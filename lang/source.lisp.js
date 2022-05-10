@@ -1,0 +1,99 @@
+// This is a TextMate grammar distributed by `starry-night`.
+// This grammar is licensed permissive.
+// See <https://github.com/wooorm/starry-night> for more info.
+/** @type {import('../lib/index.js').Grammar} */
+const grammar = {
+  extensions: [
+    '.asd',
+    '.cl',
+    '.l',
+    '.l',
+    '.lfe',
+    '.lisp',
+    '.lisp',
+    '.lsp',
+    '.lsp',
+    '.md',
+    '.nl',
+    '.nlogo',
+    '.ny',
+    '.podsl',
+    '.sexp',
+    '.srt'
+  ],
+  names: [
+    'common-lisp',
+    'gcc-machine-description',
+    'lfe',
+    'lisp',
+    'netlogo',
+    'newlisp',
+    'picolisp',
+    'srecode-template'
+  ],
+  patterns: [
+    {
+      begin: '(^[ \\t]+)?(?=;)',
+      beginCaptures: {1: {name: 'punctuation.whitespace.comment.leading.lisp'}},
+      end: '(?!\\G)',
+      patterns: [
+        {
+          begin: ';',
+          beginCaptures: {0: {name: 'punctuation.definition.comment.lisp'}},
+          end: '\\n',
+          name: 'comment.line.semicolon.lisp'
+        }
+      ]
+    },
+    {
+      captures: {
+        2: {name: 'storage.type.function-type.lisp'},
+        4: {name: 'entity.name.function.lisp'}
+      },
+      match:
+        '(\\b(?i:(defun|defgeneric|defmethod|defmacro|defclass|defstruct|defconstant|defvar|defparameter))\\b)(\\s+)((\\w|\\-|\\!|\\?)*)',
+      name: 'meta.function.lisp'
+    },
+    {
+      captures: {1: {name: 'punctuation.definition.constant.lisp'}},
+      match: '(#|\\?)(\\w|[\\\\+-=<>\'"&#])+',
+      name: 'constant.character.lisp'
+    },
+    {
+      captures: {
+        1: {name: 'punctuation.definition.variable.lisp'},
+        3: {name: 'punctuation.definition.variable.lisp'}
+      },
+      match: '(\\*)(\\S*)(\\*)',
+      name: 'variable.other.global.lisp'
+    },
+    {
+      match:
+        '\\b(?i:case|ecase|ccase|typecase|etypecase|ctypecase|do|dolist|dotimes|let|let\\*|labels|flet|loop|if|else|when|unless)\\b',
+      name: 'keyword.control.lisp'
+    },
+    {match: '\\b(?i:eq|neq|and|or|not)\\b', name: 'keyword.operator.lisp'},
+    {match: '\\b(?i:null|nil)\\b', name: 'constant.language.lisp'},
+    {
+      match:
+        '(?<![-\\w])(?i:cons|car|cdr|cond|lambda|format|setq|setf|quote|eval|append|list|listp|memberp|t|load|progn)(?![-\\w])',
+      name: 'support.function.lisp'
+    },
+    {
+      match:
+        '\\b((0(x|X)[0-9a-fA-F]*)|(([0-9]+\\.?[0-9]*)|(\\.[0-9]+))((e|E)(\\+|-)?[0-9]+)?)(L|l|UL|ul|u|U|F|f|ll|LL|ull|ULL)?\\b',
+      name: 'constant.numeric.lisp'
+    },
+    {
+      begin: '"',
+      beginCaptures: {0: {name: 'punctuation.definition.string.begin.lisp'}},
+      end: '"',
+      endCaptures: {0: {name: 'punctuation.definition.string.end.lisp'}},
+      name: 'string.quoted.double.lisp',
+      patterns: [{match: '\\\\.', name: 'constant.character.escape.lisp'}]
+    }
+  ],
+  scopeName: 'source.lisp'
+}
+
+export default grammar

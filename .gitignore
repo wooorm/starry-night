@@ -1,0 +1,10 @@
+coverage/
+gems/
+media/preview.html
+node_modules/
+script/info/
+script/grammars.yml
+*.d.ts
+*.log
+.DS_Store
+yarn.lock

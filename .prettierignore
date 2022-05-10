@@ -1,0 +1,4 @@
+coverage/
+gems/
+script/info/
+*.md
