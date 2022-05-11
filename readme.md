@@ -533,7 +533,7 @@ See source files for which are known and use `flagToScope` to turn them into
 scopes.
 
 All licenses are permissive and made available in [`notice`][notice].
-Changes should go to themes and [`languages.yml`][languages-yml] from
+Changes should go to source repos and [`languages.yml`][languages-yml] from
 `github/linguist`.
 
 <!--support start-->
