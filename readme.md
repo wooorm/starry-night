@@ -128,6 +128,10 @@ I’m hopeful that that will be open sourced in the future and we can mimic both
 
 ## Install
 
+> ⚠️ **Important**: `npm` is currently blocking this package from being
+> published.
+> I’m working on getting it published and I may have to rename it.
+
 This package is [ESM only][esm].
 In Node.js (version 12.20+, 14.14+, 16.0+, 18.0+), install with [npm][]:
 
