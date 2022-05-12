@@ -32,7 +32,7 @@ source and JavaScript!
     *   [Example: serializing hast as html](#example-serializing-hast-as-html)
     *   [Example: turning hast into react nodes](#example-turning-hast-into-react-nodes)
     *   [Example: integrate with unified, remark, and rehype](#example-integrate-with-unified-remark-and-rehype)
-    *   [Example: integrating with markdown](#example-integrating-with-markdown)
+    *   [Example: integrating with `markdown-it`](#example-integrating-with-markdown-it)
 *   [Syntax tree](#syntax-tree)
 *   [CSS](#css)
 *   [Languages](#languages)
@@ -543,7 +543,7 @@ Now running `node example.js` yields:
 </pre></div>
 ```
 
-### Example: integrating with markdown
+### Example: integrating with `markdown-it`
 
 This example shows how to combine `starry-night` with `markdown-it`.
 If we have a markdown file `example.md`:
