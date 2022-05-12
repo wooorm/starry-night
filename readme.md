@@ -465,18 +465,22 @@ export default function rehypeStarryNight(options = {}) {
     const starryNight = await starryNightPromise
 
     visit(tree, 'element', function (node, index, parent) {
+      if (!parent || index === null || node.tagName !== 'pre') {
+        return
+      }
+
+      const head = node.children[0]
+
       if (
-        !parent ||
-        index === null ||
-        parent.type !== 'element' ||
-        parent.tagName !== 'pre' ||
-        node.tagName !== 'code' ||
-        !node.properties
+        !head ||
+        head.type !== 'element' ||
+        head.tagName !== 'code' ||
+        !head.properties
       ) {
         return
       }
 
-      const classes = node.properties.className
+      const classes = head.properties.className
 
       if (!Array.isArray(classes)) return
 
@@ -491,7 +495,7 @@ export default function rehypeStarryNight(options = {}) {
       // Maybe warn?
       if (!scope) return
 
-      const fragment = starryNight.highlight(toString(node), scope)
+      const fragment = starryNight.highlight(toString(head), scope)
       const children = /** @type {Array<ElementContent>} */ (fragment.children)
 
       parent.children.splice(index, 1, {
@@ -535,8 +539,8 @@ Now running `node example.js` yields:
 ```html
 <h1>Hello</h1>
 <p>…world!</p>
-<pre><div class="highlight highlight-js"><pre><span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>it works!<span class="pl-pds">'</span></span>)
-</pre></div></pre>
+<div class="highlight highlight-js"><pre><span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>it works!<span class="pl-pds">'</span></span>)
+</pre></div>
 ```
 
 ### Example: integrating with markdown
