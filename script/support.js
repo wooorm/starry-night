@@ -33,7 +33,7 @@ export default function support() {
         if (homepage) {
           content.push(
             u('text', ' — '),
-            u('link', {url: homepage}, [u('text', 'repo')])
+            u('link', {url: homepage}, [u('text', 'upstream')])
           )
         }
 
