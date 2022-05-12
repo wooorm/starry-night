@@ -31,6 +31,7 @@ source and JavaScript!
 *   [Examples](#examples)
     *   [Example: serializing hast as html](#example-serializing-hast-as-html)
     *   [Example: turning hast into react nodes](#example-turning-hast-into-react-nodes)
+    *   [Example: integrate with unified, remark, and rehype](#example-integrate-with-unified-remark-and-rehype)
     *   [Example: integrating with markdown](#example-integrating-with-markdown)
 *   [Syntax tree](#syntax-tree)
 *   [CSS](#css)
@@ -413,6 +414,129 @@ Yields:
   _owner: null,
   _store: {}
 }
+```
+
+### Example: integrate with unified, remark, and rehype
+
+This example shows how to combine `starry-night` with [`unified`][unified]:
+using [`remark`][remark] to parse the markdown and transforming it to HTML with
+[`rehype`][rehype].
+If we have a markdown file `example.md`:
+
+````markdown
+# Hello
+
+…world!
+
+```js
+console.log('it works!')
+```
+````
+
+…and a plugin `rehype-starry-night.js`:
+
+```js
+/**
+ * @typedef {import('hast').Root} Root
+ * @typedef {import('hast').ElementContent} ElementContent
+ * @typedef {import('starry-night').Grammar} Grammar
+ *
+ * @typedef Options
+ *   Configuration (optional)
+ * @property {Array<Grammar>} [grammars]
+ *   Grammars to support (defaults: `common`).
+ */
+
+import {createStarryNight, common} from 'starry-night'
+import {visit} from 'unist-util-visit'
+import {toString} from 'hast-util-to-string'
+
+/**
+ * Plugin to highlight code with `starry-night`.
+ *
+ * @type {import('unified').Plugin<[Options?], Root>}
+ */
+export default function rehypeStarryNight(options = {}) {
+  const grammars = options.grammars || common
+  const starryNightPromise = createStarryNight(grammars)
+  const prefix = 'language-'
+
+  return async function (tree) {
+    const starryNight = await starryNightPromise
+
+    visit(tree, 'element', function (node, index, parent) {
+      if (
+        !parent ||
+        index === null ||
+        parent.type !== 'element' ||
+        parent.tagName !== 'pre' ||
+        node.tagName !== 'code' ||
+        !node.properties
+      ) {
+        return
+      }
+
+      const classes = node.properties.className
+
+      if (!Array.isArray(classes)) return
+
+      const language = classes.find(
+        (d) => typeof d === 'string' && d.startsWith(prefix)
+      )
+
+      if (typeof language !== 'string') return
+
+      const scope = starryNight.flagToScope(language.slice(prefix.length))
+
+      // Maybe warn?
+      if (!scope) return
+
+      const fragment = starryNight.highlight(toString(node), scope)
+      const children = /** @type {Array<ElementContent>} */ (fragment.children)
+
+      parent.children.splice(index, 1, {
+        type: 'element',
+        tagName: 'div',
+        properties: {
+          className: [
+            'highlight',
+            'highlight-' + scope.replace(/^source\./, '').replace(/\./g, '-')
+          ]
+        },
+        children: [{type: 'element', tagName: 'pre', properties: {}, children}]
+      })
+    })
+  }
+}
+```
+
+…and finally a module `example.js`:
+
+```js
+import fs from 'node:fs/promises'
+import {unified} from 'unified'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import rehypeStringify from 'rehype-stringify'
+import rehypeStarryNight from './rehype-starry-night.js'
+
+const file = await unified()
+  .use(remarkParse)
+  .use(remarkRehype)
+  .use(rehypeStarryNight)
+  .use(rehypeStringify)
+  .process(await fs.readFile('example.md'))
+
+console.log(String(file))
+```
+
+Now running `node example.js` yields:
+
+```html
+<h1>Hello</h1>
+<p>…world!</p>
+<pre><div class="highlight highlight-js"><pre><span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>it works!<span class="pl-pds">'</span></span>)
+</pre></div></pre>
 ```
 
 ### Example: integrating with markdown
@@ -1112,6 +1236,10 @@ All other files [MIT][license] © [Titus Wormer][author]
 [typescript]: https://www.typescriptlang.org
 
 [contribute]: https://opensource.guide/how-to-contribute/
+
+[unified]: https://github.com/unifiedjs/unified
+
+[remark]: https://github.com/remarkjs/remark
 
 [rehype]: https://github.com/rehypejs/rehype
 
