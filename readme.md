@@ -1217,13 +1217,13 @@ All other files [MIT][license] © [Titus Wormer][author]
 
 [coverage]: https://codecov.io/github/wooorm/starry-night
 
-[downloads-badge]: https://img.shields.io/npm/dm/starry-night.svg
+[downloads-badge]: https://img.shields.io/npm/dm/@wooorm/starry-night.svg
 
-[downloads]: https://www.npmjs.com/package/starry-night
+[downloads]: https://www.npmjs.com/package/@wooorm/starry-night
 
-[size-badge]: https://img.shields.io/bundlephobia/minzip/starry-night.svg
+[size-badge]: https://img.shields.io/bundlephobia/minzip/@wooorm/starry-night.svg
 
-[size]: https://bundlephobia.com/result?p=starry-night
+[size]: https://bundlephobia.com/result?p=@wooorm/starry-night
 
 [npm]: https://docs.npmjs.com/cli/install
 
