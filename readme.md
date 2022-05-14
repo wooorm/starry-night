@@ -137,20 +137,20 @@ This package is [ESM only][esm].
 In Node.js (version 12.20+, 14.14+, 16.0+, 18.0+), install with [npm][]:
 
 ```sh
-npm install starry-night
+npm install @wooorm/starry-night
 ```
 
 In Deno with [`esm.sh`][esmsh]:
 
 ```js
-import {createStarryNight, common} from 'https://esm.sh/starry-night@1'
+import {createStarryNight, common} from 'https://esm.sh/@wooorm/starry-night@1'
 ```
 
 In browsers with [`esm.sh`][esmsh]:
 
 ```html
 <script type="module">
-  import {createStarryNight, common} from 'https://esm.sh/starry-night@1?bundle'
+  import {createStarryNight, common} from 'https://esm.sh/@wooorm/starry-night@1?bundle'
 </script>
 ```
 
@@ -158,13 +158,13 @@ To get the CSS in browsers, do (see [CSS][] for more info):
 
 ```html
 <!-- This supports light and dark mode automatically. -->
-<link rel="stylesheet" href="https://esm.sh/starry-night@1/style/both.css">
+<link rel="stylesheet" href="https://esm.sh/@wooorm/starry-night@1/style/both.css">
 ```
 
 ## Use
 
 ```js
-import {createStarryNight, common} from 'starry-night'
+import {createStarryNight, common} from '@wooorm/starry-night'
 
 const starryNight = await createStarryNight(common)
 
@@ -229,8 +229,8 @@ Node representing highlighted code ([`Root`][root]).
 ###### Example
 
 ```js
-import {createStarryNight} from 'starry-night'
-import sourceCss from 'starry-night/lang/source.css.js'
+import {createStarryNight} from '@wooorm/starry-night'
+import sourceCss from '@wooorm/starry-night/lang/source.css.js'
 
 const starryNight = await createStarryNight([sourceCss])
 
@@ -274,7 +274,7 @@ Grammar scope, such as `'source.gfm'` (`string?`)
 ###### Example
 
 ```js
-import {createStarryNight, common} from 'starry-night'
+import {createStarryNight, common} from '@wooorm/starry-night'
 
 const starryNight = await createStarryNight(common)
 
@@ -295,7 +295,7 @@ List of grammar scopes, such as `'source.gfm'` (`Array<string>`).
 ###### Example
 
 ```js
-import {createStarryNight, common} from 'starry-night'
+import {createStarryNight, common} from '@wooorm/starry-night'
 
 const starryNight = await createStarryNight(common)
 
@@ -331,9 +331,9 @@ A promise resolving to nothing (`Promise<undefined>`).
 
 ````js
 import {toHtml} from 'hast-util-to-html'
-import {createStarryNight} from 'starry-night'
-import sourceGfm from 'starry-night/lang/source.gfm.js'
-import sourceCss from 'starry-night/lang/source.css.js'
+import {createStarryNight} from '@wooorm/starry-night'
+import sourceGfm from '@wooorm/starry-night/lang/source.gfm.js'
+import sourceCss from '@wooorm/starry-night/lang/source.css.js'
 
 const markdown = '```css\nem { color: red }\n```'
 
@@ -369,7 +369,7 @@ em { color: red }
 
 ```js
 import {toHtml} from 'hast-util-to-html'
-import {starryNight, common} from 'starry-night'
+import {starryNight, common} from '@wooorm/starry-night'
 
 const starryNight = await createStarryNight(common)
 
@@ -390,7 +390,7 @@ hast trees as returned by `starry-night` can be turned into React (or Preact,
 Vue, \&c) with [`hast-to-hyperscript`][hast-to-hyperscript]:
 
 ```js
-import {createStarryNight, common} from 'starry-night'
+import {createStarryNight, common} from '@wooorm/starry-night'
 import {toH} from 'hast-to-hyperscript'
 import React from 'react'
 
@@ -439,7 +439,7 @@ console.log('it works!')
 /**
  * @typedef {import('hast').Root} Root
  * @typedef {import('hast').ElementContent} ElementContent
- * @typedef {import('starry-night').Grammar} Grammar
+ * @typedef {import('@wooorm/starry-night').Grammar} Grammar
  *
  * @typedef Options
  *   Configuration (optional)
@@ -447,7 +447,7 @@ console.log('it works!')
  *   Grammars to support (defaults: `common`).
  */
 
-import {createStarryNight, common} from 'starry-night'
+import {createStarryNight, common} from '@wooorm/starry-night'
 import {visit} from 'unist-util-visit'
 import {toString} from 'hast-util-to-string'
 
@@ -562,7 +562,7 @@ console.log('it works!')
 
 ```js
 import fs from 'node:fs/promises'
-import {createStarryNight, common} from 'starry-night'
+import {createStarryNight, common} from '@wooorm/starry-night'
 import {toHtml} from 'hast-util-to-html'
 import markdownIt from 'markdown-it'
 
