@@ -1167,7 +1167,7 @@ interfaces.
 ## Compatibility
 
 This package is at least compatible with all maintained versions of Node.js.
-As of now, that is Node.js 12.20+, 14.14+, 16.0+, and 18.0+.
+As of now, that is Node.js 14.14+, 16.0+, and 18.0+.
 It also works in Deno and modern browsers.
 
 You can pass your own TextMate grammars, provided that they work with
