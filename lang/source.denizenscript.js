@@ -20,7 +20,7 @@ const grammar = {
   ],
   repository: {
     commands: {
-      begin: '(-)\\s([^\\s\\[]+)',
+      begin: '(-)\\s([^\\s<>\\[\\]]+)',
       captures: {
         1: {name: 'operator.dash.denizenscript'},
         2: {name: 'entity.other.command.denizenscript'}
@@ -33,8 +33,8 @@ const grammar = {
       name: 'comment.line.number-sign.denizenscript'
     },
     double_quotes: {
-      begin: '"',
-      end: '\\n|"',
+      begin: '(?<=\\s)"',
+      end: '(?:"|\\n)',
       name: 'string.quoted.double.denizenscript',
       patterns: [{include: '#tags'}, {include: '#tag_params'}]
     },
@@ -44,7 +44,7 @@ const grammar = {
       name: 'keyword.header-comment.denizenscript'
     },
     keys: {
-      begin: '(^[^-#\\n]*)(:)',
+      begin: '(^[^-#\\n]*)(?=(:)\\s)',
       beginCaptures: {
         1: {name: 'markup.heading.key.denizenscript'},
         2: {name: 'operator.colon.denizenscript'}
@@ -52,8 +52,8 @@ const grammar = {
       end: '\\s'
     },
     single_quotes: {
-      begin: "'",
-      end: "\\n|'",
+      begin: "(?<=\\s)'",
+      end: "(?:'|\\n)",
       name: 'string.quoted.single.denizenscript',
       patterns: [{include: '#tags'}, {include: '#tag_params'}]
     },

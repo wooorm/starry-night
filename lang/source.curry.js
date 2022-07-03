@@ -420,7 +420,7 @@ const grammar = {
         2: {name: 'keyword.preprocessor.curry pragma.name.curry'}
       },
       end: '#-\\}',
-      name: 'pragma.curry',
+      name: 'meta.preprocessor.curry pragma.curry',
       patterns: [
         {
           match: '\\b([A-Z][a-z]*)+\\b',

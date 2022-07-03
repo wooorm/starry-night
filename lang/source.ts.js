@@ -5,7 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.ts'],
+  extensions: ['.ts', '.cts', '.mts'],
   names: ['typescript', 'ts'],
   patterns: [
     {include: '#directives'},
@@ -523,7 +523,7 @@ const grammar = {
     },
     directives: {
       begin:
-        '^(///)\\s*(?=<(reference|amd-dependency|amd-module)(\\s+(path|types|no-default-lib|lib|name)\\s*=\\s*((\\\'([^\\\'\\\\]|\\\\.)*\\\')|(\\"([^\\"\\\\]|\\\\.)*\\")|(\\`([^\\`\\\\]|\\\\.)*\\`)))+\\s*/>\\s*$)',
+        '^(///)\\s*(?=<(reference|amd-dependency|amd-module)(\\s+(path|types|no-default-lib|lib|name|resolution-mode)\\s*=\\s*((\\\'([^\\\'\\\\]|\\\\.)*\\\')|(\\"([^\\"\\\\]|\\\\.)*\\")|(\\`([^\\`\\\\]|\\\\.)*\\`)))+\\s*/>\\s*$)',
       beginCaptures: {1: {name: 'punctuation.definition.comment.ts'}},
       end: '(?=$)',
       name: 'comment.line.triple-slash.directive.ts',
@@ -539,7 +539,7 @@ const grammar = {
           name: 'meta.tag.ts',
           patterns: [
             {
-              match: 'path|types|no-default-lib|lib|name',
+              match: 'path|types|no-default-lib|lib|name|resolution-mode',
               name: 'entity.other.attribute-name.directive.ts'
             },
             {match: '=', name: 'keyword.operator.assignment.ts'},
@@ -1373,6 +1373,25 @@ const grammar = {
         }
       ]
     },
+    'import-export-assert-clause': {
+      begin: '(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(assert)\\s*(\\{)',
+      beginCaptures: {
+        1: {name: 'keyword.control.assert.ts'},
+        2: {name: 'punctuation.definition.block.ts'}
+      },
+      end: '\\}',
+      endCaptures: {0: {name: 'punctuation.definition.block.ts'}},
+      patterns: [
+        {include: '#comment'},
+        {include: '#string'},
+        {
+          match:
+            '(?:[_$[:alpha:]][_$[:alnum:]]*)\\s*(?=(\\/\\*([^\\*]|(\\*[^\\/]))*\\*\\/\\s*)*:)',
+          name: 'meta.object-literal.key.ts'
+        },
+        {match: ':', name: 'punctuation.separator.key-value.ts'}
+      ]
+    },
     'import-export-block': {
       begin: '\\{',
       beginCaptures: {0: {name: 'punctuation.definition.block.ts'}},
@@ -1415,6 +1434,7 @@ const grammar = {
         {include: '#string'},
         {include: '#import-export-block'},
         {match: '\\bfrom\\b', name: 'keyword.control.from.ts'},
+        {include: '#import-export-assert-clause'},
         {include: '#import-export-clause'}
       ]
     },
@@ -2755,8 +2775,8 @@ const grammar = {
         {include: '#type-parameters'},
         {include: '#type-tuple'},
         {include: '#type-object'},
-        {include: '#type-conditional'},
         {include: '#type-operators'},
+        {include: '#type-conditional'},
         {include: '#type-fn-type-parameters'},
         {include: '#type-paren-or-function-parameters'},
         {include: '#type-function-return-type'},
@@ -2924,6 +2944,20 @@ const grammar = {
         {include: '#type'}
       ]
     },
+    'type-infer': {
+      patterns: [
+        {
+          captures: {
+            1: {name: 'keyword.operator.expression.infer.ts'},
+            2: {name: 'entity.name.type.ts'},
+            3: {name: 'keyword.operator.expression.extends.ts'}
+          },
+          match:
+            '(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(infer)\\s+([_$[:alpha:]][_$[:alnum:]]*)(?![_$[:alnum:]])(?:(?=\\.\\.\\.)|(?!\\.))(?:\\s+(extends)(?![_$[:alnum:]])(?:(?=\\.\\.\\.)|(?!\\.)))?',
+          name: 'meta.type.infer.ts'
+        }
+      ]
+    },
     'type-name': {
       patterns: [
         {
@@ -3002,6 +3036,7 @@ const grammar = {
     'type-operators': {
       patterns: [
         {include: '#typeof-operator'},
+        {include: '#type-infer'},
         {
           begin: '([&|])(?=\\s*\\{)',
           beginCaptures: {0: {name: 'keyword.operator.type.ts'}},
@@ -3021,11 +3056,6 @@ const grammar = {
         {match: '(\\?|\\:)', name: 'keyword.operator.ternary.ts'},
         {
           match:
-            '(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))infer(?=\\s+[_$[:alpha:]])',
-          name: 'keyword.operator.expression.infer.ts'
-        },
-        {
-          match:
             '(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))import(?=\\s*\\()',
           name: 'keyword.operator.expression.import.ts'
         }
@@ -3043,7 +3073,7 @@ const grammar = {
         {include: '#comment'},
         {
           match:
-            '(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(extends)(?![_$[:alnum:]])(?:(?=\\.\\.\\.)|(?!\\.))',
+            '(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(extends|in|out)(?![_$[:alnum:]])(?:(?=\\.\\.\\.)|(?!\\.))',
           name: 'storage.modifier.ts'
         },
         {include: '#type'},

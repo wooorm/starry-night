@@ -42,6 +42,7 @@ const grammar = {
     '.jsproj',
     '.kml',
     '.launch',
+    '.lvclass',
     '.lvlib',
     '.lvproj',
     '.mdpolicy',

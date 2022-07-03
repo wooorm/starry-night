@@ -477,7 +477,7 @@ const grammar = {
               name: 'meta.arrow.ballerina storage.type.function.arrow.ballerina'
             }
           },
-          end: '(?=\\;)|(?=\\,)',
+          end: '(?=\\;)|(?=\\,)|(?=)(?=\\);)',
           name: 'meta.block.ballerina',
           patterns: [{include: '#statements'}, {include: '#punctuation-comma'}]
         },
@@ -490,7 +490,7 @@ const grammar = {
         1: {name: 'keyword.other.ballerina'},
         2: {name: 'keyword.other.ballerina'}
       },
-      end: '(?<=\\;)|(?<=\\})|(?<=\\,)',
+      end: '(?<=\\;)|(?<=\\})|(?<=\\,)|(?=)(?=\\);)',
       name: 'meta.function.ballerina',
       patterns: [
         {match: '\\bexternal\\b', name: 'keyword.ballerina'},
@@ -535,7 +535,7 @@ const grammar = {
             }
           },
           match:
-            '\\s+(\\b(self)|\\b(is|new|isolated|null|function|in)\\b|(string|int|boolean|float|byte|decimal|json|xml)\\b|\\b(readonly|error|map)\\b|([_$[:alpha:]][_$[:alnum:]]*))'
+            '\\s+(\\b(self)|\\b(is|new|isolated|null|function|in)\\b|(string|int|boolean|float|byte|decimal|json|xml|anydata)\\b|\\b(readonly|error|map)\\b|([_$[:alpha:]][_$[:alnum:]]*))'
         }
       ]
     },
@@ -746,7 +746,7 @@ const grammar = {
               ]
             },
             {
-              begin: '(?<=\\))',
+              begin: '(?<=\\))(?=\\s|\\=)',
               end: '(?=\\{)',
               patterns: [{include: '#literal'}, {include: '#keywords'}]
             },
@@ -926,7 +926,7 @@ const grammar = {
     mdDocumentationParamDescription: {
       patterns: [
         {
-          begin: '(\\+\\s+)([_$[:alpha:]][_$[:alnum:]]*)(\\s*\\-\\s+)',
+          begin: "(\\+\\s+)(\\'?[_$[:alpha:]][_$[:alnum:]]*)(\\s*\\-\\s+)",
           beginCaptures: {
             1: {name: 'keyword.operator.ballerina'},
             2: {name: 'variable.other.readwrite.ballerina'},
@@ -1172,7 +1172,7 @@ const grammar = {
             9: {name: 'variable.parameter.ballerina'}
           },
           match:
-            '(?x)(?:(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))\\s+)?(?:(\\.\\.\\.)\\s*)?(?<!=|:)(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(?:(this)|(string|int|boolean|float|byte|decimal|json|xml)|\\b(is|new|isolated|null|function|in)\\b|\\b(true|false)\\b|\\b(check|foreach|if|checkpanic)\\b|\\b(readonly|error|map)\\b|([_$[:alpha:]][_$[:alnum:]]*))(?![_$[:alnum:]])(?:(?=\\.\\.\\.)|(?!\\.))\\s*(\\??)'
+            '(?x)(?:(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))\\s+)?(?:(\\.\\.\\.)\\s*)?(?<!=|:)(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(?:(this)|(string|int|boolean|float|byte|decimal|json|xml|anydata)|\\b(is|new|isolated|null|function|in)\\b|\\b(true|false)\\b|\\b(check|foreach|if|checkpanic)\\b|\\b(readonly|error|map)\\b|([_$[:alpha:]][_$[:alnum:]]*))(?![_$[:alnum:]])(?:(?=\\.\\.\\.)|(?!\\.))\\s*(\\??)'
         }
       ]
     },
@@ -1225,6 +1225,17 @@ const grammar = {
         }
       ]
     },
+    parameters: {
+      patterns: [
+        {
+          match:
+            '\\s*(return|break|continue|check|checkpanic|panic|trap|from|where)\\b',
+          name: 'keyword.control.flow.ballerina'
+        },
+        {match: '\\s*(let|select)\\b', name: 'keyword.other.ballerina'},
+        {match: '\\,', name: 'punctuation.separator.parameter.ballerina'}
+      ]
+    },
     paranthesised: {
       begin: '\\(',
       beginCaptures: {0: {name: 'meta.brace.round.ballerina'}},
@@ -1237,12 +1248,12 @@ const grammar = {
         {include: '#decl-block'},
         {include: '#comment'},
         {include: '#string'},
+        {include: '#parameters'},
         {include: '#annotationAttachment'},
         {include: '#recordLiteral'},
         {include: '#stringTemplate'},
         {include: '#parameter-name'},
         {include: '#variable-initializer'},
-        {match: '\\,', name: 'punctuation.separator.parameter.ballerina'},
         {include: '#expression'}
       ]
     },
@@ -1540,7 +1551,7 @@ const grammar = {
       patterns: [
         {
           match:
-            '(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(string|int|boolean|float|byte|decimal|json|xml)(?![_$[:alnum:]])(?:(?=\\.\\.\\.)|(?!\\.))',
+            '(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(string|int|boolean|float|byte|decimal|json|xml|anydata)(?![_$[:alnum:]])(?:(?=\\.\\.\\.)|(?!\\.))',
           name: 'support.type.primitive.ballerina'
         }
       ]
@@ -1621,11 +1632,12 @@ const grammar = {
     types: {
       patterns: [
         {
-          match: '\\b(handle|any|anydata|future|typedesc)\\b',
+          match: '\\b(handle|any|future|typedesc)\\b',
           name: 'storage.type.ballerina'
         },
         {
-          match: '\\b(boolean|int|string|float|decimal|byte|json|xml)\\b',
+          match:
+            '\\b(boolean|int|string|float|decimal|byte|json|xml|anydata)\\b',
           name: 'support.type.primitive.ballerina'
         },
         {
@@ -1655,6 +1667,7 @@ const grammar = {
             {match: '\\|', name: 'keyword.operator.type.annotation.ballerina'},
             {match: '\\bin\\b', name: 'keyword.other.ballerina'},
             {include: '#comment'},
+            {include: '#string'},
             {include: '#stringTemplate'},
             {include: '#numbers'},
             {include: '#multiType'},
@@ -1679,6 +1692,7 @@ const grammar = {
               end: '(?=\\S)'
             },
             {include: '#comment'},
+            {include: '#string'},
             {include: '#stringTemplate'},
             {include: '#var-single-const'},
             {include: '#variable-initializer'},
@@ -1689,7 +1703,7 @@ const grammar = {
         {include: '#punctuation-comma'},
         {
           begin:
-            '(string|int|boolean|float|byte|decimal|json|xml)(?=\\s+|\\[|\\?|\\||\\:)',
+            '(string|int|boolean|float|byte|decimal|json|xml|anydata)(?=\\s+|\\[|\\?|\\||\\:)',
           beginCaptures: {0: {name: 'support.type.primitive.ballerina'}},
           end: '(?!\\b(var))((?=;|}|;|^\\s*$|(?:^\\s*(?:abstract|async|class|const|declare|enum|export|function|import|interface|let|module|namespace|return|service|type|var)\\b))|((?<!^string|[^\\._$[:alnum:]]string|^int|[^\\._$[:alnum:]]int)(?=\\s*$)))',
           name: 'meta.var.expr.ballerina',
@@ -1697,11 +1711,12 @@ const grammar = {
             {include: '#xml'},
             {
               begin:
-                '(string|int|boolean|float|byte|decimal|json|xml)(?=\\s+|\\[|\\?|\\||\\:)',
+                '(string|int|boolean|float|byte|decimal|json|xml|anydata)(?=\\s+|\\[|\\?|\\||\\:)',
               beginCaptures: {0: {name: 'support.type.primitive.ballerina'}},
               end: '(?=\\S)'
             },
             {match: '\\|', name: 'keyword.operator.type.annotation.ballerina'},
+            {include: '#string'},
             {include: '#stringTemplate'},
             {include: '#numbers'},
             {include: '#multiType'},
@@ -1740,7 +1755,7 @@ const grammar = {
       patterns: [
         {
           begin:
-            '((string|int|boolean|float|byte|decimal|json|xml)|\\b(readonly|error|map)\\b|([_$[:alpha:]][_$[:alnum:]]*))(?=\\s+|\\;|\\>|\\|)',
+            '((string|int|boolean|float|byte|decimal|json|xml|anydata)|\\b(readonly|error|map)\\b|([_$[:alpha:]][_$[:alnum:]]*))(?=\\s+|\\;|\\>|\\|)',
           beginCaptures: {
             2: {name: 'support.type.primitive.ballerina'},
             3: {name: 'storage.type.ballerina'},

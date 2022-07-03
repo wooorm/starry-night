@@ -6,6 +6,7 @@
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
   extensions: [
+    '.bb',
     '.boot',
     '.cl2',
     '.clj',

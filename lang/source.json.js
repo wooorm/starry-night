@@ -6,6 +6,8 @@
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
   extensions: [
+    '.4dform',
+    '.4dproject',
     '.avsc',
     '.epj',
     '.geojson',
@@ -32,12 +34,15 @@ const grammar = {
   ],
   names: [
     'ecere-projects',
+    'geojson',
     'ipython-notebook',
     'json',
+    'jsonl',
     'jupyter-notebook',
     'max',
     'max/msp',
-    'maxmsp'
+    'maxmsp',
+    'topojson'
   ],
   patterns: [{include: '#main'}],
   repository: {

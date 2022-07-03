@@ -33,27 +33,47 @@ const grammar = {
       ]
     },
     'astro:component': {
-      begin: '(</?)([$A-Z_][^/?!\\s<>]*|[^/?!\\s<>.]+\\.[^/?!\\s<>]+)\\b',
-      beginCaptures: {
-        1: {name: 'punctuation.definition.tag.begin.astro'},
-        2: {name: 'entity.name.tag.astro support.class.component.astro'}
-      },
-      end: '(/?>)',
-      endCaptures: {1: {name: 'punctuation.definition.tag.end.astro'}},
-      name: 'meta.tag.component.astro',
-      patterns: [{include: '#astro:attribute'}]
+      patterns: [
+        {
+          begin:
+            '(<)([$A-Z_][^/?!\\s<>]*|[^/?!\\s<>.]+\\.[^/?!\\s<>]+)(.+is:raw.*?)(>)',
+          beginCaptures: {
+            1: {name: 'punctuation.definition.tag.begin.astro'},
+            2: {name: 'entity.name.tag.astro support.class.component.astro'},
+            3: {patterns: [{include: '#astro:attribute'}]},
+            4: {name: 'punctuation.definition.tag.end.astro'}
+          },
+          contentName: 'source.unknown',
+          end: '(</)([$A-Z_][^/?!\\s<>]*|[^/?!\\s<>.]+\\.[^/?!\\s<>]+)(?=\\s|/?>)(>)',
+          endCaptures: {
+            1: {name: 'punctuation.definition.tag.begin.astro'},
+            2: {name: 'entity.name.tag.astro support.class.component.astro'},
+            3: {name: 'punctuation.definition.tag.end.astro'}
+          },
+          name: 'meta.tag.component.astro astro.component.raw'
+        },
+        {
+          begin: '(</?)([$A-Z_][^/?!\\s<>]*|[^/?!\\s<>.]+\\.[^/?!\\s<>]+)\\b',
+          beginCaptures: {
+            1: {name: 'punctuation.definition.tag.begin.astro'},
+            2: {name: 'entity.name.tag.astro support.class.component.astro'}
+          },
+          end: '(/?>)',
+          endCaptures: {1: {name: 'punctuation.definition.tag.end.astro'}},
+          name: 'meta.tag.component.astro',
+          patterns: [{include: '#astro:attribute'}]
+        }
+      ]
     },
     'astro:expressions': {
       patterns: [
         {
           begin: '\\{',
-          beginCaptures: {
-            0: {name: 'punctuation.definition.generic.begin.html'}
-          },
+          beginCaptures: {0: {name: 'punctuation.section.embedded.begin.tsx'}},
           contentName: 'source.tsx',
           end: '\\}',
-          endCaptures: {0: {name: 'punctuation.definition.generic.end.html'}},
-          name: 'expression.embbeded.astro',
+          endCaptures: {0: {name: 'punctuation.section.embedded.end.tsx'}},
+          name: 'expression.embedded.astro',
           patterns: [{include: 'source.tsx'}]
         }
       ]
@@ -81,6 +101,42 @@ const grammar = {
         4: {name: 'punctuation.definition.tag.end.html'}
       },
       patterns: [
+        {
+          begin:
+            '\\G(?=\\s*[^>]*?type\\s*=\\s*([\'"]|)(?i:application/ld\\+json)\\1)',
+          end: '(?=</|/>)',
+          patterns: [
+            {
+              begin: '(?<=>)(?!</)',
+              contentName: 'source.json',
+              end: '(?=</)',
+              patterns: [{include: 'source.json'}]
+            },
+            {include: '#html:tag-attributes'}
+          ]
+        },
+        {
+          begin:
+            '\\G(?=\\s*[^>]*?type\\s*=\\s*([\'"]|)(?i:module|(?:text/javascript|text/partytown|application/node|application/javascript))\\1)',
+          end: '(?=</|/>)',
+          patterns: [
+            {
+              begin: '(?<=>)(?!</)',
+              contentName: 'source.js',
+              end: '(?=</)',
+              patterns: [{include: 'source.js'}]
+            },
+            {include: '#html:tag-attributes'}
+          ]
+        },
+        {
+          begin: '\\G(?=\\s*[^>]*?type\\s*=\\s*([\'"]|)\\1)',
+          end: '(?=</|/>)',
+          patterns: [
+            {begin: '(?<=>)(?!</)', end: '(?=</)', name: 'source.unknown'},
+            {include: '#html:tag-attributes'}
+          ]
+        },
         {
           begin:
             '\\G(?=\\s*[^>]*?lang\\s*=\\s*([\'"]|)(?i:jsx?|javascript)\\1)',
@@ -219,26 +275,34 @@ const grammar = {
       ]
     },
     'astro:markdown': {
-      begin: '(<)(Markdown)(>)',
+      begin: '(<)(Markdown)',
       beginCaptures: {
-        1: {name: 'punctuation.definition.tag.begin.html'},
-        2: {name: 'entity.name.tag.html'},
-        3: {name: 'punctuation.definition.tag.end.html'}
+        1: {name: 'punctuation.definition.tag.begin.astro'},
+        2: {name: 'entity.name.tag.astro support.class.component.astro'}
       },
-      end: '(</)(Markdown)(>)',
+      end: '(</)(Markdown)\\s*(>)|(/>)',
       endCaptures: {
-        1: {name: 'punctuation.definition.tag.begin.html'},
-        2: {name: 'entity.name.tag.html'},
-        3: {name: 'punctuation.definition.tag.end.html'}
+        1: {name: 'punctuation.definition.tag.begin.astro'},
+        2: {name: 'entity.name.tag.astro support.class.component.astro'},
+        3: {name: 'punctuation.definition.tag.end.astro'},
+        4: {name: 'punctuation.definition.tag.end.astro'}
       },
-      patterns: [{include: 'source.gfm'}]
+      patterns: [
+        {
+          begin: '(?<=>)(?!</)',
+          contentName: 'text.html.markdown',
+          end: '(?=</)',
+          patterns: [{include: 'source.gfm'}]
+        },
+        {include: '#html:tag-attributes'}
+      ]
     },
     frontmatter: {
       begin: '\\A(-{3})\\s*$',
-      beginCaptures: {1: {name: 'comment.block.html'}},
+      beginCaptures: {1: {name: 'comment'}},
       contentName: 'source.ts',
       end: '(^|\\G)(-{3})|\\.{3}\\s*$',
-      endCaptures: {2: {name: 'comment.block.html'}},
+      endCaptures: {2: {name: 'comment'}},
       patterns: [{include: 'source.ts'}]
     },
     'html:attribute': {
@@ -302,6 +366,23 @@ const grammar = {
     },
     'html:element': {
       patterns: [
+        {
+          begin: '(<)([^/?!\\s<>]+)(.+is:raw.*?)(>)',
+          beginCaptures: {
+            1: {name: 'punctuation.definition.tag.begin.html'},
+            2: {name: 'entity.name.tag.html'},
+            3: {patterns: [{include: '#astro:attribute'}]},
+            4: {name: 'punctuation.definition.tag.end.html'}
+          },
+          contentName: 'source.unknown',
+          end: '(</)([^/?!\\s<>]+)(?=\\s|/?>)(>)',
+          endCaptures: {
+            1: {name: 'punctuation.definition.tag.begin.html'},
+            2: {name: 'entity.name.tag.html'},
+            3: {name: 'punctuation.definition.tag.end.html'}
+          },
+          name: 'astro.element.raw'
+        },
         {
           begin: '(<)([^/?!\\s<>]+)(?=\\s|/?>)',
           beginCaptures: {

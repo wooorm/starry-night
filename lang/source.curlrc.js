@@ -43,7 +43,7 @@ const grammar = {
       match: '(;)(auto)\\b'
     },
     comment: {
-      begin: '^#',
+      begin: '(?:^|(?<=[ \\t\\xA0"]))#',
       beginCaptures: {0: {name: 'punctuation.definition.comment.curlrc'}},
       end: '$',
       name: 'comment.line.number-sign.curlrc'
@@ -65,16 +65,16 @@ const grammar = {
             2: {name: 'punctuation.definition.dash.long.option.curlrc'}
           },
           match:
-            '(?x)\n(?:\\G|^) \\s*\n(\n\t(--)?\n\t(?:anyauth|append|basic|cert-status|compressed-ssh|compressed|create-dirs|crlf|digest\n\t|disable-eprt|disable-epsv|disable|disallow-username-in-url|fail-early|fail|false-start\n\t|ftp-create-dirs|ftp-pasv|ftp-pret|ftp-skip-pasv-ip|ftp-ssl-ccc|ftp-ssl-control|get\n\t|globoff|haproxy-protocol|head|help|http1\\.[01]|http2(?:-prior-knowledge)?\n\t|ignore-content-length|include|insecure|ipv[46]|junk-session-cookies|list-only\n\t|location-trusted|location|manual|metalink|negotiate|netrc-optional|netrc|next\n\t|no-alpn|no-buffer|no-keepalive|no-npn|no-sessionid|ntlm-wb|ntlm|path-as-is|post30[1-3]\n\t|progress-bar|proxy-anyauth|proxy-basic|proxy-digest|proxy-insecure|proxy-negotiate\n\t|proxy-ntlm|proxy-ssl-allow-beast|proxy-tlsv1|proxytunnel|quote|raw|remote-header-name\n\t|remote-name-all|remote-name|remote-time|request-target|retry-connrefused|sasl-ir\n\t|show-error|silent|socks5-(?:basic|gssapi-nec|gssapi)|ssl-allow-beast|ssl-no-revoke\n\t|ssl-reqd|sslv[23]|ssl|stderr|styled-output|suppress-connect-headers\n\t|tcp-fastopen|tcp-nodelay|tftp-no-options|tlspassword|tlsv1\\.[0-3]\n\t|tlsv1|tr-encoding|trace-time|use-ascii|verbose|version|xattr)\n)\n(?=\\s|$)',
+            '(?x)\n(?:\\G|^|(?<=[ \\t])) \\s*\n(\n\t(--)?\n\t(?<optlist_no_parameter>\n\t\tanyauth\n\t|\tappend\n\t|\tbasic\n\t|\tcert-status\n\t|\tcompressed-ssh\n\t|\tcompressed\n\t|\tcreate-dirs\n\t|\tcrlf\n\t|\tdigest\n\t|\tdisable-eprt\n\t|\tdisable-epsv\n\t|\tdisable\n\t|\tdisallow-username-in-url\n\t|\tfail-early\n\t|\tfail\n\t|\tfalse-start\n\t|\tftp-create-dirs\n\t|\tftp-pasv\n\t|\tftp-pret\n\t|\tftp-skip-pasv-ip\n\t|\tftp-ssl-ccc\n\t|\tftp-ssl-control\n\t|\tget\n\t|\tgloboff\n\t|\thaproxy-protocol\n\t|\thead\n\t|\thelp\n\t|\thttp1.0\n\t|\thttp1.1\n\t|\thttp2-prior-knowledge\n\t|\thttp2\n\t|\tignore-content-length\n\t|\tinclude\n\t|\tinsecure\n\t|\tipv4\n\t|\tipv6\n\t|\tjunk-session-cookies\n\t|\tlist-only\n\t|\tlocation-trusted\n\t|\tlocation\n\t|\tmanual\n\t|\tmetalink\n\t|\tnegotiate\n\t|\tnetrc-optional\n\t|\tnetrc\n\t|\tnext\n\t|\tno-alpn\n\t|\tno-buffer\n\t|\tno-keepalive\n\t|\tno-npn\n\t|\tno-sessionid\n\t|\tntlm-wb\n\t|\tntlm\n\t|\tpath-as-is\n\t|\tpost301\n\t|\tpost302\n\t|\tpost303\n\t|\tprogress-bar\n\t|\tproxy-anyauth\n\t|\tproxy-basic\n\t|\tproxy-digest\n\t|\tproxy-insecure\n\t|\tproxy-negotiate\n\t|\tproxy-ntlm\n\t|\tproxy-ssl-allow-beast\n\t|\tproxy-tlsv1\n\t|\tproxytunnel\n\t|\tquote\n\t|\traw\n\t|\tremote-header-name\n\t|\tremote-name-all\n\t|\tremote-name\n\t|\tremote-time\n\t|\trequest-target\n\t|\tretry-connrefused\n\t|\tsasl-ir\n\t|\tshow-error\n\t|\tsilent\n\t|\tsocks5-basic\n\t|\tsocks5-gssapi-nec\n\t|\tsocks5-gssapi\n\t|\tssl-allow-beast\n\t|\tssl-no-revoke\n\t|\tssl-reqd\n\t|\tsslv2\n\t|\tsslv3\n\t|\tssl\n\t|\tstderr\n\t|\tstyled-output\n\t|\tsuppress-connect-headers\n\t|\ttcp-fastopen\n\t|\ttcp-nodelay\n\t|\ttftp-no-options\n\t|\ttlspassword\n\t|\ttlsv1.0\n\t|\ttlsv1.1\n\t|\ttlsv1.2\n\t|\ttlsv1.3\n\t|\ttlsv1\n\t|\ttr-encoding\n\t|\ttrace-time\n\t|\tuse-ascii\n\t|\tverbose\n\t|\tversion\n\t|\txattr\n\t)\n)\n(?=\\s|$)',
           name: 'meta.option.long.curlrc'
         },
         {
           begin:
-            '(?x) (?:\\G|^)\n(?!\\s*--\\w[-\\w]*\\s*[=:]) \\s*\n((--)?(?:doh-url|mail-auth|mail-from|mail-rcpt|noproxy|referer|url))\n(?:\\s*(=|:)|(?=\\s|$))',
+            '(?x) (?:\\G|^|(?<=[ \\t]))\n(?!\\s*--\\w[-\\w]*\\s*[=:]) \\s*\n(\n\t(--)?\n\t(?<optlist_urls>\n\t\tdoh-url\n\t|\tmail-auth\n\t|\tmail-from\n\t|\tmail-rcpt\n\t|\tnoproxy\n\t|\treferer\n\t|\turl\n\t)\n)\n(?:\\s*(=|:)|(?=\\s|$))',
           beginCaptures: {
             1: {name: 'entity.long.option.name.curlrc'},
             2: {name: 'punctuation.definition.dash.long.option.curlrc'},
-            3: {patterns: [{include: '#separators'}]}
+            4: {patterns: [{include: '#separators'}]}
           },
           end: '$|(?:((")((?:[^"\\\\]|\\\\.)*)(?:(")|(?=$)))|([^\\s]+))',
           endCaptures: {
@@ -88,11 +88,11 @@ const grammar = {
         },
         {
           begin:
-            '(?x) (?:\\G|^)\n(?!\\s*--\\w[-\\w]*\\s*[=:]) \\s*\n((--)?(?:header|proxy-header))\n(?:\\s*(=|:)|(?=\\s|$))',
+            '(?x) (?:\\G|^|(?<=[ \\t]))\n(?!\\s*--\\w[-\\w]*\\s*[=:]) \\s*\n(\n\t(--)?\n\t(?<optlist_headers>\n\t\theader\n\t|\tproxy-header\n\t)\n)\n(?:\\s*(=|:)|(?=\\s|$))',
           beginCaptures: {
             1: {name: 'entity.long.option.name.curlrc'},
             2: {name: 'punctuation.definition.dash.long.option.curlrc'},
-            3: {patterns: [{include: '#separators'}]}
+            4: {patterns: [{include: '#separators'}]}
           },
           end: '$|(?:((")((?:[^"\\\\]|\\\\.)*)(?:(")|(?=$)))|([^\\s]+))',
           endCaptures: {
@@ -106,11 +106,11 @@ const grammar = {
         },
         {
           begin:
-            '(?x) (?:\\G|^)\n(?!\\s*--\\w[-\\w]*\\s*[=:]) \\s*\n((--)?(?:cookie|form-string|form|telnet-option))\n(?:\\s*(=|:)|(?=\\s|$))',
+            '(?x) (?:\\G|^|(?<=[ \\t]))\n(?!\\s*--\\w[-\\w]*\\s*[=:]) \\s*\n(\n\t(--)?\n\t(?<optlist_form_data>\n\t\tcookie\n\t|\tform-string\n\t|\tform\n\t|\ttelnet-option\n\t)\n)\n(?:\\s*(=|:)|(?=\\s|$))',
           beginCaptures: {
             1: {name: 'entity.long.option.name.curlrc'},
             2: {name: 'punctuation.definition.dash.long.option.curlrc'},
-            3: {patterns: [{include: '#separators'}]}
+            4: {patterns: [{include: '#separators'}]}
           },
           end: '$|(?:((")((?:[^"\\\\]|\\\\.)*)(?:(")|(?=$)))|([^\\s]+))',
           endCaptures: {
@@ -124,11 +124,11 @@ const grammar = {
         },
         {
           begin:
-            '(?:\\G|^)(?!\\s*--\\w[-\\w]*\\s*[=:])\\s*((--)?(?:proto-default|proto-redir|proto))(?:\\s*(=|:)|(?=\\s|$))',
+            '(?x) (?:\\G|^|(?<=[ \\t]))\n(?!\\s*--\\w[-\\w]*\\s*[=:]) \\s*\n(\n\t(--)?\n\t(?<optlist_protocols>\n\t\tproto-default\n\t|\tproto-redir\n\t|\tproto\n\t)\n) (?:\\s*(=|:)|(?=\\s|$))',
           beginCaptures: {
             1: {name: 'entity.long.option.name.curlrc'},
             2: {name: 'punctuation.definition.dash.long.option.curlrc'},
-            3: {patterns: [{include: '#separators'}]}
+            4: {patterns: [{include: '#separators'}]}
           },
           end: '$|(?:((")((?:[^"\\\\]|\\\\.)*)(?:(")|$))|([^\\s]+))',
           endCaptures: {
@@ -142,11 +142,11 @@ const grammar = {
         },
         {
           begin:
-            '(?:\\G|^)(?!\\s*--\\w[-\\w]*\\s*[=:])\\s*((--)?ftp-port)(?:\\s*(=|:)|(?=\\s|$))',
+            '(?x) (?:\\G|^|(?<=[ \\t]))\n(?!\\s*--\\w[-\\w]*\\s*[=:]) \\s*\n(\n\t(--)?\n\t(?<optlist_port>\n\t\tftp-port\n\t)\n) (?:\\s*(=|:)|(?=\\s|$))',
           beginCaptures: {
             1: {name: 'entity.long.option.name.curlrc'},
             2: {name: 'punctuation.definition.dash.long.option.curlrc'},
-            3: {patterns: [{include: '#separators'}]}
+            4: {patterns: [{include: '#separators'}]}
           },
           end: '$|(?:((")((?:[^"\\\\]|\\\\.)*)(?:(")|$))|([^\\s]+))',
           endCaptures: {
@@ -163,11 +163,11 @@ const grammar = {
         },
         {
           begin:
-            '(?:\\G|^)(?!\\s*--\\w[-\\w]*\\s*[=:])\\s*((--)?hostpubmd5)(?:\\s*(=|:)|(?=\\s|$))',
+            '(?x) (?:\\G|^|(?<=[ \\t]))\n(?!\\s*--\\w[-\\w]*\\s*[=:]) \\s*\n(\n\t(--)?\n\t(?<optlist_md5>\n\t\thostpubmd5\n\t)\n) (?:\\s*(=|:)|(?=\\s|$))',
           beginCaptures: {
             1: {name: 'entity.long.option.name.curlrc'},
             2: {name: 'punctuation.definition.dash.long.option.curlrc'},
-            3: {patterns: [{include: '#separators'}]}
+            4: {patterns: [{include: '#separators'}]}
           },
           end: '$|(?:((")((?:[^"\\\\]|\\\\.)*)(?:(")|$))|([^\\s]+))',
           endCaptures: {
@@ -184,11 +184,11 @@ const grammar = {
         },
         {
           begin:
-            '(?:\\G|^)(?!\\s*--\\w[-\\w]*\\s*[=:])\\s*((--)?(?:local-port|range))(?:\\s*(=|:)|(?=\\s|$))',
+            '(?x) (?:\\G|^|(?<=[ \\t]))\n(?!\\s*--\\w[-\\w]*\\s*[=:]) \\s*\n(\n\t(--)?\n\t(?<optlist_byte_range>\n\t\tlocal-port\n\t|\trange\n\t)\n) (?:\\s*(=|:)|(?=\\s|$))',
           beginCaptures: {
             1: {name: 'entity.long.option.name.curlrc'},
             2: {name: 'punctuation.definition.dash.long.option.curlrc'},
-            3: {patterns: [{include: '#separators'}]}
+            4: {patterns: [{include: '#separators'}]}
           },
           end: '$|(?:((")((?:[^"\\\\]|\\\\.)*)(?:(")|$))|([^\\s]+))',
           endCaptures: {
@@ -208,11 +208,11 @@ const grammar = {
         },
         {
           begin:
-            '(?x) (?:\\G|^)\n(?!\\s*--\\w[-\\w]*\\s*[=:](?=\\s)) \\s*\n(\n\t(--)?\n\t(?:cert|connect-to|preproxy|proxy-cert|proxy-user|proxy1\\.0\n\t|proxy|resolve|socks4a?|socks5-hostname|socks5|user)\n)\n(?:\\s*(=|:)|(?=\\s|$))',
+            '(?x) (?:\\G|^|(?<=[ \\t]))\n(?!\\s*--\\w[-\\w]*\\s*[=:](?=\\s)) \\s*\n(\n\t(--)?\n\t(?<optlist_kv_colon>\n\t\tcert\n\t|\tconnect-to\n\t|\tpreproxy\n\t|\tproxy-cert\n\t|\tproxy-user\n\t|\tproxy1\\.0\n\t|\tproxy\n\t|\tresolve\n\t|\tsocks4a?\n\t|\tsocks5-hostname\n\t|\tsocks5\n\t|\tuser\n\t)\n)\n(?:\\s*(=|:)|(?=\\s|$))',
           beginCaptures: {
             1: {name: 'entity.long.option.name.curlrc'},
             2: {name: 'punctuation.definition.dash.long.option.curlrc'},
-            3: {patterns: [{include: '#separators'}]}
+            4: {patterns: [{include: '#separators'}]}
           },
           end: '$|(?:((")((?:[^"\\\\]|\\\\.)*)(?:(")|$))|([^\\s]+))',
           endCaptures: {
@@ -226,11 +226,11 @@ const grammar = {
         },
         {
           begin:
-            '(?x) (?:\\G|^)\n(?!\\s*--\\w[-\\w]*\\s*[=:](?=\\s)) \\s*\n(\n\t(--)?\n\t(?:abstract-unix-socket|cacert|capath|cert-type|ciphers|config|cookie-jar|crlfile|data-ascii\n\t|data-binary|data-raw|data-urlencode|data|delegation|dns-interface|dns-ipv[46]-addr|dns-servers\n\t|dump-header|egd-file|engine|ftp-(?:account|alternative-to-user|ssl-ccc-mode|method)|interface\n\t|key-type|key|krb|libcurl|login-options|netrc-file|oauth2-bearer|output|pass|proxy-(?:cacert\n\t|capath|cert-type|crlfile|key-type|key|pass|service-name|tlsauthtype|tlspassword|tlsuser)\n\t|pinnedpubkey|proxy-ciphers|proxy-pinnedpubkey|pubkey|random-file|proxy-tls13-ciphers|request\n\t|service-name|socks5-gssapi-service|tls13-ciphers|tlsauthtype|tls-max|tlsuser|trace-ascii\n\t|trace|unix-socket|upload-file|user-agent|write-out)\n)\n(?:\\s*(=|:)|(?=\\s|$))',
+            '(?x) (?:\\G|^|(?<=[ \\t]))\n(?!\\s*--\\w[-\\w]*\\s*[=:](?=\\s)) \\s*\n(\n\t(--)?\n\t(?<optlist_filename>\n\t\tabstract-unix-socket\n\t|\tcacert\n\t|\tcapath\n\t|\tcert-type\n\t|\tciphers\n\t|\tconfig\n\t|\tcookie-jar\n\t|\tcrlfile\n\t|\tdata-ascii\n\t|\tdata-binary\n\t|\tdata-raw\n\t|\tdata-urlencode\n\t|\tdata\n\t|\tdelegation\n\t|\tdns-interface\n\t|\tdns-ipv4-addr\n\t|\tdns-ipv6-addr\n\t|\tdns-servers\n\t|\tdump-header\n\t|\tegd-file\n\t|\tengine\n\t|\tftp-account\n\t|\tftp-alternative-to-user\n\t|\tftp-method\n\t|\tftp-ssl-ccc-mode\n\t|\tinterface\n\t|\tkey-type\n\t|\tkey\n\t|\tkrb\n\t|\tlibcurl\n\t|\tlogin-options\n\t|\tnetrc-file\n\t|\toauth2-bearer\n\t|\toutput\n\t|\tpass\n\t|\tpinnedpubkey\n\t|\tproxy-cacert\n\t|\tproxy-capath\n\t|\tproxy-cert-type\n\t|\tproxy-ciphers\n\t|\tproxy-crlfile\n\t|\tproxy-key-type\n\t|\tproxy-key\n\t|\tproxy-pass\n\t|\tproxy-pinnedpubkey\n\t|\tproxy-service-name\n\t|\tproxy-tls13-ciphers\n\t|\tproxy-tlsauthtype\n\t|\tproxy-tlspassword\n\t|\tproxy-tlsuser\n\t|\tpubkey\n\t|\trandom-file\n\t|\trequest\n\t|\tservice-name\n\t|\tsocks5-gssapi-service\n\t|\ttls-max\n\t|\ttls13-ciphers\n\t|\ttlsauthtype\n\t|\ttlsuser\n\t|\ttrace-ascii\n\t|\ttrace\n\t|\tunix-socket\n\t|\tupload-file\n\t|\tuser-agent\n\t|\twrite-out\n\t)\n)\n(?:\\s*(=|:)|(?=\\s|$))',
           beginCaptures: {
             1: {name: 'entity.long.option.name.curlrc'},
             2: {name: 'punctuation.definition.dash.long.option.curlrc'},
-            3: {patterns: [{include: '#separators'}]}
+            4: {patterns: [{include: '#separators'}]}
           },
           end: '$|(?:(=)?|(?:([-A-Za-z0-9%_]+)(=)?)?([@<]))?(?:((")((?:[^"\\\\]|\\\\.)*)(?:(")|$))|([^\\s]+))',
           endCaptures: {
@@ -248,11 +248,11 @@ const grammar = {
         },
         {
           begin:
-            '(?x) (?:\\G|^)\n(?!\\s*--\\w[-\\w]*\\s*[=:])\n\\s*\n(\n\t(--)?\n\t(?:connect-timeout|continue-at|expect100-timeout|happy-eyeballs-timeout-ms|keepalive-time\n\t|limit-rate|max-filesize|max-redirs|max-time|retry-delay|retry-max-time|retry|speed-limit\n\t|speed-time|tftp-blksize|time-cond)\n) (?:\\s*(=|:)|(?=\\s|$))',
+            '(?x) (?:\\G|^|(?<=[ \\t]))\n(?!\\s*--\\w[-\\w]*\\s*[=:])\n\\s*\n(\n\t(--)?\n\t(?<optlist_numeric>\n\t\tconnect-timeout\n\t|\tcontinue-at\n\t|\texpect100-timeout\n\t|\thappy-eyeballs-timeout-ms\n\t|\tkeepalive-time\n\t|\tlimit-rate\n\t|\tmax-filesize\n\t|\tmax-redirs\n\t|\tmax-time\n\t|\tretry-delay\n\t|\tretry-max-time\n\t|\tretry\n\t|\tspeed-limit\n\t|\tspeed-time\n\t|\ttftp-blksize\n\t|\ttime-cond\n\t)\n) (?:\\s*(=|:)|(?=\\s|$))',
           beginCaptures: {
             1: {name: 'entity.long.option.name.curlrc'},
             2: {name: 'punctuation.definition.dash.long.option.curlrc'},
-            3: {patterns: [{include: '#separators'}]}
+            4: {patterns: [{include: '#separators'}]}
           },
           end: '$|(?:((")((?:[^"\\\\]|\\\\.)*)(?:(")|$))|([^\\s]+))',
           endCaptures: {
@@ -362,7 +362,7 @@ const grammar = {
             1: {name: 'entity.short.option.name.curlrc'},
             2: {name: 'punctuation.definition.dash.short.option.curlrc'}
           },
-          end: '(?x)\n$\n|\n\n# Numbers\n(?<=[CYmyz])\\G\\s*\n([-+]?[0-9.]+)\n\n|\n\n# Byte range\n(?<=r)\\G\\s*\n([-0-9,]+)\n\n|\n\n# “key=value” pairs\n(?<=[Fbt])\\G\\s*\n(?:\n\t((")((?:[^"\\\\]|\\\\.)*)(?:(")|$))\n\t|\n\t([^\\s]+)\n)\n\n|\n\n# “key:value” pairs\n(?<=[EUux])\\G\\s*\n([^\\\\:\\s/]*://)?\n(\n\t(?:[^\\\\:\\s]|\\\\.)+\n\t(?::(?:[^\\\\:\\s]|\\\\.)+)*\n\t:?\n)\n\n|\n\n# Headers\n(?<=H)\\G\\s*\n(?:\n\t((")((?:[^"\\\\]|\\\\.)*)(?:(")|$))\n\t|\n\t([^\\s]+)\n)\n\n|\n\n# URLs\n(?<=e)\\G\\s*\n(?:\n\t((")((?:[^"\\\\]|\\\\.)*)(?:(")|$))\n\t|\n\t([^\\s]+)\n)\n\n|\n\n# Anything else\n(?:\n\t((")((?:[^"\\\\]|\\\\.)*)(?:(")|$))\n\t|\n\t([^\\s]+)\n)',
+          end: '(?x)\n$\n|\n\n# Numbers\n(?<=(?#optlist_numeric)[CYmyz])\n\\G (?:(?! )\\s)*\n([-+]?[0-9.]+)\n\n|\n\n# Byte range\n(?<=(?#optlist_byte_range)r)\n\\G (?:(?! )\\s)*\n([-0-9,]+)\n\n|\n\n# “key=value” pairs\n(?<=(?#optlist_form_data)[Fbt])\n\\G (?:(?! )\\s)*\n(?:\n\t((")((?:[^"\\\\]|\\\\.)*)(?:(")|$))\n\t|\n\t([\\S ]+)\n)\n\n|\n\n# “key:value” pairs\n(?<=(?#optlist_kv_colon)[EUux])\n\\G (?:(?! )\\s)*\n((?:[^\\\\:\\s/]| )*://)?\n(\n\t(?:[^\\\\:\\s]|\\\\.| )+\n\t(?::(?:[^\\\\:\\s]|\\\\.| )+)*\n\t:?\n)\n\n|\n\n# Headers\n(?<=(?#optlist_headers)H)\n\\G (?:(?! )\\s)*\n(?:\n\t((")((?:[^"\\\\]|\\\\.| )*)(?:(")|$))\n\t|\n\t([\\S ]+)\n)\n\n|\n\n# URLs\n(?<=(?#optlist_urls)e)\n\\G (?:(?! )\\s)*\n(?:\n\t((")((?:[^"\\\\]|\\\\.| )*)(?:(")|$))\n\t|\n\t([\\S ]+)\n)\n\n|\n\n# Anything else\n(?:\n\t((")((?:[^"\\\\]|\\\\.| )*)(?:(")|$))\n\t|\n\t([\\S ]+)\n)',
           endCaptures: {
             1: {patterns: [{include: 'etc#num'}]},
             10: {name: 'meta.http-headers.curlrc'},
@@ -396,7 +396,8 @@ const grammar = {
             1: {name: 'entity.short.option.name.curlrc'},
             2: {name: 'punctuation.definition.dash.short.option.curlrc'}
           },
-          match: '^\\s*((-)[:#012346BGIJLMNOQRSVafghijklnpqsv]+)',
+          match:
+            '^\\s*((-)(?#optlist_no_parameter)[:#012346BGIJLMNOQRSVafghijklnpqsv]+)',
           name: 'meta.option.short.curlrc'
         }
       ]

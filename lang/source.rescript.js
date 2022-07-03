@@ -37,7 +37,7 @@ const grammar = {
     },
     RE_KEYWORD: {
       match: '\\b(include|let|module|of|open|type)\\b',
-      name: 'keyword'
+      name: 'storage.type'
     },
     RE_KEYWORD_CONTROL: {
       match:
@@ -105,6 +105,7 @@ const grammar = {
     constant: {patterns: [{include: '#RE_CONSTANTS_BOOL'}]},
     constructor: {
       patterns: [
+        {match: '\\b[A-Z][0-9a-zA-Z_]*\\b', name: 'variable.other.enummember'},
         {
           captures: {
             1: {name: 'variable.other.enummember'},
@@ -133,7 +134,32 @@ const grammar = {
         }
       ]
     },
-    jsx: {match: '<>|</>|</|/>', name: 'punctuation.definition.tag'},
+    jsx: {
+      patterns: [
+        {match: '<>|</>|</|/>', name: 'punctuation.definition.tag'},
+        {
+          captures: {
+            0: {name: 'punctuation.definition.tag'},
+            1: {name: 'entity.name.class'}
+          },
+          match: '</([A-Z_][0-9a-zA-Z_]*)'
+        },
+        {
+          captures: {
+            0: {name: 'punctuation.definition.tag'},
+            1: {name: 'variable'}
+          },
+          match: '</([a-z_][0-9a-zA-Z_]*)'
+        },
+        {
+          captures: {
+            0: {name: 'punctuation.definition.tag'},
+            1: {name: 'entity.name.class'}
+          },
+          match: '<([A-Z_][0-9a-zA-Z_]*)'
+        }
+      ]
+    },
     keyword: {
       patterns: [
         {include: '#RE_TO_DOWNTO_AS_LABELS'},
@@ -153,6 +179,48 @@ const grammar = {
         {match: '\\}', name: 'punctuation.section.braces.end'}
       ]
     },
+    moduleAccess: {
+      patterns: [
+        {
+          captures: {
+            1: {name: 'entity.name.class'},
+            2: {name: 'punctuation.accessor'}
+          },
+          match: '\\b([A-Z_][0-9a-zA-Z_]*)(\\.)'
+        }
+      ]
+    },
+    moduleAccessEndsWithModule: {
+      patterns: [
+        {match: '[A-Z_][0-9a-zA-Z_]*', name: 'entity.name.class'},
+        {
+          captures: {
+            1: {name: 'punctuation.accessor'},
+            2: {name: 'entity.name.class'}
+          },
+          match: '(\\.)([A-Z_][0-9a-zA-Z_]*)'
+        }
+      ]
+    },
+    moduleDeclaration: {
+      patterns: [
+        {
+          captures: {
+            1: {name: 'keyword'},
+            2: {name: 'keyword'},
+            3: {name: 'keyword'},
+            4: {name: 'entity.name.class'}
+          },
+          match: '\\b(module)\\s+(type\\s+)?(of\\s+)?([A-Z_][0-9a-zA-Z_]*)',
+          patterns: [
+            {
+              captures: {1: {name: 'entity.name.class'}},
+              match: '\\s*:\\s*([A-Z_][0-9a-zA-Z_]*)'
+            }
+          ]
+        }
+      ]
+    },
     number: {
       patterns: [
         {
@@ -160,6 +228,19 @@ const grammar = {
             '\\b(0[xX][a-fA-F0-9_]+[Lln]?|0[oO][0-7_]+[Lln]?|0[bB][01_]+[Lln]?|[0-9][0-9_]*([Lln]|(\\.[0-9_]+)?([eE][-+]?[0-9_]+)?)?)\\b',
           name: 'constant.numeric'
         }
+      ]
+    },
+    openOrIncludeModule: {
+      patterns: [
+        {
+          captures: {
+            1: {name: 'keyword'},
+            2: {patterns: [{include: '#moduleAccessEndsWithModule'}]}
+          },
+          match:
+            '\\b(open|include)\\s+([A-Z_][0-9a-zA-Z_]*((\\.)([A-Z_][0-9a-zA-Z_]*))*)'
+        },
+        {match: '\\b(open|include)\\s+', name: 'keyword'}
       ]
     },
     operator: {

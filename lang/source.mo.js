@@ -21,7 +21,7 @@ const grammar = {
   ],
   repository: {
     'access-level-modifier': {
-      match: '\\b(open|public|internal|fileprivate|private)\\b(?:\\(set\\))?',
+      match: '\\b(public|system|private)\\b',
       name: 'keyword.other.access-level-modifier.swift'
     },
     'arithmetic-operator': {
@@ -313,14 +313,10 @@ const grammar = {
         },
         {
           match:
-            '\\b(assert|async|await|break|case|continue|default|debug|debug_show|else|if|in|for|return|switch|while|loop|try|throw|query)\\b',
+            '\\b(assert|async|await|break|case|continue|default|debug|debug_show|else|if|ignore|in|for|label|return|switch|while|loop|try|throw)\\b',
           name: 'keyword.statement.swift'
         },
-        {
-          match:
-            '\\b(associativity|didSet|get|infix|inout|left|mutating|none|nonmutating|operator|override|postfix|precedence|prefix|right|set|unowned((un)?safe)?|weak|willSet)\\b',
-          name: 'keyword.other.swift'
-        }
+        {match: '\\b(flexible|query|stable)\\b', name: 'keyword.other.swift'}
       ]
     },
     literal: {

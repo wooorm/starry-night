@@ -5,7 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.fst'],
+  extensions: ['.fst', '.fsti'],
   names: ['f*', 'fstar'],
   patterns: [
     {include: '#comments'},

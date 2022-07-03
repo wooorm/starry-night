@@ -494,7 +494,7 @@ const grammar = {
     },
     directives: {
       begin:
-        '^(///)\\s*(?=<(reference|amd-dependency|amd-module)(\\s+(path|types|no-default-lib|lib|name)\\s*=\\s*((\\\'([^\\\'\\\\]|\\\\.)*\\\')|(\\"([^\\"\\\\]|\\\\.)*\\")|(\\`([^\\`\\\\]|\\\\.)*\\`)))+\\s*/>\\s*$)',
+        '^(///)\\s*(?=<(reference|amd-dependency|amd-module)(\\s+(path|types|no-default-lib|lib|name|resolution-mode)\\s*=\\s*((\\\'([^\\\'\\\\]|\\\\.)*\\\')|(\\"([^\\"\\\\]|\\\\.)*\\")|(\\`([^\\`\\\\]|\\\\.)*\\`)))+\\s*/>\\s*$)',
       beginCaptures: {1: {name: 'punctuation.definition.comment.tsx'}},
       end: '(?=$)',
       name: 'comment.line.triple-slash.directive.tsx',
@@ -510,7 +510,7 @@ const grammar = {
           name: 'meta.tag.tsx',
           patterns: [
             {
-              match: 'path|types|no-default-lib|lib|name',
+              match: 'path|types|no-default-lib|lib|name|resolution-mode',
               name: 'entity.other.attribute-name.directive.tsx'
             },
             {match: '=', name: 'keyword.operator.assignment.tsx'},
@@ -1345,6 +1345,25 @@ const grammar = {
         }
       ]
     },
+    'import-export-assert-clause': {
+      begin: '(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(assert)\\s*(\\{)',
+      beginCaptures: {
+        1: {name: 'keyword.control.assert.tsx'},
+        2: {name: 'punctuation.definition.block.tsx'}
+      },
+      end: '\\}',
+      endCaptures: {0: {name: 'punctuation.definition.block.tsx'}},
+      patterns: [
+        {include: '#comment'},
+        {include: '#string'},
+        {
+          match:
+            '(?:[_$[:alpha:]][_$[:alnum:]]*)\\s*(?=(\\/\\*([^\\*]|(\\*[^\\/]))*\\*\\/\\s*)*:)',
+          name: 'meta.object-literal.key.tsx'
+        },
+        {match: ':', name: 'punctuation.separator.key-value.tsx'}
+      ]
+    },
     'import-export-block': {
       begin: '\\{',
       beginCaptures: {0: {name: 'punctuation.definition.block.tsx'}},
@@ -1387,6 +1406,7 @@ const grammar = {
         {include: '#string'},
         {include: '#import-export-block'},
         {match: '\\bfrom\\b', name: 'keyword.control.from.tsx'},
+        {include: '#import-export-assert-clause'},
         {include: '#import-export-clause'}
       ]
     },
@@ -2888,8 +2908,8 @@ const grammar = {
         {include: '#type-parameters'},
         {include: '#type-tuple'},
         {include: '#type-object'},
-        {include: '#type-conditional'},
         {include: '#type-operators'},
+        {include: '#type-conditional'},
         {include: '#type-fn-type-parameters'},
         {include: '#type-paren-or-function-parameters'},
         {include: '#type-function-return-type'},
@@ -3057,6 +3077,20 @@ const grammar = {
         {include: '#type'}
       ]
     },
+    'type-infer': {
+      patterns: [
+        {
+          captures: {
+            1: {name: 'keyword.operator.expression.infer.tsx'},
+            2: {name: 'entity.name.type.tsx'},
+            3: {name: 'keyword.operator.expression.extends.tsx'}
+          },
+          match:
+            '(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(infer)\\s+([_$[:alpha:]][_$[:alnum:]]*)(?![_$[:alnum:]])(?:(?=\\.\\.\\.)|(?!\\.))(?:\\s+(extends)(?![_$[:alnum:]])(?:(?=\\.\\.\\.)|(?!\\.)))?',
+          name: 'meta.type.infer.tsx'
+        }
+      ]
+    },
     'type-name': {
       patterns: [
         {
@@ -3135,6 +3169,7 @@ const grammar = {
     'type-operators': {
       patterns: [
         {include: '#typeof-operator'},
+        {include: '#type-infer'},
         {
           begin: '([&|])(?=\\s*\\{)',
           beginCaptures: {0: {name: 'keyword.operator.type.tsx'}},
@@ -3154,11 +3189,6 @@ const grammar = {
         {match: '(\\?|\\:)', name: 'keyword.operator.ternary.tsx'},
         {
           match:
-            '(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))infer(?=\\s+[_$[:alpha:]])',
-          name: 'keyword.operator.expression.infer.tsx'
-        },
-        {
-          match:
             '(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))import(?=\\s*\\()',
           name: 'keyword.operator.expression.import.tsx'
         }
@@ -3176,7 +3206,7 @@ const grammar = {
         {include: '#comment'},
         {
           match:
-            '(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(extends)(?![_$[:alnum:]])(?:(?=\\.\\.\\.)|(?!\\.))',
+            '(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(extends|in|out)(?![_$[:alnum:]])(?:(?=\\.\\.\\.)|(?!\\.))',
           name: 'storage.modifier.tsx'
         },
         {include: '#type'},

@@ -376,6 +376,18 @@ const grammar = {
         },
         {
           begin:
+            '\\b(use|use\\!|and|and!)\\s*(\\[[^-=]*\\]|[_[:alpha:]]([_[:alpha:]0-9\\._]+)*|``[_[:alpha:]]([_[:alpha:]0-9\\._`\\s]+|(?<=,)\\s)*)?',
+          beginCaptures: {
+            1: {name: 'keyword.fsharp'},
+            2: {name: 'variable.fsharp'}
+          },
+          end: '\\s*(=)',
+          endCaptures: {1: {name: 'keyword.fsharp'}},
+          name: 'binding.fsharp',
+          patterns: [{include: '#common_binding_definition'}]
+        },
+        {
+          begin:
             '(?<=with|and)\\s*\\b((get|set)\\s*(?=\\())(\\[[^-=]*\\]|[_[:alpha:]]([_[:alpha:]0-9\\._]+)*|``[_[:alpha:]]([_[:alpha:]0-9\\._`\\s]+|(?<=,)\\s)*)?',
           beginCaptures: {4: {name: 'variable.fsharp'}},
           end: '\\s*(=|\\n+=|(?<=\\=))',
@@ -621,7 +633,7 @@ const grammar = {
         },
         {
           begin:
-            "\\b(open)\\s+([[:alpha:]][[:alpha:]0-9'_]*)(?=(\\.[A-Z][[:alpha:]0-9_]*)*)",
+            "\\b(open type|open)\\s+([[:alpha:]][[:alpha:]0-9'_]*)(?=(\\.[A-Z][[:alpha:]0-9_]*)*)",
           beginCaptures: {
             1: {name: 'keyword.fsharp'},
             2: {name: 'entity.name.section.fsharp'}

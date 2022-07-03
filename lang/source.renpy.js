@@ -92,7 +92,7 @@ const grammar = {
     {match: '\\b(for|while)\\b', name: 'keyword.control.repeat.python.renpy'},
     {
       captures: {1: {name: 'keyword.other.python.renpy'}},
-      match: '\\b(assert|del|exec|print)\\b'
+      match: '\\b(assert|del|exec|print|match|case|async|await)\\b'
     },
     {match: '<>', name: 'invalid.deprecated.operator.python.renpy'},
     {
@@ -105,10 +105,10 @@ const grammar = {
       name: 'keyword.operator.assignment.augmented.python.renpy'
     },
     {
-      match: '\\+|\\-|\\*|\\*\\*|/|//|%|<<|>>|&|\\||\\^|~',
+      match: '\\+|\\-|\\*|\\*\\*|/|//|%|@|<<|>>|&|\\||\\^|~',
       name: 'keyword.operator.arithmetic.python.renpy'
     },
-    {match: '\\=', name: 'keyword.operator.assignment.python.renpy'},
+    {match: '\\=|\\:\\=', name: 'keyword.operator.assignment.python.renpy'},
     {
       captures: {
         1: {name: 'keyword.python.renpy'},
@@ -317,17 +317,17 @@ const grammar = {
     {match: '\\$', name: 'keyword.python.renpy'},
     {
       match:
-        '\\b(\\$|add|always|and|animation|as|assert|at|attribute|auto|bar|behind|block|break|button|call|camera|choice|circles|class|clear|clockwise|contains|continue|counterclockwise|def|default|define|del|drag|draggroup|elif|else|event|except|exec|expression|finally|fixed|for|frame|from|function|global|grid|group|has|hbox|hide|hotbar|hotspot|if|image|imagebutton|imagemap|import|in|index|init|input|is|jump|key|knot|label|lambda|layeredimage|menu|monologue|mousearea|music|new|nointeract|not|null|nvl|offset|old|on|onlayer|or|parallel|pass|pause|play|print|python|queue|raise|repeat|return|rpy|scene|screen|show|showif|side|sound|stop|strings|style|sustain|tag|take|testcase|text|textbutton|time|timer|transclude|transform|translate|try|use|vbar|vbox|viewport|voice|vpgrid|while|window|with|yield|zorder)\\b',
+        '\\b(\\$|add|always|and|animation|as|assert|at|attribute|auto|bar|behind|block|break|button|call|camera|choice|circles|class|clear|clockwise|contains|continue|counterclockwise|def|default|define|del|dismiss|drag|draggroup|elif|else|event|except|exec|expression|finally|fixed|for|frame|from|function|global|grid|group|has|hbox|hide|hotbar|hotspot|if|image|imagebutton|imagemap|import|in|index|init|input|is|jump|key|knot|label|lambda|layeredimage|menu|monologue|mousearea|music|nearrect|new|nointeract|not|null|nvl|offset|old|on|onlayer|or|parallel|pass|pause|play|print|python|queue|raise|repeat|return|rpy|scene|screen|show|showif|side|sound|stop|strings|style|sustain|tag|take|testcase|text|textbutton|time|timer|transclude|transform|translate|try|use|vbar|vbox|viewport|voice|vpgrid|while|window|with|yield|zorder)\\b',
       name: 'keyword.python.renpy'
     },
     {
       match:
-        '\\b((?:action|activate_sound|activated|adjustment|allow|allow_underfull|alpha|alternate|alternate_keysym|arguments|arrowkeys|at|auto|cache|caption|changed|child_size|clicked|cols|copypaste|default|default_focus|drag_handle|drag_joined|drag_name|drag_offscreen|drag_raise|draggable|dragged|drop_allowable|droppable|dropped|edgescroll|exclude|focus|focus_mask|ground|height|hover|hovered|icon_tooltip|id|idle|image_style|insensitive|keysym|layer|length|mask|min_overlap|modal|mouse_drop|mousewheel|pagekeys|pixel_width|predict|prefix|properties|range|repeat|rows|scope|scrollbars|selected|selected_hover|selected_idle|selected_insensitive|sensitive|slow|slow_done|spacing|style|style_group|style_prefix|style_suffix|substitute|suffix|text_style|text_tooltip|tooltip|transpose|unhovered|value|variant|width|xadjustment|xinitial|yadjustment|yinitial|zorder))\\b',
+        '\\b((?:action|activate_sound|activated|adjustment|allow|allow_underfull|alpha|alt|alternate|alternate_keysym|arguments|arrowkeys|at|auto|cache|caption|capture|caret_blink|changed|child_size|clicked|cols|copypaste|default|default_focus|drag_handle|drag_joined|drag_name|drag_offscreen|drag_raise|draggable|dragged|dragging|drop_allowable|droppable|dropped|edgescroll|exclude|focus|focus_mask|ground|height|hover|hovered|icon_tooltip|id|idle|image_style|insensitive|keysym|layer|length|mask|min_overlap|modal|mouse_drop|mousewheel|pagekeys|pixel_width|predict|prefer_top|prefix|properties|range|rect|released|repeat|roll_forward|rows|scope|scrollbars|selected|selected_hover|selected_idle|selected_insensitive|sensitive|slow|slow_done|spacing|style|style_group|style_prefix|style_suffix|substitute|suffix|text_style|text_tooltip|tooltip|transpose|unhovered|value|variant|width|xadjustment|xinitial|yadjustment|yinitial|zorder))\\b',
       name: 'entity.other.attribute-name.python.renpy'
     },
     {
       match:
-        '\\b((?:|activate_|hover_|idle_|insensitive_|selected_|selected_activate_|selected_hover_|selected_idle_|selected_insensitive_)(?:additive|adjust_spacing|align|alignaround|alpha|alt|anchor|angle|antialias|area|around|background|bar_invert|bar_resizing|bar_vertical|base_bar|black_color|blend|blur|bold|bottom_bar|bottom_gutter|bottom_margin|bottom_padding|box_layout|box_reverse|box_wrap|box_wrap_spacing|caret|child|clipping|color|corner1|corner2|crop|crop_relative|debug|delay|drop_shadow|drop_shadow_color|events|first_indent|first_spacing|fit|fit_first|focus_mask|font|foreground|gl_anisostropic|gl_blend_func|gl_color_mask|gl_depth|gl_mipmap|gl_pixel_perfect|gl_texture_wrap|hinting|hyperlink_functions|italic|justify|kerning|key_events|keyboard_focus|language|layout|left_bar|left_gutter|left_margin|left_padding|line_leading|line_spacing|margin|matrixanchor|matrixcolor|matrixtransform|maximum|maxsize|mesh|mesh_pad|min_width|minimum|minwidth|mipmap|modal|mouse|nearest|newline_indent|offset|order_reverse|outline_scaling|outlines|padding|perspective|pos|radius|rest_indent|right_bar|right_gutter|right_margin|right_padding|rotate|rotate_pad|ruby_style|shader|size|size_group|slow_abortable|slow_cps|slow_cps_multiplier|sound|spacing|strikethrough|subpixel|text_align|text_y_fudge|thumb|thumb_offset|thumb_shadow|top_bar|top_gutter|top_margin|top_padding|transform_anchor|underline|unscrollable|vertical|xalign|xanchor|xanchoraround|xaround|xcenter|xfill|xfit|xmargin|xmaximum|xminimum|xoffset|xpadding|xpan|xpos|xsize|xspacing|xtile|xysize|xzoom|yalign|yanchor|yanchoraround|yaround|ycenter|yfill|yfit|ymargin|ymaximum|yminimum|yoffset|ypadding|ypan|ypos|ysize|yspacing|ytile|yzoom|zoom|zpos|zzoom))\\b',
+        '\\b((?:|activate_|hover_|idle_|insensitive_|selected_|selected_activate_|selected_hover_|selected_idle_|selected_insensitive_)(?:additive|adjust_spacing|align|alignaround|alpha|alt|anchor|angle|antialias|area|around|background|bar_invert|bar_resizing|bar_vertical|base_bar|black_color|blend|blur|bold|bottom_bar|bottom_gutter|bottom_margin|bottom_padding|box_layout|box_reverse|box_wrap|box_wrap_spacing|caret|child|clipping|color|corner1|corner2|crop|crop_relative|debug|delay|drop_shadow|drop_shadow_color|events|first_indent|first_spacing|fit|fit_first|focus_mask|font|foreground|gl_anisotropic|gl_blend_func|gl_color_mask|gl_depth|gl_drawable_resolution|gl_mipmap|gl_pixel_perfect|gl_texture_scaling|gl_texture_wrap|hinting|hyperlink_functions|italic|justify|kerning|key_events|keyboard_focus|language|layout|left_bar|left_gutter|left_margin|left_padding|line_leading|line_spacing|margin|matrixanchor|matrixcolor|matrixtransform|maximum|maxsize|mesh|mesh_pad|min_width|minimum|minwidth|mipmap|modal|mouse|nearest|newline_indent|offset|order_reverse|outline_scaling|outlines|padding|perspective|pos|radius|rest_indent|right_bar|right_gutter|right_margin|right_padding|rotate|rotate_pad|ruby_style|shader|size|size_group|slow_abortable|slow_cps|slow_cps_multiplier|sound|spacing|strikethrough|subpixel|text_align|text_y_fudge|thumb|thumb_offset|thumb_shadow|top_bar|top_gutter|top_margin|top_padding|transform_anchor|underline|unscrollable|vertical|xalign|xanchor|xanchoraround|xaround|xcenter|xfill|xfit|xmargin|xmaximum|xminimum|xoffset|xpadding|xpan|xpos|xsize|xspacing|xtile|xycenter|xysize|xzoom|yalign|yanchor|yanchoraround|yaround|ycenter|yfill|yfit|ymargin|ymaximum|yminimum|yoffset|ypadding|ypan|ypos|ysize|yspacing|ytile|yzoom|zoom|zpos|zzoom))\\b',
       name: 'entity.other.attribute-name.python.renpy'
     },
     {
@@ -583,13 +583,13 @@ const grammar = {
     docstrings: {
       patterns: [
         {
-          begin: '^\\s*(?=[uU]?[rR]?""")',
+          begin: '^\\s*(?=[fuUb]?[rR]?""")',
           end: '(?<=""")',
           name: 'comment.block.python.renpy',
           patterns: [{include: '#string_quoted_double'}]
         },
         {
-          begin: "^\\s*(?=[uU]?[rR]?''')",
+          begin: "^\\s*(?=[fuUb]?[rR]?''')",
           end: "(?<=''')",
           name: 'comment.block.python.renpy',
           patterns: [{include: '#string_quoted_single'}]
@@ -681,7 +681,7 @@ const grammar = {
     generic_names: {match: '[A-Za-z_][A-Za-z0-9_]*'},
     illegal_names: {
       match:
-        '\\b(and|as|assert|break|class|continue|def|del|elif|else|except|exec|finally|for|global|if|import|in|is|lambda|nonlocal|not|or|print|raise|try|while|with|yield)\\b',
+        '\\b(and|as|assert|async|await|break|class|continue|def|del|elif|else|except|exec|finally|for|global|if|import|in|is|lambda|nonlocal|not|or|print|raise|try|while|with|yield)\\b',
       name: 'invalid.illegal.name.python.renpy'
     },
     keyword_arguments: {
@@ -707,7 +707,7 @@ const grammar = {
     },
     magic_function_names: {
       match:
-        '(?x)\\b(__(?:\n\t\t\t\t\t\tabs|add|and|cmp|coerce|complex|contains|del|delattr|\n\t\t\t\t\t\tdelete|delitem|delslice|div|divmod|enter|eq|exit|float|\n\t\t\t\t\t\tfloordiv|ge|get|getattr|getattribute|getitem|getslice|gt|\n\t\t\t\t\t\thash|hex|iadd|iand|idiv|ifloordiv|ilshift|imod|imul|init|\n\t\t\t\t\t\tint|invert|ior|ipow|irshift|isub|iter|itruediv|ixor|le|len|\n\t\t\t\t\t\tlong|lshift|lt|mod|mul|ne|neg|new|nonzero|oct|or|pos|pow|\n\t\t\t\t\t\tradd|rand|rdiv|rdivmod|repr|rfloordiv|rlshift|rmod|rmul|ror|\n\t\t\t\t\t\trpow|rrshift|rshift|rsub|rtruediv|rxor|set|setattr|setitem|\n\t\t\t\t\t\tsetslice|str|sub|truediv|unicode|xor\n\t\t\t\t\t)__)\\b',
+        '(?x)\\b(__(?:abs|add|and|cmp|coerce|complex|contains|del|delattr|delete|delitem|delslice|div|divmod|enter|eq|exit|float|floordiv|ge|get|getattr|getattribute|getitem|getslice|gt|hash|hex|iadd|iand|idiv|ifloordiv|ilshift|imod|imul|init|int|invert|ior|ipow|irshift|isub|iter|itruediv|ixor|le|len|long|lshift|lt|mod|mul|ne|neg|new|nonzero|oct|or|pos|pow|radd|rand|rdiv|rdivmod|repr|rfloordiv|rlshift|rmod|rmul|ror|rpow|rrshift|rshift|rsub|rtruediv|rxor|set|setattr|setitem|setslice|str|sub|truediv|unicode|xor)__)\\b',
       name: 'support.function.magic.python.renpy'
     },
     magic_variable_names: {
@@ -719,7 +719,7 @@ const grammar = {
     string_quoted_double: {
       patterns: [
         {
-          begin: '([uU]r)(""")',
+          begin: '([fuUb]r)(""")',
           beginCaptures: {
             1: {name: 'storage.type.string.python.renpy'},
             2: {name: 'punctuation.definition.string.begin.python.renpy'}
@@ -739,7 +739,7 @@ const grammar = {
           ]
         },
         {
-          begin: '([uU]R)(""")',
+          begin: '([fuUb]R)(""")',
           beginCaptures: {
             1: {name: 'storage.type.string.python.renpy'},
             2: {name: 'punctuation.definition.string.begin.python.renpy'}
@@ -795,7 +795,7 @@ const grammar = {
           ]
         },
         {
-          begin: '([uU])(""")',
+          begin: '([fuUb])(""")',
           beginCaptures: {
             1: {name: 'storage.type.string.python.renpy'},
             2: {name: 'punctuation.definition.string.begin.python.renpy'}
@@ -828,11 +828,11 @@ const grammar = {
             },
             4: {name: 'punctuation.definition.string.end.python.renpy'}
           },
-          match: '([uU]r)(")((?:[^"\\\\]|\\\\.)*)(")',
+          match: '([fuUb]r)(")((?:[^"\\\\]|\\\\.)*)(")',
           name: 'string.quoted.double.single-line.unicode-raw-regex.python.renpy'
         },
         {
-          begin: '([uU]R)(")',
+          begin: '([fuUb]R)(")',
           beginCaptures: {
             1: {name: 'storage.type.string.python.renpy'},
             2: {name: 'punctuation.definition.string.begin.python.renpy'}
@@ -888,7 +888,7 @@ const grammar = {
           ]
         },
         {
-          begin: '([uU])(")',
+          begin: '([fuUb])(")',
           beginCaptures: {
             1: {name: 'storage.type.string.python.renpy'},
             2: {name: 'punctuation.definition.string.begin.python.renpy'}
@@ -956,7 +956,7 @@ const grammar = {
           name: 'string.quoted.single.single-line.python.renpy'
         },
         {
-          begin: "([uU]r)(''')",
+          begin: "([fuUb]r)(''')",
           beginCaptures: {
             1: {name: 'storage.type.string.python.renpy'},
             2: {name: 'punctuation.definition.string.begin.python.renpy'}
@@ -976,7 +976,7 @@ const grammar = {
           ]
         },
         {
-          begin: "([uU]R)(''')",
+          begin: "([fuUb]R)(''')",
           beginCaptures: {
             1: {name: 'storage.type.string.python.renpy'},
             2: {name: 'punctuation.definition.string.begin.python.renpy'}
@@ -1032,7 +1032,7 @@ const grammar = {
           ]
         },
         {
-          begin: "([uU])(''')",
+          begin: "([fuUb])(''')",
           beginCaptures: {
             1: {name: 'storage.type.string.python.renpy'},
             2: {name: 'punctuation.definition.string.begin.python.renpy'}
@@ -1065,11 +1065,11 @@ const grammar = {
             },
             4: {name: 'punctuation.definition.string.end.python.renpy'}
           },
-          match: "([uU]r)(')((?:[^'\\\\]|\\\\.)*)(')",
+          match: "([fuUb]r)(')((?:[^'\\\\]|\\\\.)*)(')",
           name: 'string.quoted.single.single-line.unicode-raw-regex.python.renpy'
         },
         {
-          begin: "([uU]R)(')",
+          begin: "([fuUb]R)(')",
           beginCaptures: {
             1: {name: 'storage.type.string.python.renpy'},
             2: {name: 'punctuation.definition.string.begin.python.renpy'}
@@ -1123,7 +1123,7 @@ const grammar = {
           ]
         },
         {
-          begin: "([uU])(')",
+          begin: "([fuUb])(')",
           beginCaptures: {
             1: {name: 'storage.type.string.python.renpy'},
             2: {name: 'punctuation.definition.string.begin.python.renpy'}

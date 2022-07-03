@@ -20,9 +20,6 @@ export const info = {
     license: 'unlicense',
     homepage: 'https://github.com/ahkscript/SublimeAutoHotkey'
   },
-  'source.brightscript': {
-    license: 'mit'
-  },
   'source.cuesheet': {
     license: 'mit',
     homepage: 'https://github.com/relikd/CUE-Sheet_sublime'
@@ -116,6 +113,10 @@ export const info = {
   'source.nim': {
     license: 'mit',
     homepage: 'https://github.com/nim-lang/NimLime'
+  },
+  'source.git-revlist': {
+    license: 'isc',
+    homepage: 'https://github.com/Nixinova/NovaGrammars'
   },
   'source.json': {
     license: 'isc',
@@ -228,6 +229,10 @@ export const info = {
     license: 'mit',
     homepage: 'https://github.com/davidhq/SublimeEthereum'
   },
+  'source.yul': {
+    license: 'mit',
+    homepage: 'https://github.com/davidhq/SublimeEthereum'
+  },
   'source.gdb': {
     license: 'zlib',
     homepage: 'https://github.com/quarnster/SublimeGDB'
@@ -286,6 +291,10 @@ export const info = {
     license: 'mit',
     homepage: 'https://github.com/technosophos/Vala-TMBundle'
   },
+  'source.whiley': {
+    license: 'apache-2.0',
+    homepage: 'https://github.com/Whiley/WhileySyntaxBundle'
+  },
   'source.x10': {
     license: 'apache-2.0'
   },
@@ -305,7 +314,8 @@ export const info = {
     homepage: 'https://github.com/pvl/abap.tmbundle'
   },
   'source.abl': {
-    license: 'mit'
+    license: 'mit',
+    homepage: 'https://github.com/chriscamicas/abl-tmlanguage'
   },
   'source.actionscript.3': {
     license: 'mit',
@@ -398,15 +408,13 @@ export const info = {
     license: 'mit',
     homepage: 'https://github.com/zargony/atom-language-rust'
   },
-  'text.srt': {
-    license: 'mit'
-  },
   'source.stan': {
     license: 'mit',
     homepage: 'https://github.com/stan-dev/atom-language-stan'
   },
   'source.miniyaml': {
-    license: 'mit'
+    license: 'mit',
+    homepage: 'https://github.com/OpenRA/atom-miniyaml'
   },
   'source.yaml.salt': {
     license: 'mit',
@@ -437,6 +445,9 @@ export const info = {
     license: 'mit',
     homepage: 'https://github.com/azure/bicep'
   },
+  'source.csswg': {
+    homepage: 'https://github.com/tabatkins/bikeshed'
+  },
   'source.blitzmax': {},
   'source.boogie': {
     license: 'mit',
@@ -455,6 +466,10 @@ export const info = {
   'source.capnp': {},
   'source.css.mss': {
     license: 'mit'
+  },
+  'source.cds': {
+    license: 'apache-2.0',
+    homepage: 'https://github.com/SAP/cds-textmate-grammar'
   },
   'source.ceylon': {
     license: 'apache-2.0'
@@ -811,11 +826,23 @@ export const info = {
     license: 'isc',
     homepage: 'https://github.com/Alhadis/language-etc'
   },
+  'source.star': {
+    license: 'isc',
+    homepage: 'https://github.com/Alhadis/language-etc'
+  },
+  'source.stl': {
+    license: 'isc',
+    homepage: 'https://github.com/Alhadis/language-etc'
+  },
   'source.string-template': {
     license: 'isc',
     homepage: 'https://github.com/Alhadis/language-etc'
   },
   'source.wgetrc': {
+    license: 'isc',
+    homepage: 'https://github.com/Alhadis/language-etc'
+  },
+  'text.checksums': {
     license: 'isc',
     homepage: 'https://github.com/Alhadis/language-etc'
   },
@@ -1098,6 +1125,14 @@ export const info = {
     license: 'mit',
     homepage: 'https://github.com/atom/language-shellscript'
   },
+  'text.srt': {
+    license: 'isc',
+    homepage: 'https://github.com/Alhadis/language-subtitles'
+  },
+  'text.vtt': {
+    license: 'isc',
+    homepage: 'https://github.com/Alhadis/language-subtitles'
+  },
   'source.supercollider': {
     license: 'mit',
     homepage: 'https://github.com/supercollider/language-supercollider'
@@ -1131,9 +1166,6 @@ export const info = {
   'text.vim-help': {
     license: 'mit',
     homepage: 'https://github.com/Alhadis/language-viml'
-  },
-  'source.vtt': {
-    license: 'mit'
   },
   'source.wavefront.mtl': {
     license: 'isc',
@@ -1263,6 +1295,10 @@ export const info = {
   },
   'source.pike': {
     license: 'unlicense'
+  },
+  'source.portugol': {
+    license: 'mit',
+    homepage: 'https://github.com/luisgbr1el/portugol-grammar'
   },
   'source.powershell': {
     license: 'mit',
@@ -1502,6 +1538,14 @@ export const info = {
   'source.talon': {
     license: 'mit',
     homepage: 'https://github.com/mrob95/vscode-TalonScript'
+  },
+  'text.html.statamic': {
+    license: 'mit',
+    homepage: 'https://github.com/Stillat/vscode-antlers-language-server'
+  },
+  'source.brs': {
+    license: 'mit',
+    homepage: 'https://github.com/rokucommunity/vscode-brightscript-language'
   },
   'source.cadence': {
     license: 'apache-2.0',

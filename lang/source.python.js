@@ -25,6 +25,7 @@ const grammar = {
     '.sagews',
     '.smk',
     '.spec',
+    '.star',
     '.tac',
     '.wsgi',
     '.xpy',

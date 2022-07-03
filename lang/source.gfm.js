@@ -6,6 +6,7 @@
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
   extensions: [
+    '.livemd',
     '.markdown',
     '.md',
     '.mdown',

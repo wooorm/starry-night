@@ -468,7 +468,7 @@ const grammar = {
         {
           captures: {1: {name: 'keyword.control.php'}},
           match:
-            '\\s*\\b((break|c(ase|ontinue)|d(e(clare|fault)|ie|o)|e(lse(if)?|nd(declare|for(each)?|if|switch|while)|xit)|for(each)?|if|return|switch|use|while))\\b'
+            '\\s*\\b((break|c(ase|ontinue)|d(e(clare|fault)|o)|e(lse|nd(declare|for(each)?|switch|while))|for(each)?|if|return|switch|use|while))\\b'
         },
         {
           begin: '(?i)\\b((?:require|include)(?:_once)?)\\b\\s*',

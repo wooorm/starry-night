@@ -9,6 +9,7 @@ const grammar = {
   names: ['v', 'vlang'],
   patterns: [
     {include: '#comments'},
+    {include: '#function-decl'},
     {include: '#as-is'},
     {include: '#attributes'},
     {include: '#assignment'},
@@ -21,7 +22,6 @@ const grammar = {
     {include: '#operators'},
     {include: '#function-limited-overload-decl'},
     {include: '#function-extend-decl'},
-    {include: '#function-decl'},
     {include: '#function-exist'},
     {include: '#generic'},
     {include: '#constants'},
@@ -34,7 +34,9 @@ const grammar = {
     {include: '#numbers'},
     {include: '#strings'},
     {include: '#types'},
-    {include: '#punctuations'}
+    {include: '#punctuations'},
+    {include: '#variable-assign'},
+    {include: '#function-decl'}
   ],
   repository: {
     'as-is': {
@@ -123,7 +125,7 @@ const grammar = {
             {
               captures: {1: {name: 'storage.type.numeric.v'}},
               match:
-                '(i?(?:8|16|nt|64|128)|u?(?:16|32|64|128)|f?(?:32|64))(?=\\s*\\()',
+                '(?<!.)(i?(?:8|16|nt|64|128)|u?(?:16|32|64|128)|f?(?:32|64))(?=\\s*\\()',
               name: 'meta.expr.numeric.cast.v'
             },
             {
@@ -164,28 +166,15 @@ const grammar = {
       match: '^\\s*(?:(pub)?\\s+)?(enum)\\s+(?:\\w+\\.)?(\\w*)',
       name: 'meta.definition.enum.v'
     },
-    'escaped-fix': {
-      captures: {0: {name: 'keyword.other.escaped.v'}},
-      match:
-        '((?:@)(?:mut|pub|fn|unsafe|module|import|as|const|map|assert|sizeof|__offsetof|typeof|type|struct|interface|enum|in|is|or|match|if|else|for|go|goto|defer|return|shared|select|rlock|lock|atomic|asm|i?(?:8|16|nt|64|128)|u?(?:16|32|64|128)|f?(?:32|64)|bool|byte|byteptr|charptr|voidptr|string|ustring|rune))',
-      name: 'meta.escaped.keyword.v'
-    },
     'function-decl': {
-      begin: '^\\s*(pub)?\\s*(fn)\\s+',
-      beginCaptures: {
+      captures: {
         1: {name: 'storage.modifier.v'},
-        2: {name: 'keyword.function.v'}
+        2: {name: 'keyword.fn.v'},
+        3: {name: 'entity.name.function.v'},
+        4: {patterns: [{include: '#generic'}]}
       },
-      end: '(?:(?:C\\.)?)(\\w+)\\s*((?<=[\\w\\s+])(\\<)(\\w+)(\\>))?',
-      endCaptures: {
-        1: {
-          patterns: [
-            {include: '#illegal-name'},
-            {match: '\\w+', name: 'entity.name.function.v'}
-          ]
-        },
-        2: {patterns: [{include: '#generic'}]}
-      },
+      match:
+        '^(\\bpub\\b\\s+)?(\\bfn\\b)\\s+(?:\\([^\\)]+\\)\\s+)?(?:(?:C\\.)?)(\\w+)\\s*((?<=[\\w\\s+])(\\<)(\\w+)(\\>))?',
       name: 'meta.definition.function.v'
     },
     'function-exist': {
@@ -205,7 +194,7 @@ const grammar = {
     'function-extend-decl': {
       captures: {
         1: {name: 'storage.modifier.v'},
-        2: {name: 'keyword.function.v'},
+        2: {name: 'keyword.fn.v'},
         3: {name: 'punctuation.definition.bracket.round.begin.v'},
         4: {
           patterns: [
@@ -238,7 +227,7 @@ const grammar = {
             {match: '\\w+', name: 'entity.name.function.v'}
           ]
         },
-        2: {name: 'keyword.function.v'},
+        2: {name: 'keyword.fn.v'},
         3: {name: 'punctuation.definition.bracket.round.begin.v'},
         4: {
           patterns: [
@@ -313,12 +302,12 @@ const grammar = {
         {match: '(\\$if|\\$else)', name: 'keyword.control.v'},
         {
           match:
-            '\\b(as|it|is|in|or|break|continue|default|unsafe|match|if|else|for|go|goto|defer|return|shared|select|rlock|lock|atomic|asm)\\b',
+            '(?<!@)\\b(as|it|is|in|or|break|continue|default|unsafe|match|if|else|for|go|goto|defer|return|shared|select|rlock|lock|atomic|asm)\\b',
           name: 'keyword.control.v'
         },
         {
           match:
-            '\\b(fn|type|typeof|enum|struct|interface|map|assert|sizeof|__offsetof)\\b',
+            '(?<!@)\\b(fn|type|typeof|enum|struct|interface|map|assert|sizeof|__offsetof)\\b',
           name: 'keyword.$1.v'
         }
       ]
@@ -489,7 +478,7 @@ const grammar = {
           beginCaptures: {
             1: {name: 'storage.modifier.$1.v'},
             2: {name: 'storage.type.struct.v'},
-            3: {name: 'entity.name.struct.v'},
+            3: {name: 'entity.name.type.v'},
             4: {name: 'punctuation.definition.bracket.curly.begin.v'}
           },
           end: '\\s*|(})',
@@ -573,6 +562,17 @@ const grammar = {
           name: 'storage.type.$1.v'
         }
       ]
+    },
+    'variable-assign': {
+      captures: {
+        0: {
+          patterns: [
+            {match: '[a-zA-Z_]\\w*', name: 'variable.other.assignment.v'},
+            {include: '#punctuation'}
+          ]
+        }
+      },
+      match: '[a-zA-Z_]\\w*(?:,\\s*[a-zA-Z_]\\w*)*(?=\\s*(?:=|:=))'
     }
   },
   scopeName: 'source.v'

@@ -148,7 +148,7 @@ const grammar = {
     keywords: {
       patterns: [
         {
-          match: '\\b(else|if|in|return|end|assert)\\b',
+          match: '\\b(else|if|in|return|end|assert|with_attr)\\b',
           name: 'keyword.controls.cairo'
         },
         {
@@ -210,7 +210,7 @@ const grammar = {
     storages: {
       patterns: [
         {
-          match: '\\b(let|const|local|struct|member|alloc_locals)\\b',
+          match: '\\b(let|const|local|struct|member|alloc_locals|tempvar)\\b',
           name: 'storage.type.cairo'
         }
       ]

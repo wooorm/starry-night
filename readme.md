@@ -46,7 +46,7 @@ source and JavaScript!
 
 This package is an open source version of GitHub’s closed-source `PrettyLights`
 project (more on that later).
-It supports **490 grammars** and its **extremely high quality**.
+It supports **500+ grammars** and its **extremely high quality**.
 It uses TextMate grammars which are also used in popular editors (SublimeText,
 Atom, VS Code, \&c).
 They’re heavy but high quality.
@@ -78,8 +78,8 @@ diffing can be performant, or when you’re working with [`hast`][hast] or
 
 Bundled, minified, and gzipped, `starry-night` and the WASM binary are 185 kB.
 There are two lists of grammars you can use: `common` (33 languages, good for
-your own site) adds 160 kB and `all` (490 languages, useful if are making a site
-like GitHub) is 1.35 MB.
+your own site) adds 160 kB and `all` (500+ languages, useful if are making a
+site like GitHub) is 1.35 MB.
 You can also manually choose which grammars to include (or add to `common`): a
 language is typically between 3 and 5 kB.
 As an example, adding Astro to `starry-night` with the `common` grammars costs
@@ -707,7 +707,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.4dm`](lang/source.4dm.js) (mit)
 *   [ ] [`source.abap`](lang/source.abap.js) — [upstream](https://github.com/pvl/abap.tmbundle)
 *   [ ] [`source.abapcds`](lang/source.abapcds.js) (unlicense) — [upstream](https://github.com/FreHu/abap-cds-grammar)
-*   [ ] [`source.abl`](lang/source.abl.js) (mit)
+*   [ ] [`source.abl`](lang/source.abl.js) (mit) — [upstream](https://github.com/chriscamicas/abl-tmlanguage)
 *   [ ] [`source.abnf`](lang/source.abnf.js) (isc) — [upstream](https://github.com/Alhadis/language-grammars)
 *   [ ] [`source.actionscript.3`](lang/source.actionscript.3.js) (mit) — [upstream](https://github.com/simongregory/actionscript3-tmbundle)
 *   [ ] [`source.ada`](lang/source.ada.js)
@@ -745,7 +745,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.boo`](lang/source.boo.js) (mit) — [upstream](https://github.com/drslump/sublime-boo)
 *   [ ] [`source.boogie`](lang/source.boogie.js) (mit) — [upstream](https://github.com/boogie-org/boogie-vscode)
 *   [ ] [`source.bp`](lang/source.bp.js) (mit) — [upstream](https://github.com/flimberger/android-system-tools)
-*   [ ] [`source.brightscript`](lang/source.brightscript.js) (mit)
+*   [ ] [`source.brs`](lang/source.brs.js) (mit) — [upstream](https://github.com/rokucommunity/vscode-brightscript-language)
 *   [ ] [`source.bsl`](lang/source.bsl.js) (mit) — [upstream](https://github.com/xDrivenDevelopment/atom-language-1c-bsl)
 *   [ ] [`source.bsv`](lang/source.bsv.js) (mit)
 *   [ ] [`source.c.ec`](lang/source.c.ec.js) (unlicense) — [upstream](https://github.com/ecere/ec.tmbundle)
@@ -754,6 +754,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.cadence`](lang/source.cadence.js) (apache-2.0) — [upstream](https://github.com/onflow/vscode-cadence)
 *   [ ] [`source.cairo`](lang/source.cairo.js) (mit) — [upstream](https://github.com/xshitaka/atom-language-cairo)
 *   [ ] [`source.capnp`](lang/source.capnp.js)
+*   [ ] [`source.cds`](lang/source.cds.js) (apache-2.0) — [upstream](https://github.com/SAP/cds-textmate-grammar)
 *   [ ] [`source.ceylon`](lang/source.ceylon.js) (apache-2.0)
 *   [ ] [`source.cfscript`](lang/source.cfscript.js) (mit)
 *   [ ] [`source.chapel`](lang/source.chapel.js) (apache-2.0) — [upstream](https://github.com/chapel-lang/chapel-tmbundle)
@@ -776,6 +777,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.csound-score`](lang/source.csound-score.js) (mit) — [upstream](https://github.com/nwhetsell/language-csound)
 *   [ ] [`source.css.mss`](lang/source.css.mss.js) (mit)
 *   [ ] [`source.css.postcss.sugarss`](lang/source.css.postcss.sugarss.js) (mit)
+*   [ ] [`source.csswg`](lang/source.csswg.js) — [upstream](https://github.com/tabatkins/bikeshed)
 *   [ ] [`source.cuda-c++`](lang/source.cuda-c++.js) (bsd-3-clause) — [upstream](https://github.com/harrism/sublimetext-cuda-cpp)
 *   [ ] [`source.cue`](lang/source.cue.js) (mit) — [upstream](https://github.com/cue-sh/vscode-cue)
 *   [ ] [`source.cuesheet`](lang/source.cuesheet.js) (mit) — [upstream](https://github.com/relikd/CUE-Sheet_sublime)
@@ -831,6 +833,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.genero-forms`](lang/source.genero-forms.js) (mit) — [upstream](https://github.com/alienriver49/genero.tmbundle)
 *   [ ] [`source.gerber`](lang/source.gerber.js) (isc) — [upstream](https://github.com/Alhadis/language-pcb)
 *   [ ] [`source.gf`](lang/source.gf.js) (mit) — [upstream](https://github.com/johnjcamilleri/language-gf)
+*   [ ] [`source.git-revlist`](lang/source.git-revlist.js) (isc) — [upstream](https://github.com/Nixinova/NovaGrammars)
 *   [ ] [`source.gitattributes`](lang/source.gitattributes.js) (isc) — [upstream](https://github.com/Alhadis/language-etc)
 *   [ ] [`source.gitconfig`](lang/source.gitconfig.js) (isc) — [upstream](https://github.com/Alhadis/language-etc)
 *   [ ] [`source.gitignore`](lang/source.gitignore.js) (isc) — [upstream](https://github.com/Alhadis/language-etc)
@@ -909,7 +912,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.mcfunction`](lang/source.mcfunction.js) (mit) — [upstream](https://github.com/Arcensoth/language-mcfunction)
 *   [ ] [`source.mercury`](lang/source.mercury.js) (mit)
 *   [ ] [`source.meson`](lang/source.meson.js) (apache-2.0) — [upstream](https://github.com/TingPing/language-meson)
-*   [ ] [`source.miniyaml`](lang/source.miniyaml.js) (mit)
+*   [ ] [`source.miniyaml`](lang/source.miniyaml.js) (mit) — [upstream](https://github.com/OpenRA/atom-miniyaml)
 *   [ ] [`source.mint`](lang/source.mint.js) (mit) — [upstream](https://github.com/mint-lang/mint-vscode)
 *   [ ] [`source.ml`](lang/source.ml.js) — [upstream](https://github.com/textmate/standard-ml.tmbundle)
 *   [ ] [`source.mligo`](lang/source.mligo.js) (mit) — [upstream](https://github.com/pewulfman/Ligo-grammar)
@@ -971,6 +974,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.po`](lang/source.po.js)
 *   [ ] [`source.pogoscript`](lang/source.pogoscript.js) (mit)
 *   [ ] [`source.pony`](lang/source.pony.js) (bsd-2-clause) — [upstream](https://github.com/CausalityLtd/sublime-pony)
+*   [ ] [`source.portugol`](lang/source.portugol.js) (mit) — [upstream](https://github.com/luisgbr1el/portugol-grammar)
 *   [ ] [`source.postcss`](lang/source.postcss.js) (mit)
 *   [ ] [`source.postscript`](lang/source.postscript.js) (isc) — [upstream](https://github.com/Alhadis/Atom-PostScript)
 *   [ ] [`source.pov-ray sdl`](<lang/source.pov-ray sdl.js>) (mit)
@@ -1037,7 +1041,9 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.sqf`](lang/source.sqf.js) (apache-2.0) — [upstream](https://github.com/JonBons/Sublime-SQF-Language)
 *   [ ] [`source.ssh-config`](lang/source.ssh-config.js) (isc) — [upstream](https://github.com/Alhadis/language-etc)
 *   [ ] [`source.stan`](lang/source.stan.js) (mit) — [upstream](https://github.com/stan-dev/atom-language-stan)
+*   [ ] [`source.star`](lang/source.star.js) (isc) — [upstream](https://github.com/Alhadis/language-etc)
 *   [ ] [`source.stata`](lang/source.stata.js) (mit) — [upstream](https://github.com/pschumm/Stata.tmbundle)
+*   [ ] [`source.stl`](lang/source.stl.js) (isc) — [upstream](https://github.com/Alhadis/language-etc)
 *   [ ] [`source.string-template`](lang/source.string-template.js) (isc) — [upstream](https://github.com/Alhadis/language-etc)
 *   [ ] [`source.stylus`](lang/source.stylus.js) (mit)
 *   [ ] [`source.supercollider`](lang/source.supercollider.js) (mit) — [upstream](https://github.com/supercollider/language-supercollider)
@@ -1068,7 +1074,6 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.vhdl`](lang/source.vhdl.js)
 *   [ ] [`source.vim-snippet`](lang/source.vim-snippet.js) (mit) — [upstream](https://github.com/Alhadis/language-viml)
 *   [ ] [`source.viml`](lang/source.viml.js) (mit) — [upstream](https://github.com/Alhadis/language-viml)
-*   [ ] [`source.vtt`](lang/source.vtt.js) (mit)
 *   [ ] [`source.vyper`](lang/source.vyper.js) (mit) — [upstream](https://github.com/davidhq/SublimeEthereum)
 *   [ ] [`source.wavefront.mtl`](lang/source.wavefront.mtl.js) (isc) — [upstream](https://github.com/Alhadis/language-wavefront)
 *   [ ] [`source.wavefront.obj`](lang/source.wavefront.obj.js) (isc) — [upstream](https://github.com/Alhadis/language-wavefront)
@@ -1076,6 +1081,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.webassembly`](lang/source.webassembly.js) (isc) — [upstream](https://github.com/Alhadis/language-webassembly)
 *   [ ] [`source.webidl`](lang/source.webidl.js) (mit) — [upstream](https://github.com/andik/IDL-Syntax)
 *   [ ] [`source.wgetrc`](lang/source.wgetrc.js) (isc) — [upstream](https://github.com/Alhadis/language-etc)
+*   [ ] [`source.whiley`](lang/source.whiley.js) (apache-2.0) — [upstream](https://github.com/Whiley/WhileySyntaxBundle)
 *   [ ] [`source.win32-messages`](lang/source.win32-messages.js) (isc) — [upstream](https://github.com/Nixinova/NovaGrammars)
 *   [ ] [`source.witcherscript`](lang/source.witcherscript.js) (mit) — [upstream](https://github.com/ADawesomeguy/witcherscript-grammar)
 *   [ ] [`source.wollok`](lang/source.wollok.js) (mit)
@@ -1091,6 +1097,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.yang`](lang/source.yang.js) (mit)
 *   [ ] [`source.yara`](lang/source.yara.js) (mit) — [upstream](https://github.com/infosec-intern/vscode-yara)
 *   [ ] [`source.yasnippet`](lang/source.yasnippet.js) (isc) — [upstream](https://github.com/Alhadis/language-emacs-lisp)
+*   [ ] [`source.yul`](lang/source.yul.js) (mit) — [upstream](https://github.com/davidhq/SublimeEthereum)
 *   [ ] [`source.zap`](lang/source.zap.js)
 *   [ ] [`source.zeek`](lang/source.zeek.js) (bsd-3-clause) — [upstream](https://github.com/zeek/zeek-sublime)
 *   [ ] [`source.zenscript`](lang/source.zenscript.js) (mit) — [upstream](https://github.com/CraftTweaker/ZenScript-tmLanguage)
@@ -1098,6 +1105,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.zil`](lang/source.zil.js)
 *   [ ] [`text.bibtex`](lang/text.bibtex.js) — [upstream](https://github.com/textmate/latex.tmbundle)
 *   [ ] [`text.browserslist`](lang/text.browserslist.js) (mit) — [upstream](https://github.com/browserslist/browserslist-vscode)
+*   [ ] [`text.checksums`](lang/text.checksums.js) (isc) — [upstream](https://github.com/Alhadis/language-etc)
 *   [ ] [`text.codeowners`](lang/text.codeowners.js) (isc) — [upstream](https://github.com/Alhadis/language-etc)
 *   [ ] [`text.conllu`](lang/text.conllu.js) (apache-2.0)
 *   [ ] [`text.dfy.dafny`](lang/text.dfy.dafny.js) (mit) — [upstream](https://github.com/DafnyVSCode/Dafny-VSCode)
@@ -1127,6 +1135,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`text.html.slash`](lang/text.html.slash.js) (mit)
 *   [ ] [`text.html.smarty`](lang/text.html.smarty.js)
 *   [ ] [`text.html.soy`](lang/text.html.soy.js) (mit)
+*   [ ] [`text.html.statamic`](lang/text.html.statamic.js) (mit) — [upstream](https://github.com/Stillat/vscode-antlers-language-server)
 *   [ ] [`text.html.twig`](lang/text.html.twig.js) (bsd-3-clause) — [upstream](https://github.com/Anomareh/PHP-Twig.tmbundle)
 *   [ ] [`text.html.vue`](lang/text.html.vue.js) (mit) — [upstream](https://github.com/vuejs/vue-syntax-highlight)
 *   [ ] [`text.jade`](lang/text.jade.js) (mit)
@@ -1144,11 +1153,12 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`text.sfd`](lang/text.sfd.js) (isc) — [upstream](https://github.com/Alhadis/language-fontforge)
 *   [ ] [`text.shell-session`](lang/text.shell-session.js) (mit) — [upstream](https://github.com/atom/language-shellscript)
 *   [ ] [`text.slim`](lang/text.slim.js) (mit)
-*   [ ] [`text.srt`](lang/text.srt.js) (mit)
+*   [ ] [`text.srt`](lang/text.srt.js) (isc) — [upstream](https://github.com/Alhadis/language-subtitles)
 *   [ ] [`text.tex.latex`](lang/text.tex.latex.js) — [upstream](https://github.com/textmate/latex.tmbundle)
 *   [ ] [`text.tex.latex.haskell`](lang/text.tex.latex.haskell.js) (mit) — [upstream](https://github.com/atom-haskell/language-haskell)
 *   [ ] [`text.texinfo`](lang/text.texinfo.js) (isc) — [upstream](https://github.com/Alhadis/language-texinfo)
 *   [ ] [`text.vim-help`](lang/text.vim-help.js) (mit) — [upstream](https://github.com/Alhadis/language-viml)
+*   [ ] [`text.vtt`](lang/text.vtt.js) (isc) — [upstream](https://github.com/Alhadis/language-subtitles)
 *   [ ] [`text.xml.ant`](lang/text.xml.ant.js) (mit)
 *   [ ] [`text.xml.plist`](lang/text.xml.plist.js) (mit) — [upstream](https://github.com/atom/language-property-list)
 *   [ ] [`text.xml.pom`](lang/text.xml.pom.js)

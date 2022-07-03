@@ -6,7 +6,7 @@
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
   extensions: ['.s', '.ms'],
-  names: ['unix-assembly'],
+  names: ['unix-assembly', 'gas', 'gnu-asm', 'unix-asm'],
   patterns: [
     {
       match:

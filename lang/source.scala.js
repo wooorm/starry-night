@@ -428,16 +428,21 @@ const grammar = {
             '^\\s*(end)\\s+(?:(new|extension)|([A-Z\\p{Lt}\\p{Lu}][A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}0-9]*(?:(?<=_)[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)?))(?=\\s*(//.*|/\\*(?!.*\\*/\\s*\\S.*).*)?$)'
         },
         {
+          match: '\\b(catch|finally|try)\\b',
+          name: 'keyword.control.exception.scala'
+        },
+        {
+          match:
+            '^\\s*(end)\\s+(try)(?=\\s*(//.*|/\\*(?!.*\\*/\\s*\\S.*).*)?$)',
+          name: 'keyword.control.exception.end.scala'
+        },
+        {
           captures: {
             1: {name: 'keyword.declaration.end.scala'},
             2: {name: 'entity.name.declaration'}
           },
           match:
             '^\\s*(end)\\s+(`[^`]+`|(?:[A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}][A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}0-9]*(?:(?<=_)[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)?|[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+))?(?=\\s*(//.*|/\\*(?!.*\\*/\\s*\\S.*).*)?$)'
-        },
-        {
-          match: '\\b(catch|finally|try)\\b',
-          name: 'keyword.control.exception.scala'
         },
         {
           match: '(==?|!=|<=|>=|<>|<|>)',

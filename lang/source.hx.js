@@ -708,6 +708,8 @@ const grammar = {
         {match: '(\\-|\\+|\\*|\\/|%)', name: 'keyword.operator.arithmetic.hx'},
         {match: '\\.\\.\\.', name: 'keyword.operator.intiterator.hx'},
         {match: '=>', name: 'keyword.operator.arrow.hx'},
+        {match: '\\?\\?', name: 'keyword.operator.nullcoalescing.hx'},
+        {match: '\\?\\.', name: 'keyword.operator.safenavigation.hx'},
         {match: '\\bis\\b(?!\\()', name: 'keyword.other.hx'},
         {
           begin: '\\?',
