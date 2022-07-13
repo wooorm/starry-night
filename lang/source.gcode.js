@@ -12,29 +12,37 @@ const grammar = {
     all: {
       patterns: [
         {include: '#comments'},
-        {include: '#bracket-expression'},
-        {include: '#keywords'},
+        {include: '#control'},
+        {include: '#gcodes'},
+        {include: '#mcodes'},
         {include: '#operators'},
         {include: '#speedsfeeds'},
         {include: '#prognumbers'},
         {include: '#coords'},
         {include: '#tools'},
         {include: '#modifiers'},
-        {include: '#macrovars'}
+        {include: '#macrovars'},
+        {include: '#rs274ngc'}
       ]
-    },
-    'bracket-expression': {
-      begin: '\\[',
-      beginCaptures: {0: {name: 'punctuation.paren.open'}},
-      end: '\\]',
-      endCaptures: {0: {name: 'punctuation.paren.close'}},
-      name: 'expression.group',
-      patterns: [{include: '#all'}]
     },
     comments: {
       patterns: [
         {match: '(\\(.+\\))', name: 'comment.gcode'},
         {begin: ';', end: '\\n', name: 'comment.gcode'}
+      ]
+    },
+    control: {
+      patterns: [
+        {match: '(?i)(GOTO\\s?\\d+)', name: 'keyword.control.gcode'},
+        {
+          match: '(?i)(EQ|NE|LT|GT|LE|GE|AND|OR|XOR)',
+          name: 'keyword.control.gcode'
+        },
+        {
+          match: '(?i)(DO\\s?\\d*|WHILE|WH|END|IF|THEN|ELSE|ENDIF)',
+          name: 'keyword.control.gcode'
+        },
+        {match: '([\\%])', name: 'string.gcode'}
       ]
     },
     coords: {
@@ -57,31 +65,24 @@ const grammar = {
         }
       ]
     },
-    keywords: {
+    gcodes: {
       patterns: [
-        {
-          match:
-            '(GOTO(?>\\d+))|(IF)|(EQ)|(NE)|(LT)|(GT)|(LE)|(GE)|(DO ?(?>\\d+))|(WHILE)|(WH)|(END ?(?>\\d+))|(AND)|(OR)|(XOR)|(THEN)|(ELSE)|(ENDIF)',
-          name: 'keyword.control.gcode'
-        },
         {
           match: '[gG](1)?5[4-9](.1)?\\s?(P[0-9]{1,3})?',
           name: 'constant.numeric.gcode'
         },
         {match: '[gG]1[1-2][0-9]', name: 'constant.numeric.gcode'},
         {match: '[gG]15\\s?(H[0-9]{1,2})?', name: 'constant.numeric.gcode'},
-        {match: '[gG][0-9]{1,3}(\\.[0-9])?', name: 'markup.bold.gcode'},
+        {match: '[gG][0-9]{1,3}(\\.[0-9])?', name: 'markup.bold.gcode'}
+      ]
+    },
+    macrovars: {patterns: [{match: '[#][0-9]*', name: 'variable.other.gcode'}]},
+    mcodes: {
+      patterns: [
         {
           match: '[mM][0-9]{1,3}',
           name: 'keyword.operator.quantifier.regexp.gcode'
-        },
-        {match: '([\\%])', name: 'string.gcode'}
-      ]
-    },
-    macrovars: {
-      patterns: [
-        {match: '[#][0-9]+', name: 'variable.other.gcode'},
-        {match: '[#][\\[].+[\\]]', name: 'variable.other.gcode'}
+        }
       ]
     },
     modifiers: {
@@ -103,28 +104,36 @@ const grammar = {
     operators: {
       patterns: [
         {
-          match:
-            '(SIN)|(COS)|(TAN)|(ASIN)|(ACOS)|(ATAN)|(FIX)|(FUP)|(LN)|(ROUND)|(SQRT)',
+          match: '(?i)(SIN|COS|TAN|ASIN|ACOS|ATAN|FIX|FUP|LN|ROUND|SQRT)',
           name: 'support.constant.math.gcode'
         },
         {
-          match: '(FIX)|(FUP)|(ROUND)|(ABS)|(MOD)',
+          match: '(?i)(FIX|FUP|ROUND|ABS|MOD)',
           name: 'support.constant.math.gcode'
         },
-        {
-          match: '(\\+)|(\\*)|(\\/)|(\\*\\*)',
-          name: 'support.constant.math.gcode'
-        },
+        {match: '(\\+|\\*|\\/|\\*\\*)', name: 'support.constant.math.gcode'},
         {match: '(\\-)', name: 'invalid.gcode'}
       ]
     },
     prognumbers: {
       patterns: [
         {match: '(^[nN])(\\d+)', name: 'constant.numeric.gcode'},
-        {match: '(^[oO])(\\d+)', name: 'string.regexp.gcode'},
+        {match: '(^[oO])(\\d+)?', name: 'string.regexp.gcode'},
         {
           match: '([pP])\\s?(\\d?\\.?\\d+\\.?|\\.?(?=[#\\[]))',
           name: 'string.regexp.gcode'
+        }
+      ]
+    },
+    rs274ngc: {
+      patterns: [
+        {match: '(?i)(ENDSUB|SUB)', name: 'keyword.control.gcode'},
+        {
+          begin: '<',
+          beginCaptures: {0: {name: 'markup.bold.gcode'}},
+          end: '>',
+          endCaptures: {0: {name: 'markup.bold.gcode'}},
+          name: 'support.type.gcode'
         }
       ]
     },
@@ -132,7 +141,7 @@ const grammar = {
       patterns: [
         {match: '([sS])\\s?(\\d+|(?=[#\\[]))', name: 'constant.language.gcode'},
         {
-          match: '([eEfF])\\s?(\\d*\\.?\\d+\\.?|\\.?(?=[#\\[]))',
+          match: '([eEfF])\\s?\\.?(\\d+(\\.\\d*)?|(?=[#\\[]))',
           name: 'constant.language.gcode'
         }
       ]
@@ -140,15 +149,15 @@ const grammar = {
     tools: {
       patterns: [
         {
-          match: '([dD])\\s?(\\d*\\.?\\d*|(?=[#\\[]))',
+          match: '([dD])\\s?(\\d+(\\.\\d*)?|(?=[#\\[]))',
           name: 'constant.character.gcode'
         },
         {
-          match: '([hH])\\s?(\\d*\\.?\\d*|(?=[#\\[]))',
+          match: '([hH])\\s?(\\d+(\\.\\d*)?|(?=[#\\[]))',
           name: 'constant.character.gcode'
         },
         {
-          match: '([tT])\\s?(\\d*\\.?\\d*|(?=[#\\[]))',
+          match: '([tT])\\s?(\\d+(\\.\\d*)?|(?=[#\\[]))',
           name: 'constant.character.gcode'
         }
       ]

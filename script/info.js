@@ -16,6 +16,10 @@ export const info = {
     license: 'isc',
     homepage: 'https://github.com/Alhadis/Atom-PostScript'
   },
+  'source.velocity': {
+    license: 'mit',
+    homepage: 'https://github.com/animecyc/AtomLanguageVelocity'
+  },
   'source.ahk': {
     license: 'unlicense',
     homepage: 'https://github.com/ahkscript/SublimeAutoHotkey'
@@ -947,7 +951,8 @@ export const info = {
     homepage: 'https://github.com/byte-physics/language-igor'
   },
   'source.inform7': {
-    license: 'mit'
+    license: 'mit',
+    homepage: 'https://github.com/erkyrath/language-inform7'
   },
   'source.js': {
     license: 'mit',
@@ -1258,7 +1263,8 @@ export const info = {
     license: 'mit'
   },
   'source.nix': {
-    license: 'mit'
+    license: 'mit',
+    homepage: 'https://github.com/sambacha/nix-linguist'
   },
   'source.nu': {
     license: 'apache-2.0'
@@ -1504,7 +1510,8 @@ export const info = {
     homepage: 'https://github.com/tenable/sublimetext-nasl'
   },
   'source.svelte': {
-    license: 'mit'
+    license: 'mit',
+    homepage: 'https://github.com/sveltejs/svelte-atom'
   },
   'source.swift': {
     homepage: 'https://github.com/textmate/swift.tmbundle'
@@ -1620,6 +1627,10 @@ export const info = {
     license: 'apache-2.0',
     homepage: 'https://github.com/dfinity/vscode-motoko'
   },
+  'source.move': {
+    license: 'mit',
+    homepage: 'https://github.com/damirka/vscode-move-syntax'
+  },
   'source.rego': {
     license: 'apache-2.0',
     homepage: 'https://github.com/tsandall/vscode-opa'
@@ -1654,6 +1665,10 @@ export const info = {
   'source.v': {
     license: 'mit',
     homepage: 'https://github.com/0x9ef/vscode-vlang'
+  },
+  'source.wren': {
+    license: 'mit',
+    homepage: 'https://github.com/Nelarius/vscode-wren'
   },
   'source.yara': {
     license: 'mit',

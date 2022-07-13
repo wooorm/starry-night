@@ -61,7 +61,7 @@ const grammar = {
         },
         {match: '\\b(use)\\b', name: 'keyword.other.import.pony'},
         {
-          match: '\\b(var|let|embed|delegate)\\b',
+          match: '\\b(var|let|embed)\\b',
           name: 'keyword.other.declaration.pony'
         },
         {

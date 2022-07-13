@@ -150,7 +150,7 @@ const grammar = {
             5: {name: 'constant.numeric.class.hideshow.source.wsd'}
           },
           match:
-            '(?i)^\\s*(hide|show)\\s+(([\\w\\d_\\.]+|"[^"]+")|<<.+?>>|Stereotypes|class|interface|enum)(\\s+(empty fields|empty methods|fields|attributes|methods|members|circle))?\\s*$'
+            '(?i)^\\s*(hide|show|remove)\\s+(([\\w\\d_\\.\\$]+|"[^"]+")|<<.+?>>|Stereotypes|class|interface|enum|@unlinked)(\\s+(empty fields|empty attributes|empty methods|empty description|fields|attributes|methods|members|circle))?\\s*$'
         }
       ]
     },
@@ -332,7 +332,7 @@ const grammar = {
       patterns: [
         {
           match:
-            '(?i)^\\s*(usecase|actor|object|participant|boundary|control|entity|database|create|component|interface|package|node|folder|frame|cloud|annotation|enum|abstract\\s+class|abstract|class|state|autonumber(\\s+stop|\\s+resume|\\s+inc)?|activate|deactivate|return|destroy|newpage|alt|else|opt|loop|par|break|critical|group|box|rectangle|namespace|partition|agent|artifact|card|circle|collections|file|hexagon|label|person|queue|stack|storage|mainframe|map|repeat|backward|diamond|goto|binary|clock|concise|robust)\\b',
+            '(?i)^\\s*(usecase|actor|object|participant|boundary|control|entity|database|create|component|interface|package|node|folder|frame|cloud|annotation|enum|abstract\\s+class|abstract|class|state|autonumber(\\s+stop|\\s+resume|\\s+inc)?|activate|deactivate|return|destroy|newpage|alt|else|opt|loop|par|break|critical|group|box|rectangle|namespace|partition|agent|artifact|card|circle|collections|file|hexagon|label|person|queue|stack|storage|mainframe|map|repeat|backward|diamond|goto|binary|clock|concise|robust|compact\\s+concise|compact\\s+robust|json|protocol|struct)\\b',
           name: 'keyword.other.linebegin.source.wsd'
         },
         {

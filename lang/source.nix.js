@@ -1,5 +1,7 @@
 // This is a TextMate grammar distributed by `starry-night`.
-// This grammar is licensed `mit`.
+// This grammar is developed at
+// <https://github.com/sambacha/nix-linguist>
+// and licensed `mit`.
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
@@ -148,7 +150,7 @@ const grammar = {
       patterns: [
         {
           begin:
-            "(?=(\\s*\\}|\\\"|\\binherit\\b|\\b[a-zA-Z\\_][a-zA-Z0-9\\_\\'\\-]*(\\s*\\.|\\s*=[^=])|\\$\\{[a-zA-z0-9\\_\\'\\-]+\\}(\\s*\\.|\\s*=[^=])))",
+            '(?=(\\s*\\}|\\"|\\binherit\\b|\\$\\{|\\b[a-zA-Z\\_][a-zA-Z0-9\\_\\\'\\-]*(\\s*\\.|\\s*=[^=])))',
           end: '(?=([\\])};,]|\\b(else|then)\\b))',
           patterns: [{include: '#attrset-definition-brace-opened'}]
         },
@@ -493,7 +495,7 @@ const grammar = {
       beginCaptures: {0: {name: 'punctuation.section.embedded.begin.nix'}},
       end: '\\}',
       endCaptures: {0: {name: 'punctuation.section.embedded.end.nix'}},
-      name: 'markup.italic',
+      name: 'meta.embedded',
       patterns: [{include: '#expression'}]
     },
     let: {

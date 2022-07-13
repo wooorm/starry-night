@@ -57,13 +57,16 @@ const grammar = {
       patterns: [{include: '#main'}]
     },
     boolean: {
-      match: '(?<=^|[,:\\s\\[])(true|false)(?=$|[,\\s\\]])',
+      match: '(?<=^|[,:\\s\\[])(true|false)(?=$|[,\\s}\\]])',
       name: 'constant.language.boolean.$1.json'
     },
     delimiters: {
       patterns: [
-        {match: ':', name: 'punctuation.separator.key-value.colon.json'},
-        {match: ',', name: 'punctuation.separator.comma.json'}
+        {
+          match: '(?<=")\\s*:',
+          name: 'punctuation.separator.key-value.colon.json'
+        },
+        {match: ',(?!\\s*[}\\]])', name: 'punctuation.separator.comma.json'}
       ]
     },
     escapes: {
@@ -91,7 +94,7 @@ const grammar = {
         2: {patterns: [{include: '#escapes'}]},
         3: {name: 'punctuation.definition.key.end.json'}
       },
-      match: '(")((?:[^\\\\"]|\\\\.)*+)(")\\s*(?=:)',
+      match: '(")((?:[^\\\\"]|\\\\.)*+)(")(?=\\s*:)',
       name: 'entity.name.tag.key.json'
     },
     main: {
@@ -108,7 +111,7 @@ const grammar = {
       ]
     },
     null: {
-      match: '(?<=^|[,:\\s\\[])null(?=$|[,\\s\\]])',
+      match: '(?<=^|[,:\\s\\[])null(?=$|[,\\s}\\]])',
       name: 'constant.language.null.json'
     },
     number: {
@@ -139,7 +142,7 @@ const grammar = {
         2: {patterns: [{include: '#escapes'}]},
         3: {name: 'punctuation.definition.string.end.json'}
       },
-      match: '(")((?:[^\\\\"]|\\\\.)*+)(")\\s*(?!:)',
+      match: '(")((?:[^\\\\"]|\\\\.)*+)(")(?!\\s*:)',
       name: 'string.quoted.double.json'
     }
   },

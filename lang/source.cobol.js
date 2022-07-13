@@ -186,6 +186,8 @@ const grammar = {
       match: '([nNuU][xX]|[hHxX])".*"',
       name: 'invalid.illegal.hexadecimal.cobol'
     },
+    {match: '[bB]"[0-1]"', name: 'constant.numeric.integer.boolean.cobol'},
+    {match: "[bB]'[0-1]'", name: 'constant.numeric.integer.boolean.cobol'},
     {match: '[oO]"[0-7]*"', name: 'constant.numeric.integer.octal.cobol'},
     {match: '[oO]".*"', name: 'invalid.illegal.octal.cobol'},
     {

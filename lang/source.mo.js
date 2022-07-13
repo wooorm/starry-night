@@ -22,51 +22,55 @@ const grammar = {
   repository: {
     'access-level-modifier': {
       match: '\\b(public|system|private)\\b',
-      name: 'keyword.other.access-level-modifier.swift'
+      name: 'keyword.other.access-level-modifier.motoko'
     },
     'arithmetic-operator': {
       match:
         '(?<![/=\\-+!*%<>&|\\^~.])(\\+|\\-|\\*|\\/)(?![/=\\-+!*%<>&|\\^~.])',
-      name: 'keyword.operator.arithmetic.swift'
+      name: 'keyword.operator.arithmetic.motoko'
     },
     'array-type': {
       begin: '\\b(Array)(<)',
       beginCaptures: {
-        1: {name: 'support.type.array.swift'},
-        2: {name: 'punctuation.array.begin.swift'}
+        1: {name: 'support.type.array.motoko'},
+        2: {name: 'punctuation.array.begin.motoko'}
       },
       end: '(>)',
-      endCaptures: {1: {name: 'punctuation.array.end.swift'}},
-      name: 'meta.array.swift',
+      endCaptures: {1: {name: 'punctuation.array.end.motoko'}},
+      name: 'meta.array.motoko',
       patterns: [{include: '$self'}]
     },
     'assignment-operator': {
       match:
         '(?<![/=\\-+!*%<>&|\\^~.])(\\+|\\-|\\*|\\/|%|<<|>>|&|\\^|\\||&&|\\|\\|)?=(?![/=\\-+!*%<>&|\\^~.])',
-      name: 'keyword.operator.assignment.swift'
+      name: 'keyword.operator.assignment.motoko'
+    },
+    'async-await-keyword': {
+      match: '\\b(async|await)\\b',
+      name: 'keyword.async-await.motoko'
     },
     attribute: {
-      name: 'meta.attribute.swift',
+      name: 'meta.attribute.motoko',
       patterns: [
         {
           begin:
             '((@)(\\B\\$[0-9]+|\\b[\\w^\\d][\\w\\d]*\\b|\\B`[\\w^\\d][\\w\\d]*`\\B))(\\()',
           beginCaptures: {
-            1: {name: 'storage.modifier.attribute.swift'},
-            2: {name: 'punctuation.definition.attribute.swift'},
-            3: {name: 'punctuation.definition.attribute-arguments.begin.swift'}
+            1: {name: 'storage.modifier.attribute.motoko'},
+            2: {name: 'punctuation.definition.attribute.motoko'},
+            3: {name: 'punctuation.definition.attribute-arguments.begin.motoko'}
           },
-          contentName: 'meta.attribute.arguments.swift',
+          contentName: 'meta.attribute.arguments.motoko',
           end: '\\)',
           endCaptures: {
-            0: {name: 'punctuation.definition.attribute-arguments.end.swift'}
+            0: {name: 'punctuation.definition.attribute-arguments.end.motoko'}
           },
           patterns: [{include: '$self'}]
         },
         {
           captures: {
-            1: {name: 'storage.modifier.attribute.swift'},
-            2: {name: 'punctuation.definition.attribute.swift'}
+            1: {name: 'storage.modifier.attribute.motoko'},
+            2: {name: 'punctuation.definition.attribute.motoko'}
           },
           match:
             '((@)(\\B\\$[0-9]+|\\b[\\w^\\d][\\w\\d]*\\b|\\B`[\\w^\\d][\\w\\d]*`\\B))'
@@ -76,25 +80,25 @@ const grammar = {
     'bitwise-operator': {
       match:
         '(?<![/=\\-+!*%<>&|\\^~.])(&|\\||\\^|<<|>>)(?![/=\\-+!*%<>&|\\^~.])',
-      name: 'keyword.operator.bitwise.swift'
+      name: 'keyword.operator.bitwise.motoko'
     },
     'block-comment': {
       begin: '/\\*',
       beginCaptures: {
-        0: {name: 'punctuation.definition.comment.block.begin.swift'}
+        0: {name: 'punctuation.definition.comment.block.begin.motoko'}
       },
       end: '\\*/',
       endCaptures: {
-        0: {name: 'punctuation.definition.comment.block.end.swift'}
+        0: {name: 'punctuation.definition.comment.block.end.motoko'}
       },
-      name: 'comment.block.swift'
+      name: 'comment.block.motoko'
     },
     boolean: {
       match: '\\b(true|false)\\b',
-      name: 'keyword.constant.boolean.swift'
+      name: 'keyword.constant.boolean.motoko'
     },
     'branch-statement-keyword': {
-      name: 'keyword.control.branch.swift',
+      name: 'keyword.control.branch.motoko',
       patterns: [
         {include: '#if-statement-keyword'},
         {include: '#switch-statement-keyword'}
@@ -102,23 +106,16 @@ const grammar = {
     },
     'catch-statement-keyword': {
       match: '\\b(catch|do)\\b',
-      name: 'kewyord.control.catch.swift'
+      name: 'kewyord.control.catch.motoko'
     },
     'code-block': {
       begin: '(\\{)',
       beginCaptures: {
-        1: {name: 'punctuation.definition.code-block.begin.swift'}
+        1: {name: 'punctuation.definition.code-block.begin.motoko'}
       },
       end: '(\\})',
-      endCaptures: {1: {name: 'punctuation.definition.code-block.end.swift'}},
+      endCaptures: {1: {name: 'punctuation.definition.code-block.end.motoko'}},
       patterns: [{include: '$self'}]
-    },
-    'collection-type': {
-      patterns: [
-        {include: '#array-type'},
-        {include: '#dictionary-type'},
-        {match: '\\b(Array|Dictionary)\\b', name: 'support.type.swift'}
-      ]
     },
     comment: {
       patterns: [
@@ -130,69 +127,65 @@ const grammar = {
     'comparative-operator': {
       match:
         '(?<![/=\\-+!*%<>&|\\^~.])((=|!)==?|(<|>)=?|~=)(?![/=\\-+!*%<>&|\\^~.])',
-      name: 'keyword.operator.comparative.swift'
+      name: 'keyword.operator.comparative.motoko'
     },
     'control-transfer-statement-keyword': {
-      match: '\\b(continue|break|fallthrough|return)\\b',
-      name: 'keyword.control.transfer.swift'
+      match: '\\b(continue|break|return)\\b',
+      name: 'keyword.control.transfer.motoko'
     },
     'custom-operator': {
       patterns: [
         {
           match: '(?<=[\\s(\\[{,;:])([/=\\-+!*%<>&|\\^~.]++)(?![\\s)\\]},;:])',
-          name: 'keyword.operator.custom.prefix.unary.swift'
+          name: 'keyword.operator.custom.prefix.unary.motoko'
         },
         {
           match:
             '(?<![\\s(\\[{,;:])([/=\\-+!*%<>&|\\^~.]++)(?![\\s)\\]},;:\\.])',
-          name: 'keyword.operator.custom.postfix.unary.swift'
+          name: 'keyword.operator.custom.postfix.unary.motoko'
         },
         {
           match: '(?<=[\\s(\\[{,;:])([/=\\-+!*%<>&|\\^~.]++)(?=[\\s)\\]},;:])',
-          name: 'keyword.operator.custom.binary.swift'
+          name: 'keyword.operator.custom.binary.motoko'
         }
       ]
     },
     declaration: {
-      name: 'meta.declaration.swift',
-      patterns: [
-        {include: '#import-declaration'},
-        {include: '#function-declaration'}
-      ]
+      name: 'meta.declaration.motoko',
+      patterns: [{include: '#import-declaration'}]
     },
     'declaration-modifier': {
-      match:
-        '\\b(class|object|type|shared|convenience|dynamic|final|lazy|(non)?mutating|optional|override|required|static|unowned((un)?safe)?|weak)\\b',
-      name: 'keyword.other.declaration-modifier.swift'
+      match: '\\b(class|object|type|shared)\\b',
+      name: 'keyword.other.declaration-modifier.motoko'
     },
     'dictionary-type': {
       begin: '\\b(Dictionary)(<)',
       beginCaptures: {
-        1: {name: 'support.type.dictionary.swift'},
-        2: {name: 'punctuation.dictionary.begin.swift'}
+        1: {name: 'support.type.dictionary.motoko'},
+        2: {name: 'punctuation.dictionary.begin.motoko'}
       },
       end: '(>)',
-      endCaptures: {1: {name: 'punctuation.dictionary.end.swift'}},
-      name: 'meta.dictionary.swift',
+      endCaptures: {1: {name: 'punctuation.dictionary.end.motoko'}},
+      name: 'meta.dictionary.motoko',
       patterns: [{include: '$self'}]
     },
     'documentation-comment': {
       begin: '/\\*\\*',
       beginCaptures: {
         0: {
-          name: 'punctuation.definition.comment.block.documentation.begin.swift'
+          name: 'punctuation.definition.comment.block.documentation.begin.motoko'
         }
       },
       end: '\\*/',
       endCaptures: {
         0: {
-          name: 'punctuation.definition.comment.block.documentation.end.swift'
+          name: 'punctuation.definition.comment.block.documentation.end.motoko'
         }
       },
-      name: 'comment.block.documentation.swift'
+      name: 'comment.block.documentation.motoko'
     },
     'floating-point-literal': {
-      name: 'constant.numeric.floating-point.swift',
+      name: 'constant.numeric.floating-point.motoko',
       patterns: [
         {
           match:
@@ -205,18 +198,18 @@ const grammar = {
       ]
     },
     'function-body': {
-      name: 'meta.function-body.swift',
+      name: 'meta.function-body.motoko',
       patterns: [{include: '#code-block'}]
     },
     'function-declaration': {
       begin:
         '\\b(func)\\s+(\\B\\$[0-9]+|\\b[\\w^\\d][\\w\\d]*\\b|\\B`[\\w^\\d][\\w\\d]*`\\B|[/=\\-+!*%<>&|\\^~.]+)\\s*(?=\\(|<)',
       beginCaptures: {
-        1: {name: 'storage.type.function.swift'},
-        2: {name: 'entity.type.function.swift'}
+        1: {name: 'storage.type.function.motoko'},
+        2: {name: 'entity.type.function.motoko'}
       },
       end: '(?<=\\})',
-      name: 'meta.function-declaration.swift',
+      name: 'meta.function-declaration.motoko',
       patterns: [
         {include: '#generic-parameter-clause'},
         {include: '#parameter-clause'},
@@ -226,77 +219,75 @@ const grammar = {
     },
     'function-result': {
       begin: '(?<![/=\\-+!*%<>&|\\^~.])(\\->)(?![/=\\-+!*%<>&|\\^~.])\\s*',
-      beginCaptures: {1: {name: 'keyword.operator.function-result.swift'}},
+      beginCaptures: {1: {name: 'keyword.operator.function-result.motoko'}},
       end: '\\s*(?=\\{)',
-      name: 'meta.function-result.swift',
+      name: 'meta.function-result.motoko',
       patterns: [{include: '#type'}]
     },
     'generic-parameter-clause': {
       begin: '(<)',
       beginCaptures: {
-        1: {name: 'punctuation.definition.generic-parameter-clause.begin.swift'}
+        1: {
+          name: 'punctuation.definition.generic-parameter-clause.begin.motoko'
+        }
       },
       end: '(>)',
       endCaptures: {
-        1: {name: 'punctuation.definition.generic-parameter-clause.end.swift'}
+        1: {name: 'punctuation.definition.generic-parameter-clause.end.motoko'}
       },
-      name: 'meta.generic-parameter-clause.swift',
+      name: 'meta.generic-parameter-clause.motoko',
       patterns: [{include: '$self'}]
     },
     identifier: {
       match:
         '(\\B\\$[0-9]+|\\b[\\w^\\d][\\w\\d]*\\b|\\B`[\\w^\\d][\\w\\d]*`\\B)',
-      name: 'meta.identifier.swift'
+      name: 'meta.identifier.motoko'
     },
     'if-statement-keyword': {
       match: '\\b(if|else)\\b',
-      name: 'keyword.control.if.swift'
+      name: 'keyword.control.if.motoko'
     },
     'import-declaration': {
       captures: {
-        1: {name: 'keyword.other.import.swift'},
-        2: {name: 'storage.modifier.swift'},
-        3: {name: 'support.type.module.import.swift'}
+        1: {name: 'keyword.other.import.motoko'},
+        2: {name: 'storage.modifier.motoko'},
+        3: {name: 'support.type.module.import.motoko'}
       },
       match:
         '\\b(import)\\s+(?:(class|var|func)\\s+)?((?:\\B\\$[0-9]+|\\b[\\w^\\d][\\w\\d]*\\b|\\B`[\\w^\\d][\\w\\d]*`\\B|[/=\\-+!*%<>&|\\^~.]+)(?:\\.(?:\\B\\$[0-9]+|\\b[\\w^\\d][\\w\\d]*\\b|\\B`[\\w^\\d][\\w\\d]*`\\B|[/=\\-+!*%<>&|\\^~.]+))*)',
-      name: 'meta.import.swift'
+      name: 'meta.import.motoko'
     },
     'in-line-comment': {
       captures: {
-        1: {name: 'punctuation.definition.comment.line.double-slash.swift'}
+        1: {name: 'punctuation.definition.comment.line.double-slash.motoko'}
       },
       match: '(//).*',
-      name: 'comment.line.double-slash.swift'
+      name: 'comment.line.double-slash.motoko'
     },
     'increment-decrement-operator': {
       match: '(?<![/=\\-+!*%<>&|\\^~.])(\\+\\+|\\-\\-)(?![/=\\-+!*%<>&|\\^~.])',
-      name: 'keyword.operator.increment-or-decrement.swift'
+      name: 'keyword.operator.increment-or-decrement.motoko'
     },
     'integer-literal': {
-      name: 'constant.numeric.integer.swift',
+      name: 'constant.numeric.integer.motoko',
       patterns: [
         {
           match: '(\\B\\-|\\b)(0b[01][01_]*)\\b',
-          name: 'constant.numeric.integer.binary.swift'
+          name: 'constant.numeric.integer.binary.motoko'
         },
         {
           match: '(\\B\\-|\\b)(0o[0-7][0-7_]*)\\b',
-          name: 'constant.numeric.integer.octal.swift'
+          name: 'constant.numeric.integer.octal.motoko'
         },
         {
           match: '(\\B\\-|\\b)([0-9][0-9_]*)\\b',
-          name: 'constant.numeric.integer.decimal.swift'
+          name: 'constant.numeric.integer.decimal.motoko'
         },
         {
           match: '(\\B\\-|\\b)(0x[[:xdigit:]][[[:xdigit:]]_]*)\\b',
-          name: 'constant.numeric.integer.hexadecimal.swift'
+          name: 'constant.numeric.integer.hexadecimal.motoko'
         }
       ]
-    },
-    'integer-type': {
-      match: '\\bU?Int(8|16|32|64)?\\b',
-      name: 'support.type.swift'
     },
     keyword: {
       patterns: [
@@ -304,19 +295,20 @@ const grammar = {
         {include: '#control-transfer-statement-keyword'},
         {include: '#loop-statement-keyword'},
         {include: '#catch-statement-keyword'},
+        {include: '#async-await-keyword'},
         {include: '#operator-declaration-modifier'},
         {include: '#declaration-modifier'},
         {include: '#access-level-modifier'},
         {
-          match: '\\b(async|actor|and|class|func|import|let|module|not|or)\\b',
-          name: 'keyword.declaration.swift'
+          match: '\\b(actor|and|class|func|import|let|module|not|or)\\b',
+          name: 'keyword.declaration.motoko'
         },
         {
           match:
-            '\\b(assert|async|await|break|case|continue|default|debug|debug_show|else|if|ignore|in|for|label|return|switch|while|loop|try|throw)\\b',
-          name: 'keyword.statement.swift'
+            '\\b(assert|break|case|continue|default|debug|debug_show|else|if|ignore|in|for|label|return|switch|while|loop|try|throw)\\b',
+          name: 'keyword.statement.motoko'
         },
-        {match: '\\b(flexible|query|stable)\\b', name: 'keyword.other.swift'}
+        {match: '\\b(flexible|query|stable)\\b', name: 'keyword.other.motoko'}
       ]
     },
     literal: {
@@ -330,13 +322,13 @@ const grammar = {
     },
     'logical-operator': {
       match: '(?<![/=\\-+!*%<>&|\\^~.])(!|&&|\\|\\|)(?![/=\\-+!*%<>&|\\^~.])',
-      name: 'keyword.operator.logical.swift'
+      name: 'keyword.operator.logical.motoko'
     },
     'loop-statement-keyword': {
       match: '\\b(while|repeat|for|in|loop)\\b',
-      name: 'keyword.control.loop.swift'
+      name: 'keyword.control.loop.motoko'
     },
-    'nil-literal': {match: '\\bnil\\b', name: 'constant.nil.swift'},
+    'null-literal': {match: '\\bnull\\b', name: 'constant.null.motoko'},
     operator: {
       patterns: [
         {include: '#comparative-operator'},
@@ -355,117 +347,113 @@ const grammar = {
     },
     'operator-declaration-modifier': {
       match: '\\b(operator|prefix|infix|postfix)\\b',
-      name: 'keyword.other.operator.swift'
+      name: 'keyword.other.operator.motoko'
     },
     'optional-type': {
       beginCaptures: {
-        1: {name: 'support.type.optional.swift'},
-        2: {name: 'punctuation.optional.begin.swift'}
+        1: {name: 'support.type.optional.motoko'},
+        2: {name: 'punctuation.optional.begin.motoko'}
       },
       end: '(>)',
-      endCaptures: {1: {name: 'punctuation.optional.end.swift'}},
+      endCaptures: {1: {name: 'punctuation.optional.end.motoko'}},
       match: '\\b(Optional)(<)',
-      name: 'meta.optional.swift',
+      name: 'meta.optional.motoko',
       patterns: [{include: '$self'}]
     },
     'overflow-operator': {
       match:
         '(?<![/=\\-+!*%<>&|\\^~.])\\&(\\+|\\-|\\*|\\/|%)(?![/=\\-+!*%<>&|\\^~.])',
-      name: 'keyword.operator.overflow.swift'
+      name: 'keyword.operator.overflow.motoko'
     },
     'parameter-clause': {
       begin: '(\\()',
       beginCaptures: {
-        1: {name: 'punctuation.definition.function-arguments.begin.swift'}
+        1: {name: 'punctuation.definition.function-arguments.begin.motoko'}
       },
       end: '(\\))',
       endCaptures: {
-        1: {name: 'punctuation.definition.function-arguments.end.swift'}
+        1: {name: 'punctuation.definition.function-arguments.end.motoko'}
       },
-      name: 'meta.parameter-clause.swift',
+      name: 'meta.parameter-clause.motoko',
       patterns: [{include: '$self'}]
     },
-    'primitive-type': {match: '\\b[A-Z].*?\\b', name: 'support.type.swift'},
+    'primitive-type': {
+      match:
+        '\\b(Blob|Bool|Char|Float|(Int|Nat)(8|16|32|64)?|Principal|Text|Error)\\b',
+      name: 'support.type.motoko'
+    },
     'protocol-composition-type': {
       beginCaptures: {
-        1: {name: 'support.type.protocol.swift'},
-        2: {name: 'punctuation.protocol.begin.swift'}
+        1: {name: 'support.type.protocol.motoko'},
+        2: {name: 'punctuation.protocol.begin.motoko'}
       },
       end: '(>)',
-      endCaptures: {1: {name: 'punctuation.protocol.end.swift'}},
+      endCaptures: {1: {name: 'punctuation.protocol.end.motoko'}},
       match: '\\b(protocol)(<)',
-      name: 'meta.protocol.swift',
+      name: 'meta.protocol.motoko',
       patterns: [{include: '$self'}]
     },
     'range-operator': {
       match: '(?<![/=\\-+!*%<>&|\\^~.])\\.\\.(?:\\.)?(?![/=\\-+!*%<>&|\\^~.])',
-      name: 'keyword.operator.range.swift'
+      name: 'keyword.operator.range.motoko'
     },
     'remainder-operator': {
       match: '(?<![/=\\-+!*%<>&|\\^~.])\\%(?![/=\\-+!*%<>&|\\^~.])',
-      name: 'keyword.operator.remainder.swift'
+      name: 'keyword.operator.remainder.motoko'
     },
+    'resolved-type': {match: '\\b[A-Z].*?\\b', name: 'support.type.motoko'},
     'shebang-line': {
       captures: {
-        1: {name: 'punctuation.definition.comment.line.shebang.swift'}
+        1: {name: 'punctuation.definition.comment.line.shebang.motoko'}
       },
       match: '^(#!).*$',
-      name: 'comment.line.shebang.swift'
+      name: 'comment.line.shebang.motoko'
     },
     'special-literal': {
       match: '\\b__(FILE|LINE|COLUMN|FUNCTION)__\\b',
-      name: 'keyword.other.literal.swift'
+      name: 'keyword.other.literal.motoko'
     },
     'storage-type': {
       match: '\\b(var|func|let|class|enum)\\b',
-      name: 'storage.type.swift'
+      name: 'storage.type.motoko'
     },
     'string-literal': {
       begin: '\\"',
-      beginCaptures: {0: {name: 'string.quoted.double.swift'}},
+      beginCaptures: {0: {name: 'string.quoted.double.motoko'}},
       end: '\\"',
-      endCaptures: {0: {name: 'string.quoted.double.swift'}},
-      name: 'meta.literal.string.swift',
+      endCaptures: {0: {name: 'string.quoted.double.motoko'}},
+      name: 'meta.literal.string.motoko',
       patterns: [
         {
           match:
             '\\\\([0tnr\\"\\\'\\\\]|x[[:xdigit:]]{2}|u[[:xdigit:]]{4}|U[[:xdigit:]]{8})',
-          name: 'constant.character.escape.swift'
+          name: 'constant.character.escape.motoko'
         },
         {
           begin: '(\\\\\\()',
           beginCaptures: {
-            1: {name: 'support.punctuation.expression.begin.swift'}
+            1: {name: 'support.punctuation.expression.begin.motoko'}
           },
-          contentName: 'meta.expression.swift',
+          contentName: 'meta.expression.motoko',
           end: '(\\))',
-          endCaptures: {1: {name: 'support.punctuation.expression.end.swift'}},
-          patterns: [{include: 'source.swift'}]
+          endCaptures: {1: {name: 'support.punctuation.expression.end.motoko'}},
+          patterns: []
         },
-        {match: '(\\"|\\\\)', name: 'invalid.illegal.swift'},
-        {match: '(.)', name: 'string.quoted.double.swift'}
+        {match: '(\\"|\\\\)', name: 'invalid.illegal.motoko'},
+        {match: '(.)', name: 'string.quoted.double.motoko'}
       ]
     },
     'switch-statement-keyword': {
-      match: '\\b(switch|case|default|where)\\b',
-      name: 'keyword.control.switch.swift'
-    },
-    'ternary-operator': {
-      match: '(?<=[\\s(\\[{,;:])(\\?|:)(?=[\\s)\\]},;:])',
-      name: 'keyword.operator.ternary.swift'
+      match: '\\b(switch|case|default)\\b',
+      name: 'keyword.control.switch.motoko'
     },
     type: {
       patterns: [
         {include: '#primitive-type'},
-        {include: '#integer-type'},
-        {include: '#collection-type'},
+        {include: '#resolved-type'},
         {include: '#optional-type'},
         {include: '#protocol-composition-type'}
       ]
-    },
-    'type-casting-operator': {
-      match: '\\b(is\\b|as(\\?\\B|\\b))',
-      name: 'keyword.operator.type-casting.swift'
     }
   },
   scopeName: 'source.mo'

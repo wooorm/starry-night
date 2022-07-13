@@ -377,10 +377,7 @@ const grammar = {
         {
           begin:
             '\\b(use|use\\!|and|and!)\\s*(\\[[^-=]*\\]|[_[:alpha:]]([_[:alpha:]0-9\\._]+)*|``[_[:alpha:]]([_[:alpha:]0-9\\._`\\s]+|(?<=,)\\s)*)?',
-          beginCaptures: {
-            1: {name: 'keyword.fsharp'},
-            2: {name: 'variable.fsharp'}
-          },
+          beginCaptures: {1: {name: 'keyword.fsharp'}},
           end: '\\s*(=)',
           endCaptures: {1: {name: 'keyword.fsharp'}},
           name: 'binding.fsharp',
@@ -874,13 +871,13 @@ const grammar = {
             },
             {
               match:
-                "\\\\([\\\\''ntbr]|x[a-fA-F0-9]{2}|u[a-fA-F0-9]{4}|u[a-fA-F0-9]{8})",
+                '\\\\([\'"\\\\abfnrtv]|([01][0-9][0-9]|2[0-4][0-9]|25[0-5])|(x[0-9a-fA-F]{2})|(u[0-9a-fA-F]{4})|(U00(0[0-9a-fA-F]|10)[0-9a-fA-F]{4}))',
               name: 'constant.character.string.escape.fsharp'
             },
             {
               match:
-                "\\\\(?![\\\\''ntbr]|x[a-fA-F0-9]{2}|u[a-fA-F0-9]{4}|u[a-fA-F0-9]{8}).",
-              name: 'invalid.illeagal.character.string.fsharp'
+                '\\\\(([0-9]{1,3})|(x[^\\s]{0,2})|(u[^\\s]{0,4})|(U[^\\s]{0,8})|[^\\s])',
+              name: 'invalid.illegal.character.string.fsharp'
             },
             {include: '#string_formatter'}
           ]

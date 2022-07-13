@@ -307,7 +307,7 @@ const grammar = {
           begin: '\\\\([\\\\)\\s,\\};\\]])?',
           beginCaptures: {0: {name: 'string.quoted.single.livescript'}},
           contentName: 'string.quoted.single.livescript',
-          end: '([\\\\)\\s,\\};\\]])',
+          end: '(?=[\\\\)\\s,\\};\\]])',
           endCaptures: {
             0: {name: 'punctuation.definition.string.end.livescript'}
           }

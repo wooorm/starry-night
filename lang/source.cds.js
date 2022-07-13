@@ -187,19 +187,6 @@ const grammar = {
       name: 'meta.class.cds'
     },
     {
-      begin: '(?<=[\\[=(?:+,!]|^|return|=>|&&|\\|\\|)\\s*(?=/[^/*+?].*/)',
-      end: '(?<=[/igmuy])',
-      patterns: [
-        {
-          begin: '/',
-          beginCaptures: {1: {name: 'punctuation.definition.string.begin.cds'}},
-          end: '(/)[igmuy]*',
-          endCaptures: {1: {name: 'punctuation.definition.string.end.cds'}},
-          name: 'string.regexp.cds'
-        }
-      ]
-    },
-    {
       match:
         '(?<!\\w|entity\\s|aspect\\s|projection\\son\\s)[$_a-zA-Z][$_a-zA-Z0-9]*(\\s*:\\s*[$_a-zA-Z][$_a-zA-Z0-9]*)?(?=\\s*([:{]|as\\b))',
       name: 'entity.name.type.attribute-name.cds'
@@ -311,7 +298,7 @@ const grammar = {
       patterns: [
         {match: '@\\(?[\\w.]+\\b', name: 'entity.other.attribute-name'},
         {
-          begin: '/\\*\\*',
+          begin: '/\\*\\*(?!/)',
           beginCaptures: {
             0: {name: 'punctuation.definition.comment.begin.cds'}
           },
@@ -345,6 +332,10 @@ const grammar = {
         }
       ]
     },
+    escapes: {
+      match: '\\\\([xu$]\\{?[0-9a-fA-F]+\\}?|.|$)',
+      name: 'constant.character.escape.cds'
+    },
     'function-params': {
       patterns: [
         {
@@ -358,6 +349,27 @@ const grammar = {
           ]
         },
         {include: '#comments'}
+      ]
+    },
+    interpolation: {
+      begin: '\\$\\{',
+      beginCaptures: {0: {name: 'punctuation.section.embedded.begin.cds'}},
+      contentName: 'source.cds',
+      end: '(\\})',
+      endCaptures: {
+        0: {name: 'punctuation.section.embedded.end.cds'},
+        1: {name: 'source.cds'}
+      },
+      name: 'meta.embedded.line.cds',
+      patterns: [
+        {
+          begin: '\\{',
+          beginCaptures: {0: {name: 'meta.brace.curly.cds'}},
+          end: '\\}',
+          endCaptures: {0: {name: 'meta.brace.curly.cds'}},
+          patterns: [{include: '$self'}]
+        },
+        {include: '$self'}
       ]
     },
     numbers: {
@@ -422,32 +434,9 @@ const grammar = {
           end: '`',
           endCaptures: {0: {name: 'punctuation.definition.string.end.cds'}},
           name: 'string.quoted.other.template.cds',
-          patterns: [{include: '#interpolation'}]
+          patterns: [{include: '#interpolation'}, {include: '#escapes'}]
         }
-      ],
-      repository: {
-        interpolation: {
-          begin: '\\$\\{',
-          beginCaptures: {0: {name: 'punctuation.section.embedded.begin.cds'}},
-          contentName: 'source.cds',
-          end: '(\\})',
-          endCaptures: {
-            0: {name: 'punctuation.section.embedded.end.cds'},
-            1: {name: 'source.cds'}
-          },
-          name: 'meta.embedded.line.cds',
-          patterns: [
-            {
-              begin: '\\{',
-              beginCaptures: {0: {name: 'meta.brace.curly.cds'}},
-              end: '\\}',
-              endCaptures: {0: {name: 'meta.brace.curly.cds'}},
-              patterns: [{include: '$self'}]
-            },
-            {include: '$self'}
-          ]
-        }
-      }
+      ]
     }
   },
   scopeName: 'source.cds'

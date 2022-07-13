@@ -1,434 +1,667 @@
 // This is a TextMate grammar distributed by `starry-night`.
-// This grammar is licensed `mit`.
+// This grammar is developed at
+// <https://github.com/sveltejs/svelte-atom>
+// and licensed `mit`.
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
   extensions: ['.svelte'],
-  names: ['svelte'],
-  patterns: [
-    {
-      begin:
-        '(<)(style)\\b(?=[^>]*(?:type=(\'text/sass\'|"text/sass")|lang=(sass|\'sass\'|"sass")))(?![^/>]*/>\\s*$)',
-      beginCaptures: {
-        1: {name: 'punctuation.definition.tag.begin.html'},
-        2: {name: 'entity.name.tag.style.html'}
-      },
-      end: '(</)(style)(>)',
-      endCaptures: {
-        1: {name: 'punctuation.definition.tag.begin.html'},
-        2: {name: 'entity.name.tag.style.html'},
-        3: {name: 'punctuation.definition.tag.end.html'}
-      },
+  injections: {
+    'L:(source.ts, source.js, source.coffee)': {
       patterns: [
-        {include: '#tag-stuff'},
         {
-          begin: '(>)',
-          beginCaptures: {1: {name: 'punctuation.definition.tag.end.html'}},
-          contentName: 'source.sass',
-          end: '(?=</style>)',
-          patterns: [{include: 'source.sass'}]
+          match: '(?<![_$[:alnum:]])\\$(?=[_[:alpha:]][_$[:alnum:]]*)',
+          name: 'punctuation.definition.variable.svelte'
+        },
+        {
+          match: '(?<![_$[:alnum:]])(\\$\\$)(?=props|restProps|slots)',
+          name: 'punctuation.definition.variable.svelte'
         }
       ]
     },
-    {
-      begin:
-        '(<)(style)\\b(?=[^>]*(?:type=(\'text/scss\'|"text/scss")|lang=(scss|\'scss\'|"scss")))(?![^/>]*/>\\s*$)',
-      beginCaptures: {
-        1: {name: 'punctuation.definition.tag.begin.html'},
-        2: {name: 'entity.name.tag.style.html'}
-      },
-      end: '(</)(style)(>)',
-      endCaptures: {
-        1: {name: 'punctuation.definition.tag.begin.html'},
-        2: {name: 'entity.name.tag.style.html'},
-        3: {name: 'punctuation.definition.tag.end.html'}
-      },
+    'L:meta.script.svelte - (meta source)': {
       patterns: [
-        {include: '#tag-stuff'},
         {
-          begin: '(>)',
-          beginCaptures: {1: {name: 'punctuation.definition.tag.end.html'}},
-          contentName: 'source.css.scss',
-          end: '(?=</style>)',
-          patterns: [{include: 'source.css.scss'}]
-        }
-      ]
-    },
-    {
-      begin:
-        '(<)(style)\\b(?=[^>]*(?:type=(\'text/less\'|"text/less")|lang=(less|\'less\'|"less")))(?![^/>]*/>\\s*$)',
-      beginCaptures: {
-        1: {name: 'punctuation.definition.tag.begin.html'},
-        2: {name: 'entity.name.tag.style.html'}
-      },
-      end: '(</)(style)(>)',
-      endCaptures: {
-        1: {name: 'punctuation.definition.tag.begin.html'},
-        2: {name: 'entity.name.tag.style.html'},
-        3: {name: 'punctuation.definition.tag.end.html'}
-      },
-      patterns: [
-        {include: '#tag-stuff'},
-        {
-          begin: '(>)',
-          beginCaptures: {1: {name: 'punctuation.definition.tag.end.html'}},
-          contentName: 'source.css.less',
-          end: '(?=</style>)',
-          patterns: [{include: 'source.css.less'}]
-        }
-      ]
-    },
-    {
-      begin:
-        '(<)(style)\\b(?=[^>]*(?:type=(\'text/stylus\'|"text/stylus")|lang=(stylus|\'stylus\'|"stylus")))(?![^/>]*/>\\s*$)',
-      beginCaptures: {
-        1: {name: 'punctuation.definition.tag.begin.html'},
-        2: {name: 'entity.name.tag.style.html'}
-      },
-      end: '(</)(style)(>)',
-      endCaptures: {
-        1: {name: 'punctuation.definition.tag.begin.html'},
-        2: {name: 'entity.name.tag.style.html'},
-        3: {name: 'punctuation.definition.tag.end.html'}
-      },
-      patterns: [
-        {include: '#tag-stuff'},
-        {
-          begin: '(>)',
-          beginCaptures: {1: {name: 'punctuation.definition.tag.end.html'}},
-          contentName: 'source.stylus',
-          end: '(?=</style>)',
-          patterns: [{include: 'source.stylus'}]
-        }
-      ]
-    },
-    {
-      begin:
-        '(<)(style)\\b(?=[^>]*(?:type=(\'text/postcss\'|"text/postcss")|lang=(postcss|\'postcss\'|"postcss")))(?![^/>]*/>\\s*$)',
-      beginCaptures: {
-        1: {name: 'punctuation.definition.tag.begin.html'},
-        2: {name: 'entity.name.tag.style.html'}
-      },
-      end: '(</)(style)(>)',
-      endCaptures: {
-        1: {name: 'punctuation.definition.tag.begin.html'},
-        2: {name: 'entity.name.tag.style.html'},
-        3: {name: 'punctuation.definition.tag.end.html'}
-      },
-      patterns: [
-        {include: '#tag-stuff'},
-        {
-          begin: '(>)',
-          beginCaptures: {1: {name: 'punctuation.definition.tag.end.html'}},
-          contentName: 'source.postcss',
-          end: '(?=</style>)',
-          patterns: [{include: 'source.postcss'}]
-        }
-      ]
-    },
-    {
-      begin:
-        '(<)(style)\\b(?=[^>]*(?:(?:type=(\'text/css\'|"text/css")|lang=(css|\'css\'|"css")))?)(?![^/>]*/>\\s*$)',
-      beginCaptures: {
-        1: {name: 'punctuation.definition.tag.begin.html'},
-        2: {name: 'entity.name.tag.style.html'}
-      },
-      end: '(</)(style)(>)',
-      endCaptures: {
-        1: {name: 'punctuation.definition.tag.begin.html'},
-        2: {name: 'entity.name.tag.style.html'},
-        3: {name: 'punctuation.definition.tag.end.html'}
-      },
-      patterns: [
-        {include: '#tag-stuff'},
-        {
-          begin: '(>)',
-          beginCaptures: {1: {name: 'punctuation.definition.tag.end.html'}},
-          contentName: 'source.css',
-          end: '(?=</style>)',
-          patterns: [{include: 'source.css'}]
-        }
-      ]
-    },
-    {
-      begin:
-        '(<)(script)\\b(?=[^>]*(?:type=(\'text/typescript\'|"text/typescript")|lang=(typescript|\'typescript\'|"typescript")))(?![^/>]*/>\\s*$)',
-      beginCaptures: {
-        1: {name: 'punctuation.definition.tag.begin.html'},
-        2: {name: 'entity.name.tag.script.html'}
-      },
-      end: '(</)(script)(>)',
-      endCaptures: {
-        1: {name: 'punctuation.definition.tag.begin.html'},
-        2: {name: 'entity.name.tag.script.html'},
-        3: {name: 'punctuation.definition.tag.end.html'}
-      },
-      patterns: [
-        {include: '#tag-stuff'},
-        {
-          begin: '(>)',
-          beginCaptures: {1: {name: 'punctuation.definition.tag.end.html'}},
+          begin: '(?<=>)(?!</)',
           contentName: 'source.ts',
-          end: '(?=</script>)',
+          end: '(?=</)',
+          name: 'meta.embedded.block.svelte',
           patterns: [{include: 'source.ts'}]
         }
       ]
     },
-    {
-      begin:
-        '(<)(script)\\b(?=[^>]*(?:type=(\'text/coffee\'|"text/coffee")|lang=(coffee|\'coffee\'|"coffee")))(?![^/>]*/>\\s*$)',
-      beginCaptures: {
-        1: {name: 'punctuation.definition.tag.begin.html'},
-        2: {name: 'entity.name.tag.script.html'}
-      },
-      end: '(</)(script)(>)',
-      endCaptures: {
-        1: {name: 'punctuation.definition.tag.begin.html'},
-        2: {name: 'entity.name.tag.script.html'},
-        3: {name: 'punctuation.definition.tag.end.html'}
-      },
+    'L:meta.script.svelte meta.lang.coffee - (meta source)': {
       patterns: [
-        {include: '#tag-stuff'},
         {
-          begin: '(>)',
-          beginCaptures: {1: {name: 'punctuation.definition.tag.end.html'}},
+          begin: '(?<=>)(?!</)',
           contentName: 'source.coffee',
-          end: '(?=</script>)',
+          end: '(?=</)',
+          name: 'meta.embedded.block.svelte',
           patterns: [{include: 'source.coffee'}]
         }
       ]
     },
-    {
-      begin:
-        '(<)(script)\\b(?=[^>]*(?:(?:type=(\'text/javascript\'|"text/javascript")|lang=(javascript|\'javascript\'|"javascript")))?)(?![^/>]*/>\\s*$)',
-      beginCaptures: {
-        1: {name: 'punctuation.definition.tag.begin.html'},
-        2: {name: 'entity.name.tag.script.html'}
-      },
-      end: '(</)(script)(>)',
-      endCaptures: {
-        1: {name: 'punctuation.definition.tag.begin.html'},
-        2: {name: 'entity.name.tag.script.html'},
-        3: {name: 'punctuation.definition.tag.end.html'}
-      },
+    'L:meta.script.svelte meta.lang.javascript - (meta source)': {
       patterns: [
-        {include: '#tag-stuff'},
         {
-          begin: '(>)',
-          beginCaptures: {1: {name: 'punctuation.definition.tag.end.html'}},
-          contentName: 'source.js',
-          end: '(?=</script>)',
-          patterns: [{include: 'source.js'}]
+          begin: '(?<=>)(?!</)',
+          contentName: 'source.ts',
+          end: '(?=</)',
+          name: 'meta.embedded.block.svelte',
+          patterns: [{include: 'source.ts'}]
         }
       ]
     },
-    {
-      begin: '({)\\s*(#if|:elseif|#await|@html)',
-      beginCaptures: {
-        1: {name: 'punctuation.definition.tag.begin.svelte'},
-        2: {name: 'keyword.control.conditional'}
-      },
-      end: '}',
-      endCaptures: {0: {name: 'punctuation.definition.tag.end.svelte'}},
-      patterns: [{include: 'source.ts'}]
-    },
-    {
-      captures: {
-        1: {name: 'punctuation.definition.tag.begin.svelte'},
-        2: {name: 'keyword.control.conditional'},
-        3: {name: 'variable'},
-        4: {name: 'punctuation.definition.tag.end.svelte'}
-      },
-      match: '({)\\s*(:then|:catch)\\s+([_$[:alpha:]][_$[:alnum:]]*)\\s*(})'
-    },
-    {
-      begin: '({)\\s*(#each)',
-      beginCaptures: {
-        1: {name: 'punctuation.definition.tag.begin.svelte'},
-        2: {name: 'keyword.control.conditional'}
-      },
-      end: '}',
-      endCaptures: {0: {name: 'punctuation.definition.tag.end.svelte'}},
+    'L:meta.script.svelte meta.lang.js - (meta source)': {
       patterns: [
         {
-          begin: '\\s',
-          end: '\\s(as)\\s+',
-          endCaptures: {1: {name: 'keyword.control'}},
+          begin: '(?<=>)(?!</)',
+          contentName: 'source.ts',
+          end: '(?=</)',
+          name: 'meta.embedded.block.svelte',
           patterns: [{include: 'source.ts'}]
-        },
-        {match: '[_$[:alpha:]][_$[:alnum:]]*\\s*', name: 'variable'},
+        }
+      ]
+    },
+    'L:meta.script.svelte meta.lang.ts - (meta source)': {
+      patterns: [
         {
+          begin: '(?<=>)(?!</)',
+          contentName: 'source.ts',
+          end: '(?=</)',
+          name: 'meta.embedded.block.svelte',
+          patterns: [{include: 'source.ts'}]
+        }
+      ]
+    },
+    'L:meta.script.svelte meta.lang.typescript - (meta source)': {
+      patterns: [
+        {
+          begin: '(?<=>)(?!</)',
+          contentName: 'source.ts',
+          end: '(?=</)',
+          name: 'meta.embedded.block.svelte',
+          patterns: [{include: 'source.ts'}]
+        }
+      ]
+    },
+    'L:meta.style.svelte - meta.lang - (meta source)': {
+      patterns: [
+        {
+          begin: '(?<=>)(?!</)',
+          contentName: 'source.css',
+          end: '(?=</)',
+          name: 'meta.embedded.block.svelte',
+          patterns: [{include: 'source.css'}]
+        }
+      ]
+    },
+    'L:meta.style.svelte meta.lang.css - (meta source)': {
+      patterns: [
+        {
+          begin: '(?<=>)(?!</)',
+          contentName: 'source.css',
+          end: '(?=</)',
+          name: 'meta.embedded.block.svelte',
+          patterns: [{include: 'source.css'}]
+        }
+      ]
+    },
+    'L:meta.style.svelte meta.lang.less - (meta source)': {
+      patterns: [
+        {
+          begin: '(?<=>)(?!</)',
+          contentName: 'source.css.less',
+          end: '(?=</)',
+          name: 'meta.embedded.block.svelte',
+          patterns: [{include: 'source.css.less'}]
+        }
+      ]
+    },
+    'L:meta.style.svelte meta.lang.postcss - (meta source)': {
+      patterns: [
+        {
+          begin: '(?<=>)(?!</)',
+          contentName: 'source.css.postcss',
+          end: '(?=</)',
+          name: 'meta.embedded.block.svelte',
+          patterns: []
+        }
+      ]
+    },
+    'L:meta.style.svelte meta.lang.sass - (meta source)': {
+      patterns: [
+        {
+          begin: '(?<=>)(?!</)',
+          contentName: 'source.sass',
+          end: '(?=</)',
+          name: 'meta.embedded.block.svelte',
+          patterns: [{include: 'source.sass'}]
+        }
+      ]
+    },
+    'L:meta.style.svelte meta.lang.scss - (meta source)': {
+      patterns: [
+        {
+          begin: '(?<=>)(?!</)',
+          contentName: 'source.css.scss',
+          end: '(?=</)',
+          name: 'meta.embedded.block.svelte',
+          patterns: [{include: 'source.css.scss'}]
+        }
+      ]
+    },
+    'L:meta.style.svelte meta.lang.stylus - (meta source)': {
+      patterns: [
+        {
+          begin: '(?<=>)(?!</)',
+          contentName: 'source.stylus',
+          end: '(?=</)',
+          name: 'meta.embedded.block.svelte',
+          patterns: [{include: 'source.stylus'}]
+        }
+      ]
+    },
+    'L:meta.template.svelte - meta.lang - (meta source)': {
+      patterns: [
+        {
+          begin: '(?<=>)\\s',
+          end: '(?=</template)',
+          patterns: [{include: '#scope'}]
+        }
+      ]
+    },
+    'L:meta.template.svelte meta.lang.pug - (meta source)': {
+      patterns: [
+        {
+          begin: '(?<=>)(?!</)',
+          contentName: 'text.pug',
+          end: '(?=</)',
+          name: 'meta.embedded.block.svelte',
+          patterns: [{include: 'text.jade'}]
+        }
+      ]
+    }
+  },
+  names: ['svelte'],
+  patterns: [{include: '#scope'}],
+  repository: {
+    attributes: {
+      patterns: [
+        {include: '#attributes-directives'},
+        {include: '#attributes-keyvalue'},
+        {include: '#attributes-interpolated'}
+      ]
+    },
+    'attributes-directives': {
+      begin:
+        '(?<!<)((?:on|use|bind|transition|in|out|animate|let|class|style)(:)(?:((?:--)?[_$[:alpha:]][_\\-$[:alnum:]]*(?=\\s*=))|((?:--)?[_$[:alpha:]][_\\-$[:alnum:]]*)))((\\|\\w+)*)',
+      beginCaptures: {
+        1: {
+          patterns: [
+            {include: '#attributes-directives-keywords'},
+            {include: '#attributes-directives-types-assigned'},
+            {include: '#attributes-directives-types'}
+          ]
+        },
+        2: {name: 'punctuation.definition.keyword.svelte'},
+        5: {
+          patterns: [
+            {match: '\\w+', name: 'support.function.svelte'},
+            {match: '\\|', name: 'punctuation.separator.svelte'}
+          ]
+        }
+      },
+      end: '(?=\\s*+[^=\\s])',
+      name: 'meta.directive.$1.svelte',
+      patterns: [
+        {
+          begin: '=',
+          beginCaptures: {0: {name: 'punctuation.separator.key-value.svelte'}},
+          end: '(?<=[^\\s=])(?!\\s*=)|(?=/?>)',
+          patterns: [{include: '#attributes-value'}]
+        }
+      ]
+    },
+    'attributes-directives-keywords': {
+      patterns: [
+        {match: 'on|use|bind', name: 'keyword.control.svelte'},
+        {
+          match: 'transition|in|out|animate',
+          name: 'keyword.other.animation.svelte'
+        },
+        {match: 'let', name: 'storage.type.svelte'},
+        {match: 'class|style', name: 'entity.other.attribute-name.svelte'}
+      ]
+    },
+    'attributes-directives-types': {
+      patterns: [
+        {match: '(?<=bind:).*$', name: 'variable.parameter.svelte'},
+        {
+          match:
+            '(?:(?<=use:)|(?<=transition:)|(?<=in:)|(?<=out:)|(?<=animate:)).*$',
+          name: 'variable.function.svelte'
+        },
+        {match: '(?<=on:).*$', name: 'entity.name.type.svelte'},
+        {
+          match: '((?<=let:)|(?<=class:)|(?<=style:)).*$',
+          name: 'variable.parameter.svelte'
+        }
+      ]
+    },
+    'attributes-directives-types-assigned': {
+      patterns: [
+        {match: '(?<=(bind):)this$', name: 'variable.language.svelte'},
+        {match: '(?<=(bind):).*$', name: 'entity.name.type.svelte'},
+        {
+          match: '(?<=(class):).*$',
+          name: 'entity.other.attribute-name.class.svelte'
+        },
+        {match: '(?<=(style):).*$', name: 'support.type.property-name.svelte'},
+        {include: '#attributes-directives-types'}
+      ]
+    },
+    'attributes-interpolated': {
+      begin: '(?<!:|=)\\s*({)',
+      captures: {1: {name: 'entity.other.attribute-name.svelte'}},
+      contentName: 'meta.embedded.expression.svelte source.ts',
+      end: '(\\})',
+      patterns: [{include: 'source.ts'}]
+    },
+    'attributes-keyvalue': {
+      begin: '((?:--)?[_$[:alpha:]][_\\-$[:alnum:]]*)',
+      beginCaptures: {
+        0: {
+          patterns: [
+            {match: '--.*', name: 'support.type.property-name.svelte'},
+            {match: '.+', name: 'entity.other.attribute-name.svelte'}
+          ]
+        }
+      },
+      end: '(?=\\s*+[^=\\s])',
+      name: 'meta.attribute.$1.svelte',
+      patterns: [
+        {
+          begin: '=',
+          beginCaptures: {0: {name: 'punctuation.separator.key-value.svelte'}},
+          end: '(?<=[^\\s=])(?!\\s*=)|(?=/?>)',
+          patterns: [{include: '#attributes-value'}]
+        }
+      ]
+    },
+    'attributes-value': {
+      patterns: [
+        {include: '#interpolation'},
+        {
+          captures: {
+            1: {name: 'punctuation.definition.string.begin.svelte'},
+            2: {name: 'constant.numeric.decimal.svelte'},
+            3: {name: 'punctuation.definition.string.end.svelte'},
+            4: {name: 'constant.numeric.decimal.svelte'}
+          },
+          match:
+            '(?:([\'"])([0-9._]+[\\w%]{,4})(\\1))|(?:([0-9._]+[\\w%]{,4})(?=\\s|/?>))'
+        },
+        {
+          match: '([^\\s"\'=<>`/]|/(?!>))+',
+          name: 'string.unquoted.svelte',
+          patterns: [{include: '#interpolation'}]
+        },
+        {
+          begin: '([\'"])',
+          beginCaptures: {
+            0: {name: 'punctuation.definition.string.begin.svelte'}
+          },
+          end: '\\1',
+          endCaptures: {0: {name: 'punctuation.definition.string.end.svelte'}},
+          name: 'string.quoted.svelte',
+          patterns: [{include: '#interpolation'}]
+        }
+      ]
+    },
+    comments: {
+      begin: '<!--',
+      captures: {0: {name: 'punctuation.definition.comment.svelte'}},
+      end: '-->',
+      name: 'comment.block.svelte',
+      patterns: [
+        {
+          begin: '(@)(component)',
+          beginCaptures: {
+            1: {name: 'punctuation.definition.keyword.svelte'},
+            2: {
+              name: 'storage.type.class.component.svelte keyword.declaration.class.component.svelte'
+            }
+          },
+          contentName: 'comment.block.documentation.svelte',
+          end: '(?=-->)',
           patterns: [
             {
-              begin: '\\[\\s*',
-              end: ']\\s*',
-              patterns: [{include: 'source.js'}]
+              captures: {0: {patterns: [{include: 'source.gfm'}]}},
+              match: '.*?(?=-->)'
             },
-            {begin: '\\{\\s*', end: '}\\s*', patterns: [{include: 'source.js'}]}
+            {include: 'source.gfm'}
           ]
         },
         {
-          captures: {1: {name: 'variable'}},
-          match: ',\\s*([_$[:alpha:]][_$[:alnum:]]*)\\s*'
-        },
-        {begin: '\\(', end: '\\)\\s*', patterns: [{include: 'source.ts'}]}
-      ]
-    },
-    {
-      captures: {
-        1: {name: 'punctuation.definition.tag.begin.svelte'},
-        2: {name: 'keyword.control.conditional'},
-        3: {name: 'punctuation.definition.tag.end.svelte'}
-      },
-      match: '({)\\s*(:else|/if|/each|/await)\\s*(})'
-    },
-    {
-      begin: '{',
-      beginCaptures: {0: {name: 'punctuation.definition.tag.begin.svelte'}},
-      end: '}',
-      endCaptures: {0: {name: 'punctuation.definition.tag.end.svelte'}},
-      patterns: [{include: 'source.ts'}]
-    },
-    {
-      begin: '(</?)([a-zA-Z][a-zA-Z0-9:-]*)',
-      beginCaptures: {
-        1: {name: 'punctuation.definition.tag.begin.html'},
-        2: {name: 'entity.name.tag.other.html'}
-      },
-      end: '(/?>)',
-      endCaptures: {1: {name: 'punctuation.definition.tag.end.html'}},
-      name: 'meta.tag.other.html',
-      patterns: [{include: '#tag-stuff'}]
-    },
-    {begin: '<!--', end: '-->', name: 'comment.block'},
-    {match: '<!doctype html>', name: 'punctuation.definition.tag'}
-  ],
-  repository: {
-    entities: {
-      patterns: [
-        {
-          captures: {
-            1: {name: 'punctuation.definition.entity.html'},
-            3: {name: 'punctuation.definition.entity.html'}
-          },
-          match: '(&)([a-zA-Z0-9]+|#[0-9]+|#x[0-9a-fA-F]+)(;)',
-          name: 'constant.character.entity.html'
-        },
-        {match: '&', name: 'invalid.illegal.bad-ampersand.html'}
-      ]
-    },
-    'string-double-quoted': {
-      begin: '"',
-      beginCaptures: {0: {name: 'punctuation.definition.string.begin.html'}},
-      end: '"',
-      endCaptures: {0: {name: 'punctuation.definition.string.end.html'}},
-      name: 'string.quoted.double.html',
-      patterns: [{include: '#entities'}]
-    },
-    'string-single-quoted': {
-      begin: "'",
-      beginCaptures: {0: {name: 'punctuation.definition.string.begin.html'}},
-      end: "'",
-      endCaptures: {0: {name: 'punctuation.definition.string.end.html'}},
-      name: 'string.quoted.single.html',
-      patterns: [{include: '#entities'}]
-    },
-    'tag-event-handlers': {
-      begin: '\\b(on):([a-zA-Z]+)=("|\')',
-      beginCaptures: {
-        1: {name: 'entity.other.attribute-name.html'},
-        2: {name: 'entity.other.attribute-name.html'},
-        3: {name: 'string.quoted.double'}
-      },
-      end: '\\3',
-      endCaptures: {0: {name: 'string.quoted.double'}},
-      patterns: [{include: 'source.ts'}]
-    },
-    'tag-generic-attribute': {
-      match: '\\b([a-zA-Z\\-:]+)',
-      name: 'entity.other.attribute-name.html'
-    },
-    'tag-id-attribute': {
-      begin: '\\b(id)\\b\\s*(=)',
-      captures: {
-        1: {name: 'entity.other.attribute-name.id.html'},
-        2: {name: 'punctuation.separator.key-value.html'}
-      },
-      end: '(?<=\'|")',
-      name: 'meta.attribute-with-value.id.html',
-      patterns: [
-        {
-          begin: '"',
-          beginCaptures: {
-            0: {name: 'punctuation.definition.string.begin.html'}
-          },
-          contentName: 'meta.toc-list.id.html',
-          end: '"',
-          endCaptures: {0: {name: 'punctuation.definition.string.end.html'}},
-          name: 'string.quoted.double.html',
-          patterns: [{include: '#entities'}]
-        },
-        {
-          begin: "'",
-          beginCaptures: {
-            0: {name: 'punctuation.definition.string.begin.html'}
-          },
-          contentName: 'meta.toc-list.id.html',
-          end: "'",
-          endCaptures: {0: {name: 'punctuation.definition.string.end.html'}},
-          name: 'string.quoted.single.html',
-          patterns: [{include: '#entities'}]
+          match: '\\G-?>|<!--(?!>)|<!-(?=-->)|--!>',
+          name: 'invalid.illegal.characters-not-allowed-here.svelte'
         }
       ]
     },
-    'tag-moustaches': {
-      begin: '\\b([a-zA-Z\\-:]+)=("|\')(?=.*{)',
-      beginCaptures: {
-        1: {name: 'entity.other.attribute-name.html'},
-        2: {name: 'string.quoted.double'}
-      },
-      end: '\\2',
-      endCaptures: {0: {name: 'string.quoted.double'}},
+    destructuring: {
       patterns: [
         {
-          begin: '{',
-          beginCaptures: {0: {name: 'punctuation.definition.tag.begin.svelte'}},
-          end: '}',
-          endCaptures: {0: {name: 'punctuation.definition.tag.end.svelte'}},
+          begin: '(?={)',
+          end: '(?<=})',
+          name: 'meta.embedded.expression.svelte source.ts',
+          patterns: [{include: 'source.ts#object-binding-pattern'}]
+        },
+        {
+          begin: '(?=\\[)',
+          end: '(?<=\\])',
+          name: 'meta.embedded.expression.svelte source.ts',
+          patterns: [{include: 'source.ts#array-binding-pattern'}]
+        }
+      ]
+    },
+    interpolation: {
+      patterns: [
+        {
+          begin: '\\{',
+          beginCaptures: {
+            0: {name: 'punctuation.section.embedded.begin.svelte'}
+          },
+          contentName: 'meta.embedded.expression.svelte source.ts',
+          end: '\\}',
+          endCaptures: {0: {name: 'punctuation.section.embedded.end.svelte'}},
+          patterns: [
+            {
+              begin: '\\G\\s*(?={)',
+              end: '(?<=})',
+              patterns: [{include: 'source.ts#object-literal'}]
+            },
+            {include: 'source.ts'}
+          ]
+        }
+      ]
+    },
+    scope: {
+      patterns: [
+        {include: '#comments'},
+        {include: '#special-tags'},
+        {include: '#tags'},
+        {include: '#interpolation'},
+        {begin: '(?<=>|})', end: '(?=<|{)', name: 'text.svelte'}
+      ]
+    },
+    'special-tags': {
+      patterns: [
+        {include: '#special-tags-void'},
+        {include: '#special-tags-block-begin'},
+        {include: '#special-tags-block-end'}
+      ]
+    },
+    'special-tags-block-begin': {
+      begin: '({)\\s*(#([a-z]*))',
+      beginCaptures: {
+        1: {name: 'punctuation.definition.block.begin.svelte'},
+        2: {patterns: [{include: '#special-tags-keywords'}]}
+      },
+      end: '(})',
+      endCaptures: {0: {name: 'punctuation.definition.block.end.svelte'}},
+      name: 'meta.special.$3.svelte meta.special.start.svelte',
+      patterns: [{include: '#special-tags-modes'}]
+    },
+    'special-tags-block-end': {
+      begin: '({)\\s*(/([a-z]*))',
+      beginCaptures: {
+        1: {name: 'punctuation.definition.block.begin.svelte'},
+        2: {patterns: [{include: '#special-tags-keywords'}]}
+      },
+      end: '(})',
+      endCaptures: {1: {name: 'punctuation.definition.block.end.svelte'}},
+      name: 'meta.special.$3.svelte meta.special.end.svelte'
+    },
+    'special-tags-keywords': {
+      captures: {
+        1: {name: 'punctuation.definition.keyword.svelte'},
+        2: {
+          patterns: [
+            {
+              match: 'if|else\\s+if|else',
+              name: 'keyword.control.conditional.svelte'
+            },
+            {match: 'each|key', name: 'keyword.control.svelte'},
+            {match: 'await|then|catch', name: 'keyword.control.flow.svelte'},
+            {match: 'html', name: 'keyword.other.svelte'},
+            {match: 'debug', name: 'keyword.other.debugger.svelte'},
+            {match: 'const', name: 'storage.type.svelte'}
+          ]
+        }
+      },
+      match: '([#@/:])(else\\s+if|[a-z]*)'
+    },
+    'special-tags-modes': {
+      patterns: [
+        {
+          begin: '((?<=if)|(?<=key)|(?<=then)|(?<=catch)|(?<=html)).*?\\G',
+          end: '(?=})',
+          name: 'meta.embedded.expression.svelte source.ts',
           patterns: [{include: 'source.ts'}]
         },
-        {match: '(?!{).', name: 'string.quoted.double'}
+        {
+          begin: '(?<=const).*?\\G',
+          end: '(?=})',
+          patterns: [
+            {
+              begin: '\\G\\s*([_$[:alpha:]][_$[:alnum:]]+)\\s*',
+              beginCaptures: {1: {name: 'variable.other.constant.svelte'}},
+              end: '(?=\\=)'
+            },
+            {
+              begin: '(?=\\=)',
+              end: '(?=})',
+              patterns: [{include: 'source.ts#variable-initializer'}]
+            }
+          ]
+        },
+        {
+          begin: '(?<=each).*?\\G',
+          end: '(?=})',
+          patterns: [
+            {
+              begin: '\\G\\s*?(?=\\S)',
+              contentName: 'meta.embedded.expression.svelte source.ts',
+              end: '(?=(?:^\\s*|\\s+)(as))',
+              patterns: [{include: 'source.ts'}]
+            },
+            {
+              begin: '(as)',
+              beginCaptures: {1: {name: 'keyword.control.as.svelte'}},
+              end: '(?=})',
+              patterns: [
+                {include: '#destructuring'},
+                {
+                  begin: '\\(',
+                  captures: {0: {name: 'meta.brace.round.svelte'}},
+                  contentName: 'meta.embedded.expression.svelte source.ts',
+                  end: '\\)|(?=})',
+                  patterns: [{include: 'source.ts'}]
+                },
+                {
+                  captures: {
+                    1: {
+                      name: 'meta.embedded.expression.svelte source.ts',
+                      patterns: [{include: 'source.ts'}]
+                    }
+                  },
+                  match: '(\\s*([_$[:alpha:]][_$[:alnum:]]*)\\s*)'
+                },
+                {match: ',', name: 'punctuation.separator.svelte'}
+              ]
+            }
+          ]
+        },
+        {
+          begin: '(?<=await).*?\\G',
+          end: '(?=})',
+          patterns: [
+            {
+              begin: '\\G\\s*?(?=\\S)',
+              contentName: 'meta.embedded.expression.svelte source.ts',
+              end: '\\s+(then)|(?=})',
+              endCaptures: {1: {name: 'keyword.control.flow.svelte'}},
+              patterns: [{include: 'source.ts'}]
+            },
+            {
+              begin: '(?<=then)\\b',
+              contentName: 'meta.embedded.expression.svelte source.ts',
+              end: '(?=})',
+              patterns: [{include: 'source.ts'}]
+            }
+          ]
+        },
+        {
+          begin: '(?<=debug).*?\\G',
+          end: '(?=})',
+          patterns: [
+            {
+              captures: {
+                0: {
+                  name: 'meta.embedded.expression.svelte source.ts',
+                  patterns: [{include: 'source.ts'}]
+                }
+              },
+              match: '[_$[:alpha:]][_$[:alnum:]]*'
+            },
+            {match: ',', name: 'punctuation.separator.svelte'}
+          ]
+        }
       ]
     },
-    'tag-moustaches-raw': {
-      begin: '\\b([a-zA-Z\\-:]+)=({)',
+    'special-tags-void': {
+      begin: '({)\\s*((?:[@:])(else\\s+if|[a-z]*))',
       beginCaptures: {
-        1: {name: 'entity.other.attribute-name.html'},
-        2: {name: 'punctuation.definition.tag.begin.svelte'}
+        1: {name: 'punctuation.definition.block.begin.svelte'},
+        2: {patterns: [{include: '#special-tags-keywords'}]}
       },
-      end: '}',
-      endCaptures: {0: {name: 'punctuation.definition.tag.end.svelte'}},
-      patterns: [{include: 'source.ts'}]
+      end: '\\}',
+      endCaptures: {0: {name: 'punctuation.definition.block.end.svelte'}},
+      name: 'meta.special.$3.svelte',
+      patterns: [{include: '#special-tags-modes'}]
     },
-    'tag-shorthand': {
+    tags: {
+      patterns: [
+        {include: '#tags-lang'},
+        {include: '#tags-void'},
+        {include: '#tags-general-end'},
+        {include: '#tags-general-start'}
+      ]
+    },
+    'tags-end-node': {
+      captures: {
+        1: {
+          name: 'meta.tag.end.svelte punctuation.definition.tag.begin.svelte'
+        },
+        2: {name: 'meta.tag.end.svelte', patterns: [{include: '#tags-name'}]},
+        3: {name: 'meta.tag.end.svelte punctuation.definition.tag.end.svelte'},
+        4: {name: 'meta.tag.start.svelte punctuation.definition.tag.end.svelte'}
+      },
+      match: '(</)(.*?)\\s*(>)|(/>)'
+    },
+    'tags-general-end': {
+      begin: '(</)([^/\\s>]*)',
+      beginCaptures: {
+        1: {
+          name: 'meta.tag.end.svelte punctuation.definition.tag.begin.svelte'
+        },
+        2: {name: 'meta.tag.end.svelte', patterns: [{include: '#tags-name'}]}
+      },
+      end: '(>)',
+      endCaptures: {
+        1: {name: 'meta.tag.end.svelte punctuation.definition.tag.end.svelte'}
+      },
+      name: 'meta.scope.tag.$2.svelte'
+    },
+    'tags-general-start': {
+      begin: '(<)([^/\\s>/]*)',
+      beginCaptures: {0: {patterns: [{include: '#tags-start-node'}]}},
+      end: '(/?>)',
+      endCaptures: {
+        1: {name: 'meta.tag.start.svelte punctuation.definition.tag.end.svelte'}
+      },
+      name: 'meta.scope.tag.$2.svelte',
+      patterns: [{include: '#tags-start-attributes'}]
+    },
+    'tags-lang': {
+      begin: '<(script|style|template)',
+      beginCaptures: {0: {patterns: [{include: '#tags-start-node'}]}},
+      end: '</\\1\\s*>|/>',
+      endCaptures: {0: {patterns: [{include: '#tags-end-node'}]}},
+      name: 'meta.$1.svelte',
+      patterns: [
+        {
+          begin:
+            '\\G(?=\\s*[^>]*?(type|lang)\\s*=\\s*([\'"]|)(?:text/)?(\\w+)\\2)',
+          end: '(?=</|/>)',
+          name: 'meta.lang.$3.svelte',
+          patterns: [{include: '#tags-lang-start-attributes'}]
+        },
+        {include: '#tags-lang-start-attributes'}
+      ]
+    },
+    'tags-lang-start-attributes': {
+      begin: '\\G',
+      end: '(?=/>)|>',
+      endCaptures: {0: {name: 'punctuation.definition.tag.end.svelte'}},
+      name: 'meta.tag.start.svelte',
+      patterns: [{include: '#attributes'}]
+    },
+    'tags-name': {
+      patterns: [
+        {
+          captures: {
+            1: {name: 'keyword.control.svelte'},
+            2: {name: 'punctuation.definition.keyword.svelte'},
+            3: {name: 'entity.name.tag.svelte'}
+          },
+          match: '(svelte)(:)([a-z][\\w0-9:-]*)'
+        },
+        {match: 'slot', name: 'keyword.control.svelte'},
+        {match: '[A-Z][a-zA-Z0-9_]*', name: 'support.class.component.svelte'},
+        {
+          match: '[a-z][\\w0-9:]*-[\\w0-9:-]*',
+          name: 'meta.tag.custom.svelte entity.name.tag.svelte'
+        },
+        {match: '[a-z][\\w0-9:-]*', name: 'entity.name.tag.svelte'}
+      ]
+    },
+    'tags-start-attributes': {
+      begin: '\\G',
+      end: '(?=/?>)',
+      include: '#attributes',
+      name: 'meta.tag.start.svelte'
+    },
+    'tags-start-node': {
       captures: {
         1: {name: 'punctuation.definition.tag.begin.svelte'},
-        2: {name: 'variable'},
-        3: {name: 'punctuation.definition.tag.end.svelte'}
+        2: {patterns: [{include: '#tags-name'}]}
       },
-      match: '({)\\s*([_$[:alpha:]][_$[:alnum:]]*)\\s*(})'
+      match: '(<)([^/\\s>/]*)',
+      name: 'meta.tag.start.svelte'
     },
-    'tag-stuff': {
-      patterns: [
-        {include: '#tag-event-handlers'},
-        {include: '#tag-moustaches'},
-        {include: '#tag-moustaches-raw'},
-        {include: '#tag-shorthand'},
-        {include: '#tag-id-attribute'},
-        {include: '#tag-generic-attribute'},
-        {include: '#string-double-quoted'},
-        {include: '#string-single-quoted'}
-      ]
+    'tags-void': {
+      begin:
+        '(<)(area|base|br|col|embed|hr|img|input|link|meta|param|source|track|wbr)(?=\\s|/?>)',
+      beginCaptures: {
+        1: {name: 'punctuation.definition.tag.begin.svelte'},
+        2: {name: 'entity.name.tag.svelte'}
+      },
+      end: '/?>',
+      endCaptures: {0: {name: 'punctuation.definition.tag.begin.svelte'}},
+      name: 'meta.tag.void.svelte',
+      patterns: [{include: '#attributes'}]
     }
   },
   scopeName: 'source.svelte'

@@ -65,6 +65,7 @@ const grammar = {
     '.ps1xml',
     '.psc1',
     '.pt',
+    '.qhelp',
     '.rdf',
     '.res',
     '.resx',

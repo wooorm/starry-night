@@ -16,11 +16,12 @@ const grammar = {
     {include: '#double_quotes'},
     {include: '#single_quotes'},
     {include: '#tags'},
-    {include: '#tag_params'}
+    {include: '#def_brackets'},
+    {include: '#not_script_keys'}
   ],
   repository: {
     commands: {
-      begin: '(-)\\s([^\\s<>\\[\\]]+)',
+      begin: '(-)\\s([^\\s<>"\']+)',
       captures: {
         1: {name: 'operator.dash.denizenscript'},
         2: {name: 'entity.other.command.denizenscript'}
@@ -28,15 +29,21 @@ const grammar = {
       end: '\\s'
     },
     comments: {
-      begin: '^\\s*#(?!\\s*todo|\\s*TODO|(?:\\s*(?:\\||\\+|=|#|_|@|\\/)))',
+      begin: '(?i)^\\s*#(?!\\s*todo|(?:\\s*(?:\\||\\+|=|#|_|@|\\/)))',
       end: '\\n',
       name: 'comment.line.number-sign.denizenscript'
+    },
+    def_brackets: {
+      begin: '(?<=\\w|<)\\[',
+      end: '\\]',
+      name: 'entity.name.tag.def_brackets.denizenscript',
+      patterns: [{include: '#tags'}]
     },
     double_quotes: {
       begin: '(?<=\\s)"',
       end: '(?:"|\\n)',
       name: 'string.quoted.double.denizenscript',
-      patterns: [{include: '#tags'}, {include: '#tag_params'}]
+      patterns: [{include: '#tags'}, {include: '#def_brackets'}]
     },
     header_comments: {
       begin: '^\\s*#\\s*(?:\\||\\+|=|#|_|@|\\/)',
@@ -44,33 +51,44 @@ const grammar = {
       name: 'keyword.header-comment.denizenscript'
     },
     keys: {
-      begin: '(^[^-#\\n]*)(?=(:)\\s)',
+      begin:
+        '(^(?!.*- |#|\\n|.*(?:interact scripts|default constants|data|constants|text|lore|aliases|slots|enchantments|input)(?=(?::))).*)(?=(:)\\s)',
       beginCaptures: {
         1: {name: 'markup.heading.key.denizenscript'},
         2: {name: 'operator.colon.denizenscript'}
       },
       end: '\\s'
     },
+    not_script_keys: {
+      begin:
+        '(^(?!.*- |#|\\n).*(?=interact scripts|default constants|data|constants|text|lore|aliases|slots|enchantments|input).*)(?=(:)\\s)',
+      beginCaptures: {
+        1: {name: 'markup.heading.key.denizenscript'},
+        2: {name: 'operator.colon.denizenscript'}
+      },
+      end: '^(?!.*- |\\n|\\s*#)',
+      patterns: [
+        {include: '#tags'},
+        {include: '#def_brackets'},
+        {include: '#comments'},
+        {include: '#todo_comments'},
+        {include: '#header_comments'}
+      ]
+    },
     single_quotes: {
       begin: "(?<=\\s)'",
       end: "(?:'|\\n)",
       name: 'string.quoted.single.denizenscript',
-      patterns: [{include: '#tags'}, {include: '#tag_params'}]
-    },
-    tag_params: {
-      begin: '(?<=\\w|<)\\[',
-      end: '\\]',
-      name: 'entity.name.tag.tag-brackets.denizenscript',
-      patterns: [{include: '#tags'}]
+      patterns: [{include: '#tags'}, {include: '#def_brackets'}]
     },
     tags: {
-      begin: '<(?!-|\\s)',
+      begin: '<(?!-|\\s|=)',
       end: '>',
       name: 'constant.language.tag.denizenscript',
-      patterns: [{include: '#tag_params'}]
+      patterns: [{include: '#def_brackets'}]
     },
     todo_comments: {
-      begin: '^\\s*#\\s*(?:TODO|todo)',
+      begin: '(?i)^\\s*#\\s*(?:todo)',
       end: '\\n',
       name: 'variable.todo-comment.denizenscript'
     }

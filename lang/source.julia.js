@@ -315,14 +315,11 @@ const grammar = {
             1: {name: 'support.function.macro.julia'},
             2: {name: 'punctuation.definition.string.begin.julia'}
           },
-          contentName: 'source.cpp',
+          contentName: 'meta.embedded.inline.cpp',
           end: '"""',
           endCaptures: {0: {name: 'punctuation.definition.string.end.julia'}},
           name: 'embed.cxx.julia',
-          patterns: [
-            {include: 'source.c++'},
-            {include: '#string_dollar_sign_interpolate'}
-          ]
+          patterns: [{include: '#string_dollar_sign_interpolate'}]
         },
         {
           begin: '(py)(""")',
@@ -330,7 +327,7 @@ const grammar = {
             1: {name: 'support.function.macro.julia'},
             2: {name: 'punctuation.definition.string.begin.julia'}
           },
-          contentName: 'source.python',
+          contentName: 'meta.embedded.inline.python',
           end: '([\\s\\w]*)(""")',
           endCaptures: {2: {name: 'punctuation.definition.string.end.julia'}},
           name: 'embed.python.julia',
@@ -345,7 +342,7 @@ const grammar = {
             1: {name: 'support.function.macro.julia'},
             2: {name: 'punctuation.definition.string.begin.julia'}
           },
-          contentName: 'source.js',
+          contentName: 'meta.embedded.inline.javascript',
           end: '"""',
           endCaptures: {0: {name: 'punctuation.definition.string.end.julia'}},
           name: 'embed.js.julia',
@@ -360,7 +357,7 @@ const grammar = {
             1: {name: 'support.function.macro.julia'},
             2: {name: 'punctuation.definition.string.begin.julia'}
           },
-          contentName: 'source.r',
+          contentName: 'meta.embedded.inline.r',
           end: '"""',
           endCaptures: {0: {name: 'punctuation.definition.string.end.julia'}},
           name: 'embed.R.julia',

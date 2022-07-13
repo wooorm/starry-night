@@ -85,8 +85,7 @@ const grammar = {
       patterns: [
         {
           captures: {1: {name: 'punctuation.comment.curry'}},
-          match:
-            '(---*(?!([!#\\$%&\\*\\+\\./<=>\\?@\\\\\\^\\|\\-~:]|[^[^\\p{S}\\p{P}]_"\'\\(\\),;\\[\\]`\\{}]))).*$\\n?',
+          match: '(--).*$',
           name: 'comment.line.curry'
         },
         {include: '#block_comment'}
@@ -120,10 +119,11 @@ const grammar = {
       ]
     },
     data_declaration: {
-      begin: "^(\\s*)(data|newtype)\\s+([A-Z][\\w']*)?",
+      begin: "^(\\s*)(?:(external)\\s+)?(data|newtype)\\s+([A-Z][\\w']*)?",
       beginCaptures: {
-        2: {name: 'keyword.declaration.data.curry'},
-        3: {name: 'constant.other.curry entity.name.type.curry'}
+        2: {name: 'keyword.declaration.external.curry'},
+        3: {name: 'keyword.declaration.data.curry'},
+        4: {name: 'constant.other.curry entity.name.type.curry'}
       },
       end: '^(?!\\1\\s)',
       name: 'meta.declaration.data.curry',
@@ -162,7 +162,7 @@ const grammar = {
         },
         {
           match: '\\b(error|undefined)\\b',
-          name: 'support.function.prelude.curry invalid.curry'
+          name: 'support.function.prelude.error.curry'
         },
         {include: '#infix_op'},
         {
@@ -225,26 +225,21 @@ const grammar = {
       name: 'meta.definition.function.curry'
     },
     field_signature: {
-      begin: '(?=.*?((::)|∷))',
-      end: '(?=[,}])',
-      name: 'meta.declaration.field.curry',
-      patterns: [
-        {
-          begin: '((::)|∷)',
-          beginCaptures: {1: {name: 'keyword.other.double-colon.curry'}},
-          end: '(?=[,}])',
-          name: 'meta.declaration.field.signature.curry',
-          patterns: [{include: '#type'}]
-        },
-        {
-          match: "((?<!')\\b[a-z_][\\w']*|\\(\\W+\\))",
-          name: 'entity.name.function.curry'
-        }
-      ]
+      captures: {
+        1: {name: 'entity.name.function.curry'},
+        2: {name: 'keyword.other.double-colon.curry'},
+        3: {patterns: [{include: '#type'}]}
+      },
+      match: '\\b(\\w+)\\s*(::|∷)\\s*(\\S.+)',
+      name: 'meta.declaration.field.signature.curry'
     },
     fixity_declaration: {
-      match: '\\binfix[lr]?\\b',
-      name: 'keyword.declaration.fixity.curry'
+      captures: {
+        1: {name: 'keyword.declaration.fixity.curry'},
+        2: {name: 'constant.numeric.fixity.curry'}
+      },
+      match: '\\b(infix[lr]?)\\b\\s*(\\d+).+',
+      name: 'meta.declaration.fixity.curry'
     },
     foreign_function_signature: {
       begin: "(\\s*)([a-z_][\\w']*|\\(\\W+\\))\\s*((::)|∷)",
@@ -258,11 +253,11 @@ const grammar = {
     },
     function_declarations: {
       patterns: [
+        {include: '#fixity_declaration'},
         {include: '#function_signature'},
         {include: '#function_definition'},
         {include: '#infix_function_definition'},
-        {include: '#external_function_definition'},
-        {include: '#fixity_declaration'}
+        {include: '#external_function_definition'}
       ]
     },
     function_definition: {
@@ -305,7 +300,7 @@ const grammar = {
       patterns: [{include: '#expression_stuff'}]
     },
     infix_op: {
-      match: '(\\([^\\w \\)]+\\)|\\(,+\\))',
+      match: '(\\([^"\'\\w \\)]+\\)|\\(,+\\))',
       name: 'keyword.operator.curry'
     },
     instance_declaration: {
@@ -329,7 +324,7 @@ const grammar = {
         },
         {
           begin: '"',
-          end: '"',
+          end: '"|$',
           name: 'string.quoted.double.curry',
           patterns: [
             {
@@ -355,7 +350,7 @@ const grammar = {
             5: {name: 'constant.character.escape.control.curry'}
           },
           match:
-            "(?x)\n          (')\n          (?:\n            [\\ -&(-\\[\\]-~\"]               # Basic Char\n            | (\\\\(?:NUL|SOH|STX|ETX|EOT|ENQ|ACK|BEL|BS|HT|LF|VT|FF|CR|SO|SI|DLE\n              |DC1|DC2|DC3|DC4|NAK|SYN|ETB|CAN|EM|SUB|ESC|FS|GS|RS\n              |US|SP|DEL|[abfnrtv\\\\\\\"'\\&]))   # Escapes\n            | (\\\\o[0-7]+)               # Octal Escapes\n            | (\\\\x[0-9A-Fa-f]+)           # Hexadecimal Escapes\n            | (\\^[A-Z@\\[\\]\\\\\\^_])           # Control Chars\n          )\n          (')\n          ",
+            "(?x)(')(?:  [\\ -&(-\\[\\]-~\"]|(\\\\(?:NUL|SOH|STX|ETX|EOT|ENQ|ACK|BEL|BS|HT|LF|VT|FF|CR|SO|SI|DLE|DC1|DC2|DC3|DC4|NAK|SYN|ETB|CAN|EM|SUB|ESC|FS|GS|RS|US|SP|DEL|[abfnrtv\\\\\\\"'\\&]))|(\\\\o[0-7]+)|(\\\\x[0-9A-Fa-f]+)|(\\^[A-Z@\\[\\]\\\\\\^_]))(')",
           name: 'string.quoted.single.curry'
         }
       ]
@@ -397,7 +392,7 @@ const grammar = {
     },
     module_name: {
       match: "([A-Z][\\w']*)(\\.[A-Z][\\w']*)*",
-      name: 'storage.module.curry'
+      name: 'entity.name.module.curry entity.name.namespace.curry'
     },
     pattern_function_definition: {
       begin:
@@ -464,11 +459,11 @@ const grammar = {
         {
           match:
             '\\b(Int(eger)?|Maybe|Either|Bool|Float|Double|Char|String|Ordering|ShowS|ReadS|FilePath|IO(Error)?)\\b',
-          name: 'storage.type.curry support.type.curry'
+          name: 'entity.name.type.curry support.type.curry'
         },
         {match: "(?<!')\\b[a-z][\\w']*\\b", name: 'variable.generic.curry'},
-        {match: "(?<!')\\b[A-Z][\\w']*\\b", name: 'storage.type.curry'},
-        {match: '\\(\\)', name: 'storage.type.curry'},
+        {match: "(?<!')\\b[A-Z][\\w']*\\b", name: 'entity.name.type.curry'},
+        {match: '\\(\\)', name: 'punctuation.unit.curry'},
         {
           begin: '(\\()',
           beginCaptures: {1: {name: 'keyword.operator.curry'}},
