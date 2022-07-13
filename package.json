@@ -66,13 +66,13 @@
     "json-stable-stringify": "^1.0.0",
     "mdast-zone": "^5.0.0",
     "prettier": "^2.0.0",
-    "remark-cli": "^10.0.0",
+    "remark-cli": "^11.0.0",
     "remark-preset-wooorm": "^9.0.0",
     "tape": "^5.0.0",
     "type-coverage": "^2.0.0",
     "typescript": "^4.0.0",
     "unist-builder": "^3.0.0",
-    "xo": "^0.49.0",
+    "xo": "^0.50.0",
     "yaml": "^2.0.0"
   },
   "scripts": {
