@@ -30,6 +30,7 @@ source and JavaScript!
 *   [Examples](#examples)
     *   [Example: serializing hast as html](#example-serializing-hast-as-html)
     *   [Example: turning hast into react nodes](#example-turning-hast-into-react-nodes)
+    *   [Example: adding line numbers](#example-adding-line-numbers)
     *   [Example: integrate with unified, remark, and rehype](#example-integrate-with-unified-remark-and-rehype)
     *   [Example: integrating with `markdown-it`](#example-integrating-with-markdown-it)
 *   [Syntax tree](#syntax-tree)
@@ -410,6 +411,148 @@ Yields:
   _store: {}
 }
 ```
+
+### Example: adding line numbers
+
+GitHub itself does not add line numbers to the code they highlight.
+You can do that, by transforming the AST.
+Here’s an example of a utility that wraps each line into a span with a class and
+a data attribute with its line number.
+That way, you can style the lines as you please.
+Or you can generate different elements for each line, of course.
+
+Say we have our utility as `hast-util-starry-night-gutter.js`:
+
+```js
+/**
+ * @typedef {import('hast').Root} Root
+ * @typedef {import('hast').RootContent} RootContent
+ * @typedef {import('hast').ElementContent} ElementContent
+ * @typedef {import('hast').Element} Element
+ */
+
+/**
+ * @template {Root} Tree
+ * @param {Tree} tree
+ * @returns {Tree}
+ */
+export function starryNightGutter(tree) {
+  /** @type {Array<RootContent>} */
+  const replacement = []
+  const search = /\r?\n|\r/g
+  let index = -1
+  let start = 0
+  let startTextRemainder = ''
+  let lineNumber = 0
+
+  while (++index < tree.children.length) {
+    const child = tree.children[index]
+
+    if (child.type === 'text') {
+      let textStart = 0
+      let match = search.exec(child.value)
+
+      while (match) {
+        // Nodes in this line.
+        const line = /** @type {Array<ElementContent>} */ (
+          tree.children.slice(start, index)
+        )
+
+        // Prepend text from a partial matched earlier text.
+        if (startTextRemainder) {
+          line.unshift({type: 'text', value: startTextRemainder})
+          startTextRemainder = ''
+        }
+
+        // Append text from this text.
+        if (match.index > textStart) {
+          line.push({
+            type: 'text',
+            value: child.value.slice(textStart, match.index)
+          })
+        }
+
+        // Add a line, and the eol.
+        lineNumber += 1
+        replacement.push(createLine(line, lineNumber), {
+          type: 'text',
+          value: match[0]
+        })
+
+        start = index + 1
+        textStart = match.index + match[0].length
+        match = search.exec(child.value)
+      }
+
+      // If we matched, make sure to not drop the text after the last line ending.
+      if (start === index + 1) {
+        startTextRemainder = child.value.slice(textStart)
+      }
+    }
+  }
+
+  const line = /** @type {Array<ElementContent>} */ (tree.children.slice(start))
+  // Prepend text from a partial matched earlier text.
+  if (startTextRemainder) {
+    line.unshift({type: 'text', value: startTextRemainder})
+    startTextRemainder = ''
+  }
+
+  if (line.length > 0) {
+    lineNumber += 1
+    replacement.push(createLine(line, lineNumber))
+  }
+
+  // Replace children with new array.
+  tree.children = replacement
+
+  return tree
+}
+
+/**
+ * @param {Array<ElementContent>} children
+ * @param {number} line
+ * @returns {Element}
+ */
+function createLine(children, line) {
+  return {
+    type: 'element',
+    tagName: 'span',
+    properties: {className: 'line', dataLineNumber: line},
+    children
+  }
+}
+```
+
+…and a module `example.js`:
+
+````js
+import {toHtml} from 'hast-util-to-html'
+import {createStarryNight, common} from '@wooorm/starry-night'
+import {starryNightGutter} from './hast-util-starry-night-gutter.js'
+
+const starryNight = await createStarryNight(common)
+
+const tree = starryNight.highlight(
+  '# Some heading\n\n```js\nalert(1)\n```\n***',
+  'source.gfm'
+)
+
+starryNightGutter(tree)
+
+console.log(toHtml(tree))
+````
+
+Now running `node example.js` yields:
+
+````html
+<span class="line" data-line-number="1"><span class="pl-mh"># Some heading</span></span>
+<span class="line" data-line-number="2"></span>
+<span class="line" data-line-number="3"><span class="pl-c1">```js</span></span>
+<span class="line" data-line-number="4"><span class="pl-en">alert</span>(<span class="pl-c1">1</span>)</span>
+<span class="line" data-line-number="5"><span class="pl-c1">```</span></span>
+<span class="line" data-line-number="6"><span class="pl-c">***</span></span>
+````
 
 ### Example: integrate with unified, remark, and rehype
 
