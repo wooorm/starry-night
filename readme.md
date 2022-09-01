@@ -29,6 +29,7 @@ source and JavaScript!
     *   [`starryNight.register(grammars)`](#starrynightregistergrammars)
 *   [Examples](#examples)
     *   [Example: serializing hast as html](#example-serializing-hast-as-html)
+    *   [Example: using `starry-night` on the client](#example-using-starry-night-on-the-client)
     *   [Example: turning hast into react nodes](#example-turning-hast-into-react-nodes)
     *   [Example: adding line numbers](#example-adding-line-numbers)
     *   [Example: integrate with unified, remark, and rehype](#example-integrate-with-unified-remark-and-rehype)
@@ -378,6 +379,62 @@ Yields:
 
 ```html
 <span class="pl-s"><span class="pl-pds">"</span>use strict<span class="pl-pds">"</span></span>;
+```
+
+### Example: using `starry-night` on the client
+
+You don’t *have* to do preprocess things on a server.
+Particularly, when you are not using Node.js or so.
+Or, when you have a lot of often changing content (likely markdown), such as
+on a page of comments.
+
+In those cases, you can run `starry-night` in the browser.
+Here is an example.
+It also uses [`hast-util-to-dom`][hast-util-to-dom], which is a light way to
+turn the AST into DOM nodes.
+
+Say we have this `example.js` on our browser (no bundling needed!):
+
+```js
+import {createStarryNight, common} from 'https://esm.sh/@wooorm/starry-night@1?bundle'
+import {toDom} from 'https://esm.sh/hast-util-to-dom@3?bundle'
+
+const starryNight = await createStarryNight(common)
+const prefix = 'language-'
+
+const nodes = Array.from(document.body.querySelectorAll('code'))
+
+for (const node of nodes) {
+  const className = Array.from(node.classList).find((d) => d.startsWith(prefix))
+  if (!className) continue
+  const scope = starryNight.flagToScope(className.slice(prefix.length))
+  if (!scope) continue
+  const tree = starryNight.highlight(node.textContent, scope)
+  node.replaceChildren(toDom(tree, {fragment: true}))
+}
+```
+
+…and then, if we would have an `index.html` for our document:
+
+```html
+<!doctype html>
+<meta charset=utf8>
+<title>Hello</title>
+<link rel=stylesheet href=https://esm.sh/@wooorm/starry-night@1/style/both.css>
+<body>
+<h1>Hello</h1>
+<p>…world!</p>
+<pre><code class="language-js">console.log('it works!')
+</code></pre>
+<script type=module src=./example.js></script>
+</body>
+```
+
+Opening that page in a browser, we’d see the `<code>` being swapped with:
+
+```html
+<code class="language-js"><span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>it works!<span class="pl-pds">'</span></span>)
+</code><
 ```
 
 ### Example: turning hast into react nodes
@@ -1399,6 +1456,8 @@ All other files [MIT][license] © [Titus Wormer][author]
 [root]: https://github.com/syntax-tree/hast#root
 
 [hast-util-to-html]: https://github.com/syntax-tree/hast-util-to-html
+
+[hast-util-to-dom]: https://github.com/syntax-tree/hast-util-to-dom
 
 [hast-to-hyperscript]: https://github.com/syntax-tree/hast-to-hyperscript
 
