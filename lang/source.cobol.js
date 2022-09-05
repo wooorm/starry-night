@@ -436,8 +436,13 @@ const grammar = {
       name: 'support.function.cobol'
     },
     {
-      match: '(?<![-_])(?i:DFHRESP|DFHVALUE)(?=\\s|\\.|\\(|\\))',
-      name: 'support.function.cics.cobol'
+      captures: {
+        0: {name: 'support.function.cics.cobol'},
+        1: {name: 'punctuation.definition.string.end.cobol'},
+        2: {name: 'keyword.identifers.cobol'},
+        3: {name: 'punctuation.definition.string.end.cobol'}
+      },
+      match: '(?<![-_])(?i:DFHRESP|DFHVALUE)(\\s*\\(\\s*)([a-zA-Z]*)(\\s*\\))'
     },
     {match: '(?<![-_])(?i:function)(?=\\s|\\.)', name: 'keyword.verb.cobol'},
     {

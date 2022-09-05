@@ -230,7 +230,7 @@ const grammar = {
         2: {name: 'keyword.other.double-colon.curry'},
         3: {patterns: [{include: '#type'}]}
       },
-      match: '\\b(\\w+)\\s*(::|∷)\\s*(\\S.+)',
+      match: '\\b(\\w+)\\s*(::|∷)\\s*([^,}]+)',
       name: 'meta.declaration.field.signature.curry'
     },
     fixity_declaration: {

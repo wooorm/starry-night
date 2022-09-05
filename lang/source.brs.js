@@ -57,7 +57,7 @@ const grammar = {
     },
     component_statement: {
       begin:
-        '(?i)(?<![_[:alnum:]])(?<!\\.)(component)\\s+(?:([a-z0-9_]+)|(".*?"))(?:\\s+(extends)(?:\\s+(?:([a-z0-9_]+)|(".*?")))?)?\\s*',
+        '(?i)^[ \t]*(component)\\s+(?:([a-z0-9_]+)|(".*?"))(?:\\s+(extends)(?:\\s+(?:([a-z0-9_]+)|(".*?")))?)?\\s*',
       beginCaptures: {
         1: {name: 'storage.type.component.brs'},
         2: {name: 'entity.name.type.component.brs'},
@@ -108,6 +108,7 @@ const grammar = {
         {include: '#end_region_comment'},
         {include: '#global_constants'},
         {include: '#keyword_logical_operator'},
+        {include: '#function_call'},
         {include: '#object_properties'},
         {include: '#vscode_rale_tracker_entry_comment'},
         {include: '#identifiers_with_type_designators'},
@@ -117,7 +118,6 @@ const grammar = {
         {include: '#function_declaration'},
         {include: '#inline_function_declaration'},
         {include: '#end_function'},
-        {include: '#function_call'},
         {include: '#interface_declaration'},
         {include: '#storage_types'},
         {include: '#program_statements'},
@@ -161,7 +161,7 @@ const grammar = {
     },
     function_call: {
       captures: {1: {name: 'entity.name.function.brs'}},
-      match: '(?i:\\b([a-z_][a-z0-9_]*)\\s*\\()'
+      match: '(?i:\\b([a-z_][a-z0-9_]*)[ \\t]*(?=\\())'
     },
     function_declaration: {
       captures: {
@@ -178,7 +178,7 @@ const grammar = {
       name: 'variable.language'
     },
     identifiers_with_type_designators: {
-      match: '(?i:\\b([a-z_][a-z0-9_]*)[\\$%!#])',
+      match: '(?i:\\b([a-z_][a-z0-9_]*)[\\$%!#&])',
       name: 'entity.name.variable.local.brs'
     },
     if_with_paren: {
@@ -263,7 +263,7 @@ const grammar = {
     },
     object_properties: {
       captures: {1: {name: 'variable.other.object.property.brs'}},
-      match: '(?i:\\b\\.((?:[a-z0-9_])*)(?!\\s*\\()\\b)'
+      match: '(?i:(?<=\\.)([a-z0-9_][a-z0-9_\\$%!#&]*))'
     },
     operators: {
       match: '=|>=|<zz|>|<|<>|\\+|-|\\*|\\/|\\^|&|\\b(?i:(And|Not|Or|Mod))\\b',

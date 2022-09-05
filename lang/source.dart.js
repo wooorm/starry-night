@@ -35,14 +35,18 @@ const grammar = {
     },
     'class-identifier': {
       patterns: [
+        {match: '\\bvoid\\b', name: 'storage.type.primitive.dart'},
+        {
+          match: '\\b(bool|num|int|double|dynamic)\\b',
+          name: 'support.class.dart'
+        },
         {
           captures: {
             1: {name: 'support.class.dart'},
-            2: {patterns: [{include: '#type-args'}]},
-            3: {name: 'storage.type.primitive.dart'}
+            2: {patterns: [{include: '#type-args'}]}
           },
           match:
-            '(?<![a-zA-Z0-9_$])([_$]*[A-Z][a-zA-Z0-9_$]*(<(?:[a-zA-Z0-9_$<>?]|,\\s*|\\s+extends\\s+)+>)?|bool\\b|num\\b|int\\b|double\\b|dynamic\\b|(void)\\b)'
+            '\\b([_$]*[A-Z][a-zA-Z0-9_$]*)(<(?:[a-zA-Z0-9_$<>?]|,\\s*|\\s+extends\\s+)+>)?'
         }
       ]
     },

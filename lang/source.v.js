@@ -58,7 +58,7 @@ const grammar = {
         4: {name: 'punctuation.definition.end.bracket.square.v'}
       },
       match:
-        '^\\s*((\\[)(deprecated|unsafe_fn|console|heap|debug|manualfree|typedef|live|inline|flag|ref_only|windows_stdcall|direct_array_access)(\\]))',
+        '^\\s*((\\[)(deprecated|unsafe|console|heap|manualfree|typedef|live|inline|flag|ref_only|direct_array_access|callconv)(\\]))',
       name: 'meta.definition.attribute.v'
     },
     brackets: {

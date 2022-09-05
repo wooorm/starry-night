@@ -94,21 +94,6 @@ const grammar = {
               name: 'comment.line.double-slash.php'
             }
           ]
-        },
-        {
-          begin: '(^[ \\t]+)?(?=#)',
-          beginCaptures: {
-            1: {name: 'punctuation.whitespace.comment.leading.php'}
-          },
-          end: '(?!\\G)',
-          patterns: [
-            {
-              begin: '#',
-              beginCaptures: {0: {name: 'punctuation.definition.comment.php'}},
-              end: '\\n|(?=\\?>)',
-              name: 'comment.line.number-sign.php'
-            }
-          ]
         }
       ]
     },
@@ -169,11 +154,10 @@ const grammar = {
         {include: '#type-annotation'},
         {
           begin:
-            '(?xi)\n\\s*(&)?      # Reference\n\\s*((\\$+)[a-z_\\x{7f}-\\x{ff}][a-z0-9_\\x{7f}-\\x{ff}]*)  # The variable name',
+            '(?xi)((\\$+)[a-z_\\x{7f}-\\x{ff}][a-z0-9_\\x{7f}-\\x{ff}]*)  # The variable name',
           beginCaptures: {
-            1: {name: 'storage.modifier.reference.php'},
-            2: {name: 'variable.other.php'},
-            3: {name: 'punctuation.definition.variable.php'}
+            1: {name: 'variable.other.php'},
+            2: {name: 'punctuation.definition.variable.php'}
           },
           end: '(?xi)\n\\s*(?=,|\\)|$) # A closing parentheses (end of argument list) or a comma',
           patterns: [
@@ -372,6 +356,30 @@ const grammar = {
           ]
         },
         {
+          begin: '(?i)^\\s*(enum)\\s+(class)\\s+([a-z0-9_]+)\\s*:?',
+          beginCaptures: {
+            1: {name: 'storage.modifier.php'},
+            2: {name: 'storage.type.class.enum.php'},
+            3: {name: 'entity.name.type.class.enum.php'}
+          },
+          end: '(?=[{])',
+          name: 'meta.class.enum.php',
+          patterns: [
+            {match: '\\b(extends)\\b', name: 'storage.modifier.extends.php'},
+            {include: '#type-annotation'}
+          ]
+        },
+        {
+          begin: '(?i)^\\s*(enum)\\s+([a-z0-9_]+)\\s*:?',
+          beginCaptures: {
+            1: {name: 'storage.type.enum.php'},
+            2: {name: 'entity.name.type.enum.php'}
+          },
+          end: '\\{',
+          name: 'meta.enum.php',
+          patterns: [{include: '#comments'}, {include: '#type-annotation'}]
+        },
+        {
           begin: '(?i)^\\s*(trait)\\s+([a-z0-9_]+)\\s*',
           beginCaptures: {
             1: {name: 'storage.type.trait.php'},
@@ -468,7 +476,7 @@ const grammar = {
         {
           captures: {1: {name: 'keyword.control.php'}},
           match:
-            '\\s*\\b((break|c(ase|ontinue)|d(e(clare|fault)|o)|e(lse|nd(declare|for(each)?|switch|while))|for(each)?|if|return|switch|use|while))\\b'
+            '\\s*\\b(await|break|c(ase|ontinue)|concurrent|default|do|else|for(each)?|if|return|switch|use|while)\\b'
         },
         {
           begin: '(?i)\\b((?:require|include)(?:_once)?)\\b\\s*',
@@ -518,11 +526,8 @@ const grammar = {
           name: 'keyword.control.exception.php'
         },
         {
-          begin: '(?i)\\b(function)\\s*(&\\s*)?(?=\\()',
-          beginCaptures: {
-            1: {name: 'storage.type.function.php'},
-            2: {name: 'storage.modifier.reference.php'}
-          },
+          begin: '(?i)\\b(function)\\s*(?=\\()',
+          beginCaptures: {1: {name: 'storage.type.function.php'}},
           end: '\\{|\\)',
           name: 'meta.function.closure.php',
           patterns: [
@@ -565,7 +570,7 @@ const grammar = {
         },
         {
           begin:
-            '(?x)\n\\s*((?:(?:final|abstract|public|private|protected|static|async)\\s+)*)\n(function)\n(?:\\s+|(\\s*&\\s*))\n(?:\n  (__(?:call|construct|destruct|get|set|isset|unset|tostring|clone|set_state|sleep|wakeup|autoload|invoke|callStatic|dispose|disposeAsync)(?=[^a-zA-Z0-9_\\x7f-\\xff]))\n  |\n  ([a-zA-Z0-9_]+)\n)',
+            '(?x)\n\\s*((?:(?:final|abstract|public|private|protected|static|async)\\s+)*)\n(function)\n(?:\\s+)\n(?:\n  (__(?:call|construct|destruct|get|set|isset|unset|tostring|clone|set_state|sleep|wakeup|autoload|invoke|callStatic|dispose|disposeAsync)(?=[^a-zA-Z0-9_\\x7f-\\xff]))\n  |\n  ([a-zA-Z0-9_]+)\n)',
           beginCaptures: {
             1: {
               patterns: [
@@ -576,10 +581,9 @@ const grammar = {
               ]
             },
             2: {name: 'storage.type.function.php'},
-            3: {name: 'storage.modifier.reference.php'},
-            4: {name: 'support.function.magic.php'},
-            5: {name: 'entity.name.function.php'},
-            6: {name: 'meta.function.generics.php'}
+            3: {name: 'support.function.magic.php'},
+            4: {name: 'entity.name.function.php'},
+            5: {name: 'meta.function.generics.php'}
           },
           end: '(?=[{;])',
           name: 'meta.function.php',
@@ -666,7 +670,6 @@ const grammar = {
         {match: '=>', name: 'keyword.operator.key.php'},
         {match: '==>', name: 'keyword.operator.lambda.php'},
         {match: '\\|>', name: 'keyword.operator.pipe.php'},
-        {match: '(@)', name: 'keyword.operator.error-control.php'},
         {match: '(!==|!=|===|==)', name: 'keyword.operator.comparison.php'},
         {
           match: '=|\\+=|\\-=|\\*=|/=|%=|&=|\\|=|\\^=|<<=|>>=',
@@ -778,18 +781,6 @@ const grammar = {
         {include: '#variables'},
         {match: '=>', name: 'keyword.operator.key.php'},
         {match: '=', name: 'keyword.operator.assignment.php'},
-        {match: '&(?=\\s*\\$)', name: 'storage.modifier.reference.php'},
-        {
-          begin: '(array)\\s*(\\()',
-          beginCaptures: {
-            1: {name: 'support.function.construct.php'},
-            2: {name: 'punctuation.definition.array.begin.php'}
-          },
-          end: '\\)',
-          endCaptures: {0: {name: 'punctuation.definition.array.end.php'}},
-          name: 'meta.array.php',
-          patterns: [{include: '#parameter-default-types'}]
-        },
         {include: '#instantiation'},
         {
           begin:
@@ -1497,10 +1488,9 @@ const grammar = {
     'type-annotation': {
       name: 'support.type.php',
       patterns: [
-        {match: '\\barray\\b', name: 'support.type.array.php'},
         {
           match:
-            '\\b(?:bool|int|float|string|array|resource|mixed|arraykey|nonnull|dict|vec|keyset)\\b',
+            '\\b(?:bool|int|float|string|resource|mixed|arraykey|nonnull|dict|vec|keyset)\\b',
           name: 'support.type.php'
         },
         {

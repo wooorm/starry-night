@@ -112,7 +112,7 @@ const grammar = {
         3: {name: 'support.function.selector-item.begin.fluent'}
       },
       contentName: 'string.selector-item.content.fluent',
-      end: '^(?=\\s|})',
+      end: '^(?=(\\s*})|(\\s*\\[)|(\\s*\\*))',
       patterns: [{include: '#placeable'}]
     },
     'wrong-line': {match: '.*', name: 'invalid.illegal.wrong-line.fluent'}

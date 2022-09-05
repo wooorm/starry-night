@@ -8,12 +8,33 @@ const grammar = {
   extensions: ['.move'],
   names: ['move'],
   patterns: [
+    {include: '#address'},
     {include: '#comments'},
     {include: '#module'},
     {include: '#script'},
     {include: '#macros'}
   ],
   repository: {
+    address: {
+      begin: '\\b(address)\\b',
+      beginCaptures: {1: {name: 'storage.modifier.type.address.keyword.move'}},
+      end: '(?<=})',
+      name: 'meta.address_block.move',
+      patterns: [
+        {include: '#comments'},
+        {
+          begin: '(?<=address)',
+          end: '(?=[{])',
+          name: 'meta.address.definition.move',
+          patterns: [
+            {include: '#comments'},
+            {include: '#address_literal'},
+            {match: '\\b(\\w+)\\b', name: 'entity.name.type.move'}
+          ]
+        },
+        {include: '#module'}
+      ]
+    },
     address_literal: {
       patterns: [
         {
@@ -189,16 +210,17 @@ const grammar = {
         {include: '#comments'},
         {include: '#address_literal'},
         {include: '#as-import'},
+        {match: '\\b([A-Z]\\w*)\\b', name: 'entity.name.type.move'},
         {
           begin: '{',
           end: '}',
           patterns: [
             {include: '#comments'},
             {include: '#as-import'},
-            {match: '\\b(\\w+)\\b', name: 'entity.name.type.move'}
+            {match: '\\b([A-Z]\\w*)\\b', name: 'entity.name.type.move'}
           ]
         },
-        {match: '\\b(\\w+)\\b', name: 'entity.name.type.module.move'}
+        {match: '\\b(\\w+)\\b', name: 'meta.entity.name.type.module.move'}
       ]
     },
     let: {match: '\\b(let)\\b', name: 'keyword.control.move'},
@@ -252,8 +274,12 @@ const grammar = {
           end: '(?={)',
           patterns: [
             {include: '#comments'},
-            {begin: '(?<=module)', end: '(?=::)', name: 'constant.other.move'},
-            {begin: '(?<=::)', end: '(?={)', name: 'entity.name.type.move'}
+            {
+              begin: '(?<=module)',
+              end: '(?=[(::){])',
+              name: 'constant.other.move'
+            },
+            {begin: '(?<=::)', end: '(?=[\\s{])', name: 'entity.name.type.move'}
           ]
         },
         {
@@ -279,7 +305,7 @@ const grammar = {
     },
     module_access: {
       captures: {
-        1: {name: 'entity.name.type.module.move'},
+        1: {name: 'meta.entity.name.type.accessed.module.move'},
         2: {name: 'entity.name.function.call.move'}
       },
       match: '\\b(\\w+)::(\\w+)\\b',

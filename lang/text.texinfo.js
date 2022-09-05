@@ -666,6 +666,19 @@ const grammar = {
         {include: '#command'}
       ]
     },
+    manualName: {
+      begin: '(?:^|\\G)\\s*\\(',
+      beginCaptures: {
+        0: {name: 'punctuation.definition.reference.manual.begin.texinfo'}
+      },
+      contentName: 'constant.other.reference.link.texinfo',
+      end: '\\)',
+      endCaptures: {
+        0: {name: 'punctuation.definition.reference.manual.end.texinfo'}
+      },
+      name: 'meta.manual-name.texinfo',
+      patterns: [{include: '#main'}]
+    },
     menu: {
       begin: '((@)(detailmenu|direntry|menu))(?=\\s|$)',
       beginCaptures: {
@@ -688,7 +701,8 @@ const grammar = {
           name: 'markup.list.texinfo',
           patterns: [
             {
-              begin: '\\G',
+              begin: '\\G(\\s*\\(.*?\\))?',
+              beginCaptures: {1: {patterns: [{include: '#manualName'}]}},
               contentName: 'entity.name.tag.entry-name.texinfo',
               end: '::?|(?=\\s*$)',
               endCaptures: {
@@ -697,7 +711,8 @@ const grammar = {
               patterns: [{include: '#main'}]
             },
             {
-              begin: '(?<=[^:]:)\\s*',
+              begin: '(?<=[^:]:)\\s*(\\(.*?\\))?',
+              beginCaptures: {1: {patterns: [{include: '#manualName'}]}},
               contentName: 'entity.name.node-name.texinfo',
               end: '(\\.)|(?=\\s*$)',
               endCaptures: {

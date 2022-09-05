@@ -26,6 +26,16 @@ const grammar = {
       name: 'meta.decorator.bicep',
       patterns: [{include: '#expression'}, {include: '#comments'}]
     },
+    directive: {
+      begin: '#\\b[_a-zA-Z-0-9]+\\b',
+      end: '$',
+      name: 'meta.directive.bicep',
+      patterns: [{include: '#directive-variable'}, {include: '#comments'}]
+    },
+    'directive-variable': {
+      match: '\\b[_a-zA-Z-0-9]+\\b',
+      name: 'keyword.control.declaration.bicep'
+    },
     'escape-character': {
       match: "\\\\(u{[0-9A-Fa-f]+}|n|r|t|\\\\|'|\\${)",
       name: 'constant.character.escape.bicep'
@@ -41,7 +51,9 @@ const grammar = {
         {include: '#keyword'},
         {include: '#identifier'},
         {include: '#function-call'},
-        {include: '#decorator'}
+        {include: '#decorator'},
+        {include: '#lambda-start'},
+        {include: '#directive'}
       ]
     },
     'function-call': {
@@ -62,6 +74,18 @@ const grammar = {
         '\\b(targetScope|resource|module|param|var|output|for|in|if|existing|import|from)\\b',
       name: 'keyword.control.declaration.bicep'
     },
+    'lambda-start': {
+      begin:
+        '(\\((?:[ \\t\\r\\n]|\\/\\*(?:\\*(?!\\/)|[^*])*\\*\\/)*\\b[_$[:alpha:]][_$[:alnum:]]*\\b(?:[ \\t\\r\\n]|\\/\\*(?:\\*(?!\\/)|[^*])*\\*\\/)*(,(?:[ \\t\\r\\n]|\\/\\*(?:\\*(?!\\/)|[^*])*\\*\\/)*\\b[_$[:alpha:]][_$[:alnum:]]*\\b(?:[ \\t\\r\\n]|\\/\\*(?:\\*(?!\\/)|[^*])*\\*\\/)*)*\\)|\\((?:[ \\t\\r\\n]|\\/\\*(?:\\*(?!\\/)|[^*])*\\*\\/)*\\)|(?:[ \\t\\r\\n]|\\/\\*(?:\\*(?!\\/)|[^*])*\\*\\/)*\\b[_$[:alpha:]][_$[:alnum:]]*\\b(?:[ \\t\\r\\n]|\\/\\*(?:\\*(?!\\/)|[^*])*\\*\\/)*)(?=(?:[ \\t\\r\\n]|\\/\\*(?:\\*(?!\\/)|[^*])*\\*\\/)*=>)',
+      beginCaptures: {
+        1: {
+          name: 'meta.undefined.bicep',
+          patterns: [{include: '#identifier'}, {include: '#comments'}]
+        }
+      },
+      end: '(?:[ \\t\\r\\n]|\\/\\*(?:\\*(?!\\/)|[^*])*\\*\\/)*=>',
+      name: 'meta.lambda-start.bicep'
+    },
     'line-comment': {
       match: '//.*(?=$)',
       name: 'comment.line.double-slash.bicep'
@@ -75,32 +99,16 @@ const grammar = {
       begin: '{',
       end: '}',
       name: 'meta.object-literal.bicep',
-      patterns: [{include: '#object-property'}, {include: '#comments'}]
-    },
-    'object-property': {
-      begin: '(?<=^)(?!(?:[ \\t\\r\\n]|\\/\\*(?:\\*(?!\\/)|[^*])*\\*\\/)*})',
-      end: '(?=$)',
-      name: 'meta.object-property.bicep',
       patterns: [
-        {include: '#object-property-key-identifier'},
-        {include: '#string-literal'},
-        {include: '#object-property-end'},
+        {include: '#object-property-key'},
+        {include: '#expression'},
         {include: '#comments'}
       ]
     },
-    'object-property-end': {
-      begin: ':((?:[ \\t\\r\\n]|\\/\\*(?:\\*(?!\\/)|[^*])*\\*\\/)*)',
-      beginCaptures: {
-        1: {patterns: [{include: '#line-comment'}, {include: '#block-comment'}]}
-      },
-      end: '(?=(?:[ \\t\\r\\n]|\\/\\*(?:\\*(?!\\/)|[^*])*\\*\\/)*$)',
-      name: 'meta.object-property-end.bicep',
-      patterns: [{include: '#expression'}, {include: '#comments'}]
-    },
-    'object-property-key-identifier': {
-      captures: {1: {name: 'variable.other.property.bicep'}},
-      match: '(\\b[_$[:alpha:]][_$[:alnum:]]*\\b)',
-      name: 'meta.object-property-key-identifier.bicep'
+    'object-property-key': {
+      match:
+        '\\b[_$[:alpha:]][_$[:alnum:]]*\\b(?=(?:[ \\t\\r\\n]|\\/\\*(?:\\*(?!\\/)|[^*])*\\*\\/)*:)',
+      name: 'variable.other.property.bicep'
     },
     'string-literal': {
       begin: "'(?!'')",

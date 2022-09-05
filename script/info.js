@@ -295,6 +295,10 @@ export const info = {
     license: 'mit',
     homepage: 'https://github.com/technosophos/Vala-TMBundle'
   },
+  'text.adblock': {
+    license: 'mit',
+    homepage: 'https://github.com/ameshkov/VscodeAdblockSyntax'
+  },
   'source.whiley': {
     license: 'apache-2.0',
     homepage: 'https://github.com/Whiley/WhileySyntaxBundle'
@@ -549,6 +553,10 @@ export const info = {
     license: 'apache-2.0',
     homepage: 'https://github.com/elixir-lang/elixir-tmbundle'
   },
+  'source.elvish': {
+    license: 'bsd-2-clause',
+    homepage: 'https://github.com/elves/elvish'
+  },
   'source.erlang': {
     homepage: 'https://github.com/textmate/erlang.tmbundle'
   },
@@ -571,6 +579,10 @@ export const info = {
   'source.gemfile-lock': {
     license: 'mit',
     homepage: 'https://github.com/hmarr/gemfile-lock-tmlanguage'
+  },
+  'source.gemini': {
+    license: 'mit',
+    homepage: 'https://github.com/printfn/gemini-vscode'
   },
   'source.genero': {
     license: 'mit',
@@ -597,6 +609,10 @@ export const info = {
   },
   'source.groovy.gradle': {
     license: 'apache-2.0'
+  },
+  'source.graphql': {
+    license: 'mit',
+    homepage: 'https://github.com/graphql/graphiql'
   },
   'source.dot': {},
   'source.groovy': {},
@@ -657,7 +673,7 @@ export const info = {
   },
   'source.kusto': {
     license: 'apache-2.0',
-    homepage: 'https://github.com/josin/kusto-syntax-highlighting'
+    homepage: 'https://github.com/mmanela/kusto-sublime'
   },
   'source.4dm': {
     license: 'mit'
@@ -921,9 +937,6 @@ export const info = {
     license: 'isc',
     homepage: 'https://github.com/Alhadis/language-grammars'
   },
-  'source.graphql': {
-    license: 'mit'
-  },
   'text.haml': {
     license: 'mit'
   },
@@ -938,6 +951,10 @@ export const info = {
   'text.tex.latex.haskell': {
     license: 'mit',
     homepage: 'https://github.com/atom-haskell/language-haskell'
+  },
+  'source.hocon': {
+    license: 'mit',
+    homepage: 'https://github.com/jacobwgillespie/language-hocon'
   },
   'source.hql': {
     license: 'mit'
@@ -980,7 +997,8 @@ export const info = {
     homepage: 'https://github.com/wcandillon/language-jsoniq'
   },
   'source.jsonnet': {
-    license: 'apache-2.0'
+    license: 'apache-2.0',
+    homepage: 'https://github.com/google/language-jsonnet'
   },
   'source.kakscript': {
     license: 'unlicense',
@@ -1078,7 +1096,8 @@ export const info = {
     homepage: 'https://github.com/williamd1k0/language-renpy'
   },
   'text.restructuredtext': {
-    license: 'mit'
+    license: 'mit',
+    homepage: 'https://github.com/Lukasa/language-restructuredtext'
   },
   'source.ring': {
     license: 'mit'

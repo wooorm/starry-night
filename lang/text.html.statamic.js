@@ -192,7 +192,7 @@ const grammar = {
       patterns: [
         {
           match:
-            '(?i)\\b(taxonomy|collection|asset|vite|mount_url|form|assets|cache|can|dd|ddd|dump|get_content|get_error|get_errors|get_files|glide|in|increment|installed|is|iterate|foreach|link|locales|markdown|member|mix|nav|not_found|404|obfuscate|parent|partial|path|query|range|loop|redirect|relate|rotate|route|scope|section|session|set|structure|svg|theme|trans|trans_choice|user|users|widont|yields|yield|slot|once|noparse|view|stack|push)\\b',
+            '(?i)\\b(taxonomy|user_groups|user_roles|collection|asset|nocache|vite|mount_url|form|assets|cache|can|dd|ddd|dump|get_content|get_error|get_errors|get_files|glide|in|increment|installed|is|iterate|foreach|link|locales|markdown|member|mix|nav|not_found|404|obfuscate|parent|partial|path|query|range|loop|redirect|relate|rotate|route|scope|section|session|set|structure|svg|theme|trans|trans_choice|user|users|widont|yields|yield|slot|once|noparse|view|stack|push)\\b',
           name: 'entity.name.tag.statamic'
         }
       ]

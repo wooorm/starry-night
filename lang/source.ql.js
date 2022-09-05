@@ -39,6 +39,7 @@ const grammar = {
         {include: '#pragma'},
         {include: '#private'},
         {include: '#query'},
+        {include: '#signature'},
         {include: '#transient'}
       ]
     },
@@ -70,7 +71,7 @@ const grammar = {
     'bindingset-annotation': {
       begin: '(?x)((?:\\b(?:bindingset)(?:(?!(?:[0-9A-Za-z_])))))',
       beginCaptures: {1: {patterns: [{include: '#bindingset'}]}},
-      end: '(?x)(?! \\s | (?:// | /\\*) | \\[ ) | (?<=\\])',
+      end: '(?x)(?! (?:\\s | $ | (?:// | /\\*)) | \\[ ) | (?<=\\])',
       name: 'meta.block.bindingset-annotation.ql',
       patterns: [
         {include: '#bindingset-annotation-body'},
@@ -166,7 +167,7 @@ const grammar = {
     },
     'comment-start': {match: '(?x)// | /\\*'},
     'comparison-operator': {
-      match: '(?x)=|\\!-',
+      match: '(?x)=|\\!\\=',
       name: 'keyword.operator.comparison.ql'
     },
     concat: {
@@ -201,7 +202,7 @@ const grammar = {
     },
     'end-of-as-clause': {
       match:
-        '(?x)(?: (?<=(?:[0-9A-Za-z_])) (?!(?:[0-9A-Za-z_])) (?<!(?<!(?:[0-9A-Za-z_]))as)) | (?=\\s* (?!(?:// | /\\*) | (?:\\b [A-Za-z][0-9A-Za-z_]* (?:(?!(?:[0-9A-Za-z_]))))) \\S) | (?=\\s* (?:(?:(?:\\b(?:_)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:and)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:any)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:as)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:asc)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:avg)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:boolean)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:by)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:class)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:concat)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:count)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:date)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:desc)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:else)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:exists)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:extends)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:false)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:float)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:forall)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:forex)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:from)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:if)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:implies)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:import)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:in)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:instanceof)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:int)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:max)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:min)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:module)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:newtype)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:none)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:not)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:or)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:order)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:predicate)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:rank)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:result)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:select)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:strictconcat)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:strictcount)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:strictsum)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:string)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:sum)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:super)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:then)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:this)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:true)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:where)(?:(?!(?:[0-9A-Za-z_])))))))'
+        '(?x)(?: (?<=(?:[0-9A-Za-z_])) (?!(?:[0-9A-Za-z_])) (?<!(?<!(?:[0-9A-Za-z_]))as)) | (?=\\s* (?!(?:// | /\\*) | (?:\\b [A-Za-z][0-9A-Za-z_]* (?:(?!(?:[0-9A-Za-z_]))))) \\S) | (?=\\s* (?:(?:(?:\\b(?:_)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:and)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:any)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:as)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:asc)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:avg)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:boolean)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:by)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:class)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:concat)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:count)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:date)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:desc)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:else)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:exists)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:extends)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:false)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:float)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:forall)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:forex)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:from)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:if)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:implies)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:import)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:in)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:instanceof)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:int)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:max)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:min)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:module)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:newtype)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:none)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:not)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:or)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:order)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:predicate)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:rank)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:result)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:select)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:strictconcat)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:strictcount)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:strictsum)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:string)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:sum)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:super)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:then)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:this)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:true)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:unique)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:where)(?:(?!(?:[0-9A-Za-z_])))))))'
     },
     'end-of-id': {match: '(?x)(?!(?:[0-9A-Za-z_]))'},
     exists: {
@@ -211,7 +212,7 @@ const grammar = {
     'expr-as-clause': {
       begin: '(?x)((?:\\b(?:as)(?:(?!(?:[0-9A-Za-z_])))))',
       beginCaptures: {1: {patterns: [{include: '#as'}]}},
-      end: '(?x)(?:(?: (?<=(?:[0-9A-Za-z_])) (?!(?:[0-9A-Za-z_])) (?<!(?<!(?:[0-9A-Za-z_]))as)) | (?=\\s* (?!(?:// | /\\*) | (?:\\b [A-Za-z][0-9A-Za-z_]* (?:(?!(?:[0-9A-Za-z_]))))) \\S) | (?=\\s* (?:(?:(?:\\b(?:_)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:and)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:any)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:as)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:asc)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:avg)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:boolean)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:by)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:class)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:concat)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:count)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:date)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:desc)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:else)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:exists)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:extends)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:false)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:float)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:forall)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:forex)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:from)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:if)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:implies)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:import)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:in)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:instanceof)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:int)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:max)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:min)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:module)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:newtype)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:none)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:not)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:or)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:order)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:predicate)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:rank)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:result)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:select)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:strictconcat)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:strictcount)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:strictsum)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:string)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:sum)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:super)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:then)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:this)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:true)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:where)(?:(?!(?:[0-9A-Za-z_]))))))))',
+      end: '(?x)(?:(?: (?<=(?:[0-9A-Za-z_])) (?!(?:[0-9A-Za-z_])) (?<!(?<!(?:[0-9A-Za-z_]))as)) | (?=\\s* (?!(?:// | /\\*) | (?:\\b [A-Za-z][0-9A-Za-z_]* (?:(?!(?:[0-9A-Za-z_]))))) \\S) | (?=\\s* (?:(?:(?:\\b(?:_)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:and)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:any)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:as)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:asc)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:avg)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:boolean)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:by)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:class)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:concat)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:count)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:date)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:desc)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:else)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:exists)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:extends)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:false)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:float)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:forall)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:forex)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:from)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:if)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:implies)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:import)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:in)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:instanceof)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:int)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:max)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:min)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:module)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:newtype)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:none)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:not)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:or)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:order)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:predicate)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:rank)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:result)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:select)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:strictconcat)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:strictcount)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:strictsum)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:string)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:sum)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:super)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:then)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:this)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:true)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:unique)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:where)(?:(?!(?:[0-9A-Za-z_]))))))))',
       name: 'meta.block.expr-as-clause.ql',
       patterns: [
         {include: '#non-context-sensitive'},
@@ -300,6 +301,24 @@ const grammar = {
       match: '(?x)\\b(?:if)(?:(?!(?:[0-9A-Za-z_])))',
       name: 'keyword.other.if.ql'
     },
+    implements: {
+      match: '(?x)\\b(?:implements)(?:(?!(?:[0-9A-Za-z_])))',
+      name: 'keyword.other.implements.ql'
+    },
+    'implements-clause': {
+      begin: '(?x)((?:\\b(?:implements)(?:(?!(?:[0-9A-Za-z_])))))',
+      beginCaptures: {1: {patterns: [{include: '#implements'}]}},
+      end: '(?x)(?= \\{ )',
+      name: 'meta.block.implements-clause.ql',
+      patterns: [
+        {include: '#non-context-sensitive'},
+        {
+          match:
+            '(?x)(?:\\b [A-Za-z][0-9A-Za-z_]* (?:(?!(?:[0-9A-Za-z_]))))|(?:@[a-z][0-9A-Za-z_]* (?:(?!(?:[0-9A-Za-z_]))))',
+          name: 'entity.name.type.ql'
+        }
+      ]
+    },
     implies: {
       match: '(?x)\\b(?:implies)(?:(?!(?:[0-9A-Za-z_])))',
       name: 'keyword.other.implies.ql'
@@ -311,7 +330,7 @@ const grammar = {
     'import-as-clause': {
       begin: '(?x)((?:\\b(?:as)(?:(?!(?:[0-9A-Za-z_])))))',
       beginCaptures: {1: {patterns: [{include: '#as'}]}},
-      end: '(?x)(?:(?: (?<=(?:[0-9A-Za-z_])) (?!(?:[0-9A-Za-z_])) (?<!(?<!(?:[0-9A-Za-z_]))as)) | (?=\\s* (?!(?:// | /\\*) | (?:\\b [A-Za-z][0-9A-Za-z_]* (?:(?!(?:[0-9A-Za-z_]))))) \\S) | (?=\\s* (?:(?:(?:\\b(?:_)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:and)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:any)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:as)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:asc)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:avg)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:boolean)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:by)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:class)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:concat)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:count)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:date)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:desc)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:else)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:exists)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:extends)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:false)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:float)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:forall)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:forex)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:from)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:if)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:implies)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:import)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:in)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:instanceof)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:int)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:max)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:min)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:module)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:newtype)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:none)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:not)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:or)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:order)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:predicate)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:rank)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:result)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:select)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:strictconcat)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:strictcount)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:strictsum)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:string)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:sum)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:super)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:then)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:this)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:true)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:where)(?:(?!(?:[0-9A-Za-z_]))))))))',
+      end: '(?x)(?:(?: (?<=(?:[0-9A-Za-z_])) (?!(?:[0-9A-Za-z_])) (?<!(?<!(?:[0-9A-Za-z_]))as)) | (?=\\s* (?!(?:// | /\\*) | (?:\\b [A-Za-z][0-9A-Za-z_]* (?:(?!(?:[0-9A-Za-z_]))))) \\S) | (?=\\s* (?:(?:(?:\\b(?:_)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:and)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:any)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:as)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:asc)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:avg)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:boolean)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:by)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:class)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:concat)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:count)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:date)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:desc)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:else)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:exists)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:extends)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:false)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:float)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:forall)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:forex)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:from)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:if)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:implies)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:import)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:in)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:instanceof)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:int)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:max)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:min)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:module)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:newtype)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:none)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:not)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:or)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:order)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:predicate)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:rank)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:result)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:select)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:strictconcat)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:strictcount)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:strictsum)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:string)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:sum)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:super)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:then)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:this)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:true)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:unique)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:where)(?:(?!(?:[0-9A-Za-z_]))))))))',
       name: 'meta.block.import-as-clause.ql',
       patterns: [
         {include: '#non-context-sensitive'},
@@ -401,6 +420,7 @@ const grammar = {
         {include: '#then'},
         {include: '#this'},
         {include: '#true'},
+        {include: '#unique'},
         {include: '#where'}
       ]
     },
@@ -411,7 +431,7 @@ const grammar = {
     'language-annotation': {
       begin: '(?x)((?:\\b(?:language)(?:(?!(?:[0-9A-Za-z_])))))',
       beginCaptures: {1: {patterns: [{include: '#language'}]}},
-      end: '(?x)(?! \\s | (?:// | /\\*) | \\[ ) | (?<=\\])',
+      end: '(?x)(?! (?:\\s | $ | (?:// | /\\*)) | \\[ ) | (?<=\\])',
       name: 'meta.block.language-annotation.ql',
       patterns: [
         {include: '#language-annotation-body'},
@@ -471,6 +491,7 @@ const grammar = {
       name: 'meta.block.module-declaration.ql',
       patterns: [
         {include: '#module-body'},
+        {include: '#implements-clause'},
         {include: '#non-context-sensitive'},
         {
           match: '(?x)(?:\\b [A-Za-z][0-9A-Za-z_]* (?:(?!(?:[0-9A-Za-z_]))))',
@@ -483,6 +504,10 @@ const grammar = {
         {include: '#import-directive'},
         {include: '#import-as-clause'},
         {include: '#module-declaration'},
+        {include: '#newtype-declaration'},
+        {include: '#newtype-branch-name-with-prefix'},
+        {include: '#predicate-parameter-list'},
+        {include: '#predicate-body'},
         {include: '#class-declaration'},
         {include: '#select-clause'},
         {include: '#predicate-or-field-declaration'},
@@ -499,29 +524,23 @@ const grammar = {
       match: '(?x)\\b(?:newtype)(?:(?!(?:[0-9A-Za-z_])))',
       name: 'keyword.other.newtype.ql'
     },
-    'newtype-branch': {
-      begin: '(?x)(?:\\b [A-Z][0-9A-Za-z_]* (?:(?!(?:[0-9A-Za-z_]))))',
-      beginCaptures: {0: {name: 'entity.name.type.ql'}},
-      end: '(?x)(?<=\\}) | (?! \\s | (?:// | /\\*) | \\{ )',
-      name: 'meta.block.newtype-branch.ql',
-      patterns: [
-        {include: '#predicate-body'},
-        {include: '#non-context-sensitive'},
-        {
-          match: '(?x)(?:\\b [A-Z][0-9A-Za-z_]* (?:(?!(?:[0-9A-Za-z_]))))',
-          name: 'entity.name.type.ql'
-        }
-      ]
+    'newtype-branch-name-with-prefix': {
+      begin: '(?x)\\= | (?:\\b(?:or)(?:(?!(?:[0-9A-Za-z_]))))',
+      beginCaptures: {
+        0: {patterns: [{include: '#or'}, {include: '#comparison-operator'}]}
+      },
+      end: '(?x)(?:\\b [A-Z][0-9A-Za-z_]* (?:(?!(?:[0-9A-Za-z_]))))',
+      endCaptures: {0: {name: 'entity.name.type.ql'}},
+      name: 'meta.block.newtype-branch-name-with-prefix.ql',
+      patterns: [{include: '#non-context-sensitive'}]
     },
     'newtype-declaration': {
       begin: '(?x)((?:\\b(?:newtype)(?:(?!(?:[0-9A-Za-z_])))))',
       beginCaptures: {1: {patterns: [{include: '#newtype'}]}},
-      end: '(?x)(?! \\s | (?:\\b [A-Z][0-9A-Za-z_]* (?:(?!(?:[0-9A-Za-z_])))) | (?:// | /\\*) | \\= | \\( )',
-      name: 'meta.block.newtype.ql',
-      patterns: [
-        {include: '#non-context-sensitive'},
-        {include: '#newtype-branch'}
-      ]
+      end: '(?x)(?:\\b [A-Z][0-9A-Za-z_]* (?:(?!(?:[0-9A-Za-z_]))))',
+      endCaptures: {0: {name: 'entity.name.type.ql'}},
+      name: 'meta.block.newtype-declaration.ql',
+      patterns: [{include: '#non-context-sensitive'}]
     },
     'non-context-sensitive': {
       patterns: [
@@ -583,7 +602,7 @@ const grammar = {
     'pragma-annotation': {
       begin: '(?x)((?:\\b(?:pragma)(?:(?!(?:[0-9A-Za-z_])))))',
       beginCaptures: {1: {patterns: [{include: '#pragma'}]}},
-      end: '(?x)(?! \\s | (?:// | /\\*) | \\[ ) | (?<=\\])',
+      end: '(?x)(?! (?:\\s | $ | (?:// | /\\*)) | \\[ ) | (?<=\\])',
       name: 'meta.block.pragma-annotation.ql',
       patterns: [
         {include: '#pragma-annotation-body'},
@@ -638,7 +657,7 @@ const grammar = {
     },
     'predicate-or-field-declaration': {
       begin:
-        '(?x)(?:(?=(?:\\b [A-Za-z][0-9A-Za-z_]* (?:(?!(?:[0-9A-Za-z_])))))(?!(?:(?:(?:\\b(?:_)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:and)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:any)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:as)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:asc)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:avg)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:boolean)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:by)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:class)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:concat)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:count)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:date)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:desc)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:else)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:exists)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:extends)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:false)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:float)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:forall)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:forex)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:from)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:if)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:implies)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:import)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:in)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:instanceof)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:int)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:max)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:min)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:module)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:newtype)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:none)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:not)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:or)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:order)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:predicate)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:rank)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:result)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:select)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:strictconcat)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:strictcount)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:strictsum)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:string)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:sum)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:super)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:then)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:this)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:true)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:where)(?:(?!(?:[0-9A-Za-z_]))))))|(?:(?:(?:\\b(?:abstract)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:bindingset)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:cached)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:deprecated)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:external)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:final)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:language)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:library)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:override)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:pragma)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:private)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:query)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:transient)(?:(?!(?:[0-9A-Za-z_])))))))) | (?=(?:(?:(?:\\b(?:boolean)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:date)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:float)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:int)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:predicate)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:string)(?:(?!(?:[0-9A-Za-z_]))))))) | (?=(?:@[a-z][0-9A-Za-z_]* (?:(?!(?:[0-9A-Za-z_])))))',
+        '(?x)(?:(?=(?:\\b [A-Za-z][0-9A-Za-z_]* (?:(?!(?:[0-9A-Za-z_])))))(?!(?:(?:(?:\\b(?:_)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:and)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:any)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:as)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:asc)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:avg)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:boolean)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:by)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:class)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:concat)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:count)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:date)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:desc)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:else)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:exists)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:extends)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:false)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:float)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:forall)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:forex)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:from)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:if)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:implies)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:import)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:in)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:instanceof)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:int)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:max)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:min)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:module)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:newtype)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:none)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:not)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:or)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:order)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:predicate)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:rank)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:result)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:select)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:strictconcat)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:strictcount)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:strictsum)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:string)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:sum)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:super)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:then)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:this)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:true)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:unique)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:where)(?:(?!(?:[0-9A-Za-z_]))))))|(?:(?:(?:\\b(?:abstract)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:bindingset)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:cached)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:deprecated)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:external)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:final)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:language)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:library)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:override)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:pragma)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:private)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:query)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:signature)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:transient)(?:(?!(?:[0-9A-Za-z_])))))))) | (?=(?:(?:(?:\\b(?:boolean)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:date)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:float)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:int)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:predicate)(?:(?!(?:[0-9A-Za-z_]))))|(?:\\b(?:string)(?:(?!(?:[0-9A-Za-z_]))))))) | (?=(?:@[a-z][0-9A-Za-z_]* (?:(?!(?:[0-9A-Za-z_])))))',
       end: '(?x)(?<=\\}|;)',
       name: 'meta.block.predicate-or-field-declaration.ql',
       patterns: [
@@ -756,6 +775,10 @@ const grammar = {
       ]
     },
     semicolon: {match: '(?x);', name: 'punctuation.separator.statement.ql'},
+    signature: {
+      match: '(?x)\\b(?:signature)(?:(?!(?:[0-9A-Za-z_])))',
+      name: 'storage.modifier.signature.ql'
+    },
     'simple-id': {
       match: '(?x)\\b [A-Za-z][0-9A-Za-z_]* (?:(?!(?:[0-9A-Za-z_])))'
     },
@@ -814,6 +837,10 @@ const grammar = {
       match: '(?x)\\b(?:true)(?:(?!(?:[0-9A-Za-z_])))',
       name: 'constant.language.boolean.true.ql'
     },
+    unique: {
+      match: '(?x)\\b(?:unique)(?:(?!(?:[0-9A-Za-z_])))',
+      name: 'keyword.aggregate.unique.ql'
+    },
     'upper-id': {match: '(?x)\\b [A-Z][0-9A-Za-z_]* (?:(?!(?:[0-9A-Za-z_])))'},
     where: {
       match: '(?x)\\b(?:where)(?:(?!(?:[0-9A-Za-z_])))',
@@ -825,7 +852,8 @@ const grammar = {
       end: '(?x)(?=(?:\\b(?:select)(?:(?!(?:[0-9A-Za-z_])))))',
       name: 'meta.block.where-section.ql',
       patterns: [{include: '#predicate-body-contents'}]
-    }
+    },
+    'whitespace-or-comment-start': {match: '(?x)\\s | $ | (?:// | /\\*)'}
   },
   scopeName: 'source.ql'
 }

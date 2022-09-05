@@ -89,6 +89,7 @@ const grammar = {
     },
     code: {
       patterns: [
+        {include: '#using-directive'},
         {include: '#script-header'},
         {include: '#storage-modifiers'},
         {include: '#declarations'},
@@ -701,6 +702,25 @@ const grammar = {
           captures: {1: {name: 'keyword.declaration.scala'}},
           match: '(?<=\\()\\s*(using)\\s'
         }
+      ]
+    },
+    'using-directive': {
+      begin: '^\\s*(//>)\\s*(using)[^\\S\\n]+',
+      beginCaptures: {
+        1: {name: 'punctuation.definition.comment.scala'},
+        2: {name: 'keyword.other.import.scala'}
+      },
+      end: '\\n',
+      name: 'comment.line.shebang.scala',
+      patterns: [
+        {
+          match:
+            '[A-Z\\p{Lt}\\p{Lu}][A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}0-9]*(?:(?<=_)[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)?|`[^`]+`|(?:[A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}][A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}0-9]*(?:(?<=_)[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)?|[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)',
+          name: 'entity.name.import.scala'
+        },
+        {match: '\\.', name: 'punctuation.definition.import'},
+        {include: '#strings'},
+        {include: '#constants'}
       ]
     },
     'xml-doublequotedString': {

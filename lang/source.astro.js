@@ -8,7 +8,6 @@ const grammar = {
   extensions: ['.astro'],
   names: ['astro'],
   patterns: [
-    {include: '#astro:markdown'},
     {include: '#astro:expressions'},
     {include: '#html:comment'},
     {include: '#html:comment:bogus'},
@@ -274,29 +273,6 @@ const grammar = {
         {include: '#html:tag-attributes'}
       ]
     },
-    'astro:markdown': {
-      begin: '(<)(Markdown)',
-      beginCaptures: {
-        1: {name: 'punctuation.definition.tag.begin.astro'},
-        2: {name: 'entity.name.tag.astro support.class.component.astro'}
-      },
-      end: '(</)(Markdown)\\s*(>)|(/>)',
-      endCaptures: {
-        1: {name: 'punctuation.definition.tag.begin.astro'},
-        2: {name: 'entity.name.tag.astro support.class.component.astro'},
-        3: {name: 'punctuation.definition.tag.end.astro'},
-        4: {name: 'punctuation.definition.tag.end.astro'}
-      },
-      patterns: [
-        {
-          begin: '(?<=>)(?!</)',
-          contentName: 'text.html.markdown',
-          end: '(?=</)',
-          patterns: [{include: 'source.gfm'}]
-        },
-        {include: '#html:tag-attributes'}
-      ]
-    },
     frontmatter: {
       begin: '\\A(-{3})\\s*$',
       beginCaptures: {1: {name: 'comment'}},
@@ -310,7 +286,7 @@ const grammar = {
         1: {name: 'entity.other.attribute-name.html'},
         2: {name: 'punctuation.separator.key-value.html'}
       },
-      match: '\\b(@?[a-zA-Z\\-:]+)(=?)',
+      match: '([a-zA-Z\\-:@_.]+)(=?)',
       name: 'meta.attribute.$1.html'
     },
     'html:comment': {

@@ -691,7 +691,7 @@ const grammar = {
             4: {patterns: [{include: 'text.roff#escapes'}]}
           },
           contentName: 'source.embedded.pic',
-          end: "^([.'])[ \\t]*(P[EF])\\b",
+          end: "^([.'])[ \\t]*(P[EFY])\\b",
           endCaptures: {
             0: {name: 'meta.function.end.picture.section.macro.roff'},
             1: {name: 'punctuation.definition.macro.roff'},

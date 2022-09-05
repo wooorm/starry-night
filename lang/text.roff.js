@@ -75,7 +75,21 @@ const grammar = {
     'roff-manpage',
     'troff'
   ],
-  patterns: [{include: '#main'}],
+  patterns: [
+    {
+      begin: '\\A(?=x\\s*T\\s+(?:[a-z][-a-zA-Z0-9]*)\\s*$)',
+      end: '(?=A)B',
+      name: 'source.embedded.ditroff',
+      patterns: [{include: 'source.ditroff'}]
+    },
+    {
+      begin: '\\A(?=X\\s+(?:495|crt|hp|impr|ps)(?:\\s+\\d+){3}[ \\t]*$)',
+      end: '(?=A)B',
+      name: 'source.embedded.context',
+      patterns: [{include: 'source.context'}]
+    },
+    {include: '#main'}
+  ],
   repository: {
     '2-part-string': {
       captures: {
@@ -1859,6 +1873,27 @@ const grammar = {
           patterns: [{include: '#underline-first'}]
         },
         {
+          begin: '(?:^|\\G)([.\'])[ \\t]*(MR)(?=\\s|\\\\E?["#])',
+          beginCaptures: {
+            1: {name: 'punctuation.definition.macro.gnu.roff'},
+            2: {name: 'entity.function.name.gnu.roff'}
+          },
+          end: '(?<!\\\\)(?=$)|(?=\\\\E?")',
+          name: 'meta.function.cross-reference.man.macro.gnu.roff',
+          patterns: [
+            {
+              captures: {
+                1: {name: 'variable.reference.page-title.roff'},
+                2: {name: 'constant.numeric.manual-section.roff'},
+                3: {name: 'string.unquoted.trailing-text.roff'}
+              },
+              match:
+                '(?x)\n\\G \\s+ ([^\\s\\\\]+)    # Page title\n(?: \\s+ ([^\\s\\\\]+))?  # Manual section\n(?: \\s+ ([^\\s\\\\]+))?  # Trailing text'
+            },
+            {include: '#param-group'}
+          ]
+        },
+        {
           begin: '(?:^|\\G)([.\'])[ \\t]*(UR)(?=\\s|\\\\E?["#])\\s*',
           beginCaptures: {
             1: {name: 'punctuation.definition.macro.gnu.roff'},
@@ -2261,6 +2296,16 @@ const grammar = {
           },
           end: '(?<!\\\\)$|(?=\\\\E?")',
           name: 'meta.function.${3:/downcase}.me.macro.roff',
+          patterns: [{include: '#params'}]
+        },
+        {
+          begin: "(?:^|\\G)([.'])[ \\t]*(PF|ld)(?=\\s)",
+          beginCaptures: {
+            1: {name: 'punctuation.definition.macro.roff'},
+            2: {name: 'entity.function.name.roff'}
+          },
+          end: '(?<!\\\\)$|(?=\\\\E?")',
+          name: 'meta.function.${2:/downcase}.me.macro.gnu.roff',
           patterns: [{include: '#params'}]
         },
         {
@@ -3049,7 +3094,7 @@ const grammar = {
       patterns: [
         {
           begin:
-            '(?x) (?:^|\\G)([.\'])[ \\t]* (?:(do)[ \\t]+)?\n(aln|als|asciify|backtrace|blm|boxa|box|brp|cflags|chop|close|composite|color\n|cp|devicem|ecs|ecr|evc|fam|fchar|fcolor|fschar|fspecial|ftr|fzoom\n|gcolor|hcode|hla|hlm|hpfa|hpfcode|hpf|hym|hys|itc|kern|length|linetabs|lsm\n|mso|nroff|opena|open|pev|pnr|psbb|ptr|pvs|rchar|rfschar|rj\n|rnn|schar|shc|shift|sizes|special|spreadwarn|stringdown|stringup|sty\n|substring|tkf|tm1|tmc|trf|trin|trnt|troff|unformat|vpt|warnscale|warn\n|writec|writem|write)\n(?=\\s|\\\\E?["#])',
+            '(?x) (?:^|\\G)([.\'])[ \\t]* (?:(do)[ \\t]+)?\n(aln|als|asciify|backtrace|blm|boxa|box|brp|cflags|chop|close|composite|color\n|cp|devicem|ecs|ecr|evc|fam|fchar|fcolor|fschar|fspecial|ftr|fzoom\n|gcolor|hcode|hla|hlm|hpfa|hpfcode|hpf|hym|hys|itc|kern|length|linetabs|lsm\n|mso|m?soquiet|nroff|opena|open|pev|pnr|psbb|ptr|pvs|rchar|rfschar|rj\n|rnn|schar|shc|shift|sizes|special|spreadwarn|stringdown|stringup|sty\n|substring|tkf|tm1|tmc|trf|trin|trnt|troff|unformat|vpt|warnscale|warn\n|writec|writem|write)\n(?=\\s|\\\\E?["#])',
           beginCaptures: {
             1: {name: 'punctuation.definition.request.roff'},
             2: {name: 'entity.function.name.roff'},
@@ -3325,11 +3370,11 @@ const grammar = {
                   name: 'support.variable.predefined.register.roff'
                 },
                 {
-                  match: '\\$\\$|\\.[$aAbcdfFhHijklLnopRTstuvVwxyz]',
+                  match: '\\$\\$|\\.[$AFHLRTVa-dfh-lnops-z]\\b',
                   name: 'invalid.illegal.readonly.register.roff'
                 },
                 {
-                  match: '\\.[CgmMOPUxyY]',
+                  match: '\\.(?:cp|nm|[CgmMOPUxyY])\\b',
                   name: 'invalid.illegal.readonly.register.gnu.roff'
                 },
                 {

@@ -1,5 +1,7 @@
 // This is a TextMate grammar distributed by `starry-night`.
-// This grammar is licensed `apache-2.0`.
+// This grammar is developed at
+// <https://github.com/google/language-jsonnet>
+// and licensed `apache-2.0`.
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
@@ -130,7 +132,10 @@ const grammar = {
     {begin: '/\\*', end: '\\*/', name: 'comment.block.jsonnet'},
     {match: '//.*$', name: 'comment.line.jsonnet'},
     {match: '#.*$', name: 'comment.block.jsonnet'},
-    {name: 'entity.name.function.jsonnet'},
+    {
+      match: '\\b[a-zA-Z_][a-z0-9A-Z_]*\\s*(\\([^)]*\\))?\\s*\\+?::?:?',
+      name: 'entity.name.function.jsonnet'
+    },
     {match: '\\b(import|importstr)\\b', name: 'storage.type.jsonnet'},
     {match: '\\b(function)\\b', name: 'keyword.other.jsonnet'},
     {match: '\\b(self|super)\\b', name: 'variable.language.jsonnet'},

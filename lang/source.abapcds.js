@@ -66,7 +66,10 @@ const grammar = {
     },
     booleans: {
       patterns: [
-        {match: '(true|false)', name: 'constant.language.boolean.abapcds'}
+        {
+          match: '(?<=\\s)(true|false)(?=\\s)',
+          name: 'constant.language.boolean.abapcds'
+        }
       ]
     },
     bracketed: {
@@ -93,6 +96,7 @@ const grammar = {
     },
     comments: {
       patterns: [
+        {begin: '//', end: '$', name: 'comment.line.double-slash.abapcds'},
         {
           begin: '/\\*',
           beginCaptures: {0: {name: 'punctuation.definition.comment.abapcds'}},
@@ -111,20 +115,12 @@ const grammar = {
     enums: {
       patterns: [{match: '\\#[a-zA-Z_]+', name: 'support.variable.abapcds'}]
     },
-    functions: {
-      patterns: [
-        {
-          match:
-            '(?i)(?<=\\s)(abs|cast|ceil|div|division|floor|mod|round|concat|concat_with_space|instr|left|length|lpad|lower|ltrim|replace|right|rpad|rtrim|substring|upper|bintohex|hextobin|coalesce|fltp_to_dec|unit_conversion|currency_conversion|decimal_shift|dats_is_valid|dats_days_between|dats_add_days|dats_add_months|tims_is_valid|tstmp_is_valid|tstmp_current_utctimestamp|tstmp_seconds_between|tstmp_add_seconds|abap_system_timezone|abap_user_timezone|tstmp_to_dats|tstmp_to_tims|tstmp_to_dst|dats_tims_to_tstmp)\\(',
-          name: 'entity.name.function.abapcds'
-        }
-      ]
-    },
+    functions: {patterns: [{name: 'entity.name.function.abapcds'}]},
     keywords: {
       patterns: [
         {
           match:
-            '(?<=\\s|^)(projection|root|composition|abstract|association|annotation|annotate|custom|dynamic|cache|accesspolicy|bypass|hierarchy|parent|child|source|start|siblings|order|inheriting|conditions|define|entity|extend|view|as|select|from|key|where|select|distinct|with|parameters|inner|outer|left|right|join|on|group|by|having|union|all|define|table|function|implemented|method|returns|and|or|case|when|then|else|end|to|one|is|null|preserving|type|default|array|of|role|grant|inherit|aspect|redirected\\s+to\\s+(parent|composition))(?=\\s+)',
+            '(?i)(?<=\\s|^)(projection|root|composition|abstract|ascending|association|annotation|annotate|custom|descending|directory|dynamic|cache|accesspolicy|bypass|hierarchy\\(?|parent|child|source|start|siblings|order|inheriting|conditions|define|entity|extend|except|intersect|filter|view|as|select|from|key|where|select|distinct|with|parameters|inner|outer|left|right|join|on|group|by|having|union|all|define|table|function|implemented|method|multiple|parents|not\\s+allowed|leaves|allowed|orphans\\s+(ignore|error|root)|cycles\\s+(error|breakup)|generate\\s+spantree|cache|off|on|force|returns|redefine|and|or|case|when|then|else|end|to|one|is|null|period|depth|nodetype|load|bulk|incremental|preserving|type|default|array|of|role|grant|inherit|aspect|redirected\\s+to\\s+(parent|composition)|provider\\s+contract)(?=\\s+)',
           name: 'keyword.other.abapcds'
         }
       ]
@@ -136,11 +132,11 @@ const grammar = {
             1: {name: 'entity.name.type.abapcds'},
             2: {name: 'variable.other.abapcds'}
           },
-          match: '(?i)(?<=\\s)([/a-z_]+)\\.([/a-zA-Z_]+)\\s?'
+          match: '(?i)(?<=\\s)([/a-z0-9_]+)\\.([/a-z0-9_]+)\\s?'
         },
         {
           captures: {1: {name: 'entity.name.type.abapcds'}},
-          match: '(?i)(?<=\\s)([/a-z_]+)(?=,\\s?)'
+          match: '(?i)(?<=\\s)([/a-z0-9_]+)(?=,\\s?)'
         },
         {
           captures: {1: {name: 'entity.name.type.abapcds'}},
@@ -162,7 +158,11 @@ const grammar = {
         {include: '#names'}
       ]
     },
-    numbers: {patterns: [{match: '[0-9]+', name: 'constant.numeric.abapcds'}]},
+    numbers: {
+      patterns: [
+        {match: '(?<=\\s)[0-9]+(?=\\s)', name: 'constant.numeric.abapcds'}
+      ]
+    },
     'property-names': {
       patterns: [
         {

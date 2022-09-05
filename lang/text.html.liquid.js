@@ -29,7 +29,10 @@ const grammar = {
       begin: '{%-?\\s*comment\\s*-?%}',
       end: '{%-?\\s*endcomment\\s*-?%}',
       name: 'comment.block.liquid',
-      patterns: [{match: '(.(?!{%-?\\s*endcomment\\s*-?%}))*.'}]
+      patterns: [
+        {include: '#comment_block'},
+        {match: '(.(?!{%-?\\s*(comment|endcomment)\\s*-?%}))*.'}
+      ]
     },
     comment_inline: {
       begin: '{%-?\\s*#',

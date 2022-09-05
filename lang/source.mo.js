@@ -305,7 +305,7 @@ const grammar = {
         },
         {
           match:
-            '\\b(assert|break|case|continue|default|debug|debug_show|else|if|ignore|in|for|label|return|switch|while|loop|try|throw)\\b',
+            '\\b(assert|break|case|continue|default|debug|debug_show|else|if|ignore|in|for|label|return|switch|while|loop|try|throw|catch|do|to_candid|from_candid|with)\\b',
           name: 'keyword.statement.motoko'
         },
         {match: '\\b(flexible|query|stable)\\b', name: 'keyword.other.motoko'}

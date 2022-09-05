@@ -12,11 +12,14 @@ const grammar = {
     {include: '#nodepath_function'},
     {include: '#base_expression'},
     {include: '#logic_op'},
+    {include: '#in_keyword'},
+    {include: '#getter_setter_godot4'},
     {include: '#compare_op'},
     {include: '#arithmetic_op'},
     {include: '#assignment_op'},
+    {include: '#lambda_declaration'},
     {include: '#control_flow'},
-    {include: '#decorators'},
+    {include: '#annotations'},
     {include: '#keywords'},
     {include: '#self'},
     {include: '#const_def'},
@@ -36,6 +39,7 @@ const grammar = {
     {include: '#signal-declaration-bare'},
     {include: '#signal-declaration'},
     {include: '#function-declaration'},
+    {include: '#function_keyword'},
     {include: '#any-method'},
     {include: '#any-property'},
     {include: '#extends'}
@@ -72,6 +76,14 @@ const grammar = {
       end: '(,)|(?=\\))',
       endCaptures: {1: {name: 'punctuation.separator.parameters.gdscript'}}
     },
+    annotations: {
+      captures: {
+        1: {name: 'entity.name.function.decorator.gdscript'},
+        2: {name: 'entity.name.function.decorator.gdscript'}
+      },
+      match:
+        '(@)(export|export_color_no_alpha|export_dir|export_enum|export_exp_easing|export_file|export_flags|export_flags_2d_navigation|export_flags_2d_physics|export_flags_2d_render|export_flags_3d_navigation|export_flags_3d_physics|export_flags_3d_render|export_global_dir|export_global_file|export_multiline|export_node_path|export_placeholder|export_range|icon|onready|rpc|tool|warning_ignore)\\b'
+    },
     'any-method': {
       match: '\\b([A-Za-z_]\\w*)\\b(?=\\s*(?:[(]))',
       name: 'support.function.any-method.gdscript'
@@ -93,6 +105,8 @@ const grammar = {
         {include: '#strings'},
         {include: '#keywords'},
         {include: '#logic_op'},
+        {include: '#lambda_declaration'},
+        {include: '#in_keyword'},
         {include: '#control_flow'},
         {include: '#function-call'},
         {include: '#comment'},
@@ -108,7 +122,7 @@ const grammar = {
     },
     builtin_classes: {
       match:
-        '(?<![^.]\\.|:)\\b(Vector2|Vector2i|Vector3|Vector3i|Color|Rect2|Rect2i|Array|Basis|Dictionary|Plane|Quat|RID|Rect3|Transform|Transform2D|Transform3D|AABB|String|Color|NodePath|Object|PoolByteArray|PoolIntArray|PoolRealArray|PoolStringArray|PoolVector2Array|PoolVector3Array|PoolColorArray|bool|int|float|StringName|Quaternion|PackedByteArray|PackedInt32Array|PackedInt64Array|PackedFloat32Array|PackedFloat64Array|PackedStringArray|PackedVector2Array|PackedVector2iArray|PackedVector3Array|PackedVector3iArray|PackedColorArray)\\b',
+        '(?<![^.]\\.|:)\\b(OS|Vector2|Vector2i|Vector3|Vector3i|Color|Rect2|Rect2i|Array|Basis|Dictionary|Plane|Quat|RID|Rect3|Transform|Transform2D|Transform3D|AABB|String|Color|NodePath|Object|PoolByteArray|PoolIntArray|PoolRealArray|PoolStringArray|PoolVector2Array|PoolVector3Array|PoolColorArray|bool|int|float|StringName|Quaternion|PackedByteArray|PackedInt32Array|PackedInt64Array|PackedFloat32Array|PackedFloat64Array|PackedStringArray|PackedVector2Array|PackedVector2iArray|PackedVector3Array|PackedVector3iArray|PackedColorArray|super)\\b',
       name: 'support.class.library.gdscript'
     },
     builtin_func: {
@@ -117,12 +131,37 @@ const grammar = {
       name: 'support.function.builtin.gdscript'
     },
     builtin_get_node_shorthand: {
-      captures: {
+      patterns: [
+        {include: '#builtin_get_node_shorthand_quoted'},
+        {include: '#builtin_get_node_shorthand_bare'}
+      ]
+    },
+    builtin_get_node_shorthand_bare: {
+      begin: '(\\$)',
+      beginCaptures: {1: {name: 'keyword.control.flow'}},
+      end: '[^\\w%]',
+      name: 'support.function.builtin.shorthand.gdscript',
+      patterns: [
+        {match: '[a-zA-Z_][a-zA-Z_0-9]*/?', name: 'constant.character.escape'},
+        {
+          match: '%[a-zA-Z_][a-zA-Z_0-9]*/?',
+          name: 'invalid.illegal.escape.gdscript'
+        }
+      ]
+    },
+    builtin_get_node_shorthand_quoted: {
+      begin: '(\\$)([\\"\\\'])',
+      beginCaptures: {
         1: {name: 'keyword.control.flow'},
         2: {name: 'constant.character.escape'}
       },
-      match: '(\\$)([\\"\\\'].*[\\"\\\']|(?:[a-zA-Z_][a-zA-Z_0-9]*/?)*)',
-      name: 'support.function.builtin.shorthand.gdscript'
+      end: '([\\"\\\'])',
+      endCaptures: {1: {name: 'constant.character.escape'}},
+      name: 'support.function.builtin.shorthand.gdscript',
+      patterns: [
+        {match: '%', name: 'keyword.control.flow'},
+        {match: '[^%]*', name: 'constant.character.escape'}
+      ]
     },
     class_def: {
       captures: {
@@ -184,16 +223,8 @@ const grammar = {
     },
     control_flow: {
       match:
-        '\\b(?i:if|elif|else|for|while|break|continue|pass|return|match|in|yield)\\b',
+        '\\b(?i:if|elif|else|for|while|break|continue|pass|return|match|yield|await)\\b',
       name: 'keyword.control.gdscript'
-    },
-    decorators: {
-      captures: {
-        1: {name: 'keyword.control.flow'},
-        2: {name: 'entity.name.function.decorator.gdscript'}
-      },
-      match:
-        '(@)(export|export_color_no_alpha|export_dir|export_enum|export_exp_easing|export_file|export_flags|export_flags_2d_navigation|export_flags_2d_physics|export_flags_2d_render|export_flags_3d_navigation|export_flags_3d_physics|export_flags_3d_render|export_global_dir|export_global_file|export_multiline|export_node_path|export_placeholder|export_range|icon|onready|rpc|tool|warning_ignore)\\b'
     },
     extends: {
       match:
@@ -262,10 +293,49 @@ const grammar = {
         }
       ]
     },
+    function_keyword: {match: 'func', name: 'keyword.language.gdscript'},
+    getter_setter_godot4: {
+      patterns: [
+        {
+          captures: {1: {name: 'entity.name.function.gdscript'}},
+          match: '\\b(get):'
+        },
+        {
+          begin: '(?x) \\s+\n (set) \\s*\n (?=\\()',
+          beginCaptures: {1: {name: 'entity.name.function.gdscript'}},
+          end: '(:|(?=[#\'"\\n]))',
+          name: 'meta.function.gdscript',
+          patterns: [
+            {include: '#parameters'},
+            {include: '#line-continuation'},
+            {
+              captures: {2: {name: 'entity.name.type.class.gdscript'}},
+              match: '\\s*(\\-\\>)\\s*([a-zA-Z_][a-zA-Z_0-9]*)\\s*\\:'
+            }
+          ]
+        }
+      ]
+    },
+    in_keyword: {
+      patterns: [
+        {name: 'keyword.control.gdscript'},
+        {match: '\\bin\\b', name: 'keyword.operator.wordlike.gdscript'}
+      ]
+    },
     keywords: {
       match:
-        '\\b(?i:class|class_name|extends|is|onready|tool|static|export|setget|const|as|void|enum|preload|assert|breakpoint|rpc|sync|remote|master|puppet|slave|remotesync|mastersync|puppetsync)\\b',
+        '\\b(?i:class|class_name|extends|is|onready|tool|static|export|setget|const|as|void|enum|preload|assert|breakpoint|rpc|sync|remote|master|puppet|slave|remotesync|mastersync|puppetsync|trait|namespace)\\b',
       name: 'keyword.language.gdscript'
+    },
+    lambda_declaration: {
+      begin: '(func)(?=\\()',
+      beginCaptures: {
+        1: {name: 'storage.type.function.gdscript'},
+        2: {name: 'entity.name.function.gdscript'}
+      },
+      end: '(:|(?=[#\'"\\n]))',
+      name: 'meta.function.gdscript',
+      patterns: [{include: '#parameters'}, {include: '#line-continuation'}]
     },
     letter: {
       match: '\\b(?i:true|false|null)\\b',
@@ -302,7 +372,8 @@ const grammar = {
       patterns: [{include: '#base_expression'}]
     },
     nodepath_function: {
-      begin: '(get_node_or_null|has_node|find_node|get_node)\\s*(?:\\()',
+      begin:
+        '(get_node_or_null|has_node|has_node_and_resource|find_node|get_node)\\s*(?:\\()',
       beginCaptures: {1: {name: 'entity.name.function.gdscript'}},
       end: '(?:\\))',
       name: 'meta.literal.nodepath.gdscript',
@@ -310,7 +381,8 @@ const grammar = {
         {
           begin: '[\\"\\\']',
           end: '[\\"\\\']',
-          name: 'constant.character.escape'
+          name: 'constant.character.escape',
+          patterns: [{match: '%', name: 'keyword.control.flow'}]
         }
       ]
     },
@@ -323,7 +395,8 @@ const grammar = {
         {
           begin: '[\\"\\\']',
           end: '[\\"\\\']',
-          name: 'constant.character.escape'
+          name: 'constant.character.escape',
+          patterns: [{match: '%', name: 'keyword.control.flow'}]
         }
       ]
     },

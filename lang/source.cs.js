@@ -502,6 +502,17 @@ const grammar = {
       end: '(?=;|})',
       patterns: [{include: '#statement'}]
     },
+    'double-raw-interpolation': {
+      begin: '(?<=[^\\{][^\\{]|^)((?:\\{)*)(\\{\\{)(?=[^\\{])',
+      beginCaptures: {
+        1: {name: 'string.quoted.double.cs'},
+        2: {name: 'punctuation.definition.interpolation.begin.cs'}
+      },
+      end: '\\}\\}',
+      endCaptures: {0: {name: 'punctuation.definition.interpolation.end.cs'}},
+      name: 'meta.interpolation.cs',
+      patterns: [{include: '#expression'}]
+    },
     'element-access-expression': {
       begin:
         '(?x)\n(?:(\\?)\\s*)?                        # preceding null-conditional operator?\n(?:(\\.)\\s*)?                        # preceding dot?\n(?:(@?[_[:alpha:]][_[:alnum:]]*)\\s*)? # property name\n(?:(\\?)\\s*)?                        # null-conditional operator?\n(?=\\[)                              # open bracket of argument list',
@@ -616,6 +627,7 @@ const grammar = {
         {include: '#typeof-or-default-expression'},
         {include: '#nameof-expression'},
         {include: '#throw-expression'},
+        {include: '#raw-interpolated-string'},
         {include: '#interpolated-string'},
         {include: '#verbatim-interpolated-string'},
         {include: '#this-or-base-expression'},
@@ -1034,6 +1046,7 @@ const grammar = {
         {include: '#null-literal'},
         {include: '#numeric-literal'},
         {include: '#char-literal'},
+        {include: '#raw-string-literal'},
         {include: '#string-literal'},
         {include: '#verbatim-string-literal'},
         {include: '#tuple-literal'}
@@ -1643,6 +1656,113 @@ const grammar = {
       end: '(?=;|\\))',
       patterns: [{include: '#query-body'}, {include: '#expression'}]
     },
+    'raw-interpolated-string': {
+      patterns: [
+        {
+          include:
+            '#raw-interpolated-string-five-or-more-quote-one-or-more-interpolation'
+        },
+        {
+          include:
+            '#raw-interpolated-string-three-or-more-quote-three-or-more-interpolation'
+        },
+        {
+          include:
+            '#raw-interpolated-string-quadruple-quote-double-interpolation'
+        },
+        {
+          include:
+            '#raw-interpolated-string-quadruple-quote-single-interpolation'
+        },
+        {include: '#raw-interpolated-string-triple-quote-double-interpolation'},
+        {include: '#raw-interpolated-string-triple-quote-single-interpolation'}
+      ]
+    },
+    'raw-interpolated-string-five-or-more-quote-one-or-more-interpolation': {
+      begin: '\\$+"""""+',
+      beginCaptures: {0: {name: 'punctuation.definition.string.begin.cs'}},
+      end: '"""""+',
+      endCaptures: {0: {name: 'punctuation.definition.string.end.cs'}},
+      name: 'string.quoted.double.cs'
+    },
+    'raw-interpolated-string-quadruple-quote-double-interpolation': {
+      begin: '\\$\\$""""',
+      beginCaptures: {0: {name: 'punctuation.definition.string.begin.cs'}},
+      end: '""""',
+      endCaptures: {0: {name: 'punctuation.definition.string.end.cs'}},
+      name: 'string.quoted.double.cs',
+      patterns: [{include: '#double-raw-interpolation'}]
+    },
+    'raw-interpolated-string-quadruple-quote-single-interpolation': {
+      begin: '\\$""""',
+      beginCaptures: {0: {name: 'punctuation.definition.string.begin.cs'}},
+      end: '""""',
+      endCaptures: {0: {name: 'punctuation.definition.string.end.cs'}},
+      name: 'string.quoted.double.cs',
+      patterns: [{include: '#raw-interpolation'}]
+    },
+    'raw-interpolated-string-three-or-more-quote-three-or-more-interpolation': {
+      begin: '\\$\\$\\$+"""+',
+      beginCaptures: {0: {name: 'punctuation.definition.string.begin.cs'}},
+      end: '"""+',
+      endCaptures: {0: {name: 'punctuation.definition.string.end.cs'}},
+      name: 'string.quoted.double.cs'
+    },
+    'raw-interpolated-string-triple-quote-double-interpolation': {
+      begin: '\\$\\$"""',
+      beginCaptures: {0: {name: 'punctuation.definition.string.begin.cs'}},
+      end: '"""',
+      endCaptures: {0: {name: 'punctuation.definition.string.end.cs'}},
+      name: 'string.quoted.double.cs',
+      patterns: [{include: '#double-raw-interpolation'}]
+    },
+    'raw-interpolated-string-triple-quote-single-interpolation': {
+      begin: '\\$"""',
+      beginCaptures: {0: {name: 'punctuation.definition.string.begin.cs'}},
+      end: '"""',
+      endCaptures: {0: {name: 'punctuation.definition.string.end.cs'}},
+      name: 'string.quoted.double.cs',
+      patterns: [{include: '#raw-interpolation'}]
+    },
+    'raw-interpolation': {
+      begin: '(?<=[^\\{]|^)((?:\\{)*)(\\{)(?=[^\\{])',
+      beginCaptures: {
+        1: {name: 'string.quoted.double.cs'},
+        2: {name: 'punctuation.definition.interpolation.begin.cs'}
+      },
+      end: '\\}',
+      endCaptures: {0: {name: 'punctuation.definition.interpolation.end.cs'}},
+      name: 'meta.interpolation.cs',
+      patterns: [{include: '#expression'}]
+    },
+    'raw-string-literal': {
+      patterns: [
+        {include: '#raw-string-literal-more'},
+        {include: '#raw-string-literal-quadruple'},
+        {include: '#raw-string-literal-triple'}
+      ]
+    },
+    'raw-string-literal-more': {
+      begin: '"""""+',
+      beginCaptures: {0: {name: 'punctuation.definition.string.begin.cs'}},
+      end: '"""""+',
+      endCaptures: {0: {name: 'punctuation.definition.string.end.cs'}},
+      name: 'string.quoted.double.cs'
+    },
+    'raw-string-literal-quadruple': {
+      begin: '""""',
+      beginCaptures: {0: {name: 'punctuation.definition.string.begin.cs'}},
+      end: '""""',
+      endCaptures: {0: {name: 'punctuation.definition.string.end.cs'}},
+      name: 'string.quoted.double.cs'
+    },
+    'raw-string-literal-triple': {
+      begin: '"""',
+      beginCaptures: {0: {name: 'punctuation.definition.string.begin.cs'}},
+      end: '"""',
+      endCaptures: {0: {name: 'punctuation.definition.string.end.cs'}},
+      name: 'string.quoted.double.cs'
+    },
     'readonly-modifier': {
       match: '\\b(readonly)\\b',
       name: 'storage.modifier.cs'
@@ -1729,7 +1849,7 @@ const grammar = {
     },
     'storage-modifier': {
       match:
-        '(?<!\\.)\\b(new|public|protected|internal|private|abstract|virtual|override|sealed|static|partial|readonly|volatile|const|extern|async|unsafe|ref)\\b',
+        '(?<!\\.)\\b(new|public|protected|internal|private|abstract|virtual|override|sealed|static|partial|readonly|volatile|const|extern|async|unsafe|ref|required)\\b',
       name: 'storage.modifier.cs'
     },
     'string-character-escape': {

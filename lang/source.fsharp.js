@@ -361,7 +361,7 @@ const grammar = {
       patterns: [
         {
           begin:
-            '\\b(let mutable|static let mutable|static let|let inline|let|member val|static member inline|static member|default|member|override|let!)(\\s+rec|mutable)?(\\s+\\[\\<.*\\>\\])?\\s*(private|internal|public)?\\s+(\\[[^-=]*\\]|[_[:alpha:]]([_[:alpha:]0-9\\._]+)*|``[_[:alpha:]]([_[:alpha:]0-9\\._`\\s]+|(?<=,)\\s)*)?',
+            '\\b(let mutable|static let mutable|static let|let inline|let|and|member val|static member inline|static member|default|member|override|let!)(\\s+rec|mutable)?(\\s+\\[\\<.*\\>\\])?\\s*(private|internal|public)?\\s+(\\[[^-=]*\\]|[_[:alpha:]]([_[:alpha:]0-9\\._]+)*|``[_[:alpha:]]([_[:alpha:]0-9\\._`\\s]+|(?<=,)\\s)*)?',
           beginCaptures: {
             1: {name: 'keyword.fsharp'},
             2: {name: 'keyword.fsharp'},
@@ -376,7 +376,7 @@ const grammar = {
         },
         {
           begin:
-            '\\b(use|use\\!|and|and!)\\s*(\\[[^-=]*\\]|[_[:alpha:]]([_[:alpha:]0-9\\._]+)*|``[_[:alpha:]]([_[:alpha:]0-9\\._`\\s]+|(?<=,)\\s)*)?',
+            '\\b(use|use!|and|and!)\\s+(\\[[^-=]*\\]|[_[:alpha:]]([_[:alpha:]0-9\\._]+)*|``[_[:alpha:]]([_[:alpha:]0-9\\._`\\s]+|(?<=,)\\s)*)?',
           beginCaptures: {1: {name: 'keyword.fsharp'}},
           end: '\\s*(=)',
           endCaptures: {1: {name: 'keyword.fsharp'}},

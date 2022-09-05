@@ -121,6 +121,15 @@ const grammar = {
             name: 'keyword.control.$1.pdf'
           }
         ]
+      },
+    'L:source.postscript meta.procedure.postscript - (comment | string | text.embedded)':
+      {
+        patterns: [
+          {
+            captures: {1: {name: 'keyword.operator.postscript'}},
+            match: '\\s*(?<=^|\\G|[\\[{\\s])\\b(currentfile)\\b(?=[\\[{\\s])'
+          }
+        ]
       }
   },
   names: ['postscript', 'postscr'],

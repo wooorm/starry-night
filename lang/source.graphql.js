@@ -1,5 +1,7 @@
 // This is a TextMate grammar distributed by `starry-night`.
-// This grammar is licensed `mit`.
+// This grammar is developed at
+// <https://github.com/graphql/graphiql>
+// and licensed `mit`.
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
@@ -9,18 +11,23 @@ const grammar = {
   repository: {
     graphql: {
       patterns: [
+        {include: '#graphql-comment'},
+        {include: '#graphql-description-docstring'},
+        {include: '#graphql-description-singleline'},
         {include: '#graphql-fragment-definition'},
+        {include: '#graphql-directive-definition'},
         {include: '#graphql-type-interface'},
         {include: '#graphql-enum'},
         {include: '#graphql-scalar'},
         {include: '#graphql-union'},
         {include: '#graphql-schema'},
         {include: '#graphql-operation-def'},
-        {include: '#graphql-comment'},
-        {include: '#graphql-directive'},
-        {include: '#graphql-blockstring-value'},
-        {include: '#graphql-string-value'}
+        {include: '#literal-quasi-embedded'}
       ]
+    },
+    'graphql-ampersand': {
+      captures: {1: {name: 'keyword.operator.logical.graphql'}},
+      match: '\\s*(&)'
     },
     'graphql-arguments': {
       begin: '\\s*(\\()',
@@ -30,38 +37,30 @@ const grammar = {
       name: 'meta.arguments.graphql',
       patterns: [
         {include: '#graphql-comment'},
+        {include: '#graphql-description-docstring'},
+        {include: '#graphql-description-singleline'},
         {
-          begin: '\\s*([_A-Za-z][_0-9A-Za-z]*)(?:\\s*(:))?',
+          begin: '\\s*([_A-Za-z][_0-9A-Za-z]*)(?:\\s*(:))',
           beginCaptures: {
-            1: {name: 'variable.arguments.graphql'},
+            1: {name: 'variable.parameter.graphql'},
             2: {name: 'punctuation.colon.graphql'}
           },
           end: '(?=\\s*(?:(?:([_A-Za-z][_0-9A-Za-z]*)\\s*(:))|\\)))|\\s*(,)',
           endCaptures: {3: {name: 'punctuation.comma.graphql'}},
           patterns: [
-            {include: '#graphql-value'},
             {include: '#graphql-comment'},
+            {include: '#graphql-description-docstring'},
+            {include: '#graphql-description-singleline'},
+            {include: '#graphql-directive'},
+            {include: '#graphql-value'},
             {include: '#graphql-skip-newlines'}
           ]
-        }
+        },
+        {include: '#literal-quasi-embedded'}
       ]
     },
-    'graphql-blockstring-value': {
-      begin: '\\s*+(("""))',
-      beginCaptures: {
-        1: {name: 'string.quoted.block.graphql'},
-        2: {name: 'punctuation.definition.string.begin.graphql'}
-      },
-      contentName: 'string.quoted.block.graphql',
-      end: '\\s*+(?:((""")))',
-      endCaptures: {
-        1: {name: 'string.quoted.block.graphql'},
-        2: {name: 'punctuation.definition.string.end.graphql'}
-      },
-      patterns: [{include: '#graphql-string-content'}]
-    },
     'graphql-boolean-value': {
-      captures: {1: {name: 'constant.boolean.graphql'}},
+      captures: {1: {name: 'constant.language.boolean.graphql'}},
       match: '\\s*\\b(true|false)\\b'
     },
     'graphql-colon': {
@@ -73,9 +72,40 @@ const grammar = {
       match: '\\s*(,)'
     },
     'graphql-comment': {
-      captures: {1: {name: 'punctuation.whitespace.comment.leading.graphql'}},
-      match: '(\\s*)(#).*',
-      name: 'comment.line.graphql.js'
+      patterns: [
+        {
+          captures: {
+            1: {name: 'punctuation.whitespace.comment.leading.graphql'}
+          },
+          match: '(\\s*)(#).*',
+          name: 'comment.line.graphql.js'
+        },
+        {
+          begin: '(""")',
+          beginCaptures: {
+            1: {name: 'punctuation.whitespace.comment.leading.graphql'}
+          },
+          end: '(""")',
+          name: 'comment.line.graphql.js'
+        },
+        {
+          begin: '(")',
+          beginCaptures: {
+            1: {name: 'punctuation.whitespace.comment.leading.graphql'}
+          },
+          end: '(")',
+          name: 'comment.line.graphql.js'
+        }
+      ]
+    },
+    'graphql-description-docstring': {
+      begin: '"""',
+      end: '"""',
+      name: 'comment.block.graphql'
+    },
+    'graphql-description-singleline': {
+      match: '#(?=([^"]*"[^"]*")*[^"]*$).*$',
+      name: 'comment.line.number-sign.graphql'
     },
     'graphql-directive': {
       applyEndPatternLast: true,
@@ -83,9 +113,47 @@ const grammar = {
       beginCaptures: {1: {name: 'entity.name.function.directive.graphql'}},
       end: '(?=.)',
       patterns: [
-        {include: '#graphql-arguments'},
         {include: '#graphql-comment'},
+        {include: '#graphql-description-docstring'},
+        {include: '#graphql-description-singleline'},
+        {include: '#graphql-arguments'},
+        {include: '#literal-quasi-embedded'},
         {include: '#graphql-skip-newlines'}
+      ]
+    },
+    'graphql-directive-definition': {
+      applyEndPatternLast: true,
+      begin: '\\s*(\\bdirective\\b)\\s*(@[_A-Za-z][_0-9A-Za-z]*)',
+      beginCaptures: {
+        1: {name: 'keyword.directive.graphql'},
+        2: {name: 'entity.name.function.directive.graphql'},
+        3: {name: 'keyword.on.graphql'},
+        4: {name: 'support.type.graphql'}
+      },
+      end: '(?=.)',
+      patterns: [
+        {include: '#graphql-variable-definitions'},
+        {
+          applyEndPatternLast: true,
+          begin: '\\s*(\\bon\\b)\\s*([_A-Za-z]*)',
+          beginCaptures: {
+            1: {name: 'keyword.on.graphql'},
+            2: {name: 'support.type.location.graphql'}
+          },
+          end: '(?=.)',
+          patterns: [
+            {include: '#graphql-skip-newlines'},
+            {include: '#graphql-comment'},
+            {include: '#literal-quasi-embedded'},
+            {
+              captures: {2: {name: 'support.type.location.graphql'}},
+              match: '\\s*(\\|)\\s*([_A-Za-z]*)'
+            }
+          ]
+        },
+        {include: '#graphql-skip-newlines'},
+        {include: '#graphql-comment'},
+        {include: '#literal-quasi-embedded'}
       ]
     },
     'graphql-enum': {
@@ -106,11 +174,17 @@ const grammar = {
           patterns: [
             {include: '#graphql-object-type'},
             {include: '#graphql-comment'},
+            {include: '#graphql-description-docstring'},
+            {include: '#graphql-description-singleline'},
+            {include: '#graphql-directive'},
             {include: '#graphql-enum-value'},
-            {include: '#graphql-blockstring-value'},
-            {include: '#graphql-string-value'}
+            {include: '#literal-quasi-embedded'}
           ]
-        }
+        },
+        {include: '#graphql-comment'},
+        {include: '#graphql-description-docstring'},
+        {include: '#graphql-description-singleline'},
+        {include: '#graphql-directive'}
       ]
     },
     'graphql-enum-value': {
@@ -133,16 +207,17 @@ const grammar = {
         {include: '#graphql-arguments'},
         {include: '#graphql-directive'},
         {include: '#graphql-selection-set'},
+        {include: '#literal-quasi-embedded'},
         {include: '#graphql-skip-newlines'}
       ]
     },
     'graphql-float-value': {
-      captures: {1: {name: 'constant.float.graphql'}},
-      match: '\\s*((-)?(0|([1-9]\\d*)(\\.\\d*)?((e|E)(\\+|-)?\\d*)?))'
+      captures: {1: {name: 'constant.numeric.float.graphql'}},
+      match: '\\s*(-?(0|[1-9][0-9]*)(\\.[0-9]+)?((e|E)(\\+|-)?[0-9]+)?)'
     },
     'graphql-fragment-definition': {
       begin:
-        '\\s*(?:(\\bfragment\\b)\\s*(?!\\bon\\b)([_A-Za-z][_0-9A-Za-z]*)\\s*(?:(\\bon\\b)\\s*([_A-Za-z][_0-9A-Za-z]*)))',
+        '\\s*(?:(\\bfragment\\b)\\s*([_A-Za-z][_0-9A-Za-z]*)?\\s*(?:(\\bon\\b)\\s*([_A-Za-z][_0-9A-Za-z]*)))',
       captures: {
         1: {name: 'keyword.fragment.graphql'},
         2: {name: 'entity.name.fragment.graphql'},
@@ -153,9 +228,12 @@ const grammar = {
       name: 'meta.fragment.graphql',
       patterns: [
         {include: '#graphql-comment'},
+        {include: '#graphql-description-docstring'},
+        {include: '#graphql-description-singleline'},
         {include: '#graphql-selection-set'},
         {include: '#graphql-directive'},
-        {include: '#graphql-skip-newlines'}
+        {include: '#graphql-skip-newlines'},
+        {include: '#literal-quasi-embedded'}
       ]
     },
     'graphql-fragment-spread': {
@@ -168,11 +246,15 @@ const grammar = {
       end: '(?=.)',
       patterns: [
         {include: '#graphql-comment'},
+        {include: '#graphql-description-docstring'},
+        {include: '#graphql-description-singleline'},
         {include: '#graphql-selection-set'},
         {include: '#graphql-directive'},
+        {include: '#literal-quasi-embedded'},
         {include: '#graphql-skip-newlines'}
       ]
     },
+    'graphql-ignore-spaces': {match: '\\s*'},
     'graphql-inline-fragment': {
       applyEndPatternLast: true,
       begin: '\\s*(\\.\\.\\.)\\s*(?:(\\bon\\b)\\s*([_A-Za-z][_0-9A-Za-z]*))?',
@@ -184,9 +266,12 @@ const grammar = {
       end: '(?=.)',
       patterns: [
         {include: '#graphql-comment'},
+        {include: '#graphql-description-docstring'},
+        {include: '#graphql-description-singleline'},
         {include: '#graphql-selection-set'},
         {include: '#graphql-directive'},
-        {include: '#graphql-skip-newlines'}
+        {include: '#graphql-skip-newlines'},
+        {include: '#literal-quasi-embedded'}
       ]
     },
     'graphql-input-types': {
@@ -202,22 +287,21 @@ const grammar = {
         {
           begin: '\\s*(\\[)',
           captures: {
-            1: {name: 'meta.brace.squart.graphql'},
+            1: {name: 'meta.brace.square.graphql'},
             2: {name: 'keyword.operator.nulltype.graphql'}
           },
           end: '\\s*(\\])(?:\\s*(!))?',
           name: 'meta.type.list.graphql',
           patterns: [
-            {include: '#graphql-input-types'},
             {include: '#graphql-comment'},
-            {include: '#graphql-comma'}
+            {include: '#graphql-description-docstring'},
+            {include: '#graphql-description-singleline'},
+            {include: '#graphql-input-types'},
+            {include: '#graphql-comma'},
+            {include: '#literal-quasi-embedded'}
           ]
         }
       ]
-    },
-    'graphql-int-value': {
-      captures: {1: {name: 'constant.int.graphql'}},
-      match: '\\s*((-)?(0|[1-9][0-9]*))'
     },
     'graphql-list-value': {
       patterns: [
@@ -234,6 +318,10 @@ const grammar = {
     'graphql-name': {
       captures: {1: {name: 'entity.name.function.graphql'}},
       match: '\\s*([_A-Za-z][_0-9A-Za-z]*)'
+    },
+    'graphql-null-value': {
+      captures: {1: {name: 'constant.language.null.graphql'}},
+      match: '\\s*\\b(null)\\b'
     },
     'graphql-object-field': {
       captures: {
@@ -306,18 +394,23 @@ const grammar = {
                   captures: {1: {name: 'support.type.graphql'}},
                   match: '\\s*([_A-Za-z][_0-9A-Za-z]*)'
                 },
-                {include: '#graphql-colon'},
                 {include: '#graphql-comment'},
-                {include: '#graphql-directive'},
+                {include: '#graphql-description-docstring'},
+                {include: '#graphql-description-singleline'},
+                {include: '#graphql-colon'},
                 {include: '#graphql-skip-newlines'}
               ]
             },
             {include: '#graphql-comment'},
+            {include: '#graphql-description-docstring'},
+            {include: '#graphql-description-singleline'},
             {include: '#graphql-skip-newlines'}
           ]
         },
-        {include: '#graphql-directive'},
         {include: '#graphql-comment'},
+        {include: '#graphql-description-docstring'},
+        {include: '#graphql-description-singleline'},
+        {include: '#graphql-directive'},
         {include: '#graphql-skip-newlines'}
       ]
     },
@@ -328,11 +421,15 @@ const grammar = {
       endCaptures: {1: {name: 'punctuation.operation.graphql'}},
       name: 'meta.selectionset.graphql',
       patterns: [
+        {include: '#graphql-comment'},
+        {include: '#graphql-description-docstring'},
+        {include: '#graphql-description-singleline'},
         {include: '#graphql-field'},
         {include: '#graphql-fragment-spread'},
         {include: '#graphql-inline-fragment'},
         {include: '#graphql-comma'},
-        {include: '#graphql-comment'}
+        {include: '#native-interpolation'},
+        {include: '#literal-quasi-embedded'}
       ]
     },
     'graphql-skip-newlines': {match: '\\s*\n'},
@@ -361,7 +458,10 @@ const grammar = {
         2: {name: 'punctuation.definition.string.end.graphql'},
         3: {name: 'invalid.illegal.newline.graphql'}
       },
-      patterns: [{include: '#graphql-string-content'}]
+      patterns: [
+        {include: '#graphql-string-content'},
+        {include: '#literal-quasi-embedded'}
+      ]
     },
     'graphql-type-definition': {
       begin: '\\s*([_A-Za-z][_0-9A-Za-z]*)(?=\\s*\\(|:)',
@@ -369,17 +469,21 @@ const grammar = {
       end: '(?=\\s*(([_A-Za-z][_0-9A-Za-z]*)\\s*(\\(|:)|(})))|\\s*(,)',
       endCaptures: {5: {name: 'punctuation.comma.graphql'}},
       patterns: [
-        {include: '#graphql-directive'},
         {include: '#graphql-comment'},
+        {include: '#graphql-description-docstring'},
+        {include: '#graphql-description-singleline'},
+        {include: '#graphql-directive'},
         {include: '#graphql-variable-definitions'},
         {include: '#graphql-type-object'},
         {include: '#graphql-colon'},
-        {include: '#graphql-input-types'}
+        {include: '#graphql-input-types'},
+        {include: '#literal-quasi-embedded'}
       ]
     },
     'graphql-type-interface': {
+      applyEndPatternLast: true,
       begin:
-        '\\s*\\b(?:(extends)?\\b\\s*\\b(type)|(interface)|(input))\\b\\s*([_A-Za-z][_0-9A-Za-z]*)?',
+        '\\s*\\b(?:(extends?)?\\b\\s*\\b(type)|(interface)|(input))\\b\\s*([_A-Za-z][_0-9A-Za-z]*)?',
       captures: {
         1: {name: 'keyword.type.graphql'},
         2: {name: 'keyword.type.graphql'},
@@ -387,20 +491,33 @@ const grammar = {
         4: {name: 'keyword.input.graphql'},
         5: {name: 'support.type.graphql'}
       },
-      end: '(?<=})',
+      end: '(?=.)',
       name: 'meta.type.interface.graphql',
       patterns: [
         {
-          captures: {
-            1: {name: 'keyword.implements.graphql'},
-            2: {name: 'keyword.implements.graphql'},
-            3: {name: 'support.type.graphql'}
-          },
-          match: '\\s*(?:\\b(implements)\\b|(&))\\s*([_A-Za-z][_0-9A-Za-z]*)'
+          begin: '\\s*\\b(implements)\\b\\s*',
+          beginCaptures: {1: {name: 'keyword.implements.graphql'}},
+          end: '\\s*(?={)',
+          patterns: [
+            {
+              captures: {1: {name: 'support.type.graphql'}},
+              match: '\\s*([_A-Za-z][_0-9A-Za-z]*)'
+            },
+            {include: '#graphql-comment'},
+            {include: '#graphql-description-docstring'},
+            {include: '#graphql-description-singleline'},
+            {include: '#graphql-directive'},
+            {include: '#graphql-ampersand'},
+            {include: '#graphql-comma'}
+          ]
         },
         {include: '#graphql-comment'},
+        {include: '#graphql-description-docstring'},
+        {include: '#graphql-description-singleline'},
         {include: '#graphql-directive'},
-        {include: '#graphql-type-object'}
+        {include: '#graphql-type-object'},
+        {include: '#literal-quasi-embedded'},
+        {include: '#graphql-ignore-spaces'}
       ]
     },
     'graphql-type-object': {
@@ -410,11 +527,12 @@ const grammar = {
       endCaptures: {1: {name: 'punctuation.operation.graphql'}},
       name: 'meta.type.object.graphql',
       patterns: [
-        {include: '#graphql-object-type'},
         {include: '#graphql-comment'},
+        {include: '#graphql-description-docstring'},
+        {include: '#graphql-description-singleline'},
+        {include: '#graphql-object-type'},
         {include: '#graphql-type-definition'},
-        {include: '#graphql-blockstring-value'},
-        {include: '#graphql-string-value'}
+        {include: '#literal-quasi-embedded'}
       ]
     },
     'graphql-union': {
@@ -435,8 +553,11 @@ const grammar = {
           },
           end: '(?=.)',
           patterns: [
-            {include: '#graphql-skip-newlines'},
             {include: '#graphql-comment'},
+            {include: '#graphql-description-docstring'},
+            {include: '#graphql-description-singleline'},
+            {include: '#graphql-skip-newlines'},
+            {include: '#literal-quasi-embedded'},
             {
               captures: {
                 1: {name: 'punctuation.or.graphql'},
@@ -446,8 +567,10 @@ const grammar = {
             }
           ]
         },
-        {include: '#graphql-skip-newlines'},
         {include: '#graphql-comment'},
+        {include: '#graphql-description-docstring'},
+        {include: '#graphql-description-singleline'},
+        {include: '#graphql-skip-newlines'},
         {include: '#literal-quasi-embedded'}
       ]
     },
@@ -457,16 +580,16 @@ const grammar = {
     },
     'graphql-value': {
       patterns: [
+        {include: '#graphql-comment'},
+        {include: '#graphql-description-docstring'},
         {include: '#graphql-variable-name'},
         {include: '#graphql-float-value'},
-        {include: '#graphql-int-value'},
-        {include: '#graphql-blockstring-value'},
         {include: '#graphql-string-value'},
         {include: '#graphql-boolean-value'},
+        {include: '#graphql-null-value'},
         {include: '#graphql-enum-value'},
         {include: '#graphql-list-value'},
         {include: '#graphql-object-value'},
-        {include: '#graphql-comment'},
         {include: '#literal-quasi-embedded'}
       ]
     },
@@ -474,20 +597,24 @@ const grammar = {
       applyEndPatternLast: true,
       begin: '\\s(=)',
       beginCaptures: {1: {name: 'punctuation.assignment.graphql'}},
-      end: '(?=.)',
+      end: '(?=[\n,)])',
       patterns: [{include: '#graphql-value'}]
     },
     'graphql-variable-definition': {
       begin: '\\s*(\\$?[_A-Za-z][_0-9A-Za-z]*)(?=\\s*\\(|:)',
-      beginCaptures: {1: {name: 'variable.graphql'}},
+      beginCaptures: {1: {name: 'variable.parameter.graphql'}},
       end: '(?=\\s*((\\$?[_A-Za-z][_0-9A-Za-z]*)\\s*(\\(|:)|(}|\\))))|\\s*(,)',
       endCaptures: {5: {name: 'punctuation.comma.graphql'}},
       name: 'meta.variables.graphql',
       patterns: [
         {include: '#graphql-comment'},
+        {include: '#graphql-description-docstring'},
+        {include: '#graphql-description-singleline'},
+        {include: '#graphql-directive'},
         {include: '#graphql-colon'},
         {include: '#graphql-input-types'},
         {include: '#graphql-variable-assignment'},
+        {include: '#literal-quasi-embedded'},
         {include: '#graphql-skip-newlines'}
       ]
     },
@@ -497,14 +624,27 @@ const grammar = {
       end: '\\s*(\\))',
       patterns: [
         {include: '#graphql-comment'},
+        {include: '#graphql-description-docstring'},
+        {include: '#graphql-description-singleline'},
         {include: '#graphql-variable-definition'},
-        {include: '#graphql-blockstring-value'},
-        {include: '#graphql-string-value'}
+        {include: '#literal-quasi-embedded'}
       ]
     },
     'graphql-variable-name': {
       captures: {1: {name: 'variable.graphql'}},
       match: '\\s*(\\$[_A-Za-z][_0-9A-Za-z]*)'
+    },
+    'native-interpolation': {
+      begin: '\\s*(\\${)',
+      beginCaptures: {1: {name: 'keyword.other.substitution.begin'}},
+      end: '(})',
+      endCaptures: {1: {name: 'keyword.other.substitution.end'}},
+      name: 'native.interpolation',
+      patterns: [
+        {include: 'source.js'},
+        {include: 'source.ts'},
+        {include: 'source.tsx'}
+      ]
     }
   },
   scopeName: 'source.graphql'
