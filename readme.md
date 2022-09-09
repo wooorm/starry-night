@@ -434,7 +434,7 @@ Opening that page in a browser, we’d see the `<code>` being swapped with:
 
 ```html
 <code class="language-js"><span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>it works!<span class="pl-pds">'</span></span>)
-</code><
+</code>
 ```
 
 ### Example: turning hast into react nodes
