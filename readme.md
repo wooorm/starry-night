@@ -366,7 +366,7 @@ em { color: red }
 
 ```js
 import {toHtml} from 'hast-util-to-html'
-import {starryNight, common} from '@wooorm/starry-night'
+import {createStarryNight, common} from '@wooorm/starry-night'
 
 const starryNight = await createStarryNight(common)
 
