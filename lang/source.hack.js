@@ -293,8 +293,11 @@ const grammar = {
       ]
     },
     interface: {
-      begin: '^(?i)\\b(interface)\\b',
-      beginCaptures: {1: {name: 'storage.type.interface.php'}},
+      begin: '^(?i)\\s*(?:(public|internal)\\s+)?(interface)\\b',
+      beginCaptures: {
+        1: {name: 'storage.modifier.php'},
+        2: {name: 'storage.type.interface.php'}
+      },
       end: '(?=[;{])',
       name: 'meta.interface.php',
       patterns: [
@@ -340,10 +343,12 @@ const grammar = {
         {include: '#xhp'},
         {include: '#interface'},
         {
-          begin: '(?xi)\n^\\s*\n(type|newtype)\n\\s+\n([a-z0-9_]+)',
+          begin:
+            '(?xi)\n^\\s*\n(?:(module)\\s*)?(type|newtype)\n\\s+\n([a-z0-9_]+)',
           beginCaptures: {
-            1: {name: 'storage.type.typedecl.php'},
-            2: {name: 'entity.name.type.typedecl.php'}
+            1: {name: 'storage.modifier.php'},
+            2: {name: 'storage.type.typedecl.php'},
+            3: {name: 'entity.name.type.typedecl.php'}
           },
           end: '(;)',
           endCaptures: {1: {name: 'punctuation.termination.expression.php'}},
@@ -356,11 +361,13 @@ const grammar = {
           ]
         },
         {
-          begin: '(?i)^\\s*(enum)\\s+(class)\\s+([a-z0-9_]+)\\s*:?',
+          begin:
+            '(?i)^\\s*(?:(public|internal)\\s+)?(enum)\\s+(class)\\s+([a-z0-9_]+)\\s*:?',
           beginCaptures: {
             1: {name: 'storage.modifier.php'},
-            2: {name: 'storage.type.class.enum.php'},
-            3: {name: 'entity.name.type.class.enum.php'}
+            2: {name: 'storage.modifier.php'},
+            3: {name: 'storage.type.class.enum.php'},
+            4: {name: 'entity.name.type.class.enum.php'}
           },
           end: '(?=[{])',
           name: 'meta.class.enum.php',
@@ -370,20 +377,24 @@ const grammar = {
           ]
         },
         {
-          begin: '(?i)^\\s*(enum)\\s+([a-z0-9_]+)\\s*:?',
+          begin:
+            '(?i)^\\s*(?:(public|internal)\\s+)?(enum)\\s+([a-z0-9_]+)\\s*:?',
           beginCaptures: {
-            1: {name: 'storage.type.enum.php'},
-            2: {name: 'entity.name.type.enum.php'}
+            1: {name: 'storage.modifier.php'},
+            2: {name: 'storage.type.enum.php'},
+            3: {name: 'entity.name.type.enum.php'}
           },
           end: '\\{',
           name: 'meta.enum.php',
           patterns: [{include: '#comments'}, {include: '#type-annotation'}]
         },
         {
-          begin: '(?i)^\\s*(trait)\\s+([a-z0-9_]+)\\s*',
+          begin:
+            '(?i)^\\s*(?:(public|internal)\\s+)?(trait)\\s+([a-z0-9_]+)\\s*',
           beginCaptures: {
-            1: {name: 'storage.type.trait.php'},
-            2: {name: 'entity.name.type.class.php'}
+            1: {name: 'storage.modifier.php'},
+            2: {name: 'storage.type.trait.php'},
+            3: {name: 'entity.name.type.class.php'}
           },
           end: '(?=[{])',
           name: 'meta.trait.php',
@@ -392,6 +403,27 @@ const grammar = {
             {include: '#generics'},
             {include: '#implements'}
           ]
+        },
+        {
+          begin: '^\\s*(new)\\s+(module)\\s+([A-Za-z0-9_\\.]+)\\b',
+          beginCaptures: {
+            1: {name: 'storage.type.module.php'},
+            2: {name: 'storage.type.module.php'},
+            3: {name: 'entity.name.type.module.php'}
+          },
+          end: '(?=[{])',
+          name: 'meta.module.php',
+          patterns: [{include: '#comments'}]
+        },
+        {
+          begin: '^\\s*(module)\\s+([A-Za-z0-9_\\.]+)\\b',
+          beginCaptures: {
+            1: {name: 'keyword.other.module.php'},
+            2: {name: 'entity.name.type.module.php'}
+          },
+          end: '$|(?=[\\s;])',
+          name: 'meta.use.module.php',
+          patterns: [{include: '#comments'}]
         },
         {
           begin:
@@ -438,12 +470,18 @@ const grammar = {
         },
         {
           begin:
-            '(?i)^\\s*(abstract|final)?\\s*(abstract|final)?\\s*(class)\\s+([a-z0-9_]+)\\s*',
+            '(?i)^\\s*((?:(?:final|abstract|public|internal)\\s+)*)(class)\\s+([a-z0-9_]+)\\s*',
           beginCaptures: {
-            1: {name: 'storage.modifier.php'},
-            2: {name: 'storage.modifier.php'},
-            3: {name: 'storage.type.class.php'},
-            4: {name: 'entity.name.type.class.php'}
+            1: {
+              patterns: [
+                {
+                  match: 'final|abstract|public|internal',
+                  name: 'storage.modifier.php'
+                }
+              ]
+            },
+            2: {name: 'storage.type.class.php'},
+            3: {name: 'entity.name.type.class.php'}
           },
           end: '(?=[;{])',
           name: 'meta.class.php',
@@ -526,8 +564,11 @@ const grammar = {
           name: 'keyword.control.exception.php'
         },
         {
-          begin: '(?i)\\b(function)\\s*(?=\\()',
-          beginCaptures: {1: {name: 'storage.type.function.php'}},
+          begin: '(?i)\\s*(?:(public|internal)\\s+)?(function)\\s*(?=\\()',
+          beginCaptures: {
+            1: {name: 'storage.modifier.php'},
+            2: {name: 'storage.type.function.php'}
+          },
           end: '\\{|\\)',
           name: 'meta.function.closure.php',
           patterns: [
@@ -570,12 +611,13 @@ const grammar = {
         },
         {
           begin:
-            '(?x)\n\\s*((?:(?:final|abstract|public|private|protected|static|async)\\s+)*)\n(function)\n(?:\\s+)\n(?:\n  (__(?:call|construct|destruct|get|set|isset|unset|tostring|clone|set_state|sleep|wakeup|autoload|invoke|callStatic|dispose|disposeAsync)(?=[^a-zA-Z0-9_\\x7f-\\xff]))\n  |\n  ([a-zA-Z0-9_]+)\n)',
+            '(?x)\n\\s*((?:(?:final|abstract|public|private|protected|internal|static|async)\\s+)*)\n(function)\n(?:\\s+)\n(?:\n  (__(?:call|construct|destruct|get|set|isset|unset|tostring|clone|set_state|sleep|wakeup|autoload|invoke|callStatic|dispose|disposeAsync)(?=[^a-zA-Z0-9_\\x7f-\\xff]))\n  |\n  ([a-zA-Z0-9_]+)\n)',
           beginCaptures: {
             1: {
               patterns: [
                 {
-                  match: 'final|abstract|public|private|protected|static|async',
+                  match:
+                    'final|abstract|public|private|protected|internal|static|async',
                   name: 'storage.modifier.php'
                 }
               ]
@@ -660,7 +702,7 @@ const grammar = {
         },
         {
           match:
-            '(?i)\\b(global|abstract|const|extends|implements|final|p(r(ivate|otected)|ublic)|static)\\b',
+            '(?i)\\b(global|abstract|const|extends|implements|final|p(r(ivate|otected)|ublic)|internal|static)\\b',
           name: 'storage.modifier.php'
         },
         {include: '#object'},
@@ -808,7 +850,7 @@ const grammar = {
             4: {name: 'invalid.illegal.wrong-access-type.phpdoc.php'}
           },
           match:
-            '^\\s*\\*\\s*(@access)\\s+((public|private|protected)|(.+))\\s*$'
+            '^\\s*\\*\\s*(@access)\\s+((public|private|protected|internal)|(.+))\\s*$'
         },
         {
           captures: {
@@ -830,7 +872,7 @@ const grammar = {
       ]
     },
     'regex-double-quoted': {
-      begin: '(?x)\n"/ (?=(\\\\.|[^"/])++/[imsxeADSUXu]*")',
+      begin: '(?x)\n(?<=re)"/ (?=(\\\\.|[^"/])++/[imsxeADSUXu]*")',
       beginCaptures: {0: {name: 'punctuation.definition.string.begin.php'}},
       end: '(/)([imsxeADSUXu]*)(")',
       endCaptures: {0: {name: 'punctuation.definition.string.end.php'}},
@@ -860,7 +902,7 @@ const grammar = {
       ]
     },
     'regex-single-quoted': {
-      begin: "(?x)\n'/ (?=(\\\\.|[^'/])++/[imsxeADSUXu]*')",
+      begin: "(?x)\n(?<=re)'/ (?=(\\\\.|[^'/])++/[imsxeADSUXu]*')",
       beginCaptures: {0: {name: 'punctuation.definition.string.begin.php'}},
       end: "(/)([imsxeADSUXu]*)(')",
       endCaptures: {0: {name: 'punctuation.definition.string.end.php'}},

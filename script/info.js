@@ -169,6 +169,10 @@ export const info = {
     license: 'apache-2.0',
     homepage: 'https://github.com/scalate/Scalate.tmbundle'
   },
+  'source.scenic': {
+    license: 'mit',
+    homepage: 'https://github.com/UCSCFormalMethods/Scenic-tmLanguage'
+  },
   'text.html.slash': {
     license: 'mit'
   },
@@ -368,7 +372,8 @@ export const info = {
     homepage: 'https://github.com/withastro/language-tools'
   },
   'source.editorconfig': {
-    license: 'mit'
+    license: 'mit',
+    homepage: 'https://github.com/sindresorhus/atom-editorconfig'
   },
   'source.firestore': {
     license: 'mit'
@@ -639,7 +644,15 @@ export const info = {
     license: 'mit',
     homepage: 'https://github.com/idris-hackers/idris-sublime'
   },
+  'source.imba': {
+    license: 'mit',
+    homepage: 'https://github.com/imba/imba-linguist-grammar'
+  },
   'source.ini': {},
+  'source.ink': {
+    license: 'mit',
+    homepage: 'https://github.com/inkle/ink-tmlanguage'
+  },
   'source.io': {},
   'source.ioke': {
     license: 'mit'
@@ -826,7 +839,15 @@ export const info = {
     license: 'isc',
     homepage: 'https://github.com/Alhadis/language-etc'
   },
+  'source.opts': {
+    license: 'isc',
+    homepage: 'https://github.com/Alhadis/language-etc'
+  },
   'source.record-jar': {
+    license: 'isc',
+    homepage: 'https://github.com/Alhadis/language-etc'
+  },
+  'source.sfv': {
     license: 'isc',
     homepage: 'https://github.com/Alhadis/language-etc'
   },
@@ -867,6 +888,10 @@ export const info = {
     homepage: 'https://github.com/Alhadis/language-etc'
   },
   'text.codeowners': {
+    license: 'isc',
+    homepage: 'https://github.com/Alhadis/language-etc'
+  },
+  'text.html.ecmarkup': {
     license: 'isc',
     homepage: 'https://github.com/Alhadis/language-etc'
   },
@@ -1026,6 +1051,10 @@ export const info = {
     license: 'mit',
     homepage: 'https://github.com/Arcensoth/language-mcfunction'
   },
+  'source.mermaid': {
+    license: 'isc',
+    homepage: 'https://github.com/Alhadis/language-mermaid'
+  },
   'source.meson': {
     license: 'apache-2.0',
     homepage: 'https://github.com/TingPing/language-meson'
@@ -1166,7 +1195,8 @@ export const info = {
     homepage: 'https://github.com/Alhadis/language-texinfo'
   },
   'source.toc': {
-    license: 'unlicense'
+    license: 'unlicense',
+    homepage: 'https://github.com/nebularg/language-toc-wow'
   },
   'source.tsql': {
     license: 'mit',
@@ -1232,7 +1262,8 @@ export const info = {
   },
   'source.lisp': {},
   'source.llvm': {
-    license: 'mit'
+    license: 'mit',
+    homepage: 'https://github.com/whitequark/llvm.tmbundle'
   },
   'source.logos': {
     license: 'mit',
@@ -1321,6 +1352,10 @@ export const info = {
   'source.pike': {
     license: 'unlicense'
   },
+  'source.polar': {
+    license: 'apache-2.0',
+    homepage: 'https://github.com/osohq/polar-grammar'
+  },
   'source.portugol': {
     license: 'mit',
     homepage: 'https://github.com/luisgbr1el/portugol-grammar'
@@ -1344,7 +1379,8 @@ export const info = {
     homepage: 'https://github.com/usethesource/rascal-syntax-highlighting'
   },
   'text.html.cshtml': {
-    license: 'mit'
+    license: 'mit',
+    homepage: 'https://github.com/github-linguist/razor-plus'
   },
   'source.rescript': {
     license: 'mit',
@@ -1383,6 +1419,10 @@ export const info = {
   },
   'source.smalltalk': {
     license: 'mit'
+  },
+  'source.smithy': {
+    license: 'apache-2.0',
+    homepage: 'https://github.com/awslabs/smithy-vscode'
   },
   'source.sourcepawn': {
     license: 'mit',
@@ -1429,6 +1469,10 @@ export const info = {
   },
   'source.clips': {
     license: 'mit'
+  },
+  'source.cypher': {
+    license: 'apache-2.0',
+    homepage: 'https://github.com/fredbenenson/sublime-cypher'
   },
   'source.fan': {
     license: 'mit'
@@ -1635,6 +1679,10 @@ export const info = {
     license: 'mit',
     homepage: 'https://github.com/jest-community/vscode-jest'
   },
+  'source.just': {
+    license: 'mit',
+    homepage: 'https://github.com/skellock/vscode-just'
+  },
   'source.lean': {
     license: 'apache-2.0',
     homepage: 'https://github.com/leanprover/vscode-lean'
@@ -1653,6 +1701,10 @@ export const info = {
   'source.rego': {
     license: 'apache-2.0',
     homepage: 'https://github.com/tsandall/vscode-opa'
+  },
+  'source.pddl': {
+    license: 'mit',
+    homepage: 'https://github.com/jan-dolejsi/vscode-pddl'
   },
   'source.wsd': {
     license: 'mit',

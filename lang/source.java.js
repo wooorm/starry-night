@@ -5,7 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.ck', '.cls', '.jav', '.java', '.uc'],
+  extensions: ['.ck', '.cls', '.jav', '.java', '.jsh', '.uc'],
   names: ['apex', 'chuck', 'java', 'unrealscript'],
   patterns: [
     {

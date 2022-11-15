@@ -934,9 +934,13 @@ const grammar = {
             '(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(as)\\s+(const)(?=\\s*($|[;,:})\\]]))'
         },
         {
-          begin: '(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(as)\\s+',
-          beginCaptures: {1: {name: 'keyword.control.as.tsx'}},
-          end: '(?=^|[;),}\\]:?\\-\\+\\>]|\\|\\||\\&\\&|\\!\\=\\=|$|((?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(as)\\s+)|(\\s+\\<))',
+          begin:
+            '(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(?:(as)|(satisfies))\\s+',
+          beginCaptures: {
+            1: {name: 'keyword.control.as.tsx'},
+            2: {name: 'keyword.control.satisfies.tsx'}
+          },
+          end: '(?=^|[;),}\\]:?\\-\\+\\>]|\\|\\||\\&\\&|\\!\\=\\=|$|((?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(as|satisifies)\\s+)|(\\s+\\<))',
           patterns: [{include: '#type'}]
         },
         {match: '\\.\\.\\.', name: 'keyword.operator.spread.tsx'},
@@ -2038,14 +2042,14 @@ const grammar = {
         },
         {
           begin: '(?=[\\\'\\"\\`])',
-          end: '(?=:)|((?<=[\\\'\\"\\`])(?=((\\s*[\\(\\<,}])|(\\s+(as)\\s+))))',
+          end: '(?=:)|((?<=[\\\'\\"\\`])(?=((\\s*[\\(\\<,}])|(\\s+(as|satisifies)\\s+))))',
           name: 'meta.object.member.tsx meta.object-literal.key.tsx',
           patterns: [{include: '#comment'}, {include: '#string'}]
         },
         {
           begin:
             '(?x)(?=(\\b(?<!\\$)0(?:x|X)[0-9a-fA-F][0-9a-fA-F_]*(n)?\\b(?!\\$))|(\\b(?<!\\$)0(?:b|B)[01][01_]*(n)?\\b(?!\\$))|(\\b(?<!\\$)0(?:o|O)?[0-7][0-7_]*(n)?\\b(?!\\$))|((?<!\\$)(?:\n  (?:\\b[0-9][0-9_]*(\\.)[0-9][0-9_]*[eE][+-]?[0-9][0-9_]*(n)?\\b)| # 1.1E+3\n  (?:\\b[0-9][0-9_]*(\\.)[eE][+-]?[0-9][0-9_]*(n)?\\b)|             # 1.E+3\n  (?:\\B(\\.)[0-9][0-9_]*[eE][+-]?[0-9][0-9_]*(n)?\\b)|             # .1E+3\n  (?:\\b[0-9][0-9_]*[eE][+-]?[0-9][0-9_]*(n)?\\b)|                 # 1E+3\n  (?:\\b[0-9][0-9_]*(\\.)[0-9][0-9_]*(n)?\\b)|                      # 1.1\n  (?:\\b[0-9][0-9_]*(\\.)(n)?\\B)|                                  # 1.\n  (?:\\B(\\.)[0-9][0-9_]*(n)?\\b)|                                  # .1\n  (?:\\b[0-9][0-9_]*(n)?\\b(?!\\.))                                 # 1\n)(?!\\$)))',
-          end: '(?=:)|(?=\\s*([\\(\\<,}])|(\\s+as\\s+))',
+          end: '(?=:)|(?=\\s*([\\(\\<,}])|(\\s+as|satisifies\\s+))',
           name: 'meta.object.member.tsx meta.object-literal.key.tsx',
           patterns: [{include: '#comment'}, {include: '#numeric-literal'}]
         },
@@ -2101,9 +2105,13 @@ const grammar = {
           name: 'meta.object.member.tsx'
         },
         {
-          begin: '(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(as)\\s+',
-          beginCaptures: {1: {name: 'keyword.control.as.tsx'}},
-          end: '(?=[;),}\\]:?\\-\\+\\>]|\\|\\||\\&\\&|\\!\\=\\=|$|^|((?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(as)\\s+))',
+          begin:
+            '(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(?:(as)|(satisfies))\\s+',
+          beginCaptures: {
+            1: {name: 'keyword.control.as.tsx'},
+            2: {name: 'keyword.control.satisfies.tsx'}
+          },
+          end: '(?=[;),}\\]:?\\-\\+\\>]|\\|\\||\\&\\&|\\!\\=\\=|$|^|((?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(as|satisifies)\\s+))',
           name: 'meta.object.member.tsx',
           patterns: [{include: '#type'}]
         },
@@ -2328,7 +2336,7 @@ const grammar = {
     },
     'property-accessor': {
       match:
-        '(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(get|set)(?![_$[:alnum:]])(?:(?=\\.\\.\\.)|(?!\\.))',
+        '(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(accessor|get|set)(?![_$[:alnum:]])(?:(?=\\.\\.\\.)|(?!\\.))',
       name: 'storage.type.property.tsx'
     },
     'punctuation-accessor': {

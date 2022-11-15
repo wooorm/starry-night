@@ -21,7 +21,7 @@ const grammar = {
   ],
   repository: {
     commands: {
-      begin: '(-)\\s([^\\s<>"\']+)',
+      begin: '^\\s*(-)\\s([^\\s<>"\']+)',
       captures: {
         1: {name: 'operator.dash.denizenscript'},
         2: {name: 'entity.other.command.denizenscript'}
@@ -52,7 +52,7 @@ const grammar = {
     },
     keys: {
       begin:
-        '(^(?!.*- |#|\\n|.*(?:interact scripts|default constants|data|constants|text|lore|aliases|slots|enchantments|input)(?=(?::))).*)(?=(:)\\s)',
+        '(?i)(^(?!^\\s*-|#|\n|^\\s*(?:interact scripts|default constants|data|constants|text|lore|aliases|slots|enchantments|input)(?=(?::))).*?)(?=(:)\\s)',
       beginCaptures: {
         1: {name: 'markup.heading.key.denizenscript'},
         2: {name: 'operator.colon.denizenscript'}
@@ -61,9 +61,9 @@ const grammar = {
     },
     not_script_keys: {
       begin:
-        '(^(?!.*- |#|\\n).*(?=interact scripts|default constants|data|constants|text|lore|aliases|slots|enchantments|input).*)(?=(:)\\s)',
+        '(?i)(^(?!.*- |#|\\n).*(?=interact scripts|default constants|data|constants|text|lore|aliases|slots|enchantments|input).*)(?=(:)\\s)',
       beginCaptures: {
-        1: {name: 'markup.heading.key.denizenscript'},
+        1: {name: 'markup.heading.not_script_key.denizenscript'},
         2: {name: 'operator.colon.denizenscript'}
       },
       end: '^(?!.*- |\\n|\\s*#)',

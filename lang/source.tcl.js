@@ -3,8 +3,8 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.adp', '.glf', '.tcl', '.tcl.in', '.tm'],
-  names: ['glyph', 'tcl'],
+  extensions: ['.adp', '.glf', '.sdc', '.tcl', '.tcl.in', '.tm', '.xdc'],
+  names: ['glyph', 'sdc', 'tcl', 'xdc'],
   patterns: [
     {
       begin: '(?<=^|;)\\s*((#))',

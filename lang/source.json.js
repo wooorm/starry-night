@@ -16,6 +16,8 @@ const grammar = {
     '.ice',
     '.ipynb',
     '.json',
+    '.json',
+    '.json',
     '.json-tmlanguage',
     '.jsonl',
     '.maxhelp',
@@ -42,6 +44,8 @@ const grammar = {
     'max',
     'max/msp',
     'maxmsp',
+    'oasv2-json',
+    'oasv3-json',
     'topojson'
   ],
   patterns: [{include: '#main'}],

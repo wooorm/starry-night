@@ -192,6 +192,7 @@ const grammar = {
         {include: '#do-statement'},
         {include: '#if-statement'},
         {include: '#regex'},
+        {include: '#type_parameters'},
         {include: '#keywords'},
         {include: '#object-literal'},
         {include: '#array-literal'},
@@ -222,12 +223,6 @@ const grammar = {
           patterns: [{include: '#types'}]
         }
       ]
-    },
-    function_call: {
-      begin: '\\s*\\(',
-      end: '\\s*\\)',
-      name: 'function_call',
-      patterns: [{include: '#punctuation-comma'}, {include: '#expressions'}]
     },
     generics: {
       patterns: [
@@ -719,6 +714,15 @@ const grammar = {
         {begin: '<', end: '>', patterns: [{include: '#generics'}]},
         {match: '\\=', name: 'keyword.other.dw'},
         {include: '#types'}
+      ]
+    },
+    type_parameters: {
+      begin: '<',
+      end: '>',
+      patterns: [
+        {include: '#types'},
+        {include: '#punctuation-comma'},
+        {include: '#comments'}
       ]
     },
     types: {

@@ -783,7 +783,27 @@ const grammar = {
           patterns: [{include: '#long-params'}]
         },
         {
-          begin: '((?:((\\\\)E)|(\\\\))(?!s[-+]?\\(?\\d)[ABRsZ])((.))',
+          begin: '((?:((\\\\)E)|(\\\\))s([-+])?)((.))',
+          beginCaptures: {
+            1: {name: 'entity.name.function.roff'},
+            2: {name: 'constant.character.escape.current-escape-char.gnu.roff'},
+            3: {name: 'punctuation.definition.escape.roff'},
+            4: {name: 'punctuation.definition.escape.roff'},
+            5: {name: 'keyword.operator.arithmetic.roff'},
+            6: {name: 'string.other.roff'},
+            7: {name: 'punctuation.definition.begin.roff'}
+          },
+          contentName: 'variable.parameter.roff',
+          end: '(\\6)|(?<!\\\\)(?=$)',
+          endCaptures: {
+            0: {name: 'string.other.roff'},
+            1: {name: 'punctuation.definition.end.roff'}
+          },
+          name: 'constant.character.escape.function.point-size.gnu.roff',
+          patterns: [{include: '#escapes'}]
+        },
+        {
+          begin: '((?:((\\\\)E)|(\\\\))(?!s[-+]?\\(?[-+]?\\d)[ABRZ])((.))',
           beginCaptures: {
             1: {name: 'entity.name.function.roff'},
             2: {name: 'constant.character.escape.current-escape-char.gnu.roff'},
@@ -1324,10 +1344,12 @@ const grammar = {
             2: {name: 'constant.character.escape.current-escape-char.gnu.roff'},
             3: {name: 'punctuation.definition.escape.roff'},
             4: {name: 'punctuation.definition.escape.roff'},
-            5: {name: 'punctuation.definition.brace.roff'},
-            6: {name: 'variable.parameter.roff'}
+            5: {name: 'keyword.operator.arithmetic.roff'},
+            6: {name: 'punctuation.definition.brace.roff'},
+            7: {name: 'keyword.operator.arithmetic.roff'},
+            8: {name: 'variable.parameter.roff'}
           },
-          match: '((?:((\\\\)E)|(\\\\))s[-+]?(\\()?)(\\d+)',
+          match: '((?:((\\\\)E)|(\\\\))s([-+]?)(\\()?)((?<=s\\()[-+])?(\\d+)',
           name: 'constant.character.escape.function.point-size.roff'
         },
         {
@@ -3600,19 +3622,19 @@ const grammar = {
           },
           match:
             '(?:^|\\G)([.\'])[ \\t]*(?:(do)[ \\t]+)?(ul|cu)\\s*(0+)(?:(?!\\\\E?")\\D)*(?=\\s|$)(.*)$',
-          name: 'meta.request.$3.roff'
+          name: 'meta.function.request.$3.roff'
         },
         {
           begin:
             "(?:^|\\G)([.'])[ \\t]*(?:(do)[ \\t]+)?(ul|cu)(?=\\s|$|\\\\)(.*?)$(?!R)\\R?",
           beginCaptures: {
+            0: {name: 'meta.function.request.$3.roff'},
             1: {name: 'punctuation.definition.function.request.roff'},
             2: {name: 'entity.function.name.roff'},
             3: {name: 'entity.function.name.roff'},
             4: {patterns: [{include: '#params'}]}
           },
           end: '(?!\\G)(?<!\\\\)$',
-          name: 'meta.request.$3.roff',
           patterns: [
             {
               begin: "(?:^|\\G)(?=[.']|\\\\E?!)(.*)$(?!R)\\R?",

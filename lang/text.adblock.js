@@ -25,6 +25,7 @@ const grammar = {
     {include: '#contentRules'},
     {include: '#elemhideRules'},
     {include: '#basicRulesNoUrl'},
+    {include: '#basicRulesRegex'},
     {include: '#basicRules'}
   ],
   repository: {
@@ -205,6 +206,19 @@ const grammar = {
         {match: '\\$', name: 'invalid.illegal.redundant.modifier.separator'}
       ]
     },
+    basicRulesRegex: {
+      patterns: [
+        {
+          captures: {
+            1: {patterns: [{include: '#regularExpression'}]},
+            2: {name: 'keyword.control.adblock'},
+            3: {patterns: [{include: '#basicRulesOptions'}]}
+          },
+          match:
+            '^(\\/[^\\/\\\\]*(?:\\\\.[^\\/\\\\]*)*\\/[dgimsuy]*)(?:(\\$)(.+))?$'
+        }
+      ]
+    },
     comments: {
       patterns: [
         {match: '^!.*', name: 'comment.line'},
@@ -343,7 +357,7 @@ const grammar = {
             2: {name: 'string.unquoted.adblock'},
             3: {name: 'punctuation.definition.adblock'}
           },
-          match: '(~?)([a-zA-Z0-9.*-]+)(,?)'
+          match: '(~?)([^,]+)(,?)'
         },
         {match: '.*', name: 'invalid.illegal.domain-list'}
       ]
@@ -356,7 +370,7 @@ const grammar = {
             2: {name: 'string.unquoted.adblock'},
             3: {name: 'punctuation.definition.adblock'}
           },
-          match: '(~?)([a-zA-Z0-9.*-]+)(\\|?)'
+          match: '(~?)([^|]+)(\\|?)'
         },
         {match: '.*', name: 'invalid.illegal.domain-list'}
       ]
@@ -398,7 +412,7 @@ const grammar = {
               patterns: [
                 {
                   match:
-                    '(adguard_app_windows|adguard_app_mac|adguard_app_android|adguard_app_ios|adguard_ext_chromium|adguard_ext_firefox|adguard_ext_edge|adguard_ext_safari|adguard_ext_opera|adguard_ext_android_cb|adguard|ext_abp|ext_ublock|env_chromium|env_edge|env_firefox|env_mobile|env_safari|false|cap_html_filtering|cap_user_stylesheet)',
+                    '(adguard_app_windows|adguard_app_mac|adguard_app_android|adguard_app_ios|adguard_ext_chromium|adguard_ext_firefox|adguard_ext_edge|adguard_ext_safari|adguard_ext_opera|adguard_ext_android_cb|adguard|ext_abp|ext_ublock|env_chromium|env_edge|env_firefox|env_mobile|env_safari|false|cap_html_filtering|cap_user_stylesheet|env_legacy)',
                   name: 'constant.language.platform.name'
                 },
                 {match: '(&&|!|\\|\\|| )', name: 'keyword.control.characters'},
@@ -453,7 +467,24 @@ const grammar = {
           },
           match: '^(!\\+) (.*)$'
         },
-        {match: '^!#.+$', name: 'invalid.preprocessor'}
+        {match: '^!#(?!#).+$', name: 'invalid.illegal.preprocessor'}
+      ]
+    },
+    regularExpression: {
+      patterns: [
+        {
+          begin: '(/)',
+          beginCaptures: {1: {name: 'keyword.other.regex.begin'}},
+          contentName: 'string.regexp',
+          end: '((?<!\\\\)/)([dgimsuy]*)?',
+          endCaptures: {
+            1: {name: 'keyword.other.regex.end'},
+            2: {name: 'keyword.other.regex'}
+          },
+          patterns: [
+            {match: '(?<!\\\\)([/\\^\\$\\|])', name: 'keyword.control.regex'}
+          ]
+        }
       ]
     },
     scriptletFunction: {
@@ -475,7 +506,7 @@ const grammar = {
             1: {name: 'string.quoted.adblock'},
             2: {name: 'keyword.operator.adblock'}
           },
-          match: '([^,]+)(,\\s*)?'
+          match: '([^,]*)(,\\s*)?'
         },
         {match: '.*', name: 'invalid.illegal.adblock'}
       ]

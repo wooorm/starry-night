@@ -20,11 +20,10 @@ const grammar = {
     comment: {
       patterns: [
         {
-          begin: '#',
+          begin: '//',
           beginCaptures: {0: {name: 'punctuation.definition.comment'}},
           end: '$',
-          name: 'comment.line.number-sign',
-          patterns: [{match: 'TODO', name: 'comment.line.number-sign'}]
+          name: 'comment.line.number-sign'
         }
       ]
     },
@@ -96,7 +95,7 @@ const grammar = {
             1: {name: 'storage.type.function.cairo'},
             2: {name: 'entity.name.function.cairo'}
           },
-          end: '(?<=:)',
+          end: '(?<={)',
           name: 'meta.function.expression.cairo',
           patterns: [
             {include: '#comment'},
@@ -109,7 +108,11 @@ const grammar = {
     },
     'function-implicit': {
       patterns: [
-        {begin: '\\{', end: '\\}', patterns: [{include: '#parameters'}]}
+        {
+          begin: '(?<=[a-zA-Z0-9])\\s*{',
+          end: '}',
+          patterns: [{include: '#parameters'}]
+        }
       ]
     },
     'function-params': {
@@ -148,7 +151,7 @@ const grammar = {
     keywords: {
       patterns: [
         {
-          match: '\\b(else|if|in|return|end|assert|with_attr)\\b',
+          match: '\\b(else|if|in|return|assert|with_attr)\\b',
           name: 'keyword.controls.cairo'
         },
         {
@@ -157,7 +160,7 @@ const grammar = {
         },
         {
           match:
-            '^\\s*@(constructor|storage_var|view|external|contract_interface|known_ap_change|event)\\s+',
+            '^\\s*@(constructor|storage_var|view|external|raw_output|raw_input|l1_handler|contract_interface|known_ap_change|event)\\s+',
           name: 'keyword.others.cairo'
         }
       ]
@@ -210,7 +213,7 @@ const grammar = {
     storages: {
       patterns: [
         {
-          match: '\\b(let|const|local|struct|member|alloc_locals|tempvar)\\b',
+          match: '\\b(let|const|local|struct|alloc_locals|tempvar)\\b',
           name: 'storage.type.cairo'
         }
       ]

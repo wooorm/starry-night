@@ -115,7 +115,15 @@ const grammar = {
     enums: {
       patterns: [{match: '\\#[a-zA-Z_]+', name: 'support.variable.abapcds'}]
     },
-    functions: {patterns: [{name: 'entity.name.function.abapcds'}]},
+    functions: {
+      patterns: [
+        {
+          match:
+            '(?i)(?<=\\s)(abs|cast|ceil|curr_to_decfloat_amount|div|division|floor|mod|round|concat|concat_with_space|datn_days_between|datn_add_days|datn_add_months|get_numeric_value|instr|left|length|lpad|lower|ltrim|replace|replace_regexpr|right|rpad|rtrim|substring|upper|bintohex|hextobin|coalesce|fltp_to_dec|unit_conversion|currency_conversion|decimal_shift|dats_is_valid|dats_days_between|dats_add_days|dats_add_months|tims_is_valid|tstmp_is_valid|tstmp_current_utctimestamp|tstmp_seconds_between|tstmp_add_seconds|utcl_current|utcl_add_seconds|utcl_seconds_between|tstmpl_to_utcl|tstmpl_from_utcl|dats_to_datn|dats_from_datn|tims_to_timn|tims_from_timn|abap_system_timezone|abap_user_timezone|tstmp_to_dats|tstmp_to_tims|tstmp_to_dst|dats_tims_to_tstmp)\\(',
+          name: 'entity.name.function.abapcds'
+        }
+      ]
+    },
     keywords: {
       patterns: [
         {

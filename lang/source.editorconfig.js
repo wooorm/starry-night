@@ -1,15 +1,36 @@
 // This is a TextMate grammar distributed by `starry-night`.
-// This grammar is licensed `mit`.
+// This grammar is developed at
+// <https://github.com/sindresorhus/atom-editorconfig>
+// and licensed `mit`.
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: [],
+  extensions: ['.editorconfig'],
   names: ['editorconfig', 'editor-config'],
   patterns: [{include: '#main'}],
   repository: {
+    array: {
+      begin: '(?:\\G|^)(?=\\s*[^#\\s,]+\\s*(?:,\\s*[^#\\s,]+)++\\s*$)',
+      end: '(?=\\s*(?:$|#))',
+      patterns: [
+        {match: '[^#\\s,]+', name: 'string.unquoted.bareword.editorconfig'},
+        {include: '#comma'}
+      ]
+    },
     bareword: {
       match: '[^=#;\\s]+',
       name: 'string.unquoted.bareword.editorconfig'
+    },
+    bestGuess: {
+      patterns: [
+        {include: '#value'},
+        {include: '#bareword'},
+        {include: '#comment'}
+      ]
+    },
+    comma: {
+      match: ',',
+      name: 'punctuation.separator.delimiter.comma.editorconfig'
     },
     comment: {
       patterns: [
@@ -37,11 +58,12 @@ const grammar = {
     keywords: {
       patterns: [
         {
-          match: '(?i)(?<=\\s|=)(true|false|on|off|yes|no)(?=$|\\s)',
+          match: '(?i)(?:\\G|^|(?<=\\s|=))(true|false|on|off|yes|no)(?=$|\\s)',
           name: 'constant.language.boolean.${1:/downcase}.editorconfig'
         },
         {
-          match: '(?i)(?<=\\s|=)(CRLF|CR|LF|tab|space|unset)(?=$|\\s)',
+          match:
+            '(?i)(?:\\G|^|(?<=\\s|=))(CRLF|CR|LF|tab|space|unset)(?=$|\\s)',
           name: 'constant.language.${1:/downcase}.editorconfig'
         }
       ]
@@ -70,10 +92,7 @@ const grammar = {
       },
       patterns: [
         {include: '#escape'},
-        {
-          match: ',',
-          name: 'punctuation.separator.delimiter.comma.editorconfig'
-        },
+        {include: '#comma'},
         {include: '#pathRange'},
         {include: '#pathSpec'}
       ]
@@ -159,6 +178,49 @@ const grammar = {
           ]
         },
         {
+          begin: '(?i)^\\s*(ij_[^#\\s=]+)\\s*(=)',
+          beginCaptures: {
+            1: {name: 'keyword.other.definition.vendor-specific.editorconfig'},
+            2: {name: 'punctuation.separator.key-value.editorconfig'}
+          },
+          end: '(?=\\s*(?:$|#))',
+          name: 'meta.rule.vendor-specific.intellij.editorconfig',
+          patterns: [
+            {include: '#array'},
+            {include: '#value'},
+            {include: '#bareword'}
+          ]
+        },
+        {
+          begin:
+            '(?i)^\\s*((csharp|dotnet|java|vs|vscode|visual_studio)_[^\\s=]+)\\s*(=)',
+          beginCaptures: {
+            1: {name: 'keyword.other.definition.custom.editorconfig'},
+            3: {name: 'punctuation.separator.key-value.editorconfig'}
+          },
+          end: '$',
+          name: 'meta.rule.vendor-specific.microsoft.${2:/downcase}.editorconfig',
+          patterns: [
+            {
+              begin: '[A-Z]:\\\\(?=[^\\s:])',
+              end: '(?=\\s*(?:$|:|#|;))',
+              name: 'string.unquoted.pathname.windows.editorconfig',
+              patterns: [{match: '\\\\'}, {include: '#pathSpec'}]
+            },
+            {
+              captures: {
+                1: {patterns: [{include: '#keywords'}]},
+                2: {name: 'punctuation.separator.warning.editorconfig'},
+                3: {name: 'constant.language.severity-level.editorconfig'}
+              },
+              match:
+                '\\G\\s*(?:(true|false)(:))?(error|warning|suggestion|silent|none|default)(?=$|[\\s;#])',
+              name: 'meta.severity-level.editorconfig'
+            },
+            {include: '#bestGuess'}
+          ]
+        },
+        {
           begin: '^\\s*(?![\\[#;])([^\\s=]+)\\s*(=)',
           beginCaptures: {
             1: {name: 'keyword.other.definition.custom.editorconfig'},
@@ -166,7 +228,7 @@ const grammar = {
           },
           end: '$',
           name: 'meta.rule.custom.editorconfig',
-          patterns: [{include: '#value'}, {include: '#bareword'}]
+          patterns: [{include: '#bestGuess'}]
         }
       ]
     },

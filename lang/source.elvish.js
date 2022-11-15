@@ -37,7 +37,7 @@ const grammar = {
         1: {name: 'keyword.control.elvish'},
         2: {name: 'variable.other.elvish'}
       },
-      match: '}\\s+(catch|except)\\s+([\\w\\d_:~-]+)'
+      match: '(?<=})\\s+(catch|except)\\s+([\\w\\d_:~-]+)'
     },
     {
       captures: {1: {name: 'support.function.elvish'}},
@@ -61,7 +61,7 @@ const grammar = {
     },
     {
       captures: {1: {name: 'keyword.control.elvish'}},
-      match: '}\\s+(elif|else|catch|except|finally)(?=[\\s)}<>;|&])'
+      match: '(?<=})\\s+(elif|else|catch|except|finally)(?=[\\s)}<>;|&])'
     },
     {match: '[*?|&;<>()\\[\\]{}]', name: 'keyword.operator.elvish'}
   ],

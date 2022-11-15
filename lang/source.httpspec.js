@@ -23,7 +23,7 @@ const grammar = {
       ]
     },
     closingbracket: {
-      patterns: [{name: 'keyword.other.multiplexend.httpspec'}, {match: '\\]'}]
+      patterns: [{match: '\\]', name: 'keyword.other.multiplexend.httpspec'}]
     },
     comma: {
       patterns: [{match: '\\,', name: 'keyword.other.comma.httpspec.test'}]
@@ -38,7 +38,7 @@ const grammar = {
       patterns: [
         {
           captures: {1: {name: 'variable.parameter.headername.httpspec'}},
-          match: '^([a-zA-Z\\-_]+\\:)\\s(.*)$',
+          match: '^([^()<>@,;:\\\\"{} \\t\\x00-\\x1F\\x7F]+\\:)\\s(.*)$',
           name: 'string.unquoted.uri.httpspec'
         }
       ]
@@ -59,7 +59,8 @@ const grammar = {
     methodname: {
       patterns: [
         {
-          match: '(?:\\b)(OPTIONS|HEAD|GET|DELETE|PUT|PATCH|POST)',
+          match:
+            '(?:\\b)(ACL|BASELINE-CONTROL|BIND|CHECKIN|CHECKOUT|CONNECT|COPY|DELETE|GET|HEAD|LABEL|LINK|LOCK|MERGE|MKACTIVITY|MKCALENDAR|MKCOL|MKREDIRECTREF|MKWORKSPACE|MOVE|OPTIONS|ORDERPATCH|PATCH|POST|PRI|PROPFIND|PROPPATCH|PUT|REBIND|REPORT|SEARCH|TRACE|UNBIND|UNCHECKOUT|UNLINK|UNLOCK|UPDATE|UPDATEREDIRECTREF|VERSION-CONTROL)',
           name: 'keyword.other.method.httpspec'
         }
       ]
@@ -91,7 +92,7 @@ const grammar = {
         {
           begin:
             '^(?=ACL|BASELINE-CONTROL|BIND|CHECKIN|CHECKOUT|CONNECT|COPY|DELETE|GET|HEAD|LABEL|LINK|LOCK|MERGE|MKACTIVITY|MKCALENDAR|MKCOL|MKREDIRECTREF|MKWORKSPACE|MOVE|OPTIONS|ORDERPATCH|PATCH|POST|PRI|PROPFIND|PROPPATCH|PUT|REBIND|REPORT|SEARCH|TRACE|UNBIND|UNCHECKOUT|UNLINK|UNLOCK|UPDATE|UPDATEREDIRECTREF|VERSION-CONTROL\n)',
-          end: '^(?=\\d\\d\\d)',
+          end: '^(?=\\d\\d\\d|HTTP)',
           patterns: [
             {include: '#requestline'},
             {include: '#header'},
@@ -113,15 +114,31 @@ const grammar = {
         {
           captures: {0: {name: 'constant.language.statustext.httpspec'}},
           match: '^(\\d\\d\\d)\\s(.*)$'
+        },
+        {
+          captures: {0: {name: 'constant.language.statustext.httpspec'}},
+          match: '^HTTP/(1\\.1|2|3)\\s(\\d\\d\\d)\\s(.*)$'
         }
       ]
     },
     uri: {
       patterns: [
+        {include: '#uriabsolute'},
         {include: '#uripath'},
         {include: '#multiplex'},
         {include: '#questionmark'},
         {include: '#uriquery'}
+      ]
+    },
+    uriabsolute: {
+      patterns: [
+        {
+          begin:
+            '(?:\\s)(https?):\\/\\/((?:(?:[A-Za-z0-9\\-]{1,63})\\.)*(?:[A-Za-z0-9\\-]{1,63}))',
+          end: '(?:$)',
+          name: 'support.function.httpspec',
+          patterns: [{include: '#uripart'}, {include: '#multiplex'}]
+        }
       ]
     },
     uripart: {patterns: [{match: '([a-bA-B0-9\\-_/]+)'}]},

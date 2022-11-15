@@ -327,7 +327,7 @@ const grammar = {
     },
     phantom: {match: '\\b(phantom)\\b', name: 'keyword.control.phantom.move'},
     primitives: {
-      match: '\\b(u8|u64|u128|address|bool|signer)\\b',
+      match: '\\b(u8|u16|u32|u64|u128|u256|address|bool|signer)\\b',
       name: 'support.type.primitives.move'
     },
     public_fun: {
@@ -456,7 +456,7 @@ const grammar = {
       name: 'keyword.control.move.spec'
     },
     spec_types: {
-      match: '\\b(range|num|vector|bool|u8|u64|u128|address)\\b',
+      match: '\\b(range|num|vector|bool|u8|u16|u32|u64|u128|u256|address)\\b',
       name: 'support.type.vector.move'
     },
     struct: {

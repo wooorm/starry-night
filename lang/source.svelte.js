@@ -7,19 +7,7 @@
 const grammar = {
   extensions: ['.svelte'],
   injections: {
-    'L:(source.ts, source.js, source.coffee)': {
-      patterns: [
-        {
-          match: '(?<![_$[:alnum:]])\\$(?=[_[:alpha:]][_$[:alnum:]]*)',
-          name: 'punctuation.definition.variable.svelte'
-        },
-        {
-          match: '(?<![_$[:alnum:]])(\\$\\$)(?=props|restProps|slots)',
-          name: 'punctuation.definition.variable.svelte'
-        }
-      ]
-    },
-    'L:meta.script.svelte - (meta source)': {
+    'L:(meta.script.svelte - (meta source))': {
       patterns: [
         {
           begin: '(?<=>)(?!</)',
@@ -30,7 +18,7 @@ const grammar = {
         }
       ]
     },
-    'L:meta.script.svelte meta.lang.coffee - (meta source)': {
+    'L:(meta.script.svelte meta.lang.coffee - (meta source))': {
       patterns: [
         {
           begin: '(?<=>)(?!</)',
@@ -41,7 +29,7 @@ const grammar = {
         }
       ]
     },
-    'L:meta.script.svelte meta.lang.javascript - (meta source)': {
+    'L:(meta.script.svelte meta.lang.javascript - (meta source))': {
       patterns: [
         {
           begin: '(?<=>)(?!</)',
@@ -52,7 +40,7 @@ const grammar = {
         }
       ]
     },
-    'L:meta.script.svelte meta.lang.js - (meta source)': {
+    'L:(meta.script.svelte meta.lang.js - (meta source))': {
       patterns: [
         {
           begin: '(?<=>)(?!</)',
@@ -63,7 +51,7 @@ const grammar = {
         }
       ]
     },
-    'L:meta.script.svelte meta.lang.ts - (meta source)': {
+    'L:(meta.script.svelte meta.lang.ts - (meta source))': {
       patterns: [
         {
           begin: '(?<=>)(?!</)',
@@ -74,7 +62,7 @@ const grammar = {
         }
       ]
     },
-    'L:meta.script.svelte meta.lang.typescript - (meta source)': {
+    'L:(meta.script.svelte meta.lang.typescript - (meta source))': {
       patterns: [
         {
           begin: '(?<=>)(?!</)',
@@ -85,7 +73,7 @@ const grammar = {
         }
       ]
     },
-    'L:meta.style.svelte - meta.lang - (meta source)': {
+    'L:(meta.style.svelte - meta.lang - (meta source))': {
       patterns: [
         {
           begin: '(?<=>)(?!</)',
@@ -96,7 +84,7 @@ const grammar = {
         }
       ]
     },
-    'L:meta.style.svelte meta.lang.css - (meta source)': {
+    'L:(meta.style.svelte meta.lang.css - (meta source))': {
       patterns: [
         {
           begin: '(?<=>)(?!</)',
@@ -107,7 +95,7 @@ const grammar = {
         }
       ]
     },
-    'L:meta.style.svelte meta.lang.less - (meta source)': {
+    'L:(meta.style.svelte meta.lang.less - (meta source))': {
       patterns: [
         {
           begin: '(?<=>)(?!</)',
@@ -118,7 +106,7 @@ const grammar = {
         }
       ]
     },
-    'L:meta.style.svelte meta.lang.postcss - (meta source)': {
+    'L:(meta.style.svelte meta.lang.postcss - (meta source))': {
       patterns: [
         {
           begin: '(?<=>)(?!</)',
@@ -129,7 +117,7 @@ const grammar = {
         }
       ]
     },
-    'L:meta.style.svelte meta.lang.sass - (meta source)': {
+    'L:(meta.style.svelte meta.lang.sass - (meta source))': {
       patterns: [
         {
           begin: '(?<=>)(?!</)',
@@ -140,7 +128,7 @@ const grammar = {
         }
       ]
     },
-    'L:meta.style.svelte meta.lang.scss - (meta source)': {
+    'L:(meta.style.svelte meta.lang.scss - (meta source))': {
       patterns: [
         {
           begin: '(?<=>)(?!</)',
@@ -151,7 +139,7 @@ const grammar = {
         }
       ]
     },
-    'L:meta.style.svelte meta.lang.stylus - (meta source)': {
+    'L:(meta.style.svelte meta.lang.stylus - (meta source))': {
       patterns: [
         {
           begin: '(?<=>)(?!</)',
@@ -162,7 +150,7 @@ const grammar = {
         }
       ]
     },
-    'L:meta.template.svelte - meta.lang - (meta source)': {
+    'L:(meta.template.svelte - meta.lang - (meta source))': {
       patterns: [
         {
           begin: '(?<=>)\\s',
@@ -171,7 +159,7 @@ const grammar = {
         }
       ]
     },
-    'L:meta.template.svelte meta.lang.pug - (meta source)': {
+    'L:(meta.template.svelte meta.lang.pug - (meta source))': {
       patterns: [
         {
           begin: '(?<=>)(?!</)',
@@ -179,6 +167,18 @@ const grammar = {
           end: '(?=</)',
           name: 'meta.embedded.block.svelte',
           patterns: [{include: 'text.jade'}]
+        }
+      ]
+    },
+    'L:(source.ts, source.js, source.coffee)': {
+      patterns: [
+        {
+          match: '(?<![_$[:alnum:]])\\$(?=[_[:alpha:]][_$[:alnum:]]*)',
+          name: 'punctuation.definition.variable.svelte'
+        },
+        {
+          match: '(?<![_$[:alnum:]])(\\$\\$)(?=props|restProps|slots)',
+          name: 'punctuation.definition.variable.svelte'
         }
       ]
     }

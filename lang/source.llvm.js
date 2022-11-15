@@ -1,5 +1,7 @@
 // This is a TextMate grammar distributed by `starry-night`.
-// This grammar is licensed `mit`.
+// This grammar is developed at
+// <https://github.com/whitequark/llvm.tmbundle>
+// and licensed `mit`.
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
@@ -22,7 +24,7 @@ const grammar = {
     },
     {
       match:
-        '\\b(void|i\\d+\\**|half|float|double|fp128|x86_fp80|ppc_fp128|x86mmx|label|metadata)',
+        '\\b(void|i\\d+\\**|half|float|double|fp128|x86_fp80|ppc_fp128|x86mmx|ptr|label|metadata)',
       name: 'storage.type.language.llvm'
     },
     {

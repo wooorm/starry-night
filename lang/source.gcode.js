@@ -48,19 +48,19 @@ const grammar = {
     coords: {
       patterns: [
         {
-          match: '([xX])\\s?(\\-?\\d*\\.?\\d+\\.?|\\-?\\.?(?=[#\\[]))',
+          match: '(?i)([X])\\s?(\\-?\\d*\\.?\\d+\\.?|\\-?\\.?(?=[#\\[]))',
           name: 'string.gcode'
         },
         {
-          match: '([yY])\\s?(\\-?\\d*\\.?\\d+\\.?|\\-?\\.?(?=[#\\[]))',
+          match: '(?i)([Y])\\s?(\\-?\\d*\\.?\\d+\\.?|\\-?\\.?(?=[#\\[]))',
           name: 'string.gcode'
         },
         {
-          match: '([zZ])\\s?(\\-?\\d*\\.?\\d+\\.?|\\-?\\.?(?=[#\\[]))',
+          match: '(?i)([Z])\\s?(\\-?\\d*\\.?\\d+\\.?|\\-?\\.?(?=[#\\[]))',
           name: 'invalid.gcode'
         },
         {
-          match: '([aAbBcC])\\s?(\\-*\\d?\\.?\\d+\\.?|\\-?\\.?(?=[#\\[]))',
+          match: '(?i)([ABC])\\s?(\\-*\\d*\\.?\\d+\\.?|\\-?\\.?(?=[#\\[]))',
           name: 'constant.character.escape.gcode'
         }
       ]
@@ -68,19 +68,19 @@ const grammar = {
     gcodes: {
       patterns: [
         {
-          match: '[gG](1)?5[4-9](.1)?\\s?(P[0-9]{1,3})?',
+          match: '(?i)[G](1)?5[4-9](.1)?\\s?(P[0-9]{1,3})?',
           name: 'constant.numeric.gcode'
         },
-        {match: '[gG]1[1-2][0-9]', name: 'constant.numeric.gcode'},
-        {match: '[gG]15\\s?(H[0-9]{1,2})?', name: 'constant.numeric.gcode'},
-        {match: '[gG][0-9]{1,3}(\\.[0-9])?', name: 'markup.bold.gcode'}
+        {match: '(?i)[G]1[1-2][0-9]', name: 'constant.numeric.gcode'},
+        {match: '(?i)[G]15\\s?(H[0-9]{1,2})?', name: 'constant.numeric.gcode'},
+        {match: '(?i)[G][0-9]{1,3}(\\.[0-9])?', name: 'markup.bold.gcode'}
       ]
     },
     macrovars: {patterns: [{match: '[#][0-9]*', name: 'variable.other.gcode'}]},
     mcodes: {
       patterns: [
         {
-          match: '[mM][0-9]{1,3}',
+          match: '(?i)[M][0-9]{1,3}',
           name: 'keyword.operator.quantifier.regexp.gcode'
         }
       ]
@@ -88,15 +88,15 @@ const grammar = {
     modifiers: {
       patterns: [
         {
-          match: '([iIjJkK])(\\-?\\d*\\.?\\d+\\.?|\\-?\\.?(?=[#\\[]))',
+          match: '(?i)([IJK])(\\-?\\d*\\.?\\d+\\.?|\\-?\\.?(?=[#\\[]))',
           name: 'constant.character.escape.gcode'
         },
         {
-          match: '([qQrR])(\\-?\\d*\\.?\\d+\\.?|\\-?\\.?(?=[#\\[]]))',
+          match: '(?i)([QR])(\\-?\\d*\\.?\\d+\\.?|\\-?\\.?(?=[#\\[]]))',
           name: 'support.constant.math.gcode'
         },
         {
-          match: '([uUwW])(\\-?\\d*\\.?\\d+\\.?|\\-?\\.?(?=[#\\[]]))',
+          match: '(?i)([UW])(\\-?\\d*\\.?\\d+\\.?|\\-?\\.?(?=[#\\[]]))',
           name: 'support.constant.math.gcode'
         }
       ]
@@ -117,10 +117,10 @@ const grammar = {
     },
     prognumbers: {
       patterns: [
-        {match: '(^[nN])(\\d+)', name: 'constant.numeric.gcode'},
-        {match: '(^[oO])(\\d+)?', name: 'string.regexp.gcode'},
+        {match: '(?i)(^[N])(\\d+)', name: 'constant.numeric.gcode'},
+        {match: '(?i)(^[O])(\\d+)?', name: 'string.regexp.gcode'},
         {
-          match: '([pP])\\s?(\\d?\\.?\\d+\\.?|\\.?(?=[#\\[]))',
+          match: '(?i)([P])\\s?(\\d?\\.?\\d+\\.?|\\.?(?=[#\\[]))',
           name: 'string.regexp.gcode'
         }
       ]
@@ -139,9 +139,12 @@ const grammar = {
     },
     speedsfeeds: {
       patterns: [
-        {match: '([sS])\\s?(\\d+|(?=[#\\[]))', name: 'constant.language.gcode'},
         {
-          match: '([eEfF])\\s?\\.?(\\d+(\\.\\d*)?|(?=[#\\[]))',
+          match: '(?i)([S])\\s?(\\d+|(?=[#\\[]))',
+          name: 'constant.language.gcode'
+        },
+        {
+          match: '(?i)([EF])\\s?\\.?(\\d+(\\.\\d*)?|(?=[#\\[]))',
           name: 'constant.language.gcode'
         }
       ]
@@ -149,15 +152,15 @@ const grammar = {
     tools: {
       patterns: [
         {
-          match: '([dD])\\s?(\\d+(\\.\\d*)?|(?=[#\\[]))',
+          match: '(?i)([D])\\s?(\\d+(\\.\\d*)?|(?=[#\\[]))',
           name: 'constant.character.gcode'
         },
         {
-          match: '([hH])\\s?(\\d+(\\.\\d*)?|(?=[#\\[]))',
+          match: '(?i)([H])\\s?(\\d+(\\.\\d*)?|(?=[#\\[]))',
           name: 'constant.character.gcode'
         },
         {
-          match: '([tT])\\s?(\\d+(\\.\\d*)?|(?=[#\\[]))',
+          match: '(?i)([T])\\s?(\\d+(\\.\\d*)?|(?=[#\\[]))',
           name: 'constant.character.gcode'
         }
       ]

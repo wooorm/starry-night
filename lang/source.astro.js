@@ -24,6 +24,7 @@ const grammar = {
   repository: {
     'astro:attribute': {
       patterns: [
+        {include: '#html:events'},
         {include: '#html:attribute'},
         {include: '#string-double-quoted'},
         {include: '#string-single-quoted'},
@@ -286,7 +287,7 @@ const grammar = {
         1: {name: 'entity.other.attribute-name.html'},
         2: {name: 'punctuation.separator.key-value.html'}
       },
-      match: '([a-zA-Z\\-:@_.]+)(=?)',
+      match: '([a-zA-Z0-9\\-:@_.]+)(=?)',
       name: 'meta.attribute.$1.html'
     },
     'html:comment': {
@@ -398,6 +399,113 @@ const grammar = {
       },
       match: '(&)([0-9A-Za-z]+|#x[0-9A-Fa-f]+|x[0-9]+)',
       name: 'constant.character.entity.html'
+    },
+    'html:events': {
+      begin:
+        'on(s(croll|t(orage|alled)|u(spend|bmit)|e(curitypolicyviolation|ek(ing|ed)|lect))|hashchange|c(hange|o(ntextmenu|py)|u(t|echange)|l(ick|ose)|an(cel|play(through)?))|t(imeupdate|oggle)|in(put|valid)|o(nline|ffline)|d(urationchange|r(op|ag(start|over|e(n(ter|d)|xit)|leave)?)|blclick)|un(handledrejection|load)|p(opstate|lay(ing)?|a(ste|use|ge(show|hide))|rogress)|e(nded|rror|mptied)|volumechange|key(down|up|press)|focus|w(heel|aiting)|l(oad(start|e(nd|d(data|metadata)))?|anguagechange)|a(uxclick|fterprint|bort)|r(e(s(ize|et)|jectionhandled)|atechange)|m(ouse(o(ut|ver)|down|up|enter|leave|move)|essage(error)?)|b(efore(unload|print)|lur))(?![\\w:-])',
+      beginCaptures: {0: {name: 'entity.other.attribute-name.html'}},
+      end: '(?=\\s*+[^=\\s])',
+      name: 'meta.attribute.event-handler.$1.html',
+      patterns: [
+        {
+          begin: '=',
+          beginCaptures: {0: {name: 'punctuation.separator.key-value.html'}},
+          end: '(?<=[^\\s=])(?!\\s*=)|(?=/?>)',
+          patterns: [
+            {
+              begin: '(?=[^\\s=<>`/]|/(?!>))',
+              end: '(?!\\G)',
+              name: 'meta.embedded.line.js',
+              patterns: [
+                {
+                  captures: {
+                    0: {name: 'source.js'},
+                    1: {patterns: [{include: 'source.js'}]}
+                  },
+                  match: '(([^\\s"\'=<>`/]|/(?!>))+)',
+                  name: 'string.unquoted.html'
+                },
+                {
+                  begin: '"',
+                  beginCaptures: {
+                    0: {name: 'punctuation.definition.string.begin.html'}
+                  },
+                  contentName: 'source.js',
+                  end: '(")',
+                  endCaptures: {
+                    0: {name: 'punctuation.definition.string.end.html'}
+                  },
+                  name: 'string.quoted.double.html',
+                  patterns: [
+                    {
+                      captures: {0: {patterns: [{include: 'source.js'}]}},
+                      match: '([^\\n"/]|/(?![/*]))+'
+                    },
+                    {
+                      begin: '//',
+                      beginCaptures: {
+                        0: {name: 'punctuation.definition.comment.js'}
+                      },
+                      end: '(?=")|\\n',
+                      name: 'comment.line.double-slash.js'
+                    },
+                    {
+                      begin: '/\\*',
+                      beginCaptures: {
+                        0: {name: 'punctuation.definition.comment.begin.js'}
+                      },
+                      end: '(?=")|\\*/',
+                      endCaptures: {
+                        0: {name: 'punctuation.definition.comment.end.js'}
+                      },
+                      name: 'comment.block.js'
+                    }
+                  ]
+                },
+                {
+                  begin: "'",
+                  beginCaptures: {
+                    0: {name: 'punctuation.definition.string.begin.html'}
+                  },
+                  contentName: 'source.js',
+                  end: "(')",
+                  endCaptures: {
+                    0: {name: 'punctuation.definition.string.end.html'},
+                    1: {name: 'source.js-ignored-vscode'}
+                  },
+                  name: 'string.quoted.single.html',
+                  patterns: [
+                    {
+                      captures: {0: {patterns: [{include: 'source.js'}]}},
+                      match: "([^\\n'/]|/(?![/*]))+"
+                    },
+                    {
+                      begin: '//',
+                      beginCaptures: {
+                        0: {name: 'punctuation.definition.comment.js'}
+                      },
+                      end: "(?=')|\\n",
+                      name: 'comment.line.double-slash.js'
+                    },
+                    {
+                      begin: '/\\*',
+                      beginCaptures: {
+                        0: {name: 'punctuation.definition.comment.begin.js'}
+                      },
+                      end: "(?=')|\\*/",
+                      endCaptures: {
+                        0: {name: 'punctuation.definition.comment.end.js'}
+                      },
+                      name: 'comment.block.js'
+                    }
+                  ]
+                }
+              ]
+            },
+            {match: '=', name: 'invalid.illegal.unexpected-equals-sign.html'}
+          ]
+        }
+      ]
     },
     'html:tag-attributes': {
       begin: '\\G',

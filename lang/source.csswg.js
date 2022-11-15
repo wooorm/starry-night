@@ -66,7 +66,7 @@ const grammar = {
             2: {name: 'string.unquoted.csswg'}
           },
           match:
-            '^\\s*(?i)(Name|Value|For|Initial|Applies to|Inherited|Percentages|Media|Computed value|Animation type|Canonical order)\\s*:\\s*(.*)$'
+            '^\\s*(?i)(Name|Value|For|Initial|Applies to|Inherited|Percentages|Media|Computed value|Animation type|Canonical order|Logical property group)\\s*:\\s*(.*)$'
         },
         {
           captures: {

@@ -365,7 +365,7 @@ const grammar = {
         {
           captures: {
             1: {name: 'keyword.declaration.scala'},
-            2: {name: 'entity.other.inherited-class.scala'}
+            2: {name: 'entity.name.class'}
           },
           match:
             '\\b(extends|with|derives)\\b\\s*([A-Z\\p{Lt}\\p{Lu}][A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}0-9]*(?:(?<=_)[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)?|`[^`]+`|(?=\\([^\\)]+=>)|(?=(?:[A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}][A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}0-9]*(?:(?<=_)[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)?|[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+))|(?="))?'
