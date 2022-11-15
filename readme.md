@@ -48,7 +48,7 @@ source and JavaScript!
 
 This package is an open source version of GitHub’s closed-source `PrettyLights`
 project (more on that later).
-It supports **500+ grammars** and its **extremely high quality**.
+It supports **520+ grammars** and its **extremely high quality**.
 It uses TextMate grammars which are also used in popular editors (SublimeText,
 Atom, VS Code, \&c).
 They’re heavy but high quality.
@@ -80,7 +80,7 @@ diffing can be performant, or when you’re working with [`hast`][hast] or
 
 Bundled, minified, and gzipped, `starry-night` and the WASM binary are 185 kB.
 There are two lists of grammars you can use: `common` (33 languages, good for
-your own site) adds 160 kB and `all` (500+ languages, useful if are making a
+your own site) adds 160 kB and `all` (520+ languages, useful if are making a
 site like GitHub) is 1.35 MB.
 You can also manually choose which grammars to include (or add to `common`): a
 language is typically between 3 and 5 kB.
