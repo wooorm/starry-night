@@ -1574,7 +1574,7 @@ export const info = {
   },
   'source.svelte': {
     license: 'mit',
-    homepage: 'https://github.com/sveltejs/svelte-atom'
+    homepage: 'https://github.com/umanghome/svelte-atom'
   },
   'source.swift': {
     homepage: 'https://github.com/textmate/swift.tmbundle'

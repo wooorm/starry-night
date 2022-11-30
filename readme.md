@@ -1262,7 +1262,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.string-template`](lang/source.string-template.js) (isc) — [upstream](https://github.com/Alhadis/language-etc)
 *   [ ] [`source.stylus`](lang/source.stylus.js) (mit)
 *   [ ] [`source.supercollider`](lang/source.supercollider.js) (mit) — [upstream](https://github.com/supercollider/language-supercollider)
-*   [ ] [`source.svelte`](lang/source.svelte.js) (mit) — [upstream](https://github.com/sveltejs/svelte-atom)
+*   [ ] [`source.svelte`](lang/source.svelte.js) (mit) — [upstream](https://github.com/umanghome/svelte-atom)
 *   [ ] [`source.systemverilog`](lang/source.systemverilog.js) (apache-2.0) — [upstream](https://github.com/TheClams/SystemVerilog)
 *   [ ] [`source.talon`](lang/source.talon.js) (mit) — [upstream](https://github.com/mrob95/vscode-TalonScript)
 *   [ ] [`source.tcl`](lang/source.tcl.js)
