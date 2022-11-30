@@ -1,6 +1,6 @@
 {
   "include": ["**/**.js"],
-  "exclude": ["coverage", "node_modules"],
+  "exclude": ["coverage/", "node_modules/", "lang/"],
   "compilerOptions": {
     "checkJs": true,
     "declaration": true,
