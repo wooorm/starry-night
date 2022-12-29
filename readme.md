@@ -276,6 +276,16 @@ Function to get a URL to the oniguruma WASM.
 
 URL object to a WASM binary (`URL` or `Promise<URL>`).
 
+
+###### Example 
+```js
+import {createStarryNight, common} from '@wooorm/starry-night'
+
+const starryNight = await createStarryNight(common, {
+  getOnigurumaUrlFetch: () => new URL(window.location.origin + "onig.wasm")
+})
+```
+
 ### `starryNight.flagToScope(flag)`
 
 Get the grammar scope (such as `source.gfm`) associated with a grammar name
