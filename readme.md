@@ -192,16 +192,22 @@ Yields:
 This package exports the identifiers `createStarryNight`, `common`, and `all`.
 There is no default export.
 
-### `createStarryNight(grammars)`
+### `createStarryNight(grammars[, options])`
 
 Create a `StarryNight` that can highlight things based on the given `grammars`.
 This is async to facilitate async loading and registering, which is currently
-only used for WASM.
+only used for WASM.  
+Use the optional `Options` object to pass functions that resolve to a `URL`
+pointing to a `vscode-oniguruma` WASM binary.
+
+*Note: The URL must result in a version 1 `onig.wasm` from `vscode-oniguruma`*
 
 ###### Parameters
 
 *   `grammars` (`Array<Grammar>`)
     — grammars to support
+*   `options` (`Options`)
+    — `getOnigurumaUrlFs` for node.js w/o fetch and `getOnigurumaUrlFetch` for browser and node v18+ environments.
 
 ###### Returns
 
