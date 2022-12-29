@@ -22,7 +22,7 @@ source and JavaScript!
 *   [Install](#install)
 *   [Use](#use)
 *   [API](#api)
-    *   [`createStarryNight(grammars)`](#createstarrynightgrammars)
+    *   [`createStarryNight(grammars)`](#createstarrynightgrammars-options)
     *   [`starryNight.highlight(value, scope)`](#starrynighthighlightvalue-scope)
     *   [`starryNight.flagToScope(flag)`](#starrynightflagtoscopeflag)
     *   [`starryNight.scopes()`](#starrynightscopes)
@@ -197,17 +197,13 @@ There is no default export.
 Create a `StarryNight` that can highlight things based on the given `grammars`.
 This is async to facilitate async loading and registering, which is currently
 only used for WASM.  
-Use the optional `Options` object to pass functions that resolve to a `URL`
-pointing to a `vscode-oniguruma` WASM binary.
-
-*Note: The URL must result in a version 1 `onig.wasm` from `vscode-oniguruma`*
 
 ###### Parameters
 
 *   `grammars` (`Array<Grammar>`)
     — grammars to support
 *   `options` (`Options`)
-    — `getOnigurumaUrlFs` for node.js w/o fetch and `getOnigurumaUrlFetch` for browser and node v18+ environments.
+    — `configuration
 
 ###### Returns
 
@@ -254,6 +250,31 @@ Yields:
   ]
 }
 ```
+
+#### `Options`
+
+Configuration (optional).
+
+###### `options.getOnigurumaUrlFetch`
+
+Get a URL to the oniguruma WASM, typically used in browsers (`GetOnigurumaUrl`,
+optional).
+
+###### `options.getOnigurumaUrlFs`
+
+Get a URL to the oniguruma WASM, typically used in Node.js (`GetOnigurumaUrl`,
+optional).
+
+#### `GetOnigurumaUrl`
+
+Function to get a URL to the oniguruma WASM.
+
+> 👉 **Note**: this must currently result in a version 1 URL of
+> `onig.wasm` from `vscode-oniguruma`.
+
+###### Returns
+
+URL object to a WASM binary (`URL` or `Promise<URL>`).
 
 ### `starryNight.flagToScope(flag)`
 
@@ -1395,7 +1416,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 ## Types
 
 This package is fully typed with [TypeScript][].
-It exports additional `Grammar` and `Root` types that model their respective
+It exports additional `Grammar`, `Root`, `Options` and `GetOnigurumaUrl` types that model their respective
 interfaces.
 
 ## Compatibility
