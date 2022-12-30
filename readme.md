@@ -210,47 +210,6 @@ only used for WASM.
 Promise that resolves to an instance which highlights based on the bound
 grammars (`Promise<StarryNight>`).
 
-### `starryNight.highlight(value, scope)`
-
-Highlight `value` (code) as `scope` (a TextMate scope).
-
-###### Parameters
-
-*   `value` (`string`)
-    — code to highlight
-*   `scope` (`string`)
-    — registered grammar scope to highlight as (such as `'source.gfm'`)
-
-###### Returns
-
-Node representing highlighted code ([`Root`][root]).
-
-###### Example
-
-```js
-import {createStarryNight} from '@wooorm/starry-night'
-import sourceCss from '@wooorm/starry-night/lang/source.css.js'
-
-const starryNight = await createStarryNight([sourceCss])
-
-console.log(starryNight.highlight('em { color: red }', 'source.css'))
-```
-
-Yields:
-
-```js
-{
-  type: 'root',
-  children: [
-    {type: 'element', tagName: 'span', properties: [Object], children: [Array]},
-    {type: 'text', value: ' { '},
-    // …
-    {type: 'element', tagName: 'span', properties: [Object], children: [Array]},
-    {type: 'text', value: ' }'}
-  ]
-}
-```
-
 #### `Options`
 
 Configuration (optional).
@@ -294,6 +253,47 @@ const starryNight = await createStarryNight(common, {
     return new URL("/onig.wasm", window.location.href);
   }
 })
+```
+
+### `starryNight.highlight(value, scope)`
+
+Highlight `value` (code) as `scope` (a TextMate scope).
+
+###### Parameters
+
+*   `value` (`string`)
+    — code to highlight
+*   `scope` (`string`)
+    — registered grammar scope to highlight as (such as `'source.gfm'`)
+
+###### Returns
+
+Node representing highlighted code ([`Root`][root]).
+
+###### Example
+
+```js
+import {createStarryNight} from '@wooorm/starry-night'
+import sourceCss from '@wooorm/starry-night/lang/source.css.js'
+
+const starryNight = await createStarryNight([sourceCss])
+
+console.log(starryNight.highlight('em { color: red }', 'source.css'))
+```
+
+Yields:
+
+```js
+{
+  type: 'root',
+  children: [
+    {type: 'element', tagName: 'span', properties: [Object], children: [Array]},
+    {type: 'text', value: ' { '},
+    // …
+    {type: 'element', tagName: 'span', properties: [Object], children: [Array]},
+    {type: 'text', value: ' }'}
+  ]
+}
 ```
 
 ### `starryNight.flagToScope(flag)`
