@@ -229,14 +229,15 @@ optional).
 Function to get a URL to the oniguruma WASM.
 
 > 👉 **Note**: this must currently result in a version 1 URL of
-> `onig.wasm` from `vscode-oniguruma`.
+> `onig.wasm` from [`vscode-oniguruma`][vscode-oniguruma].
 
 > ⚠️ **Danger**: when you use this functionality, your project might break at
 > any time (when reinstalling dependencies), except when you make sure that
 > the WASM binary you load manually is what our internally used
 > `vscode-oniguruma` dependency expects.
-> To solve this, you could for example use an npm script called `dependencies`
-> (which runs everytime `node_modules` is changed) which copies
+> To solve this, you could for example use an npm script called
+> [`dependencies`][npm-script-dependencies] (which runs everytime
+> `node_modules` is changed) which copies
 > `vscode-oniguruma/release/onig.wasm` to the place you want to host it.
 
 ###### Returns
@@ -1529,6 +1530,10 @@ All other files [MIT][license] © [Titus Wormer][author]
 [refractor]: https://github.com/wooorm/refractor
 
 [shiki]: https://github.com/shikijs/shiki
+
+[npm-script-dependencies]: https://docs.npmjs.com/cli/v8/using-npm/scripts#dependencies
+
+[vscode-oniguruma]: https://github.com/microsoft/vscode-oniguruma
 
 [vscode-textmate]: https://github.com/microsoft/vscode-textmate
 
