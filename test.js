@@ -35,6 +35,18 @@ test('.flagToScope(flag)', async () => {
   assert.equal(starryNight.flagToScope('whatever'), undefined)
 })
 
+test('.createStarryNight with options', () => {
+  assert.rejects(
+    async () => {
+      await createStarryNight(common, {
+        getOnigurumaUrlFs: () => new URL('file:///foo/baz/onig.wasm')
+      })
+    },
+    /no such file or directory/,
+    'should support `getOnigurumaUrlFs`'
+  )
+})
+
 test('.scopes()', async () => {
   const starryNight = await createStarryNight(common)
   const list = starryNight.scopes()

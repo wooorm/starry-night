@@ -22,7 +22,7 @@ source and JavaScript!
 *   [Install](#install)
 *   [Use](#use)
 *   [API](#api)
-    *   [`createStarryNight(grammars)`](#createstarrynightgrammars)
+    *   [`createStarryNight(grammars[, options])`](#createstarrynightgrammars-options)
     *   [`starryNight.highlight(value, scope)`](#starrynighthighlightvalue-scope)
     *   [`starryNight.flagToScope(flag)`](#starrynightflagtoscopeflag)
     *   [`starryNight.scopes()`](#starrynightscopes)
@@ -192,7 +192,7 @@ Yields:
 This package exports the identifiers `createStarryNight`, `common`, and `all`.
 There is no default export.
 
-### `createStarryNight(grammars)`
+### `createStarryNight(grammars[, options])`
 
 Create a `StarryNight` that can highlight things based on the given `grammars`.
 This is async to facilitate async loading and registering, which is currently
@@ -202,6 +202,8 @@ only used for WASM.
 
 *   `grammars` (`Array<Grammar>`)
     — grammars to support
+*   `options` (`Options`)
+    — configuration
 
 ###### Returns
 
@@ -247,6 +249,51 @@ Yields:
     {type: 'text', value: ' }'}
   ]
 }
+```
+
+#### `Options`
+
+Configuration (optional).
+
+###### `options.getOnigurumaUrlFetch`
+
+Get a URL to the oniguruma WASM, typically used in browsers (`GetOnigurumaUrl`,
+optional).
+
+###### `options.getOnigurumaUrlFs`
+
+Get a URL to the oniguruma WASM, typically used in Node.js (`GetOnigurumaUrl`,
+optional).
+
+#### `GetOnigurumaUrl`
+
+Function to get a URL to the oniguruma WASM.
+
+> 👉 **Note**: this must currently result in a version 1 URL of
+> `onig.wasm` from `vscode-oniguruma`.
+
+> ⚠️ **Danger**: when you use this functionality, your project might break at
+> any time (when reinstalling dependencies), except when you make sure that
+> the WASM binary you load manually is what our internally used
+> `vscode-oniguruma` dependency expects.
+> To solve this, you could for example use an npm script called `dependencies`
+> (which runs everytime `node_modules` is changed) which copies
+> `vscode-oniguruma/release/onig.wasm` to the place you want to host it.
+
+###### Returns
+
+URL object to a WASM binary (`URL` or `Promise<URL>`).
+
+###### Example
+
+```js
+import {createStarryNight, common} from '@wooorm/starry-night'
+
+const starryNight = await createStarryNight(common, {
+  getOnigurumaUrlFetch() {
+    return new URL("/onig.wasm", window.location.href);
+  }
+})
 ```
 
 ### `starryNight.flagToScope(flag)`
@@ -1389,8 +1436,8 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 ## Types
 
 This package is fully typed with [TypeScript][].
-It exports additional `Grammar` and `Root` types that model their respective
-interfaces.
+It exports additional `Grammar`, `Root`, `Options`, and `GetOnigurumaUrl`
+types that model their respective interfaces.
 
 ## Compatibility
 
