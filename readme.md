@@ -270,10 +270,10 @@ optional).
 Function to get a URL to the oniguruma WASM.
 
 > 👉 **Note**: this must currently result in a version 1 URL of
-> `onig.wasm` from `vscode-oniguruma`.  
+> `onig.wasm` from `vscode-oniguruma`.\
 > ☝️ **Disclaimer**: Using this functionality may break your implementation
-if the static WASM you point to differs
-from the one released by `vscode-oniguruma`
+> if the static WASM you point to differs
+> from the one released by `vscode-oniguruma`
 
 ###### Returns
 
@@ -288,7 +288,8 @@ const starryNight = await createStarryNight(common, {
   getOnigurumaUrlFetch() {
     return new URL("/onig.wasm", window.location.href);
   }
-}) ```
+})
+```
 
 ### `starryNight.flagToScope(flag)`
 
