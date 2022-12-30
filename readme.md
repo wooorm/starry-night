@@ -251,7 +251,7 @@ import {createStarryNight, common} from '@wooorm/starry-night'
 
 const starryNight = await createStarryNight(common, {
   getOnigurumaUrlFetch() {
-    return new URL("/onig.wasm", window.location.href);
+    return new URL('/onig.wasm', window.location.href);
   }
 })
 ```
