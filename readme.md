@@ -22,7 +22,7 @@ source and JavaScript!
 *   [Install](#install)
 *   [Use](#use)
 *   [API](#api)
-    *   [`createStarryNight(grammars)`](#createstarrynightgrammars-options)
+    *   [`createStarryNight(grammars[, options])`](#createstarrynightgrammars-options)
     *   [`starryNight.highlight(value, scope)`](#starrynighthighlightvalue-scope)
     *   [`starryNight.flagToScope(flag)`](#starrynightflagtoscopeflag)
     *   [`starryNight.scopes()`](#starrynightscopes)
@@ -196,14 +196,14 @@ There is no default export.
 
 Create a `StarryNight` that can highlight things based on the given `grammars`.
 This is async to facilitate async loading and registering, which is currently
-only used for WASM.  
+only used for WASM.
 
 ###### Parameters
 
 *   `grammars` (`Array<Grammar>`)
     — grammars to support
 *   `options` (`Options`)
-    — `configuration
+    — configuration
 
 ###### Returns
 
@@ -270,21 +270,25 @@ optional).
 Function to get a URL to the oniguruma WASM.
 
 > 👉 **Note**: this must currently result in a version 1 URL of
-> `onig.wasm` from `vscode-oniguruma`.
+> `onig.wasm` from `vscode-oniguruma`.  
+> ☝️ **Disclaimer**: Using this functionality may break your implementation
+if the static WASM you point to differs
+from the one released by `vscode-oniguruma`
 
 ###### Returns
 
 URL object to a WASM binary (`URL` or `Promise<URL>`).
 
+###### Example
 
-###### Example 
 ```js
 import {createStarryNight, common} from '@wooorm/starry-night'
 
 const starryNight = await createStarryNight(common, {
-  getOnigurumaUrlFetch: () => new URL(window.location.origin + "onig.wasm")
-})
-```
+  getOnigurumaUrlFetch() {
+    return new URL("/onig.wasm", window.location.href);
+  }
+}) ```
 
 ### `starryNight.flagToScope(flag)`
 
@@ -1426,8 +1430,8 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 ## Types
 
 This package is fully typed with [TypeScript][].
-It exports additional `Grammar`, `Root`, `Options` and `GetOnigurumaUrl` types that model their respective
-interfaces.
+It exports additional `Grammar`, `Root`, `Options`, and `GetOnigurumaUrl`
+types that model their respective interfaces.
 
 ## Compatibility
 

@@ -42,8 +42,8 @@ test('.createStarryNight with options', () => {
         getOnigurumaUrlFs: () => new URL('file:///foo/baz/onig.wasm')
       })
     },
-    /no such file or directory, open '\/foo\/baz\/onig.wasm'/,
-    "should throw when file at given URL can't be found"
+    /no such file or directory/,
+    'should support `getOnigurumaUrlFs`'
   )
 })
 
