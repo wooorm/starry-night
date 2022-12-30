@@ -270,7 +270,7 @@ optional).
 Function to get a URL to the oniguruma WASM.
 
 > 👉 **Note**: this must currently result in a version 1 URL of
-> `onig.wasm` from `vscode-oniguruma`.\
+> `onig.wasm` from `vscode-oniguruma`.
 
 > ⚠️ **Danger**: when you use this functionality, your project might break at
 > any time (when reinstalling dependencies), except when you make sure that
