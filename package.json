@@ -103,7 +103,8 @@
     ],
     "rules": {
       "no-bitwise": "off",
-      "no-template-curly-in-string": "off"
+      "no-template-curly-in-string": "off",
+      "unicorn/prefer-top-level-await": "off"
     }
   },
   "remarkConfig": {
