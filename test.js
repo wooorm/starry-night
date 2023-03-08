@@ -168,4 +168,20 @@ class Country(val name : String)`,
     '<span class="pl-k">package</span> <span class="pl-en">addressbook</span>\n\n<span class="pl-k">class</span> <span class="pl-en">Country</span>(<span class="pl-k">val</span> <span class="pl-smi">name</span> <span class="pl-k">:</span> <span class="pl-c1">String</span>)',
     'should highlight some kotlin'
   )
+
+  // Real world example of this test case:
+  // <https://github.com/microsoft/vscode-markdown-tm-grammar/blob/eed230887a39da1ecf5bfc914e00a1e1813c0fdb/markdown.tmLanguage.base.yaml#L125>
+  const starryNightBlankLines = await createStarryNight([
+    {
+      names: [],
+      extensions: [],
+      scopeName: 'x',
+      patterns: [{begin: '^a$', end: '^[\\t ]*$', name: 'invalid.illegal'}]
+    }
+  ])
+  assert.equal(
+    toHtml(starryNightBlankLines.highlight('a\n\nb', 'x')),
+    '<span class="pl-ii">a</span>\n\nb',
+    'should be able to match on empty lines'
+  )
 })
