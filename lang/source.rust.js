@@ -1,6 +1,6 @@
 // This is a TextMate grammar distributed by `starry-night`.
 // This grammar is developed at
-// <https://github.com/zargony/atom-language-rust>
+// <https://github.com/dustypomerleau/rust-syntax>
 // and licensed `mit`.
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */

@@ -417,10 +417,6 @@ export const info = {
     license: 'mit',
     homepage: 'https://github.com/purescript-contrib/atom-language-purescript'
   },
-  'source.rust': {
-    license: 'mit',
-    homepage: 'https://github.com/zargony/atom-language-rust'
-  },
   'source.stan': {
     license: 'mit',
     homepage: 'https://github.com/stan-dev/atom-language-stan'
@@ -1391,6 +1387,10 @@ export const info = {
   },
   'text.slim': {
     license: 'mit'
+  },
+  'source.rust': {
+    license: 'mit',
+    homepage: 'https://github.com/dustypomerleau/rust-syntax'
   },
   'source.sas': {
     license: 'mit',

@@ -935,7 +935,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [x] [`source.python`](lang/source.python.js) (mit) — [upstream](https://github.com/MagicStack/MagicPython)
 *   [x] [`source.r`](lang/source.r.js)
 *   [x] [`source.ruby`](lang/source.ruby.js) (mit) — [upstream](https://github.com/atom/language-ruby)
-*   [x] [`source.rust`](lang/source.rust.js) (mit) — [upstream](https://github.com/zargony/atom-language-rust)
+*   [x] [`source.rust`](lang/source.rust.js) (mit) — [upstream](https://github.com/dustypomerleau/rust-syntax)
 *   [x] [`source.shell`](lang/source.shell.js) (mit) — [upstream](https://github.com/atom/language-shellscript)
 *   [x] [`source.sql`](lang/source.sql.js)
 *   [x] [`source.swift`](lang/source.swift.js) — [upstream](https://github.com/textmate/swift.tmbundle)
