@@ -131,7 +131,8 @@ const ruleSchema = {
     'name',
     'patterns',
     'repository',
-    'while'
+    'while',
+    'whileCaptures'
   ],
   remove: ['disabled']
 }
@@ -225,7 +226,9 @@ function cleanGrammar(d, path) {
 function cleanRule(d, path) {
   // @ts-expect-error: sometimes used in custom grammars.
   if (d.disabled) return {}
+
   const cleaned = cleanPatternFields(clean(d, ruleSchema, path), path)
+
   if ('captures' in cleaned && cleaned.captures) {
     cleaned.captures = cleanMapOfRules(cleaned.captures, path + '.captures')
   }
@@ -244,12 +247,20 @@ function cleanRule(d, path) {
     )
   }
 
+  if ('whileCaptures' in cleaned && cleaned.whileCaptures) {
+    cleaned.whileCaptures = cleanMapOfRules(
+      cleaned.whileCaptures,
+      path + '.whileCaptures'
+    )
+  }
+
   return cleaned
 }
 
 /**
  * @param {Array<Rule>} d
  * @param {string} path
+ * @returns {Array<Rule>}
  */
 function cleanListOfRules(d, path) {
   return d
@@ -276,10 +287,9 @@ function cleanMapOfRules(d, path) {
 }
 
 /**
- * @template {Grammar|Rule} Thing
- * @param {Thing} d
+ * @param {Rule} d
  * @param {string} path
- * @returns {Thing}
+ * @returns {Rule}
  */
 function cleanPatternFields(d, path) {
   if ('patterns' in d && d.patterns) {
@@ -345,9 +355,12 @@ function clean(value, schema, path) {
  * @returns {string}
  */
 function scopeToId(value) {
-  return value
-    .replace(/\+/g, 'p')
-    .replace(/[. -_]([a-z\d])/g, (_, /** @type {string} */ $1) =>
-      $1.toUpperCase()
-    )
+  return (
+    value
+      // For `c++`
+      .replace(/\+/g, 'p')
+      .replace(/[. -_]([a-z\d])/g, (_, /** @type {string} */ $1) =>
+        $1.toUpperCase()
+      )
+  )
 }
