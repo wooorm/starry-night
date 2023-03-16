@@ -48,6 +48,7 @@ const grammar = {
         {match: '\\s([@]\\w+)\\b', name: 'support.constant.named.address.move'}
       ]
     },
+    all_upper: {match: '\\b([A-Z_]+)\\b', name: 'constant.other.move'},
     as: {match: '\\b(as)\\b', name: 'keyword.control.move'},
     'as-import': {match: '\\b(as)\\b', name: 'meta.import_as.move'},
     assert: {match: '\\b(assert)\\b', name: 'support.function.assert.move'},
@@ -102,6 +103,10 @@ const grammar = {
       match: '\\b(return|while|loop|if|else|break|continue|abort)\\b',
       name: 'keyword.control.move'
     },
+    e_const: {
+      match: '\\b(E[A-Z][a-zA-Z0-9]+)\\b',
+      name: 'constant.other.e_camel_case.move'
+    },
     entry_fun: {
       begin: '\\b(entry)\\b',
       beginCaptures: {1: {name: 'storage.modifier.entry.move'}},
@@ -142,7 +147,6 @@ const grammar = {
         {include: '#control'},
         {include: '#move_copy'},
         {include: '#resource_methods'},
-        {include: '#self_access'},
         {include: '#module_access'},
         {include: '#fun_call'},
         {include: '#block'}
@@ -156,7 +160,6 @@ const grammar = {
       patterns: [
         {include: '#comments'},
         {include: '#resource_methods'},
-        {include: '#self_access'},
         {include: '#module_access'},
         {include: '#move_copy'},
         {include: '#literals'},
@@ -191,8 +194,12 @@ const grammar = {
           end: '[)]',
           name: 'meta.parentheses.move',
           patterns: [
+            {
+              begin: '(?<=\\()',
+              end: '(?=:)',
+              patterns: [{include: '#self_keyword'}]
+            },
             {include: '#comments'},
-            {include: '#self_access'},
             {include: '#module_access'},
             {include: '#types'},
             {include: '#mut'}
@@ -245,9 +252,17 @@ const grammar = {
           match: '\\b(?:h)("[a-fA-F0-9]+")'
         },
         {
-          captures: {1: {name: 'string.quoted.double.raw.byte.move'}},
-          match: '\\b("(.*)")',
-          name: 'meta.ascii_literal.move'
+          begin: '\\bb"',
+          end: '"',
+          name: 'meta.ascii_literal.move',
+          patterns: [
+            {match: '\\\\[nrt\\0"]', name: 'constant.character.escape.move'},
+            {
+              match: '\\\\x[a-fA-F0-9][A-Fa-f0-9]',
+              name: 'constant.character.escape.hex.move'
+            },
+            {match: '[\\x00-\\x7F]', name: 'string.quoted.double.raw.move'}
+          ]
         },
         {
           captures: {1: {name: 'constant.numeric.hex.move'}},
@@ -259,7 +274,7 @@ const grammar = {
       ]
     },
     macros: {
-      match: '#\\[(?:[\\w0-9=_\\(\\)\\s"]+)\\]',
+      match: '#\\[(?:[\\w0-9=_\\(\\)\\:\\s"]+)\\]',
       name: 'support.constant.macro.move'
     },
     module: {
@@ -378,14 +393,7 @@ const grammar = {
         }
       ]
     },
-    self_access: {
-      captures: {
-        1: {name: 'variable.language.self.move'},
-        2: {name: 'entity.name.function.call.move'}
-      },
-      match: '\\b(Self)::(\\w+)\\b',
-      name: 'meta.self_access.move'
-    },
+    self_keyword: {match: '\\b(self)\\b', name: 'variable.language.self.move'},
     spec: {
       begin: '\\b(spec)\\b',
       beginCaptures: {1: {name: 'storage.modifier.spec.move'}},
@@ -487,7 +495,6 @@ const grammar = {
           name: 'meta.struct_body.move',
           patterns: [
             {include: '#comments'},
-            {include: '#self_access'},
             {include: '#module_access'},
             {include: '#types'}
           ]
@@ -513,8 +520,9 @@ const grammar = {
       patterns: [
         {include: '#primitives'},
         {include: '#vector'},
-        {match: '\\b([A-Z][A-Za-z_]+)\\b', name: 'entity.name.type'},
-        {match: '\\b([A-Z_]+)\\b', name: 'constant.other.move'}
+        {include: '#e_const'},
+        {match: '\\b([A-Z][A-Za-z0-9]+)\\b', name: 'entity.name.type'},
+        {include: '#all_upper'}
       ]
     },
     vector: {

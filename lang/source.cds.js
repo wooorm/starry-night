@@ -9,8 +9,49 @@ const grammar = {
   names: ['cap-cds', 'cds'],
   patterns: [
     {
-      match: '"[^"]*(""[^"]*)*"|!\\[[^\\]]*(\\]\\][^\\]]*)*\\]',
-      name: 'identifier.cds'
+      begin: '\\b(aspect|(abstract\\s+)?entity)\\b',
+      beginCaptures: {1: {name: 'keyword.strong.cds'}},
+      end: '(?<=})(;)?|(;)',
+      endCaptures: {
+        1: {name: 'punctuation.terminator.statement.cds'},
+        2: {name: 'punctuation.terminator.statement.cds'}
+      },
+      patterns: [
+        {
+          begin: ':',
+          beginCaptures: {0: {name: 'keyword.operator.cds'}},
+          end: '(?={|;)',
+          patterns: [
+            {include: '#identifiers'},
+            {match: ',', name: 'punctuation.separator.object.cds'}
+          ]
+        },
+        {include: '#bracedElementDef'},
+        {include: '#keywords'},
+        {include: '#identifiers'}
+      ]
+    },
+    {
+      begin:
+        '(?i)\\b(extend)\\s+((context|service|aspect|entity|projection|type)\\s+)?(\\S+)(\\s+(with)(\\s+(actions|definitions|columns|elements|enum))?|(?=\\s*{))',
+      beginCaptures: {
+        1: {name: 'keyword.strong.cds'},
+        3: {name: 'keyword.cds'},
+        4: {name: 'identifier.cds'},
+        6: {name: 'keyword.cds'},
+        8: {name: 'keyword.cds'}
+      },
+      end: '(?<=})(;)?|(;)',
+      endCaptures: {
+        1: {name: 'punctuation.terminator.statement.cds'},
+        2: {name: 'punctuation.terminator.statement.cds'}
+      },
+      patterns: [
+        {include: '#bracedElementDef'},
+        {include: '#keywords'},
+        {include: '#identifiers'},
+        {match: ',', name: 'punctuation.separator.object.cds'}
+      ]
     },
     {
       captures: {
@@ -27,11 +68,11 @@ const grammar = {
       name: 'meta.import.cds',
       patterns: [
         {
-          begin: '\\{',
+          begin: '{',
           beginCaptures: {
             0: {name: 'punctuation.definition.modules.begin.cds'}
           },
-          end: '\\}',
+          end: '}',
           endCaptures: {0: {name: 'punctuation.definition.modules.end.cds'}},
           patterns: [
             {
@@ -43,7 +84,7 @@ const grammar = {
                 5: {name: 'variable.other.module-alias.cds'}
               },
               match:
-                '(?x)\n                              (?: \\b(default)\\b | \\b([$_a-zA-Z][$_a-zA-Z0-9]*)\\b)\n                              \\s*\n                              (\\b as \\b)\n                              \\s*\n                              (?: (\\b default \\b | \\*) | \\b([$_a-zA-Z][$_a-zA-Z0-9]*)\\b)'
+                '(?:\\b(default)\\b|\\b([$_a-zA-Z][$_a-zA-Z0-9]*)\\b)\\s*(\\bas\\b)\\s*(?:(\\bdefault\\b|\\*)|\\b([$_a-zA-Z][$_a-zA-Z0-9]*)\\b)'
             },
             {match: ',', name: 'punctuation.separator.object.cds'},
             {include: '#comments'},
@@ -61,7 +102,7 @@ const grammar = {
             4: {name: 'variable.other.module-alias.cds'}
           },
           match:
-            '(?x) (?:\n    (\\*)  |\n    (?=\\D)(\\b[\\$\\.\\w]+\\b)\n)\n\\s* (\\b as \\b) \\s*\n(?=\\D)(\\b[\\$\\.\\w]+\\b)\n'
+            '(?:(\\*)|(?=\\D)(\\b[\\$\\.\\w]+\\b))\\s*(\\bas\\b)\\s*(?=\\D)(\\b[\\$\\.\\w]+\\b)'
         },
         {match: '\\*', name: 'variable.language.import-all.cds'},
         {match: '\\b(default)\\b', name: 'variable.language.default.cds'},
@@ -82,7 +123,7 @@ const grammar = {
         3: {name: 'variable.other.module.cds'}
       },
       match:
-        '(?x) \\b(export)\\b \\s* \\b(default)\\b (?:\\s*) \\b((?!\\bclass\\b|\\blet\\b|\\bvar\\b|\\bconst\\b)[$_a-zA-Z][$_a-zA-Z0-9]*)?\\b',
+        '\\b(export)\\b\\s*\\b(default)\\b(?:\\s*)\\b((?!\\bclass\\b|\\blet\\b|\\bvar\\b|\\bconst\\b)[$_a-zA-Z][$_a-zA-Z0-9]*)?\\b',
       name: 'meta.export.cds'
     },
     {
@@ -93,11 +134,11 @@ const grammar = {
       patterns: [
         {include: '#numbers'},
         {
-          begin: '\\{(?=.*\\bfrom\\b)',
+          begin: '{(?=.*\\bfrom\\b)',
           beginCaptures: {
             0: {name: 'punctuation.definition.modules.begin.cds'}
           },
-          end: '\\}',
+          end: '}',
           endCaptures: {0: {name: 'punctuation.definition.modules.end.cds'}},
           patterns: [
             {
@@ -110,7 +151,7 @@ const grammar = {
                 6: {name: 'variable.other.module-alias.cds'}
               },
               match:
-                '(?x)\n                                (?: \\b(default)\\b | \\b([$_a-zA-Z][$_a-zA-Z0-9]*)\\b)\n                                \\s*\n                                (\\b as \\b)\n                                \\s*\n                                (?: \\b(default)\\b | (\\*) | \\b([$_a-zA-Z][$_a-zA-Z0-9]*)\\b)\n                            '
+                '(?:\\b(default)\\b|\\b([$_a-zA-Z][$_a-zA-Z0-9]*)\\b)\\s*(\\bas\\b)\\s*(?:\\b(default)\\b|(\\*)|\\b([$_a-zA-Z][$_a-zA-Z0-9]*)\\b)'
             },
             {match: ',', name: 'meta.delimiter.object.comma.cds'},
             {
@@ -120,11 +161,11 @@ const grammar = {
           ]
         },
         {
-          begin: '(?![\\p{L}$_])\\{',
+          begin: '(?![\\p{L}$_]){',
           beginCaptures: {
             0: {name: 'punctuation.definition.modules.begin.cds'}
           },
-          end: '\\}',
+          end: '}',
           endCaptures: {0: {name: 'punctuation.definition.modules.end.cds'}},
           patterns: [
             {
@@ -137,7 +178,7 @@ const grammar = {
                 6: {name: 'variable.other.module-alias.cds'}
               },
               match:
-                '(?x)\n                                (?: \\b(default)\\b | \\b([$_a-zA-Z][$_a-zA-Z0-9]*)\\b)\n                                \\s*\n                                (\\b as \\b)\n                                \\s*\n                                (?: \\b(default)\\b | (\\*) | \\b([$_a-zA-Z][$_a-zA-Z0-9]*)\\b)\n                            '
+                '(?:\\b(default)\\b|\\b([$_a-zA-Z][$_a-zA-Z0-9]*)\\b)\\s*(\\bas\\b)\\s*(?:\\b(default)\\b|(\\*)|\\b([$_a-zA-Z][$_a-zA-Z0-9]*)\\b)'
             },
             {match: ',', name: 'meta.delimiter.object.comma.cds'},
             {
@@ -164,7 +205,7 @@ const grammar = {
     },
     {
       begin:
-        '(?x)\n                \\b\n                (?: (static) \\s+ )?                                             # Optional static keyword\n                (?!                                                             # Dont match known keywords\n                    (?:break|case|catch|continue|do|else|finally|for|if|\n                        export|import|using|package|return|switch|throw|try|while|with)\n                    [\\s\\(]\n                )\n                ([$_a-zA-Z][$_a-zA-Z0-9]*)\n                \\s*\n                (\\()\n                (?=(?:[^\\(\\)]*)?\\)\\s*\\{)\n            ',
+        '\\b(?:(static)\\s+)?(?!(?:break|case|catch|continue|do|else|finally|for|if|export|import|using|package|return|switch|throw|try|while|with)[\\s\\(])([$_a-zA-Z][$_a-zA-Z0-9]*)\\s*(\\()(?=(?:[^\\(\\)]*)?\\)\\s*{)',
       beginCaptures: {
         1: {name: 'storage.modifier.static.cds'},
         2: {name: 'entity.name.function.cds'},
@@ -183,18 +224,9 @@ const grammar = {
         4: {name: 'entity.other.inherited-class.cds'}
       },
       match:
-        '(?x)\n                \\b(class)\n                (?:\n                    \\s+\n                    ([$_a-zA-Z][$_a-zA-Z0-9]*)\n                )?\n                (?:\n                    \\s+\n                    (extends)\n                    \\s+\n                    ([$_a-zA-Z][$_a-zA-Z0-9]*)\n                )?\n                \\s*($|(?=\\{))\n            ',
+        '\\b(class)(?:\\s+([$_a-zA-Z][$_a-zA-Z0-9]*))?(?:\\s+(extends)\\s+([$_a-zA-Z][$_a-zA-Z0-9]*))?\\s*($|(?={))',
       name: 'meta.class.cds'
     },
-    {
-      match:
-        '(?<!\\w|entity\\s|aspect\\s|projection\\son\\s)[$_a-zA-Z][$_a-zA-Z0-9]*(\\s*:\\s*[$_a-zA-Z][$_a-zA-Z0-9]*)?(?=\\s*([:{]|as\\b))',
-      name: 'entity.name.type.attribute-name.cds'
-    },
-    {include: '#numbers'},
-    {include: '#strings'},
-    {include: '#comments'},
-    {include: '#operators'},
     {match: '=>', name: 'storage.type.arrow.cds'},
     {match: '(?<!\\.|\\$)\\b(let|var)\\b(?!\\$)', name: 'storage.type.var.cds'},
     {
@@ -208,21 +240,6 @@ const grammar = {
       },
       match: '(?<!\\.)\\b(yield)(?!\\s*:)\\b(?:\\s*(\\*))?',
       name: 'meta.control.yield.cds'
-    },
-    {
-      match:
-        '(?<!\\.|\\$)\\b(Association\\s*(?:\\[[0-9.eE+, *-]*\\]\\s*)?to\\s*(?:(many|one)\\s*)?|Composition\\s*(?:\\[[0-9.eE+, *-]*\\]\\s*)?of\\s*(?:(many|one)\\s*)?|(Boolean|Date|Time|DateTime|Timestamp|Number|Integer|Decimal|String)\\s*(\\([^()]*\\))?)(?!\\$)',
-      name: 'support.class.cds'
-    },
-    {match: '(?<!\\.|\\$)\\b(await)\\b(?!\\$)', name: 'invalid.illegal.cds'},
-    {
-      match:
-        '(?<!\\.|\\$)\\b(implements|interface|package|private|protected|public)\\b(?!\\$)',
-      name: 'invalid.deprecated.cds'
-    },
-    {
-      match: '(?<!\\.|\\$)\\b(class|static|extends)\\b(?!\\$)',
-      name: 'invalid.illegal.cds'
     },
     {
       match: '\\b(false|Infinity|NaN|null|true|undefined)\\b',
@@ -241,9 +258,9 @@ const grammar = {
       match: '(\\[)(\\])'
     },
     {
-      begin: '\\{',
+      begin: '{',
       beginCaptures: {0: {name: 'punctuation.section.scope.begin.cds'}},
-      end: '\\}',
+      end: '}',
       endCaptures: {0: {name: 'punctuation.section.scope.end.cds'}},
       patterns: [{include: '$self'}]
     },
@@ -272,28 +289,25 @@ const grammar = {
       match: '(?<!\\w)([$_a-zA-Z][$_a-zA-Z0-9]*)(?=\\()',
       name: 'meta.function-call.cds'
     },
-    {
-      match:
-        '(?i)(?<!\\.|\\$)\\b(all|and|any|asc|between|by|case|cast|cross|desc|distinct|element|escape|except|excluding|exists|first|from|full|group|group by|having|in|inner|intersect|into|is|join|last|left|like|limit|many|minus|mixin|not null|not|null|nulls|offset|one|or|order by|outer|redirected to|select|some|top|type of|union|where|with)\\b(?!\\$)',
-      name: 'keyword.cds'
-    },
-    {
-      match: '(?i)(?<!\\.|\\$)\\b(as|key|on|type)\\b(?!\\$)',
-      name: 'keyword.strong.cds'
-    },
-    {
-      match:
-        '(?<!\\.|\\$)\\b(after|always|analysis|array of|async|asynchronous|auto|both|cache|column|columns|configuration|current|cycle|day|default|depends|detection|disabled|documents|else|enabled|end|every|existing|export|extended|extract|fast|flush|fulltext|fuzzy|generated|getnumservers|hana|hash|hour|identity|import|increment|index|keeping|language|layout|leading|masked|maxvalue|merge|migration|mime|mining|minute|minutes|minvalue|mode|month|name|new|no|off|only|others|overlay|parameters|partition|partitioning|partitions|phrase|preprocess|priority|projection|projection on|queue|range|ratio|reset|returns|right|roundrobin|row|search|second|separators|start|storage|store|subtype|sync|synchronous|table|technical|temporary|text|then|token|trailing|trim|unique|unload|value|values|virtual|when|with parameters|year)\\b(?!\\$)',
-      name: 'keyword.cds'
-    },
-    {
-      match:
-        '(?<!\\.|\\$)\\b(abstract|action|actions|annotation|aspect|context|define|entity|enum|event|expose|extend|facet|function|namespace|service|view)\\b(?!\\$)',
-      name: 'keyword.strong.cds'
-    },
-    {match: '[$_a-zA-Z][$_a-zA-Z0-9]*', name: 'identifier.cds'}
+    {include: '#keywords'},
+    {include: '#numbers'},
+    {include: '#strings'},
+    {include: '#comments'},
+    {include: '#operators'},
+    {include: '#identifiers'}
   ],
   repository: {
+    bracedElementDef: {
+      begin: '{',
+      beginCaptures: {0: {name: 'punctuation.section.scope.begin.cds'}},
+      end: '}',
+      endCaptures: {0: {name: 'punctuation.section.scope.end.cds'}},
+      patterns: [
+        {include: '#comments'},
+        {include: '#extendElement'},
+        {include: '#elementDef'}
+      ]
+    },
     comments: {
       patterns: [
         {match: '@\\(?[\\w.]+\\b', name: 'entity.other.attribute-name'},
@@ -315,26 +329,83 @@ const grammar = {
           endCaptures: {0: {name: 'punctuation.definition.comment.end.cds'}},
           name: 'comment.block.cds'
         },
+        {match: '//.*', name: 'comment.line.double-slash.cds'}
+      ]
+    },
+    elementDef: {
+      begin:
+        '\\b(virtual(?:\\s+))?(key(?:\\s+))?(masked(?:\\s+))?(element(?:\\s+))?',
+      beginCaptures: {
+        1: {name: 'keyword.cds'},
+        2: {name: 'keyword.strong.cds'},
+        3: {name: 'keyword.cds'},
+        4: {name: 'keyword.cds'}
+      },
+      end: '(?=})|(;)',
+      endCaptures: {1: {name: 'punctuation.terminator.statement.cds'}},
+      patterns: [
+        {include: '#bracedElementDef'},
+        {include: '#strings'},
+        {include: '#comments'},
+        {include: '#keywords'},
+        {match: ':', name: 'keyword.operator.cds'},
         {
-          begin: '(^[ \\t]+)?(?=//)',
-          beginCaptures: {
-            1: {name: 'punctuation.whitespace.comment.leading.cds'}
-          },
-          end: '(?!\\G)',
-          patterns: [
-            {
-              begin: '//',
-              beginCaptures: {0: {name: 'punctuation.definition.comment.cds'}},
-              end: '\\n',
-              name: 'comment.line.double-slash.cds'
-            }
-          ]
-        }
+          begin:
+            '([$_a-zA-Z][$_a-zA-Z0-9]*|"[^"]*(""[^"]*)*"|!\\[[^\\]]*(\\]\\][^\\]]*)*\\])(?=\\s*[:{,])',
+          beginCaptures: {1: {name: 'entity.name.type.attribute-name.cds'}},
+          end: '(,)|(?=\\s*[:{])',
+          endCaptures: {1: {name: 'punctuation.separator.object.cds'}}
+        },
+        {include: '#identifiers'},
+        {include: '#operators'},
+        {include: '#numbers'}
       ]
     },
     escapes: {
-      match: '\\\\([xu$]\\{?[0-9a-fA-F]+\\}?|.|$)',
+      match: '\\\\([xu$]\\{?[0-9a-fA-F]+}?|.|$)',
       name: 'constant.character.escape.cds'
+    },
+    extendElement: {
+      begin: '\\b(?=extend\\b.*\\bwith\\b)',
+      end: '(?<=})(;)?|(;)',
+      endCaptures: {
+        1: {name: 'punctuation.terminator.statement.cds'},
+        2: {name: 'punctuation.terminator.statement.cds'}
+      },
+      patterns: [
+        {
+          begin: '\\bextend\\b',
+          beginCaptures: {0: {name: 'keyword.strong.cds'}},
+          end: '\\bwith\\b',
+          endCaptures: {0: {name: 'keyword.cds'}},
+          patterns: [
+            {
+              match: 'element(?!(?:\\s*/\\*.*\\*/\\s*|\\s+)?with\\b)',
+              name: 'keyword.cds'
+            },
+            {
+              match:
+                '[$_a-zA-Z][$_a-zA-Z0-9]*|"[^"]*(""[^"]*)*"|!\\[[^\\]]*(\\]\\][^\\]]*)*\\]',
+              name: 'entity.name.type.attribute-name.cds'
+            },
+            {include: '#comments'}
+          ]
+        },
+        {
+          begin: '{',
+          beginCaptures: {0: {name: 'punctuation.section.scope.begin.cds'}},
+          end: '}',
+          endCaptures: {0: {name: 'punctuation.section.scope.end.cds'}},
+          patterns: [{include: '#extendElement'}, {include: '#elementDef'}]
+        },
+        {include: '#comments'},
+        {include: '#keywords'},
+        {include: '#identifiers'},
+        {include: '#operators'},
+        {match: '\\(', name: 'punctuation.section.scope.begin.cds'},
+        {match: '\\)', name: 'punctuation.section.scope.end.cds'},
+        {include: '#numbers'}
+      ]
     },
     'function-params': {
       patterns: [
@@ -351,11 +422,20 @@ const grammar = {
         {include: '#comments'}
       ]
     },
+    identifiers: {
+      patterns: [
+        {
+          match:
+            '[$_a-zA-Z][$_a-zA-Z0-9]*|"[^"]*(""[^"]*)*"|!\\[[^\\]]*(\\]\\][^\\]]*)*\\]',
+          name: 'identifier.cds'
+        }
+      ]
+    },
     interpolation: {
-      begin: '\\$\\{',
+      begin: '\\${',
       beginCaptures: {0: {name: 'punctuation.section.embedded.begin.cds'}},
       contentName: 'source.cds',
-      end: '(\\})',
+      end: '(})',
       endCaptures: {
         0: {name: 'punctuation.section.embedded.end.cds'},
         1: {name: 'source.cds'}
@@ -363,13 +443,54 @@ const grammar = {
       name: 'meta.embedded.line.cds',
       patterns: [
         {
-          begin: '\\{',
+          begin: '{',
           beginCaptures: {0: {name: 'meta.brace.curly.cds'}},
-          end: '\\}',
+          end: '}',
           endCaptures: {0: {name: 'meta.brace.curly.cds'}},
           patterns: [{include: '$self'}]
         },
         {include: '$self'}
+      ]
+    },
+    keywords: {
+      patterns: [
+        {
+          match:
+            '(?<!\\.|\\$)\\b(Association\\s*(?:\\[[0-9.eE+, *-]*\\]\\s*)?to\\s*(?:(many|one)\\s*)?|Composition\\s*(?:\\[[0-9.eE+, *-]*\\]\\s*)?of\\s*(?:(many|one)\\s*)?|(Binary|Boolean|Date|DateTime|Decimal|DecimalFloat|Double|Int(16|32|64)|Integer|Integer64|LargeBinary|LargeString|Number|String|Time|Timestamp|UInt8|UUID)\\s*(\\([^()]*\\))?)(?!\\$|\\s*:)',
+          name: 'support.class.cds'
+        },
+        {
+          match: '(?<!\\.|\\$)\\b(await)\\b(?!\\$|\\s*:)',
+          name: 'invalid.illegal.cds'
+        },
+        {
+          match:
+            '(?<!\\.|\\$)\\b(implements|interface|package|private|protected|public)\\b(?!\\$|\\s*:)',
+          name: 'invalid.deprecated.cds'
+        },
+        {
+          match: '(?<!\\.|\\$)\\b(class|static|extends)\\b(?!\\$|\\s*:)',
+          name: 'invalid.illegal.cds'
+        },
+        {
+          match:
+            '(?i)(?<!\\.|\\$)\\b(all|and|any|asc|between|by|case|cast|cross|desc|distinct|element|elements|escape|except|excluding|exists|first|from|full|group|group by|having|in|inner|intersect|into|is|join|last|left|like|limit|many|minus|mixin|not null|not|null|nulls|offset|one|or|order by|outer|redirected to|select|some|top|type of|union|where|with)\\b(?!\\$|\\s*:)',
+          name: 'keyword.cds'
+        },
+        {
+          match: '(?i)(?<!\\.|\\$)\\b(as|key|on|type)\\b(?!\\$|\\s*:)',
+          name: 'keyword.strong.cds'
+        },
+        {
+          match:
+            '(?<!\\.|\\$)\\b(after|always|analysis|array of|async|asynchronous|auto|both|cache|column|columns|configuration|current|cycle|day|default|depends|detection|disabled|documents|else|enabled|end|every|existing|export|extended|extract|fast|flush|fulltext|fuzzy|generated|getnumservers|hana|hash|hour|identity|import|increment|index|keeping|language|layout|leading|masked|maxvalue|merge|migration|mime|mining|minute|minutes|minvalue|mode|month|name|new|no|off|only|others|overlay|parameters|partition|partitioning|partitions|phrase|preprocess|priority|projection|projection on|queue|range|ratio|reset|returns|right|roundrobin|row|search|second|separators|start|storage|store|subtype|sync|synchronous|table|technical|temporary|text|then|token|trailing|trim|unique|unload|value|values|virtual|when|with parameters|year)\\b(?!\\$|\\s*:)',
+          name: 'keyword.cds'
+        },
+        {
+          match:
+            '(?<!\\.|\\$)\\b(abstract|action|actions|annotation|aspect|context|define|entity|enum|event|expose|extend|facet|function|namespace|service|view)\\b(?!\\$|\\s*:)',
+          name: 'keyword.strong.cds'
+        }
       ]
     },
     numbers: {
@@ -387,8 +508,7 @@ const grammar = {
           name: 'constant.numeric.octal.cds'
         },
         {
-          match:
-            '(?x)\n    (?<!\\w|\\$)\t\t\t\t\t\t\t    # Ensure word boundry\n    [+-]?                                           # Optional sign\n    (?>;\n        (\n            (0|[1-9][0-9]*)(\\.[0-9]*)?\t    # 0 or 1 or 1. or 1.0\n            | \\.[0-9]+\t\t\t\t\t\t        # .1\n        )\n        ([eE][+-]?[0-9]+)?\t\t\t\t\t    # Exponent\n    )\n    (?!\\w)\t\t\t\t\t\t\t\t\t            # Ensure word boundry\n',
+          match: "(?<!\\w|\\$)[+-]?[0-9]+('.'[0-9]+)?([eE][+-]?[0-9]+)?(?!\\w)",
           name: 'constant.numeric.cds'
         }
       ]

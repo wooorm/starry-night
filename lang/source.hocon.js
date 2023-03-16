@@ -25,8 +25,7 @@ const grammar = {
         1: {name: 'entity.name.tag.hocon'},
         2: {name: 'punctuation.separator.key-value.hocon'}
       },
-      end: '(\\=|{)',
-      match: '(?:^[ \t]*([\\w-]+)\\s*?({|=|:))'
+      match: '(?:[ \t]*([\\w-]+)\\s*?({|=|:))'
     }
   ],
   repository: {
@@ -36,7 +35,8 @@ const grammar = {
       name: 'constant.numeric.byte.long.hocon'
     },
     'bytesize-short': {
-      match: '\\b\\d+(([kMGTPEZY]B)|([KMGTPEZY]i[B]?)|([kmgtpezybB]))\\b',
+      match:
+        '\\b\\d+(([kMGTPEZY]B)|([KMGTPEZY]B?)|([KMGTPEZY]iB?)|([kmgtpezybB]))\\b',
       name: 'constant.numeric.byte.short.hocon'
     },
     comments: {
@@ -96,7 +96,8 @@ const grammar = {
     },
     ustring: {
       captures: {1: {name: 'entity.name.tag.hocon'}},
-      match: '([^=\\{\\}\\[\\]\\s][^0-9=\\{\\}\\[\\]][^=\\{\\}\\[\\]\\s]*)$',
+      match:
+        '([^:=\\{\\}\\[\\]\\s,][^0-9:=\\{\\}\\[\\],][^=:\\{\\}\\[\\]\\s,]*)',
       name: 'string.other.zzz.unquoted.hocon'
     },
     variables: {match: '\\$\\{[^\\}]*\\}', name: 'storage.type.source.hocon'}

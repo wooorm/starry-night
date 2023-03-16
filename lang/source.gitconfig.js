@@ -89,6 +89,10 @@ const grammar = {
         }
       ]
     },
+    dot: {
+      match: '\\.',
+      name: 'punctuation.delimiter.separator.meta.dot.period.gitconfig'
+    },
     escapedNewline: {
       captures: {
         1: {name: 'punctuation.definition.escape.backslash.gitconfig'}
@@ -227,6 +231,29 @@ const grammar = {
                 {include: '#sectionEscapes'},
                 {include: '#includeInnards'}
               ]
+            },
+            {
+              begin: '(hasconfig)(:)([^":]+)(:)',
+              beginCaptures: {
+                1: {name: 'entity.name.condition-type.gitconfig'},
+                2: {name: 'punctuation.separator.parameter.gitconfig'},
+                3: {
+                  name: 'variable.parameter.comparison.gitconfig',
+                  patterns: [
+                    {include: '#dot'},
+                    {include: '#sectionEscapes'},
+                    {include: '#includeInnards'}
+                  ]
+                },
+                4: {name: 'punctuation.separator.key-value.gitconfig'}
+              },
+              contentName: 'string.unquoted.argument.gitconfig',
+              end: '(?=\\s*(?:$|"))',
+              name: 'meta.condition.match-config.gitconfig',
+              patterns: [
+                {include: '#sectionEscapes'},
+                {include: '#includeInnards'}
+              ]
             }
           ]
         },
@@ -260,7 +287,7 @@ const grammar = {
         2: {name: 'punctuation.definition.bracket.square.end.gitconfig'},
         3: {name: 'punctuation.definition.bracket.square.begin.gitconfig'},
         4: {name: 'entity.section.name.gitconfig'},
-        5: {name: 'punctuation.delimiter.separator.meta.dot.period.gitconfig'},
+        5: {patterns: [{include: '#dot'}]},
         6: {name: 'entity.subsection.name.deprecated-syntax.gitconfig'},
         7: {name: 'punctuation.definition.subsection.begin.gitconfig'},
         8: {
@@ -414,7 +441,7 @@ const grammar = {
           patterns: [{include: '#aliasInnards'}]
         },
         {
-          begin: '[A-Za-z][-A-Za-z]*',
+          begin: '[0-9A-Za-z][-0-9A-Za-z]*',
           beginCaptures: {0: {name: 'variable.parameter.assignment.gitconfig'}},
           end: '(?=\\s*(?:$|#|;))',
           name: 'meta.variable-field.gitconfig',

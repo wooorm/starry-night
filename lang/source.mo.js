@@ -42,7 +42,7 @@ const grammar = {
     },
     'assignment-operator': {
       match:
-        '(?<![/=\\-+!*%<>&|\\^~.])(\\+|\\-|\\*|\\/|%|<<|>>|&|\\^|\\||&&|\\|\\|)?=(?![/=\\-+!*%<>&|\\^~.])',
+        '(?<![/=\\-+!*%<>&|\\^~.])(\\+|\\-|\\*|\\/|%|<<>?|<?>>|&|\\^|\\||&&|\\|\\|)?=(?![/=\\-+!*%<>&|\\^~.])',
       name: 'keyword.operator.assignment.motoko'
     },
     'async-await-keyword': {
@@ -79,7 +79,7 @@ const grammar = {
     },
     'bitwise-operator': {
       match:
-        '(?<![/=\\-+!*%<>&|\\^~.])(&|\\||\\^|<<|>>)(?![/=\\-+!*%<>&|\\^~.])',
+        '(?<![/=\\-+!*%<>&|\\^~.])(&|\\||\\^|<<>?|<?>>)(?![/=\\-+!*%<>&|\\^~.])',
       name: 'keyword.operator.bitwise.motoko'
     },
     'block-comment': {
@@ -107,6 +107,22 @@ const grammar = {
     'catch-statement-keyword': {
       match: '\\b(catch|do)\\b',
       name: 'kewyord.control.catch.motoko'
+    },
+    'char-literal': {
+      begin: "'",
+      beginCaptures: {0: {name: 'string.quoted.double.motoko'}},
+      end: "'",
+      endCaptures: {0: {name: 'string.quoted.single.motoko'}},
+      name: 'meta.literal.char.motoko',
+      patterns: [
+        {
+          match:
+            '\\\\([0tnr\\"\\\'\\\\]|x[[:xdigit:]]{2}|u[[:xdigit:]]{4}|U[[:xdigit:]]{8})',
+          name: 'constant.character.escape.motoko'
+        },
+        {match: "(\\'|\\\\)", name: 'invalid.illegal.motoko'},
+        {match: '(.)', name: 'string.quoted.single.motoko'}
+      ]
     },
     'code-block': {
       begin: '(\\{)',
@@ -317,7 +333,7 @@ const grammar = {
         {include: '#floating-point-literal'},
         {include: '#nil-literal'},
         {include: '#string-literal'},
-        {include: '#special-literal'}
+        {include: '#char-literal'}
       ]
     },
     'logical-operator': {
@@ -405,10 +421,6 @@ const grammar = {
       match: '^(#!).*$',
       name: 'comment.line.shebang.motoko'
     },
-    'special-literal': {
-      match: '\\b__(FILE|LINE|COLUMN|FUNCTION)__\\b',
-      name: 'keyword.other.literal.motoko'
-    },
     'storage-type': {
       match: '\\b(var|func|let|class|enum)\\b',
       name: 'storage.type.motoko'
@@ -424,16 +436,6 @@ const grammar = {
           match:
             '\\\\([0tnr\\"\\\'\\\\]|x[[:xdigit:]]{2}|u[[:xdigit:]]{4}|U[[:xdigit:]]{8})',
           name: 'constant.character.escape.motoko'
-        },
-        {
-          begin: '(\\\\\\()',
-          beginCaptures: {
-            1: {name: 'support.punctuation.expression.begin.motoko'}
-          },
-          contentName: 'meta.expression.motoko',
-          end: '(\\))',
-          endCaptures: {1: {name: 'support.punctuation.expression.end.motoko'}},
-          patterns: []
         },
         {match: '(\\"|\\\\)', name: 'invalid.illegal.motoko'},
         {match: '(.)', name: 'string.quoted.double.motoko'}

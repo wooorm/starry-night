@@ -192,6 +192,11 @@ const grammar = {
         }
       ]
     },
+    compatibility: {
+      match:
+        '(?x) (?<![^/\\s{}()<>\\[\\]%]) (?:\\b|(?=\\.))\n( 11x17tray\n| 11x17\n| a3tray\n| a3\n| a4small\n| a4tray\n| a4\n| accuratescreens\n| appletalktype\n| b5tray\n| b5\n| buildtime\n| byteorder\n| checkpassword\n| checkscreen\n| defaulttimeouts\n| devdismount\n| devforall\n| devformat\n| devmount\n| devstatus\n| diskonline\n| diskstatus\n| doprinterrors\n| dostartpage\n| dosysstart\n| duplexmode\n| emulate\n| firstside\n| hardwareiomode\n| initializedisk\n| jobname\n| jobtimeout\n| ledgertray\n| ledger\n| legaltray\n| legal\n| lettersmall\n| lettertray\n| letter\n| manualfeedtimeout\n| manualfeed\n| margins\n| mirrorprint\n| newsheet\n| note\n| pagecount\n| pagemargin\n| pageparams\n| pagestackorder\n| printername\n| processcolors\n| ramsize\n| realformat\n| resolution\n| sccbatch\n| sccinteractive\n| setaccuratescreens\n| setdefaulttimeouts\n| setdoprinterrors\n| setdostartpage\n| setdosysstart\n| setduplexmode\n| sethardwareiomode\n| setjobtimeout\n| setmargins\n| setmirrorprint\n| setpagemargin\n| setpageparams\n| setpagestackorder\n| setpage\n| setprintername\n| setresolution\n| setsccbatch\n| setsccinteractive\n| setsoftwareiomode\n| settumble\n| setuserdiskpercent\n| softwareiomode\n| tumble\n| userdiskpercent\n| waittimeout\n) \\b (?![^/\\s{}()<>\\[\\]%])',
+      name: 'keyword.operator.level-1.compatibility.postscript'
+    },
     dictionary: {
       begin: '<<',
       beginCaptures: {
@@ -299,9 +304,18 @@ const grammar = {
       ]
     },
     extensions: {
-      match:
-        '(?x) (?<![^/\\s{}()<>\\[\\]%]) (?:\\b|(?=\\.))\n( \\.activatepathcontrol\n| \\.addcontrolpath\n| \\.begintransparencygroup\n| \\.begintransparencymaskgroup\n| \\.bind\n| \\.bindnow\n| \\.currentalphaisshape\n| \\.currentblendmode\n| \\.currentfillconstantalpha\n| \\.currentopacityalpha\n| \\.currentoverprintmode\n| \\.currentpathcontrolstate\n| \\.currentshapealpha\n| \\.currentstrokeconstantalpha\n| \\.currenttextknockout\n| \\.dicttomark\n| \\.endtransparencygroup\n| \\.endtransparencymask\n| \\.fileposition\n| \\.genordered\n| \\.knownget\n| \\.locksafe\n| \\.popdf14devicefilter\n| \\.pushpdf14devicefilter\n| \\.setalphaisshape\n| \\.setblendmode\n| \\.setdebug\n| \\.setfillconstantalpha\n| \\.setopacityalpha\n| \\.setoverprintmode\n| \\.setsafe\n| \\.setshapealpha\n| \\.setstrokeconstantalpha\n| \\.settextknockout\n| \\.shellarguments\n| \\.tempfile\n| %Type1BuildChar\n| %Type1BuildGlyph\n| arccos\n| arcsin\n| copydevice\n| copyscanlines\n| currentdevice\n| finddevice\n| findlibfile\n| findprotodevice\n| getdeviceprops\n| getenv\n| makeimagedevice\n| max\n| min\n| putdeviceprops\n| setdevice\n) \\b (?![^/\\s{}()<>\\[\\]%])',
-      name: 'keyword.operator.ghostscript.postscript'
+      patterns: [
+        {
+          match:
+            '(?<![^/\\s{}()<>\\[\\]%])\\b((?:current|set)distillerparams)\\b(?![^/\\s{}()<>\\[\\]%])',
+          name: 'keyword.operator.distiller.postscript'
+        },
+        {
+          match:
+            '(?x) (?<![^/\\s{}()<>\\[\\]%]) (?:\\b|(?=\\.))\n( \\.activatepathcontrol\n| \\.addcontrolpath\n| \\.begintransparencygroup\n| \\.begintransparencymaskgroup\n| \\.bind\n| \\.bindnow\n| \\.currentalphaisshape\n| \\.currentblendmode\n| \\.currentfillconstantalpha\n| \\.currentopacityalpha\n| \\.currentoverprintmode\n| \\.currentpathcontrolstate\n| \\.currentshapealpha\n| \\.currentstrokeconstantalpha\n| \\.currenttextknockout\n| \\.dicttomark\n| \\.endtransparencygroup\n| \\.endtransparencymask\n| \\.fileposition\n| \\.genordered\n| \\.knownget\n| \\.locksafe\n| \\.max\n| \\.min\n| \\.PDFClose\n| \\.PDFDrawAnnots\n| \\.PDFDrawPage\n| \\.PDFFile\n| \\.PDFInfo\n| \\.PDFInit\n| \\.PDFMetadata\n| \\.PDFPageInfo\n| \\.PDFPageInfoExt\n| \\.PDFStream\n| \\.popdf14devicefilter\n| \\.pushpdf14devicefilter\n| \\.setalphaisshape\n| \\.setblendmode\n| \\.setdebug\n| \\.setfillconstantalpha\n| \\.setopacityalpha\n| \\.setoverprintmode\n| \\.setsafe\n| \\.setshapealpha\n| \\.setstrokeconstantalpha\n| \\.settextknockout\n| \\.shellarguments\n| \\.tempfile\n| %Type1BuildChar\n| %Type1BuildGlyph\n| arccos\n| arcsin\n| copydevice\n| copyscanlines\n| currentdevice\n| dopdfpages\n| finddevice\n| findlibfile\n| findprotodevice\n| getdeviceprops\n| getenv\n| makeimagedevice\n| pdfclose\n| pdfgetpage\n| pdfopen\n| pdfshowpage\n| pdfshowpage_finish\n| pdfshowpage_init\n| pdfshowpage_setpage\n| putdeviceprops\n| runpdf\n| runpdfbegin\n| runpdfend\n| runpdfpagerange\n| setdevice\n) \\b (?![^/\\s{}()<>\\[\\]%])',
+          name: 'keyword.operator.ghostscript.postscript'
+        }
+      ]
     },
     hex: {
       begin: '<',
@@ -332,6 +346,7 @@ const grammar = {
         {include: '#embedded'},
         {include: '#operators'},
         {include: '#extensions'},
+        {include: '#compatibility'},
         {include: '#embeddedRow'},
         {include: '#names'}
       ]

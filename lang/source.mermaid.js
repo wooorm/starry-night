@@ -213,8 +213,16 @@ const grammar = {
         {include: '#pie-chart'},
         {include: '#requirement-diagram'},
         {include: '#gitgraph'},
-        {include: '#c4c-diagram'}
+        {include: '#c4c-diagram'},
+        {include: '#mindmap'}
       ]
+    },
+    mindmap: {
+      begin: '(?i)^[ \\t]*(mindmap)(?=$|\\s)',
+      beginCaptures: {1: {name: 'keyword.control.mindmap.begin.mermaid'}},
+      end: '(?=A)B|(?=^[ \\t]*(?:`{3,}|~{3,})\\s*$)',
+      name: 'meta.mindmap.mermaid',
+      patterns: [{include: 'source.mermaid.mindmap'}]
     },
     'pie-chart': {
       begin: '(?i)^[ \\t]*(pie)(?=$|\\s)',

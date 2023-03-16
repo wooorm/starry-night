@@ -109,7 +109,7 @@ const grammar = {
             2: {name: 'keyword.operator.adblock'},
             3: {patterns: [{include: '#domainListPipeSeparated'}]}
           },
-          match: '(domain|denyallow)(=)([^,]+)'
+          match: '(domain|denyallow|from|to)(=)([^,]+)'
         },
         {
           captures: {
@@ -191,6 +191,23 @@ const grammar = {
           },
           match: '(removeparam|queryprune)(=)(~)?(((\\\\,)|[^,])+)',
           name: 'keyword.other.adblock'
+        },
+        {
+          captures: {
+            1: {name: 'keyword.other.adblock'},
+            2: {name: 'keyword.operator.adblock'},
+            3: {
+              patterns: [
+                {
+                  match: '(?i)(connect|delete|get|head|options|patch|post|put)',
+                  name: 'string.unquoted.adblock'
+                },
+                {match: '~|\\|', name: 'keyword.operator.adblock'},
+                {match: '.+', name: 'invalid.illegal.method-value'}
+              ]
+            }
+          },
+          match: '(method)(=)([^,]+)'
         },
         {
           match:
@@ -311,6 +328,19 @@ const grammar = {
     },
     cssStyle: {
       patterns: [
+        {
+          captures: {
+            1: {name: 'entity.name.function.adblock'},
+            2: {name: 'punctuation.section.adblock'},
+            3: {name: 'entity.name.function.adblock'},
+            4: {name: 'punctuation.section.adblock'},
+            5: {name: 'string.quoted.adblock'},
+            6: {name: 'punctuation.section.adblock'},
+            7: {name: 'punctuation.section.adblock'}
+          },
+          match:
+            '(@media[\\s]+[^\\{]*)(\\{)([\\s]*[^\\{]*)(\\{)([\\s]*[^\\}]*)(\\})[\\s]*(\\})'
+        },
         {
           captures: {
             1: {name: 'entity.name.function.adblock'},

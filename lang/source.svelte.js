@@ -154,7 +154,7 @@ const grammar = {
     },
     {
       begin:
-        '(<)(script)\\b(?=[^>]*(?:type=(\'text/typescript\'|"text/typescript")|lang=(typescript|\'typescript\'|"typescript")))(?![^/>]*/>\\s*$)',
+        '(<)(script)\\b(?=[^>]*(?:type=(\'text/typescript\'|"text/typescript")|lang=(typescript|\'typescript\'|"typescript"|ts|\'ts\'|"ts")))(?![^/>]*/>\\s*$)',
       beginCaptures: {
         1: {name: 'punctuation.definition.tag.begin.html'},
         2: {name: 'entity.name.tag.script.html'}

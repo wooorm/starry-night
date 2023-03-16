@@ -14,6 +14,7 @@ const grammar = {
     {include: '#modifier_explicit_defn'},
     {include: '#explicit_string_defn'},
     {include: '#noun_defn'},
+    {include: '#bracket'},
     {include: '#number'},
     {include: '#operator'},
     {include: '#copula'},
@@ -22,6 +23,7 @@ const grammar = {
     {include: '#comment'}
   ],
   repository: {
+    bracket: {patterns: [{match: '(\\(|\\))', name: 'meta.bracket.j'}]},
     comment: {
       patterns: [
         {
@@ -50,6 +52,7 @@ const grammar = {
             {include: '#direct_defn'},
             {include: '#explicit_arg'},
             {include: '#explicit_operand'},
+            {include: '#bracket'},
             {include: '#number'},
             {include: '#operator'},
             {include: '#copula'},
@@ -88,6 +91,7 @@ const grammar = {
             {include: '#direct_noun_defn'},
             {include: '#direct_defn'},
             {include: '#explicit_arg'},
+            {include: '#bracket'},
             {include: '#number'},
             {include: '#operator'},
             {include: '#copula'},
@@ -149,6 +153,7 @@ const grammar = {
             {include: '#direct_defn'},
             {include: '#explicit_arg'},
             {include: '#explicit_operand'},
+            {include: '#bracket'},
             {include: '#number'},
             {include: '#operator'},
             {include: '#copula'},
@@ -212,7 +217,7 @@ const grammar = {
           name: 'keyword.operator.verb.j'
         },
         {
-          match: '\\b((p\\.\\.)|([AcCeEiIjLopruv]\\.)|([ipqsux]:))(?![.:])',
+          match: '\\b((p\\.\\.)|([AcCeEiIjLoprTuv]\\.)|([ipqsux]:))(?![.:])',
           name: 'keyword.operator.verb.j'
         },
         {
@@ -229,11 +234,11 @@ const grammar = {
         },
         {match: '\\b(([bfM]\\.))(?![.:])', name: 'keyword.operator.adverb.j'},
         {
-          match: '(([\\/\\\\]\\.)|([~\\/\\\\}]))(?![.:])',
+          match: '(([\\/\\\\]\\.)|(\\/\\.\\.)|([~\\/\\\\}]))(?![.:])',
           name: 'keyword.operator.adverb.j'
         },
         {
-          match: '\\b((H\\.)|([LS]:))(?![.:])',
+          match: '\\b(([Ht]\\.)|([LS]:))(?![.:])',
           name: 'keyword.operator.conjunction.j'
         },
         {

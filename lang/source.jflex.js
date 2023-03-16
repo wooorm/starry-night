@@ -86,7 +86,7 @@ const grammar = {
             2: {name: 'storage.type.jflex'}
           },
           match:
-            '^(%(?:class|extends|type|ctorarg|implements|include|initthrow|eofthrow|yylexthrow|throws|scanerror))\\s+(.+)',
+            '^(%(?:class|extends|type|ctorarg|implements|include|initthrow|eofthrow|yylexthrow|throws|scanerror|warn|no-warn|suppress|token_size_limit))\\s+(.+)',
           name: 'meta.somearg.jflex'
         },
         {
@@ -120,7 +120,7 @@ const grammar = {
         },
         {
           match:
-            '^%(char|line|column|byaccj|cup2|cup(debug)?|integer|int(wrap)?|yyeof|notunix|7bit|full|8bit|16bit|caseless|ignorecase|public|apiprivate|final|abstract|debug|standalone|pack)',
+            '^%(char|line|column|byaccj|cup2|cup(debug)?|integer|int(wrap)?|yyeof|notunix|7bit|full|8bit|16bit|caseless|ignorecase|public|apiprivate|final|abstract|debug|standalone|pack|no_suppress_warnings)',
           name: 'keyword.other.jflex'
         },
         {

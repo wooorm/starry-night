@@ -9,343 +9,569 @@ const grammar = {
   names: ['rust', 'rs'],
   patterns: [
     {
-      begin: '\\b(impl)\\b',
-      beginCaptures: {1: {name: 'storage.type.rust'}},
-      end: '\\{',
+      begin: '(<)(\\[)',
+      beginCaptures: {
+        1: {name: 'punctuation.brackets.angle.rust'},
+        2: {name: 'punctuation.brackets.square.rust'}
+      },
+      end: '>',
+      endCaptures: {0: {name: 'punctuation.brackets.angle.rust'}},
       patterns: [
-        {include: '#block_comment'},
-        {include: '#line_comment'},
-        {include: '#sigils'},
-        {include: '#mut'},
-        {include: '#dyn'},
-        {include: '#ref_lifetime'},
-        {include: '#core_types'},
-        {include: '#core_marker'},
-        {include: '#core_traits'},
-        {include: '#std_types'},
-        {include: '#std_traits'},
-        {include: '#type_params'},
-        {include: '#where'},
-        {match: '\\bfor\\b', name: 'storage.type.rust'},
-        {include: '#type'}
+        {include: '#block-comments'},
+        {include: '#comments'},
+        {include: '#gtypes'},
+        {include: '#lvariables'},
+        {include: '#lifetimes'},
+        {include: '#punctuation'},
+        {include: '#types'}
       ]
     },
-    {include: '#block_doc_comment'},
-    {include: '#block_comment'},
-    {include: '#line_doc_comment'},
-    {include: '#line_comment'},
     {
-      begin: '#\\!?\\[',
+      captures: {
+        1: {name: 'keyword.operator.macro.dollar.rust'},
+        3: {name: 'keyword.other.crate.rust'},
+        4: {name: 'entity.name.type.metavariable.rust'},
+        6: {name: 'keyword.operator.key-value.rust'},
+        7: {name: 'variable.other.metavariable.specifier.rust'}
+      },
+      match:
+        '(\\$)((crate)|([A-Z][A-Za-z0-9_]*))((:)(block|expr|ident|item|lifetime|literal|meta|path?|stmt|tt|ty|vis))?',
+      name: 'meta.macro.metavariable.type.rust',
+      patterns: [{include: '#keywords'}]
+    },
+    {
+      captures: {
+        1: {name: 'keyword.operator.macro.dollar.rust'},
+        2: {name: 'variable.other.metavariable.name.rust'},
+        4: {name: 'keyword.operator.key-value.rust'},
+        5: {name: 'variable.other.metavariable.specifier.rust'}
+      },
+      match:
+        '(\\$)([a-z][A-Za-z0-9_]*)((:)(block|expr|ident|item|lifetime|literal|meta|path?|stmt|tt|ty|vis))?',
+      name: 'meta.macro.metavariable.rust',
+      patterns: [{include: '#keywords'}]
+    },
+    {
+      captures: {
+        1: {name: 'entity.name.function.macro.rules.rust'},
+        3: {name: 'entity.name.function.macro.rust'},
+        4: {name: 'entity.name.type.macro.rust'},
+        5: {name: 'punctuation.brackets.curly.rust'}
+      },
+      match: '\\b(macro_rules!)\\s+(([a-z0-9_]+)|([A-Z][a-z0-9_]*))\\s+(\\{)',
+      name: 'meta.macro.rules.rust'
+    },
+    {
+      begin: '(#)(\\!?)(\\[)',
+      beginCaptures: {
+        1: {name: 'punctuation.definition.attribute.rust'},
+        2: {name: 'keyword.operator.attribute.inner.rust'},
+        3: {name: 'punctuation.brackets.attribute.rust'}
+      },
       end: '\\]',
+      endCaptures: {0: {name: 'punctuation.brackets.attribute.rust'}},
       name: 'meta.attribute.rust',
       patterns: [
-        {include: '#string_literal'},
-        {include: '#block_doc_comment'},
-        {include: '#block_comment'},
-        {include: '#line_doc_comment'},
-        {include: '#line_comment'}
+        {include: '#block-comments'},
+        {include: '#comments'},
+        {include: '#keywords'},
+        {include: '#lifetimes'},
+        {include: '#punctuation'},
+        {include: '#strings'},
+        {include: '#gtypes'},
+        {include: '#types'}
       ]
     },
     {
-      match:
-        "b?'([^'\\\\]|\\\\(x[0-9A-Fa-f]{2}|[0-2][0-7]{0,2}|3[0-6][0-7]?|37[0-7]?|[4-7][0-7]?|.))'",
-      name: 'string.quoted.single.rust'
-    },
-    {include: '#string_literal'},
-    {include: '#raw_string_literal'},
-    {
-      match: '\\b[0-9][0-9_]*\\.[0-9][0-9_]*([eE][+-]?[0-9_]+)?(f32|f64)?\\b',
-      name: 'constant.numeric.float.rust'
-    },
-    {
-      match: '\\b[0-9][0-9_]*(\\.[0-9][0-9_]*)?[eE][+-]?[0-9_]+(f32|f64)?\\b',
-      name: 'constant.numeric.float.rust'
-    },
-    {
-      match: '\\b[0-9][0-9_]*(\\.[0-9][0-9_]*)?([eE][+-]?[0-9_]+)?(f32|f64)\\b',
-      name: 'constant.numeric.float.rust'
-    },
-    {
-      match: '\\b[0-9][0-9_]*([ui](8|16|32|64|128|s|size))?\\b',
-      name: 'constant.numeric.integer.decimal.rust'
-    },
-    {
-      match: '\\b0x[a-fA-F0-9_]+([ui](8|16|32|64|128|s|size))?\\b',
-      name: 'constant.numeric.integer.hexadecimal.rust'
-    },
-    {
-      match: '\\b0o[0-7_]+([ui](8|16|32|64|128|s|size))?\\b',
-      name: 'constant.numeric.integer.octal.rust'
-    },
-    {
-      match: '\\b0b[01_]+([ui](8|16|32|64|128|s|size))?\\b',
-      name: 'constant.numeric.integer.binary.rust'
-    },
-    {match: '\\bstatic\\b', name: 'storage.modifier.static.rust'},
-    {match: '\\b(true|false)\\b', name: 'constant.language.boolean.rust'},
-    {
-      match:
-        '\\b(async|await|break|continue|else|if|in|for|loop|match|return|try|while)\\b',
-      name: 'keyword.control.rust'
-    },
-    {
-      match: '\\b(crate|extern|mod|let|ref|use|super|move)\\b',
-      name: 'keyword.other.rust'
-    },
-    {
-      match:
-        '\\b(abstract|alignof|become|do|final|macro|offsetof|override|priv|proc|pure|sizeof|typeof|virtual|yield)\\b',
-      name: 'invalid.deprecated.rust'
-    },
-    {include: '#unsafe'},
-    {include: '#sigils'},
-    {include: '#self'},
-    {include: '#mut'},
-    {include: '#dyn'},
-    {include: '#impl'},
-    {include: '#box'},
-    {include: '#lifetime'},
-    {include: '#ref_lifetime'},
-    {include: '#const'},
-    {include: '#pub'},
-    {match: '(=>|::|\\bas\\b)', name: 'keyword.operator.misc.rust'},
-    {match: '(&&|\\|\\||==|!=)', name: 'keyword.operator.comparison.rust'},
-    {
-      match: '(\\+=|-=|/=|\\*=|%=|\\^=|&=|\\|=|<<=|>>=|=)',
-      name: 'keyword.operator.assignment.rust'
-    },
-    {
-      match: '(!|\\+|-|/|\\*|%|\\^|&|\\||<<|>>)',
-      name: 'keyword.operator.arithmetic.rust'
-    },
-    {match: '(<=|>=|<|>)', name: 'keyword.operator.comparison.rust'},
-    {include: '#core_types'},
-    {include: '#core_vars'},
-    {include: '#core_marker'},
-    {include: '#core_traits'},
-    {include: '#std_types'},
-    {include: '#std_traits'},
-    {
-      match:
-        '\\b(macro_rules|compile_error|format_args|env|option_env|concat_idents|concat|line|column|file|stringify|include|include_str|include_bytes|module_path|cfg)!',
-      name: 'support.function.builtin.rust'
-    },
-    {
-      match:
-        '\\b(panic|assert|assert_eq|assert_ne|debug_assert|debug_assert_eq|debug_assert_ne|try|write|writeln|unreachable|unimplemented)!',
-      name: 'support.function.core.rust'
-    },
-    {
-      match: '\\b(format|print|println|eprint|eprintln|select|vec)!',
-      name: 'support.function.std.rust'
-    },
-    {
-      match: '\\b(log|error|warn|info|debug|trace|log_enabled)!',
-      name: 'support.function.log.rust'
-    },
-    {
-      captures: {1: {name: 'entity.name.function.macro.rust'}},
-      match: '\\b([a-zA-Z_][a-zA-Z0-9_]*\\!)\\s*[({\\[]'
-    },
-    {
-      captures: {1: {name: 'entity.name.function.rust'}},
-      match: '\\b([A-Za-z][A-Za-z0-9_]*|_[A-Za-z0-9_]+)\\s*\\('
-    },
-    {
-      begin:
-        '\\b([A-Za-z][A-Za-z0-9_]*|_[A-Za-z0-9_]+)\\s*(::)(?=\\s*<.*>\\s*\\()',
       captures: {
-        1: {name: 'entity.name.function.rust'},
-        2: {name: 'keyword.operator.misc.rust'}
+        1: {name: 'storage.type.rust'},
+        2: {name: 'entity.name.module.rust'}
       },
-      end: '\\(',
-      patterns: [{include: '#type_params'}]
+      match: '(mod)\\s+((?:r#(?!crate|[Ss]elf|super))?[a-z][A-Za-z0-9_]*)'
     },
     {
-      begin: '\\b(fn)\\s+([A-Za-z][A-Za-z0-9_]*|_[A-Za-z0-9_]+)',
-      beginCaptures: {
-        1: {name: 'keyword.other.fn.rust'},
-        2: {name: 'entity.name.function.rust'}
-      },
-      end: '[\\{;]',
-      patterns: [
-        {include: '#block_comment'},
-        {include: '#line_comment'},
-        {include: '#sigils'},
-        {include: '#self'},
-        {include: '#mut'},
-        {include: '#dyn'},
-        {include: '#impl'},
-        {include: '#ref_lifetime'},
-        {include: '#core_types'},
-        {include: '#core_marker'},
-        {include: '#core_traits'},
-        {include: '#std_types'},
-        {include: '#std_traits'},
-        {include: '#type_params'},
-        {include: '#const'},
-        {include: '#where'},
-        {include: '#unsafe'},
-        {match: '\bfn\b', name: 'keyword.other.fn.rust'}
-      ]
-    },
-    {
-      begin: '\\b(enum|struct|trait|union)\\s+([a-zA-Z_][a-zA-Z0-9_]*)',
+      begin: '\\b(extern)\\s+(crate)',
       beginCaptures: {
         1: {name: 'storage.type.rust'},
-        2: {name: 'entity.name.type.rust'}
-      },
-      end: '[\\{\\(;]',
-      patterns: [
-        {include: '#block_comment'},
-        {include: '#line_comment'},
-        {include: '#core_traits'},
-        {include: '#std_traits'},
-        {include: '#type_params'},
-        {include: '#core_types'},
-        {include: '#pub'},
-        {include: '#where'}
-      ]
-    },
-    {
-      begin: '\\b(type)\\s+([a-zA-Z_][a-zA-Z0-9_]*)',
-      beginCaptures: {
-        1: {name: 'storage.type.rust'},
-        2: {name: 'entity.name.type.rust'}
+        2: {name: 'keyword.other.crate.rust'}
       },
       end: ';',
+      endCaptures: {0: {name: 'punctuation.semi.rust'}},
+      name: 'meta.import.rust',
       patterns: [
-        {include: '#block_comment'},
-        {include: '#line_comment'},
-        {include: '#sigils'},
-        {include: '#mut'},
-        {include: '#dyn'},
-        {include: '#impl'},
-        {include: '#lifetime'},
-        {include: '#ref_lifetime'},
-        {include: '#core_types'},
-        {include: '#core_marker'},
-        {include: '#core_traits'},
-        {include: '#std_types'},
-        {include: '#std_traits'},
-        {include: '#type_params'}
+        {include: '#block-comments'},
+        {include: '#comments'},
+        {include: '#keywords'},
+        {include: '#punctuation'}
       ]
-    }
+    },
+    {
+      begin: '\\b(use)\\s',
+      beginCaptures: {1: {name: 'keyword.other.rust'}},
+      end: ';',
+      endCaptures: {0: {name: 'punctuation.semi.rust'}},
+      name: 'meta.use.rust',
+      patterns: [
+        {include: '#block-comments'},
+        {include: '#comments'},
+        {include: '#keywords'},
+        {include: '#namespaces'},
+        {include: '#punctuation'},
+        {include: '#types'},
+        {include: '#lvariables'}
+      ]
+    },
+    {include: '#block-comments'},
+    {include: '#comments'},
+    {include: '#lvariables'},
+    {include: '#constants'},
+    {include: '#gtypes'},
+    {include: '#functions'},
+    {include: '#types'},
+    {include: '#keywords'},
+    {include: '#lifetimes'},
+    {include: '#macros'},
+    {include: '#namespaces'},
+    {include: '#punctuation'},
+    {include: '#strings'},
+    {include: '#variables'}
   ],
   repository: {
-    block_comment: {
-      begin: '/\\*',
-      end: '\\*/',
-      name: 'comment.block.rust',
-      patterns: [{include: '#block_doc_comment'}, {include: '#block_comment'}]
-    },
-    block_doc_comment: {
-      begin: '/\\*[\\*!](?![\\*/])',
-      end: '\\*/',
-      name: 'comment.block.documentation.rust',
-      patterns: [{include: '#block_doc_comment'}, {include: '#block_comment'}]
-    },
-    box: {match: '\\bbox\\b', name: 'storage.modifier.box.rust'},
-    const: {match: '\\bconst\\b', name: 'storage.modifier.const.rust'},
-    core_marker: {
-      match: '\\b(Copy|Send|Sized|Sync)\\b',
-      name: 'support.type.marker.rust'
-    },
-    core_traits: {
-      match:
-        '\\b(Drop|Fn|FnMut|FnOnce|Clone|PartialEq|PartialOrd|Eq|Ord|AsRef|AsMut|Into|From|Default|Iterator|Extend|IntoIterator|DoubleEndedIterator|ExactSizeIterator)\\b',
-      name: 'support.type.core.rust'
-    },
-    core_types: {
-      match:
-        '\\b(bool|char|usize|isize|u8|u16|u32|u64|u128|i8|i16|i32|i64|i128|f32|f64|str|Self|Option|Result)\\b',
-      name: 'storage.type.core.rust'
-    },
-    core_vars: {
-      match: '\\b(Some|None|Ok|Err)\\b',
-      name: 'support.constant.core.rust'
-    },
-    dyn: {match: '\\bdyn\\b', name: 'storage.modifier.dyn.rust'},
-    escaped_character: {
-      match:
-        '\\\\(x[0-9A-Fa-f]{2}|[0-2][0-7]{0,2}|3[0-6][0-7]?|37[0-7]?|[4-7][0-7]?|.)',
-      name: 'constant.character.escape.rust'
-    },
-    impl: {match: '\\bimpl\\b', name: 'storage.modifier.impl.rust'},
-    lifetime: {
-      captures: {1: {name: 'entity.name.lifetime.rust'}},
-      match: "'([a-zA-Z_][a-zA-Z0-9_]*)\\b",
-      name: 'storage.modifier.lifetime.rust'
-    },
-    line_comment: {
-      begin: '//',
-      end: '$',
-      name: 'comment.line.double-slash.rust'
-    },
-    line_doc_comment: {
-      begin: '//[!/](?=[^/])',
-      end: '$',
-      name: 'comment.line.documentation.rust'
-    },
-    mut: {match: '\\bmut\\b', name: 'storage.modifier.mut.rust'},
-    pub: {match: '\\bpub\\b', name: 'storage.modifier.visibility.rust'},
-    raw_string_literal: {
-      begin: 'b?r(#*)"',
-      end: '"\\1',
-      name: 'string.quoted.double.raw.rust'
-    },
-    ref_lifetime: {
-      captures: {
-        1: {name: 'storage.modifier.lifetime.rust'},
-        2: {name: 'entity.name.lifetime.rust'}
-      },
-      match: "&('([a-zA-Z_][a-zA-Z0-9_]*))\\b"
-    },
-    self: {match: '\\bself\\b', name: 'variable.language.rust'},
-    sigils: {
-      match: '[&*](?=[a-zA-Z0-9_\\(\\[\\|\\"]+)',
-      name: 'keyword.operator.sigil.rust'
-    },
-    std_traits: {
-      match: '\\b(ToOwned|ToString)\\b',
-      name: 'support.type.std.rust'
-    },
-    std_types: {
-      match: '\\b(Box|String|Vec|Path|PathBuf)\\b',
-      name: 'storage.class.std.rust'
-    },
-    string_literal: {
-      begin: 'b?"',
-      end: '"',
-      name: 'string.quoted.double.rust',
-      patterns: [{include: '#escaped_character'}]
-    },
-    type: {
-      match: '\\b([A-Za-z][_A-Za-z0-9]*|_[_A-Za-z0-9]+)\\b',
-      name: 'entity.name.type.rust'
-    },
-    type_params: {
-      begin: '<(?![=<])',
-      end: '(?<![-])>',
-      name: 'meta.type_params.rust',
+    'block-comments': {
       patterns: [
-        {include: '#block_comment'},
-        {include: '#line_comment'},
-        {include: '#sigils'},
-        {include: '#mut'},
-        {include: '#dyn'},
-        {include: '#impl'},
-        {include: '#lifetime'},
-        {include: '#core_types'},
-        {include: '#core_marker'},
-        {include: '#core_traits'},
-        {include: '#std_types'},
-        {include: '#std_traits'},
-        {include: '#type_params'}
+        {match: '/\\*\\*/', name: 'comment.block.rust'},
+        {
+          begin: '/\\*\\*',
+          end: '\\*/',
+          name: 'comment.block.documentation.rust',
+          patterns: [{include: '#block-comments'}]
+        },
+        {
+          begin: '/\\*(?!\\*)',
+          end: '\\*/',
+          name: 'comment.block.rust',
+          patterns: [{include: '#block-comments'}]
+        }
       ]
     },
-    unsafe: {match: '\\bunsafe\\b', name: 'keyword.other.unsafe.rust'},
-    where: {match: '\\bwhere\\b', name: 'keyword.other.where.rust'}
+    comments: {
+      patterns: [
+        {match: '^\\s*///.*', name: 'comment.line.documentation.rust'},
+        {match: '\\s*//.*', name: 'comment.line.double-slash.rust'}
+      ]
+    },
+    constants: {
+      patterns: [
+        {match: '\\b[A-Z]{2}[A-Z0-9_]*\\b', name: 'constant.other.caps.rust'},
+        {
+          captures: {
+            1: {name: 'storage.type.rust'},
+            2: {name: 'constant.other.caps.rust'}
+          },
+          match: '\\b(const)\\s+([A-Z][A-Za-z0-9_]*)\\b'
+        },
+        {
+          captures: {
+            1: {name: 'punctuation.separator.dot.decimal.rust'},
+            2: {name: 'keyword.operator.exponent.rust'},
+            3: {name: 'keyword.operator.exponent.sign.rust'},
+            4: {name: 'constant.numeric.decimal.exponent.mantissa.rust'},
+            5: {name: 'entity.name.type.numeric.rust'}
+          },
+          match:
+            '\\b\\d[\\d_]*(\\.?)[\\d_]*(?:(E)([+-])([\\d_]+))?(f32|f64|i128|i16|i32|i64|i8|isize|u128|u16|u32|u64|u8|usize)?\\b',
+          name: 'constant.numeric.decimal.rust'
+        },
+        {
+          captures: {1: {name: 'entity.name.type.numeric.rust'}},
+          match:
+            '\\b0x[\\da-fA-F_]+(i128|i16|i32|i64|i8|isize|u128|u16|u32|u64|u8|usize)?\\b',
+          name: 'constant.numeric.hex.rust'
+        },
+        {
+          captures: {1: {name: 'entity.name.type.numeric.rust'}},
+          match:
+            '\\b0o[0-7_]+(i128|i16|i32|i64|i8|isize|u128|u16|u32|u64|u8|usize)?\\b',
+          name: 'constant.numeric.oct.rust'
+        },
+        {
+          captures: {1: {name: 'entity.name.type.numeric.rust'}},
+          match:
+            '\\b0b[01_]+(i128|i16|i32|i64|i8|isize|u128|u16|u32|u64|u8|usize)?\\b',
+          name: 'constant.numeric.bin.rust'
+        },
+        {match: '\\b(true|false)\\b', name: 'constant.language.bool.rust'}
+      ]
+    },
+    escapes: {
+      captures: {
+        1: {name: 'constant.character.escape.backslash.rust'},
+        2: {name: 'constant.character.escape.bit.rust'},
+        3: {name: 'constant.character.escape.unicode.rust'},
+        4: {name: 'constant.character.escape.unicode.punctuation.rust'},
+        5: {name: 'constant.character.escape.unicode.punctuation.rust'}
+      },
+      match:
+        '(\\\\)(?:(?:(x[0-7][0-7a-fA-F])|(u(\\{)[\\da-fA-F]{4,6}(\\}))|.))',
+      name: 'constant.character.escape.rust'
+    },
+    functions: {
+      patterns: [
+        {
+          captures: {
+            1: {name: 'keyword.other.rust'},
+            2: {name: 'punctuation.brackets.round.rust'}
+          },
+          match: '\\b(pub)(\\()'
+        },
+        {
+          begin:
+            '\\b(fn)\\s+((?:r#(?!crate|[Ss]elf|super))?[A-Za-z0-9_]+)((\\()|(<))',
+          beginCaptures: {
+            1: {name: 'keyword.other.fn.rust'},
+            2: {name: 'entity.name.function.rust'},
+            4: {name: 'punctuation.brackets.round.rust'},
+            5: {name: 'punctuation.brackets.angle.rust'}
+          },
+          end: '\\{|;',
+          endCaptures: {0: {name: 'punctuation.brackets.curly.rust'}},
+          name: 'meta.function.definition.rust',
+          patterns: [
+            {include: '#block-comments'},
+            {include: '#comments'},
+            {include: '#keywords'},
+            {include: '#lvariables'},
+            {include: '#constants'},
+            {include: '#gtypes'},
+            {include: '#functions'},
+            {include: '#lifetimes'},
+            {include: '#macros'},
+            {include: '#namespaces'},
+            {include: '#punctuation'},
+            {include: '#strings'},
+            {include: '#types'},
+            {include: '#variables'}
+          ]
+        },
+        {
+          begin: '((?:r#(?!crate|[Ss]elf|super))?[A-Za-z0-9_]+)(\\()',
+          beginCaptures: {
+            1: {name: 'entity.name.function.rust'},
+            2: {name: 'punctuation.brackets.round.rust'}
+          },
+          end: '\\)',
+          endCaptures: {0: {name: 'punctuation.brackets.round.rust'}},
+          name: 'meta.function.call.rust',
+          patterns: [
+            {include: '#block-comments'},
+            {include: '#comments'},
+            {include: '#keywords'},
+            {include: '#lvariables'},
+            {include: '#constants'},
+            {include: '#gtypes'},
+            {include: '#functions'},
+            {include: '#lifetimes'},
+            {include: '#macros'},
+            {include: '#namespaces'},
+            {include: '#punctuation'},
+            {include: '#strings'},
+            {include: '#types'},
+            {include: '#variables'}
+          ]
+        },
+        {
+          begin: '((?:r#(?!crate|[Ss]elf|super))?[A-Za-z0-9_]+)(?=::<.*>\\()',
+          beginCaptures: {1: {name: 'entity.name.function.rust'}},
+          end: '\\)',
+          endCaptures: {0: {name: 'punctuation.brackets.round.rust'}},
+          name: 'meta.function.call.rust',
+          patterns: [
+            {include: '#block-comments'},
+            {include: '#comments'},
+            {include: '#keywords'},
+            {include: '#lvariables'},
+            {include: '#constants'},
+            {include: '#gtypes'},
+            {include: '#functions'},
+            {include: '#lifetimes'},
+            {include: '#macros'},
+            {include: '#namespaces'},
+            {include: '#punctuation'},
+            {include: '#strings'},
+            {include: '#types'},
+            {include: '#variables'}
+          ]
+        }
+      ]
+    },
+    gtypes: {
+      patterns: [
+        {match: '\\b(Some|None)\\b', name: 'entity.name.type.option.rust'},
+        {match: '\\b(Ok|Err)\\b', name: 'entity.name.type.result.rust'}
+      ]
+    },
+    interpolations: {
+      captures: {
+        1: {name: 'punctuation.definition.interpolation.rust'},
+        2: {name: 'punctuation.definition.interpolation.rust'}
+      },
+      match: '({)[^"{}]*(})',
+      name: 'meta.interpolation.rust'
+    },
+    keywords: {
+      patterns: [
+        {
+          match:
+            '\\b(await|break|continue|do|else|for|if|loop|match|return|try|while|yield)\\b',
+          name: 'keyword.control.rust'
+        },
+        {
+          match: '\\b(extern|let|macro|mod)\\b',
+          name: 'keyword.other.rust storage.type.rust'
+        },
+        {match: '\\b(const)\\b', name: 'storage.modifier.rust'},
+        {
+          match: '\\b(type)\\b',
+          name: 'keyword.declaration.type.rust storage.type.rust'
+        },
+        {
+          match: '\\b(enum)\\b',
+          name: 'keyword.declaration.enum.rust storage.type.rust'
+        },
+        {
+          match: '\\b(trait)\\b',
+          name: 'keyword.declaration.trait.rust storage.type.rust'
+        },
+        {
+          match: '\\b(struct)\\b',
+          name: 'keyword.declaration.struct.rust storage.type.rust'
+        },
+        {match: '\\b(abstract|static)\\b', name: 'storage.modifier.rust'},
+        {
+          match:
+            '\\b(as|async|become|box|dyn|move|final|impl|in|override|priv|pub|ref|typeof|union|unsafe|unsized|use|virtual|where)\\b',
+          name: 'keyword.other.rust'
+        },
+        {match: '\\bfn\\b', name: 'keyword.other.fn.rust'},
+        {match: '\\bcrate\\b', name: 'keyword.other.crate.rust'},
+        {match: '\\bmut\\b', name: 'storage.modifier.mut.rust'},
+        {
+          match: '(\\^|\\||\\|\\||&&|<<|>>|!)(?!=)',
+          name: 'keyword.operator.logical.rust'
+        },
+        {match: '&(?![&=])', name: 'keyword.operator.borrow.and.rust'},
+        {
+          match: '(\\+=|-=|\\*=|/=|%=|\\^=|&=|\\|=|<<=|>>=)',
+          name: 'keyword.operator.assignment.rust'
+        },
+        {
+          match: '(?<![<>])=(?!=|>)',
+          name: 'keyword.operator.assignment.equal.rust'
+        },
+        {
+          match: '(=(=)?(?!>)|!=|<=|(?<!=)>=)',
+          name: 'keyword.operator.comparison.rust'
+        },
+        {
+          match: '(([+%]|(\\*(?!\\w)))(?!=))|(-(?!>))|(/(?!/))',
+          name: 'keyword.operator.math.rust'
+        },
+        {
+          captures: {
+            1: {name: 'punctuation.brackets.round.rust'},
+            2: {name: 'punctuation.brackets.square.rust'},
+            3: {name: 'punctuation.brackets.curly.rust'},
+            4: {name: 'keyword.operator.comparison.rust'},
+            5: {name: 'punctuation.brackets.round.rust'},
+            6: {name: 'punctuation.brackets.square.rust'},
+            7: {name: 'punctuation.brackets.curly.rust'}
+          },
+          match:
+            '(?:\\b|(?:(\\))|(\\])|(\\})))[ \\t]+([<>])[ \\t]+(?:\\b|(?:(\\()|(\\[)|(\\{)))'
+        },
+        {match: '::', name: 'keyword.operator.namespace.rust'},
+        {
+          captures: {1: {name: 'keyword.operator.dereference.rust'}},
+          match: '(\\*)(?=\\w+)'
+        },
+        {match: '@', name: 'keyword.operator.subpattern.rust'},
+        {match: '\\.(?!\\.)', name: 'keyword.operator.access.dot.rust'},
+        {match: '\\.{2}(=|\\.)?', name: 'keyword.operator.range.rust'},
+        {match: ':(?!:)', name: 'keyword.operator.key-value.rust'},
+        {match: '->', name: 'keyword.operator.arrow.skinny.rust'},
+        {match: '=>', name: 'keyword.operator.arrow.fat.rust'},
+        {match: '\\$', name: 'keyword.operator.macro.dollar.rust'},
+        {match: '\\?', name: 'keyword.operator.question.rust'}
+      ]
+    },
+    lifetimes: {
+      patterns: [
+        {
+          captures: {
+            1: {name: 'punctuation.definition.lifetime.rust'},
+            2: {name: 'entity.name.type.lifetime.rust'}
+          },
+          match: "(['])([a-zA-Z_][0-9a-zA-Z_]*)(?!['])\\b"
+        },
+        {
+          captures: {
+            1: {name: 'keyword.operator.borrow.rust'},
+            2: {name: 'punctuation.definition.lifetime.rust'},
+            3: {name: 'entity.name.type.lifetime.rust'}
+          },
+          match: "(\\&)(['])([a-zA-Z_][0-9a-zA-Z_]*)(?!['])\\b"
+        }
+      ]
+    },
+    lvariables: {
+      patterns: [
+        {match: '\\b[Ss]elf\\b', name: 'variable.language.self.rust'},
+        {match: '\\bsuper\\b', name: 'variable.language.super.rust'}
+      ]
+    },
+    macros: {
+      patterns: [
+        {
+          captures: {
+            2: {name: 'entity.name.function.macro.rust'},
+            3: {name: 'entity.name.type.macro.rust'}
+          },
+          match: '(([a-z_][A-Za-z0-9_]*!)|([A-Z_][A-Za-z0-9_]*!))',
+          name: 'meta.macro.rust'
+        }
+      ]
+    },
+    namespaces: {
+      patterns: [
+        {
+          captures: {
+            1: {name: 'entity.name.namespace.rust'},
+            2: {name: 'keyword.operator.namespace.rust'}
+          },
+          match: '(?<![A-Za-z0-9_])([a-z0-9_]+)((?<!super|self)::)'
+        }
+      ]
+    },
+    punctuation: {
+      patterns: [
+        {match: ',', name: 'punctuation.comma.rust'},
+        {match: '[{}]', name: 'punctuation.brackets.curly.rust'},
+        {match: '[()]', name: 'punctuation.brackets.round.rust'},
+        {match: ';', name: 'punctuation.semi.rust'},
+        {match: '[\\[\\]]', name: 'punctuation.brackets.square.rust'},
+        {match: '(?<!=)[<>]', name: 'punctuation.brackets.angle.rust'}
+      ]
+    },
+    strings: {
+      patterns: [
+        {
+          begin: '(b?)(")',
+          beginCaptures: {
+            1: {name: 'string.quoted.byte.raw.rust'},
+            2: {name: 'punctuation.definition.string.rust'}
+          },
+          end: '"',
+          endCaptures: {0: {name: 'punctuation.definition.string.rust'}},
+          name: 'string.quoted.double.rust',
+          patterns: [{include: '#escapes'}, {include: '#interpolations'}]
+        },
+        {
+          begin: '(b?r)(#*)(")',
+          beginCaptures: {
+            1: {name: 'string.quoted.byte.raw.rust'},
+            2: {name: 'punctuation.definition.string.raw.rust'},
+            3: {name: 'punctuation.definition.string.rust'}
+          },
+          end: '(")(\\2)',
+          endCaptures: {
+            1: {name: 'punctuation.definition.string.rust'},
+            2: {name: 'punctuation.definition.string.raw.rust'}
+          },
+          name: 'string.quoted.double.rust'
+        },
+        {
+          begin: "(b)?(')",
+          beginCaptures: {
+            1: {name: 'string.quoted.byte.raw.rust'},
+            2: {name: 'punctuation.definition.char.rust'}
+          },
+          end: "'",
+          endCaptures: {0: {name: 'punctuation.definition.char.rust'}},
+          name: 'string.quoted.single.char.rust',
+          patterns: [{include: '#escapes'}]
+        }
+      ]
+    },
+    types: {
+      patterns: [
+        {
+          captures: {1: {name: 'entity.name.type.numeric.rust'}},
+          match:
+            '(?<![A-Za-z])(f32|f64|i128|i16|i32|i64|i8|isize|u128|u16|u32|u64|u8|usize)\\b'
+        },
+        {
+          begin: '\\b([A-Z][A-Za-z0-9]*)(<)',
+          beginCaptures: {
+            1: {name: 'entity.name.type.rust'},
+            2: {name: 'punctuation.brackets.angle.rust'}
+          },
+          end: '>',
+          endCaptures: {0: {name: 'punctuation.brackets.angle.rust'}},
+          patterns: [
+            {include: '#block-comments'},
+            {include: '#comments'},
+            {include: '#keywords'},
+            {include: '#lvariables'},
+            {include: '#lifetimes'},
+            {include: '#punctuation'},
+            {include: '#types'},
+            {include: '#variables'}
+          ]
+        },
+        {
+          match: '\\b(bool|char|str)\\b',
+          name: 'entity.name.type.primitive.rust'
+        },
+        {
+          captures: {
+            1: {name: 'keyword.declaration.trait.rust storage.type.rust'},
+            2: {name: 'entity.name.type.trait.rust'}
+          },
+          match: '\\b(trait)\\s+([A-Z][A-Za-z0-9]*)\\b'
+        },
+        {
+          captures: {
+            1: {name: 'keyword.declaration.struct.rust storage.type.rust'},
+            2: {name: 'entity.name.type.struct.rust'}
+          },
+          match: '\\b(struct)\\s+([A-Z][A-Za-z0-9]*)\\b'
+        },
+        {
+          captures: {
+            1: {name: 'keyword.declaration.enum.rust storage.type.rust'},
+            2: {name: 'entity.name.type.enum.rust'}
+          },
+          match: '\\b(enum)\\s+([A-Z][A-Za-z0-9_]*)\\b'
+        },
+        {
+          captures: {
+            1: {name: 'keyword.declaration.type.rust storage.type.rust'},
+            2: {name: 'entity.name.type.declaration.rust'}
+          },
+          match: '\\b(type)\\s+([A-Z][A-Za-z0-9_]*)\\b'
+        },
+        {match: '\\b[A-Z][A-Za-z0-9]*\\b(?!!)', name: 'entity.name.type.rust'}
+      ]
+    },
+    variables: {
+      patterns: [
+        {
+          match:
+            '\\b(?<!(?<!\\.)\\.)(?:r#(?!(crate|[Ss]elf|super)))?[a-z0-9_]+\\b',
+          name: 'variable.other.rust'
+        }
+      ]
+    }
   },
   scopeName: 'source.rust'
 }

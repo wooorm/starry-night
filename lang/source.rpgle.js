@@ -22,6 +22,7 @@ const grammar = {
         {include: '#freeformat'}
       ]
     },
+    {begin: '(?i)^.{5}.[*]', end: '\n', name: 'comment.line.rpgle.fixed'},
     {include: '#tempfreeformat'},
     {include: '#fixedSQL'},
     {include: '#freeSQL'},

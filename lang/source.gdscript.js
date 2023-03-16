@@ -131,12 +131,12 @@ const grammar = {
         1: {name: 'keyword.control.flow'},
         2: {name: 'constant.character.escape'}
       },
-      end: '(["\'])|$',
+      end: '(["\'])',
       endCaptures: {1: {name: 'constant.character.escape'}},
       name: 'support.function.builtin.shorthand.gdscript',
       patterns: [
         {match: '%', name: 'keyword.control.flow'},
-        {match: '[^%]*', name: 'constant.character.escape'}
+        {match: '[^%^"^\']*', name: 'constant.character.escape'}
       ]
     },
     class_definition: {
@@ -247,7 +247,8 @@ const grammar = {
         {
           captures: {2: {name: 'entity.name.type.class.gdscript'}},
           match: '\\s*(\\-\\>)\\s*([a-zA-Z_]\\w*)\\s*\\:'
-        }
+        },
+        {include: '#base_expression'}
       ]
     },
     function_keyword: {match: 'func', name: 'keyword.language.gdscript'},
@@ -352,8 +353,8 @@ const grammar = {
       name: 'meta.literal.nodepath.gdscript',
       patterns: [
         {
-          begin: '[\\"\\\']',
-          end: '[\\"\\\']',
+          begin: '["\']',
+          end: '["\']',
           name: 'constant.character.escape',
           patterns: [{match: '%', name: 'keyword.control.flow'}]
         }
@@ -366,8 +367,8 @@ const grammar = {
       name: 'meta.literal.nodepath.gdscript',
       patterns: [
         {
-          begin: '[\\"\\\']',
-          end: '[\\"\\\']',
+          begin: '["\']',
+          end: '["\']',
           name: 'constant.character.escape',
           patterns: [{match: '%', name: 'keyword.control.flow'}]
         }
@@ -453,11 +454,7 @@ const grammar = {
             '(?:(?<=get_node|has_node|find_node|get_node_or_null|NodePath)\\s*\\(\\s*)',
           end: '(?:\\s*\\))',
           patterns: [
-            {
-              begin: '[\\"\\\']',
-              end: '[\\"\\\']',
-              name: 'constant.character.escape'
-            },
+            {begin: '["\']', end: '["\']', name: 'constant.character.escape'},
             {include: '#base_expression'}
           ]
         },
@@ -487,12 +484,12 @@ const grammar = {
       ]
     },
     variable_definition: {
-      begin: '\\b(?:(var)|(const))',
+      begin: '\\b(?:(var)|(const))\\s+',
       beginCaptures: {
         1: {name: 'storage.type.var.gdscript'},
         2: {name: 'storage.type.const.gdscript'}
       },
-      end: '$',
+      end: '$|;',
       patterns: [
         {
           captures: {

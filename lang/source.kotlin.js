@@ -120,8 +120,8 @@ const grammar = {
               },
               name: 'meta.parameters.kotlin',
               patterns: [
-                {include: '#comments'},
-                {include: '#class-parameter-list'}
+                {include: '#class-parameter-list'},
+                {include: '#comments'}
               ]
             },
             {
@@ -151,7 +151,8 @@ const grammar = {
               match: '(\\w+)\\s*(:)'
             },
             {match: ',', name: 'punctuation.seperator.kotlin'},
-            {include: '#types'}
+            {include: '#types'},
+            {include: '#literals'}
           ]
         }
       }
@@ -275,7 +276,7 @@ const grammar = {
         },
         {
           match:
-            '\\b(?<![+-/%*=(,]\\s)(inline|external|public|private|protected|internal|abstract|final|sealed|enum|open|annotation|expect|actual|const|lateinit)(?=\\s(?!(?:\\s*)(?:[+-/%*=:).,]|$)))\\b',
+            '\\b(?<![+-/%*=(,]\\s)(inline|inner|external|public|private|protected|internal|abstract|final|sealed|enum|open|annotation|expect|actual|const|lateinit)(?=\\s(?!(?:\\s*)(?:[+-/%*=:).,]|$)))\\b',
           name: 'storage.modifier.kotlin'
         },
         {match: '\\b(vararg(?=\\s+\\w+:))\\b', name: 'storage.modifier.kotlin'},

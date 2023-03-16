@@ -27,6 +27,7 @@ const grammar = {
     {include: '#annotations'},
     {include: '#keywords'},
     {include: '#constants-and-special-vars'},
+    {include: '#operators'},
     {include: '#strings'}
   ],
   repository: {
@@ -35,18 +36,19 @@ const grammar = {
     },
     'class-identifier': {
       patterns: [
-        {match: '\\bvoid\\b', name: 'storage.type.primitive.dart'},
         {
-          match: '\\b(bool|num|int|double|dynamic)\\b',
+          match: '(?<!\\$)\\b(bool|num|int|double|dynamic)\\b(?!\\$)',
           name: 'support.class.dart'
         },
         {
-          captures: {
-            1: {name: 'support.class.dart'},
-            2: {patterns: [{include: '#type-args'}]}
-          },
-          match:
-            '\\b([_$]*[A-Z][a-zA-Z0-9_$]*)(<(?:[a-zA-Z0-9_$<>?]|,\\s*|\\s+extends\\s+)+>)?'
+          match: '(?<!\\$)\\bvoid\\b(?!\\$)',
+          name: 'storage.type.primitive.dart'
+        },
+        {
+          begin: '(?<![a-zA-Z0-9_$])([_$]*[A-Z][a-zA-Z0-9_$]*)\\b',
+          beginCaptures: {1: {name: 'support.class.dart'}},
+          end: '(?!<)',
+          patterns: [{include: '#type-args'}]
         }
       ]
     },
@@ -155,7 +157,7 @@ const grammar = {
             2: {patterns: [{include: '#type-args'}]}
           },
           match:
-            '([_$]*[a-z][a-zA-Z0-9_$]*)(<(?:[a-zA-Z0-9_$<>?]|,\\s*|\\s+extends\\s+)+>)?[!?]?(\\(|\\s+=>)'
+            '([_$]*[a-z][a-zA-Z0-9_$]*)(<(?:[a-zA-Z0-9_$<>?]|,\\s*|\\s+extends\\s+)+>)?[!?]?\\('
         }
       ]
     },
@@ -168,7 +170,7 @@ const grammar = {
         },
         {
           match:
-            '(?<!\\$)\\b(break|case|continue|default|do|else|for|if|in|return|switch|while)\\b(?!\\$)',
+            '(?<!\\$)\\b(break|case|continue|default|do|else|for|if|in|return|switch|while|when)\\b(?!\\$)',
           name: 'keyword.control.dart'
         },
         {
@@ -180,9 +182,21 @@ const grammar = {
         {match: '(?<!\\$)\\b(new)\\b(?!\\$)', name: 'keyword.control.new.dart'},
         {
           match:
-            '(?<!\\$)\\b(abstract|class|enum|extends|extension|external|factory|implements|get|mixin|native|operator|set|typedef|with|covariant)\\b(?!\\$)',
+            '(?<!\\$)\\b(abstract|sealed|base|interface|class|enum|extends|extension|external|factory|implements|get(?!\\()|mixin|native|operator|set(?!\\()|typedef|with|covariant)\\b(?!\\$)',
           name: 'keyword.declaration.dart'
         },
+        {
+          match: '(?<!\\$)\\b(static|final|const|required|late)\\b(?!\\$)',
+          name: 'storage.modifier.dart'
+        },
+        {
+          match: '(?<!\\$)\\b(?:void|var)\\b(?!\\$)',
+          name: 'storage.type.primitive.dart'
+        }
+      ]
+    },
+    operators: {
+      patterns: [
         {match: '(?<!\\$)\\b(is\\!?)\\b(?!\\$)', name: 'keyword.operator.dart'},
         {match: '\\?|:', name: 'keyword.operator.ternary.dart'},
         {match: '(<<|>>>?|~|\\^|\\||&)', name: 'keyword.operator.bitwise.dart'},
@@ -205,15 +219,7 @@ const grammar = {
           match: '(\\-|\\+|\\*|\\/|\\~\\/|%)',
           name: 'keyword.operator.arithmetic.dart'
         },
-        {match: '(!|&&|\\|\\|)', name: 'keyword.operator.logical.dart'},
-        {
-          match: '(?<!\\$)\\b(static|final|const|required|late)\\b(?!\\$)',
-          name: 'storage.modifier.dart'
-        },
-        {
-          match: '(?<!\\$)\\b(?:void|var)\\b(?!\\$)',
-          name: 'storage.type.primitive.dart'
-        }
+        {match: '(!|&&|\\|\\|)', name: 'keyword.operator.logical.dart'}
       ]
     },
     punctuation: {
@@ -308,7 +314,7 @@ const grammar = {
       endCaptures: {1: {name: 'other.source.dart'}},
       patterns: [
         {include: '#class-identifier'},
-        {match: '[\\s,]+'},
+        {match: ','},
         {match: 'extends', name: 'keyword.declaration.dart'}
       ]
     }

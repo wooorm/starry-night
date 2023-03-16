@@ -73,10 +73,11 @@ const grammar = {
       captures: {
         1: {patterns: [{include: '#digest'}]},
         2: {name: 'storage.modifier.binary-mode.checksum'},
-        3: {name: 'string.unquoted.other.filename.checksum'}
+        3: {name: 'storage.modifier.bitwise-mode.checksum'},
+        4: {name: 'string.unquoted.other.filename.checksum'}
       },
       match:
-        '^\\s*(?=\\S{24})([A-Za-z0-9+/]=*|[A-Fa-f0-9]+) (?: |(\\*))(\\S.*)',
+        '^\\s*(?=\\S{24})([A-Za-z0-9+/]=*|[A-Fa-f0-9]+)(?:[ \\t](?: |(\\*)|(\\^))?|(?:\\t* \\t*){3,}+)(\\S.*)',
       name: 'meta.gnu-style.checksum'
     },
     isolated: {

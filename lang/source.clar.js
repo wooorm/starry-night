@@ -8,105 +8,467 @@ const grammar = {
   extensions: ['.clar'],
   names: ['clarity'],
   patterns: [
-    {include: '#comment'},
-    {include: '#datatype'},
-    {include: '#keyword'},
-    {include: '#number'},
-    {include: '#string'},
-    {include: '#define'},
-    {include: '#lang-func'},
-    {include: '#tuple-key'}
+    {include: '#expression'},
+    {include: '#define-constant'},
+    {include: '#define-data-var'},
+    {include: '#define-map'},
+    {include: '#define-function'},
+    {include: '#define-fungible-token'},
+    {include: '#define-non-fungible-token'},
+    {include: '#define-trait'},
+    {include: '#use-trait'}
   ],
   repository: {
-    args: {
-      begin: '(?x)\n  (?<=^|[(]) \\s*\n  ([a-z][a-zA-Z0-9_-]+) \\s*\n',
-      beginCaptures: {0: {name: 'variable.parameter.clarity'}},
-      end: '\\)',
-      endCaptures: {0: {name: 'punctuation.section.end.clarity'}},
-      patterns: [
-        {include: '#datatype'},
-        {include: '#tuple-key'},
-        {include: '#number'}
-      ]
+    'built-in-func': {
+      begin:
+        '(?x) (\\() \\s* (\\-|\\+|<\\=|>\\=|<|>|\\*|/|and|append|as-contract|as-max-len\\?|asserts!|at-block|begin|bit-and|bit-not|bit-or|bit-shift-left|bit-shift-right|bit-xor|buff-to-int-be|buff-to-int-le|buff-to-uint-be|buff-to-uint-le|concat|contract-call\\?|contract-of|default-to|element-at|element-at\\?|filter|fold|from-consensus-buff\\?|ft-burn\\?|ft-get-balance|ft-get-supply|ft-mint\\?|ft-transfer\\?|get-block-info\\?|get-burn-block-info\\?|hash160|if|impl-trait|index-of|index-of\\?|int-to-ascii|int-to-utf8|is-eq|is-err|is-none|is-ok|is-some|is-standard|keccak256|len|log2|map|match|merge|mod|nft-burn\\?|nft-get-owner\\?|nft-mint\\?|nft-transfer\\?|not|or|pow|principal-construct\\?|principal-destruct\\?|principal-of\\?|print|replace-at\\?|secp256k1-recover\\?|secp256k1-verify|sha256|sha512|sha512/256|slice\\?|sqrti|string-to-int\\?|string-to-uint\\?|stx-account|stx-burn\\?|stx-get-balance|stx-transfer-memo\\?|stx-transfer\\?|to-consensus-buff\\?|to-int|to-uint|try!|unwrap!|unwrap-err!|unwrap-err-panic|unwrap-panic|xor) \\s+',
+      beginCaptures: {
+        1: {name: 'punctuation.built-in-function.start.clarity'},
+        2: {name: 'keyword.declaration.built-in-function.clarity'}
+      },
+      end: '(\\))',
+      endCaptures: {1: {name: 'punctuation.built-in-function.end.clarity'}},
+      name: 'meta.built-in-function',
+      patterns: [{include: '#expression'}, {include: '#user-func'}]
     },
     comment: {
       match: '(?x) (?<=^|[()\\[\\]{}",\'`;\\s]) (;) .* $',
       name: 'comment.line.semicolon.clarity'
     },
-    datatype: {
-      match:
-        '(?x)\n(?<=^|[\\s:(){},])\n(tuple|list|response|optional|buff|string-ascii|string-utf8|principal|bool|int|uint)\n(?=[\\s(){},])',
-      name: 'storage.type.clarity'
-    },
-    define: {
+    'data-type': {
       patterns: [
-        {include: '#define-func'},
-        {include: '#define-var'},
-        {include: '#set-func'}
+        {include: '#comment'},
+        {match: '\\b(uint|int)\\b', name: 'entity.name.type.numeric.clarity'},
+        {
+          match: '\\b(principal)\\b',
+          name: 'entity.name.type.principal.clarity'
+        },
+        {match: '\\b(bool)\\b', name: 'entity.name.type.bool.clarity'},
+        {
+          captures: {
+            1: {name: 'punctuation.string-def.start.clarity'},
+            2: {name: 'entity.name.type.string.clarity'},
+            3: {name: 'constant.numeric.string-len.clarity'},
+            4: {name: 'punctuation.string-def.end.clarity'}
+          },
+          match:
+            '(?x) (\\() \\s* (?:(string-ascii|string-utf8)\\s+(\\d+)) \\s* (\\))'
+        },
+        {
+          captures: {
+            1: {name: 'punctuation.buff-def.start.clarity'},
+            2: {name: 'entity.name.type.buff.clarity'},
+            3: {name: 'constant.numeric.buf-len.clarity'},
+            4: {name: 'punctuation.buff-def.end.clarity'}
+          },
+          match: '(?x) (\\() \\s* (buff)\\s+(\\d+)\\s* (\\))'
+        },
+        {
+          begin: '(?x) (\\() \\s* (optional)\\s+',
+          beginCaptures: {
+            1: {name: 'punctuation.optional-def.start.clarity'},
+            2: {name: 'storage.type.modifier'}
+          },
+          end: '(\\))',
+          endCaptures: {1: {name: 'punctuation.optional-def.end.clarity'}},
+          name: 'meta.optional-def',
+          patterns: [{include: '#data-type'}]
+        },
+        {
+          begin: '(?x) (\\() \\s* (response)\\s+',
+          beginCaptures: {
+            1: {name: 'punctuation.response-def.start.clarity'},
+            2: {name: 'storage.type.modifier'}
+          },
+          end: '(\\))',
+          endCaptures: {1: {name: 'punctuation.response-def.end.clarity'}},
+          name: 'meta.response-def',
+          patterns: [{include: '#data-type'}]
+        },
+        {
+          begin: '(?x) (\\() \\s* (list) \\s+ (\\d+) \\s+',
+          beginCaptures: {
+            1: {name: 'punctuation.list-def.start.clarity'},
+            2: {name: 'entity.name.type.list.clarity'},
+            3: {name: 'constant.numeric.list-len.clarity'}
+          },
+          end: '(\\))',
+          endCaptures: {1: {name: 'punctuation.list-def.end.clarity'}},
+          name: 'meta.list-def',
+          patterns: [{include: '#data-type'}]
+        },
+        {
+          begin: '(\\{)',
+          beginCaptures: {1: {name: 'punctuation.tuple-def.start.clarity'}},
+          end: '(\\})',
+          endCaptures: {1: {name: 'punctuation.tuple-def.end.clarity'}},
+          name: 'meta.tuple-def',
+          patterns: [
+            {
+              match: '([a-zA-Z][a-zA-Z0-9_\\-\\!\\?]*)(?=:)',
+              name: 'entity.name.tag.tuple-data-type-key.clarity'
+            },
+            {include: '#data-type'}
+          ]
+        }
       ]
     },
-    'define-func': {
+    'define-constant': {
       begin:
-        '(?x)\n  (?<=^|[(]) \\s*\n  (define-(?:public|private|read-only)) \\s+\n  (\\() \\s*\n  ([a-z][a-zA-Z0-9_-]+) \\s*\n',
+        '(?x) (\\() \\s* (define-constant) \\s+ ([a-zA-Z][a-zA-Z0-9_\\-\\!\\?]*) \\s+',
       beginCaptures: {
-        1: {name: 'storage.type.clarity'},
-        2: {name: 'punctuation.section.begin.clarity'},
-        3: {name: 'entity.name.function.clarity'}
+        1: {name: 'punctuation.define-constant.start.clarity'},
+        2: {name: 'keyword.declaration.define-constant.clarity'},
+        3: {name: 'entity.name.constant-name.clarity variable.other.clarity'}
       },
-      end: '\\)',
-      endCaptures: {0: {name: 'punctuation.section.end.clarity'}},
-      patterns: [{include: '#args'}]
+      end: '(\\))',
+      endCaptures: {1: {name: 'punctuation.define-constant.end.clarity'}},
+      name: 'meta.define-constant',
+      patterns: [{include: '#expression'}]
     },
-    'define-var': {
+    'define-data-var': {
+      begin:
+        '(?x) (\\() \\s* (define-data-var) \\s+ ([a-zA-Z][a-zA-Z0-9_\\-\\!\\?]*) \\s+',
+      beginCaptures: {
+        1: {name: 'punctuation.define-data-var.start.clarity'},
+        2: {name: 'keyword.declaration.define-data-var.clarity'},
+        3: {name: 'entity.name.data-var-name.clarity variable.other.clarity'}
+      },
+      end: '(\\))',
+      endCaptures: {1: {name: 'punctuation.define-data-var.end.clarity'}},
+      name: 'meta.define-data-var',
+      patterns: [{include: '#data-type'}, {include: '#expression'}]
+    },
+    'define-function': {
+      begin: '(?x) (\\() \\s* (define-(?:public|private|read-only)) \\s+',
+      beginCaptures: {
+        1: {name: 'punctuation.define-function.start.clarity'},
+        2: {name: 'keyword.declaration.define-function.clarity'}
+      },
+      end: '(\\))',
+      endCaptures: {1: {name: 'punctuation.define-function.end.clarity'}},
+      name: 'meta.define-function',
+      patterns: [
+        {include: '#expression'},
+        {include: '#user-func'},
+        {
+          begin: '(?x) (\\() \\s* ([a-zA-Z][a-zA-Z0-9_\\-\\!\\?]*) \\s*',
+          beginCaptures: {
+            1: {name: 'punctuation.function-signature.start.clarity'},
+            2: {name: 'entity.name.function.clarity'}
+          },
+          end: '(\\))',
+          endCaptures: {
+            1: {name: 'punctuation.function-signature.end.clarity'}
+          },
+          name: 'meta.define-function-signature',
+          patterns: [
+            {
+              begin: '(?x) (\\() \\s* ([a-zA-Z][a-zA-Z0-9_\\-\\!\\?]*) \\s+',
+              beginCaptures: {
+                1: {name: 'punctuation.function-argument.start.clarity'},
+                2: {name: 'variable.parameter.clarity'}
+              },
+              end: '(\\))',
+              endCaptures: {
+                1: {name: 'punctuation.function-argument.end.clarity'}
+              },
+              name: 'meta.function-argument',
+              patterns: [{include: '#data-type'}]
+            }
+          ]
+        }
+      ]
+    },
+    'define-fungible-token': {
       captures: {
-        1: {name: 'storage.type.clarity'},
-        2: {name: 'variable.other.clarity'}
+        1: {name: 'punctuation.define-fungible-token.start.clarity'},
+        2: {name: 'keyword.declaration.define-fungible-token.clarity'},
+        3: {
+          name: 'entity.name.fungible-token-name.clarity variable.other.clarity'
+        },
+        4: {name: 'constant.numeric.fungible-token-total-supply.clarity'},
+        5: {name: 'punctuation.define-fungible-token.end.clarity'}
       },
       match:
-        '(?x)\n  (?<=^[(]) \\s*\n  (define-(?:constant|data-var|map|fungible-token|non-fungible-token|trait)) \\s+\n  ([a-zA-Z][a-zA-Z0-9_-]+)\n'
+        '(?x) (\\() \\s* (define-fungible-token) \\s+ ([a-zA-Z][a-zA-Z0-9_\\-\\!\\?]*) (?:\\s+(u\\d+))?'
     },
-    'escape-char': {match: '\\\\.', name: 'constant.character.escape.clarity'},
+    'define-map': {
+      begin:
+        '(?x) (\\() \\s* (define-map) \\s+ ([a-zA-Z][a-zA-Z0-9_\\-\\!\\?]*) \\s+',
+      beginCaptures: {
+        1: {name: 'punctuation.define-map.start.clarity'},
+        2: {name: 'keyword.declaration.define-map.clarity'},
+        3: {name: 'entity.name.map-name.clarity variable.other.clarity'}
+      },
+      end: '(\\))',
+      endCaptures: {1: {name: 'punctuation.define-map.end.clarity'}},
+      name: 'meta.define-map',
+      patterns: [{include: '#data-type'}, {include: '#expression'}]
+    },
+    'define-non-fungible-token': {
+      begin:
+        '(?x) (\\() \\s* (define-non-fungible-token) \\s+ ([a-zA-Z][a-zA-Z0-9_\\-\\!\\?]*) \\s+',
+      beginCaptures: {
+        1: {name: 'punctuation.define-non-fungible-token.start.clarity'},
+        2: {name: 'keyword.declaration.define-non-fungible-token.clarity'},
+        3: {
+          name: 'entity.name.non-fungible-token-name.clarity variable.other.clarity'
+        }
+      },
+      end: '(\\))',
+      endCaptures: {
+        1: {name: 'punctuation.define-non-fungible-token.end.clarity'}
+      },
+      name: 'meta.define-non-fungible-token',
+      patterns: [{include: '#data-type'}]
+    },
+    'define-trait': {
+      begin:
+        '(?x) (\\() \\s* (define-trait) \\s+ ([a-zA-Z][a-zA-Z0-9_\\-\\!\\?]*) \\s+',
+      beginCaptures: {
+        1: {name: 'punctuation.define-trait.start.clarity'},
+        2: {name: 'keyword.declaration.define-trait.clarity'},
+        3: {name: 'entity.name.trait-name.clarity variable.other.clarity'}
+      },
+      end: '(\\))',
+      endCaptures: {1: {name: 'punctuation.define-trait.end.clarity'}},
+      name: 'meta.define-trait',
+      patterns: [
+        {
+          begin: '(?x) (\\() \\s*',
+          beginCaptures: {
+            1: {name: 'punctuation.define-trait-body.start.clarity'}
+          },
+          end: '(\\))',
+          endCaptures: {1: {name: 'punctuation.define-trait-body.end.clarity'}},
+          name: 'meta.define-trait-body',
+          patterns: [
+            {include: '#expression'},
+            {
+              begin:
+                '(?x) (\\() \\s* ([a-zA-Z][a-zA-Z0-9_\\-\\!\\?]+\\??) \\s+',
+              beginCaptures: {
+                1: {name: 'punctuation.trait-function.start.clarity'},
+                2: {
+                  name: 'entity.name.trait-function-name.clarity variable.other.clarity'
+                }
+              },
+              end: '(\\))',
+              endCaptures: {
+                1: {name: 'punctuation.trait-function.end.clarity'}
+              },
+              name: 'meta.trait-function',
+              patterns: [
+                {include: '#data-type'},
+                {
+                  begin: '(?x) (\\() \\s*',
+                  beginCaptures: {
+                    1: {name: 'punctuation.trait-function-args.start.clarity'}
+                  },
+                  end: '(\\))',
+                  endCaptures: {
+                    1: {name: 'punctuation.trait-function-args.end.clarity'}
+                  },
+                  name: 'meta.trait-function-args',
+                  patterns: [{include: '#data-type'}]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    expression: {
+      patterns: [
+        {include: '#comment'},
+        {include: '#keyword'},
+        {include: '#literal'},
+        {include: '#let-func'},
+        {include: '#built-in-func'},
+        {include: '#get-set-func'}
+      ]
+    },
+    'get-set-func': {
+      begin:
+        '(?x) (\\() \\s* (var-get|var-set|map-get\\?|map-set|map-insert|map-delete|get) \\s+ ([a-zA-Z][a-zA-Z0-9_\\-\\!\\?]*) \\s*',
+      beginCaptures: {
+        1: {name: 'punctuation.get-set-func.start.clarity'},
+        2: {name: 'keyword.control.clarity'},
+        3: {name: 'variable.other.clarity'}
+      },
+      end: '(\\))',
+      endCaptures: {1: {name: 'punctuation.get-set-func.end.clarity'}},
+      name: 'meta.get-set-func',
+      patterns: [{include: '#expression'}]
+    },
     keyword: {
       match:
-        '(?x)\n  (?<=^|[\\s:(){},]) \n  (?:block-height|burn-block-height|contract-caller|false|is-in-regtest|none|stx-liquid-supply|true|tx-sender)\n  (?=[\\s(){},])\n',
+        '\\b(?:block-height|burn-block-height|chain-id|contract-caller|is-in-regtest|stx-liquid-supply|tx-sender|tx-sponsor?)\\b',
       name: 'constant.language.clarity'
     },
-    'lang-func': {
-      match:
-        '(?x)\n  (?<=^|[(]) \\s*\n  (\n    and|append|as-contract|as-max-len\\?|asserts!|at-block|begin|concat|contract-call\\?|contract-of|\n    default-to|element-at|err|filter|fold|ft-burn\\?|ft-get-balance|ft-get-supply|ft-mint\\?|ft-transfer\\?|\n    get|get-block-info\\?|hash160|if|impl-trait|index-of|is-eq|is-err|is-none|is-ok|is-some|keccak256|\n    len|let|list|log2|map|map-delete|map-get\\?|map-insert|map-set|match|merge|mod|nft-burn\\?|nft-get-owner\\?|\n    nft-mint\\?|nft-transfer\\?|not|ok|or|pow|principal-of\\?|print|secp256k1-recover\\?|secp256k1-verify|sha256|\n    sha512|sha512/256|some|sqrti|stx-burn\\?|stx-get-balance|stx-transfer\\?|to-int|to-uint|try!|unwrap-err-panic|\n    unwrap-err!|unwrap-panic|unwrap!|var-get|var-set|xor\n  ) \\s+\n',
-      name: 'keyword.control.clarity'
-    },
-    number: {
-      match:
-        "(?x)\n  (?<=^|[\\s:(){},])\n  \\'[0-9A-Z]{28,41}(:?\\.[a-zA-Z][a-zA-Z0-9\\-]+){0,2}|\n  0x[0-9a-f]{2,}|\n  u[0-9]+|\n  [0-9]+\n  (?=[\\s(){},]|$)\n",
-      name: 'constant.numeric.clarity'
-    },
-    'set-func': {
-      begin:
-        '(?x)\n  (?<=^|[(]) \\s*\n  (var-get|var-set|map-get\\?|map-set|map-insert|get) \\s+\n  ([a-z][a-zA-Z0-9_-]+) \\s*\n',
+    'let-func': {
+      begin: '(?x) (\\() \\s* (let) \\s*',
       beginCaptures: {
-        1: {name: 'keyword.control.clarity'},
-        2: {name: 'variable.other.clarity'}
+        1: {name: 'punctuation.let-function.start.clarity'},
+        2: {name: 'keyword.declaration.let-function.clarity'}
       },
-      end: '\\)',
-      endCaptures: {0: {name: 'punctuation.section.end.clarity'}},
+      end: '(\\))',
+      endCaptures: {1: {name: 'punctuation.let-function.end.clarity'}},
+      name: 'meta.let-function',
       patterns: [
-        {include: '#lang-func'},
-        {include: '#tuple-key'},
-        {include: '#number'}
+        {include: '#expression'},
+        {include: '#user-func'},
+        {
+          begin: '(?x) (\\() \\s*',
+          beginCaptures: {1: {name: 'punctuation.let-var.start.clarity'}},
+          end: '(\\))',
+          endCaptures: {1: {name: 'punctuation.let-var.end.clarity'}},
+          name: 'meta.let-var',
+          patterns: [
+            {
+              begin: '(?x) (\\() ([a-zA-Z][a-zA-Z0-9_\\-\\!\\?]*) \\s+',
+              beginCaptures: {
+                1: {name: 'punctuation.let-local-var.start.clarity'},
+                2: {
+                  name: 'entity.name.let-local-var-name.clarity variable.parameter.clarity'
+                }
+              },
+              end: '(\\))',
+              endCaptures: {1: {name: 'punctuation.let-local-var.end.clarity'}},
+              name: 'meta.let-local-var',
+              patterns: [{include: '#expression'}, {include: '#user-func'}]
+            },
+            {include: '#expression'}
+          ]
+        }
       ]
     },
-    string: {
-      begin: '"',
-      beginCaptures: {0: {name: 'punctuation.definition.string.begin.clarity'}},
-      end: '"',
-      endCaptures: {0: {name: 'punctuation.definition.string.end.clarity'}},
-      name: 'string.quoted.double.clarity',
-      patterns: [{include: '#escape-char'}]
+    literal: {
+      patterns: [
+        {include: '#number-literal'},
+        {include: '#bool-literal'},
+        {include: '#string-literal'},
+        {include: '#tuple-literal'},
+        {include: '#principal-literal'},
+        {include: '#list-literal'},
+        {include: '#optional-literal'},
+        {include: '#response-literal'}
+      ],
+      repository: {
+        'bool-literal': {
+          match: '\\b(true|false)\\b',
+          name: 'constant.language.bool.clarity'
+        },
+        'list-literal': {
+          begin: '(?x) (\\() \\s* (list) \\s+',
+          beginCaptures: {
+            1: {name: 'punctuation.list.start.clarity'},
+            2: {name: 'entity.name.type.list.clarity'}
+          },
+          end: '(\\))',
+          endCaptures: {},
+          name: 'meta.list',
+          patterns: [{include: '#expression'}, {include: '#user-func'}]
+        },
+        'number-literal': {
+          patterns: [
+            {match: '\\bu\\d+\\b', name: 'constant.numeric.uint.clarity'},
+            {match: '\\b\\d+\\b', name: 'constant.numeric.int.clarity'},
+            {match: '\\b0x[0-9a-f]*\\b', name: 'constant.numeric.hex.clarity'}
+          ]
+        },
+        'optional-literal': {
+          patterns: [
+            {match: '\\b(none)\\b', name: 'constant.language.none.clarity'},
+            {
+              begin: '(?x) (\\() \\s* (some) \\s+',
+              beginCaptures: {
+                1: {name: 'punctuation.some.start.clarity'},
+                2: {name: 'constant.language.some.clarity'}
+              },
+              end: '(\\))',
+              endCaptures: {1: {name: 'punctuation.some.end.clarity'}},
+              name: 'meta.some',
+              patterns: [{include: '#expression'}]
+            }
+          ]
+        },
+        'principal-literal': {
+          match:
+            "(?x)  \\'[0-9A-Z]{28,41}(:?\\.[a-zA-Z][a-zA-Z0-9\\-]+){0,2} | (\\.[a-zA-Z][a-zA-Z0-9\\-]*){1,2} (?=[\\s(){},]|$)",
+          name: 'constant.other.principal.clarity'
+        },
+        'response-literal': {
+          begin: '(?x) (\\() \\s* (ok|err) \\s+',
+          beginCaptures: {
+            1: {name: 'punctuation.response.start.clarity'},
+            2: {name: 'constant.language.ok-err.clarity'}
+          },
+          end: '(\\))',
+          endCaptures: {1: {name: 'punctuation.response.end.clarity'}},
+          name: 'meta.response',
+          patterns: [{include: '#expression'}, {include: '#user-func'}]
+        },
+        'string-literal': {
+          patterns: [
+            {
+              begin: '(u?)(")',
+              beginCaptures: {
+                1: {name: 'string.quoted.utf8.clarity'},
+                2: {name: 'punctuation.definition.string.begin.clarity'}
+              },
+              end: '"',
+              endCaptures: {
+                1: {name: 'punctuation.definition.string.end.clarity'}
+              },
+              name: 'string.quoted.double.clarity',
+              patterns: [
+                {match: '\\\\.', name: 'constant.character.escape.quote'}
+              ]
+            }
+          ]
+        },
+        'tuple-literal': {
+          begin: '(\\{)',
+          beginCaptures: {1: {name: 'punctuation.tuple.start.clarity'}},
+          end: '(\\})',
+          endCaptures: {1: {name: 'punctuation.tuple.end.clarity'}},
+          name: 'meta.tuple',
+          patterns: [
+            {
+              match: '([a-zA-Z][a-zA-Z0-9_\\-\\!\\?]*)(?=:)',
+              name: 'entity.name.tag.tuple-key.clarity'
+            },
+            {include: '#expression'},
+            {include: '#user-func'}
+          ]
+        }
+      }
     },
-    'tuple-key': {
-      match: '(?x)\n  ([a-z][a-zA-Z0-9_-]+)(?=:)\n',
-      name: 'entity.name.type.clarity'
+    'use-trait': {
+      begin:
+        '(?x) (\\() \\s* (use-trait) \\s+ ([a-zA-Z][a-zA-Z0-9_\\-\\!\\?]*) \\s+',
+      beginCaptures: {
+        1: {name: 'punctuation.use-trait.start.clarity'},
+        2: {name: 'keyword.declaration.use-trait.clarity'},
+        3: {name: 'entity.name.trait-alias.clarity variable.other.clarity'}
+      },
+      end: '(\\))',
+      endCaptures: {1: {name: 'punctuation.use-trait.end.clarity'}},
+      name: 'meta.use-trait',
+      patterns: [{include: '#literal'}]
+    },
+    'user-func': {
+      begin: '(?x) (\\() \\s* (([a-zA-Z][a-zA-Z0-9_\\-\\!\\?]*)) \\s*',
+      beginCaptures: {
+        1: {name: 'punctuation.user-function.start.clarity'},
+        2: {name: 'entity.name.function.clarity'}
+      },
+      end: '(\\))',
+      endCaptures: {1: {name: 'punctuation.user-function.end.clarity'}},
+      name: 'meta.user-function',
+      patterns: [{include: '#expression'}, {include: '$self'}]
     }
   },
   scopeName: 'source.clar'

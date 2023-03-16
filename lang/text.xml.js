@@ -79,6 +79,7 @@ const grammar = {
     '.srdf',
     '.storyboard',
     '.sublime-snippet',
+    '.sw',
     '.targets',
     '.tml',
     '.ts',

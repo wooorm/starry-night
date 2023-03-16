@@ -35,7 +35,7 @@ const grammar = {
     comment: {
       patterns: [
         {
-          begin: '(\\s*)(#)',
+          begin: '^(\\s*)(#)',
           beginCaptures: {
             1: {name: 'punctuation.whitespace.comment.leading.editorconfig'},
             2: {name: 'punctuation.definition.comment.editorconfig'}
@@ -44,7 +44,7 @@ const grammar = {
           name: 'comment.line.number-sign.editorconfig'
         },
         {
-          begin: '(\\s*)(;)',
+          begin: '^(\\s*)(;)',
           beginCaptures: {
             1: {name: 'punctuation.whitespace.comment.leading.editorconfig'},
             2: {name: 'punctuation.definition.comment.editorconfig'}

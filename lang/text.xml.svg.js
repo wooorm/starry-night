@@ -10,16 +10,7 @@ const grammar = {
     'R:meta.attribute.d.xml.svg string': {patterns: [{include: '#commands'}]}
   },
   names: ['svg'],
-  patterns: [
-    {begin: '\\A(?=[ \\t]*$)', end: '(?=\\S)'},
-    {
-      begin: '(?i)(?=[MLHVCSQTAZ][-\\d\\s.,MLHVCSQTAZ]*(?:$|[\'"]))',
-      end: '(?i)(?=[^-\\d\\s.,MLHVCSQTAZ])',
-      name: 'meta.drawing-commands.xml.svg',
-      patterns: [{include: '#commands'}]
-    },
-    {begin: '(?=\\S)', end: '(?=A)B', patterns: [{include: '#main'}]}
-  ],
+  patterns: [{include: '#main'}],
   repository: {
     attr: {
       begin: '[A-Za-z_:][-\\w.:]*',

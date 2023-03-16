@@ -13,6 +13,7 @@ const grammar = {
     '.cc',
     '.cp',
     '.cpp',
+    '.cppm',
     '.cxx',
     '.edc',
     '.gml',

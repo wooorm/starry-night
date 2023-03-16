@@ -21,7 +21,7 @@ const grammar = {
     comment: {
       begin: '^(U?Comments?)(:)',
       beginCaptures: {
-        1: {name: 'variable.other.property.sfd'},
+        1: {name: 'variable.assignment.property.sfd'},
         2: {name: 'punctuation.separator.dictionary.key-value.sfd'}
       },
       contentName: 'comment.line.field.sfd',
@@ -36,7 +36,7 @@ const grammar = {
     copyright: {
       begin: '^(Copyright)(:)',
       beginCaptures: {
-        1: {name: 'variable.other.property.sfd'},
+        1: {name: 'variable.assignment.property.sfd'},
         2: {name: 'punctuation.separator.dictionary.key-value.sfd'}
       },
       contentName: 'string.unquoted.copyright.info.sfd',
@@ -51,7 +51,7 @@ const grammar = {
     gaspTable: {
       begin: '^(GaspTable)(:|(?=\\s))',
       beginCaptures: {
-        1: {name: 'variable.other.property.sfd'},
+        1: {name: 'variable.assignment.property.sfd'},
         2: {name: 'punctuation.separator.dictionary.key-value.sfd'}
       },
       end: '$',
@@ -100,7 +100,7 @@ const grammar = {
     },
     names: {
       captures: {
-        1: {name: 'variable.other.property.sfd'},
+        1: {name: 'variable.assignment.property.sfd'},
         3: {name: 'punctuation.separator.dictionary.key-value.sfd'},
         4: {name: 'entity.name.${2:/downcase},sfd'}
       },
@@ -110,7 +110,7 @@ const grammar = {
     pickleData: {
       begin: '^(PickledData)(:)\\s*(")',
       beginCaptures: {
-        1: {name: 'variable.other.property.sfd'},
+        1: {name: 'variable.assignment.property.sfd'},
         2: {name: 'punctuation.separator.dictionary.key-value.sfd'},
         3: {name: 'punctuation.definition.string.begin.sfd'}
       },
@@ -132,7 +132,7 @@ const grammar = {
     },
     property: {
       captures: {
-        1: {name: 'variable.other.property.sfd'},
+        1: {name: 'variable.assignment.property.sfd'},
         2: {name: 'punctuation.separator.dictionary.key-value.sfd'}
       },
       match: '^([^:]+)(:)',

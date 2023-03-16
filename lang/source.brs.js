@@ -120,6 +120,7 @@ const grammar = {
         {include: '#end_function'},
         {include: '#interface_declaration'},
         {include: '#storage_types'},
+        {include: '#loop_keywords'},
         {include: '#program_statements'},
         {include: '#try_catch'},
         {include: '#non_identifier_keywords'},
@@ -232,6 +233,10 @@ const grammar = {
     keyword_return: {
       captures: {1: {name: 'keyword.control.flow.return.brs'}},
       match: '(?i:\\b(return)\\b)'
+    },
+    loop_keywords: {
+      match: '(?i:(?<!\\.)(continue\\s+(for|while)\\b))',
+      name: 'keyword.control.loop.brs'
     },
     m_and_global: {
       captures: {1: {name: 'keyword.other.this.brs'}},

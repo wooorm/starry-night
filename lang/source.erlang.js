@@ -5,7 +5,16 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.erl', '.app.src', '.es', '.escript', '.hrl', '.xrl', '.yrl'],
+  extensions: [
+    '.erl',
+    '.app',
+    '.app.src',
+    '.es',
+    '.escript',
+    '.hrl',
+    '.xrl',
+    '.yrl'
+  ],
   names: ['erlang'],
   patterns: [
     {include: '#module-directive'},

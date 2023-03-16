@@ -37,13 +37,16 @@ const grammar = {
         {include: '#varname'}
       ]
     },
-    'action-action': {
+    'action-gamepad': {
       captures: {
-        1: {name: 'punctuation.definition.parameters.begin.talon'},
-        2: {name: 'variable.parameter.talon'},
-        3: {name: 'punctuation.definition.parameters.end.talon'}
+        2: {name: 'punctuation.definition.parameters.begin.talon'},
+        3: {
+          name: 'variable.parameter.talon',
+          patterns: [{include: '#key-mods'}]
+        },
+        4: {name: 'punctuation.definition.parameters.key.talon'}
       },
-      match: 'action(\\()(.*)(\\))',
+      match: '(deck|gamepad|action)(\\()(.*)(\\))',
       name: 'entity.name.function.talon'
     },
     'action-key': {
@@ -80,7 +83,11 @@ const grammar = {
       patterns: [{include: '#body-noheader'}]
     },
     'body-noheader': {
-      patterns: [{include: '#comment'}, {include: '#rule-definition'}]
+      patterns: [
+        {include: '#comment'},
+        {include: '#speech-rule-definition'},
+        {include: '#other-rule-definition'}
+      ]
     },
     capture: {
       match: '(\\<[a-zA-Z0-9._]+\\>)',
@@ -125,7 +132,7 @@ const grammar = {
         1: {name: 'keyword.operator.talon'},
         2: {name: 'keyword.control.talon'}
       },
-      match: '(:)(up|down|\\d+)',
+      match: '(:)(up|down|change|repeat|\\d+)',
       name: 'keyword.operator.talon'
     },
     'key-prefixes': {
@@ -150,6 +157,22 @@ const grammar = {
     list: {match: '({[a-zA-Z0-9._]+?})', name: 'string.interpolated.talon'},
     number: {match: '(?<=\\b)\\d+(\\.\\d+)?', name: 'constant.numeric.talon'},
     operator: {match: '\\s(\\+|-|\\*|/|or)\\s', name: 'keyword.operator.talon'},
+    'other-rule-definition': {
+      begin:
+        '^([a-z]+\\(.*[^\\-]\\)|[a-z]+\\(.*--\\)|[a-z]+\\(-\\)|[a-z]+\\(\\)):',
+      beginCaptures: {
+        1: {
+          name: 'entity.name.tag.talon',
+          patterns: [
+            {include: '#action-key'},
+            {include: '#action-gamepad'},
+            {include: '#rule-specials'}
+          ]
+        }
+      },
+      end: '(?=^[^\\s#])',
+      patterns: [{include: '#statement'}]
+    },
     qstring: {
       begin: '("|\')',
       beginCaptures: {1: {name: 'punctuation.definition.string.begin.talon'}},
@@ -182,25 +205,6 @@ const grammar = {
         {match: '\\*|\\+|\\?', name: 'keyword.operator.quantifier.regexp'}
       ]
     },
-    'rule-definition': {
-      begin: '^([^\\s].+?):',
-      beginCaptures: {
-        1: {
-          name: 'entity.name.tag.talon',
-          patterns: [
-            {include: '#rule-specials'},
-            {match: '^\\^', name: 'string.regexp.talon'},
-            {match: '\\$$', name: 'string.regexp.talon'},
-            {include: '#action-key'},
-            {include: '#action-action'},
-            {include: '#capture'},
-            {include: '#list'}
-          ]
-        }
-      },
-      end: '(?=^[^\\s#])',
-      patterns: [{include: '#statement'}]
-    },
     'rule-specials': {
       captures: {
         1: {name: 'entity.name.function.talon'},
@@ -208,6 +212,22 @@ const grammar = {
         3: {name: 'punctuation.definition.parameters.end.talon'}
       },
       match: '(settings|tag)(\\()(\\))'
+    },
+    'speech-rule-definition': {
+      begin: "^([A-Za-z0-9\\s'<>{}+*_.\\-^$]*?):",
+      beginCaptures: {
+        1: {
+          name: 'entity.name.tag.talon',
+          patterns: [
+            {match: '^\\^', name: 'string.regexp.talon'},
+            {match: '\\$$', name: 'string.regexp.talon'},
+            {include: '#capture'},
+            {include: '#list'}
+          ]
+        }
+      },
+      end: '(?=^[^\\s#])',
+      patterns: [{include: '#statement'}]
     },
     statement: {
       patterns: [

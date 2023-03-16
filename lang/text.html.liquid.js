@@ -34,17 +34,12 @@ const grammar = {
         {match: '(.(?!{%-?\\s*(comment|endcomment)\\s*-?%}))*.'}
       ]
     },
-    comment_inline: {
-      begin: '{%-?\\s*#',
-      end: '-?%}',
-      name: 'comment.line.number-sign.liquid'
-    },
     core: {
       patterns: [
         {include: '#raw_tag'},
         {include: '#comment_block'},
-        {include: '#comment_inline'},
         {include: '#style_codefence'},
+        {include: '#stylesheet_codefence'},
         {include: '#json_codefence'},
         {include: '#javascript_codefence'},
         {include: '#object'},
@@ -60,7 +55,6 @@ const grammar = {
       patterns: [
         {include: '#raw_tag'},
         {include: '#comment_block'},
-        {include: '#comment_inline'},
         {include: '#object'},
         {include: '#tag_injection'}
       ]
@@ -178,6 +172,25 @@ const grammar = {
       name: 'meta.block.style.liquid',
       patterns: [{include: 'source.css'}]
     },
+    stylesheet_codefence: {
+      begin: '({%-?)\\s*(stylesheet)\\s*(-?%})',
+      beginCaptures: {
+        0: {name: 'meta.tag.metadata.style.start.liquid'},
+        1: {name: 'punctuation.definition.tag.begin.liquid'},
+        2: {name: 'entity.name.tag.style.liquid'},
+        3: {name: 'punctuation.definition.tag.begin.liquid'}
+      },
+      contentName: 'meta.embedded.block.css',
+      end: '({%-?)\\s*(endstylesheet)\\s*(-?%})',
+      endCaptures: {
+        0: {name: 'meta.tag.metadata.style.end.liquid'},
+        1: {name: 'punctuation.definition.tag.end.liquid'},
+        2: {name: 'entity.name.tag.style.liquid'},
+        3: {name: 'punctuation.definition.tag.end.liquid'}
+      },
+      name: 'meta.block.style.liquid',
+      patterns: [{include: 'source.css'}]
+    },
     tag: {
       begin:
         '(?<!comment %})(?<!comment -%})(?<!comment%})(?<!comment-%})(?<!raw %})(?<!raw -%})(?<!raw%})(?<!raw-%}){%-?',
@@ -213,6 +226,7 @@ const grammar = {
       patterns: [
         {include: '#tag_liquid'},
         {include: '#tag_assign'},
+        {include: '#tag_comment_inline'},
         {include: '#tag_case'},
         {include: '#tag_conditional'},
         {include: '#tag_for'},
@@ -236,10 +250,24 @@ const grammar = {
       name: 'meta.entity.tag.case.liquid',
       patterns: [{include: '#value_expression'}]
     },
-    tag_comment_liquid: {
+    tag_comment_block_liquid: {
       begin: '(?:^\\s*)(comment)\\b',
       end: '(?:^\\s*)(endcomment)\\b',
-      name: 'comment.block.liquid'
+      name: 'comment.block.liquid',
+      patterns: [
+        {include: '#tag_comment_block_liquid'},
+        {match: '(?:^\\s*)(?!(comment|endcomment)).*'}
+      ]
+    },
+    tag_comment_inline: {
+      begin: '#',
+      end: '(?=%})',
+      name: 'comment.line.number-sign.liquid'
+    },
+    tag_comment_inline_liquid: {
+      begin: '(?:^\\s*)#.*',
+      end: '$',
+      name: 'comment.line.number-sign.liquid'
     },
     tag_conditional: {
       begin: '(?:(?:(?<={%)|(?<={%-)|^)\\s*)(if|elsif|unless)\\b',
@@ -346,7 +374,8 @@ const grammar = {
       end: '(?=%})',
       name: 'meta.entity.tag.liquid.liquid',
       patterns: [
-        {include: '#tag_comment_liquid'},
+        {include: '#tag_comment_block_liquid'},
+        {include: '#tag_comment_inline_liquid'},
         {include: '#tag_assign_liquid'},
         {include: '#tag_case_liquid'},
         {include: '#tag_conditional_liquid'},

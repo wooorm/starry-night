@@ -3,7 +3,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.pl', '.pro', '.prolog', '.yap'],
+  extensions: ['.pl', '.plt', '.pro', '.prolog', '.yap'],
   names: ['prolog'],
   patterns: [
     {include: '#comments'},

@@ -193,11 +193,7 @@ const grammar = {
           match: '\\b[0-9]+(KB|MB)?\\b',
           name: 'constant.numeric.dec.yara'
         },
-        {
-          captures: {1: {name: 'storage.modifier.number.yara'}},
-          match: '\\b(0x)[0-9A-Fa-f]+\\b',
-          name: 'constant.numeric.hex.yara'
-        },
+        {match: '\\b0x[0-9A-Fa-f]+\\b', name: 'constant.numeric.hex.yara'},
         {
           captures: {1: {name: 'storage.type.number.yara'}},
           match: '\\b(0o)([0-7]+)\\b',

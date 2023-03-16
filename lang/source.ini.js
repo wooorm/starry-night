@@ -5,6 +5,7 @@
 const grammar = {
   extensions: [
     '.cfg',
+    '.cnf',
     '.dof',
     '.ini',
     '.lektorproject',

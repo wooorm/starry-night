@@ -216,17 +216,22 @@ const grammar = {
       match: '\\s*(-?(0|[1-9][0-9]*)(\\.[0-9]+)?((e|E)(\\+|-)?[0-9]+)?)'
     },
     'graphql-fragment-definition': {
-      begin:
-        '\\s*(?:(\\bfragment\\b)\\s*([_A-Za-z][_0-9A-Za-z]*)?\\s*(?:(\\bon\\b)\\s*([_A-Za-z][_0-9A-Za-z]*)))',
+      begin: '\\s*(?:(\\bfragment\\b)\\s*([_A-Za-z][_0-9A-Za-z]*)?)',
       captures: {
         1: {name: 'keyword.fragment.graphql'},
-        2: {name: 'entity.name.fragment.graphql'},
-        3: {name: 'keyword.on.graphql'},
-        4: {name: 'support.type.graphql'}
+        2: {name: 'entity.name.fragment.graphql'}
       },
       end: '(?<=})',
       name: 'meta.fragment.graphql',
       patterns: [
+        {
+          captures: {
+            1: {name: 'keyword.on.graphql'},
+            2: {name: 'support.type.graphql'}
+          },
+          match: '\\s*(?:(\\bon\\b)\\s*([_A-Za-z][_0-9A-Za-z]*))'
+        },
+        {include: '#graphql-variable-definitions'},
         {include: '#graphql-comment'},
         {include: '#graphql-description-docstring'},
         {include: '#graphql-description-singleline'},
@@ -245,6 +250,7 @@ const grammar = {
       },
       end: '(?=.)',
       patterns: [
+        {include: '#graphql-arguments'},
         {include: '#graphql-comment'},
         {include: '#graphql-description-docstring'},
         {include: '#graphql-description-singleline'},

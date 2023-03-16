@@ -104,10 +104,9 @@ const grammar = {
         {include: '#keywords'},
         {include: '#using'},
         {include: '#constants'},
-        {include: '#scala-symbol'},
         {include: '#singleton-type'},
         {include: '#inline'},
-        {include: '#scala-quoted'},
+        {include: '#scala-quoted-or-symbol'},
         {include: '#char-literal'},
         {include: '#empty-parentheses'},
         {include: '#parameter-list'},
@@ -210,19 +209,18 @@ const grammar = {
         {
           captures: {
             1: {name: 'keyword.declaration.stable.scala'},
-            2: {name: 'keyword.declaration.volatile.scala'}
+            2: {name: 'variable.stable.declaration.scala'}
           },
           match:
-            '\\b(?:(val)|(var))\\b\\s*(?!//|/\\*)(?:(?:[A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}][A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}0-9]*(?:(?<=_)[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)?|[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)|`[^`]+`)(?=\\s*,)'
+            '\\b(val)\\b\\s*(?!//|/\\*)((?:(?:[A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}][A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}0-9]*(?:(?<=_)[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)?|[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)|`[^`]+`)(?:\\s*,\\s*(?:(?:[A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}][A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}0-9]*(?:(?<=_)[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)?|[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)|`[^`]+`))*)?'
         },
         {
           captures: {
-            1: {name: 'keyword.declaration.stable.scala'},
-            2: {name: 'keyword.declaration.volatile.scala'},
-            3: {name: 'variable.other.declaration.scala'}
+            1: {name: 'keyword.declaration.volatile.scala'},
+            2: {name: 'variable.volatile.declaration.scala'}
           },
           match:
-            '\\b(?:(val)|(var))\\b\\s*(?!//|/\\*)((?:(?:[A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}][A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}0-9]*(?:(?<=_)[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)?|[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)|`[^`]+`))?'
+            '\\b(var)\\b\\s*(?!//|/\\*)((?:(?:[A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}][A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}0-9]*(?:(?<=_)[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)?|[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)|`[^`]+`)(?:\\s*,\\s*(?:(?:[A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}][A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}0-9]*(?:(?<=_)[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)?|[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)|`[^`]+`))*)?'
         },
         {
           captures: {
@@ -264,15 +262,18 @@ const grammar = {
       name: 'meta.parentheses.scala'
     },
     exports: {
-      begin: '\\b(export)\\s+(given\\s+)?',
-      beginCaptures: {
-        1: {name: 'keyword.other.export.scala'},
-        2: {name: 'keyword.other.export.given.scala'}
-      },
+      begin: '\\b(export)\\s+',
+      beginCaptures: {1: {name: 'keyword.other.export.scala'}},
       end: '(?<=[\\n;])',
       name: 'meta.export.scala',
       patterns: [
         {include: '#comments'},
+        {match: '\\b(given)\\b', name: 'keyword.other.export.given.scala'},
+        {
+          match:
+            '[A-Z\\p{Lt}\\p{Lu}][A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}0-9]*(?:(?<=_)[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)?',
+          name: 'entity.name.class.export.scala'
+        },
         {
           match:
             '(`[^`]+`|(?:[A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}][A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}0-9]*(?:(?<=_)[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)?|[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+))',
@@ -288,14 +289,26 @@ const grammar = {
           patterns: [
             {
               captures: {
-                1: {name: 'entity.name.export.renamed-from.scala'},
-                2: {name: 'keyword.other.arrow.scala'},
-                3: {name: 'entity.name.export.renamed-to.scala'}
+                1: {name: 'keyword.other.export.given.scala'},
+                2: {name: 'entity.name.class.export.renamed-from.scala'},
+                3: {name: 'entity.name.export.renamed-from.scala'},
+                4: {name: 'keyword.other.arrow.scala'},
+                5: {name: 'entity.name.class.export.renamed-to.scala'},
+                6: {name: 'entity.name.export.renamed-to.scala'}
               },
               match:
-                '(?x)\\s*(`[^`]+`|(?:[A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}][A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}0-9]*(?:(?<=_)[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)?|[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+))\\s*(=>)\\s*(`[^`]+`|(?:[A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}][A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}0-9]*(?:(?<=_)[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)?|[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+))\\s*'
+                '(?x)(given\\s)?\\s*(?:([A-Z\\p{Lt}\\p{Lu}][A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}0-9]*(?:(?<=_)[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)?)|(`[^`]+`|(?:[A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}][A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}0-9]*(?:(?<=_)[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)?|[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)))\\s*(=>)\\s*(?:([A-Z\\p{Lt}\\p{Lu}][A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}0-9]*(?:(?<=_)[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)?)|(`[^`]+`|(?:[A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}][A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}0-9]*(?:(?<=_)[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)?|[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)))\\s*'
             },
-            {match: '([^\\s.,}]+)', name: 'entity.name.export.scala'}
+            {match: '\\b(given)\\b', name: 'keyword.other.export.given.scala'},
+            {
+              captures: {
+                1: {name: 'keyword.other.export.given.scala'},
+                2: {name: 'entity.name.class.export.scala'},
+                3: {name: 'entity.name.export.scala'}
+              },
+              match:
+                '(given\\s+)?(?:([A-Z\\p{Lt}\\p{Lu}][A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}0-9]*(?:(?<=_)[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)?)|(`[^`]+`|(?:[A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}][A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}0-9]*(?:(?<=_)[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)?|[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)))'
+            }
           ]
         }
       ]
@@ -492,16 +505,28 @@ const grammar = {
       match:
         '(\\b([A-Z][\\w]*)(?:(?<=_)[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)?)'
     },
-    'scala-quoted': {
+    'scala-quoted-or-symbol': {
       patterns: [
-        {match: "['$]\\{(?!')", name: 'punctuation.section.block.begin.scala'},
-        {match: "'\\[(?!')", name: 'meta.bracket.scala'}
+        {
+          captures: {
+            1: {
+              name: 'keyword.control.flow.staging.scala constant.other.symbol.scala'
+            },
+            2: {name: 'constant.other.symbol.scala'}
+          },
+          match:
+            "(')((?>(?:[A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}][A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}0-9]*(?:(?<=_)[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)?|[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)))(?!')"
+        },
+        {
+          match: "'(?=\\s*\\{(?!'))",
+          name: 'keyword.control.flow.staging.scala'
+        },
+        {
+          match: "'(?=\\s*\\[(?!'))",
+          name: 'keyword.control.flow.staging.scala'
+        },
+        {match: '\\$(?=\\s*\\{)', name: 'keyword.control.flow.staging.scala'}
       ]
-    },
-    'scala-symbol': {
-      match:
-        "(?>'(?:[A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}][A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}0-9]*(?:(?<=_)[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)?|[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+))(?!')",
-      name: 'constant.other.symbol.scala'
     },
     'script-header': {
       captures: {1: {name: 'string.unquoted.shebang.scala'}},

@@ -24,6 +24,7 @@ const grammar = {
     '.sage',
     '.sagews',
     '.smk',
+    '.snakefile',
     '.spec',
     '.star',
     '.tac',
@@ -39,6 +40,8 @@ const grammar = {
     'python3',
     'rusthon',
     'sage',
+    'snakefile',
+    'snakemake',
     'starlark',
     'xonsh'
   ],

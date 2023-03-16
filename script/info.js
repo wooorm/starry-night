@@ -487,6 +487,10 @@ export const info = {
     license: 'apache-2.0',
     homepage: 'https://github.com/chapel-lang/chapel-tmbundle'
   },
+  'source.circom': {
+    license: 'mit',
+    homepage: 'https://github.com/iden3/circom-highlighting-vscode'
+  },
   'source.clar': {
     license: 'mit',
     homepage: 'https://github.com/hirosystems/clarity.tmbundle'
@@ -558,6 +562,10 @@ export const info = {
     license: 'bsd-2-clause',
     homepage: 'https://github.com/elves/elvish'
   },
+  'source.elvish-transcript': {
+    license: 'bsd-2-clause',
+    homepage: 'https://github.com/elves/elvish'
+  },
   'source.erlang': {
     homepage: 'https://github.com/textmate/erlang.tmbundle'
   },
@@ -600,6 +608,10 @@ export const info = {
   'source.go': {
     license: 'bsd-3-clause',
     homepage: 'https://github.com/AlanQuatermain/go-tmbundle'
+  },
+  'source.gdresource': {
+    license: 'mit',
+    homepage: 'https://github.com/godotengine/godot-vscode-plugin'
   },
   'source.gdscript': {
     license: 'mit',
@@ -788,6 +800,10 @@ export const info = {
     homepage: 'https://github.com/Alhadis/language-etc'
   },
   'source.curlrc': {
+    license: 'isc',
+    homepage: 'https://github.com/Alhadis/language-etc'
+  },
+  'source.dotenv': {
     license: 'isc',
     homepage: 'https://github.com/Alhadis/language-etc'
   },
@@ -1025,6 +1041,14 @@ export const info = {
     license: 'unlicense',
     homepage: 'https://github.com/kakoune-editor/language-kak'
   },
+  'source.kerboscript': {
+    license: 'mit',
+    homepage: 'https://github.com/KSP-KOS/language-kerboscript'
+  },
+  'source.kickstart': {
+    license: 'mit',
+    homepage: 'https://github.com/wgwoods/language-kickstart'
+  },
   'source.kotlin': {
     license: 'apache-2.0',
     homepage: 'https://github.com/nishtahir/language-kotlin'
@@ -1101,6 +1125,10 @@ export const info = {
   'text.xml.plist': {
     license: 'mit',
     homepage: 'https://github.com/atom/language-property-list'
+  },
+  'source.arr': {
+    license: 'mit',
+    homepage: 'https://github.com/samuela/language-pyret'
   },
   'source.qasm': {
     license: 'mit'
@@ -1576,6 +1604,10 @@ export const info = {
     license: 'mit',
     homepage: 'https://github.com/umanghome/svelte-atom'
   },
+  'source.sway': {
+    license: 'apache-2.0',
+    homepage: 'https://github.com/FuelLabs/sway-vscode-plugin'
+  },
   'source.swift': {
     homepage: 'https://github.com/textmate/swift.tmbundle'
   },
@@ -1748,6 +1780,10 @@ export const info = {
   'source.zap': {},
   'source.zil': {},
   'source.cobol': {
+    license: 'mit',
+    homepage: 'https://github.com/spgennard/vscode_cobol'
+  },
+  'source.jcl': {
     license: 'mit',
     homepage: 'https://github.com/spgennard/vscode_cobol'
   },

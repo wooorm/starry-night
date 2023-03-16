@@ -66,22 +66,19 @@ const grammar = {
           ]
         },
         {
-          captures: {
-            1: {name: 'keyword.other.abl'},
-            2: {
-              patterns: [
-                {include: '#string'},
-                {include: '#primitive-type'},
-                {include: '#numeric'},
-                {include: '#constant'},
-                {include: '#keywords'},
-                {include: '#parameter-name'}
-              ]
-            }
-          },
-          match:
-            '(?i)(?<=^|\\s)(input|output|input-output|return)(?=\\s)([^\\.]*)',
-          name: 'meta.define.parameter.abl'
+          begin:
+            '(?i)\\b(?<![\\w-])(input|output|input-output|return)(?![\\w-])\\b',
+          beginCaptures: {1: {name: 'keyword.other.abl'}},
+          end: '(?=\\.)',
+          name: 'meta.define.parameter.abl',
+          patterns: [
+            {include: '#string'},
+            {include: '#primitive-type'},
+            {include: '#numeric'},
+            {include: '#constant'},
+            {include: '#keywords'},
+            {include: '#parameter-name'}
+          ]
         },
         {
           captures: {
@@ -346,12 +343,7 @@ const grammar = {
       match: '(?<![\\w-])((0(x|X)[0-9a-fA-F]+)|([0-9]+(\\.[0-9]+)?))',
       name: 'constant.numeric.source.abl'
     },
-    operator: {patterns: [{include: '#operator1'}, {include: '#operator2'}]},
-    operator1: {
-      match: '(?i)(?<=^|\\s)(or|and|not|is|eq|ge|ne|le|lt|gt)(?=\\s|\\.)',
-      name: 'keyword.operator.source.abl'
-    },
-    operator2: {
+    operator: {
       match: '(?i)(<=|<>|>=|=|\\+| - |/|<|>|,)',
       name: 'keyword.operator.source.abl'
     },

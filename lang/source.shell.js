@@ -13,7 +13,6 @@ const grammar = {
     '.csh',
     '.ebuild',
     '.eclass',
-    '.env',
     '.fcgi',
     '.ksh',
     '.sh',

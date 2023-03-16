@@ -11,7 +11,7 @@ const grammar = {
     {include: '#comments'},
     {
       match:
-        '\\b(align|as|atomic|begin|borrowed|break|by|catch|class|cobegin|coforall|continue|delete|dmapped|do|else|enum|except|export|extern|for|forall|if|import|index|inline|in|inout|iter|label|lambda|let|lifetime|local|module|new|noinit|on|only|otherwise|out|override|owned|pragma|private|proc|prototype|public|record|reduce|require|return|scan|select|serial|shared|sync|then|throw|throws|try|union|unmanaged|use|when|where|while|with|yield|zip)\\b',
+        '\\b(align|as|atomic|begin|borrowed|break|by|catch|class|cobegin|coforall|continue|defer|delete|dmapped|do|else|enum|except|export|extern|for|forall|foreach|forwarding|if|import|in|index|inline|inout|iter|label|lambda|let|lifetime|local|manage|module|new|noinit|on|only|operator|otherwise|out|override|owned|pragma|private|proc|prototype|public|record|reduce|require|return|scan|select|serial|shared|sync|then|throw|throws|try|union|unmanaged|use|when|where|while|with|yield|zip)\\b',
       name: 'keyword.control.chapel'
     },
     {
@@ -166,7 +166,7 @@ const grammar = {
     generic_names: {match: '[A-Za-z_][A-Za-z0-9_]*'},
     illegal_names: {
       match:
-        '\\b(align|as|atomic|begin|borrowed|break|by|bytes|catch|class|cobegin|coforall|continue|delete|dmapped|do|else|enum|except|export|extern|for|forall|if|import|index|inline|in|inout|iter|label|lambda|let|lifetime|local|module|new|noinit|nothing|on|only|otherwise|out|override|owned|pragma|private|proc|public|record|reduce|ref|require|return|scan|select|serial|shared|single|sync|then|throw|throws|try|union|unmanaged|use|var|void|when|where|while|with|yield|zip)\\b',
+        '\\b(align|as|atomic|begin|borrowed|break|by|bytes|catch|class|cobegin|coforall|continue|defer|delete|dmapped|do|else|enum|except|export|extern|for|forall|foreach|forwarding|if|import|in|index|inline|inout|iter|label|lambda|let|lifetime|local|manage|module|new|noinit|nothing|on|only|operator|otherwise|out|override|owned|pragma|private|proc|public|record|reduce|ref|require|return|scan|select|serial|shared|single|sync|then|throw|throws|try|union|unmanaged|use|var|void|when|where|while|with|yield|zip)\\b',
       name: 'invalid.illegal.name.chapel'
     },
     string_escaped_char: {

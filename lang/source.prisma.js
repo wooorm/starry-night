@@ -173,7 +173,7 @@ const grammar = {
       ]
     },
     model_block_definition: {
-      begin: '^\\s*(model|type)\\s+([A-Za-z][\\w]*)\\s*({)',
+      begin: '^\\s*(model|type|view)\\s+([A-Za-z][\\w]*)\\s*({)',
       beginCaptures: {
         1: {name: 'storage.type.model.prisma'},
         2: {name: 'entity.name.type.model.prisma'},

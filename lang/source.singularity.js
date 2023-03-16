@@ -24,7 +24,7 @@ const grammar = {
         1: {name: 'keyword.other.special-method.singularity'},
         3: {name: 'keyword.other.special-method.singularity'}
       },
-      match: '^\\s*\\b(?i:(from))\\b:.*?(.+?\\b(as)\\b.*)?'
+      match: '^\\s*\\b(?i:(from|registry|namespace))\\b:.*?(.+?\\b(as)\\b.*)?'
     },
     {
       captures: {1: {name: 'keyword.other.special-method.singularity'}},

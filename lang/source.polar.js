@@ -12,9 +12,11 @@ const grammar = {
     {include: '#rule'},
     {include: '#rule-type'},
     {include: '#inline-query'},
-    {include: '#resource-block'}
+    {include: '#resource-block'},
+    {include: '#test-block'}
   ],
   repository: {
+    boolean: {match: '\\b(true|false)\\b', name: 'constant.language.boolean'},
     comment: {match: '#.*', name: 'comment.line.number-sign'},
     'inline-query': {
       begin: '\\?=',
@@ -27,7 +29,7 @@ const grammar = {
       patterns: [
         {
           match:
-            '\\b(cut|or|debug|print|in|forall|if|and|of|not|matches|type|on)\\b',
+            '\\b(cut|or|debug|print|in|forall|if|and|of|not|matches|type|on|global)\\b',
           name: 'constant.character'
         }
       ]
@@ -42,16 +44,28 @@ const grammar = {
         {match: '\\b[\\d]+\\b', name: 'constant.numeric.natural'}
       ]
     },
+    'object-literal': {
+      begin: '([a-zA-Z_][a-zA-Z0-9_]*(?:::[a-zA-Z0-9_]+)*)\\s*\\{',
+      beginCaptures: {1: {name: 'entity.name.type.resource'}},
+      end: '\\}',
+      name: 'constant.other.object-literal',
+      patterns: [
+        {include: '#string'},
+        {include: '#number'},
+        {include: '#boolean'}
+      ]
+    },
     operator: {
       captures: {1: {name: 'keyword.control'}},
       match: '(\\+|-|\\*|\\/|<|>|=|!)'
     },
     'resource-block': {
       begin:
-        '(resource|actor)\\s+([a-zA-Z_][a-zA-Z0-9_]*(?:::[a-zA-Z0-9_]+)*)\\s*\\{',
+        '((resource|actor)\\s+([a-zA-Z_][a-zA-Z0-9_]*(?:::[a-zA-Z0-9_]+)*)|(global))\\s*\\{',
       beginCaptures: {
-        1: {name: 'keyword.control'},
-        2: {name: 'entity.name.type'}
+        2: {name: 'keyword.control'},
+        3: {name: 'entity.name.type'},
+        4: {name: 'keyword.control'}
       },
       end: '\\}',
       name: 'meta.resource-block',
@@ -118,6 +132,8 @@ const grammar = {
         {include: '#number'},
         {include: '#keyword'},
         {include: '#operator'},
+        {include: '#boolean'},
+        {include: '#object-literal'},
         {
           begin: '\\[',
           end: '\\]',
@@ -142,6 +158,27 @@ const grammar = {
           name: 'meta.parens',
           patterns: [{include: '#term'}]
         }
+      ]
+    },
+    'test-block': {
+      begin: '(test)\\s+("[^"]*")\\s*\\{',
+      beginCaptures: {
+        1: {name: 'keyword.control'},
+        2: {name: 'string.quoted.double'}
+      },
+      end: '\\}',
+      name: 'meta.test-block',
+      patterns: [
+        {
+          begin: '(setup)\\s*\\{',
+          beginCaptures: {1: {name: 'keyword.control'}},
+          end: '\\}',
+          name: 'meta.test-setup',
+          patterns: [{include: '#rule'}, {include: '#comment'}]
+        },
+        {include: '#rule'},
+        {match: '\\b(assert|assert_not)\\b', name: 'keyword.other'},
+        {include: '#comment'}
       ]
     }
   },

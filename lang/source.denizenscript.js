@@ -52,7 +52,7 @@ const grammar = {
     },
     keys: {
       begin:
-        '(?i)(^(?!^\\s*-|#|\n|^\\s*(?:interact scripts|default constants|data|constants|text|lore|aliases|slots|enchantments|input)(?=(?::))).*?)(?=(:)\\s)',
+        '(?i)(^(?!^\\s*-|#|\\n|^\\s*(?:interact scripts|default constants|data|constants|text|lore|aliases|slots|enchantments|input|description)(?=:\\n)).*?)(?=(:)\\s)',
       beginCaptures: {
         1: {name: 'markup.heading.key.denizenscript'},
         2: {name: 'operator.colon.denizenscript'}
@@ -61,7 +61,7 @@ const grammar = {
     },
     not_script_keys: {
       begin:
-        '(?i)(^(?!.*- |#|\\n).*(?=interact scripts|default constants|data|constants|text|lore|aliases|slots|enchantments|input).*)(?=(:)\\s)',
+        '(?i)(^(?!.*- |#|\\n).*(?=interact scripts|default constants|data|constants|text|lore|aliases|slots|enchantments|input|description).*)(?=(:)\\n)',
       beginCaptures: {
         1: {name: 'markup.heading.not_script_key.denizenscript'},
         2: {name: 'operator.colon.denizenscript'}

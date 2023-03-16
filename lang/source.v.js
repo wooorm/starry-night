@@ -115,7 +115,7 @@ const grammar = {
             {match: '(\\$if|\\$else)(?=\\s*\\()', name: 'keyword.control.v'},
             {
               match:
-                '\\b(as|in|is|or|break|continue|default|unsafe|match|if|else|for|go|goto|defer|return|shared|select|rlock|lock|atomic|asm)\\b(?=\\s*\\()',
+                '\\b(as|in|is|or|break|continue|default|unsafe|match|if|else|for|go|spawn|goto|defer|return|shared|select|rlock|lock|atomic|asm)\\b(?=\\s*\\()',
               name: 'keyword.control.v'
             }
           ]
@@ -131,7 +131,7 @@ const grammar = {
             {
               captures: {1: {name: 'storage.type.$1.v'}},
               match:
-                '(bool|byte|byteptr|charptr|voidptr|string|rune|size_t)(?=\\s*\\()',
+                '(bool|byte|byteptr|charptr|voidptr|string|rune|size_t|[ui]size)(?=\\s*\\()',
               name: 'meta.expr.bool.cast.v'
             }
           ]
@@ -302,7 +302,7 @@ const grammar = {
         {match: '(\\$if|\\$else)', name: 'keyword.control.v'},
         {
           match:
-            '(?<!@)\\b(as|it|is|in|or|break|continue|default|unsafe|match|if|else|for|go|goto|defer|return|shared|select|rlock|lock|atomic|asm)\\b',
+            '(?<!@)\\b(as|it|is|in|or|break|continue|default|unsafe|match|if|else|for|go|spawn|goto|defer|return|shared|select|rlock|lock|atomic|asm)\\b',
           name: 'keyword.control.v'
         },
         {

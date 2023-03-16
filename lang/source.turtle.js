@@ -127,7 +127,7 @@ const grammar = {
       patterns: [
         {
           match:
-            '(?x)\n\t\t\t\t\t\t(?<=\\s)[+-]?\t\t\t\t\t\t\n\t\t\t\t\t\t( (?: \\d+?\\.?\\d*[eE][+-]?\\d+) | \\d*\\.\\d+ | \\d+)\n\t\t\t\t\t\t(?=[ ]*[,.;]?)\n\t\t\t\t\t',
+            '(?x)\n\t\t\t\t\t\t(?<=\\s)[+-]?\n\t\t\t\t\t\t( (?: \\d+?\\.?\\d*[eE][+-]?\\d+) | \\d*\\.\\d+ | \\d+)\n\t\t\t\t\t\t(?=[ ]*[,.;]?)\n\t\t\t\t\t',
           name: 'constant.numeric.turtle'
         },
         {
@@ -209,7 +209,7 @@ const grammar = {
     },
     sparqlKeywords: {
       match:
-        '(?x)(\n\t\t\t\t\t(?# SPARQL )\n\t\t\t\t\tSELECT|ASK|CONSTRUCT|DESCRIBE|FROM|NAMED|WHERE|GRAPH|AS|\n\t\t\t\t\tUNION|FILTER|HAVING|VALUES|\n\t\t\t\t\tOPTIONAL|SERVICE|\t\t\t \n\t\t\t\t\t(?# SPARUL )\n\t\t\t\t\tSILENT|DATA|\t\t\t\t\t\n\t\t\t\t\tADD|MOVE|COPY|\n\t\t\t\t\tINSERT|DELETE|\n\t\t\t\t\tLOAD|INTO|\n\t\t\t\t\tGRAPH|ALL|DEFAULT|\t\t\t\t\t\n\t\t\t\t\tCLEAR|CREATE|DROP|\n\t\t\t\t\tWITH|USING|\n\t\t\t\t\t(?# Solution sequence modifiers )\n\t\t\t\t\tDISTINCT|REDUCED|\n\t\t\t\t\tORDER|ASC|DESC|OFFSET|LIMITED|REDUCED|\n\t\t\t\t\tGROUP|BY|LIMIT\t\t\t\t\t\n\t\t\t\t)',
+        '(?x)(\n\t\t\t\t\t(?# SPARQL )\n\t\t\t\t\tSELECT|ASK|CONSTRUCT|DESCRIBE|FROM|NAMED|WHERE|GRAPH|AS|\n\t\t\t\t\tUNION|FILTER|HAVING|VALUES|\n\t\t\t\t\tOPTIONAL|SERVICE|\n\t\t\t\t\t(?# SPARUL )\n\t\t\t\t\tSILENT|DATA|\n\t\t\t\t\tADD|MOVE|COPY|\n\t\t\t\t\tINSERT|DELETE|\n\t\t\t\t\tLOAD|INTO|\n\t\t\t\t\tGRAPH|ALL|DEFAULT|\n\t\t\t\t\tCLEAR|CREATE|DROP|\n\t\t\t\t\tWITH|USING|\n\t\t\t\t\t(?# Solution sequence modifiers )\n\t\t\t\t\tDISTINCT|REDUCED|\n\t\t\t\t\tORDER|ASC|DESC|OFFSET|LIMITED|REDUCED|\n\t\t\t\t\tGROUP|BY|LIMIT\n\t\t\t\t)',
       name: 'keyword.control.sparql.turtle'
     },
     sparqlLangConsts: {

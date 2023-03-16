@@ -415,6 +415,24 @@ const grammar = {
         },
         {
           begin:
+            '(?i)^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?)(::)\\s+(cfg|dosini|ini)(?=\\s*$)',
+          beginCaptures: {
+            2: {name: 'punctuation.definition.directive.restructuredtext'},
+            3: {name: 'support.directive.restructuredtext'},
+            4: {name: 'punctuation.separator.key-value.restructuredtext'},
+            5: {name: 'entity.name.directive.restructuredtext'}
+          },
+          contentName: 'source.embedded.ini',
+          end: '^(?!\\s*$|\\1[ \\t]+\\S)',
+          patterns: [
+            {
+              captures: {1: {patterns: [{include: 'source.ini'}]}},
+              match: '(?:^|\\G)[ \\t]*(\\S.*)'
+            }
+          ]
+        },
+        {
+          begin:
             '(?i)^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?|raw)(::)\\s+(manpage|man|[ntg]?roff)(?=\\s*$)',
           beginCaptures: {
             2: {name: 'punctuation.definition.directive.restructuredtext'},
@@ -430,6 +448,32 @@ const grammar = {
               match: '(?:^|\\G)[ \\t]*(\\S.*)'
             }
           ]
+        },
+        {
+          begin:
+            '(?i)^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?|raw)(::)\\s+([dg]?pic|pikchr|pic2plot|dformat)(?=\\s*$)',
+          beginCaptures: {
+            2: {name: 'punctuation.definition.directive.restructuredtext'},
+            3: {name: 'support.directive.restructuredtext'},
+            4: {name: 'punctuation.separator.key-value.restructuredtext'},
+            5: {name: 'entity.name.directive.restructuredtext'}
+          },
+          contentName: 'source.embedded.pic',
+          end: '^(?!\\s*$|\\1[ \\t]+\\S)',
+          patterns: [{include: 'source.pic'}]
+        },
+        {
+          begin:
+            '(?i)^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?|raw)(::)\\s+(ditroff|groff[-_]?out|grout)(?=\\s*$)',
+          beginCaptures: {
+            2: {name: 'punctuation.definition.directive.restructuredtext'},
+            3: {name: 'support.directive.restructuredtext'},
+            4: {name: 'punctuation.separator.key-value.restructuredtext'},
+            5: {name: 'entity.name.directive.restructuredtext'}
+          },
+          contentName: 'source.embedded.ditroff',
+          end: '^(?!\\s*$|\\1[ \\t]+\\S)',
+          patterns: [{include: 'source.ditroff'}]
         },
         {
           begin:
@@ -456,6 +500,71 @@ const grammar = {
           contentName: 'text.embedded.texinfo',
           end: '^(?!\\s*$|\\1[ \\t]+\\S)',
           patterns: [{include: 'text.texinfo'}]
+        },
+        {
+          begin:
+            '(?i)^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?|raw)(::)\\s+(postscript|ps|eps)(?=\\s*$)',
+          beginCaptures: {
+            2: {name: 'punctuation.definition.directive.restructuredtext'},
+            3: {name: 'support.directive.restructuredtext'},
+            4: {name: 'punctuation.separator.key-value.restructuredtext'},
+            5: {name: 'entity.name.directive.restructuredtext'}
+          },
+          contentName: 'source.embedded.postscript',
+          end: '^(?!\\s*$|\\1[ \\t]+\\S)',
+          patterns: [{include: 'source.postscript#main'}]
+        },
+        {
+          begin:
+            '(?i)^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?|raw)(::)\\s+(posh|powershell|ps1|psm1|pwsh)(?=\\s*$)',
+          beginCaptures: {
+            2: {name: 'punctuation.definition.directive.restructuredtext'},
+            3: {name: 'support.directive.restructuredtext'},
+            4: {name: 'punctuation.separator.key-value.restructuredtext'},
+            5: {name: 'entity.name.directive.restructuredtext'}
+          },
+          contentName: 'source.embedded.powershell',
+          end: '^(?!\\s*$|\\1[ \\t]+\\S)',
+          patterns: [{include: 'source.powershell'}]
+        },
+        {
+          begin:
+            '(?i)^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?|raw)(::)\\s+((?:dos|win)?batch|bat)(?=\\s*$)',
+          beginCaptures: {
+            2: {name: 'punctuation.definition.directive.restructuredtext'},
+            3: {name: 'support.directive.restructuredtext'},
+            4: {name: 'punctuation.separator.key-value.restructuredtext'},
+            5: {name: 'entity.name.directive.restructuredtext'}
+          },
+          contentName: 'source.embedded.batchfile',
+          end: '^(?!\\s*$|\\1[ \\t]+\\S)',
+          patterns: [{include: 'source.batchfile'}]
+        },
+        {
+          begin:
+            '(?i)^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?|raw)(::)\\s+(swift)(?=\\s*$)',
+          beginCaptures: {
+            2: {name: 'punctuation.definition.directive.restructuredtext'},
+            3: {name: 'support.directive.restructuredtext'},
+            4: {name: 'punctuation.separator.key-value.restructuredtext'},
+            5: {name: 'entity.name.directive.restructuredtext'}
+          },
+          contentName: 'source.embedded.swift',
+          end: '^(?!\\s*$|\\1[ \\t]+\\S)',
+          patterns: [{include: 'source.swift'}]
+        },
+        {
+          begin:
+            '(?i)^([ \\t]*)(\\.\\.)\\s+(code(?:-block)?|raw)(::)\\s+(applescript)(?=\\s*$)',
+          beginCaptures: {
+            2: {name: 'punctuation.definition.directive.restructuredtext'},
+            3: {name: 'support.directive.restructuredtext'},
+            4: {name: 'punctuation.separator.key-value.restructuredtext'},
+            5: {name: 'entity.name.directive.restructuredtext'}
+          },
+          contentName: 'source.embedded.applescript',
+          end: '^(?!\\s*$|\\1[ \\t]+\\S)',
+          patterns: [{include: 'source.applescript'}]
         },
         {
           begin:
@@ -1602,6 +1711,33 @@ const grammar = {
         },
         {
           begin:
+            '(?i)^(\\s*)(\\.\\.)\\s+(\\|)(?=[^|\\s])(.+?)((?<=\\S)\\|)\\s+(unicode)(::)[ \\t]*',
+          beginCaptures: {
+            2: {name: 'punctuation.definition.directive.restructuredtext'},
+            3: {
+              name: 'punctuation.definition.substitution.start.restructuredtext'
+            },
+            4: {name: 'entity.name.substitution.restructuredtext'},
+            5: {
+              name: 'punctuation.definition.substitution.end.restructuredtext'
+            },
+            6: {name: 'support.directive.restructuredtext'},
+            7: {name: 'punctuation.separator.key-value.restructuredtext'}
+          },
+          end: '^(?!\\s*$|\\1[ \\t]+\\S)',
+          name: 'meta.substitution-definition.unicode.restructuredtext',
+          patterns: [
+            {
+              captures: {1: {patterns: [{include: '#tag-name'}]}},
+              match: '(?i)(:[lr]?trim:)(?=$|\\s)',
+              name: 'meta.unicode-option.${1:/downcase}.restructuredtext'
+            },
+            {include: '#directive-options'},
+            {include: '#unicode-innards'}
+          ]
+        },
+        {
+          begin:
             '^(\\s*)(\\.\\.)\\s+(\\|)(?=[^|\\s])(.+?)((?<=\\S)\\|)\\s+(\\S+.*(?=::))(::)(.*)',
           beginCaptures: {
             2: {name: 'punctuation.definition.directive.restructuredtext'},
@@ -1764,6 +1900,7 @@ const grammar = {
               patterns: [{include: '#table-simple-innards'}]
             },
             {
+              begin: '^(\\s+)(={2,}(?:\\s+={2,})++)[ \\t]*$',
               beginCaptures: {
                 0: {name: 'meta.separator.table.simple.restructuredtext'},
                 2: {
@@ -1803,6 +1940,7 @@ const grammar = {
               patterns: [{include: '#table-simple-innards'}]
             },
             {
+              begin: '^(={2,}(?:\\s+={2,})++)[ \\t]*$',
               beginCaptures: {
                 0: {name: 'meta.separator.table.simple.restructuredtext'},
                 1: {
@@ -1810,7 +1948,7 @@ const grammar = {
                 }
               },
               contentName: 'markup.other.table.restructuredtext',
-              end: '^={2,}(?:\\s+={2,})++[ \\t]*$|(?=^\\s*$)',
+              end: '^(={2,}(?:\\s+={2,})++)[ \\t]*$|(?=^\\s*$)',
               endCaptures: {
                 0: {name: 'meta.separator.table.simple.restructuredtext'},
                 1: {
@@ -1961,6 +2099,42 @@ const grammar = {
             }
           },
           match: '(?:^|\\G)(?:(!)|(~))?(?!<)((.+))(?<!<)$'
+        }
+      ]
+    },
+    'unicode-innards': {
+      patterns: [
+        {
+          captures: {
+            1: {name: 'constant.character.escape.backslash.restructuredtext'}
+          },
+          match: '(?i)(?:^|(?<=\\s))(?:0x|(\\\\)?[ux]|U\\+)[0-9A-F]+(?=$|\\s)',
+          name: 'constant.numeric.integer.codepoint.hexadecimal.restructuredtext'
+        },
+        {
+          match: '(?:^|(?<=\\s))[0-9]+(?=$|\\s)',
+          name: 'constant.numeric.integer.codepoint.decimal.restructuredtext'
+        },
+        {
+          captures: {
+            1: {name: 'punctuation.definition.constant.xml'},
+            2: {name: 'entity.name.other.codepoint.hexadecimal.xml'},
+            3: {name: 'punctuation.definition.entity.end.xml'}
+          },
+          match: '(?i)(?:^|(?<=\\s))(&)(#x[0-9A-F]+)(;)(?=$|\\s)',
+          name: 'constant.character.entity.xml'
+        },
+        {
+          begin: '\\s+(\\.\\.)[ \\t]+(?=\\S)',
+          beginCaptures: {
+            1: {name: 'punctuation.definition.comment.restructuredtext'}
+          },
+          end: '(?=\\s*$)',
+          name: 'comment.line.double-dot.trailing.restructuredtext'
+        },
+        {
+          match: '(?:^|(?<=\\s))(?!\\.\\.\\s+\\S)[^\\s]+',
+          name: 'string.unquoted.substitution.data.restructuredtext'
         }
       ]
     }

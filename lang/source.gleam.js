@@ -64,10 +64,10 @@ const grammar = {
       patterns: [
         {
           match:
-            '\\b(case|if|external|fn|import|let|assert|try|pub|type|opaque|const|todo)\\b',
+            '\\b(use|case|if|external|fn|import|let|assert|try|pub|type|opaque|const|todo|panic)\\b',
           name: 'keyword.control.gleam'
         },
-        {match: '->', name: 'keyword.operator.arrow.gleam'},
+        {match: '(<\\-|\\->)', name: 'keyword.operator.arrow.gleam'},
         {match: '\\|>', name: 'keyword.operator.pipe.gleam'},
         {match: '\\.\\.', name: 'keyword.operator.splat.gleam'},
         {
@@ -79,6 +79,7 @@ const grammar = {
           name: 'keyword.operator.comparison.int.gleam'
         },
         {match: '(&&|\\|\\|)', name: 'keyword.operator.logical.gleam'},
+        {match: '<>', name: 'keyword.operator.string.gleam'},
         {match: '\\|', name: 'keyword.operator.other.gleam'},
         {
           match: '(\\+\\.|\\-\\.|/\\.|\\*\\.|%\\.)',
