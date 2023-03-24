@@ -8,12 +8,10 @@ const grammar = {
   extensions: [
     '.bash',
     '.bats',
-    '.cgi',
     '.command',
     '.csh',
     '.ebuild',
     '.eclass',
-    '.fcgi',
     '.ksh',
     '.sh',
     '.sh.in',

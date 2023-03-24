@@ -5,7 +5,8 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.odin'],
+  extensions: [],
+  extensionsWithDot: ['.odin'],
   names: ['object-data-instance-notation'],
   patterns: [{include: '#main'}],
   repository: {

@@ -6,7 +6,6 @@
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
   extensions: [
-    '.plist',
     '.sttheme',
     '.tmcommand',
     '.tmlanguage',

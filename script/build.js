@@ -3,6 +3,12 @@
  * @typedef {import('../lib/index.js').Rule} Rule
  */
 
+/**
+ * @typedef Info
+ * @property {Array<string>} names
+ * @property {Array<string>} extensions
+ */
+
 import process from 'node:process'
 import assert from 'node:assert'
 import fs from 'node:fs/promises'
@@ -52,22 +58,78 @@ const prettierConfig = await prettier.resolveConfig(
 
 const gemBase = new URL(linguistBasename + '/', gemsBase)
 const languagesUrl = new URL('lib/linguist/languages.json', gemBase)
+
+const ignore = new Set(
+  // This one actually turns into two classes on GH, which must be a bug.
+  ['source.pov-ray sdl']
+)
+
 /** @type {Record<string, {aliases?: Array<string>, extensions?: Array<string>, tm_scope: string}>} */
 // @ts-expect-error: TS is wrong, `JSON.parse` accepts buffers.
 const languages = JSON.parse(await fs.readFile(languagesUrl))
 /** @type {string} */
 let name
 
-/**
- * @typedef Info
- * @property {Array<string>} names
- * @property {Array<string>} extensions
- */
+/** @type {Map<string, string>} */
+const uniqueIdentifiers = new Map()
+/** @type {Map<string, Set<string>>} */
+const duplicates = new Map()
 
-const ignore = new Set(
-  // This one actually turns into two classes on GH, which must be a bug.
-  ['source.pov-ray sdl']
-)
+// Order is important, so we need to run it several times.
+for (const [name, language] of Object.entries(languages)) {
+  const scope = language.tm_scope
+
+  if (scope === 'none') {
+    continue
+  }
+
+  const names = (language.aliases || []).map((d) => normalizeLinguistName(d))
+  const defaultId = normalizeLinguistName(name)
+
+  if (!names.includes(defaultId)) {
+    names.push(defaultId)
+  }
+
+  for (const alias of names) {
+    const existing = uniqueIdentifiers.get(alias)
+
+    if (existing) {
+      assert(
+        existing === scope,
+        'expected duplicate names to refer to same language'
+      )
+    }
+
+    uniqueIdentifiers.set(alias, scope)
+  }
+}
+
+// Order is important, so we need to run it several times.
+for (const [name, language] of Object.entries(languages)) {
+  const scope = language.tm_scope
+
+  if (scope === 'none') {
+    continue
+  }
+
+  const extnames = (language.extensions || []).map((d) =>
+    normalizeLinguistExtension(d)
+  )
+
+  for (const extname of extnames) {
+    const existing = uniqueIdentifiers.get(extname)
+
+    if (existing) {
+      const dupes = duplicates.get(extname) || new Set()
+      dupes.add(existing)
+      dupes.add(name)
+      duplicates.set(extname, dupes)
+    } else {
+      uniqueIdentifiers.set(extname, scope)
+    }
+  }
+}
+
 /** @type {Map<string, Info>} */
 const linguistInfo = new Map()
 
@@ -82,22 +144,13 @@ for (name in languages) {
       continue
     }
 
-    let names = [name, ...(rawInfo.aliases || [])].map((d) => {
-      const normal = d.toLowerCase().replace(/ /g, '-')
-      assert(/^[-a-z\d.#+'*()/]+$/.test(normal), normal)
-      return normal
-    })
+    let names = [name, ...(rawInfo.aliases || [])].map((d) =>
+      normalizeLinguistName(d)
+    )
 
-    let extensions = (rawInfo.extensions || []).map((d) => {
-      const normal = d.toLowerCase().replace(/ /g, '-')
-      assert(
-        normal.charAt(0) === '.',
-        'extension `' + normal + '` should start w/ a `.`'
-      )
-      // Same as names but w/o these values: `#'*()/`.
-      assert(/^[-a-z\d.+_]+$/.test(normal), normal)
-      return normal
-    })
+    let extensions = (rawInfo.extensions || []).map((d) =>
+      normalizeLinguistExtension(d)
+    )
 
     const info = linguistInfo.get(scope)
 
@@ -157,6 +210,58 @@ await Promise.all(
     const grammar = cleanGrammar(JSON.parse(await fs.readFile(inputUrl)), scope)
     assert(grammar.scopeName === scope, 'expected scopes to match')
 
+    const info = linguistInfo.get(scope)
+    assert(info, 'expected info')
+
+    for (const name of info.names) {
+      const mappedScope = uniqueIdentifiers.get(name)
+      assert(mappedScope, 'expected mapping')
+      assert(mappedScope === scope, 'expected names to be unique')
+    }
+
+    /**
+     * List of extensions that can be used with and without dots.
+     *
+     * To illustrate, `yaml` can be used like ` ```yaml ` and like ` ```.yaml `.
+     *
+     * @type {Array<string>}
+     */
+    const extensions = []
+    /**
+     * List of extensions that can only be used with a dot.
+     *
+     * To illustrate, ` ```adb ` maps to `Adblock Filter List`, whereas
+     * ` ```.adb ` maps to `Ada`.
+     *
+     * @type {Array<string>}
+     */
+    const extensionsWithDot = []
+
+    for (const name of info.extensions) {
+      const mappedScopeDot = uniqueIdentifiers.get(name)
+      const short = name.slice(1)
+      assert(mappedScopeDot, 'expected mapping')
+      const mappedScopeDotless = uniqueIdentifiers.get(short) || mappedScopeDot
+
+      if (mappedScopeDot === scope) {
+        if (mappedScopeDotless === scope) {
+          extensions.push(name)
+        } else {
+          extensionsWithDot.push(name)
+        }
+      } else if (mappedScopeDotless === scope) {
+        // Only allowed without a dot (`html`), because with a dot, it maps to
+        // something else (`.html` weirdly maps to `ecmarkup`).
+        // That means, the short form must be in names.
+        // It might not currently be though, because we’re still looping!
+        assert(
+          info.names.includes(short),
+          'expected extension (w/o dot) in names'
+        )
+        // Otherwise, ignore the extension: it maps to something else in all cases!
+      }
+    }
+
     await fs.writeFile(
       outputUrl,
       prettier.format(
@@ -165,7 +270,10 @@ await Promise.all(
           'const grammar = ' +
             jsonStableStringify({
               ...grammar,
-              ...linguistInfo.get(scope)
+              names: info.names,
+              extensions,
+              extensionsWithDot:
+                extensionsWithDot.length === 0 ? undefined : extensionsWithDot
             }),
           '',
           'export default grammar',
@@ -363,4 +471,33 @@ function scopeToId(value) {
         $1.toUpperCase()
       )
   )
+}
+
+/**
+ * @param {string} d
+ * @returns {string}
+ */
+function normalizeLinguistName(d) {
+  // Names are case-insensitive, so we lowercase.
+  // For an example, see `SnipMate` which is included as an alias, but using
+  // `snipmate` or `SNIPMATE` also highlights.
+  //
+  // Spaces in names are turned into dashes.
+  // For example `DNS zone` can be used as `dns-zone`, not as `dns` or
+  // `dns_zone`.
+  const normal = d.toLowerCase().replace(/ /g, '-')
+  assert(/^[-a-z\d.#+'*()/]+$/.test(normal), normal)
+  return normal
+}
+
+/**
+ * @param {string} d
+ * @returns {string}
+ */
+function normalizeLinguistExtension(d) {
+  // Extensions are case-insensitive (example: for `.OutJob`, `.outjob` also works).
+  // They can also contain dots, dashes, plusses, etc.
+  const normal = d.toLowerCase()
+  assert(/^\.[\w+.-]+$/.test(normal), normal)
+  return normal
 }

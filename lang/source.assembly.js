@@ -5,7 +5,8 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.asm', '.a51', '.i', '.inc', '.nas', '.nasm'],
+  extensions: ['.asm', '.a51', '.i', '.nas', '.nasm'],
+  extensionsWithDot: ['.inc'],
   names: ['assembly', 'asm', 'nasm'],
   patterns: [
     {

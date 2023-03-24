@@ -7,7 +7,6 @@
 const grammar = {
   extensions: [
     '._coffee',
-    '.cake',
     '.cjsx',
     '.coffee',
     '.cson',

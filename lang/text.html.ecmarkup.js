@@ -5,7 +5,8 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.html'],
+  extensions: [],
+  extensionsWithDot: ['.html'],
   injections: {
     'L:(source.embedded.yaml.front-matter.ecmarkup - (comment | embedded))': {
       patterns: [{include: 'text.html.basic#character-reference'}]

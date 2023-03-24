@@ -10,7 +10,6 @@ const grammar = {
     '.asset',
     '.ksy',
     '.lookml',
-    '.mask',
     '.mat',
     '.meta',
     '.mir',
@@ -23,14 +22,8 @@ const grammar = {
     '.syntax',
     '.unity',
     '.view.lkml',
-    '.yaml',
-    '.yaml',
-    '.yaml',
     '.yaml-tmlanguage',
     '.yaml.sed',
-    '.yml',
-    '.yml',
-    '.yml',
     '.yml.mysql'
   ],
   names: [

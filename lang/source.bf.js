@@ -5,7 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.b', '.bf'],
+  extensions: ['.b'],
   names: ['brainfuck'],
   patterns: [
     {match: '[+-]', name: 'constant.character.modify-value.bf'},

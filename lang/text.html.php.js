@@ -6,9 +6,6 @@ const grammar = {
   extensions: [
     '.aw',
     '.ctp',
-    '.fcgi',
-    '.inc',
-    '.php',
     '.php3',
     '.php4',
     '.php5',

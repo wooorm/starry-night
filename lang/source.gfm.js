@@ -8,7 +8,6 @@ const grammar = {
   extensions: [
     '.livemd',
     '.markdown',
-    '.md',
     '.mdown',
     '.mdwn',
     '.mdx',

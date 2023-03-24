@@ -5,7 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.g', '.gap', '.gd', '.gi', '.tst'],
+  extensions: ['.gap', '.gd', '.gi', '.tst'],
   names: ['gap'],
   patterns: [
     {match: '^\\s*(end|fi|od)$', name: 'invalid.illegal.end-statement.gap'},

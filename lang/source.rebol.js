@@ -5,7 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.reb', '.r', '.r2', '.r3', '.rebol'],
+  extensions: ['.reb', '.r2', '.r3', '.rebol'],
   names: ['rebol'],
   patterns: [
     {include: '#comments'},

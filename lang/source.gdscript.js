@@ -5,7 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.gd'],
+  extensions: [],
   names: ['gdscript'],
   patterns: [
     {include: '#nodepath_object'},

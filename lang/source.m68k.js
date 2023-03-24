@@ -3,7 +3,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.asm', '.i', '.inc', '.s', '.x68'],
+  extensions: ['.s', '.x68'],
   names: ['motorola-68k-assembly', 'm68k'],
   patterns: [
     {match: '(;|\\B\\*).*$', name: 'comment.m68k'},

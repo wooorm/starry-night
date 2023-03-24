@@ -3,7 +3,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.fth', '.4th', '.f', '.for', '.forth', '.fr', '.frt', '.fs'],
+  extensions: ['.fth', '.4th', '.f', '.for', '.forth', '.fr', '.frt'],
   names: ['forth'],
   patterns: [
     {

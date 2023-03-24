@@ -3,7 +3,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.cs', '.st', '.ston'],
+  extensions: ['.st', '.ston'],
   names: ['smalltalk', 'squeak', 'ston'],
   patterns: [
     {match: '\\b(class)\\b', name: 'storage.type.$1.smalltalk'},

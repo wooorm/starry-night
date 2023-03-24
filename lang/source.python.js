@@ -7,9 +7,7 @@
 const grammar = {
   extensions: [
     '.bzl',
-    '.cgi',
     '.eb',
-    '.fcgi',
     '.gyp',
     '.gypi',
     '.lmi',
@@ -26,7 +24,6 @@ const grammar = {
     '.smk',
     '.snakefile',
     '.spec',
-    '.star',
     '.tac',
     '.wsgi',
     '.xpy',

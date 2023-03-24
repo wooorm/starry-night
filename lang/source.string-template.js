@@ -5,7 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.st'],
+  extensions: [],
   injections: {
     'L:source.string-template meta.document.dollar-delimiters.string-template - comment':
       {patterns: [{match: '<|>'}, {include: '#main$'}]}

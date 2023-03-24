@@ -12,15 +12,12 @@ const grammar = {
     '.p6',
     '.p6l',
     '.p6m',
-    '.pl',
     '.pl6',
-    '.pm',
     '.pm6',
     '.pod',
     '.pod6',
     '.raku',
-    '.rakumod',
-    '.t'
+    '.rakumod'
   ],
   names: ['perl-6', 'perl6', 'pod-6', 'raku'],
   patterns: [

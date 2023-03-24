@@ -10,7 +10,6 @@ const grammar = {
     '.fp',
     '.frag',
     '.frg',
-    '.fs',
     '.fsh',
     '.fshader',
     '.geo',

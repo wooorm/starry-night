@@ -7,7 +7,6 @@ const grammar = {
     '.cql',
     '.db2',
     '.ddl',
-    '.inc',
     '.mysql',
     '.pgsql',
     '.prc',

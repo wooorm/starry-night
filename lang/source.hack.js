@@ -5,7 +5,8 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.hack', '.hh', '.hhi', '.php'],
+  extensions: ['.hack', '.hhi'],
+  extensionsWithDot: ['.php'],
   names: ['hack'],
   patterns: [{include: 'text.html.basic'}, {include: '#language'}],
   repository: {

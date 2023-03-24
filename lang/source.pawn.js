@@ -3,7 +3,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.pwn', '.inc', '.sma'],
+  extensions: ['.pwn', '.sma'],
   names: ['pawn'],
   patterns: [{include: '#translation_unit'}],
   repository: {

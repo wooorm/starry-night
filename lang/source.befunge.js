@@ -3,7 +3,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.befunge', '.bf'],
+  extensions: ['.befunge'],
   names: ['befunge'],
   patterns: [
     {match: '[0-9]', name: 'constant.numberic.bf'},

@@ -300,17 +300,18 @@ Yields:
 ### `starryNight.flagToScope(flag)`
 
 Get the grammar scope (such as `source.gfm`) associated with a grammar name
-(such as `markdown` or `pandoc`) or grammar extension (such as `.md` or `.rmd`).
+(such as `markdown` or `pandoc`) or grammar extension (such as `.mdwn` or
+`.rmd`).
 Note that grammars can use the same extensions, in which case GitHub chooses the
 first.
-Notably, `.md` is registered by a lisp-like language instead of markdown.
+Notably, `.md` is registered by a Lisp-like language instead of markdown.
 🤷‍♂️
 
 ###### Parameters
 
 *   `flag` (`string`)
     — grammar name (such as `'markdown'` or `'pandoc'`) or grammar extension
-    (such as `'.md'` or `'.rmd'`)
+    (such as `'.mdwn'` or `'.rmd'`)
 
 ###### Returns
 

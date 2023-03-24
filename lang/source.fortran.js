@@ -3,7 +3,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.f', '.f77', '.for', '.fpp'],
+  extensions: ['.f77', '.fpp'],
   injections: {
     'source.fortran - (source.fortran.modern)': {
       patterns: [

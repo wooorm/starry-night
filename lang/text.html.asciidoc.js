@@ -5,7 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.asciidoc', '.adoc', '.asc'],
+  extensions: ['.asciidoc', '.adoc'],
   names: ['asciidoc'],
   patterns: [
     {include: '#heading_inline'},

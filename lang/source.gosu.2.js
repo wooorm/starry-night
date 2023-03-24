@@ -5,7 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.gs', '.gst', '.gsx', '.vark'],
+  extensions: ['.gst', '.gsx', '.vark'],
   names: ['gosu'],
   patterns: [
     {match: '\\b(List|Map)\\b', name: 'support.class.gosu.2'},

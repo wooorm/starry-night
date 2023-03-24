@@ -8,14 +8,10 @@ const grammar = {
   extensions: [
     '.c',
     '.cats',
-    '.cl',
-    '.d',
     '.h',
     '.idc',
     '.opencl',
-    '.pm',
     '.upc',
-    '.x',
     '.xbm',
     '.xpm',
     '.xs'

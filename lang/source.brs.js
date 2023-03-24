@@ -5,7 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.brs', '.bs'],
+  extensions: ['.brs'],
   names: ['brighterscript', 'brightscript'],
   patterns: [{include: '#entire_language'}],
   repository: {

@@ -10,7 +10,6 @@ const grammar = {
     '.aux',
     '.bbx',
     '.cbx',
-    '.cls',
     '.dtx',
     '.ins',
     '.lbx',

@@ -4,7 +4,6 @@
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
   extensions: [
-    '.cfg',
     '.cnf',
     '.dof',
     '.ini',
@@ -13,7 +12,6 @@ const grammar = {
     '.pcbdoc',
     '.prefs',
     '.prjpcb',
-    '.pro',
     '.properties',
     '.schdoc',
     '.url'

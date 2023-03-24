@@ -5,7 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.p', '.cls', '.w'],
+  extensions: ['.w'],
   names: ['openedge-abl', 'progress', 'openedge', 'abl'],
   patterns: [{include: '#procedure-definition'}, {include: '#statements'}],
   repository: {

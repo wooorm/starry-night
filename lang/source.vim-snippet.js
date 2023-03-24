@@ -5,7 +5,8 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.snip', '.snippet', '.snippets'],
+  extensions: ['.snip', '.snippets'],
+  extensionsWithDot: ['.snippet'],
   names: ['vim-snippet', 'snipmate', 'ultisnip', 'ultisnips', 'neosnippet'],
   patterns: [{include: '#main'}],
   repository: {

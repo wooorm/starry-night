@@ -3,7 +3,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.scm', '.sch', '.sld', '.sls', '.sps', '.ss'],
+  extensions: ['.scm', '.sld', '.sps', '.ss'],
   names: ['scheme'],
   patterns: [
     {include: '#comment'},

@@ -5,7 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.chs', '.dhall', '.fr', '.hs', '.hs-boot', '.hsc'],
+  extensions: ['.chs', '.dhall', '.hs', '.hs-boot', '.hsc'],
   names: ['c2hs', 'c2hs-haskell', 'dhall', 'frege', 'haskell'],
   patterns: [{include: '#haskell_source'}],
   repository: {

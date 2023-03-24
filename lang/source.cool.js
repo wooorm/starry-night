@@ -3,7 +3,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.cl'],
+  extensions: [],
   names: ['cool'],
   patterns: [
     {match: '--(.*)\\n', name: 'comment.line.double-dash'},

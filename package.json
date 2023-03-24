@@ -102,6 +102,7 @@
       "lang/"
     ],
     "rules": {
+      "max-depth": "off",
       "no-bitwise": "off",
       "no-template-curly-in-string": "off",
       "unicorn/prefer-top-level-await": "off"

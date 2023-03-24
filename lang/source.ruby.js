@@ -10,7 +10,6 @@ const grammar = {
     '.druby',
     '.duby',
     '.eye',
-    '.fcgi',
     '.gemspec',
     '.god',
     '.jbuilder',
@@ -28,7 +27,6 @@ const grammar = {
     '.rbx',
     '.ru',
     '.ruby',
-    '.spec',
     '.thor',
     '.watchr'
   ],

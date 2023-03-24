@@ -6,11 +6,7 @@
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
   extensions: [
-    '.bas',
-    '.bas',
     '.bi',
-    '.cls',
-    '.cls',
     '.ctl',
     '.dsr',
     '.frm',

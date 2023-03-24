@@ -3,7 +3,8 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.adb', '.ada', '.ads'],
+  extensions: ['.ada', '.ads'],
+  extensionsWithDot: ['.adb'],
   names: ['ada', 'ada95', 'ada2005'],
   patterns: [
     {

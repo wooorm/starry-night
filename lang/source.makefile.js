@@ -5,7 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.mak', '.d', '.make', '.makefile', '.mk', '.mkfile'],
+  extensions: ['.mak', '.make', '.makefile', '.mk', '.mkfile'],
   names: ['makefile', 'bsdmake', 'make', 'mf'],
   patterns: [
     {include: '#comment'},

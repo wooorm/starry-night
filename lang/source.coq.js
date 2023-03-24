@@ -3,7 +3,8 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.coq', '.v'],
+  extensions: ['.coq'],
+  extensionsWithDot: ['.v'],
   names: ['coq'],
   patterns: [
     {include: '#multilinecomment'},

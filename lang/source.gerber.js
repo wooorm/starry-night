@@ -13,16 +13,15 @@ const grammar = {
     '.gbp',
     '.gbs',
     '.gko',
-    '.gml',
     '.gpb',
     '.gpt',
     '.gtl',
     '.gto',
     '.gtp',
     '.gts',
-    '.ncl',
     '.sol'
   ],
+  extensionsWithDot: ['.ncl'],
   names: ['gerber-image', 'rs-274x'],
   patterns: [
     {

@@ -5,17 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: [
-    '.hta',
-    '.htm',
-    '.html',
-    '.html.hl',
-    '.inc',
-    '.kit',
-    '.mtml',
-    '.xht',
-    '.xhtml'
-  ],
+  extensions: ['.hta', '.htm', '.html.hl', '.kit', '.mtml', '.xht', '.xhtml'],
   names: ['html', 'kit', 'mtml', 'xhtml'],
   patterns: [
     {

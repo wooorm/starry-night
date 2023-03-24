@@ -3,17 +3,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: [
-    '.cp',
-    '.cps',
-    '.dfm',
-    '.dpr',
-    '.inc',
-    '.lpr',
-    '.pas',
-    '.pascal',
-    '.pp'
-  ],
+  extensions: ['.cps', '.dfm', '.dpr', '.lpr', '.pas', '.pascal', '.pp'],
   names: ['component-pascal', 'delphi', 'objectpascal', 'pascal'],
   patterns: [
     {

@@ -8,7 +8,6 @@ const grammar = {
   extensions: [
     '.mathematica',
     '.cdf',
-    '.m',
     '.ma',
     '.mt',
     '.nb',

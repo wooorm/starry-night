@@ -3,6 +3,8 @@ import test from 'node:test'
 import {toHtml} from 'hast-util-to-html'
 import sourceGfm from './lang/source.gfm.js'
 import sourceCss from './lang/source.css.js'
+import sourceAssembly from './lang/source.assembly.js'
+import textPhp from './lang/text.html.php.js'
 import {createStarryNight, common} from './index.js'
 
 test('.flagToScope(flag)', async () => {
@@ -33,6 +35,29 @@ test('.flagToScope(flag)', async () => {
     'should support extensions (w/ dot)'
   )
   assert.equal(starryNight.flagToScope('whatever'), undefined)
+
+  const phpThenAssembly = await createStarryNight([textPhp, sourceAssembly])
+  assert.equal(
+    phpThenAssembly.flagToScope('.inc'),
+    sourceAssembly.scopeName,
+    'should support the scope that GH uses for an extension w/ dot (1)'
+  )
+  assert.equal(
+    phpThenAssembly.flagToScope('inc'),
+    textPhp.scopeName,
+    'should support the scope that GH uses for an extension w/o dot (1)'
+  )
+  const assemblyThenPhp = await createStarryNight([sourceAssembly, textPhp])
+  assert.equal(
+    sourceAssembly.scopeName,
+    'source.assembly',
+    'should support the scope that GH uses for an extension w/ dot (2)'
+  )
+  assert.equal(
+    assemblyThenPhp.flagToScope('inc'),
+    textPhp.scopeName,
+    'should support the scope that GH uses for an extension w/o dot (2)'
+  )
 })
 
 test('.createStarryNight with options', () => {

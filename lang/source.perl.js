@@ -5,18 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: [
-    '.pl',
-    '.al',
-    '.cgi',
-    '.fcgi',
-    '.perl',
-    '.ph',
-    '.plx',
-    '.pm',
-    '.psgi',
-    '.t'
-  ],
+  extensions: ['.pl', '.cgi', '.perl', '.ph', '.plx', '.pm', '.psgi', '.t'],
   names: ['perl', 'cperl'],
   patterns: [
     {include: '#line_comment'},

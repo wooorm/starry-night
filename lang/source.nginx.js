@@ -5,7 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.nginx', '.nginxconf', '.vhost'],
+  extensions: ['.nginx', '.nginxconf'],
   names: ['nginx', 'nginx-configuration-file'],
   patterns: [
     {match: '\\#.*', name: 'comment.line.number-sign'},

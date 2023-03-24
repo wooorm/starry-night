@@ -3,7 +3,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.pov', '.inc'],
+  extensions: ['.pov'],
   names: ['pov-ray-sdl', 'pov-ray', 'povray'],
   patterns: [
     {
