@@ -302,16 +302,37 @@ Yields:
 Get the grammar scope (such as `source.gfm`) associated with a grammar name
 (such as `markdown` or `pandoc`) or grammar extension (such as `.mdwn` or
 `.rmd`).
-Note that grammars can use the same extensions, in which case GitHub chooses the
-first.
-Notably, `.md` is registered by a Lisp-like language instead of markdown.
-🤷‍♂️
+
+This function is designed to accept the first word (when splitting on
+spaces and tabs) that is used after the opening of a fenced code block:
+
+````markdown
+```js
+console.log(1)
+```
+````
+
+To match GitHub, this also accepts entire paths:
+
+````markdown
+```path/to/example.js
+console.log(1)
+```
+````
+
+> **Note**: languages can use the same extensions.
+> For example, `.h` is reused by many languages.
+> Importantly, you don’t always get the most popular language associated
+> with an extension.
+> For example, `.md` is registeded by a Lisp-like language instead of
+> markdown.
+> 🤷‍♂️
 
 ###### Parameters
 
 *   `flag` (`string`)
-    — grammar name (such as `'markdown'` or `'pandoc'`) or grammar extension
-    (such as `'.mdwn'` or `'.rmd'`)
+    — grammar name (such as `'markdown'` or `'pandoc'`), grammar extension
+    (such as `'.mdwn'` or `'.rmd'`), or entire file path ending in extension
 
 ###### Returns
 

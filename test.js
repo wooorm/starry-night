@@ -58,6 +58,42 @@ test('.flagToScope(flag)', async () => {
     textPhp.scopeName,
     'should support the scope that GH uses for an extension w/o dot (2)'
   )
+
+  assert.equal(
+    phpThenAssembly.flagToScope('path/to/example.inc.bak'),
+    undefined,
+    'should not support file paths with a known extension followed by an unknown one'
+  )
+  assert.equal(
+    phpThenAssembly.flagToScope('path/to/example.bak.inc'),
+    sourceAssembly.scopeName,
+    'should support file paths with an unknown extension followed by a known one'
+  )
+  assert.equal(
+    phpThenAssembly.flagToScope('path/to/example.inc#asd'),
+    undefined,
+    'should not support file paths with a known extension followed by a hash'
+  )
+  assert.equal(
+    phpThenAssembly.flagToScope('path/to/example.inc?asd=1'),
+    undefined,
+    'should not support file paths with a known extension followed by a search'
+  )
+  assert.equal(
+    phpThenAssembly.flagToScope('path/to/example.inc'),
+    sourceAssembly.scopeName,
+    'should support file paths with a known extension'
+  )
+  assert.equal(
+    phpThenAssembly.flagToScope('path/to/exampleinc'),
+    undefined,
+    'should not support file paths with a known extension, without the needed dot'
+  )
+  assert.equal(
+    phpThenAssembly.flagToScope('path/to/inc'),
+    undefined,
+    'should not support file paths with a known extension, without the needed dot, as a filename'
+  )
 })
 
 test('.createStarryNight with options', () => {
