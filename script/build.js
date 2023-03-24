@@ -483,8 +483,8 @@ function normalizeLinguistName(d) {
   // `snipmate` or `SNIPMATE` also highlights.
   //
   // Spaces in names are turned into dashes.
-  // For example `DNS zone` can be used as `dns-zone`, not as `dns` or
-  // `dns_zone`.
+  // For example `DNS zone` can be used as `dns-zone`, not as `dns`, `dns_zone`,
+  // or `dnszone`.
   const normal = d.toLowerCase().replace(/ /g, '-')
   assert(/^[-a-z\d.#+'*()/]+$/.test(normal), normal)
   return normal

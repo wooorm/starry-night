@@ -94,6 +94,62 @@ test('.flagToScope(flag)', async () => {
     undefined,
     'should not support file paths with a known extension, without the needed dot, as a filename'
   )
+
+  const {default: asn} = await import('./lang/source.asn.js')
+  const starryAsn = await createStarryNight([asn])
+  assert.equal(
+    starryAsn.flagToScope('asn.1'),
+    'source.asn',
+    'should support language names with dots (`.`)'
+  )
+
+  const {default: cs} = await import('./lang/source.cs.js')
+  const starryCs = await createStarryNight([cs])
+  assert.equal(
+    starryCs.flagToScope('c#'),
+    'source.cs',
+    'should support language names with number signs (`#`)'
+  )
+
+  const {default: cpp} = await import('./lang/source.c++.js')
+  const starryCpp = await createStarryNight([cpp])
+  assert.equal(
+    starryCpp.flagToScope('c++'),
+    'source.c++',
+    'should support language names with plusses (`+`)'
+  )
+
+  const {default: fStar} = await import('./lang/source.fstar.js')
+  const starryFStar = await createStarryNight([fStar])
+  assert.equal(
+    starryFStar.flagToScope('f*'),
+    'source.fstar',
+    'should support language names with asterisks (`*`)'
+  )
+
+  const {default: capnp} = await import('./lang/source.capnp.js')
+  const starryCapnp = await createStarryNight([capnp])
+  assert.equal(
+    starryCapnp.flagToScope("cap'n-proto"),
+    'source.capnp',
+    "should support language names with apostrophes (`'`)"
+  )
+
+  const {default: dot} = await import('./lang/source.dot.js')
+  const starryDot = await createStarryNight([dot])
+  assert.equal(
+    starryDot.flagToScope('graphviz-(dot)'),
+    'source.dot',
+    'should support language names with parens (`(`, `)`)'
+  )
+
+  const {default: json} = await import('./lang/source.json.js')
+  const starryJson = await createStarryNight([json])
+  assert.equal(
+    starryJson.flagToScope('max/msp'),
+    'source.json',
+    'should support language names with slashes (`/`)'
+  )
 })
 
 test('.createStarryNight with options', () => {
