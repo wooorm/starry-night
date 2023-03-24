@@ -1,13 +1,13 @@
 /**
  * @typedef License
- * @property {string|undefined} sources
+ * @property {string | undefined} sources
  * @property {string} text
  *
  * @typedef Dep
  * @property {string} name
  * @property {string} version
  * @property {'git_submodule'} type
- * @property {string|undefined} homepage
+ * @property {string | undefined} homepage
  * @property {string} license
  * @property {Array<License>} licenses
  * @property {Array<string>} notices

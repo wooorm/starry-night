@@ -18,6 +18,22 @@ import prettier from 'prettier'
 import jsonStableStringify from 'json-stable-stringify'
 import {common} from './common.js'
 
+/**
+ * List of scopes renamed in `github/linguist`.
+ *
+ * Occasionally, delete all files in `lang/`, see what’s removed,
+ * see if there’s a new scope, and add them here.
+ *
+ * This prevents having to introduce breaking changes in `starry-night`
+ *
+ * @type {Record<string, string>}
+ */
+const aliases = {
+  // Old names to new names.
+  'source.brightscript': 'source.brs',
+  'source.vtt': 'text.vtt'
+}
+
 const own = {}.hasOwnProperty
 const gemsBase = new URL('../gems/gems/', import.meta.url)
 const languagesBase = new URL('../lang/', import.meta.url)
@@ -58,11 +74,6 @@ const prettierConfig = await prettier.resolveConfig(
 
 const gemBase = new URL(linguistBasename + '/', gemsBase)
 const languagesUrl = new URL('lib/linguist/languages.json', gemBase)
-
-const ignore = new Set(
-  // This one actually turns into two classes on GH, which must be a bug.
-  ['source.pov-ray sdl']
-)
 
 /** @type {Record<string, {aliases?: Array<string>, extensions?: Array<string>, tm_scope: string}>} */
 // @ts-expect-error: TS is wrong, `JSON.parse` accepts buffers.
@@ -138,7 +149,11 @@ for (name in languages) {
     const rawInfo = languages[name]
     const scope = rawInfo.tm_scope
 
-    assert(ignore.has(scope) || /^[-a-z\d+_.]+$/.test(scope), scope)
+    assert(
+      // This one actually turns into two classes on GH, which must be a bug.
+      scope === 'source.pov-ray sdl' || /^[-a-z\d+_.]+$/.test(scope),
+      scope
+    )
 
     if (scope === 'none') {
       continue
@@ -195,7 +210,13 @@ const grammarBasenames = await fs.readdir(grammarsBase)
 const scopes = grammarBasenames
   .flatMap((d) => {
     const ext = path.extname(d)
-    return ext === '.json' ? path.basename(d, ext) : []
+
+    if (ext === '.json') {
+      return path.basename(d, ext)
+    }
+
+    assert(d === 'version', d)
+    return []
   })
   .filter((d) => linguistInfo.has(d))
 
@@ -287,9 +308,11 @@ await Promise.all(
 
 console.log('generated %s grammars', scopes.length)
 
+const indices = ['common', 'all']
+
 // Write index files.
 await Promise.all(
-  ['common', 'all'].map(async (d) => {
+  indices.map(async (d) => {
     const list = (d === 'common' ? common : [...linguistInfo.keys()]).sort()
 
     await fs.writeFile(
@@ -316,7 +339,28 @@ await Promise.all(
   })
 )
 
-console.log('generated indices')
+console.log('generated %s indices', indices.length)
+
+// Write grammars.
+await Promise.all(
+  Object.keys(aliases).map(async (from) => {
+    const to = aliases[from]
+
+    await fs.writeFile(
+      new URL('../lang/' + from + '.js', import.meta.url),
+      prettier.format(
+        [
+          '// This is an alias, please use `' + to + '.js` instead.',
+          'export {default} from "./' + to + '.js"',
+          ''
+        ].join('\n'),
+        {...prettierConfig, parser: 'babel'}
+      )
+    )
+  })
+)
+
+console.log('generated %s aliases', Object.keys(aliases).length)
 
 /**
  * @param {Grammar} d
@@ -463,14 +507,14 @@ function clean(value, schema, path) {
  * @returns {string}
  */
 function scopeToId(value) {
-  return (
-    value
-      // For `c++`
-      .replace(/\+/g, 'p')
-      .replace(/[. -_]([a-z\d])/g, (_, /** @type {string} */ $1) =>
-        $1.toUpperCase()
-      )
-  )
+  const id = value
+    // For `c++`
+    .replace(/\+/g, 'p')
+    .replace(/[. -_]([a-z\d])/g, (_, /** @type {string} */ $1) =>
+      $1.toUpperCase()
+    )
+  assert(/^[A-Za-z\d.]+$/.test(id), value)
+  return id
 }
 
 /**
