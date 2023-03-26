@@ -542,18 +542,19 @@ Opening that page in a browser, we’d see the `<code>` being swapped with:
 
 ### Example: turning hast into react nodes
 
-hast trees as returned by `starry-night` can be turned into React (or Preact,
-Vue, \&c) with [`hast-to-hyperscript`][hast-to-hyperscript]:
+hast trees as returned by `starry-night` can be turned into preact, react,
+solid, svelte, vue, etc., with
+[`hast-util-to-jsx-runtime`][hast-util-to-jsx-runtime]:
 
 ```js
+import {Fragment, jsx, jsxs} from 'react/jsx-runtime'
 import {createStarryNight, common} from '@wooorm/starry-night'
-import {toH} from 'hast-to-hyperscript'
-import React from 'react'
+import {toJsxRuntime} from 'hast-util-to-jsx-runtime'
 
 const starryNight = await createStarryNight(common)
 
 const tree = starryNight.highlight('"use strict";', 'source.js')
-const reactNode = toH(React.createElement, tree)
+const reactNode = toJsxRuntime(tree, {Fragment, jsx, jsxs})
 
 console.log(reactNode)
 ```
@@ -563,10 +564,10 @@ Yields:
 ```js
 {
   '$$typeof': Symbol(react.element),
-  type: 'div',
-  key: 'h-1',
+  type: Symbol(react.fragment),
+  key: null,
   ref: null,
-  props: {children: [[Object], ';']},
+  props: { children: [ [Object], ';' ] },
   _owner: null,
   _store: {}
 }
@@ -1631,7 +1632,7 @@ All other files [MIT][license] © [Titus Wormer][author]
 
 [hast-util-to-dom]: https://github.com/syntax-tree/hast-util-to-dom
 
-[hast-to-hyperscript]: https://github.com/syntax-tree/hast-to-hyperscript
+[hast-util-to-jsx-runtime]: https://github.com/syntax-tree/hast-util-to-jsx-runtime
 
 [lowlight]: https://github.com/wooorm/lowlight
 
