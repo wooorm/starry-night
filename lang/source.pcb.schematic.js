@@ -5,6 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
+  dependencies: ['source.pcb.sexp', 'source.scheme'],
   extensions: ['.kicad_sch'],
   names: ['kicad-schematic', 'eeschema-schematic'],
   patterns: [

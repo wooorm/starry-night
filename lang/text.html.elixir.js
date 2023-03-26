@@ -5,6 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
+  dependencies: ['text.elixir', 'text.html.basic'],
   extensions: ['.eex', '.html.heex', '.html.leex'],
   injections: {
     'R:text.html.elixir meta.tag meta.attribute string.quoted': {

@@ -5,6 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
+  dependencies: ['text.xml'],
   extensions: ['.svg'],
   injections: {
     'R:meta.attribute.d.xml.svg string': {patterns: [{include: '#commands'}]}

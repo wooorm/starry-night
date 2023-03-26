@@ -1,10 +1,12 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import {toHtml} from 'hast-util-to-html'
-import sourceGfm from './lang/source.gfm.js'
-import sourceCss from './lang/source.css.js'
 import sourceAssembly from './lang/source.assembly.js'
+import sourceCss from './lang/source.css.js'
+import sourceGfm from './lang/source.gfm.js'
 import textPhp from './lang/text.html.php.js'
+import textXml from './lang/text.xml.js'
+import textXmlSvg from './lang/text.xml.svg.js'
 import {createStarryNight, common} from './index.js'
 
 test('.flagToScope(flag)', async () => {
@@ -174,6 +176,21 @@ test('.scopes()', async () => {
     'should return an array of strings'
   )
   assert.ok(list.includes('source.js'), 'should include `js`')
+})
+
+test('.missingScopes()', async () => {
+  const svg = await createStarryNight([textXmlSvg])
+  const svgAndXml = await createStarryNight([textXmlSvg, textXml])
+  assert.deepEqual(
+    svg.missingScopes(),
+    ['text.xml'],
+    'should list missing scopes'
+  )
+  assert.deepEqual(
+    svgAndXml.missingScopes(),
+    [],
+    'should list no missing scopes'
+  )
 })
 
 test('.register(grammars)', async () => {

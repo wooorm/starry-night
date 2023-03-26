@@ -5,6 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
+  dependencies: ['source.js', 'source.ts', 'source.tsx'],
   extensions: ['.astro'],
   injections: {
     'L:(meta.script.astro) (meta.lang.js | meta.lang.javascript | meta.lang.partytown | meta.lang.node) - (meta source)':

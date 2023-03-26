@@ -3,6 +3,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
+  dependencies: ['source.c', 'source.c.platform', 'source.objc.platform'],
   extensions: [],
   names: ['objective-c', 'obj-c', 'objc', 'objectivec'],
   patterns: [

@@ -3,6 +3,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
+  dependencies: ['text.html.basic'],
   extensions: ['.latte', '.mustache', '.tpl'],
   injections: {
     'text.html.smarty - (meta.embedded | meta.tag | comment.block | meta.block.literal), L:text.html.smarty meta.tag':

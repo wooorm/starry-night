@@ -11,6 +11,11 @@
  * @property {string} license
  * @property {Array<License>} licenses
  * @property {Array<string>} notices
+ *
+ * @typedef Info
+ * @property {string | undefined} homepage
+ * @property {string | undefined} license
+ * @property {Array<string> | undefined} dependencies
  */
 
 import assert from 'node:assert'
@@ -18,6 +23,13 @@ import fs from 'node:fs/promises'
 import process from 'node:process'
 import {parse as parseYaml} from 'yaml'
 import {all} from '../index.js'
+
+const own = {}.hasOwnProperty
+
+/** @type {Record<string, Record<string, boolean>>} */
+const graph = parseYaml(
+  String(await fs.readFile(new URL('graph.yml', import.meta.url)))
+)
 
 const ghKey = process.env.GITHUB_TOKEN || process.env.GH_TOKEN
 
@@ -65,6 +77,7 @@ async function list() {
 
     for (const scopeName of packagedScopes) {
       if (!scopes.has(scopeName)) {
+        // Not used by any of the main grammars, or its dependencies.
         continue
       }
 
@@ -116,7 +129,7 @@ The following files/folders contain third party software:`
   /** @type {Array<Promise<void>>} */
   const commentPromises = []
 
-  /** @type {Record<string, {homepage: string|undefined, license: string|undefined}>} */
+  /** @type {Record<string, Info>} */
   const scopeToInfo = {}
 
   while (++index < vendors.length) {
@@ -150,7 +163,21 @@ The following files/folders contain third party software:`
     while (++scopeIndex < scopes.length) {
       const scope = scopes[scopeIndex]
 
-      scopeToInfo[scope] = {license, homepage}
+      const dependencies = own.call(graph, scope) ? graph[scope] : {}
+      /** @type {Array<string>} */
+      const required = []
+
+      for (const dep of Object.keys(dependencies)) {
+        if (dependencies[dep]) {
+          required.push(dep)
+        }
+      }
+
+      scopeToInfo[scope] = {
+        license,
+        homepage,
+        dependencies: required.length === 0 ? undefined : required
+      }
 
       commentPromises.push(
         (async () => {
@@ -176,7 +203,7 @@ ${info.licenses
   await fs.writeFile('notice', thirdPartyStuff.join('\n\n'))
   await fs.writeFile(
     new URL('info.js', import.meta.url),
-    '/** @type {Record<string, {homepage?: string, license?: string}>} */\nexport const info = ' +
+    '/** @type {Record<string, {homepage?: string, license?: string, dependencies?: Array<string>}>} */\nexport const info = ' +
       JSON.stringify(scopeToInfo, null, 2) +
       '\n'
   )

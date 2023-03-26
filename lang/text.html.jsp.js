@@ -5,6 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
+  dependencies: ['text.html.basic'],
   extensions: ['.gsp', '.jsp', '.tag'],
   injections: {
     'text.html.jsp - (meta.embedded.block.jsp | meta.embedded.line.jsp | meta.tag | comment), meta.tag string.quoted':

@@ -3,6 +3,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
+  dependencies: ['source.cfscript', 'text.cfml.basic'],
   extensions: ['.cfm', '.cfml'],
   names: ['coldfusion', 'cfm', 'cfml', 'coldfusion-html'],
   patterns: [

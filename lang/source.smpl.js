@@ -5,6 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
+  dependencies: ['etc'],
   extensions: ['.cocci'],
   names: ['smpl', 'coccinelle'],
   patterns: [{include: '#main'}],

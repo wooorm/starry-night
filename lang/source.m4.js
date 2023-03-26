@@ -5,6 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
+  dependencies: ['etc'],
   extensions: ['.m4', '.m4', '.mc'],
   names: ['autoconf', 'm4', 'm4sugar'],
   patterns: [{include: '#main'}],

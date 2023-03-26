@@ -5,6 +5,20 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
+  dependencies: [
+    'source.mermaid.c4c-diagram',
+    'source.mermaid.class-diagram',
+    'source.mermaid.er-diagram',
+    'source.mermaid.flowchart',
+    'source.mermaid.gantt',
+    'source.mermaid.gitgraph',
+    'source.mermaid.mindmap',
+    'source.mermaid.pie-chart',
+    'source.mermaid.requirement-diagram',
+    'source.mermaid.sequence-diagram',
+    'source.mermaid.state-diagram',
+    'source.mermaid.user-journey'
+  ],
   extensions: ['.mmd', '.mermaid'],
   names: ['mermaid', 'mermaid-example'],
   patterns: [{include: '#main'}],

@@ -5,6 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
+  dependencies: ['etc'],
   extensions: [],
   names: ['record-jar'],
   patterns: [{include: '#main'}],

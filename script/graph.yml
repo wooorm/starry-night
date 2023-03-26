@@ -1,0 +1,879 @@
+# Record of scope names towards dependencies.
+etc:
+  # Record of scope names towards whether it’s required or not.
+  #
+  # Some examples that are optional:
+  # * `source.js` used in a markdown fenced code block
+  # * `source.yaml` used in markdown frontmatter
+  # * `source.css` used in an HTML `<script>` element.
+  source.regexp.posix: true
+file.lasso:
+  source.css: false
+  source.js: false
+objdump.x86asm:
+  source.c: true
+  source.c++: true
+  source.x86asm: false
+source.actionscript.3:
+  text.html.asdoc: true
+  text.xml: true
+source.apl:
+  source.css: false
+  source.js: false
+  source.json: false
+  text.html.basic: false
+  text.xml: false
+source.aspectj:
+  text.html.javadoc: false
+source.astro:
+  source.css: false
+  source.css.less: false
+  source.css.scss: false
+  source.js: true
+  source.json: false
+  source.sass: false
+  source.stylus: false
+  source.ts: true
+  source.tsx: true
+source.awk:
+  source.regexp: false
+source.bdf:
+  source.xlfd: true
+source.bsl:
+  source.sdbl: true
+source.c:
+  source.c.platform: true
+source.c++:
+  source.c: true
+source.c.ec:
+  source.c: true
+source.c.nwscript:
+  source.c: true
+source.camlp4.ocaml:
+  source.ocaml: true
+source.cfscript:
+  source.sql: true
+  text.html.javadoc: false
+source.clean:
+  source.gfm: false
+source.cobol:
+  source.java: false
+  source.sql: false
+  text.html.basic: false
+source.coffee:
+  source.js: true
+  source.js.regexp: false
+source.context:
+  source.shell: true
+source.crystal:
+  source.c: false
+  source.c++: false
+  source.css: false
+  source.js: false
+  source.lua: false
+  source.shell: false
+  source.sql: false
+  text.html.basic: true
+source.csound:
+  source.csound-score: false
+  source.lua: false
+  source.python: false
+source.csound-document:
+  source.csound: true
+  source.csound-score: false
+  text.html.basic: false
+  text.xml: true
+source.csound-score:
+  source.csound: true
+source.css.less:
+  source.css: true
+source.css.scss:
+  source.css: true
+  source.sassdoc: false
+source.cuda-c++:
+  source.c++: true
+source.curlrc:
+  etc: true
+source.cython:
+  source.regexp.python: true
+  source.sql: false
+source.d:
+  text.html.javadoc: true
+source.dircolors:
+  source.opts: false
+source.ditroff:
+  source.ditroff.desc: true
+  source.postscript: false
+  text.html.basic: false
+  text.roff: true
+source.dotenv:
+  source.shell: false
+source.ebnf:
+  source.lex.regexp: true
+source.elixir:
+  text.elixir: true
+  text.html.basic: false
+source.elm:
+  source.glsl: false
+source.elvish-transcript:
+  source.elvish: true
+source.fontdir:
+  source.xlfd: true
+source.fortran.modern:
+  source.fortran: true
+source.fsharp:
+  source.gfm: false
+source.futhark:
+  etc: true
+source.gdresource:
+  source.gdscript: false
+  source.gdshader: false
+source.generic-db:
+  etc: true
+source.gfm:
+  source.c: false
+  source.c++: false
+  source.clojure: false
+  source.coffee: false
+  source.cs: false
+  source.css: false
+  source.css.less: false
+  source.diff: false
+  source.dockerfile: false
+  source.elixir: false
+  source.elm: false
+  source.erlang: false
+  source.gitconfig: false
+  source.go: false
+  source.graphql: false
+  source.haskell: false
+  source.java: false
+  source.js: false
+  source.json: false
+  source.julia: false
+  source.kotlin: false
+  source.makefile: false
+  source.objc: false
+  source.perl: false
+  source.python: false
+  source.r: false
+  source.raku: false
+  source.ruby: false
+  source.rust: false
+  source.scala: false
+  source.shell: false
+  source.sql: false
+  source.swift: false
+  source.toml: false
+  source.ts: false
+  source.yaml: false
+  text.html.asciidoc: false
+  text.html.basic: false
+  text.html.markdown.source.gfm.apib: false
+  text.html.markdown.source.gfm.mson: false
+  text.html.php: false
+  text.python.console: false
+  text.shell-session: false
+  text.xml: false
+source.gitattributes:
+  etc: true
+  source.gitignore: true
+source.gitconfig:
+  source.shell: true
+source.gitignore:
+  etc: true
+source.graphql:
+  source.js: false
+  source.ts: false
+  source.tsx: false
+source.gremlin:
+  text.roff: true
+source.groovy:
+  text.html.javadoc: false
+source.groovy.gradle:
+  source.groovy: true
+source.hack:
+  source.sql: false
+  text.html.basic: true
+source.haskell:
+  annotation.liquidhaskell.haskell: false
+source.httpspec:
+  source.json: true
+source.hxml:
+  source.hx: true
+source.ideal:
+  source.pic: true
+  text.roff: true
+source.ini.npmrc:
+  etc: true
+source.inno:
+  source.pascal: true
+source.inputrc:
+  etc: true
+source.java:
+  text.html.javadoc: false
+source.jflex:
+  source.java: true
+source.jison:
+  source.jisonlex: true
+  source.js: false
+source.jisonlex:
+  source.jison: true
+  source.js: true
+source.js:
+  source.graphql: false
+  source.js.regexp: false
+  source.jsdoc: false
+  source.sql: false
+  text.html.basic: false
+source.js.objj:
+  source.js: true
+source.jsdoc:
+  source.js: false
+source.jsoniq:
+  source.xq: false
+source.julia:
+  source.c++: false
+  source.js: false
+  source.python: false
+  source.r: false
+  source.sql: false
+source.kakscript:
+  source.shell: false
+source.kickstart:
+  source.perl: false
+  source.python: false
+  source.shell: false
+source.lark:
+  source.regexp.python: false
+source.lean:
+  source.lean.markdown: false
+source.lean.markdown:
+  source.batchfile: false
+  source.c: false
+  source.c++: false
+  source.clojure: false
+  source.coffee: false
+  source.cs: false
+  source.css: false
+  source.css.less: false
+  source.css.scss: false
+  source.dart: false
+  source.diff: false
+  source.dockerfile: false
+  source.fsharp: false
+  source.gfm: false
+  source.go: false
+  source.groovy: false
+  source.ini: false
+  source.java: false
+  source.js: false
+  source.js.regexp: false
+  source.json: false
+  source.lua: false
+  source.makefile: false
+  source.objc: false
+  source.perl: false
+  source.perl.6: false
+  source.powershell: false
+  source.python: false
+  source.r: false
+  source.regexp.python: false
+  source.ruby: false
+  source.rust: false
+  source.scala: false
+  source.shell: false
+  source.sql: false
+  source.swift: false
+  source.ts: false
+  source.tsx: false
+  source.yaml: false
+  text.html.basic: false
+  text.html.handlebars: false
+  text.html.php: false
+  text.jade: false
+  text.xml: false
+  text.xml.xsl: false
+source.lex:
+  source.c++: true
+  source.jflex: true
+  source.lex.regexp: false
+source.lilypond:
+  source.lisp: true
+source.litcoffee:
+  source.coffee: true
+  text.html.basic: true
+source.logos:
+  source.c++: true
+  source.objc: true
+source.lua:
+  source.c: false
+source.m4:
+  etc: true
+source.makefile:
+  source.shell: true
+source.mask:
+  source.css: false
+  source.gfm: false
+  source.js: true
+  text.html.basic: true
+source.mathematica:
+  source.sql: false
+source.matlab:
+  source.shell: false
+source.mermaid:
+  source.css: false
+  source.js: false
+  source.mermaid.c4c-diagram: true
+  source.mermaid.class-diagram: true
+  source.mermaid.er-diagram: true
+  source.mermaid.flowchart: true
+  source.mermaid.gantt: true
+  source.mermaid.gitgraph: true
+  source.mermaid.mindmap: true
+  source.mermaid.pie-chart: true
+  source.mermaid.requirement-diagram: true
+  source.mermaid.sequence-diagram: true
+  source.mermaid.state-diagram: true
+  source.mermaid.user-journey: true
+  text.html.basic: false
+source.mermaid.c4c-diagram:
+  source.mermaid: true
+  source.mermaid.user-journey: true
+  source.wsd: true
+source.mermaid.class-diagram:
+  source.mermaid: true
+  source.mermaid.flowchart: true
+source.mermaid.er-diagram:
+  source.mermaid: true
+source.mermaid.flowchart:
+  source.mermaid: true
+source.mermaid.gantt:
+  source.mermaid: true
+  source.mermaid.flowchart: true
+source.mermaid.gitgraph:
+  source.json: true
+  source.mermaid: true
+source.mermaid.mindmap:
+  source.mermaid: true
+  source.mermaid.flowchart: true
+source.mermaid.pie-chart:
+  source.mermaid: true
+source.mermaid.requirement-diagram:
+  source.mermaid: true
+source.mermaid.sequence-diagram:
+  source.json: true
+  source.mermaid: true
+source.mermaid.state-diagram:
+  source.mermaid: true
+source.mermaid.user-journey:
+  source.mermaid: true
+source.mint:
+  source.css: true
+  source.css.scss: true
+  source.js: true
+source.nanorc:
+  injections.etc: true
+  source.regexp: false
+source.ne:
+  source.js: false
+source.nesc:
+  source.c: true
+source.netlinx.erb:
+  source.netlinx: true
+  source.ruby: false
+source.nextflow:
+  source.nextflow-groovy: true
+source.ninja:
+  source.shell: false
+source.objc:
+  source.c: true
+  source.c.platform: true
+  source.objc.platform: true
+source.objc++:
+  source.c++: true
+  source.objc: true
+source.objectscript:
+  source.js: false
+  source.objectscript_macros: true
+  source.sql: false
+source.objectscript_macros:
+  source.objectscript: true
+source.ocaml:
+  source.camlp4.ocaml: true
+source.odin-ehr:
+  etc: true
+source.opts:
+  etc: true
+  source.regexp: false
+source.pcb.board:
+  source.pcb.sexp: true
+  text.xml: false
+source.pcb.schematic:
+  source.pcb.sexp: true
+  source.scheme: true
+  text.xml: false
+source.pegjs:
+  source.js: true
+  source.js.regexp: false
+source.perl:
+  source.css: false
+  source.js: false
+  source.postscript: false
+  source.sql: false
+  text.html.basic: false
+  text.xml: false
+source.pic:
+  source.shell: true
+  text.html.basic: true
+  text.roff: true
+  text.tex: false
+source.postscript:
+  text.xml: false
+source.procfile:
+  source.shell: true
+source.prolog.eclipse:
+  source.prolog: true
+source.python.kivy:
+  source.python: true
+source.qml:
+  source.js: true
+source.quoting.raku:
+  source.raku: true
+source.raku:
+  source.quoting.raku: true
+  source.regexp.raku: false
+  source.shell: false
+source.reason:
+  source.js: false
+source.record-jar:
+  etc: true
+source.regexp:
+  source.regexp.extended: true
+  source.regexp.posix: true
+  source.sy: true
+source.regexp.extended:
+  source.regexp: true
+source.regexp.posix:
+  source.regexp: true
+source.regexp.raku:
+  source.raku: true
+source.renpy:
+  source.regexp.python: true
+source.rpgle:
+  source.sql: true
+source.rpm-spec:
+  source.changelogs.rpm-spec: true
+  source.shell: true
+source.ruby:
+  source.c: false
+  source.c++: false
+  source.css: false
+  source.graphql: false
+  source.js: false
+  source.lua: false
+  source.shell: false
+  source.sql: false
+  text.html.basic: false
+  text.xml: false
+source.sas:
+  source.sql: false
+source.sass:
+  source.css: true
+  source.sassdoc: false
+source.sassdoc:
+  source.css.scss: false
+  source.js: false
+source.scaml:
+  source.js: false
+  source.sass: false
+  source.scala: true
+source.sfv:
+  text.checksums: false
+source.shaderlab:
+  source.hlsl: false
+source.shell:
+  source.applescript: false
+  source.gfm: false
+  source.python: false
+  source.ruby: false
+  text.html.basic: false
+source.shellcheckrc:
+  etc: true
+source.smpl:
+  etc: true
+  source.ocaml: false
+  source.python: false
+source.sparql:
+  source.turtle: true
+source.spin:
+  source.regexp.spin: false
+source.ssh-config:
+  source.shell: false
+source.stata:
+  source.mata: false
+source.stl:
+  etc: true
+source.string-template:
+  etc: true
+source.svelte:
+  source.coffee: false
+  source.css: true
+  source.css.less: false
+  source.css.scss: false
+  source.js: true
+  source.postcss: false
+  source.sass: false
+  source.stylus: false
+  source.ts: true
+source.sy:
+  source.regexp: true
+source.tea:
+  source.js: true
+  text.html.basic: true
+  text.xml: true
+source.vala:
+  text.html.javadoc: false
+source.vim-snippet:
+  source.python: false
+  source.regexp: false
+  source.viml: false
+source.viml:
+  text.vim-help: false
+source.wgetrc:
+  etc: true
+source.win32-messages:
+  source.c: false
+source.xc:
+  source.c: true
+source.xq:
+  source.jsoniq: false
+source.xtend:
+  text.html.javadoc: false
+source.yacc:
+  source.c++: true
+  source.java: true
+source.yaml.salt:
+  source.python: true
+source.yasnippet:
+  source.emacs.lisp: true
+text.cfml.basic:
+  source.cfscript: false
+  source.sql: false
+  text.html.cfm: false
+text.checksums:
+  etc: true
+text.codeowners:
+  etc: true
+text.elixir:
+  source.elixir: true
+text.eml.basic:
+  text.html.basic: false
+text.haml:
+  source.coffee: false
+  source.css: false
+  source.css.scss: false
+  source.gfm: false
+  source.js: false
+  source.ruby: true
+  source.sass: false
+  text.html.php: false
+text.html.asciidoc:
+  text.html.basic: true
+text.html.asdoc:
+  text.html.basic: true
+text.html.asp:
+  source.asp: true
+  text.html.basic: true
+text.html.basic:
+  source.coffee: false
+  source.css: false
+  source.graphql: false
+  source.js: false
+  source.python: false
+text.html.cfm:
+  source.cfscript: true
+  source.css: false
+  source.js: false
+  source.python: false
+  source.ruby: false
+  text.cfml.basic: true
+  text.html.php: false
+text.html.creole:
+  text.html.basic: true
+text.html.cshtml:
+  source.cs: true
+  text.html.basic: true
+text.html.django:
+  text.html.basic: true
+text.html.ecmarkup:
+  etc: true
+  source.yaml: true
+  text.grammarkdown: true
+  text.html.basic: true
+text.html.ecr:
+  source.crystal: true
+  text.html.basic: true
+text.html.elixir:
+  text.elixir: true
+  text.html.basic: true
+text.html.erb:
+  source.ruby: true
+  text.html.basic: true
+text.html.ftl:
+  text.html.basic: true
+text.html.handlebars:
+  source.css: false
+  source.js: false
+  source.yaml: false
+  text.html.basic: true
+text.html.javadoc:
+  text.html.basic: false
+text.html.js:
+  source.js: false
+  text.html.basic: true
+text.html.jsp:
+  source.java: false
+  text.html.basic: true
+text.html.liquid:
+  source.css: false
+  source.js: false
+  source.json: false
+  text.html.basic: true
+text.html.mako:
+  source.python: false
+  text.html.basic: true
+text.html.markdown.source.gfm.apib:
+  source.c: false
+  source.c++: false
+  source.coffee: false
+  source.cs: false
+  source.css: false
+  source.css.less: false
+  source.diff: false
+  source.elixir: false
+  source.erlang: false
+  source.go: false
+  source.java: false
+  source.js: true
+  source.json: false
+  source.julia: false
+  source.objc: false
+  source.python: false
+  source.r: false
+  source.ruby: false
+  source.shell: false
+  source.yaml: false
+  text.html.basic: false
+  text.html.markdown.source.gfm.mson: true
+  text.html.php: false
+  text.xml: false
+text.html.markdown.source.gfm.mson:
+  source.c: false
+  source.c++: false
+  source.coffee: false
+  source.cs: false
+  source.css: false
+  source.css.less: false
+  source.diff: false
+  source.elixir: false
+  source.erlang: false
+  source.go: false
+  source.java: false
+  source.js: false
+  source.json: false
+  source.julia: false
+  source.objc: false
+  source.python: false
+  source.r: false
+  source.ruby: false
+  source.shell: false
+  source.yaml: false
+  text.html.basic: false
+  text.html.php: false
+  text.xml: false
+text.html.mediawiki:
+  text.html.basic: false
+  text.tex: false
+text.html.nunjucks:
+  source.nunjucks: true
+  text.html.basic: true
+text.html.php:
+  source.css: false
+  source.js: false
+  source.json: false
+  source.sql: false
+  text.html.basic: true
+  text.xml: false
+text.html.php.blade:
+  source.css: false
+  source.js: false
+  source.json: false
+  source.sql: false
+  text.html.basic: true
+  text.xml: false
+text.html.riot:
+  source.coffee: false
+  source.css: false
+  source.css.less: false
+  source.css.scss: false
+  source.js: false
+  source.livescript: false
+  source.postcss: false
+  source.sass: false
+  source.stylus: false
+  source.ts: false
+text.html.slash:
+  text.html.basic: true
+text.html.smarty:
+  text.html.basic: true
+text.html.soy:
+  text.html.basic: true
+text.html.statamic:
+  source.yaml: false
+  text.html.basic: true
+  text.html.php: false
+text.html.twig:
+  source.css: false
+  source.js: false
+  source.python: false
+  source.ruby: false
+  text.html.php: false
+text.html.vue:
+  source.coffee: false
+  source.css: false
+  source.css.less: false
+  source.css.scss: false
+  source.js: false
+  source.livescript: false
+  source.postcss: false
+  source.sass: false
+  source.stylus: false
+  source.ts: false
+  text.jade: false
+  text.slim: false
+text.jade:
+  source.coffee: false
+  source.css: false
+  source.css.less: false
+  source.js: true
+  source.sass: false
+  source.stylus: false
+  text.html.basic: true
+text.marko:
+  source.css: false
+  source.css.less: false
+  source.css.scss: false
+  source.ts: true
+text.muse:
+  text.html.basic: false
+  text.tex.latex: false
+  text.texinfo: false
+  text.xml: false
+text.python.console:
+  source.python: true
+text.python.traceback:
+  source.python: true
+text.restructuredtext:
+  hidden.manref: false
+  source.applescript: false
+  source.batchfile: false
+  source.c: false
+  source.c++: false
+  source.coffee: false
+  source.cs: false
+  source.css: false
+  source.ditroff: false
+  source.erlang: false
+  source.ini: false
+  source.java: false
+  source.js: false
+  source.json: false
+  source.objc: false
+  source.pic: false
+  source.postscript: false
+  source.powershell: false
+  source.python: false
+  source.regexp: false
+  source.regexp.python: false
+  source.ruby: false
+  source.shell: false
+  source.stata: false
+  source.swift: false
+  source.ts: false
+  source.yaml: false
+  text.html.basic: false
+  text.html.php: false
+  text.roff: false
+  text.tex: false
+  text.tex.latex: false
+  text.texinfo: false
+  text.xml: false
+text.roff:
+  source.context: false
+  source.css: false
+  source.ditroff: true
+  source.gremlin: true
+  source.ideal: true
+  source.js: false
+  source.lilypond: false
+  source.perl: false
+  source.pic: true
+  source.shell: false
+  text.html.basic: false
+text.sfd:
+  source.fontforge: true
+text.shell-session:
+  source.shell: true
+text.slim:
+  source.coffee: false
+  source.css: false
+  source.css.less: false
+  source.css.scss: false
+  source.gfm: false
+  source.js: false
+  source.ruby: false
+  source.sass: false
+  source.yaml: false
+  text.html.basic: true
+  text.html.erb: false
+text.srt:
+  text.html.basic: true
+text.tex:
+  source.r: true
+text.tex.latex:
+  source.java: false
+  source.python: false
+  text.tex: true
+text.tex.latex.haskell:
+  annotation.liquidhaskell.haskell: false
+  source.haskell: true
+  text.tex.latex: true
+text.texinfo:
+  source.emacs.lisp: false
+  text.html.basic: false
+  text.tex.latex: false
+  text.xml: false
+text.vim-help:
+  source.viml: true
+text.vtt:
+  source.css: false
+  text.html.basic: true
+text.xml:
+  source.java: false
+text.xml.ant:
+  text.xml: true
+text.xml.genshi:
+  source.python: true
+  text.xml: true
+text.xml.plist:
+  text.xml: true
+text.xml.pom:
+  source.groovy: true
+  text.xml: true
+text.xml.svg:
+  source.css: false
+  source.js: false
+  text.xml: true
+text.xml.xsl:
+  text.xml: true

@@ -1,4 +1,4 @@
-/** @type {Record<string, {homepage?: string, license?: string}>} */
+/** @type {Record<string, {homepage?: string, license?: string, dependencies?: Array<string>}>} */
 export const info = {
   'source.al': {
     license: 'mit',
@@ -33,10 +33,15 @@ export const info = {
     homepage: 'https://github.com/Jake-NotTheMuss/CoDT7-Sublime'
   },
   'source.cfscript': {
+    license: 'mit',
+    dependencies: ['source.sql']
+  },
+  'text.cfml.basic': {
     license: 'mit'
   },
   'text.html.cfm': {
-    license: 'mit'
+    license: 'mit',
+    dependencies: ['source.cfscript', 'text.cfml.basic']
   },
   'text.dfy.dafny': {
     license: 'mit',
@@ -51,10 +56,12 @@ export const info = {
     homepage: 'https://github.com/elm-community/Elm.tmLanguage'
   },
   'text.html.ftl': {
-    license: 'mit'
+    license: 'mit',
+    dependencies: ['text.html.basic']
   },
   'text.html.handlebars': {
-    license: 'mit'
+    license: 'mit',
+    dependencies: ['text.html.basic']
   },
   'source.webidl': {
     license: 'mit',
@@ -99,13 +106,19 @@ export const info = {
     license: 'mit',
     homepage: 'https://github.com/MagicStack/MagicPython'
   },
-  'text.python.console': {
+  'source.regexp.python': {
     license: 'mit',
     homepage: 'https://github.com/MagicStack/MagicPython'
   },
+  'text.python.console': {
+    license: 'mit',
+    homepage: 'https://github.com/MagicStack/MagicPython',
+    dependencies: ['source.python']
+  },
   'text.python.traceback': {
     license: 'mit',
-    homepage: 'https://github.com/MagicStack/MagicPython'
+    homepage: 'https://github.com/MagicStack/MagicPython',
+    dependencies: ['source.python']
   },
   'source.modelica': {
     license: 'mit',
@@ -147,7 +160,12 @@ export const info = {
     homepage: 'https://github.com/Nixinova/NovaGrammars'
   },
   'source.objectscript': {
-    license: 'mit'
+    license: 'mit',
+    dependencies: ['source.objectscript_macros']
+  },
+  'source.objectscript_macros': {
+    license: 'mit',
+    dependencies: ['source.objectscript']
   },
   'text.html.twig': {
     license: 'bsd-3-clause',
@@ -167,14 +185,16 @@ export const info = {
   },
   'source.scaml': {
     license: 'apache-2.0',
-    homepage: 'https://github.com/scalate/Scalate.tmbundle'
+    homepage: 'https://github.com/scalate/Scalate.tmbundle',
+    dependencies: ['source.scala']
   },
   'source.scenic': {
     license: 'mit',
     homepage: 'https://github.com/UCSCFormalMethods/Scenic-tmLanguage'
   },
   'text.html.slash': {
-    license: 'mit'
+    license: 'mit',
+    dependencies: ['text.html.basic']
   },
   'source.stata': {
     license: 'mit',
@@ -188,7 +208,8 @@ export const info = {
   },
   'source.httpspec': {
     license: 'mit',
-    homepage: 'https://github.com/samsalisbury/Sublime-HTTP'
+    homepage: 'https://github.com/samsalisbury/Sublime-HTTP',
+    dependencies: ['source.json']
   },
   'file.lasso': {
     license: 'public domain'
@@ -207,7 +228,8 @@ export const info = {
     license: 'wtfpl'
   },
   'source.qml': {
-    license: 'mit'
+    license: 'mit',
+    dependencies: ['source.js']
   },
   'source.rebol': {
     license: 'mit',
@@ -331,7 +353,13 @@ export const info = {
   },
   'source.actionscript.3': {
     license: 'mit',
-    homepage: 'https://github.com/simongregory/actionscript3-tmbundle'
+    homepage: 'https://github.com/simongregory/actionscript3-tmbundle',
+    dependencies: ['text.html.asdoc', 'text.xml']
+  },
+  'text.html.asdoc': {
+    license: 'mit',
+    homepage: 'https://github.com/simongregory/actionscript3-tmbundle',
+    dependencies: ['text.html.basic']
   },
   'source.ada': {},
   'source.agda': {
@@ -350,26 +378,38 @@ export const info = {
     homepage: 'https://github.com/flimberger/android-system-tools'
   },
   'text.xml.ant': {
-    license: 'mit'
+    license: 'mit',
+    dependencies: ['text.xml']
   },
   'source.antlr': {},
   'source.apache-config': {},
   'text.html.markdown.source.gfm.apib': {
+    license: 'mit',
+    homepage: 'https://github.com/apiaryio/api-blueprint-sublime-plugin',
+    dependencies: ['source.js', 'text.html.markdown.source.gfm.mson']
+  },
+  'text.html.markdown.source.gfm.mson': {
     license: 'mit',
     homepage: 'https://github.com/apiaryio/api-blueprint-sublime-plugin'
   },
   'source.applescript': {},
   'text.html.asciidoc': {
     license: 'mit',
-    homepage: 'https://github.com/zuckschwerdt/asciidoc.tmbundle'
+    homepage: 'https://github.com/zuckschwerdt/asciidoc.tmbundle',
+    dependencies: ['text.html.basic']
   },
-  'text.html.asp': {},
+  'source.asp': {},
+  'text.html.asp': {
+    dependencies: ['source.asp', 'text.html.basic']
+  },
   'objdump.x86asm': {
-    license: 'mit'
+    license: 'mit',
+    dependencies: ['source.c', 'source.c++']
   },
   'source.astro': {
     license: 'mit',
-    homepage: 'https://github.com/withastro/language-tools'
+    homepage: 'https://github.com/withastro/language-tools',
+    dependencies: ['source.js', 'source.ts', 'source.tsx']
   },
   'source.editorconfig': {
     license: 'mit',
@@ -383,6 +423,11 @@ export const info = {
     homepage: 'https://github.com/FStarLang/atom-fstar'
   },
   'source.bsl': {
+    license: 'mit',
+    homepage: 'https://github.com/xDrivenDevelopment/atom-language-1c-bsl',
+    dependencies: ['source.sdbl']
+  },
+  'source.sdbl': {
     license: 'mit',
     homepage: 'https://github.com/xDrivenDevelopment/atom-language-1c-bsl'
   },
@@ -398,20 +443,30 @@ export const info = {
   },
   'source.inno': {
     license: 'mit',
-    homepage: 'https://github.com/idleberg/atom-language-innosetup'
+    homepage: 'https://github.com/idleberg/atom-language-innosetup',
+    dependencies: ['source.pascal']
   },
   'source.julia': {
     license: 'mit',
     homepage: 'https://github.com/JuliaEditorSupport/atom-language-julia'
   },
   'source.nextflow': {
+    license: 'mit',
+    dependencies: ['source.nextflow-groovy']
+  },
+  'source.nextflow-groovy': {
     license: 'mit'
   },
   'source.p4': {
     license: 'mit'
   },
+  'source.quoting.raku': {
+    homepage: 'https://github.com/perl6/atom-language-perl6',
+    dependencies: ['source.raku']
+  },
   'source.raku': {
-    homepage: 'https://github.com/perl6/atom-language-perl6'
+    homepage: 'https://github.com/perl6/atom-language-perl6',
+    dependencies: ['source.quoting.raku']
   },
   'source.purescript': {
     license: 'mit',
@@ -427,7 +482,8 @@ export const info = {
   },
   'source.yaml.salt': {
     license: 'mit',
-    homepage: 'https://github.com/saltstack/atom-salt'
+    homepage: 'https://github.com/saltstack/atom-salt',
+    dependencies: ['source.python']
   },
   'source.dm': {
     license: 'mit'
@@ -467,9 +523,14 @@ export const info = {
     homepage: 'https://github.com/browserslist/browserslist-vscode'
   },
   'source.c': {
-    homepage: 'https://github.com/textmate/c.tmbundle'
+    homepage: 'https://github.com/textmate/c.tmbundle',
+    dependencies: ['source.c.platform']
   },
   'source.c++': {
+    homepage: 'https://github.com/textmate/c.tmbundle',
+    dependencies: ['source.c']
+  },
+  'source.c.platform': {
     homepage: 'https://github.com/textmate/c.tmbundle'
   },
   'source.capnp': {},
@@ -505,7 +566,8 @@ export const info = {
   'source.qmake': {},
   'text.html.creole': {
     license: 'mit',
-    homepage: 'https://github.com/Siddley/Creole'
+    homepage: 'https://github.com/Siddley/Creole',
+    dependencies: ['text.html.basic']
   },
   'source.cs': {
     license: 'mit',
@@ -515,9 +577,12 @@ export const info = {
     license: 'mit',
     homepage: 'https://github.com/cucumber/cucumber-tmbundle'
   },
-  'source.cython': {},
+  'source.cython': {
+    dependencies: ['source.regexp.python']
+  },
   'source.d': {
-    homepage: 'https://github.com/textmate/d.tmbundle'
+    homepage: 'https://github.com/textmate/d.tmbundle',
+    dependencies: ['text.html.javadoc']
   },
   'source.dart': {
     license: 'bsd-3-clause',
@@ -540,7 +605,8 @@ export const info = {
   },
   'source.c.ec': {
     license: 'unlicense',
-    homepage: 'https://github.com/ecere/ec.tmbundle'
+    homepage: 'https://github.com/ecere/ec.tmbundle',
+    dependencies: ['source.c']
   },
   'source.ecl': {
     license: 'apache-2.0',
@@ -548,15 +614,23 @@ export const info = {
   },
   'source.eiffel': {},
   'text.html.js': {
-    license: 'mit'
+    license: 'mit',
+    dependencies: ['text.html.basic']
   },
   'source.elixir': {
     license: 'apache-2.0',
-    homepage: 'https://github.com/elixir-lang/elixir-tmbundle'
+    homepage: 'https://github.com/elixir-lang/elixir-tmbundle',
+    dependencies: ['text.elixir']
+  },
+  'text.elixir': {
+    license: 'apache-2.0',
+    homepage: 'https://github.com/elixir-lang/elixir-tmbundle',
+    dependencies: ['source.elixir']
   },
   'text.html.elixir': {
     license: 'apache-2.0',
-    homepage: 'https://github.com/elixir-lang/elixir-tmbundle'
+    homepage: 'https://github.com/elixir-lang/elixir-tmbundle',
+    dependencies: ['text.elixir', 'text.html.basic']
   },
   'source.elvish': {
     license: 'bsd-2-clause',
@@ -564,7 +638,8 @@ export const info = {
   },
   'source.elvish-transcript': {
     license: 'bsd-2-clause',
-    homepage: 'https://github.com/elves/elvish'
+    homepage: 'https://github.com/elves/elvish',
+    dependencies: ['source.elvish']
   },
   'source.erlang': {
     homepage: 'https://github.com/textmate/erlang.tmbundle'
@@ -581,7 +656,9 @@ export const info = {
   },
   'source.forth': {},
   'source.fortran': {},
-  'source.fortran.modern': {},
+  'source.fortran.modern': {
+    dependencies: ['source.fortran']
+  },
   'source.gap': {
     homepage: 'https://github.com/dhowden/gap-tmbundle'
   },
@@ -621,7 +698,8 @@ export const info = {
     license: 'mit'
   },
   'source.groovy.gradle': {
-    license: 'apache-2.0'
+    license: 'apache-2.0',
+    dependencies: ['source.groovy']
   },
   'source.graphql': {
     license: 'mit',
@@ -635,7 +713,8 @@ export const info = {
   },
   'source.hxml': {
     license: 'mit',
-    homepage: 'https://github.com/vshaxe/haxe-TmLanguage'
+    homepage: 'https://github.com/vshaxe/haxe-TmLanguage',
+    dependencies: ['source.hx']
   },
   'source.hc': {
     license: 'unlicense'
@@ -670,7 +749,8 @@ export const info = {
     homepage: 'https://github.com/ionide/ionide-fsgrammar'
   },
   'text.jade': {
-    license: 'mit'
+    license: 'mit',
+    dependencies: ['source.js', 'text.html.basic']
   },
   'source.jasmin': {
     license: 'mit'
@@ -682,15 +762,21 @@ export const info = {
     homepage: 'https://github.com/textmate/java.tmbundle'
   },
   'text.html.jsp': {
-    homepage: 'https://github.com/textmate/java.tmbundle'
+    homepage: 'https://github.com/textmate/java.tmbundle',
+    dependencies: ['text.html.basic']
   },
-  'source.js.objj': {},
+  'text.html.javadoc': {},
+  'source.js.objj': {
+    dependencies: ['source.js']
+  },
   'source.jflex': {
-    license: 'bsd-2-clause'
+    license: 'bsd-2-clause',
+    dependencies: ['source.java']
   },
   'source.python.kivy': {
     license: 'mit',
-    homepage: 'https://github.com/p0lygun/kivy-language-grammer'
+    homepage: 'https://github.com/p0lygun/kivy-language-grammer',
+    dependencies: ['source.python']
   },
   'source.kusto': {
     license: 'apache-2.0',
@@ -723,7 +809,8 @@ export const info = {
     homepage: 'https://github.com/mmims/language-batchfile'
   },
   'text.html.php.blade': {
-    license: 'mit'
+    license: 'mit',
+    dependencies: ['text.html.basic']
   },
   'source.click': {
     license: 'mit'
@@ -733,21 +820,26 @@ export const info = {
     homepage: 'https://github.com/atom/language-clojure'
   },
   'text.html.soy': {
-    license: 'mit'
+    license: 'mit',
+    dependencies: ['text.html.basic']
   },
   'source.coffee': {
     license: 'mit',
-    homepage: 'https://github.com/atom/language-coffee-script'
+    homepage: 'https://github.com/atom/language-coffee-script',
+    dependencies: ['source.js']
   },
   'source.litcoffee': {
     license: 'mit',
-    homepage: 'https://github.com/atom/language-coffee-script'
+    homepage: 'https://github.com/atom/language-coffee-script',
+    dependencies: ['source.coffee', 'text.html.basic']
   },
   'source.crystal': {
-    license: 'mit'
+    license: 'mit',
+    dependencies: ['text.html.basic']
   },
   'text.html.ecr': {
-    license: 'mit'
+    license: 'mit',
+    dependencies: ['source.crystal', 'text.html.basic']
   },
   'source.csound': {
     license: 'mit',
@@ -755,11 +847,13 @@ export const info = {
   },
   'source.csound-document': {
     license: 'mit',
-    homepage: 'https://github.com/nwhetsell/language-csound'
+    homepage: 'https://github.com/nwhetsell/language-csound',
+    dependencies: ['source.csound', 'text.xml']
   },
   'source.csound-score': {
     license: 'mit',
-    homepage: 'https://github.com/nwhetsell/language-csound'
+    homepage: 'https://github.com/nwhetsell/language-csound',
+    dependencies: ['source.csound']
   },
   'source.css': {
     license: 'mit',
@@ -781,7 +875,8 @@ export const info = {
   },
   'source.yasnippet': {
     license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-emacs-lisp'
+    homepage: 'https://github.com/Alhadis/language-emacs-lisp',
+    dependencies: ['source.emacs.lisp']
   },
   'text.muse': {
     license: 'isc',
@@ -791,17 +886,28 @@ export const info = {
     license: 'mit',
     homepage: 'https://github.com/mariozaizar/language-eml'
   },
+  etc: {
+    license: 'isc',
+    homepage: 'https://github.com/Alhadis/language-etc',
+    dependencies: ['source.regexp.posix']
+  },
+  'injections.etc': {
+    license: 'isc',
+    homepage: 'https://github.com/Alhadis/language-etc'
+  },
   'source.2da': {
     license: 'isc',
     homepage: 'https://github.com/Alhadis/language-etc'
   },
   'source.c.nwscript': {
     license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-etc'
+    homepage: 'https://github.com/Alhadis/language-etc',
+    dependencies: ['source.c']
   },
   'source.curlrc': {
     license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-etc'
+    homepage: 'https://github.com/Alhadis/language-etc',
+    dependencies: ['etc']
   },
   'source.dotenv': {
     license: 'isc',
@@ -809,39 +915,48 @@ export const info = {
   },
   'source.futhark': {
     license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-etc'
+    homepage: 'https://github.com/Alhadis/language-etc',
+    dependencies: ['etc']
   },
   'source.generic-db': {
     license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-etc'
+    homepage: 'https://github.com/Alhadis/language-etc',
+    dependencies: ['etc']
   },
   'source.gitattributes': {
     license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-etc'
+    homepage: 'https://github.com/Alhadis/language-etc',
+    dependencies: ['etc', 'source.gitignore']
   },
   'source.gitconfig': {
     license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-etc'
+    homepage: 'https://github.com/Alhadis/language-etc',
+    dependencies: ['source.shell']
   },
   'source.gitignore': {
     license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-etc'
+    homepage: 'https://github.com/Alhadis/language-etc',
+    dependencies: ['etc']
   },
   'source.ini.npmrc': {
     license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-etc'
+    homepage: 'https://github.com/Alhadis/language-etc',
+    dependencies: ['etc']
   },
   'source.inputrc': {
     license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-etc'
+    homepage: 'https://github.com/Alhadis/language-etc',
+    dependencies: ['etc']
   },
   'source.m4': {
     license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-etc'
+    homepage: 'https://github.com/Alhadis/language-etc',
+    dependencies: ['etc']
   },
   'source.nanorc': {
     license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-etc'
+    homepage: 'https://github.com/Alhadis/language-etc',
+    dependencies: ['injections.etc']
   },
   'source.neon': {
     license: 'isc',
@@ -849,15 +964,18 @@ export const info = {
   },
   'source.odin-ehr': {
     license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-etc'
+    homepage: 'https://github.com/Alhadis/language-etc',
+    dependencies: ['etc']
   },
   'source.opts': {
     license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-etc'
+    homepage: 'https://github.com/Alhadis/language-etc',
+    dependencies: ['etc']
   },
   'source.record-jar': {
     license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-etc'
+    homepage: 'https://github.com/Alhadis/language-etc',
+    dependencies: ['etc']
   },
   'source.sfv': {
     license: 'isc',
@@ -865,7 +983,8 @@ export const info = {
   },
   'source.shellcheckrc': {
     license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-etc'
+    homepage: 'https://github.com/Alhadis/language-etc',
+    dependencies: ['etc']
   },
   'source.sieve': {
     license: 'isc',
@@ -873,7 +992,8 @@ export const info = {
   },
   'source.smpl': {
     license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-etc'
+    homepage: 'https://github.com/Alhadis/language-etc',
+    dependencies: ['etc']
   },
   'source.ssh-config': {
     license: 'isc',
@@ -885,31 +1005,38 @@ export const info = {
   },
   'source.stl': {
     license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-etc'
+    homepage: 'https://github.com/Alhadis/language-etc',
+    dependencies: ['etc']
   },
   'source.string-template': {
     license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-etc'
+    homepage: 'https://github.com/Alhadis/language-etc',
+    dependencies: ['etc']
   },
   'source.wgetrc': {
     license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-etc'
+    homepage: 'https://github.com/Alhadis/language-etc',
+    dependencies: ['etc']
   },
   'text.checksums': {
     license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-etc'
+    homepage: 'https://github.com/Alhadis/language-etc',
+    dependencies: ['etc']
   },
   'text.codeowners': {
     license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-etc'
+    homepage: 'https://github.com/Alhadis/language-etc',
+    dependencies: ['etc']
   },
   'text.html.ecmarkup': {
     license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-etc'
+    homepage: 'https://github.com/Alhadis/language-etc',
+    dependencies: ['etc', 'source.yaml', 'text.grammarkdown', 'text.html.basic']
   },
   'text.xml.svg': {
     license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-etc'
+    homepage: 'https://github.com/Alhadis/language-etc',
+    dependencies: ['text.xml']
   },
   'source.faust': {
     license: 'mit'
@@ -920,7 +1047,8 @@ export const info = {
   },
   'source.bdf': {
     license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-fontforge'
+    homepage: 'https://github.com/Alhadis/language-fontforge',
+    dependencies: ['source.xlfd']
   },
   'source.figfont': {
     license: 'isc',
@@ -928,15 +1056,25 @@ export const info = {
   },
   'source.fontdir': {
     license: 'isc',
+    homepage: 'https://github.com/Alhadis/language-fontforge',
+    dependencies: ['source.xlfd']
+  },
+  'source.fontforge': {
+    license: 'isc',
     homepage: 'https://github.com/Alhadis/language-fontforge'
   },
   'source.opentype': {
     license: 'isc',
     homepage: 'https://github.com/Alhadis/language-fontforge'
   },
-  'text.sfd': {
+  'source.xlfd': {
     license: 'isc',
     homepage: 'https://github.com/Alhadis/language-fontforge'
+  },
+  'text.sfd': {
+    license: 'isc',
+    homepage: 'https://github.com/Alhadis/language-fontforge',
+    dependencies: ['source.fontforge']
   },
   'source.gf': {
     license: 'mit',
@@ -956,7 +1094,8 @@ export const info = {
   },
   'source.ebnf': {
     license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-grammars'
+    homepage: 'https://github.com/Alhadis/language-grammars',
+    dependencies: ['source.lex.regexp']
   },
   'source.lark': {
     license: 'isc',
@@ -964,18 +1103,30 @@ export const info = {
   },
   'source.lex': {
     license: 'isc',
+    homepage: 'https://github.com/Alhadis/language-grammars',
+    dependencies: ['source.c++', 'source.jflex']
+  },
+  'source.lex.regexp': {
+    license: 'isc',
     homepage: 'https://github.com/Alhadis/language-grammars'
   },
   'source.pegjs': {
     license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-grammars'
+    homepage: 'https://github.com/Alhadis/language-grammars',
+    dependencies: ['source.js']
   },
   'source.yacc': {
+    license: 'isc',
+    homepage: 'https://github.com/Alhadis/language-grammars',
+    dependencies: ['source.c++', 'source.java']
+  },
+  'text.grammarkdown': {
     license: 'isc',
     homepage: 'https://github.com/Alhadis/language-grammars'
   },
   'text.haml': {
-    license: 'mit'
+    license: 'mit',
+    dependencies: ['source.ruby']
   },
   'source.cabal': {
     license: 'mit',
@@ -987,7 +1138,8 @@ export const info = {
   },
   'text.tex.latex.haskell': {
     license: 'mit',
-    homepage: 'https://github.com/atom-haskell/language-haskell'
+    homepage: 'https://github.com/atom-haskell/language-haskell',
+    dependencies: ['source.haskell', 'text.tex.latex']
   },
   'source.hocon': {
     license: 'mit',
@@ -1013,10 +1165,12 @@ export const info = {
     homepage: 'https://github.com/atom/language-javascript'
   },
   'source.jison': {
-    license: 'mit'
+    license: 'mit',
+    dependencies: ['source.jisonlex']
   },
   'source.jisonlex': {
-    license: 'mit'
+    license: 'mit',
+    dependencies: ['source.jison', 'source.js']
   },
   'source.jolie': {
     license: 'mit'
@@ -1055,7 +1209,8 @@ export const info = {
   },
   'source.css.less': {
     license: 'mit',
-    homepage: 'https://github.com/atom/language-less'
+    homepage: 'https://github.com/atom/language-less',
+    dependencies: ['source.css']
   },
   'source.m68k': {
     license: 'mit'
@@ -1073,7 +1228,80 @@ export const info = {
   },
   'source.mermaid': {
     license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-mermaid'
+    homepage: 'https://github.com/Alhadis/language-mermaid',
+    dependencies: [
+      'source.mermaid.c4c-diagram',
+      'source.mermaid.class-diagram',
+      'source.mermaid.er-diagram',
+      'source.mermaid.flowchart',
+      'source.mermaid.gantt',
+      'source.mermaid.gitgraph',
+      'source.mermaid.mindmap',
+      'source.mermaid.pie-chart',
+      'source.mermaid.requirement-diagram',
+      'source.mermaid.sequence-diagram',
+      'source.mermaid.state-diagram',
+      'source.mermaid.user-journey'
+    ]
+  },
+  'source.mermaid.c4c-diagram': {
+    license: 'isc',
+    homepage: 'https://github.com/Alhadis/language-mermaid',
+    dependencies: [
+      'source.mermaid',
+      'source.mermaid.user-journey',
+      'source.wsd'
+    ]
+  },
+  'source.mermaid.class-diagram': {
+    license: 'isc',
+    homepage: 'https://github.com/Alhadis/language-mermaid',
+    dependencies: ['source.mermaid', 'source.mermaid.flowchart']
+  },
+  'source.mermaid.er-diagram': {
+    license: 'isc',
+    homepage: 'https://github.com/Alhadis/language-mermaid',
+    dependencies: ['source.mermaid']
+  },
+  'source.mermaid.flowchart': {
+    license: 'isc',
+    homepage: 'https://github.com/Alhadis/language-mermaid',
+    dependencies: ['source.mermaid']
+  },
+  'source.mermaid.gantt': {
+    license: 'isc',
+    homepage: 'https://github.com/Alhadis/language-mermaid',
+    dependencies: ['source.mermaid', 'source.mermaid.flowchart']
+  },
+  'source.mermaid.gitgraph': {
+    license: 'isc',
+    homepage: 'https://github.com/Alhadis/language-mermaid',
+    dependencies: ['source.json', 'source.mermaid']
+  },
+  'source.mermaid.pie-chart': {
+    license: 'isc',
+    homepage: 'https://github.com/Alhadis/language-mermaid',
+    dependencies: ['source.mermaid']
+  },
+  'source.mermaid.requirement-diagram': {
+    license: 'isc',
+    homepage: 'https://github.com/Alhadis/language-mermaid',
+    dependencies: ['source.mermaid']
+  },
+  'source.mermaid.sequence-diagram': {
+    license: 'isc',
+    homepage: 'https://github.com/Alhadis/language-mermaid',
+    dependencies: ['source.json', 'source.mermaid']
+  },
+  'source.mermaid.state-diagram': {
+    license: 'isc',
+    homepage: 'https://github.com/Alhadis/language-mermaid',
+    dependencies: ['source.mermaid']
+  },
+  'source.mermaid.user-journey': {
+    license: 'isc',
+    homepage: 'https://github.com/Alhadis/language-mermaid',
+    dependencies: ['source.mermaid']
   },
   'source.meson': {
     license: 'apache-2.0',
@@ -1089,8 +1317,12 @@ export const info = {
   'source.ninja': {
     license: 'mit'
   },
-  'text.html.nunjucks': {
+  'source.nunjucks': {
     license: 'mit'
+  },
+  'text.html.nunjucks': {
+    license: 'mit',
+    dependencies: ['source.nunjucks', 'text.html.basic']
   },
   'source.pan': {
     license: 'mit'
@@ -1105,11 +1337,13 @@ export const info = {
   },
   'source.pcb.board': {
     license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-pcb'
+    homepage: 'https://github.com/Alhadis/language-pcb',
+    dependencies: ['source.pcb.sexp']
   },
   'source.pcb.schematic': {
     license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-pcb'
+    homepage: 'https://github.com/Alhadis/language-pcb',
+    dependencies: ['source.pcb.sexp', 'source.scheme']
   },
   'source.pcb.sexp': {
     license: 'isc',
@@ -1124,7 +1358,8 @@ export const info = {
   },
   'text.xml.plist': {
     license: 'mit',
-    homepage: 'https://github.com/atom/language-property-list'
+    homepage: 'https://github.com/atom/language-property-list',
+    dependencies: ['text.xml']
   },
   'source.arr': {
     license: 'mit',
@@ -1142,11 +1377,28 @@ export const info = {
   },
   'source.regexp': {
     license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-regexp'
+    homepage: 'https://github.com/Alhadis/language-regexp',
+    dependencies: ['source.regexp.extended', 'source.regexp.posix', 'source.sy']
+  },
+  'source.regexp.extended': {
+    license: 'isc',
+    homepage: 'https://github.com/Alhadis/language-regexp',
+    dependencies: ['source.regexp']
+  },
+  'source.regexp.posix': {
+    license: 'isc',
+    homepage: 'https://github.com/Alhadis/language-regexp',
+    dependencies: ['source.regexp']
+  },
+  'source.sy': {
+    license: 'isc',
+    homepage: 'https://github.com/Alhadis/language-regexp',
+    dependencies: ['source.regexp']
   },
   'source.renpy': {
     license: 'mit',
-    homepage: 'https://github.com/williamd1k0/language-renpy'
+    homepage: 'https://github.com/williamd1k0/language-renpy',
+    dependencies: ['source.regexp.python']
   },
   'text.restructuredtext': {
     license: 'mit',
@@ -1155,20 +1407,50 @@ export const info = {
   'source.ring': {
     license: 'mit'
   },
-  'source.pic': {
+  'source.ditroff': {
+    license: 'isc',
+    homepage: 'https://github.com/Alhadis/language-roff',
+    dependencies: ['source.ditroff.desc', 'text.roff']
+  },
+  'source.ditroff.desc': {
     license: 'isc',
     homepage: 'https://github.com/Alhadis/language-roff'
   },
+  'source.gremlin': {
+    license: 'isc',
+    homepage: 'https://github.com/Alhadis/language-roff',
+    dependencies: ['text.roff']
+  },
+  'source.ideal': {
+    license: 'isc',
+    homepage: 'https://github.com/Alhadis/language-roff',
+    dependencies: ['source.pic', 'text.roff']
+  },
+  'source.pic': {
+    license: 'isc',
+    homepage: 'https://github.com/Alhadis/language-roff',
+    dependencies: ['source.shell', 'text.html.basic', 'text.roff']
+  },
   'text.roff': {
     license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-roff'
+    homepage: 'https://github.com/Alhadis/language-roff',
+    dependencies: [
+      'source.ditroff',
+      'source.gremlin',
+      'source.ideal',
+      'source.pic'
+    ]
   },
   'text.runoff': {
     license: 'isc',
     homepage: 'https://github.com/Alhadis/language-roff'
   },
-  'source.rpm-spec': {
+  'source.changelogs.rpm-spec': {
     license: 'mit'
+  },
+  'source.rpm-spec': {
+    license: 'mit',
+    dependencies: ['source.changelogs.rpm-spec', 'source.shell']
   },
   'text.rtf': {
     license: 'mit',
@@ -1180,15 +1462,18 @@ export const info = {
   },
   'text.html.erb': {
     license: 'mit',
-    homepage: 'https://github.com/atom/language-ruby'
+    homepage: 'https://github.com/atom/language-ruby',
+    dependencies: ['source.ruby', 'text.html.basic']
   },
   'source.css.scss': {
     license: 'mit',
-    homepage: 'https://github.com/atom/language-sass'
+    homepage: 'https://github.com/atom/language-sass',
+    dependencies: ['source.css']
   },
   'source.sass': {
     license: 'mit',
-    homepage: 'https://github.com/atom/language-sass'
+    homepage: 'https://github.com/atom/language-sass',
+    dependencies: ['source.css']
   },
   'source.sed': {
     license: 'isc',
@@ -1200,15 +1485,18 @@ export const info = {
   },
   'text.shell-session': {
     license: 'mit',
-    homepage: 'https://github.com/atom/language-shellscript'
+    homepage: 'https://github.com/atom/language-shellscript',
+    dependencies: ['source.shell']
   },
   'text.srt': {
     license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-subtitles'
+    homepage: 'https://github.com/Alhadis/language-subtitles',
+    dependencies: ['text.html.basic']
   },
   'text.vtt': {
     license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-subtitles'
+    homepage: 'https://github.com/Alhadis/language-subtitles',
+    dependencies: ['text.html.basic']
   },
   'source.supercollider': {
     license: 'mit',
@@ -1243,7 +1531,8 @@ export const info = {
   },
   'text.vim-help': {
     license: 'mit',
-    homepage: 'https://github.com/Alhadis/language-viml'
+    homepage: 'https://github.com/Alhadis/language-viml',
+    dependencies: ['source.viml']
   },
   'source.wavefront.mtl': {
     license: 'isc',
@@ -1273,16 +1562,23 @@ export const info = {
   'text.bibtex': {
     homepage: 'https://github.com/textmate/latex.tmbundle'
   },
+  'text.tex': {
+    homepage: 'https://github.com/textmate/latex.tmbundle',
+    dependencies: ['source.r']
+  },
   'text.tex.latex': {
-    homepage: 'https://github.com/textmate/latex.tmbundle'
+    homepage: 'https://github.com/textmate/latex.tmbundle',
+    dependencies: ['text.tex']
   },
   'source.lilypond': {
     license: 'mit',
-    homepage: 'https://github.com/nwhetsell/linter-lilypond'
+    homepage: 'https://github.com/nwhetsell/linter-lilypond',
+    dependencies: ['source.lisp']
   },
   'text.html.liquid': {
     license: 'mit',
-    homepage: 'https://github.com/Shopify/liquid-tm-grammar'
+    homepage: 'https://github.com/Shopify/liquid-tm-grammar',
+    dependencies: ['text.html.basic']
   },
   'source.lisp': {},
   'source.llvm': {
@@ -1291,7 +1587,8 @@ export const info = {
   },
   'source.logos': {
     license: 'mit',
-    homepage: 'https://github.com/Cykey/Sublime-Logos'
+    homepage: 'https://github.com/Cykey/Sublime-Logos',
+    dependencies: ['source.c++', 'source.objc']
   },
   'source.logtalk': {},
   'source.lua': {},
@@ -1300,27 +1597,33 @@ export const info = {
     homepage: 'https://github.com/newgrammars/m3'
   },
   'source.makefile': {
-    homepage: 'https://github.com/textmate/make.tmbundle'
+    homepage: 'https://github.com/textmate/make.tmbundle',
+    dependencies: ['source.shell']
   },
   'text.html.mako': {
-    license: 'mit'
+    license: 'mit',
+    dependencies: ['text.html.basic']
   },
   'text.marko': {
     license: 'mit',
-    homepage: 'https://github.com/marko-js/marko-tmbundle'
+    homepage: 'https://github.com/marko-js/marko-tmbundle',
+    dependencies: ['source.ts']
   },
   'source.mathematica': {
     license: 'apache-2.0',
     homepage: 'https://github.com/shadanan/mathematica-tmbundle'
   },
-  'text.xml.pom': {},
+  'text.xml.pom': {
+    dependencies: ['source.groovy', 'text.xml']
+  },
   'text.html.mediawiki': {},
   'source.mercury': {
     license: 'mit'
   },
   'source.mint': {
     license: 'mit',
-    homepage: 'https://github.com/mint-lang/mint-vscode'
+    homepage: 'https://github.com/mint-lang/mint-vscode',
+    dependencies: ['source.css', 'source.css.scss', 'source.js']
   },
   'source.mlir': {
     license: 'apache-2.0',
@@ -1334,7 +1637,8 @@ export const info = {
   },
   'source.nemerle': {},
   'source.nesc': {
-    license: 'mit'
+    license: 'mit',
+    dependencies: ['source.c']
   },
   'source.nix': {
     license: 'mit',
@@ -1343,9 +1647,19 @@ export const info = {
   'source.nu': {
     license: 'apache-2.0'
   },
-  'source.objc': {},
-  'source.objc++': {},
-  'source.ocaml': {},
+  'source.objc': {
+    dependencies: ['source.c', 'source.c.platform', 'source.objc.platform']
+  },
+  'source.objc++': {
+    dependencies: ['source.c++', 'source.objc']
+  },
+  'source.objc.platform': {},
+  'source.camlp4.ocaml': {
+    dependencies: ['source.ocaml']
+  },
+  'source.ocaml': {
+    dependencies: ['source.camlp4.ocaml']
+  },
   'source.ooc': {
     license: 'bsd-2-clause'
   },
@@ -1368,8 +1682,12 @@ export const info = {
   'source.perl': {
     homepage: 'https://github.com/textmate/perl.tmbundle'
   },
-  'text.html.smarty': {},
-  'text.html.php': {},
+  'text.html.smarty': {
+    dependencies: ['text.html.basic']
+  },
+  'text.html.php': {
+    dependencies: ['text.html.basic']
+  },
   'source.pig_latin': {
     license: 'mit'
   },
@@ -1389,7 +1707,9 @@ export const info = {
     homepage: 'https://github.com/PowerShell/EditorSyntax'
   },
   'source.processing': {},
-  'text.html.django': {},
+  'text.html.django': {
+    dependencies: ['text.html.basic']
+  },
   'source.qsharp': {
     license: 'mit',
     homepage: 'https://github.com/microsoft/qsharp-compiler'
@@ -1404,7 +1724,8 @@ export const info = {
   },
   'text.html.cshtml': {
     license: 'mit',
-    homepage: 'https://github.com/github-linguist/razor-plus'
+    homepage: 'https://github.com/github-linguist/razor-plus',
+    dependencies: ['source.cs', 'text.html.basic']
   },
   'source.rescript': {
     license: 'mit',
@@ -1414,7 +1735,8 @@ export const info = {
     license: 'mit'
   },
   'text.slim': {
-    license: 'mit'
+    license: 'mit',
+    dependencies: ['text.html.basic']
   },
   'source.rust': {
     license: 'mit',
@@ -1514,7 +1836,8 @@ export const info = {
     homepage: 'https://github.com/TypeUnsafe/sublime-golo'
   },
   'source.mask': {
-    license: 'mit'
+    license: 'mit',
+    dependencies: ['source.js', 'text.html.basic']
   },
   'source.ne': {
     license: 'unlicense',
@@ -1524,7 +1847,8 @@ export const info = {
     license: 'mit'
   },
   'source.netlinx.erb': {
-    license: 'mit'
+    license: 'mit',
+    dependencies: ['source.netlinx']
   },
   'source.nginx': {
     license: 'mit',
@@ -1566,7 +1890,8 @@ export const info = {
     homepage: 'https://github.com/bitbased/sublime-spintools'
   },
   'source.tea': {
-    license: 'apache-2.0'
+    license: 'apache-2.0',
+    dependencies: ['source.js', 'text.html.basic', 'text.xml']
   },
   'source.terra': {
     license: 'bsd-3-clause'
@@ -1590,11 +1915,13 @@ export const info = {
     license: 'mpl-2.0'
   },
   'source.prolog.eclipse': {
-    license: 'mpl-2.0'
+    license: 'mpl-2.0',
+    dependencies: ['source.prolog']
   },
   'source.cuda-c++': {
     license: 'bsd-3-clause',
-    homepage: 'https://github.com/harrism/sublimetext-cuda-cpp'
+    homepage: 'https://github.com/harrism/sublimetext-cuda-cpp',
+    dependencies: ['source.c++']
   },
   'source.nasl': {
     license: 'mit',
@@ -1602,7 +1929,8 @@ export const info = {
   },
   'source.svelte': {
     license: 'mit',
-    homepage: 'https://github.com/umanghome/svelte-atom'
+    homepage: 'https://github.com/umanghome/svelte-atom',
+    dependencies: ['source.css', 'source.js', 'source.ts']
   },
   'source.sway': {
     license: 'apache-2.0',
@@ -1625,7 +1953,8 @@ export const info = {
   },
   'source.sparql': {
     license: 'mit',
-    homepage: 'https://github.com/peta/turtle.tmbundle'
+    homepage: 'https://github.com/peta/turtle.tmbundle',
+    dependencies: ['source.turtle']
   },
   'source.turtle': {
     license: 'mit',
@@ -1643,7 +1972,8 @@ export const info = {
   },
   'text.html.statamic': {
     license: 'mit',
-    homepage: 'https://github.com/Stillat/vscode-antlers-language-server'
+    homepage: 'https://github.com/Stillat/vscode-antlers-language-server',
+    dependencies: ['text.html.basic']
   },
   'source.brs': {
     license: 'mit',
@@ -1693,7 +2023,8 @@ export const info = {
   },
   'source.hack': {
     license: 'mit',
-    homepage: 'https://github.com/slackhq/vscode-hack'
+    homepage: 'https://github.com/slackhq/vscode-hack',
+    dependencies: ['text.html.basic']
   },
   'source.hy': {
     license: 'mit',
@@ -1701,7 +2032,8 @@ export const info = {
   },
   'source.rpgle': {
     license: 'mit',
-    homepage: 'https://github.com/barrettotte/vscode-ibmi-languages'
+    homepage: 'https://github.com/barrettotte/vscode-ibmi-languages',
+    dependencies: ['source.sql']
   },
   'source.janet': {
     license: 'mit',
@@ -1748,7 +2080,8 @@ export const info = {
   },
   'source.procfile': {
     license: 'bsd-3-clause',
-    homepage: 'https://github.com/benspaulding/vscode-procfile'
+    homepage: 'https://github.com/benspaulding/vscode-procfile',
+    dependencies: ['source.shell']
   },
   'source.proto': {
     license: 'mit',
@@ -1802,9 +2135,13 @@ export const info = {
   'source.wollok': {
     license: 'mit'
   },
-  'source.xc': {},
+  'source.xc': {
+    dependencies: ['source.c']
+  },
   'text.xml': {},
-  'text.xml.xsl': {},
+  'text.xml.xsl': {
+    dependencies: ['text.xml']
+  },
   'source.zeek': {
     license: 'bsd-3-clause',
     homepage: 'https://github.com/zeek/zeek-sublime'

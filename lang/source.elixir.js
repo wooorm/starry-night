@@ -5,6 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
+  dependencies: ['text.elixir'],
   extensions: ['.ex', '.exs'],
   names: ['elixir'],
   patterns: [

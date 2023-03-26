@@ -5,6 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
+  dependencies: ['text.html.basic'],
   extensions: ['.antlers.html', '.antlers.php', '.antlers.xml'],
   injections: {
     'text.html.statamic': {

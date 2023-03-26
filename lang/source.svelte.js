@@ -5,6 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
+  dependencies: ['source.css', 'source.js', 'source.ts'],
   extensions: ['.svelte'],
   names: ['svelte'],
   patterns: [

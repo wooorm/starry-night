@@ -1,5 +1,6 @@
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
+  dependencies: ['source.python', 'text.xml'],
   extensions: ['.kid'],
   names: ['genshi', 'xml+genshi', 'xml+kid'],
   patterns: [

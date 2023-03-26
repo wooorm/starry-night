@@ -5,6 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
+  dependencies: ['source.csound', 'text.xml'],
   extensions: ['.csd'],
   names: ['csound-document', 'csound-csd'],
   patterns: [

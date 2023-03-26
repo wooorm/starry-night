@@ -5,6 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
+  dependencies: ['source.regexp.extended', 'source.regexp.posix', 'source.sy'],
   extensions: ['.regexp', '.regex'],
   names: ['regular-expression', 'regexp', 'regex'],
   patterns: [

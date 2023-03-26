@@ -5,6 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
+  dependencies: ['source.shell', 'text.html.basic', 'text.roff'],
   extensions: ['.pic', '.chem'],
   names: ['pic'],
   patterns: [

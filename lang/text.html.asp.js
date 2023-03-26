@@ -3,6 +3,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
+  dependencies: ['source.asp', 'text.html.basic'],
   extensions: ['.asax', '.ascx', '.ashx', '.asmx', '.asp', '.aspx', '.axd'],
   names: ['asp', 'asp.net', 'aspx', 'aspx-vb', 'classic-asp'],
   patterns: [

@@ -421,7 +421,7 @@ For more information, please refer to <https://unlicense.org>
 
 
 =========================================================================================================
-Files in `starry-night`: lang/source.cfscript.js, lang/text.html.cfm.js
+Files in `starry-night`: lang/source.cfscript.js, lang/text.cfml.basic.js, lang/text.html.cfm.js
 From source: <>
 SPDX: mit
 ---------------------------------------------------------------------------------------------------------
@@ -848,7 +848,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 =========================================================================================================
-Files in `starry-night`: lang/source.python.js, lang/text.python.console.js, lang/text.python.traceback.js
+Files in `starry-night`: lang/source.python.js, lang/source.regexp.python.js, lang/text.python.console.js, lang/text.python.traceback.js
 From source: <https://github.com/MagicStack/MagicPython>
 SPDX: mit
 ---------------------------------------------------------------------------------------------------------
@@ -1168,7 +1168,7 @@ or in connection with the use or performance of this software.
 
 
 =========================================================================================================
-Files in `starry-night`: lang/source.objectscript.js
+Files in `starry-night`: lang/source.objectscript.js, lang/source.objectscript_macros.js
 From source: <>
 SPDX: mit
 ---------------------------------------------------------------------------------------------------------
@@ -4202,7 +4202,7 @@ License from source file: README.md
 MIT
 
 =========================================================================================================
-Files in `starry-night`: lang/source.actionscript.3.js
+Files in `starry-night`: lang/source.actionscript.3.js, lang/text.html.asdoc.js
 From source: <https://github.com/simongregory/actionscript3-tmbundle>
 SPDX: mit
 ---------------------------------------------------------------------------------------------------------
@@ -4680,7 +4680,7 @@ If not otherwise specified (see below), files in this repository fall under the 
 An exception is made for files in readable text which contain their own license information, or files where an accompanying file exists (in the same directory) with a “-license” suffix added to the base-name name of the original file, and an extension of txt, html, or similar. For example “tidy” is accompanied by “tidy-license.txt”.
 
 =========================================================================================================
-Files in `starry-night`: lang/text.html.markdown.source.gfm.apib.js
+Files in `starry-night`: lang/text.html.markdown.source.gfm.apib.js, lang/text.html.markdown.source.gfm.mson.js
 From source: <https://github.com/apiaryio/api-blueprint-sublime-plugin>
 SPDX: mit
 ---------------------------------------------------------------------------------------------------------
@@ -4761,7 +4761,7 @@ SOFTWARE.
 
 
 =========================================================================================================
-Files in `starry-night`: lang/text.html.asp.js
+Files in `starry-night`: lang/source.asp.js, lang/text.html.asp.js
 From source: <>
 SPDX: permissive
 ---------------------------------------------------------------------------------------------------------
@@ -5113,7 +5113,7 @@ Apache License
    limitations under the License.
 
 =========================================================================================================
-Files in `starry-night`: lang/source.bsl.js
+Files in `starry-night`: lang/source.bsl.js, lang/source.sdbl.js
 From source: <https://github.com/xDrivenDevelopment/atom-language-1c-bsl>
 SPDX: mit
 ---------------------------------------------------------------------------------------------------------
@@ -5285,7 +5285,7 @@ The atom-language-julia package is licensed under the MIT "Expat" License:
 
 
 =========================================================================================================
-Files in `starry-night`: lang/source.nextflow.js
+Files in `starry-night`: lang/source.nextflow.js, lang/source.nextflow-groovy.js
 From source: <>
 SPDX: mit
 ---------------------------------------------------------------------------------------------------------
@@ -5328,7 +5328,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 =========================================================================================================
-Files in `starry-night`: lang/source.raku.js
+Files in `starry-night`: lang/source.quoting.raku.js, lang/source.raku.js
 From source: <https://github.com/perl6/atom-language-perl6>
 SPDX: permissive
 ---------------------------------------------------------------------------------------------------------
@@ -6139,7 +6139,7 @@ SOFTWARE.
 
 
 =========================================================================================================
-Files in `starry-night`: lang/source.c.js, lang/source.c++.js
+Files in `starry-night`: lang/source.c.js, lang/source.c++.js, lang/source.c.platform.js
 From source: <https://github.com/textmate/c.tmbundle>
 SPDX: permissive
 ---------------------------------------------------------------------------------------------------------
@@ -8082,7 +8082,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 =========================================================================================================
-Files in `starry-night`: lang/source.elixir.js, lang/text.html.elixir.js
+Files in `starry-night`: lang/source.elixir.js, lang/text.elixir.js, lang/text.html.elixir.js
 From source: <https://github.com/elixir-lang/elixir-tmbundle>
 SPDX: apache-2.0
 ---------------------------------------------------------------------------------------------------------
@@ -9134,6 +9134,22 @@ From source: <https://github.com/textmate/java.tmbundle>
 SPDX: permissive
 ---------------------------------------------------------------------------------------------------------
 License from source file: README.mdown
+
+If not otherwise specified (see below), files in this repository fall under the following license:
+
+	Permission to copy, use, modify, sell and distribute this
+	software is granted. This software is provided "as is" without
+	express or implied warranty, and with no claim as to its
+	suitability for any purpose.
+
+An exception is made for files in readable text which contain their own license information, or files where an accompanying file exists (in the same directory) with a “-license” suffix added to the base-name name of the original file, and an extension of txt, html, or similar. For example “tidy” is accompanied by “tidy-license.txt”.
+
+=========================================================================================================
+Files in `starry-night`: lang/text.html.javadoc.js
+From source: <>
+SPDX: permissive
+---------------------------------------------------------------------------------------------------------
+License from source file: ?
 
 If not otherwise specified (see below), files in this repository fall under the following license:
 
@@ -10268,7 +10284,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 =========================================================================================================
-Files in `starry-night`: lang/source.2da.js, lang/source.c.nwscript.js, lang/source.curlrc.js, lang/source.dotenv.js, lang/source.futhark.js, lang/source.generic-db.js, lang/source.gitattributes.js, lang/source.gitconfig.js, lang/source.gitignore.js, lang/source.ini.npmrc.js, lang/source.inputrc.js, lang/source.m4.js, lang/source.nanorc.js, lang/source.neon.js, lang/source.odin-ehr.js, lang/source.opts.js, lang/source.record-jar.js, lang/source.sfv.js, lang/source.shellcheckrc.js, lang/source.sieve.js, lang/source.smpl.js, lang/source.ssh-config.js, lang/source.star.js, lang/source.stl.js, lang/source.string-template.js, lang/source.wgetrc.js, lang/text.checksums.js, lang/text.codeowners.js, lang/text.html.ecmarkup.js, lang/text.xml.svg.js
+Files in `starry-night`: lang/etc.js, lang/injections.etc.js, lang/source.2da.js, lang/source.c.nwscript.js, lang/source.curlrc.js, lang/source.dotenv.js, lang/source.futhark.js, lang/source.generic-db.js, lang/source.gitattributes.js, lang/source.gitconfig.js, lang/source.gitignore.js, lang/source.ini.npmrc.js, lang/source.inputrc.js, lang/source.m4.js, lang/source.nanorc.js, lang/source.neon.js, lang/source.odin-ehr.js, lang/source.opts.js, lang/source.record-jar.js, lang/source.sfv.js, lang/source.shellcheckrc.js, lang/source.sieve.js, lang/source.smpl.js, lang/source.ssh-config.js, lang/source.star.js, lang/source.stl.js, lang/source.string-template.js, lang/source.wgetrc.js, lang/text.checksums.js, lang/text.codeowners.js, lang/text.html.ecmarkup.js, lang/text.xml.svg.js
 From source: <https://github.com/Alhadis/language-etc>
 SPDX: isc
 ---------------------------------------------------------------------------------------------------------
@@ -10344,7 +10360,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 =========================================================================================================
-Files in `starry-night`: lang/source.afm.js, lang/source.bdf.js, lang/source.figfont.js, lang/source.fontdir.js, lang/source.opentype.js, lang/text.sfd.js
+Files in `starry-night`: lang/source.afm.js, lang/source.bdf.js, lang/source.figfont.js, lang/source.fontdir.js, lang/source.fontforge.js, lang/source.opentype.js, lang/source.xlfd.js, lang/text.sfd.js
 From source: <https://github.com/Alhadis/language-fontforge>
 SPDX: isc
 ---------------------------------------------------------------------------------------------------------
@@ -10461,7 +10477,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 =========================================================================================================
-Files in `starry-night`: lang/source.abnf.js, lang/source.ebnf.js, lang/source.lark.js, lang/source.lex.js, lang/source.pegjs.js, lang/source.yacc.js
+Files in `starry-night`: lang/source.abnf.js, lang/source.ebnf.js, lang/source.lark.js, lang/source.lex.js, lang/source.lex.regexp.js, lang/source.pegjs.js, lang/source.yacc.js, lang/text.grammarkdown.js
 From source: <https://github.com/Alhadis/language-grammars>
 SPDX: isc
 ---------------------------------------------------------------------------------------------------------
@@ -11725,7 +11741,7 @@ SOFTWARE.
 
 
 =========================================================================================================
-Files in `starry-night`: lang/source.mermaid.js
+Files in `starry-night`: lang/source.mermaid.js, lang/source.mermaid.c4c-diagram.js, lang/source.mermaid.class-diagram.js, lang/source.mermaid.er-diagram.js, lang/source.mermaid.flowchart.js, lang/source.mermaid.gantt.js, lang/source.mermaid.gitgraph.js, lang/source.mermaid.pie-chart.js, lang/source.mermaid.requirement-diagram.js, lang/source.mermaid.sequence-diagram.js, lang/source.mermaid.state-diagram.js, lang/source.mermaid.user-journey.js
 From source: <https://github.com/Alhadis/language-mermaid>
 SPDX: isc
 ---------------------------------------------------------------------------------------------------------
@@ -12035,7 +12051,7 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 =========================================================================================================
-Files in `starry-night`: lang/text.html.nunjucks.js
+Files in `starry-night`: lang/source.nunjucks.js, lang/text.html.nunjucks.js
 From source: <>
 SPDX: mit
 ---------------------------------------------------------------------------------------------------------
@@ -12298,7 +12314,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 =========================================================================================================
-Files in `starry-night`: lang/source.regexp.js
+Files in `starry-night`: lang/source.regexp.js, lang/source.regexp.extended.js, lang/source.regexp.posix.js, lang/source.sy.js
 From source: <https://github.com/Alhadis/language-regexp>
 SPDX: isc
 ---------------------------------------------------------------------------------------------------------
@@ -12421,7 +12437,7 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 =========================================================================================================
-Files in `starry-night`: lang/source.pic.js, lang/text.roff.js, lang/text.runoff.js
+Files in `starry-night`: lang/source.ditroff.js, lang/source.ditroff.desc.js, lang/source.gremlin.js, lang/source.ideal.js, lang/source.pic.js, lang/text.roff.js, lang/text.runoff.js
 From source: <https://github.com/Alhadis/language-roff>
 SPDX: isc
 ---------------------------------------------------------------------------------------------------------
@@ -12443,7 +12459,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 
 =========================================================================================================
-Files in `starry-night`: lang/source.rpm-spec.js
+Files in `starry-night`: lang/source.changelogs.rpm-spec.js, lang/source.rpm-spec.js
 From source: <>
 SPDX: mit
 ---------------------------------------------------------------------------------------------------------
@@ -13044,7 +13060,7 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 =========================================================================================================
-Files in `starry-night`: lang/text.bibtex.js, lang/text.tex.latex.js
+Files in `starry-night`: lang/text.bibtex.js, lang/text.tex.js, lang/text.tex.latex.js
 From source: <https://github.com/textmate/latex.tmbundle>
 SPDX: permissive
 ---------------------------------------------------------------------------------------------------------
@@ -14135,7 +14151,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 =========================================================================================================
-Files in `starry-night`: lang/source.objc.js, lang/source.objc++.js
+Files in `starry-night`: lang/source.objc.js, lang/source.objc++.js, lang/source.objc.platform.js
 From source: <>
 SPDX: permissive
 ---------------------------------------------------------------------------------------------------------
@@ -14151,7 +14167,7 @@ If not otherwise specified (see below), files in this repository fall under the 
 An exception is made for files in readable text which contain their own license information, or files where an accompanying file exists (in the same directory) with a “-license” suffix added to the base-name name of the original file, and an extension of txt, html, or similar. For example “tidy” is accompanied by “tidy-license.txt”.
 
 =========================================================================================================
-Files in `starry-night`: lang/source.ocaml.js
+Files in `starry-night`: lang/source.camlp4.ocaml.js, lang/source.ocaml.js
 From source: <>
 SPDX: permissive
 ---------------------------------------------------------------------------------------------------------

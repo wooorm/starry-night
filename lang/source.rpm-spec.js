@@ -3,6 +3,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
+  dependencies: ['source.changelogs.rpm-spec', 'source.shell'],
   extensions: [],
   names: ['rpm-spec', 'specfile'],
   patterns: [

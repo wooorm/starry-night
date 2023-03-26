@@ -3,6 +3,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
+  dependencies: ['source.js', 'text.html.basic'],
   extensions: ['.jade', '.pug'],
   names: ['pug'],
   patterns: [

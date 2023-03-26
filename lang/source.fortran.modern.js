@@ -3,6 +3,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
+  dependencies: ['source.fortran'],
   extensions: ['.f90', '.f03', '.f08', '.f95'],
   names: ['fortran-free-form'],
   patterns: [

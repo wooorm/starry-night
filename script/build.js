@@ -9,13 +9,14 @@
  * @property {Array<string>} extensions
  */
 
-import process from 'node:process'
-import assert from 'node:assert'
+import assert from 'node:assert/strict'
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import process from 'node:process'
 import {fileURLToPath} from 'node:url'
-import prettier from 'prettier'
 import jsonStableStringify from 'json-stable-stringify'
+import prettier from 'prettier'
+import {parse as parseYaml} from 'yaml'
 import {common} from './common.js'
 
 /**
@@ -37,6 +38,12 @@ const aliases = {
 const own = {}.hasOwnProperty
 const gemsBase = new URL('../gems/gems/', import.meta.url)
 const languagesBase = new URL('../lang/', import.meta.url)
+
+// Human-maintained database of which language needs what language.
+/** @type {Record<string, Record<string, boolean>>} */
+const graph = parseYaml(
+  String(await fs.readFile(new URL('graph.yml', import.meta.url)))
+)
 
 /** @type {Array<string>} */
 let installed = []
@@ -207,18 +214,19 @@ const ruleSchema = {
 
 const grammarsBase = new URL('grammars/', gemBase)
 const grammarBasenames = await fs.readdir(grammarsBase)
-const scopes = grammarBasenames
-  .flatMap((d) => {
-    const ext = path.extname(d)
+const scopes = grammarBasenames.flatMap((d) => {
+  const ext = path.extname(d)
 
-    if (ext === '.json') {
-      return path.basename(d, ext)
-    }
+  if (ext === '.json') {
+    return path.basename(d, ext)
+  }
 
-    assert(d === 'version', d)
-    return []
-  })
-  .filter((d) => linguistInfo.has(d))
+  assert(d === 'version', d)
+  return []
+})
+
+/** @type {Map<string, ReturnType<analyze>>} */
+const dependencyInfo = new Map()
 
 // Write grammars.
 await Promise.all(
@@ -231,8 +239,10 @@ await Promise.all(
     const grammar = cleanGrammar(JSON.parse(await fs.readFile(inputUrl)), scope)
     assert(grammar.scopeName === scope, 'expected scopes to match')
 
-    const info = linguistInfo.get(scope)
-    assert(info, 'expected info')
+    const result = analyze(grammar)
+    dependencyInfo.set(scope, result)
+
+    const info = linguistInfo.get(scope) || {names: [], extensions: []}
 
     for (const name of info.names) {
       const mappedScope = uniqueIdentifiers.get(name)
@@ -283,6 +293,16 @@ await Promise.all(
       }
     }
 
+    const dependencies = own.call(graph, scope) ? graph[scope] : {}
+    /** @type {Array<string>} */
+    const required = []
+
+    for (const dep of Object.keys(dependencies)) {
+      if (dependencies[dep]) {
+        required.push(dep)
+      }
+    }
+
     await fs.writeFile(
       outputUrl,
       prettier.format(
@@ -294,7 +314,8 @@ await Promise.all(
               names: info.names,
               extensions,
               extensionsWithDot:
-                extensionsWithDot.length === 0 ? undefined : extensionsWithDot
+                extensionsWithDot.length === 0 ? undefined : extensionsWithDot,
+              dependencies: required.length === 0 ? undefined : required
             }),
           '',
           'export default grammar',
@@ -308,12 +329,199 @@ await Promise.all(
 
 console.log('generated %s grammars', scopes.length)
 
+console.log()
+console.log('analyzing…')
+
+/** @type {Map<string, Set<string>>} */
+const dependencies = new Map()
+
+for (const [scope, {referenced, defined}] of dependencyInfo) {
+  /** @type {Set<string>} */
+  const deps = new Set()
+
+  for (const reference of referenced) {
+    if (reference.charAt(0) === '$') {
+      if (reference === '$self' || reference === '$base') {
+        // Fine.
+      } else {
+        console.warn(
+          '%s: found unknown dollar reference `%s`',
+          scope,
+          reference
+        )
+      }
+    } else if (reference.charAt(0) === '#') {
+      if (!defined.has(reference.slice(1))) {
+        console.warn('%s: undefined internal reference `%s`', scope, reference)
+      }
+    } else {
+      const index = reference.indexOf('#')
+      const [externalScope, externalReference] =
+        index === -1
+          ? [reference]
+          : [reference.slice(0, index), reference.slice(index + 1)]
+      const externalInfo = dependencyInfo.get(externalScope)
+
+      if (externalInfo) {
+        // A reference deep into a different grammar.
+        if (externalReference) {
+          const has = externalInfo.defined.has(externalReference)
+
+          if (has) {
+            deps.add(externalScope)
+          } else {
+            console.warn(
+              '%s: undefined reference to `%s#%s`',
+              scope,
+              externalScope,
+              externalReference
+            )
+          }
+        } else {
+          // A reference to a different grammar, which exists.
+          deps.add(externalScope)
+        }
+      } else {
+        console.warn(
+          '%s: missing grammar for scope name `%s`',
+          scope,
+          externalScope
+        )
+      }
+    }
+  }
+
+  // Sometimes `$self` is included as a full name.
+  deps.delete(scope)
+
+  dependencies.set(scope, deps)
+}
+
+console.log()
+
+/** @type {Set<string>} */
+const used = new Set()
+
+for (const [scope] of linguistInfo) {
+  add(scope)
+}
+
+/** @param {string} scope */
+function add(scope) {
+  if (used.has(scope)) return
+  used.add(scope)
+  const deps = dependencies.get(scope)
+  assert(deps, scope)
+  for (const dep of deps) {
+    add(dep)
+  }
+}
+
+const unneeded = scopes.filter((d) => !used.has(d))
+
+await Promise.all(
+  unneeded.map(async (d) => {
+    await fs.unlink(new URL(d + '.js', languagesBase))
+  })
+)
+
+console.log('unlinked %s unused grammars', unneeded.length)
+
+const usedScopes = [...used].sort()
+
+for (const scope of usedScopes) {
+  const deps = dependencies.get(scope)
+  assert(deps, scope)
+
+  if (deps.size > 0) {
+    const manifest = own.call(graph, scope) ? graph[scope] : undefined
+
+    if (manifest) {
+      /** @type {Set<string>} */
+      const missing = new Set()
+      /** @type {Set<string>} */
+      const superfluous = new Set()
+
+      for (const dep of deps) {
+        if (!own.call(manifest, dep)) {
+          missing.add(dep)
+        }
+      }
+
+      for (const dep of Object.keys(manifest)) {
+        if (!deps.has(dep)) {
+          superfluous.add(dep)
+        }
+      }
+
+      if (missing.size > 0) {
+        console.warn(
+          `Missing entries in \`graph.yml\` for \`${scope}\`, here’s the fields to add:
+${[...missing]
+  .sort()
+  .map((d) => `  ${d}: false`)
+  .join('\n')}
+`
+        )
+      }
+
+      if (superfluous.size > 0) {
+        console.warn(
+          `Superfluous entries in \`graph.yml\` for ${scope}, here’s the fields to remove:
+\`${[...superfluous].sort().join('`, `')}\`
+`
+        )
+      }
+    } else {
+      console.warn(
+        `Missing entry in \`graph.yml\`, here’s a template you can fill out:
+${scope}:
+${[...deps]
+  .sort()
+  .map((d) => `  ${d}: false`)
+  .join('\n')}
+`
+      )
+    }
+  } else if (own.call(graph, scope)) {
+    console.warn(
+      'Superfluous entry in `graph.yml` for `%s`, it has no dependencies',
+      scope
+    )
+  }
+}
+
 const indices = ['common', 'all']
 
 // Write index files.
 await Promise.all(
   indices.map(async (d) => {
-    const list = (d === 'common' ? common : [...linguistInfo.keys()]).sort()
+    /** @type {Array<string>} */
+    const list = []
+
+    const scopes = d === 'common' ? common : [...linguistInfo.keys()]
+
+    /** @param {Array<string>} scopes */
+    for (const scope of scopes) {
+      add(scope)
+    }
+
+    list.sort()
+
+    /** @param {string} scope */
+    function add(scope) {
+      if (!list.includes(scope)) {
+        list.push(scope)
+
+        const dependencies = own.call(graph, scope) ? graph[scope] : {}
+
+        for (const dep of Object.keys(dependencies)) {
+          if (dependencies[dep]) {
+            add(dep)
+          }
+        }
+      }
+    }
 
     await fs.writeFile(
       new URL('../lib/' + d + '.js', import.meta.url),
@@ -500,6 +708,92 @@ function clean(value, schema, path) {
   }
 
   return result
+}
+
+/**
+ * @param {Rule} rule
+ * @param {boolean | null | undefined} [local=false]
+ * @returns {{referenced: Set<string>, defined: Set<string>}}
+ */
+function analyze(rule, local) {
+  /** @type {Set<string>} */
+  const defined = new Set()
+  /** @type {Set<string>} */
+  const referenced = new Set()
+
+  visit(rule, (rule) => {
+    if ('repository' in rule && rule.repository) {
+      for (const key of Object.keys(rule.repository)) {
+        defined.add(key)
+      }
+    }
+
+    if (
+      'include' in rule &&
+      rule.include &&
+      (!local || rule.include.startsWith('#'))
+    ) {
+      referenced.add(rule.include)
+    }
+  })
+
+  return {referenced, defined}
+}
+
+/**
+ *
+ * @param {Rule} rule
+ * @param {(rule: Rule) => boolean | undefined | void} callback
+ * @returns {boolean}
+ */
+function visit(rule, callback) {
+  const result = callback(rule)
+
+  if (result === false) {
+    return result
+  }
+
+  if ('captures' in rule && rule.captures) map(rule.captures)
+  if ('beginCaptures' in rule && rule.beginCaptures) map(rule.beginCaptures)
+  if ('endCaptures' in rule && rule.endCaptures) map(rule.endCaptures)
+  if ('whileCaptures' in rule && rule.whileCaptures) map(rule.whileCaptures)
+  if ('repository' in rule && rule.repository) map(rule.repository)
+  if ('injections' in rule && rule.injections) map(rule.injections)
+  if ('patterns' in rule && rule.patterns) set(rule.patterns)
+
+  // Keep.
+  return true
+
+  /**
+   * @param {Array<Rule>} values
+   */
+  function set(values) {
+    let index = -1
+    while (++index < values.length) {
+      const result = visit(values[index], callback)
+      if (result === false) {
+        values.splice(index, 1)
+        index--
+      }
+    }
+  }
+
+  /**
+   * @param {Record<string, Rule>} values
+   */
+  function map(values) {
+    /** @type {string} */
+    let key
+
+    for (key in values) {
+      if (own.call(values, key)) {
+        const result = visit(values[key], callback)
+        if (result === false) {
+          delete values[key]
+        }
+      }
+    }
+  }
 }
 
 /**

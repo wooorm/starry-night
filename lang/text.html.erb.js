@@ -5,6 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
+  dependencies: ['source.ruby', 'text.html.basic'],
   extensions: ['.erb', '.erb.deface', '.rhtml'],
   injections: {
     'text.html.erb - (meta.embedded.block.erb | meta.embedded.line.erb | meta.tag | comment), meta.tag string.quoted, L:source.js.embedded.html':

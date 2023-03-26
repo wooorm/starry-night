@@ -3,6 +3,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
+  dependencies: ['source.js'],
   extensions: ['.qml', '.qbs'],
   names: ['qml'],
   patterns: [

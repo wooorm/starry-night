@@ -5,6 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
+  dependencies: ['text.html.asdoc', 'text.xml'],
   extensions: ['.as'],
   names: ['actionscript', 'actionscript-3', 'actionscript3', 'as3'],
   patterns: [

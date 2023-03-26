@@ -3,6 +3,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
+  dependencies: ['source.crystal', 'text.html.basic'],
   extensions: ['.ecr'],
   injections: {'text.html.ecr': {patterns: [{include: '#tags'}]}},
   names: ['html+ecr', 'ecr'],

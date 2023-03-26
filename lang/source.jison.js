@@ -3,6 +3,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
+  dependencies: ['source.jisonlex'],
   extensions: ['.jison'],
   injections: {
     'L:(meta.action.jison - (comment | string)), source.js.embedded.jison - (comment | string), source.js.embedded.source - (comment | string.quoted.double | string.quoted.single)':

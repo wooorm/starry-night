@@ -3,6 +3,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
+  dependencies: ['source.nunjucks', 'text.html.basic'],
   extensions: ['.njk'],
   names: ['nunjucks', 'njk'],
   patterns: [{include: 'source.nunjucks'}, {include: 'text.html.basic'}],

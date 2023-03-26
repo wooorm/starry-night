@@ -5,6 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
+  dependencies: ['source.shell'],
   extensions: ['.sh-session'],
   names: ['shellsession', 'bash-session', 'console'],
   patterns: [

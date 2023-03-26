@@ -3,6 +3,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
+  dependencies: ['text.html.basic'],
   extensions: ['.jinja', '.j2', '.jinja2'],
   names: ['jinja', 'django', 'html+django', 'html+jinja', 'htmldjango'],
   patterns: [

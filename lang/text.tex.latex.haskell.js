@@ -5,6 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
+  dependencies: ['source.haskell', 'text.tex.latex'],
   extensions: ['.lhs'],
   names: ['literate-haskell', 'lhaskell', 'lhs'],
   patterns: [
