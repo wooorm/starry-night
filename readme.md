@@ -81,12 +81,11 @@ diffing can be performant, or when you’re working with [`hast`][hast] or
 
 Bundled, minified, and gzipped, `starry-night` and the WASM binary are 185 kB.
 There are two lists of grammars you can use: `common` (33 languages, good for
-your own site) adds 160 kB and `all` (520+ languages, useful if are making a
-site like GitHub) is 1.35 MB.
+your own site) adds 250 kB and `all` (\~600 languages, useful if you are making
+a site like GitHub) is 1.6 MB.
 You can also manually choose which grammars to include (or add to `common`): a
 language is typically between 3 and 5 kB.
-As an example, adding Astro to `starry-night` with the `common` grammars costs
-an additional 1.5 kB.
+To illustrate, Astro costs 2.1 kB and TSX costs 25.4 kB.
 
 ## What is `PrettyLights`?
 
