@@ -1,7 +1,4 @@
 /**
- * @typedef {'light'|'light_high_contrast'|'light_colorblind'|'light_tritanopia'} Light
- * @typedef {'dark'|'dark_high_contrast'|'dark_colorblind'|'dark_tritanopia'|'dark_dimmed'} Dark
- *
  * @typedef {import('css').Rule} Rule
  * @typedef {import('css').Stylesheet} Stylesheet
  * @typedef {import('css').Declaration} Declaration
@@ -18,11 +15,16 @@
  * @typedef {import('css').Namespace} Namespace
  * @typedef {import('css').Page} Page
  * @typedef {import('css').Supports} Supports
- * @typedef {Rule|Stylesheet|Declaration|Comment|Charset|CustomMedia|Document|FontFace|Host|Import|KeyFrames|KeyFrame|Media|Namespace|Page|Supports} Node
+ */
+
+/**
+ * @typedef {Rule | Stylesheet | Declaration | Comment | Charset | CustomMedia | Document | FontFace | Host | Import | KeyFrames | KeyFrame | Media | Namespace | Page | Supports} Node
+ * @typedef {'light' | 'light_high_contrast' | 'light_colorblind' | 'light_tritanopia'} Light
+ * @typedef {'dark' | 'dark_high_contrast' | 'dark_colorblind' | 'dark_tritanopia' | 'dark_dimmed'} Dark
  *
  * @typedef Schema
- * @property {Light|undefined} light
- * @property {Dark|undefined} dark
+ * @property {Light | undefined} light
+ * @property {Dark | undefined} dark
  **/
 
 import assert from 'node:assert'
