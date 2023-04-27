@@ -140,14 +140,14 @@ npm install @wooorm/starry-night
 In Deno with [`esm.sh`][esmsh]:
 
 ```js
-import {createStarryNight, common} from 'https://esm.sh/@wooorm/starry-night@1'
+import {createStarryNight, common} from 'https://esm.sh/@wooorm/starry-night@2'
 ```
 
 In browsers with [`esm.sh`][esmsh]:
 
 ```html
 <script type="module">
-  import {createStarryNight, common} from 'https://esm.sh/@wooorm/starry-night@1?bundle'
+  import {createStarryNight, common} from 'https://esm.sh/@wooorm/starry-night@2?bundle'
 </script>
 ```
 
@@ -155,7 +155,7 @@ To get the CSS in browsers, do (see [CSS][] for more info):
 
 ```html
 <!-- This supports light and dark mode automatically. -->
-<link rel="stylesheet" href="https://esm.sh/@wooorm/starry-night@1/style/both.css">
+<link rel="stylesheet" href="https://esm.sh/@wooorm/starry-night@2/style/both.css">
 ```
 
 ## Use
