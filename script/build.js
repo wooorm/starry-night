@@ -20,18 +20,19 @@ import {parse as parseYaml} from 'yaml'
 import {common} from './common.js'
 
 /**
- * List of scopes renamed in `github/linguist`.
+ * List of scopes renamed in `github-linguist`.
  *
  * Occasionally, delete all files in `lang/`, see what’s removed,
  * see if there’s a new scope, and add them here.
  *
- * This prevents having to introduce breaking changes in `starry-night`
+ * This prevents having to introduce breaking changes in `starry-night`.
  *
  * @type {Record<string, string>}
  */
 const aliases = {
   // Old names to new names.
   'source.brightscript': 'source.brs',
+  'source.gfm': 'text.md',
   'source.vtt': 'text.vtt'
 }
 

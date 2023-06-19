@@ -6,7 +6,7 @@
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
   extensions: [],
-  names: ['go-checksums', 'go.sum', 'go-sum'],
+  names: ['go-checksums', 'go.sum', 'go-sum', 'go.work.sum', 'go-work-sum'],
   patterns: [
     {include: '#checksum'},
     {include: '#semver'},

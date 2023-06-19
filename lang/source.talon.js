@@ -85,8 +85,8 @@ const grammar = {
     'body-noheader': {
       patterns: [
         {include: '#comment'},
-        {include: '#speech-rule-definition'},
-        {include: '#other-rule-definition'}
+        {include: '#other-rule-definition'},
+        {include: '#speech-rule-definition'}
       ]
     },
     capture: {
@@ -119,7 +119,18 @@ const grammar = {
       ]
     },
     fstring: {
-      match: '({.+?})',
+      captures: {
+        1: {
+          patterns: [
+            {include: '#action'},
+            {include: '#operator'},
+            {include: '#number'},
+            {include: '#varname'},
+            {include: '#qstring'}
+          ]
+        }
+      },
+      match: '{(.+?)}',
       name: 'constant.character.format.placeholder.talon'
     },
     header: {
@@ -214,13 +225,19 @@ const grammar = {
       match: '(settings|tag)(\\()(\\))'
     },
     'speech-rule-definition': {
-      begin: "^([A-Za-z0-9\\s'<>{}+*_.\\-^$]*?):",
+      begin: '^(.*?):',
       beginCaptures: {
         1: {
           name: 'entity.name.tag.talon',
           patterns: [
             {match: '^\\^', name: 'string.regexp.talon'},
             {match: '\\$$', name: 'string.regexp.talon'},
+            {
+              match: '\\(',
+              name: 'punctuation.definition.parameters.begin.talon'
+            },
+            {match: '\\)', name: 'punctuation.definition.parameters.end.talon'},
+            {match: '\\|', name: 'punctuation.separator.talon'},
             {include: '#capture'},
             {include: '#list'}
           ]

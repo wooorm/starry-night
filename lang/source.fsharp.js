@@ -35,7 +35,7 @@ const grammar = {
         1: {name: 'keyword.fsharp'},
         2: {name: 'keyword.fsharp'},
         3: {name: 'support.function.attribute.fsharp'},
-        5: {name: 'keyword.fsharp'}
+        5: {name: 'keyword.symbol.fsharp'}
       },
       end: '\\s*(with)\\b|=|$',
       endCaptures: {1: {name: 'keyword.fsharp'}},
@@ -72,7 +72,7 @@ const grammar = {
             {include: '#comments'},
             {
               begin: '(\\()',
-              beginCaptures: {1: {name: 'keyword.symbol.arrow.fsharp'}},
+              beginCaptures: {1: {name: 'keyword.symbol.fsharp'}},
               end: '\\s*(?=(->))',
               endCaptures: {1: {name: 'keyword.symbol.arrow.fsharp'}},
               patterns: [{include: '#member_declaration'}]
@@ -115,7 +115,7 @@ const grammar = {
         {
           captures: {0: {name: 'keyword.fsharp'}},
           match:
-            '\\b(async|seq|promise|task|maybe|asyncMaybe|controller|scope|application|pipeline)\\s*\\{',
+            '\\b(async|seq|promise|task|maybe|asyncMaybe|controller|scope|application|pipeline)(?=\\s*\\{)',
           name: 'cexpr.fsharp'
         }
       ]
@@ -234,7 +234,7 @@ const grammar = {
         },
         {
           captures: {
-            1: {name: 'keyword.symbol.fsharp'},
+            1: {name: 'keyword.symbol.arrow.fsharp'},
             2: {name: 'keyword.symbol.fsharp'},
             3: {name: 'entity.name.type.fsharp'}
           },
@@ -288,7 +288,7 @@ const grammar = {
         {
           begin: "\\s*(->)\\s*([[:alpha:]0-9'`^._ ]+)(<)",
           beginCaptures: {
-            1: {name: 'keyword.symbol.fsharp'},
+            1: {name: 'keyword.symbol.arrow.fsharp'},
             2: {name: 'entity.name.type.fsharp'},
             3: {name: 'keyword.symbol.fsharp'}
           },
@@ -304,7 +304,7 @@ const grammar = {
         },
         {
           captures: {
-            1: {name: 'keyword.symbol.fsharp'},
+            1: {name: 'keyword.symbol.arrow.fsharp'},
             2: {name: 'entity.name.type.fsharp'}
           },
           match: "\\s*(->)\\s*(?!with|get|set\\b)\\b([\\w0-9'`^._]+)"
@@ -342,7 +342,7 @@ const grammar = {
     },
     constants: {
       patterns: [
-        {match: '\\(\\)', name: 'constant.language.unit.fsharp'},
+        {match: '\\(\\)', name: 'keyword.symbol.fsharp'},
         {
           match:
             '\\b-?[0-9][0-9_]*((\\.([0-9][0-9_]*([eE][+-]??[0-9][0-9_]*)?)?)|([eE][+-]??[0-9][0-9_]*))',
@@ -354,7 +354,7 @@ const grammar = {
           name: 'constant.numeric.integer.nativeint.fsharp'
         },
         {match: '\\b(true|false)\\b', name: 'constant.language.boolean.fsharp'},
-        {match: '\\b(null|unit|void)\\b', name: 'constant.other.fsharp'}
+        {match: '\\b(null|void)\\b', name: 'constant.other.fsharp'}
       ]
     },
     definition: {
@@ -369,8 +369,11 @@ const grammar = {
             4: {name: 'storage.modifier.fsharp'},
             5: {name: 'variable.fsharp'}
           },
-          end: '\\s*(with\\b|=|\\n+=|(?<=\\=))',
-          endCaptures: {1: {name: 'keyword.fsharp'}},
+          end: '\\s*((with\\b)|(=|\\n+=|(?<=\\=)))',
+          endCaptures: {
+            2: {name: 'keyword.fsharp'},
+            3: {name: 'keyword.symbol.fsharp'}
+          },
           name: 'binding.fsharp',
           patterns: [{include: '#common_binding_definition'}]
         },
@@ -379,7 +382,7 @@ const grammar = {
             '\\b(use|use!|and|and!)\\s+(\\[[^-=]*\\]|[_[:alpha:]]([_[:alpha:]0-9\\._]+)*|``[_[:alpha:]]([_[:alpha:]0-9\\._`\\s]+|(?<=,)\\s)*)?',
           beginCaptures: {1: {name: 'keyword.fsharp'}},
           end: '\\s*(=)',
-          endCaptures: {1: {name: 'keyword.fsharp'}},
+          endCaptures: {1: {name: 'keyword.symbol.fsharp'}},
           name: 'binding.fsharp',
           patterns: [{include: '#common_binding_definition'}]
         },
@@ -388,7 +391,7 @@ const grammar = {
             '(?<=with|and)\\s*\\b((get|set)\\s*(?=\\())(\\[[^-=]*\\]|[_[:alpha:]]([_[:alpha:]0-9\\._]+)*|``[_[:alpha:]]([_[:alpha:]0-9\\._`\\s]+|(?<=,)\\s)*)?',
           beginCaptures: {4: {name: 'variable.fsharp'}},
           end: '\\s*(=|\\n+=|(?<=\\=))',
-          endCaptures: {1: {name: 'keyword.fsharp'}},
+          endCaptures: {1: {name: 'keyword.symbol.fsharp'}},
           name: 'binding.fsharp',
           patterns: [{include: '#common_binding_definition'}]
         },
@@ -410,10 +413,10 @@ const grammar = {
           begin: '\\b(new)\\b\\s+(\\()',
           beginCaptures: {
             1: {name: 'keyword.fsharp'},
-            2: {name: 'keyword.fsharp'}
+            2: {name: 'keyword.symbol.fsharp'}
           },
           end: '(\\))',
-          endCaptures: {1: {name: 'keyword.fsharp'}},
+          endCaptures: {1: {name: 'keyword.symbol.fsharp'}},
           name: 'binding.fsharp',
           patterns: [{include: '#common_binding_definition'}]
         }
@@ -493,7 +496,7 @@ const grammar = {
             "\\b(private|to|public|internal|function|yield!|yield|class|exception|match|delegate|of|new|in|as|if|then|else|elif|for|begin|end|inherit|do|let\\!|return\\!|return|interface|with|abstract|enum|member|try|finally|and|when|or|use|use\\!|struct|while|mutable|assert|base|done|downcast|downto|extern|fixed|global|lazy|upcast|not)(?!')\\b",
           name: 'keyword.fsharp'
         },
-        {match: ':', name: 'keyword.fsharp'},
+        {match: ':', name: 'keyword.symbol.fsharp'},
         {include: '#constants'},
         {
           captures: {1: {name: 'entity.name.type.fsharp'}},
@@ -539,7 +542,7 @@ const grammar = {
         {match: '\\b(private|public|internal)\\b', name: 'storage.modifier'},
         {
           match:
-            "\\b(private|to|public|internal|function|class|exception|delegate|of|as|begin|end|inherit|let!|interface|abstract|enum|member|and|when|or|use|use\\!|struct|mutable|assert|base|done|downcast|downto|extern|fixed|global|lazy|upcast|not)(?!')\\b",
+            "\\b(private|to|public|internal|function|class|exception|delegate|of|new|as|begin|end|inherit|let!|interface|abstract|enum|member|and|when|or|use|use\\!|struct|mutable|assert|base|done|downcast|downto|extern|fixed|global|lazy|upcast|not)(?!')\\b",
           name: 'keyword.fsharp'
         },
         {
@@ -547,10 +550,10 @@ const grammar = {
             "\\b(match|yield|yield!|with|if|then|else|elif|for|in|return!|return|try|finally|while|do)(?!')\\b",
           name: 'keyword.control'
         },
-        {match: '\\b(new)\\b', name: 'keyword.symbol.new'},
+        {match: '(\\->|\\<\\-)', name: 'keyword.symbol.arrow.fsharp'},
         {
           match:
-            '(&&&|\\|\\|\\||\\^\\^\\^|~~~|<<<|>>>|\\|>|\\->|\\<\\-|:>|:\\?>|:|\\[|\\]|\\;|<>|=|@|\\|\\||&&|{|}|\\||_|\\.\\.|\\,|\\+|\\-|\\*|\\/|\\^|\\!|\\>|\\>\\=|\\>\\>|\\<|\\<\\=|\\(|\\)|\\<\\<)',
+            '(&&&|\\|\\|\\||\\^\\^\\^|~~~|<<<|>>>|\\|>|:>|:\\?>|:|\\[|\\]|\\;|<>|=|@|\\|\\||&&|{|}|\\||_|\\.\\.|\\,|\\+|\\-|\\*|\\/|\\^|\\!|\\>|\\>\\=|\\>\\>|\\<|\\<\\=|\\(|\\)|\\<\\<)',
           name: 'keyword.symbol.fsharp'
         }
       ]
@@ -655,7 +658,7 @@ const grammar = {
           beginCaptures: {
             1: {name: 'keyword.fsharp'},
             2: {name: 'entity.name.type.namespace.fsharp'},
-            3: {name: 'punctuation.separator.namespace-definition.fsharp'},
+            3: {name: 'keyword.symbol.fsharp'},
             4: {name: 'entity.name.section.fsharp'}
           },
           end: '(\\s|$)',
@@ -757,7 +760,7 @@ const grammar = {
             4: {name: 'keyword.fsharp'},
             5: {name: 'variable.parameter.fsharp'},
             6: {name: 'keyword.symbol.fsharp'},
-            7: {name: 'constant.language.unit.fsharp'}
+            7: {name: 'keyword.symbol.fsharp'}
           },
           name: 'record.fsharp',
           patterns: [
@@ -769,9 +772,9 @@ const grammar = {
             },
             {
               begin: '(<)',
-              beginCaptures: {1: {name: 'keyword.fsharp'}},
+              beginCaptures: {1: {name: 'keyword.symbol.fsharp'}},
               end: '((?<!:)>)',
-              endCaptures: {1: {name: 'keyword.fsharp'}},
+              endCaptures: {1: {name: 'keyword.symbol.fsharp'}},
               patterns: [
                 {
                   captures: {1: {name: 'entity.name.type.fsharp'}},
@@ -804,10 +807,7 @@ const grammar = {
               ]
             },
             {
-              captures: {
-                1: {name: 'keyword.symbol.fsharp'},
-                2: {name: 'storage.modifier.fsharp'}
-              },
+              captures: {1: {name: 'storage.modifier.fsharp'}},
               match: '\\s*(private|internal|public)'
             },
             {
@@ -959,7 +959,7 @@ const grammar = {
     },
     variables: {
       patterns: [
-        {match: '\\(\\)', name: 'constant.language.unit.fsharp'},
+        {match: '\\(\\)', name: 'keyword.symbol.fsharp'},
         {
           captures: {
             1: {name: 'keyword.symbol.fsharp'},

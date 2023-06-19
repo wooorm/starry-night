@@ -131,7 +131,7 @@ const grammar = {
       captures: {2: {name: 'entity.name.tag.haml'}},
       end: '^(?!\\1\\s+|\\n)',
       name: 'meta.embedded.markdown',
-      patterns: [{include: 'source.gfm'}]
+      patterns: []
     },
     {
       begin: '^(\\s*)(:coffee(script)?)$',

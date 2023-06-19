@@ -13,7 +13,6 @@ const grammar = {
     '.lisp',
     '.lsp',
     '.lsp',
-    '.md',
     '.nl',
     '.nlogo',
     '.ny',
@@ -21,6 +20,7 @@ const grammar = {
     '.sexp',
     '.srt'
   ],
+  extensionsWithDot: ['.md'],
   names: [
     'common-lisp',
     'gcc-machine-description',

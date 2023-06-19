@@ -11,7 +11,6 @@ export const common = [
   'source.css.less', // `less`
   'source.css.scss', // `scss`
   'source.diff', // `diff`
-  'source.gfm', // `markdown`
   'source.go', // `go`
   'source.ini', // `ini`
   'source.java', // `java`
@@ -34,6 +33,7 @@ export const common = [
   'source.yaml', // `yaml`
   'text.html.basic', // `xml` (HTML)
   'text.html.php', // `php`, `php-template`
+  'text.md', // `markdown`
   'text.xml', // `xml`
   'text.xml.svg', // `xml` (SVG)
 

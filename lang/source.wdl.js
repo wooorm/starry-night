@@ -6,7 +6,7 @@
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
   extensions: ['.wdl'],
-  names: ['wdl'],
+  names: ['wdl', 'workflow-description-language'],
   patterns: [
     {match: '\\=', name: 'keyword.operator.assignment.wdl'},
     {

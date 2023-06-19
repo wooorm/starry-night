@@ -6,7 +6,7 @@
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
   extensions: ['.proto'],
-  names: ['protocol-buffer', 'protobuf', 'protocol-buffers'],
+  names: ['protocol-buffer', 'proto', 'protobuf', 'protocol-buffers'],
   patterns: [
     {include: '#comments'},
     {include: '#syntax'},

@@ -51,7 +51,7 @@ async function list() {
     await readOrFetch(
       new URL('grammars.yml', base),
       new URL(
-        'https://raw.githubusercontent.com/github/linguist/master/grammars.yml'
+        'https://raw.githubusercontent.com/github-linguist/linguist/master/grammars.yml'
       )
     )
   )
@@ -102,7 +102,7 @@ async function list() {
       readOrFetch(
         new URL(vendor + '.yml', infoFolder),
         new URL(
-          'https://raw.githubusercontent.com/github/linguist/master/vendor/licenses/git_submodule/' +
+          'https://raw.githubusercontent.com/github-linguist/linguist/master/vendor/licenses/git_submodule/' +
             vendor +
             '.dep.yml'
         )

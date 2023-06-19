@@ -6,7 +6,14 @@
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
   extensions: [],
-  names: ['go-module', 'go.mod', 'go-mod'],
+  names: [
+    'go-mod',
+    'go-module',
+    'go-work',
+    'go-workspace',
+    'go.mod',
+    'go.work'
+  ],
   patterns: [
     {include: '#comments'},
     {include: '#directive'},

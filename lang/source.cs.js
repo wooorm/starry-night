@@ -152,7 +152,7 @@ const grammar = {
     'base-types': {
       begin: ':',
       beginCaptures: {0: {name: 'punctuation.separator.colon.cs'}},
-      end: '(?=\\{|where)',
+      end: '(?=\\{|where|;)',
       patterns: [
         {include: '#type'},
         {include: '#punctuation-comma'},
@@ -286,19 +286,22 @@ const grammar = {
       patterns: [{include: '#block'}, {include: '#comment'}]
     },
     'class-declaration': {
-      begin: '(?=\\bclass\\b)',
-      end: '(?<=\\})',
+      begin: '(?=(\\brecord\\b\\s+)?\\bclass\\b)',
+      end: '(?<=\\})|(?=;)',
       patterns: [
         {
-          begin: '(?x)\n\\b(class)\\b\\s+\n(@?[_[:alpha:]][_[:alnum:]]*)\\s*',
+          begin:
+            '(?x)\n(\\b(record)\\b\\s+)?\n\\b(class)\\b\\s+\n(@?[_[:alpha:]][_[:alnum:]]*)\\s*',
           beginCaptures: {
-            1: {name: 'keyword.other.class.cs'},
-            2: {name: 'entity.name.type.class.cs'}
+            2: {name: 'keyword.other.record.cs'},
+            3: {name: 'keyword.other.class.cs'},
+            4: {name: 'entity.name.type.class.cs'}
           },
-          end: '(?=\\{)',
+          end: '(?=\\{)|(?=;)',
           patterns: [
             {include: '#comment'},
             {include: '#type-parameter-list'},
+            {include: '#parenthesized-parameter-list'},
             {include: '#base-types'},
             {include: '#generic-constraints'}
           ]
@@ -1339,7 +1342,7 @@ const grammar = {
                     '(\\G(?=[0-9.])(?!0[xXbB]))([0-9](?:[0-9]|((?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))*)((?<!_)([eE])(\\+?)(\\-?)((?:[0-9](?:[0-9]|(?:(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))*)))?((?:(?:(?:(?:(?:[uU]|[uU]l)|[uU]L)|l[uU]?)|L[uU]?)|[fFdDmM])(?!\\w))?$'
                 },
                 {
-                  match: '(?:(?:[0-9a-zA-Z_\\.]|_)|(?<=[eE])[+-])+',
+                  match: '(?:(?:[0-9a-zA-Z_]|_)|(?<=[eE])[+-]|\\.\\d)+',
                   name: 'invalid.illegal.constant.numeric.cs'
                 }
               ]
@@ -1347,7 +1350,7 @@ const grammar = {
           ]
         }
       },
-      match: '(?<!\\w)\\.?\\d(?:(?:[0-9a-zA-Z_\\.]|_)|(?<=[eE])[+-])*'
+      match: '(?<!\\w)\\.?\\d(?:(?:[0-9a-zA-Z_]|_)|(?<=[eE])[+-]|\\.\\d)*'
     },
     'object-creation-expression': {
       patterns: [
@@ -1769,18 +1772,19 @@ const grammar = {
     },
     'record-declaration': {
       begin: '(?=\\brecord\\b)',
-      end: '(?<=\\})',
+      end: '(?<=\\})|(?=;)',
       patterns: [
         {
           begin: '(?x)\n(record)\\b\\s+\n(@?[_[:alpha:]][_[:alnum:]]*)',
           beginCaptures: {
             1: {name: 'keyword.other.record.cs'},
-            2: {name: 'entity.name.type.record.cs'}
+            2: {name: 'entity.name.type.class.cs'}
           },
-          end: '(?=\\{)',
+          end: '(?=\\{)|(?=;)',
           patterns: [
             {include: '#comment'},
             {include: '#type-parameter-list'},
+            {include: '#parenthesized-parameter-list'},
             {include: '#base-types'},
             {include: '#generic-constraints'}
           ]
@@ -1805,8 +1809,8 @@ const grammar = {
     },
     'script-top-level': {
       patterns: [
-        {include: '#method-declaration'},
         {include: '#statement'},
+        {include: '#method-declaration'},
         {include: '#punctuation-semicolon'}
       ]
     },
@@ -1849,7 +1853,7 @@ const grammar = {
     },
     'storage-modifier': {
       match:
-        '(?<!\\.)\\b(new|public|protected|internal|private|abstract|virtual|override|sealed|static|partial|readonly|volatile|const|extern|async|unsafe|ref|required)\\b',
+        '(?<!\\.)\\b(new|public|protected|internal|private|abstract|virtual|override|sealed|static|partial|readonly|volatile|const|extern|async|unsafe|ref|required|file)\\b',
       name: 'storage.modifier.cs'
     },
     'string-character-escape': {
@@ -1869,19 +1873,22 @@ const grammar = {
       patterns: [{include: '#string-character-escape'}]
     },
     'struct-declaration': {
-      begin: '(?=\\bstruct\\b)',
-      end: '(?<=\\})',
+      begin: '(?=(\\brecord\\b\\s+)?\\bstruct\\b)',
+      end: '(?<=\\})|(?=;)',
       patterns: [
         {
-          begin: '(?x)\n(struct)\\b\\s+\n(@?[_[:alpha:]][_[:alnum:]]*)',
+          begin:
+            '(?x)\n(\\b(record)\\b\\s+)?\n(struct)\\b\\s+\n(@?[_[:alpha:]][_[:alnum:]]*)',
           beginCaptures: {
-            1: {name: 'keyword.other.struct.cs'},
-            2: {name: 'entity.name.type.struct.cs'}
+            2: {name: 'keyword.other.record.cs'},
+            3: {name: 'keyword.other.struct.cs'},
+            4: {name: 'entity.name.type.struct.cs'}
           },
-          end: '(?=\\{)',
+          end: '(?=\\{)|(?=;)',
           patterns: [
             {include: '#comment'},
             {include: '#type-parameter-list'},
+            {include: '#parenthesized-parameter-list'},
             {include: '#base-types'},
             {include: '#generic-constraints'}
           ]
@@ -2176,8 +2183,8 @@ const grammar = {
         {include: '#delegate-declaration'},
         {include: '#enum-declaration'},
         {include: '#interface-declaration'},
-        {include: '#record-declaration'},
         {include: '#struct-declaration'},
+        {include: '#record-declaration'},
         {include: '#attribute-section'},
         {include: '#punctuation-semicolon'}
       ]
@@ -2266,7 +2273,7 @@ const grammar = {
           ]
         },
         {
-          begin: '\\b(using)\\s*',
+          begin: '\\b(using)\\s*(?!\\(|\\s|var)',
           beginCaptures: {1: {name: 'keyword.other.using.cs'}},
           end: '(?=;)',
           patterns: [

@@ -52,7 +52,7 @@ const grammar = {
       patterns: [
         {
           match:
-            '(?x)\n  (?<!\\.) \\b(\n    __import__ | abs | all | any | ascii | bin | breakpoint | callable\n    | chr | compile | copyright | credits | delattr | dir | divmod\n    | enumerate | eval | exec | exit | filter | format | getattr\n    | globals | hasattr | hash | help | hex | id | input\n    | isinstance | issubclass | iter | len | license | locals | map\n    | max | memoryview | min | next | oct | open | ord | pow | print\n    | quit | range | reload | repr | reversed | round\n    | setattr | sorted | sum | vars | zip\n  )\\b\n',
+            '(?x)\n  (?<!\\.) \\b(\n    __import__ | abs | aiter | all | any | anext | ascii | bin\n    | breakpoint | callable | chr | compile | copyright | credits\n    | delattr | dir | divmod | enumerate | eval | exec | exit\n    | filter | format | getattr | globals | hasattr | hash | help\n    | hex | id | input | isinstance | issubclass | iter | len\n    | license | locals | map | max | memoryview | min | next\n    | oct | open | ord | pow | print | quit | range | reload | repr\n    | reversed | round | setattr | sorted | sum | vars | zip\n  )\\b\n',
           name: 'support.function.builtin.scenic'
         },
         {
@@ -81,7 +81,7 @@ const grammar = {
     },
     'builtin-types-scenic': {
       match:
-        '(?x)\n  (?<!\\.) \\b(\n    Point | OrientedPoint | Object\n    | Vector | VectorField | PolygonalVectorField\n    | Region | PointSetRegion | RectangularRegion | CircularRegion\n    | SectorRegion | PolygonalRegion | PolylineRegion\n    | Workspace\n    | Range | DiscreteRange | Options | Discrete | Uniform\n    | Normal | TruncatedNormal\n    | VerifaiParameter | VerifaiRange | VerifaiDiscreteRange | VerifaiOptions\n  )\\b\n',
+        '(?x)\n  (?<!\\.) \\b(\n    Point | OrientedPoint | Object\n    | Vector | Orientation | VectorField | PolygonalVectorField\n    | Shape | MeshShape | BoxShape | CylinderShape | ConeShape | SpheroidShape\n    | Region | PointSetRegion | RectangularRegion | CircularRegion\n    | SectorRegion | PolygonalRegion | PolylineRegion | PathRegion\n    | MeshVolumeRegion | MeshSurfaceRegion | BoxRegion | SpheroidRegion\n    | Workspace\n    | Range | DiscreteRange | Options | Discrete | Uniform\n    | Normal | TruncatedNormal\n    | VerifaiParameter | VerifaiRange | VerifaiDiscreteRange | VerifaiOptions\n  )\\b\n',
       name: 'support.type.scenic'
     },
     'call-wrapper-inheritance': {
@@ -334,148 +334,6 @@ const grammar = {
       end: '((?<=\\1)|^)(?!\\s*[rR]?(\\\'\\\'\\\'|\\"\\"\\"|\\\'|\\"))',
       patterns: [{include: '#docstring'}]
     },
-    'double-one-fregexp-conditional': {
-      begin: '(\\()\\?\\((\\w+(?:\\s+[[:alnum:]]+)?|\\d+)\\)',
-      beginCaptures: {
-        0: {name: 'keyword.operator.conditional.regexp'},
-        1: {name: 'punctuation.parenthesis.conditional.begin.regexp'}
-      },
-      end: '(\\)|(?="))|((?=(?<!\\\\)\\n))',
-      endCaptures: {
-        1: {
-          name: 'keyword.operator.conditional.negative.regexp punctuation.parenthesis.conditional.end.regexp'
-        },
-        2: {name: 'invalid.illegal.newline.scenic'}
-      },
-      patterns: [{include: '#double-one-fregexp-expression'}]
-    },
-    'double-one-fregexp-expression': {
-      patterns: [
-        {include: '#fregexp-base-expression'},
-        {include: '#double-one-regexp-character-set'},
-        {include: '#double-one-regexp-comments'},
-        {include: '#regexp-flags'},
-        {include: '#double-one-regexp-named-group'},
-        {include: '#regexp-backreference'},
-        {include: '#double-one-fregexp-lookahead'},
-        {include: '#double-one-fregexp-lookahead-negative'},
-        {include: '#double-one-fregexp-lookbehind'},
-        {include: '#double-one-fregexp-lookbehind-negative'},
-        {include: '#double-one-fregexp-conditional'},
-        {include: '#double-one-fregexp-parentheses-non-capturing'},
-        {include: '#double-one-fregexp-parentheses'}
-      ]
-    },
-    'double-one-fregexp-lookahead': {
-      begin: '(\\()\\?=',
-      beginCaptures: {
-        0: {name: 'keyword.operator.lookahead.regexp'},
-        1: {name: 'punctuation.parenthesis.lookahead.begin.regexp'}
-      },
-      end: '(\\)|(?="))|((?=(?<!\\\\)\\n))',
-      endCaptures: {
-        1: {
-          name: 'keyword.operator.lookahead.regexp punctuation.parenthesis.lookahead.end.regexp'
-        },
-        2: {name: 'invalid.illegal.newline.scenic'}
-      },
-      patterns: [{include: '#double-one-fregexp-expression'}]
-    },
-    'double-one-fregexp-lookahead-negative': {
-      begin: '(\\()\\?!',
-      beginCaptures: {
-        0: {name: 'keyword.operator.lookahead.negative.regexp'},
-        1: {name: 'punctuation.parenthesis.lookahead.begin.regexp'}
-      },
-      end: '(\\)|(?="))|((?=(?<!\\\\)\\n))',
-      endCaptures: {
-        1: {
-          name: 'keyword.operator.lookahead.negative.regexp punctuation.parenthesis.lookahead.end.regexp'
-        },
-        2: {name: 'invalid.illegal.newline.scenic'}
-      },
-      patterns: [{include: '#double-one-fregexp-expression'}]
-    },
-    'double-one-fregexp-lookbehind': {
-      begin: '(\\()\\?<=',
-      beginCaptures: {
-        0: {name: 'keyword.operator.lookbehind.regexp'},
-        1: {name: 'punctuation.parenthesis.lookbehind.begin.regexp'}
-      },
-      end: '(\\)|(?="))|((?=(?<!\\\\)\\n))',
-      endCaptures: {
-        1: {
-          name: 'keyword.operator.lookbehind.regexp punctuation.parenthesis.lookbehind.end.regexp'
-        },
-        2: {name: 'invalid.illegal.newline.scenic'}
-      },
-      patterns: [{include: '#double-one-fregexp-expression'}]
-    },
-    'double-one-fregexp-lookbehind-negative': {
-      begin: '(\\()\\?<!',
-      beginCaptures: {
-        0: {name: 'keyword.operator.lookbehind.negative.regexp'},
-        1: {name: 'punctuation.parenthesis.lookbehind.begin.regexp'}
-      },
-      end: '(\\)|(?="))|((?=(?<!\\\\)\\n))',
-      endCaptures: {
-        1: {
-          name: 'keyword.operator.lookbehind.negative.regexp punctuation.parenthesis.lookbehind.end.regexp'
-        },
-        2: {name: 'invalid.illegal.newline.scenic'}
-      },
-      patterns: [{include: '#double-one-fregexp-expression'}]
-    },
-    'double-one-fregexp-named-group': {
-      begin: '(?x)\n  (\\()  (\\?P <\\w+(?:\\s+[[:alnum:]]+)?>)\n',
-      beginCaptures: {
-        1: {
-          name: 'support.other.parenthesis.regexp punctuation.parenthesis.named.begin.regexp'
-        },
-        2: {name: 'entity.name.tag.named.group.regexp'}
-      },
-      end: '(\\)|(?="))|((?=(?<!\\\\)\\n))',
-      endCaptures: {
-        1: {
-          name: 'support.other.parenthesis.regexp punctuation.parenthesis.named.end.regexp'
-        },
-        2: {name: 'invalid.illegal.newline.scenic'}
-      },
-      name: 'meta.named.regexp',
-      patterns: [{include: '#double-one-fregexp-expression'}]
-    },
-    'double-one-fregexp-parentheses': {
-      begin: '\\(',
-      beginCaptures: {
-        0: {
-          name: 'support.other.parenthesis.regexp punctuation.parenthesis.begin.regexp'
-        }
-      },
-      end: '(\\)|(?="))|((?=(?<!\\\\)\\n))',
-      endCaptures: {
-        1: {
-          name: 'support.other.parenthesis.regexp punctuation.parenthesis.end.regexp'
-        },
-        2: {name: 'invalid.illegal.newline.scenic'}
-      },
-      patterns: [{include: '#double-one-fregexp-expression'}]
-    },
-    'double-one-fregexp-parentheses-non-capturing': {
-      begin: '\\(\\?:',
-      beginCaptures: {
-        0: {
-          name: 'support.other.parenthesis.regexp punctuation.parenthesis.non-capturing.begin.regexp'
-        }
-      },
-      end: '(\\)|(?="))|((?=(?<!\\\\)\\n))',
-      endCaptures: {
-        1: {
-          name: 'support.other.parenthesis.regexp punctuation.parenthesis.non-capturing.end.regexp'
-        },
-        2: {name: 'invalid.illegal.newline.scenic'}
-      },
-      patterns: [{include: '#double-one-fregexp-expression'}]
-    },
     'double-one-regexp-character-set': {
       patterns: [
         {match: '(?x)\n  \\[ \\^? \\] (?! .*?\\])\n'},
@@ -655,173 +513,6 @@ const grammar = {
         2: {name: 'invalid.illegal.newline.scenic'}
       },
       patterns: [{include: '#double-one-regexp-expression'}]
-    },
-    'double-three-fregexp-conditional': {
-      begin: '(\\()\\?\\((\\w+(?:\\s+[[:alnum:]]+)?|\\d+)\\)',
-      beginCaptures: {
-        0: {name: 'keyword.operator.conditional.regexp'},
-        1: {name: 'punctuation.parenthesis.conditional.begin.regexp'}
-      },
-      end: '(\\)|(?="""))',
-      endCaptures: {
-        1: {
-          name: 'keyword.operator.conditional.negative.regexp punctuation.parenthesis.conditional.end.regexp'
-        },
-        2: {name: 'invalid.illegal.newline.scenic'}
-      },
-      patterns: [
-        {include: '#double-three-fregexp-expression'},
-        {include: '#comments-string-double-three'}
-      ]
-    },
-    'double-three-fregexp-expression': {
-      patterns: [
-        {include: '#fregexp-base-expression'},
-        {include: '#double-three-regexp-character-set'},
-        {include: '#double-three-regexp-comments'},
-        {include: '#regexp-flags'},
-        {include: '#double-three-regexp-named-group'},
-        {include: '#regexp-backreference'},
-        {include: '#double-three-fregexp-lookahead'},
-        {include: '#double-three-fregexp-lookahead-negative'},
-        {include: '#double-three-fregexp-lookbehind'},
-        {include: '#double-three-fregexp-lookbehind-negative'},
-        {include: '#double-three-fregexp-conditional'},
-        {include: '#double-three-fregexp-parentheses-non-capturing'},
-        {include: '#double-three-fregexp-parentheses'},
-        {include: '#comments-string-double-three'}
-      ]
-    },
-    'double-three-fregexp-lookahead': {
-      begin: '(\\()\\?=',
-      beginCaptures: {
-        0: {name: 'keyword.operator.lookahead.regexp'},
-        1: {name: 'punctuation.parenthesis.lookahead.begin.regexp'}
-      },
-      end: '(\\)|(?="""))',
-      endCaptures: {
-        1: {
-          name: 'keyword.operator.lookahead.regexp punctuation.parenthesis.lookahead.end.regexp'
-        },
-        2: {name: 'invalid.illegal.newline.scenic'}
-      },
-      patterns: [
-        {include: '#double-three-fregexp-expression'},
-        {include: '#comments-string-double-three'}
-      ]
-    },
-    'double-three-fregexp-lookahead-negative': {
-      begin: '(\\()\\?!',
-      beginCaptures: {
-        0: {name: 'keyword.operator.lookahead.negative.regexp'},
-        1: {name: 'punctuation.parenthesis.lookahead.begin.regexp'}
-      },
-      end: '(\\)|(?="""))',
-      endCaptures: {
-        1: {
-          name: 'keyword.operator.lookahead.negative.regexp punctuation.parenthesis.lookahead.end.regexp'
-        },
-        2: {name: 'invalid.illegal.newline.scenic'}
-      },
-      patterns: [
-        {include: '#double-three-fregexp-expression'},
-        {include: '#comments-string-double-three'}
-      ]
-    },
-    'double-three-fregexp-lookbehind': {
-      begin: '(\\()\\?<=',
-      beginCaptures: {
-        0: {name: 'keyword.operator.lookbehind.regexp'},
-        1: {name: 'punctuation.parenthesis.lookbehind.begin.regexp'}
-      },
-      end: '(\\)|(?="""))',
-      endCaptures: {
-        1: {
-          name: 'keyword.operator.lookbehind.regexp punctuation.parenthesis.lookbehind.end.regexp'
-        },
-        2: {name: 'invalid.illegal.newline.scenic'}
-      },
-      patterns: [
-        {include: '#double-three-fregexp-expression'},
-        {include: '#comments-string-double-three'}
-      ]
-    },
-    'double-three-fregexp-lookbehind-negative': {
-      begin: '(\\()\\?<!',
-      beginCaptures: {
-        0: {name: 'keyword.operator.lookbehind.negative.regexp'},
-        1: {name: 'punctuation.parenthesis.lookbehind.begin.regexp'}
-      },
-      end: '(\\)|(?="""))',
-      endCaptures: {
-        1: {
-          name: 'keyword.operator.lookbehind.negative.regexp punctuation.parenthesis.lookbehind.end.regexp'
-        },
-        2: {name: 'invalid.illegal.newline.scenic'}
-      },
-      patterns: [
-        {include: '#double-three-fregexp-expression'},
-        {include: '#comments-string-double-three'}
-      ]
-    },
-    'double-three-fregexp-named-group': {
-      begin: '(?x)\n  (\\()  (\\?P <\\w+(?:\\s+[[:alnum:]]+)?>)\n',
-      beginCaptures: {
-        1: {
-          name: 'support.other.parenthesis.regexp punctuation.parenthesis.named.begin.regexp'
-        },
-        2: {name: 'entity.name.tag.named.group.regexp'}
-      },
-      end: '(\\)|(?="""))',
-      endCaptures: {
-        1: {
-          name: 'support.other.parenthesis.regexp punctuation.parenthesis.named.end.regexp'
-        },
-        2: {name: 'invalid.illegal.newline.scenic'}
-      },
-      name: 'meta.named.regexp',
-      patterns: [
-        {include: '#double-three-fregexp-expression'},
-        {include: '#comments-string-double-three'}
-      ]
-    },
-    'double-three-fregexp-parentheses': {
-      begin: '\\(',
-      beginCaptures: {
-        0: {
-          name: 'support.other.parenthesis.regexp punctuation.parenthesis.begin.regexp'
-        }
-      },
-      end: '(\\)|(?="""))',
-      endCaptures: {
-        1: {
-          name: 'support.other.parenthesis.regexp punctuation.parenthesis.end.regexp'
-        },
-        2: {name: 'invalid.illegal.newline.scenic'}
-      },
-      patterns: [
-        {include: '#double-three-fregexp-expression'},
-        {include: '#comments-string-double-three'}
-      ]
-    },
-    'double-three-fregexp-parentheses-non-capturing': {
-      begin: '\\(\\?:',
-      beginCaptures: {
-        0: {
-          name: 'support.other.parenthesis.regexp punctuation.parenthesis.non-capturing.begin.regexp'
-        }
-      },
-      end: '(\\)|(?="""))',
-      endCaptures: {
-        1: {
-          name: 'support.other.parenthesis.regexp punctuation.parenthesis.non-capturing.end.regexp'
-        },
-        2: {name: 'invalid.illegal.newline.scenic'}
-      },
-      patterns: [
-        {include: '#double-three-fregexp-expression'},
-        {include: '#comments-string-double-three'}
-      ]
     },
     'double-three-regexp-character-set': {
       patterns: [
@@ -1058,6 +749,7 @@ const grammar = {
         {include: '#regexp'},
         {include: '#string'},
         {include: '#lambda'},
+        {include: '#inline-keywords'},
         {include: '#illegal-operator'},
         {include: '#operator'},
         {include: '#curly-braces'},
@@ -1065,6 +757,7 @@ const grammar = {
         {include: '#list'},
         {include: '#round-braces'},
         {include: '#function-call'},
+        {include: '#instance-creation'},
         {include: '#builtin-functions'},
         {include: '#builtin-types'},
         {include: '#builtin-types-scenic'},
@@ -1101,73 +794,9 @@ const grammar = {
         {include: '#regexp-base-common'}
       ]
     },
-    'fregexp-double-one-line': {
-      begin: '\\b(([uU]r)|([fF]r)|(r[fF]?))(")',
-      beginCaptures: {
-        2: {name: 'invalid.deprecated.prefix.scenic'},
-        3: {name: 'storage.type.string.scenic'},
-        4: {name: 'storage.type.string.scenic'},
-        5: {name: 'punctuation.definition.string.begin.scenic'}
-      },
-      end: '(")|(?<!\\\\)(\\n)',
-      endCaptures: {
-        1: {name: 'punctuation.definition.string.end.scenic'},
-        2: {name: 'invalid.illegal.newline.scenic'}
-      },
-      name: 'string.interpolated.scenic string.regexp.quoted.single.scenic',
-      patterns: [{include: '#double-one-fregexp-expression'}]
-    },
-    'fregexp-double-three-line': {
-      begin: '\\b(([uU]r)|([fF]r)|(r[fF]?))(""")',
-      beginCaptures: {
-        2: {name: 'invalid.deprecated.prefix.scenic'},
-        3: {name: 'storage.type.string.scenic'},
-        4: {name: 'storage.type.string.scenic'},
-        5: {name: 'punctuation.definition.string.begin.scenic'}
-      },
-      end: '(""")',
-      endCaptures: {
-        1: {name: 'punctuation.definition.string.end.scenic'},
-        2: {name: 'invalid.illegal.newline.scenic'}
-      },
-      name: 'string.interpolated.scenic string.regexp.quoted.multi.scenic',
-      patterns: [{include: '#double-three-fregexp-expression'}]
-    },
     'fregexp-quantifier': {
       match: '(?x)\n  \\{\\{(\n    \\d+ | \\d+,(\\d+)? | ,\\d+\n  )\\}\\}\n',
       name: 'keyword.operator.quantifier.regexp'
-    },
-    'fregexp-single-one-line': {
-      begin: "\\b(([uU]r)|([fF]r)|(r[fF]?))(\\')",
-      beginCaptures: {
-        2: {name: 'invalid.deprecated.prefix.scenic'},
-        3: {name: 'storage.type.string.scenic'},
-        4: {name: 'storage.type.string.scenic'},
-        5: {name: 'punctuation.definition.string.begin.scenic'}
-      },
-      end: "(\\')|(?<!\\\\)(\\n)",
-      endCaptures: {
-        1: {name: 'punctuation.definition.string.end.scenic'},
-        2: {name: 'invalid.illegal.newline.scenic'}
-      },
-      name: 'string.interpolated.scenic string.regexp.quoted.single.scenic',
-      patterns: [{include: '#single-one-fregexp-expression'}]
-    },
-    'fregexp-single-three-line': {
-      begin: "\\b(([uU]r)|([fF]r)|(r[fF]?))(\\'\\'\\')",
-      beginCaptures: {
-        2: {name: 'invalid.deprecated.prefix.scenic'},
-        3: {name: 'storage.type.string.scenic'},
-        4: {name: 'storage.type.string.scenic'},
-        5: {name: 'punctuation.definition.string.begin.scenic'}
-      },
-      end: "(\\'\\'\\')",
-      endCaptures: {
-        1: {name: 'punctuation.definition.string.end.scenic'},
-        2: {name: 'invalid.illegal.newline.scenic'}
-      },
-      name: 'string.interpolated.scenic string.regexp.quoted.multi.scenic',
-      patterns: [{include: '#single-three-fregexp-expression'}]
     },
     'fstring-fnorm-quoted-multi-line': {
       begin: '(\\b[fF])([bBuU])?(\'\'\'|""")',
@@ -1350,7 +979,7 @@ const grammar = {
       name: 'string.interpolated.scenic string.quoted.raw.multi.scenic'
     },
     'fstring-raw-quoted-multi-line': {
-      begin: '(\\b(?:[R][fF]|[fF][R]))(\'\'\'|""")',
+      begin: '(\\b(?:[rR][fF]|[fF][rR]))(\'\'\'|""")',
       beginCaptures: {
         1: {
           name: 'string.interpolated.scenic string.quoted.raw.multi.scenic storage.type.string.scenic'
@@ -1375,7 +1004,7 @@ const grammar = {
       ]
     },
     'fstring-raw-quoted-single-line': {
-      begin: '(\\b(?:[R][fF]|[fF][R]))(([\'"]))',
+      begin: '(\\b(?:[rR][fF]|[fF][rR]))(([\'"]))',
       beginCaptures: {
         1: {
           name: 'string.interpolated.scenic string.quoted.raw.single.scenic storage.type.string.scenic'
@@ -1425,20 +1054,21 @@ const grammar = {
     },
     'fstring-terminator-multi': {
       patterns: [
-        {match: '(![rsa])(?=})', name: 'storage.type.format.scenic'},
+        {match: '(=(![rsa])?)(?=})', name: 'storage.type.format.scenic'},
+        {match: '(=?![rsa])(?=})', name: 'storage.type.format.scenic'},
         {
           captures: {
             1: {name: 'storage.type.format.scenic'},
             2: {name: 'storage.type.format.scenic'}
           },
           match:
-            '(?x)\n  (![rsa])?\n    ( : \\w? [<>=^]? [-+ ]? \\#?\n      \\d* ,? (\\.\\d+)? [bcdeEfFgGnosxX%]? )(?=})\n'
+            '(?x)\n  ( (?: =?) (?: ![rsa])? )\n    ( : \\w? [<>=^]? [-+ ]? \\#?\n      \\d* ,? (\\.\\d+)? [bcdeEfFgGnosxX%]? )(?=})\n'
         },
         {include: '#fstring-terminator-multi-tail'}
       ]
     },
     'fstring-terminator-multi-tail': {
-      begin: '(![rsa])?(:)(?=.*?{)',
+      begin: '((?:=?)(?:![rsa])?)(:)(?=.*?{)',
       beginCaptures: {
         1: {name: 'storage.type.format.scenic'},
         2: {name: 'storage.type.format.scenic'}
@@ -1459,20 +1089,21 @@ const grammar = {
     },
     'fstring-terminator-single': {
       patterns: [
-        {match: '(![rsa])(?=})', name: 'storage.type.format.scenic'},
+        {match: '(=(![rsa])?)(?=})', name: 'storage.type.format.scenic'},
+        {match: '(=?![rsa])(?=})', name: 'storage.type.format.scenic'},
         {
           captures: {
             1: {name: 'storage.type.format.scenic'},
             2: {name: 'storage.type.format.scenic'}
           },
           match:
-            '(?x)\n  (![rsa])?\n    ( : \\w? [<>=^]? [-+ ]? \\#?\n      \\d* ,? (\\.\\d+)? [bcdeEfFgGnosxX%]? )(?=})\n'
+            '(?x)\n  ( (?: =?) (?: ![rsa])? )\n    ( : \\w? [<>=^]? [-+ ]? \\#?\n      \\d* ,? (\\.\\d+)? [bcdeEfFgGnosxX%]? )(?=})\n'
         },
         {include: '#fstring-terminator-single-tail'}
       ]
     },
     'fstring-terminator-single-tail': {
-      begin: '(![rsa])?(:)(?=.*?{)',
+      begin: '((?:=?)(?:![rsa])?)(:)(?=.*?{)',
       beginCaptures: {
         1: {name: 'storage.type.format.scenic'},
         2: {name: 'storage.type.format.scenic'}
@@ -1578,7 +1209,7 @@ const grammar = {
         2: {name: 'keyword.control.import.scenic'}
       },
       match:
-        '(?x)\n  \\b(?:\n    (\n      and | as | assert | async | await | break | class | continue | def\n      | del | elif | else | except | finally | for | from | global\n      | if | in | is | (?<=\\.)lambda | lambda(?=\\s*[\\.=])\n      | nonlocal | not | or | pass | raise | return | try | while | with\n      | yield\n    ) | (\n      import\n    )\n  )\\b\n'
+        '(?x)\n  \\b(?:\n    (\n      and | as | assert | async | await | break | class | continue | def\n      | del | elif | else | except | finally | for | from | global\n      | if | in | is | (?<=\\.)lambda | lambda(?=\\s*[\\.=])\n      | nonlocal | not | or | pass | raise | return | try | while | with\n      | yield\n      | at | by | do | of | to | until\n    ) | (\n      import\n    )\n  )\\b\n'
     },
     'illegal-object-name': {
       match: '\\b(True|False|None)\\b',
@@ -1616,16 +1247,22 @@ const grammar = {
         {include: '#inheritance-identifier'}
       ]
     },
-    'instance-statement': {
+    'inline-keywords': {
+      captures: {1: {name: 'keyword.control.flow.scenic'}},
+      match:
+        '(?x)\n  \\b(?<!\\.)(\n    initial\\ scenario | until | to | by | from\n  )\\b\n'
+    },
+    'instance-creation': {
+      applyEndPatternLast: true,
       begin:
-        '(?x)\n  ^\\s*\n  (?: (?: (ego) | [[:alpha:]_]\\w* ) \\s* (=) | (return))? \\s*\n  (?! True|False|None|NotImplemented|Ellipsis) ([[:upper:]]\\w*)\n  (?=\n    \\s* (\\#.*)? $\n    | \\s+ (\n      (with) \\s+ \\b[[:alpha:]_]\\w*\n      | (\n        at | offset\\ by | offset\\ along\n        | ((left | right | ahead)\\ of) | behind\n        | beyond\n        | visible\\ from | visible\n        | not\\ visible\\ from | not\\ visible\n        | in | on\n        | following\n        | facing\\ (toward | away\\ from) | facing\n        | apparently\\ facing\n      )\n    )\n  )\\b\n',
+        '(?x)\n  (new) \\s+\n  (?: (Point | OrientedPoint | Object)\\b | ([[:alpha:]_]\\w*))\n  [^\\S\\n]*\n',
       beginCaptures: {
-        1: {name: 'variable.language.special.ego.scenic'},
-        2: {name: 'keyword.operator.assignment.scenic'},
-        3: {name: 'keyword.control.flow.scenic'},
-        4: {name: 'markup.bold entity.name.instance.scenic'}
+        1: {name: 'keyword.other.new.scenic'},
+        2: {name: 'markup.italic markup.bold entity.name.instance.scenic'},
+        3: {name: 'markup.bold entity.name.instance.scenic'}
       },
-      end: '\\n',
+      end: '(?=[\\S\\n])',
+      endCaptures: {1: {name: 'comment.line.number-sign.scenic'}},
       name: 'meta.instance.scenic',
       patterns: [{include: '#specifier'}, {include: '#line-continuation'}]
     },
@@ -1686,6 +1323,7 @@ const grammar = {
           },
           name: 'meta.lambda-function.scenic',
           patterns: [
+            {match: '/', name: 'keyword.operator.positional.parameter.scenic'},
             {
               match: '(\\*\\*|\\*)',
               name: 'keyword.operator.unpacking.parameter.scenic'
@@ -1773,7 +1411,7 @@ const grammar = {
     'magic-function-names': {
       captures: {1: {name: 'support.function.magic.scenic'}},
       match:
-        '(?x)\n  \\b(\n    __(?:\n      abs | add | aenter | aexit | aiter | and | anext | await\n      | bool | call | ceil | cmp | coerce | complex | contains\n      | copy | deepcopy | del | delattr | delete | delitem\n      | delslice | dir | div | divmod | enter | eq | exit | float\n      | floor | floordiv | format | ge | get | getattr\n      | getattribute | getinitargs | getitem | getnewargs\n      | getslice | getstate | gt | hash | hex | iadd | iand | idiv\n      | ifloordiv | ilshift | imod | imul | index | init\n      | instancecheck | int | invert | ior | ipow | irshift | isub\n      | iter | itruediv | ixor | le | len | long | lshift | lt\n      | missing | mod | mul | ne | neg | new | next | nonzero | oct | or\n      | pos | pow | radd | rand | rdiv | rdivmod | reduce\n      | reduce_ex | repr | reversed | rfloordiv | rlshift | rmod\n      | rmul | ror | round | rpow | rrshift | rshift | rsub\n      | rtruediv | rxor | set | setattr | setitem | setslice\n      | setstate | sizeof | str | sub | subclasscheck | truediv\n      | trunc | unicode | xor | matmul | rmatmul | imatmul\n      | init_subclass | set_name | fspath | bytes | prepare\n    )__\n  )\\b\n'
+        '(?x)\n  \\b(\n    __(?:\n      abs | add | aenter | aexit | aiter | and | anext\n      | await | bool | call | ceil | class_getitem\n      | cmp | coerce | complex | contains | copy\n      | deepcopy | del | delattr | delete | delitem\n      | delslice | dir | div | divmod | enter | eq\n      | exit | float | floor | floordiv | format | ge\n      | get | getattr | getattribute | getinitargs\n      | getitem | getnewargs | getslice | getstate | gt\n      | hash | hex | iadd | iand | idiv | ifloordiv |\n      | ilshift | imod | imul | index | init\n      | instancecheck | int | invert | ior | ipow\n      | irshift | isub | iter | itruediv | ixor | le\n      | len | long | lshift | lt | missing | mod | mul\n      | ne | neg | new | next | nonzero | oct | or | pos\n      | pow | radd | rand | rdiv | rdivmod | reduce\n      | reduce_ex | repr | reversed | rfloordiv |\n      | rlshift | rmod | rmul | ror | round | rpow\n      | rrshift | rshift | rsub | rtruediv | rxor | set\n      | setattr | setitem | set_name | setslice\n      | setstate | sizeof | str | sub | subclasscheck\n      | truediv | trunc | unicode | xor | matmul\n      | rmatmul | imatmul | init_subclass | set_name\n      | fspath | bytes | prepare | length_hint\n    )__\n  )\\b\n'
     },
     'magic-names': {
       patterns: [
@@ -1784,7 +1422,7 @@ const grammar = {
     'magic-variable-names': {
       captures: {1: {name: 'support.variable.magic.scenic'}},
       match:
-        '(?x)\n  \\b(\n    __(?:\n      all | bases | builtins | class | class_getitem | code | debug\n      | defaults | dict | doc | file | func | kwdefaults | members\n      | metaclass | methods | module | mro | mro_entries | name\n      | qualname | post_init | self | signature | slots | subclasses\n      | version | weakref | wrapped | annotations | classcell\n      | spec | path | package | future | traceback\n    )__\n  )\\b\n'
+        '(?x)\n  \\b(\n    __(?:\n      all | annotations | bases | builtins | class\n      | closure | code | debug | defaults | dict | doc | file | func\n      | globals | kwdefaults | match_args | members | metaclass | methods\n      | module | mro | mro_entries | name | qualname | post_init | self\n      | signature | slots | subclasses | version | weakref | wrapped\n      | classcell | spec | path | package | future | traceback\n    )__\n  )\\b\n'
     },
     'member-access': {
       begin: '(\\.)\\s*(?!\\.)',
@@ -1811,15 +1449,6 @@ const grammar = {
         {include: '#member-access-base'},
         {include: '#inheritance-identifier'}
       ]
-    },
-    'monitor-declaration': {
-      begin:
-        '(?x)\n  ^\\s*\n  \\b(monitor)\\s+\n    (?=\n      [[:alpha:]_][[:word:]]* \\s* :\n    )\n',
-      beginCaptures: {1: {name: 'storage.type.function.scenic'}},
-      end: '(:)',
-      endCaptures: {1: {name: 'punctuation.section.function.begin.scenic'}},
-      name: 'meta.function.scenic',
-      patterns: [{include: '#function-def-name'}]
     },
     number: {
       name: 'constant.numeric.scenic',
@@ -1869,6 +1498,35 @@ const grammar = {
       match: '(?x)\n  (?<![\\w\\.])\n    (0[oO]) (_?[0-7])+\n  \\b\n',
       name: 'constant.numeric.oct.scenic'
     },
+    'old-instance-statement': {
+      begin:
+        "(?x)\n  # Case 1: at least one specifier.\n  ^\\s*\n  (?: (?: (ego) | [[:alpha:]_]\\w* ) \\s* (=) | (return))? \\s*\n  (?! True|False|None|NotImplemented|Ellipsis)\n  (?: (Point | OrientedPoint | Object)\\b | ([[:upper:]]\\w*))\n  (?=\n    \\s+ (?:\n      (?: with) \\s+ \\b[[:alpha:]_]\\w*\n      | (?:\n        at | offset\\ by | offset\\ along\n        | (?: (?: left | right | ahead)\\ of) | behind\n        | above | below\n        | beyond\n        | visible\\ from | visible\n        | not\\ visible\\ from | not\\ visible\n        | in | on\n        | contained\\ in\n        | following\n        | facing\\ (?: directly\\ )? (?: toward | away\\ from)\n        | facing | apparently\\ facing\n      )\n    )\n  )\\b\n\n# Case 2: assignment with no specifiers. Only match ego since otherwise\n#   we'd get annoying false positives while typing Python lines like\n#   'x = MyPythonClass()' before adding the parentheses.\n| ^\\s* (ego) \\s* (=) \\s*\n  (?: (Object)\\b | ([[:upper:]]\\w*))\n  (?= \\s* (?: \\#.*)? $ )\n\n# Case 3: name with no specifiers. We'll allow this since we only match\n#   capitalized names, which are rare as variable or side-effecting\n#   function names so we should get few false positives.\n| ^\\s* (?: (Object)\\b | ([[:upper:]]\\w*))\n  (?= \\s* (?: \\#.*)? $ )\n",
+      beginCaptures: {
+        1: {name: 'variable.language.special.ego.scenic'},
+        10: {name: 'markup.italic markup.bold entity.name.instance.scenic'},
+        11: {name: 'markup.bold entity.name.instance.scenic'},
+        2: {name: 'keyword.operator.assignment.scenic'},
+        3: {name: 'keyword.control.flow.scenic'},
+        4: {name: 'markup.italic markup.bold entity.name.instance.scenic'},
+        5: {name: 'markup.bold entity.name.instance.scenic'},
+        6: {name: 'variable.language.special.ego.scenic'},
+        7: {name: 'keyword.operator.assignment.scenic'},
+        8: {name: 'markup.italic markup.bold entity.name.instance.scenic'},
+        9: {name: 'markup.bold entity.name.instance.scenic'}
+      },
+      end: '\\n',
+      name: 'meta.instance.scenic',
+      patterns: [{include: '#specifier'}, {include: '#line-continuation'}]
+    },
+    'old-monitor-declaration': {
+      begin:
+        '(?x)\n  ^\\s*\n  (monitor)\\s+\n    (?=\n      [[:alpha:]_][[:word:]]* \\s* :\n    )\n',
+      beginCaptures: {1: {name: 'storage.type.function.scenic'}},
+      end: '(:)',
+      endCaptures: {1: {name: 'punctuation.section.function.begin.scenic'}},
+      name: 'meta.function.scenic',
+      patterns: [{include: '#function-def-name'}]
+    },
     operator: {
       captures: {
         1: {name: 'keyword.operator.logical.scenic'},
@@ -1876,20 +1534,39 @@ const grammar = {
         3: {name: 'keyword.operator.bitwise.scenic'},
         4: {name: 'keyword.operator.arithmetic.scenic'},
         5: {name: 'keyword.operator.comparison.scenic'},
-        6: {name: 'keyword.operator.scenic'}
+        6: {name: 'keyword.operator.assignment.scenic'},
+        7: {name: 'keyword.operator.scenic'}
       },
       match:
-        '(?x)\n    \\b(?<!\\.)\n      (?:\n        (and | or | not | in | is)                         (?# 1)\n        |\n        (for | if | else | await | (?:yield(?:\\s+from)?))  (?# 2)\n      )\n    (?!\\s*:)\\b\n\n    | (<< | >> | & | \\| | \\^ | ~)                          (?# 3)\n\n    | (\\*\\* | \\* | \\+ | - | % | // | / | @)                (?# 4)\n\n    | (!= | == | >= | <= | < | >)                          (?# 5)\n\n    | (                                                    (?# 6)\n      deg\n      | (?:\n          (?:relative | apparent)\\ heading\\ of\n          | distance\\ (?:from | to) | distance\n          | angle\\ from | angle | can\\ see\n          | at | relative\\ to\n          | offset\\ by | offset\\ along\n          | visible | not\\ visible\n          | (?:front | back | left | right)\\ of\n          | (?:(?:front | back)\\ (?:left | right))\\ of\n          | to | by\n        )\\b(?!\\s*[)}\\]])\n      )\n'
+        '(?x)\n    \\b(?<!\\.)\n      (?:\n        (and | or | not | in | is)                         (?# 1)\n        |\n        (for | if | else | await | (?:yield(?:\\s+from)?))  (?# 2)\n      )\n    (?!\\s*:)\\b\n\n    | (<< | >> | & | \\| | \\^ | ~)                          (?# 3)\n\n    | (\\*\\* | \\* | \\+ | - | % | // | / | @)                (?# 4)\n\n    | (!= | == | >= | <= | < | >)                          (?# 5)\n\n    | (:=)                                                 (?# 6)\n\n    | (                                                    (?# 7)\n      deg\n      | (?:\n          (?:relative | apparent)\\ heading\\ of\n          | distance\\ (?:from | to | past)\n          | (?:angle | altitude)\\ (?:from | to) | can\\ see\n          | at | relative\\ to\n          | offset\\ by | offset\\ along\n          | visible | not\\ visible\n          | (?:front | back | left | right | top | bottom)\\ of\n          | (?:(?:front | back | top | bottom)\\ (?:left | right))\\ of\n          | (?:(?:top | bottom)\\ (?:front | back))\\ of\n          | (?:(?:top | bottom)\\ (?:front | back)\\ (?:left | right))\\ of\n        )\\b(?!\\s*[)}\\]=:.;,])\n      )\n'
+    },
+    'override-statement': {
+      begin:
+        '(?x)\n  ^\\s*\n  (override) \\s+ (?: (ego) | [[:alpha:]_]\\w*)\n  \\s+\n',
+      beginCaptures: {
+        1: {name: 'keyword.control.flow.scenic'},
+        2: {name: 'variable.language.special.ego.scenic'}
+      },
+      end: '\\n',
+      name: 'meta.override.scenic',
+      patterns: [{include: '#specifier'}, {include: '#line-continuation'}]
     },
     'param-statement': {
+      begin: '^\\s*(param)\\s+',
+      beginCaptures: {1: {name: 'keyword.control.flow.scenic'}},
+      end: '(\\#.*)?\\n',
+      endCaptures: {1: {name: 'comment.line.number-sign.scenic'}},
       patterns: [
         {
           captures: {
-            1: {name: 'keyword.control.flow.scenic'},
+            1: {name: 'variable.parameter.global.scenic'},
             2: {name: 'keyword.operator.assignment.scenic'}
           },
-          match: '(?x)\n  ^\\s*(param) \\s* [[:alpha:]_]\\w* \\s* (=)\n'
-        }
+          match:
+            '(?x)\n  ([[:alpha:]_]\\w* | \'[^\\\\\'"%{\\n]+\' | "[^\\\\\'"%{\\n]+")\n  \\s* (=) \\s*\n',
+          name: 'meta.param.scenic'
+        },
+        {include: '#expression'}
       ]
     },
     'parameter-special': {
@@ -1910,6 +1587,7 @@ const grammar = {
       endCaptures: {1: {name: 'punctuation.definition.parameters.end.scenic'}},
       name: 'meta.function.parameters.scenic',
       patterns: [
+        {match: '/', name: 'keyword.operator.positional.parameter.scenic'},
         {
           match: '(\\*\\*|\\*)',
           name: 'keyword.operator.unpacking.parameter.scenic'
@@ -1936,8 +1614,7 @@ const grammar = {
         {
           match: '\\b(additive|dynamic|final)\\b',
           name: 'storage.type.property.scenic'
-        },
-        {match: '\\b[[:alpha:]_]\\w*\\b', name: 'storage.scenic'}
+        }
       ]
     },
     'property-declaration': {
@@ -1973,11 +1650,7 @@ const grammar = {
         {include: '#regexp-single-three-line'},
         {include: '#regexp-double-three-line'},
         {include: '#regexp-single-one-line'},
-        {include: '#regexp-double-one-line'},
-        {include: '#fregexp-single-three-line'},
-        {include: '#fregexp-double-three-line'},
-        {include: '#fregexp-single-one-line'},
-        {include: '#fregexp-double-one-line'}
+        {include: '#regexp-double-one-line'}
       ]
     },
     'regexp-backreference': {
@@ -2123,6 +1796,18 @@ const grammar = {
       name: 'string.regexp.quoted.multi.scenic',
       patterns: [{include: '#single-three-regexp-expression'}]
     },
+    'require-statement': {
+      patterns: [
+        {
+          begin: '(?x)\n  ^\\s* (require) \\s+ (?!monitor)\n',
+          beginCaptures: {1: {name: 'keyword.control.flow.scenic'}},
+          end: '(?x) (\\#.*)? \\n',
+          endCaptures: {1: {name: 'comment.line.number-sign.scenic'}},
+          name: 'meta.requirement.scenic',
+          patterns: [{include: '#temporal-expression'}]
+        }
+      ]
+    },
     'return-annotation': {
       begin: '(->)',
       beginCaptures: {
@@ -2140,7 +1825,7 @@ const grammar = {
     },
     'scenario-declaration': {
       begin:
-        '(?x)\n  ^\\s*\n  \\b(scenario | behavior)\\s+\n    (?=\n      [[:alpha:]_][[:word:]]* \\s* \\(\n    )\n',
+        '(?x)\n  ^\\s*\n  (scenario | behavior | monitor)\\s+\n    (?=\n      [[:alpha:]_][[:word:]]* \\s* \\(\n    )\n',
       beginCaptures: {1: {name: 'storage.type.function.scenic'}},
       end: '(:|(?=[#\'"\\n]))',
       endCaptures: {1: {name: 'punctuation.section.function.begin.scenic'}},
@@ -2154,148 +1839,6 @@ const grammar = {
     },
     semicolon: {
       patterns: [{match: '\\;$', name: 'invalid.deprecated.semicolon.scenic'}]
-    },
-    'single-one-fregexp-conditional': {
-      begin: '(\\()\\?\\((\\w+(?:\\s+[[:alnum:]]+)?|\\d+)\\)',
-      beginCaptures: {
-        0: {name: 'keyword.operator.conditional.regexp'},
-        1: {name: 'punctuation.parenthesis.conditional.begin.regexp'}
-      },
-      end: "(\\)|(?=\\'))|((?=(?<!\\\\)\\n))",
-      endCaptures: {
-        1: {
-          name: 'keyword.operator.conditional.negative.regexp punctuation.parenthesis.conditional.end.regexp'
-        },
-        2: {name: 'invalid.illegal.newline.scenic'}
-      },
-      patterns: [{include: '#single-one-fregexp-expression'}]
-    },
-    'single-one-fregexp-expression': {
-      patterns: [
-        {include: '#fregexp-base-expression'},
-        {include: '#single-one-regexp-character-set'},
-        {include: '#single-one-regexp-comments'},
-        {include: '#regexp-flags'},
-        {include: '#single-one-regexp-named-group'},
-        {include: '#regexp-backreference'},
-        {include: '#single-one-fregexp-lookahead'},
-        {include: '#single-one-fregexp-lookahead-negative'},
-        {include: '#single-one-fregexp-lookbehind'},
-        {include: '#single-one-fregexp-lookbehind-negative'},
-        {include: '#single-one-fregexp-conditional'},
-        {include: '#single-one-fregexp-parentheses-non-capturing'},
-        {include: '#single-one-fregexp-parentheses'}
-      ]
-    },
-    'single-one-fregexp-lookahead': {
-      begin: '(\\()\\?=',
-      beginCaptures: {
-        0: {name: 'keyword.operator.lookahead.regexp'},
-        1: {name: 'punctuation.parenthesis.lookahead.begin.regexp'}
-      },
-      end: "(\\)|(?=\\'))|((?=(?<!\\\\)\\n))",
-      endCaptures: {
-        1: {
-          name: 'keyword.operator.lookahead.regexp punctuation.parenthesis.lookahead.end.regexp'
-        },
-        2: {name: 'invalid.illegal.newline.scenic'}
-      },
-      patterns: [{include: '#single-one-fregexp-expression'}]
-    },
-    'single-one-fregexp-lookahead-negative': {
-      begin: '(\\()\\?!',
-      beginCaptures: {
-        0: {name: 'keyword.operator.lookahead.negative.regexp'},
-        1: {name: 'punctuation.parenthesis.lookahead.begin.regexp'}
-      },
-      end: "(\\)|(?=\\'))|((?=(?<!\\\\)\\n))",
-      endCaptures: {
-        1: {
-          name: 'keyword.operator.lookahead.negative.regexp punctuation.parenthesis.lookahead.end.regexp'
-        },
-        2: {name: 'invalid.illegal.newline.scenic'}
-      },
-      patterns: [{include: '#single-one-fregexp-expression'}]
-    },
-    'single-one-fregexp-lookbehind': {
-      begin: '(\\()\\?<=',
-      beginCaptures: {
-        0: {name: 'keyword.operator.lookbehind.regexp'},
-        1: {name: 'punctuation.parenthesis.lookbehind.begin.regexp'}
-      },
-      end: "(\\)|(?=\\'))|((?=(?<!\\\\)\\n))",
-      endCaptures: {
-        1: {
-          name: 'keyword.operator.lookbehind.regexp punctuation.parenthesis.lookbehind.end.regexp'
-        },
-        2: {name: 'invalid.illegal.newline.scenic'}
-      },
-      patterns: [{include: '#single-one-fregexp-expression'}]
-    },
-    'single-one-fregexp-lookbehind-negative': {
-      begin: '(\\()\\?<!',
-      beginCaptures: {
-        0: {name: 'keyword.operator.lookbehind.negative.regexp'},
-        1: {name: 'punctuation.parenthesis.lookbehind.begin.regexp'}
-      },
-      end: "(\\)|(?=\\'))|((?=(?<!\\\\)\\n))",
-      endCaptures: {
-        1: {
-          name: 'keyword.operator.lookbehind.negative.regexp punctuation.parenthesis.lookbehind.end.regexp'
-        },
-        2: {name: 'invalid.illegal.newline.scenic'}
-      },
-      patterns: [{include: '#single-one-fregexp-expression'}]
-    },
-    'single-one-fregexp-named-group': {
-      begin: '(?x)\n  (\\()  (\\?P <\\w+(?:\\s+[[:alnum:]]+)?>)\n',
-      beginCaptures: {
-        1: {
-          name: 'support.other.parenthesis.regexp punctuation.parenthesis.named.begin.regexp'
-        },
-        2: {name: 'entity.name.tag.named.group.regexp'}
-      },
-      end: "(\\)|(?=\\'))|((?=(?<!\\\\)\\n))",
-      endCaptures: {
-        1: {
-          name: 'support.other.parenthesis.regexp punctuation.parenthesis.named.end.regexp'
-        },
-        2: {name: 'invalid.illegal.newline.scenic'}
-      },
-      name: 'meta.named.regexp',
-      patterns: [{include: '#single-one-fregexp-expression'}]
-    },
-    'single-one-fregexp-parentheses': {
-      begin: '\\(',
-      beginCaptures: {
-        0: {
-          name: 'support.other.parenthesis.regexp punctuation.parenthesis.begin.regexp'
-        }
-      },
-      end: "(\\)|(?=\\'))|((?=(?<!\\\\)\\n))",
-      endCaptures: {
-        1: {
-          name: 'support.other.parenthesis.regexp punctuation.parenthesis.end.regexp'
-        },
-        2: {name: 'invalid.illegal.newline.scenic'}
-      },
-      patterns: [{include: '#single-one-fregexp-expression'}]
-    },
-    'single-one-fregexp-parentheses-non-capturing': {
-      begin: '\\(\\?:',
-      beginCaptures: {
-        0: {
-          name: 'support.other.parenthesis.regexp punctuation.parenthesis.non-capturing.begin.regexp'
-        }
-      },
-      end: "(\\)|(?=\\'))|((?=(?<!\\\\)\\n))",
-      endCaptures: {
-        1: {
-          name: 'support.other.parenthesis.regexp punctuation.parenthesis.non-capturing.end.regexp'
-        },
-        2: {name: 'invalid.illegal.newline.scenic'}
-      },
-      patterns: [{include: '#single-one-fregexp-expression'}]
     },
     'single-one-regexp-character-set': {
       patterns: [
@@ -2476,173 +2019,6 @@ const grammar = {
         2: {name: 'invalid.illegal.newline.scenic'}
       },
       patterns: [{include: '#single-one-regexp-expression'}]
-    },
-    'single-three-fregexp-conditional': {
-      begin: '(\\()\\?\\((\\w+(?:\\s+[[:alnum:]]+)?|\\d+)\\)',
-      beginCaptures: {
-        0: {name: 'keyword.operator.conditional.regexp'},
-        1: {name: 'punctuation.parenthesis.conditional.begin.regexp'}
-      },
-      end: "(\\)|(?=\\'\\'\\'))",
-      endCaptures: {
-        1: {
-          name: 'keyword.operator.conditional.negative.regexp punctuation.parenthesis.conditional.end.regexp'
-        },
-        2: {name: 'invalid.illegal.newline.scenic'}
-      },
-      patterns: [
-        {include: '#single-three-fregexp-expression'},
-        {include: '#comments-string-single-three'}
-      ]
-    },
-    'single-three-fregexp-expression': {
-      patterns: [
-        {include: '#fregexp-base-expression'},
-        {include: '#single-three-regexp-character-set'},
-        {include: '#single-three-regexp-comments'},
-        {include: '#regexp-flags'},
-        {include: '#single-three-regexp-named-group'},
-        {include: '#regexp-backreference'},
-        {include: '#single-three-fregexp-lookahead'},
-        {include: '#single-three-fregexp-lookahead-negative'},
-        {include: '#single-three-fregexp-lookbehind'},
-        {include: '#single-three-fregexp-lookbehind-negative'},
-        {include: '#single-three-fregexp-conditional'},
-        {include: '#single-three-fregexp-parentheses-non-capturing'},
-        {include: '#single-three-fregexp-parentheses'},
-        {include: '#comments-string-single-three'}
-      ]
-    },
-    'single-three-fregexp-lookahead': {
-      begin: '(\\()\\?=',
-      beginCaptures: {
-        0: {name: 'keyword.operator.lookahead.regexp'},
-        1: {name: 'punctuation.parenthesis.lookahead.begin.regexp'}
-      },
-      end: "(\\)|(?=\\'\\'\\'))",
-      endCaptures: {
-        1: {
-          name: 'keyword.operator.lookahead.regexp punctuation.parenthesis.lookahead.end.regexp'
-        },
-        2: {name: 'invalid.illegal.newline.scenic'}
-      },
-      patterns: [
-        {include: '#single-three-fregexp-expression'},
-        {include: '#comments-string-single-three'}
-      ]
-    },
-    'single-three-fregexp-lookahead-negative': {
-      begin: '(\\()\\?!',
-      beginCaptures: {
-        0: {name: 'keyword.operator.lookahead.negative.regexp'},
-        1: {name: 'punctuation.parenthesis.lookahead.begin.regexp'}
-      },
-      end: "(\\)|(?=\\'\\'\\'))",
-      endCaptures: {
-        1: {
-          name: 'keyword.operator.lookahead.negative.regexp punctuation.parenthesis.lookahead.end.regexp'
-        },
-        2: {name: 'invalid.illegal.newline.scenic'}
-      },
-      patterns: [
-        {include: '#single-three-fregexp-expression'},
-        {include: '#comments-string-single-three'}
-      ]
-    },
-    'single-three-fregexp-lookbehind': {
-      begin: '(\\()\\?<=',
-      beginCaptures: {
-        0: {name: 'keyword.operator.lookbehind.regexp'},
-        1: {name: 'punctuation.parenthesis.lookbehind.begin.regexp'}
-      },
-      end: "(\\)|(?=\\'\\'\\'))",
-      endCaptures: {
-        1: {
-          name: 'keyword.operator.lookbehind.regexp punctuation.parenthesis.lookbehind.end.regexp'
-        },
-        2: {name: 'invalid.illegal.newline.scenic'}
-      },
-      patterns: [
-        {include: '#single-three-fregexp-expression'},
-        {include: '#comments-string-single-three'}
-      ]
-    },
-    'single-three-fregexp-lookbehind-negative': {
-      begin: '(\\()\\?<!',
-      beginCaptures: {
-        0: {name: 'keyword.operator.lookbehind.negative.regexp'},
-        1: {name: 'punctuation.parenthesis.lookbehind.begin.regexp'}
-      },
-      end: "(\\)|(?=\\'\\'\\'))",
-      endCaptures: {
-        1: {
-          name: 'keyword.operator.lookbehind.negative.regexp punctuation.parenthesis.lookbehind.end.regexp'
-        },
-        2: {name: 'invalid.illegal.newline.scenic'}
-      },
-      patterns: [
-        {include: '#single-three-fregexp-expression'},
-        {include: '#comments-string-single-three'}
-      ]
-    },
-    'single-three-fregexp-named-group': {
-      begin: '(?x)\n  (\\()  (\\?P <\\w+(?:\\s+[[:alnum:]]+)?>)\n',
-      beginCaptures: {
-        1: {
-          name: 'support.other.parenthesis.regexp punctuation.parenthesis.named.begin.regexp'
-        },
-        2: {name: 'entity.name.tag.named.group.regexp'}
-      },
-      end: "(\\)|(?=\\'\\'\\'))",
-      endCaptures: {
-        1: {
-          name: 'support.other.parenthesis.regexp punctuation.parenthesis.named.end.regexp'
-        },
-        2: {name: 'invalid.illegal.newline.scenic'}
-      },
-      name: 'meta.named.regexp',
-      patterns: [
-        {include: '#single-three-fregexp-expression'},
-        {include: '#comments-string-single-three'}
-      ]
-    },
-    'single-three-fregexp-parentheses': {
-      begin: '\\(',
-      beginCaptures: {
-        0: {
-          name: 'support.other.parenthesis.regexp punctuation.parenthesis.begin.regexp'
-        }
-      },
-      end: "(\\)|(?=\\'\\'\\'))",
-      endCaptures: {
-        1: {
-          name: 'support.other.parenthesis.regexp punctuation.parenthesis.end.regexp'
-        },
-        2: {name: 'invalid.illegal.newline.scenic'}
-      },
-      patterns: [
-        {include: '#single-three-fregexp-expression'},
-        {include: '#comments-string-single-three'}
-      ]
-    },
-    'single-three-fregexp-parentheses-non-capturing': {
-      begin: '\\(\\?:',
-      beginCaptures: {
-        0: {
-          name: 'support.other.parenthesis.regexp punctuation.parenthesis.non-capturing.begin.regexp'
-        }
-      },
-      end: "(\\)|(?=\\'\\'\\'))",
-      endCaptures: {
-        1: {
-          name: 'support.other.parenthesis.regexp punctuation.parenthesis.non-capturing.end.regexp'
-        },
-        2: {name: 'invalid.illegal.newline.scenic'}
-      },
-      patterns: [
-        {include: '#single-three-fregexp-expression'},
-        {include: '#comments-string-single-three'}
-      ]
     },
     'single-three-regexp-character-set': {
       patterns: [
@@ -2866,12 +2242,13 @@ const grammar = {
     },
     specifier: {
       begin:
-        '(?x)\n  \\b(?<!\\.) (?:\n    (with) \\s+ \\b[[:alpha:]_]\\w*\n    | (\n      at | offset\\ by | offset\\ along\n      | ((left | right | ahead)\\ of) | behind\n      | beyond\n      | visible\\ from | visible\n      | not\\ visible\\ from | not\\ visible\n      | in | on\n      | following\n      | facing\\ (toward | away\\ from) | facing\n      | apparently\\ facing\n    )\n  )\\b\n',
+        '(?x)\n  \\b(?<!\\.) (?:\n    (with) \\s+ \\b([[:alpha:]_]\\w*)\n    | (\n      at | offset\\ by | offset\\ along\n      | ((left | right | ahead)\\ of) | behind\n      | above | below\n      | beyond\n      | visible\\ from | visible\n      | not\\ visible\\ from | not\\ visible\n      | in | on\n      | contained\\ in\n      | following\n      | facing\\ (?:directly\\ )? (toward | away\\ from)\n      | facing | apparently\\ facing\n    )\n  )\\b\n',
       beginCaptures: {
         1: {name: 'keyword.other.specifier.scenic'},
-        2: {name: 'keyword.other.specifier.scenic'}
+        2: {name: 'entity.name.property.scenic'},
+        3: {name: 'keyword.other.specifier.scenic'}
       },
-      end: '(?x)\n  (,) \\s* (?: (\\#.*)? \\n)?\n  | (?=\\n)\n',
+      end: '(?x)\n  (,) \\s* (?: (\\#.*)? \\n)?\n  | (?=[)}\\]\\n])\n',
       endCaptures: {
         1: {name: 'punctuation.separator.specifier.scenic'},
         2: {name: 'comment.line.number-sign.scenic'}
@@ -2893,16 +2270,18 @@ const grammar = {
         {include: '#class-declaration'},
         {include: '#function-declaration'},
         {include: '#scenario-declaration'},
-        {include: '#monitor-declaration'},
+        {include: '#old-monitor-declaration'},
         {include: '#statement-keyword'},
+        {include: '#override-statement'},
         {include: '#param-statement'},
+        {include: '#require-statement'},
         {include: '#statement-keyword-scenic'},
         {include: '#assignment-operator'},
         {include: '#decorator'},
         {include: '#property-declaration'},
         {include: '#docstring-statement'},
         {include: '#semicolon'},
-        {include: '#instance-statement'}
+        {include: '#old-instance-statement'}
       ]
     },
     'statement-keyword': {
@@ -2920,24 +2299,24 @@ const grammar = {
           match: '(?x)\n  \\b(?<!\\.)(\n    global | nonlocal\n  )\\b\n',
           name: 'storage.modifier.declaration.scenic'
         },
-        {match: '\\b(?<!\\.)(class)\\b', name: 'storage.type.class.scenic'}
+        {match: '\\b(?<!\\.)(class)\\b', name: 'storage.type.class.scenic'},
+        {
+          captures: {1: {name: 'keyword.control.flow.scenic'}},
+          match:
+            '(?x)\n  ^\\s*(\n    case | match\n  )(?=\\s*([-+\\w\\d(\\[{\'":#]|$))\\b\n'
+        }
       ]
     },
     'statement-keyword-scenic': {
       patterns: [
         {
           match:
-            '(?x)\n  ^\\s*(\n    model | simulator | param\n    | require\\ always | require\\ eventually | require\n    | terminate\\ when | terminate\\ after\n    | mutate\n    | record\\ initial | record\\ final | record\n    | take | wait | terminate\n    | do\\ choose | do\\ shuffle | do\n    | abort | override\n    | try | interrupt\\ when\n  )\\b\n',
+            '(?x)\n  ^\\s*(\n    model | simulator | param\n    | require\\ monitor | require\n    | terminate\\ when | terminate\\ after\n    | terminate\\ simulation\\ when\n    | mutate\n    | record\\ initial | record\\ final | record\n    | take | wait | terminate\\ simulation | terminate\n    | do\\ choose | do\\ shuffle | do\n    | abort | override\n    | interrupt\\ when\n  )\\b (?!\\s*[:.;,])\n',
           name: 'keyword.control.flow.scenic'
         },
         {
           match:
             '(?x)\n  \\b(?<!\\.)(seconds | steps)\\b (?= \\s*(\\#.*)? $)\n',
-          name: 'keyword.control.flow.scenic'
-        },
-        {
-          match:
-            '(?x)\n  \\b(?<!\\.)(\n    initial\\ scenario | until\n  )\\b\n',
           name: 'keyword.control.flow.scenic'
         },
         {
@@ -3231,6 +2610,22 @@ const grammar = {
         {include: '#escape-sequence-unicode'},
         {include: '#string-entity'},
         {include: '#string-brace-formatting'}
+      ]
+    },
+    'temporal-expression': {
+      patterns: [
+        {
+          match: '(?x)\n  (always | eventually | next | until | implies)\\b\n',
+          name: 'keyword.control.flow.scenic'
+        },
+        {
+          begin: '\\(',
+          beginCaptures: {0: {name: 'punctuation.parenthesis.begin.scenic'}},
+          end: '\\)',
+          endCaptures: {0: {name: 'punctuation.parenthesis.end.scenic'}},
+          patterns: [{include: '#temporal-expression'}]
+        },
+        {include: '#expression'}
       ]
     }
   },

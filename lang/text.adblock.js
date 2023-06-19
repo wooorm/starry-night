@@ -1,6 +1,6 @@
 // This is a TextMate grammar distributed by `starry-night`.
 // This grammar is developed at
-// <https://github.com/ameshkov/VscodeAdblockSyntax>
+// <https://github.com/AdguardTeam/VscodeAdblockSyntax>
 // and licensed `mit`.
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
@@ -33,7 +33,7 @@ const grammar = {
       patterns: [
         {
           captures: {
-            1: {name: 'punctuation.definition.array.start.ablock.agent'},
+            1: {name: 'punctuation.definition.array.start.adblock.agent'},
             2: {
               patterns: [
                 {include: '#adblockData'},
@@ -41,7 +41,7 @@ const grammar = {
                 {match: '.*', name: 'invalid.illegal'}
               ]
             },
-            3: {name: 'punctuation.definition.array.end.ablock.agent'}
+            3: {name: 'punctuation.definition.array.end.adblock.agent'}
           },
           match: '^(\\[)([^\\]]+)(\\])\\s*$'
         }
@@ -55,7 +55,7 @@ const grammar = {
             2: {name: 'constant.numeric.decimal'}
           },
           match:
-            '(?:\\s*)([Aa]d[Bb]lock(?:\\s[Pp]lus)?|u[Bb]lock(?:\\s[Oo]rigin)?|[Aa]d[Gg]uard)(?:\\s+(\\d+(?:\\.\\d+)*+\\+?))?(?:\\s*)'
+            '(?x)\n  (?:\\s*)\n  (\n      [Aa]d[Bb]lock(?:\\s[Pp]lus)?\n      |u[Bb]lock(?:\\s[Oo]rigin)?\n      |[Aa]d[Gg]uard\n  )\n  (?:\\s+(\\d+(?:\\.\\d+)*+\\+?))?\n  (?:\\s*)'
         }
       ]
     },
@@ -418,16 +418,23 @@ const grammar = {
         }
       ]
     },
-    jsFunction: {
-      patterns: [{match: '.+', name: 'constant.character.jscode.adblock'}]
-    },
     jsRules: {
       patterns: [
+        {
+          begin: '^(.*?)(#@?%#(?!\\/\\/scriptlet))',
+          beginCaptures: {
+            1: {patterns: [{include: '#domainListCommaSeparated'}]},
+            2: {name: 'keyword.control.adblock'}
+          },
+          contentName: 'source.js',
+          end: '$',
+          patterns: [{include: 'source.js'}]
+        },
         {
           captures: {
             1: {patterns: [{include: '#domainListCommaSeparated'}]},
             2: {name: 'keyword.control.adblock'},
-            3: {patterns: [{include: '#jsFunction'}]}
+            3: {name: 'invalid.illegal'}
           },
           match: '^(.*?)(#@?%#)(.+)$'
         }
@@ -442,7 +449,7 @@ const grammar = {
               patterns: [
                 {
                   match:
-                    '(adguard_app_windows|adguard_app_mac|adguard_app_android|adguard_app_ios|adguard_ext_chromium|adguard_ext_firefox|adguard_ext_edge|adguard_ext_safari|adguard_ext_opera|adguard_ext_android_cb|adguard|ext_abp|ext_ublock|env_chromium|env_edge|env_firefox|env_mobile|env_safari|false|cap_html_filtering|cap_user_stylesheet|env_legacy)',
+                    '(?x)\n(\n  adguard_app_windows\n  |adguard_app_mac\n  |adguard_app_android\n  |adguard_app_ios\n  |adguard_ext_chromium\n  |adguard_ext_firefox\n  |adguard_ext_edge\n  |adguard_ext_safari\n  |adguard_ext_opera\n  |adguard_ext_android_cb\n  |adguard|ext_abp\n  |ext_ublock\n  |env_chromium\n  |env_edge\n  |env_firefox\n  |env_mobile\n  |env_safari\n  |false\n  |cap_html_filtering\n  |cap_user_stylesheet\n  |env_legacy\n)',
                   name: 'constant.language.platform.name'
                 },
                 {match: '(&&|!|\\|\\|| )', name: 'keyword.control.characters'},

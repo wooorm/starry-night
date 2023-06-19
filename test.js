@@ -3,7 +3,7 @@ import test from 'node:test'
 import {toHtml} from 'hast-util-to-html'
 import sourceAssembly from './lang/source.assembly.js'
 import sourceCss from './lang/source.css.js'
-import sourceGfm from './lang/source.gfm.js'
+import textMd from './lang/text.md.js'
 import textPhp from './lang/text.html.php.js'
 import textXml from './lang/text.xml.js'
 import textXmlSvg from './lang/text.xml.svg.js'
@@ -23,17 +23,17 @@ test('.flagToScope(flag)', async () => {
 
   assert.equal(
     starryNight.flagToScope('pandoc'),
-    'source.gfm',
+    'text.md',
     'should support names'
   )
   assert.equal(
     starryNight.flagToScope('workbook'),
-    'source.gfm',
+    'text.md',
     'should support extensions (w/o dot)'
   )
   assert.equal(
     starryNight.flagToScope('.workbook'),
-    'source.gfm',
+    'text.md',
     'should support extensions (w/ dot)'
   )
   assert.equal(starryNight.flagToScope('whatever'), undefined)
@@ -194,7 +194,7 @@ test('.missingScopes()', async () => {
 })
 
 test('.register(grammars)', async () => {
-  const starryNight = await createStarryNight([sourceGfm])
+  const starryNight = await createStarryNight([textMd])
 
   await starryNight.register([sourceCss])
 
@@ -205,10 +205,8 @@ test('.register(grammars)', async () => {
   )
 
   assert.equal(
-    toHtml(
-      starryNight.highlight('```css\nem { color: red }\n```', 'source.gfm')
-    ),
-    '<span class="pl-c1">```css</span>\n<span class="pl-ent">em</span> { <span class="pl-c1">color</span>: <span class="pl-c1">red</span> }\n<span class="pl-c1">```</span>',
+    toHtml(starryNight.highlight('```css\nem { color: red }\n```', 'text.md')),
+    '<span class="pl-s">```</span><span class="pl-en">css</span>\n<span class="pl-ent">em</span> { <span class="pl-c1">color</span>: <span class="pl-c1">red</span> }\n<span class="pl-s">```</span>',
     'should support adding deep languages'
   )
 })
@@ -267,8 +265,8 @@ test('.highlight(value, scope)', async () => {
   )
 
   assert.equal(
-    toHtml(starryNight.highlight('# asd *qwe* rty', 'source.gfm')),
-    '<span class="pl-mh"># asd <span class="pl-mi">*qwe*</span> rty</span>',
+    toHtml(starryNight.highlight('# asd *qwe* rty', 'text.md')),
+    '<span class="pl-mh"># <span class="pl-en">asd </span></span><span class="pl-s"><span class="pl-mh"><span class="pl-en">*</span></span></span><span class="pl-mh"><span class="pl-en">qwe</span></span><span class="pl-s"><span class="pl-mh"><span class="pl-en">*</span></span></span><span class="pl-mh"><span class="pl-en"> rty</span></span>',
     'should generate parents'
   )
 

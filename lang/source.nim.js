@@ -154,28 +154,8 @@ const grammar = {
         {match: '\\bresult\\b', name: 'variable.language.nim'},
         {
           match:
-            '\\b(?x: abs|add(?:[Ee]scapedChar|Float|Int|QuitProc|Quoted)?|alignof|allocCStringArray|arrayWith |ashr|astToStr|assert |atomic(?:AddFetch|AlwaysLockFree|(?:And|Nand|Or|Sub|Xor)Fetch|Clear |(?:Compare)?ExchangeN?|Dec|Fetch(?:A[dn]d|Nand|Or|Sub|Xor)|Inc |IsLockFree|LoadN?|(?:Signal|Thread)Fence|StoreN?|TestAndSet) |card|cas|chr|clamp|close|cmp(?:Mem)?|compile(?:Option|s)|contains|copyMem |cpuRelax|create(?:(?:Shared)?U?|Thread)|cstringArrayToSeq |dealloc(?:CStringArray|Heap|(?:Shared)?(?:Impl)?)|debugEcho|dec |declared(?:InScope)?|deepCopy|default|defined|del(?:ete)?|dispose|doAssert(?:Raises)?|echo|endOfFile |equalMem|excl|failedAssertImpl|field(?:s|Pairs)|find|finished|flushFile|freeShared |GC_(?:collectZct|disable(?:MarkAndSweep)?|fullCollect|getStatistics|(?:un)?ref) |gcInvariant|getAllocStats |get(?:CurrentException(?:Msg)?|File(?:Pos|Size)|Frame(?:State)? |(?:(?:Free|Occupied|Total)(?:Shared)?|Max)Mem|GCFrame|OsFileHandle |StackTrace(?:Entries)?|TypeInfo|ThreadId) |gorge(?:Ex)?|handle|high|incl?|insert|instantiationInfo|internalNew |isNil|isNotForeign|iterToProc|joinThreads?|len|lines|locals|low|max|min |m?(?:items|pairs)|move(?:Mem)? |new(?:Seq(?:OfCap|Uninitialized)?|String(?:OfCap)?|Exception|WideCString)? |onFailedAssert|onThreadDestruction|open|ord|peek|pinToCpu|pop(?:GcFrame)?|pred |prepareMutation|procCall|protect|pushGcFrame|quit|raiseAssert|raw(?:Env|Proc) |ready|read(?:All|Buffer|Bytes|Chars?|File|Lines?) |(?:re)?alloc(?:Shared)?0?(?:Impl)?|recv|repr(?:Discriminant)?|reset |resize(?:Shared)?|runnableExamples |set(?:ControlCHook|CurrentException|FilePos|Frame(?:State)?|GcFrame|Inheritable|Len|StdIoUnbuffered|upForeignThreadGc) |shallow(?:Copy)?|sizeof|slurp|stackTraceAvailable|static(?:Exec|Read)|stdmsg |substr|succ|swap|tearDownForeignThreadGc |to(?:Biggest?(?:Float|Int)|OpenArray(?:Byte)?|U(?:8|16|32))|try(?:Recv|Send) |typeof|unsafe(?:Addr|New)|unsetControlCHook|wasMoved|writeStackTrace |ze(?:64)?|zero(?:Default|Mem)|count(?:down|up)|varargsLen|closureScope |currentSourcePath|disarm|dumpAllocStats|excl|fence|format(?:ErrorIndexBound|FieldDefect) |incl|offsetOf|once|rangeCheck|(?:un)?likely|unown|write(?:Buffer|Bytes|Chars|File|Line)? )\\b',
-          name: 'support.function.builtin.expl'
-        },
-        {
-          match:
-            '`(?:addr|and|div|is(?:not)?|mod|not|of|sh[lr]|x?or|(?:not)?in|=(?:copy|destroy|sink|trace)|\\$|%%|[-*+/<]%?=?|<=%|[&=]=?|\\.\\.|@|\\[]=?)`',
-          name: 'support.function.builtin.expl'
-        },
-        {
-          match:
             '\\b(?x:any|array|auto|bool|byte |c(?:double|float|u?(?:long(?:long)?|char|int|short)|longdouble|schar |size(?:_t)?|string(?:[Aa]rray)?) |char|float(?:32|64)?|iterable|lent|open[Aa]rray|owned|pointer|ptr|range|ref|se[qt] |sink|static|string|typed?|type[Dd]esc|u?int(?:8|16|32|64)?|untyped|varargs|void)\\b',
-          name: 'storage.type.primitive.expl'
-        },
-        {
-          match:
-            '\\b(?x:appType|Compile(?:Date|Time)|(?:big|cpu|little)Endian |fm(Append|Read(?:Write(?:Existing)?)?|Write)|fsp(?:Set|Cur|End) |gc(?:Throughput|Responsiveness|Optimize(?:Space|Time))|host(?:CPU|OS) |isMainModule|NaN|(?:Neg)?Inf|Nim(?:Major|Minor|Patch|Version)|nimvm|off|on |Quit(?:Failure|Success)|typeOf(?:Iter|Proc))\\b',
-          name: 'support.constant.builtin.expl'
-        },
-        {
-          match:
-            '\\b(?x: ATOMIC_(?:ACQ_REL|ACQUIRE|CONSUME|RELAXED|RELEASE|SEQ_CST)|errorMessageWriter |(?:global|local)RaiseHook|nimThreadDestructionHandlers|onUnhandledException |outOfMemHook|programResult|std(?:err|out|in)|unhandledExceptionHook )\\b',
-          name: 'support.variable.builtin.expl'
+          name: 'storage.type.primitive.nim'
         }
       ]
     },
@@ -189,7 +169,7 @@ const grammar = {
             {
               begin: '(?=[`_A-Za-z\\x80-\\xff])',
               end: '(?=[^`_A-Za-z\\x80-\\xff])',
-              name: 'variable.function.nim',
+              name: 'entity.name.function.nim',
               patterns: [
                 {include: '#builtins'},
                 {
@@ -219,11 +199,11 @@ const grammar = {
               patterns: [
                 {
                   captures: {
-                    1: {name: 'variable.parameter.nim'},
+                    1: {name: 'variable.parameter.function.nim'},
                     2: {name: 'punctuation.separator.key-value.nim'}
                   },
                   match:
-                    '(?x: (?= (?:[A-Za-z\\x80-\\xff](?:_?[\\dA-Za-z\\x80-\\xff])*|_|`[^;,\\n`]+`) [ ]* [:=](?![-=+*/<>@$~&%|!?^.:\\\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]) ) (?!(?x:addr|asm|bind|block|break|case|cast|concept|const|continue|converter |defer|discard|distinct|do|elif|else|end|enum|except|export|finally|for |from|func|if|import|include|interface|iterator|let|macro|method|mixin |object|of|out|proc|ptr|raise|ref|return|static|template|try|tuple|type |using|var|when|while|yield)\\b ) ([A-Za-z\\x80-\\xff](?:_?[\\dA-Za-z\\x80-\\xff])*|_|`[^;,\\n`]+`)(?:[ ]*(:))? )'
+                    '(?x: (?= (?:[A-Za-z\\x80-\\xff](?:_?[\\dA-Za-z\\x80-\\xff])*|_|`[^;,\\n`]+`) [ ]* [:=](?![-=+*/<>@$~&%|!?^.:\\\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]) ) (?!(?x:addr|and|as|asm|bind|block|break|case|cast|concept |const|continue|converter|defer|discard|distinct|div|do |elif|else|end|enum|except|export|finally|for|from|func |if|import|in|include|interface|is|isnot|iterator|let |macro|method|mixin|mod|nil|not|notin|object|of|or|out |proc|ptr|raise|ref|return|shl|shr|static|template|try |tuple|type|using|var|when|while|xor|yield)\\b ) ([A-Za-z\\x80-\\xff](?:_?[\\dA-Za-z\\x80-\\xff])*|_|`[^;,\\n`]+`)(?:[ ]*(:))? )'
                 },
                 {include: '$self'}
               ]
@@ -269,24 +249,22 @@ const grammar = {
           beginCaptures: {1: {name: 'storage.modifier.nim'}},
           end: '([A-Za-z\\x80-\\xff](?:_?[\\dA-Za-z\\x80-\\xff])*|_|`[^;,\\n`]+`)(?: *(\\*))?|(?=[^\\(])',
           endCaptures: {
-            1: {name: 'entity.name.constant.expl'},
-            2: {name: 'storage.modifier.expl'}
+            1: {name: 'entity.name.constant.nim'},
+            2: {name: 'storage.modifier.nim'}
           },
           patterns: [{include: '#const-name'}]
         },
         {
           begin: '^const\\b',
-          beginCaptures: {
-            0: {name: 'storage.modifier.nim keyword.declaration.constant.nim'}
-          },
+          beginCaptures: {0: {name: 'storage.modifier.nim'}},
           end: '^(?!  |$)',
           patterns: [
             {
               begin: '^  (?=[A-Za-z\\x80-\\xff]|\\(|`|_\\b)',
               end: '([A-Za-z\\x80-\\xff](?:_?[\\dA-Za-z\\x80-\\xff])*|_|`[^;,\\n`]+`)(?: *(\\*))?|(?=[^\\(])',
               endCaptures: {
-                1: {name: 'entity.name.constant.expl'},
-                2: {name: 'storage.modifier.expl'}
+                1: {name: 'entity.name.constant.nim'},
+                2: {name: 'storage.modifier.nim'}
               },
               patterns: [{include: '#const-name'}]
             },
@@ -305,8 +283,8 @@ const grammar = {
           patterns: [
             {
               captures: {
-                1: {name: 'entity.name.constant.expl'},
-                2: {name: 'storage.modifier.expl'}
+                1: {name: 'entity.name.constant.nim'},
+                2: {name: 'storage.modifier.nim'}
               },
               match:
                 '([A-Za-z\\x80-\\xff](?:_?[\\dA-Za-z\\x80-\\xff])*|_|`[^;,\\n`]+`)(?: *(\\*))?'
@@ -528,8 +506,8 @@ const grammar = {
     },
     'generic-symbols': {
       patterns: [
-        {match: '[A-Z](_?[A-Z\\d_])+\\b', name: 'support.constant.expl'},
-        {match: '[A-Z][\\dA-Za-z]+\\b', name: 'support.type.expl'},
+        {match: '[A-Z](_?[A-Z\\d_])+\\b', name: 'support.constant.nim'},
+        {match: '[A-Z][\\dA-Za-z]+\\b', name: 'support.type.nim'},
         {
           match:
             '[A-Za-z\\x80-\\xff](?:_?[\\dA-Za-z\\x80-\\xff])*|_|`[^;,\\n`]+`'
@@ -549,94 +527,81 @@ const grammar = {
         }
       ]
     },
-    'invalid-names': {
-      patterns: [
-        {
-          match:
-            '(?x:addr|asm|bind|block|break|case|cast|concept|const|continue|converter |defer|discard|distinct|do|elif|else|end|enum|except|export|finally|for |from|func|if|import|include|interface|iterator|let|macro|method|mixin |object|of|out|proc|ptr|raise|ref|return|static|template|try|tuple|type |using|var|when|while|yield)\\b',
-          name: 'invalid.illegal.nim'
-        }
-      ]
-    },
     keywords: {
       patterns: [
-        {match: '\\b(?:addr|cast)\\b', name: 'keyword.operator.word.expl'},
+        {match: '\\b(?:addr|cast)\\b', name: 'keyword.operator.word.nim'},
         {
           begin: '\\bdiscard +"""',
           beginCaptures: {
-            0: {name: 'punctuation.definition.comment.begin.expl'}
+            0: {name: 'punctuation.definition.comment.begin.nim'}
           },
           end: '"""(?!")',
-          endCaptures: {0: {name: 'punctuation.definition.comment.end.expl'}},
-          name: 'comment.block.expl'
+          endCaptures: {0: {name: 'punctuation.definition.comment.end.nim'}},
+          name: 'comment.block.nim'
         },
-        {match: '\\b(?:distinct|discard)\\b', name: 'keyword.other.expl'},
+        {match: '\\b(?:distinct|discard)\\b', name: 'keyword.other.nim'},
         {
           match: '\\b(?:asm|end|break|continue|raise|return|yield)\\b',
-          name: 'keyword.control.flow.expl'
+          name: 'keyword.control.flow.nim'
         },
-        {match: '\\b(?:concept|enum|interface)\\b', name: 'storage.type.expl'},
+        {match: '\\b(?:concept|enum|interface)\\b', name: 'storage.type.nim'},
         {
           captures: {
-            1: {name: 'storage.type.expl'},
-            2: {name: 'keyword.other.expl'}
+            1: {name: 'storage.type.nim'},
+            2: {name: 'keyword.other.nim'}
           },
           match: '\\b(object)\\b(?: *(of)\\b)?'
         },
-        {match: '\\bwhile\\b', name: 'keyword.control.loop.while.expl'},
-        {match: '\\bcase\\b', name: 'keyword.control.conditional.switch.expl'},
-        {match: '^ *(of)\\b', name: 'keyword.control.conditional.case.expl'},
-        {match: '\\bif\\b', name: 'keyword.control.conditional.if.expl'},
-        {match: '\\bwhen\\b', name: 'keyword.control.conditional.when.expl'},
-        {match: '\\belif\\b', name: 'keyword.control.conditional.elseif.expl'},
+        {match: '\\bwhile\\b', name: 'keyword.control.loop.while.nim'},
+        {match: '\\bcase\\b', name: 'keyword.control.conditional.switch.nim'},
+        {match: '^ *(of)\\b', name: 'keyword.control.conditional.case.nim'},
+        {match: '\\bif\\b', name: 'keyword.control.conditional.if.nim'},
+        {match: '\\bwhen\\b', name: 'keyword.control.conditional.when.nim'},
+        {match: '\\belif\\b', name: 'keyword.control.conditional.elseif.nim'},
         {
           captures: {
-            0: {name: 'meta.statement.conditional.else.expl'},
-            1: {name: 'keyword.control.conditional.else.expl'},
-            2: {name: 'punctuation.section.block.conditional.else.expl'}
+            0: {name: 'meta.statement.conditional.else.nim'},
+            1: {name: 'keyword.control.conditional.else.nim'},
+            2: {name: 'punctuation.section.block.conditional.else.nim'}
           },
           match: '\\b(else)\\b(?: *(:))?'
         },
         {
           captures: {
-            0: {name: 'meta.statement.exception.try.expl'},
-            1: {name: 'keyword.control.exception.try.expl'},
-            2: {name: 'punctuation.section.block.exception.expl'}
+            0: {name: 'meta.statement.exception.try.nim'},
+            1: {name: 'keyword.control.exception.try.nim'},
+            2: {name: 'punctuation.section.block.exception.nim'}
           },
           match: '\\b(try)\\b(?: *(:))?'
         },
         {
           captures: {
-            0: {name: 'meta.statement.exception.finally.expl'},
-            1: {name: 'keyword.control.exception.finally.expl'},
-            2: {name: 'punctuation.section.block.exception.finally.expl'}
+            0: {name: 'meta.statement.exception.finally.nim'},
+            1: {name: 'keyword.control.exception.finally.nim'},
+            2: {name: 'punctuation.section.block.exception.finally.nim'}
           },
           match: '\\b(finally)\\b(?: *(:))?'
         },
         {
           captures: {
-            1: {name: 'keyword.control.flow.defer.expl'},
-            2: {name: 'punctuation.section.block.begin.expl'}
+            1: {name: 'keyword.control.flow.defer.nim'},
+            2: {name: 'punctuation.section.block.begin.nim'}
           },
           match: '\\b(defer)\\b(?: *(:))?'
         },
         {
           captures: {
-            1: {name: 'keyword.declaration.block.expl'},
-            2: {name: 'punctuation.section.block.begin.expl'}
+            1: {name: 'keyword.declaration.block.nim'},
+            2: {name: 'punctuation.section.block.begin.nim'}
           },
           match:
             '\\b(block)\\b(?:(?: *(?:[A-Za-z\\x80-\\xff](?:_?[\\dA-Za-z\\x80-\\xff])*|_|`[^;,\\n`]+`))? *(:))?'
         },
         {
           match: '\\b(?:as|(?:ex|im)port|include|bind|mixin|from|except)\\b',
-          name: 'keyword.control.expl'
+          name: 'keyword.control.nim'
         },
-        {
-          match: '\\b(?:const|let|using)\\b',
-          name: 'storage.modifier.expl keyword.declaration.expl'
-        },
-        {match: '\\bvar\\b', name: 'storage.modifier.expl'}
+        {match: '\\b(?:const|let|var|using)\\b', name: 'storage.modifier.nim'}
       ]
     },
     'language-constants': {
@@ -765,6 +730,7 @@ const grammar = {
     operators: {
       patterns: [
         {match: '\\b(?:and|not|x?or)\\b', name: 'keyword.operator.logical.nim'},
+        {match: '^of\\b', name: 'keyword.control.conditional.case.nim'},
         {
           match: '\\b(?:of|(?:not)?in|is(?:not)?)\\b',
           name: 'keyword.operator.word.nim'
@@ -845,7 +811,7 @@ const grammar = {
             {include: '#square-brackets'},
             {
               begin: '(?=\\S)',
-              end: '(,)|(?=\\S)',
+              end: '(,)|(?=\\.?})',
               endCaptures: {1: {name: 'punctuation.separator.sequence.nim'}},
               patterns: [
                 {
@@ -1007,7 +973,7 @@ const grammar = {
         },
         {
           begin: '^type\\b',
-          beginCaptures: {0: {name: 'keyword.declaration.type.nim'}},
+          beginCaptures: {0: {name: 'storage.modifier.nim'}},
           end: '^(?!  |$)',
           patterns: [
             {
@@ -1051,7 +1017,7 @@ const grammar = {
         },
         {
           match: '\\b(?:out|tuple|ref|ptr)\\b',
-          name: 'storage.type.primitive.expl'
+          name: 'storage.type.primitive.nim'
         }
       ]
     },
@@ -1061,7 +1027,7 @@ const grammar = {
           begin: '(?:^|(;)) *(var|let|using) +(?=[\\(`A-Za-z\\x80-\\xff]|_\\b)',
           beginCaptures: {
             1: {name: 'punctuation.terminator.nim'},
-            2: {name: 'storage.modifier.nim keyword.declaration.variable.nim'}
+            2: {name: 'storage.modifier.nim'}
           },
           end: '(?=[^\\({_`,#A-Za-z\\x80-\\xff\\s])',
           patterns: [{include: '#var-name'}]
@@ -1097,8 +1063,8 @@ const grammar = {
       patterns: [
         {
           captures: {
-            1: {name: 'variable.other.expl'},
-            2: {name: 'storage.modifier.expl'}
+            1: {name: 'variable.other.nim'},
+            2: {name: 'storage.modifier.nim'}
           },
           match:
             '([A-Za-z\\x80-\\xff](?:_?[\\dA-Za-z\\x80-\\xff])*|_|`[^;,\\n`]+`)(?: *(\\*))?'

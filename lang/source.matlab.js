@@ -951,7 +951,7 @@ const grammar = {
           ]
         }
       },
-      match: '(?<=^|,|;|for)\\s*([a-zA-Z][a-zA-Z0-9_.(){}]*)(?=\\s*=)'
+      match: '(?<=^|,|;|for)\\s*([a-zA-Z][a-zA-Z0-9_.]*)(?=\\s*=)'
     },
     square_brackets: {
       begin: '\\[(?![^\\]]+\\]\\s{,4}=)',

@@ -46,10 +46,10 @@ const grammar = {
         {match: '\\b(bool)\\b', name: 'entity.name.type.bool.clarity'},
         {
           captures: {
-            1: {name: 'punctuation.string-def.start.clarity'},
-            2: {name: 'entity.name.type.string.clarity'},
-            3: {name: 'constant.numeric.string-len.clarity'},
-            4: {name: 'punctuation.string-def.end.clarity'}
+            1: {name: 'punctuation.string_type-def.start.clarity'},
+            2: {name: 'entity.name.type.string_type.clarity'},
+            3: {name: 'constant.numeric.string_type-len.clarity'},
+            4: {name: 'punctuation.string_type-def.end.clarity'}
           },
           match:
             '(?x) (\\() \\s* (?:(string-ascii|string-utf8)\\s+(\\d+)) \\s* (\\))'
@@ -105,7 +105,7 @@ const grammar = {
           name: 'meta.tuple-def',
           patterns: [
             {
-              match: '([a-zA-Z][a-zA-Z0-9_\\-\\!\\?]*)(?=:)',
+              match: '([a-zA-Z][\\w\\?\\!\\-]*)(?=:)',
               name: 'entity.name.tag.tuple-data-type-key.clarity'
             },
             {include: '#data-type'}
@@ -115,7 +115,7 @@ const grammar = {
     },
     'define-constant': {
       begin:
-        '(?x) (\\() \\s* (define-constant) \\s+ ([a-zA-Z][a-zA-Z0-9_\\-\\!\\?]*) \\s+',
+        '(?x) (\\() \\s* (define-constant) \\s+ ([a-zA-Z][\\w\\?\\!\\-]*) \\s+',
       beginCaptures: {
         1: {name: 'punctuation.define-constant.start.clarity'},
         2: {name: 'keyword.declaration.define-constant.clarity'},
@@ -128,7 +128,7 @@ const grammar = {
     },
     'define-data-var': {
       begin:
-        '(?x) (\\() \\s* (define-data-var) \\s+ ([a-zA-Z][a-zA-Z0-9_\\-\\!\\?]*) \\s+',
+        '(?x) (\\() \\s* (define-data-var) \\s+ ([a-zA-Z][\\w\\?\\!\\-]*) \\s+',
       beginCaptures: {
         1: {name: 'punctuation.define-data-var.start.clarity'},
         2: {name: 'keyword.declaration.define-data-var.clarity'},
@@ -150,9 +150,8 @@ const grammar = {
       name: 'meta.define-function',
       patterns: [
         {include: '#expression'},
-        {include: '#user-func'},
         {
-          begin: '(?x) (\\() \\s* ([a-zA-Z][a-zA-Z0-9_\\-\\!\\?]*) \\s*',
+          begin: '(?x) (\\() \\s* ([a-zA-Z][\\w\\?\\!\\-]*) \\s*',
           beginCaptures: {
             1: {name: 'punctuation.function-signature.start.clarity'},
             2: {name: 'entity.name.function.clarity'}
@@ -164,7 +163,7 @@ const grammar = {
           name: 'meta.define-function-signature',
           patterns: [
             {
-              begin: '(?x) (\\() \\s* ([a-zA-Z][a-zA-Z0-9_\\-\\!\\?]*) \\s+',
+              begin: '(?x) (\\() \\s* ([a-zA-Z][\\w\\?\\!\\-]*) \\s+',
               beginCaptures: {
                 1: {name: 'punctuation.function-argument.start.clarity'},
                 2: {name: 'variable.parameter.clarity'}
@@ -177,7 +176,8 @@ const grammar = {
               patterns: [{include: '#data-type'}]
             }
           ]
-        }
+        },
+        {include: '#user-func'}
       ]
     },
     'define-fungible-token': {
@@ -191,11 +191,10 @@ const grammar = {
         5: {name: 'punctuation.define-fungible-token.end.clarity'}
       },
       match:
-        '(?x) (\\() \\s* (define-fungible-token) \\s+ ([a-zA-Z][a-zA-Z0-9_\\-\\!\\?]*) (?:\\s+(u\\d+))?'
+        '(?x) (\\() \\s* (define-fungible-token) \\s+ ([a-zA-Z][\\w\\?\\!\\-]*) (?:\\s+(u\\d+))?'
     },
     'define-map': {
-      begin:
-        '(?x) (\\() \\s* (define-map) \\s+ ([a-zA-Z][a-zA-Z0-9_\\-\\!\\?]*) \\s+',
+      begin: '(?x) (\\() \\s* (define-map) \\s+ ([a-zA-Z][\\w\\?\\!\\-]*) \\s+',
       beginCaptures: {
         1: {name: 'punctuation.define-map.start.clarity'},
         2: {name: 'keyword.declaration.define-map.clarity'},
@@ -208,7 +207,7 @@ const grammar = {
     },
     'define-non-fungible-token': {
       begin:
-        '(?x) (\\() \\s* (define-non-fungible-token) \\s+ ([a-zA-Z][a-zA-Z0-9_\\-\\!\\?]*) \\s+',
+        '(?x) (\\() \\s* (define-non-fungible-token) \\s+ ([a-zA-Z][\\w\\?\\!\\-]*) \\s+',
       beginCaptures: {
         1: {name: 'punctuation.define-non-fungible-token.start.clarity'},
         2: {name: 'keyword.declaration.define-non-fungible-token.clarity'},
@@ -225,7 +224,7 @@ const grammar = {
     },
     'define-trait': {
       begin:
-        '(?x) (\\() \\s* (define-trait) \\s+ ([a-zA-Z][a-zA-Z0-9_\\-\\!\\?]*) \\s+',
+        '(?x) (\\() \\s* (define-trait) \\s+ ([a-zA-Z][\\w\\?\\!\\-]*) \\s+',
       beginCaptures: {
         1: {name: 'punctuation.define-trait.start.clarity'},
         2: {name: 'keyword.declaration.define-trait.clarity'},
@@ -246,13 +245,10 @@ const grammar = {
           patterns: [
             {include: '#expression'},
             {
-              begin:
-                '(?x) (\\() \\s* ([a-zA-Z][a-zA-Z0-9_\\-\\!\\?]+\\??) \\s+',
+              begin: '(?x) (\\() \\s* ([a-zA-Z][\\w\\!\\?\\-]*) \\s+',
               beginCaptures: {
                 1: {name: 'punctuation.trait-function.start.clarity'},
-                2: {
-                  name: 'entity.name.trait-function-name.clarity variable.other.clarity'
-                }
+                2: {name: 'entity.name.function.clarity'}
               },
               end: '(\\))',
               endCaptures: {
@@ -291,7 +287,7 @@ const grammar = {
     },
     'get-set-func': {
       begin:
-        '(?x) (\\() \\s* (var-get|var-set|map-get\\?|map-set|map-insert|map-delete|get) \\s+ ([a-zA-Z][a-zA-Z0-9_\\-\\!\\?]*) \\s*',
+        '(?x) (\\() \\s* (var-get|var-set|map-get\\?|map-set|map-insert|map-delete|get) \\s+ ([a-zA-Z][\\w\\?\\!\\-]*) \\s*',
       beginCaptures: {
         1: {name: 'punctuation.get-set-func.start.clarity'},
         2: {name: 'keyword.control.clarity'},
@@ -304,7 +300,7 @@ const grammar = {
     },
     keyword: {
       match:
-        '\\b(?:block-height|burn-block-height|chain-id|contract-caller|is-in-regtest|stx-liquid-supply|tx-sender|tx-sponsor?)\\b',
+        '(?<!\\S)(?!-)\\b(?:block-height|burn-block-height|chain-id|contract-caller|is-in-regtest|stx-liquid-supply|tx-sender|tx-sponsor?)\\b(?!\\s*-)',
       name: 'constant.language.clarity'
     },
     'let-func': {
@@ -327,7 +323,7 @@ const grammar = {
           name: 'meta.let-var',
           patterns: [
             {
-              begin: '(?x) (\\() ([a-zA-Z][a-zA-Z0-9_\\-\\!\\?]*) \\s+',
+              begin: '(?x) (\\() ([a-zA-Z][\\w\\?\\!\\-]*) \\s+',
               beginCaptures: {
                 1: {name: 'punctuation.let-local-var.start.clarity'},
                 2: {
@@ -357,7 +353,7 @@ const grammar = {
       ],
       repository: {
         'bool-literal': {
-          match: '\\b(true|false)\\b',
+          match: '(?<!\\S)(?!-)\\b(true|false)\\b(?!\\s*-)',
           name: 'constant.language.bool.clarity'
         },
         'list-literal': {
@@ -373,14 +369,26 @@ const grammar = {
         },
         'number-literal': {
           patterns: [
-            {match: '\\bu\\d+\\b', name: 'constant.numeric.uint.clarity'},
-            {match: '\\b\\d+\\b', name: 'constant.numeric.int.clarity'},
-            {match: '\\b0x[0-9a-f]*\\b', name: 'constant.numeric.hex.clarity'}
+            {
+              match: '(?<!\\S)(?!-)\\bu\\d+\\b(?!\\s*-)',
+              name: 'constant.numeric.uint.clarity'
+            },
+            {
+              match: '(?<!\\S)(?!-)\\b\\d+\\b(?!\\s*-)',
+              name: 'constant.numeric.int.clarity'
+            },
+            {
+              match: '(?<!\\S)(?!-)\\b0x[0-9a-f]*\\b(?!\\s*-)',
+              name: 'constant.numeric.hex.clarity'
+            }
           ]
         },
         'optional-literal': {
           patterns: [
-            {match: '\\b(none)\\b', name: 'constant.language.none.clarity'},
+            {
+              match: '(?<!\\S)(?!-)\\b(none)\\b(?!\\s*-)',
+              name: 'constant.language.none.clarity'
+            },
             {
               begin: '(?x) (\\() \\s* (some) \\s+',
               beginCaptures: {
@@ -437,7 +445,7 @@ const grammar = {
           name: 'meta.tuple',
           patterns: [
             {
-              match: '([a-zA-Z][a-zA-Z0-9_\\-\\!\\?]*)(?=:)',
+              match: '([a-zA-Z][\\w\\?\\!\\-]*)(?=:)',
               name: 'entity.name.tag.tuple-key.clarity'
             },
             {include: '#expression'},
@@ -447,8 +455,7 @@ const grammar = {
       }
     },
     'use-trait': {
-      begin:
-        '(?x) (\\() \\s* (use-trait) \\s+ ([a-zA-Z][a-zA-Z0-9_\\-\\!\\?]*) \\s+',
+      begin: '(?x) (\\() \\s* (use-trait) \\s+ ([a-zA-Z][\\w\\?\\!\\-]*) \\s+',
       beginCaptures: {
         1: {name: 'punctuation.use-trait.start.clarity'},
         2: {name: 'keyword.declaration.use-trait.clarity'},
@@ -460,7 +467,7 @@ const grammar = {
       patterns: [{include: '#literal'}]
     },
     'user-func': {
-      begin: '(?x) (\\() \\s* (([a-zA-Z][a-zA-Z0-9_\\-\\!\\?]*)) \\s*',
+      begin: '(?x) (\\() \\s* (([a-zA-Z][\\w\\?\\!\\-]*)) \\s*',
       beginCaptures: {
         1: {name: 'punctuation.user-function.start.clarity'},
         2: {name: 'entity.name.function.clarity'}

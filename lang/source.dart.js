@@ -315,7 +315,8 @@ const grammar = {
       patterns: [
         {include: '#class-identifier'},
         {match: ','},
-        {match: 'extends', name: 'keyword.declaration.dart'}
+        {match: 'extends', name: 'keyword.declaration.dart'},
+        {include: '#comments'}
       ]
     }
   },

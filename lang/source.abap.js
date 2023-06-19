@@ -22,7 +22,11 @@ const grammar = {
       match: '(?<![^\\s])##.*?(?=([\\.:,\\s]))',
       name: 'comment.line.pragma.abap'
     },
-    {name: 'variable.other.abap'},
+    {
+      match:
+        '(?i)(?<=(?:\\s|~|-))(?<=(?:->|=>))([a-z_\\/][a-z_0-9\\/]*)(?=\\s+(?:=|\\+=|-=|\\*=|\\/=|&&=|&=)\\s+)',
+      name: 'variable.other.abap'
+    },
     {match: '\\b[0-9]+(\\b|\\.|,)', name: 'constant.numeric.abap'},
     {
       match:
@@ -64,7 +68,7 @@ const grammar = {
       patterns: [
         {
           match:
-            '(?ix)(^|\\s+)(definition|implementation|public|inheriting\\s+from|final|deferred|abstract|shared\\s+memory\\s+enabled|(global|local)*\\s*friends|(create\\s+(public|protected|private))|for\\s+testing|risk\\s+level\\s+(critical|dangerous|harmless))|duration\\s(short|medium|long)(?=\\s+|\\.)',
+            '(?ix)(^|\\s+)(definition|implementation|public|inheriting\\s+from|final|deferred|abstract|shared\\s+memory\\s+enabled|(global|local)*\\s*friends|(create\\s+(public|protected|private))|for\\s+behavior\\s+of|for\\s+testing|risk\\s+level\\s+(critical|dangerous|harmless))|duration\\s(short|medium|long)(?=\\s+|\\.)',
           name: 'storage.modifier.class.abap'
         },
         {
@@ -87,7 +91,7 @@ const grammar = {
       patterns: [
         {
           match:
-            '(?ix)(?<=^|\\s)(BY\\s+DATABASE(\\s+PROCEDURE|\\s+FUNCTION|\\s+GRAPH\\s+WORKSPACE))(?=\\s+|\\.)',
+            '(?ix)(?<=^|\\s)(BY\\s+DATABASE(\\s+PROCEDURE|\\s+FUNCTION|\\s+GRAPH\\s+WORKSPACE)|BY\\s+KERNEL\\s+MODULE)(?=\\s+|\\.)',
           name: 'storage.modifier.method.abap'
         },
         {
@@ -131,7 +135,7 @@ const grammar = {
       ]
     },
     {
-      begin: '(?ix)^\\s*(FORM)\\s([a-z_\\/][a-z_0-9\\/]*)',
+      begin: '(?ix)^\\s*(FORM)\\s([a-z_\\/][a-z_0-9\\/\\-\\?]*)',
       beginCaptures: {
         1: {name: 'storage.type.block.abap'},
         2: {name: 'entity.name.type.abap'}
@@ -139,10 +143,12 @@ const grammar = {
       end: '\\s*\\.\\s*\\n?',
       patterns: [
         {
-          match: '(?ix)(?<=^|\\s)(USING|TABLES|CHANGING|RAISING)(?=\\s+|\\.)',
+          match:
+            '(?ix)(?<=^|\\s)(USING|TABLES|CHANGING|RAISING|IMPLEMENTATION|DEFINITION)(?=\\s+|\\.)',
           name: 'storage.modifier.form.abap'
         },
-        {include: '#abaptypes'}
+        {include: '#abaptypes'},
+        {include: '#keywords_followed_by_braces'}
       ]
     },
     {
@@ -159,24 +165,26 @@ const grammar = {
     {include: '#operators'},
     {include: '#builtin_functions'},
     {include: '#abaptypes'},
-    {include: '#system_fields'}
+    {include: '#system_fields'},
+    {include: '#sql_functions'},
+    {include: '#sql_types'}
   ],
   repository: {
     abap_constants: {
       match:
-        '(?ix)(?<=\\s)(initial|null|space|abap_true|abap_false|table_line)(?=\\s|\\.|,)',
+        '(?ix)(?<=\\s)(initial|null|space|abap_true|abap_false|abap_undefined|table_line|\n\t\t\t\t%_final|%_hints|%_predefined|col_background|col_group|col_heading|col_key|col_negative|col_normal|col_positive|col_total|\n\t\t\t\tadabas|as400|db2|db6|hdb|oracle|sybase|mssqlnt|pos_low|pos_high)(?=\\s|\\.|,)',
       name: 'constant.language.abap'
     },
     abaptypes: {
       patterns: [
         {
           match:
-            '(?ix)\\s(abap_bool|string|xstring|any|clike|csequence|numeric|xsequence|c|n|i|p|f|d|t|x)(?=\\s|\\.|,)',
+            '(?ix)\\s(abap_bool|string|xstring|any|clike|csequence|numeric|xsequence|decfloat|decfloat16|decfloat34|utclong|simple|int8|c|n|i|p|f|d|t|x)(?=\\s|\\.|,)',
           name: 'support.type.abap'
         },
         {
           match:
-            '(?ix)\\s(TYPE|REF|TO|STANDARD|SORTED|HASHED|INDEX|TABLE|WITH|UNIQUE|NON-UNIQUE|SECONDARY|DEFAULT|KEY)(?=\\s|\\.|,)',
+            '(?ix)\\s(TYPE|REF|TO|LIKE|LINE|OF|STRUCTURE|STANDARD|SORTED|HASHED|INDEX|TABLE|WITH|UNIQUE|NON-UNIQUE|SECONDARY|DEFAULT|KEY)(?=\\s|\\.|,)',
           name: 'keyword.control.simple.abap'
         }
       ]
@@ -198,7 +206,7 @@ const grammar = {
     },
     control_keywords: {
       match:
-        '(?ix)(^|\\s)(\n\t        at|case|catch|continue|do|elseif|else|endat|endcase|enddo|endif|\n\t        endloop|endon|if|loop|on|raise|try)(?=\\s|\\.|:)',
+        '(?ix)(^|\\s)(\n\t        at|case|catch|continue|do|elseif|else|endat|endcase|endcatch|enddo|endif|\n\t        endloop|endon|endtry|endwhile|if|loop|on|raise|try|while)(?=\\s|\\.|:)',
       name: 'keyword.control.flow.abap'
     },
     generic_names: {match: '[A-Za-z_][A-Za-z0-9_]*'},
@@ -216,7 +224,7 @@ const grammar = {
         2: {name: 'variable.other.abap'}
       },
       match:
-        '(?ix)\\b(data|value|field-symbol)\\((<?[a-z_\\/][a-z_0-9\\/]*>?)\\)'
+        '(?ix)\\b(data|value|field-symbol|final|reference|resumable)\\((<?[a-z_\\/][a-z_0-9\\/]*>?)\\)'
     },
     logical_operator: {
       match: '(?i)(?<=\\s)(not|or|and)(?=\\s)',
@@ -224,7 +232,7 @@ const grammar = {
     },
     main_keywords: {
       match:
-        '(?ix)(?<=^|\\s)(\n\t        abap-source|abstract|access|add|add-corresponding|adjacent|alias|aliases|all|amdp|append|appending|ascending|as|assert|assign|assigned|assigning|association|authority-check|\n\t        back|badi|base|begin|between|binary|blanks|block|bound|break-point|by|by\\s+database|byte|\n\t        call|calling|cast|casting|cds\\s+session|changing|check|checkbox|class-data|class-events|class-method|class-methods|class-pool|cleanup|clear|client|clients|close|cnt|collect|commit|comment|cond|character|\n\t        corresponding|communication|comparing|component|components|compute|concatenate|condense|constants|conv|count|\n\t        controls|convert|create|currency|current|\n\t        data|database|date|ddl|decimals|default|define|deferred|delete|descending|describe|destination|detail|display|divide|divide-corresponding|display-mode|distinct|duplicates|\n\t        deleting|\n\t        editor-call|empty|end|endenhancement|endexec|endfunction|ending|endmodule|end-of-definition|end-of-page|end-of-selection|end-test-injection|end-test-seam|exit-command|extension|\n\t        endprovide|endselect|entries|endtry|endwhile|enhancement|enhancement-point|enum|escape|event|events|excluding|exec|exit|export|\n\t        exporting|extract|exception|exception-table|exceptions|\n\t        field-symbols|field-groups|field|first|fetch|fields|format|frame|free|from|function|find|for|found|function-pool|\n\t        generate|get|group|\n\t        handle|handler|hide|hashed|header|help-request|\n\t        include|import|importing|index|infotypes|initial|initialization|\n\t\tid|implemented|ignoring|is|in|inner|interface|interfaces|interface-pool|intervals|init|input|insert|instance|into|\n\t\tjoin|\n\t\tkey|keywords|\n\t        language|language\\s+graph|language\\s+sql|left-justified|leave|let|like|line|lines|line-count|line-size|listbox|list-processing|load|local|log-point|length|left|leading|lower|\n\t        matchcode|memory|method|mesh|message|message-id|methods|mode|modify|module|move|move-corresponding|multiply|multiply-corresponding|match|modif|\n\t\tnew|new-line|new-page|new-section|next|no|no-display|no-gap|no-gaps|no-sign|no-zero|non-unique|number|\n\t        occurrence|object|obligatory|of|order|output|overlay|optional|others|occurrences|occurs|offset|options|\n\t        pack|parameter|parameter-table|parameters|partially|perform|pf-status|places|position|preferred|primary|print-control|private|privileged|program|protected|provide|public|pushbutton|put|\n\t        radiobutton\\s+group|raising|range|ranges|receive|receiving|redefinition|reduce|reference|refresh|regex|reject|results|requested|\n\t        ref|replace|report|required|reserve|respecting|restore|result\\s+xml|result\\s+\\(|return|returning|right|right-justified|rollback|read|read-only|rp-provide-from-last|run|\n\t        scan|screen|scroll|search|select|select-options|selection-screen|set|stamp|state|statements|source|subkey|\n\t        seconds|selection-table|separated|set|shift|single|skip|sort|sorted|split|spots|stable|standard|stamp|starting|start-of-selection|sum|subscreen|subtract-corresponding|statics|step|stop|structure|structures|submatches|submit|subtract|summary|supplied|suppress|section|syntax-check|syntax-trace|system-call|switch|\n\t        tabbed|tables|table|task|testing|test-seam|test-injection|textpool|then|time|times|title|titlebar|to|tokens|top-of-page|trailing|transaction|transfer|transformation|translate|transporting|types|type|type-pool|type-pools|\n\t        unassign|unique|uline|union|unpack|until|update|upper|using|user-command|\n\t        value|value-request|visible|\n\t        wait|when|while|window|write|where|with|work|workspace|\n\t\txml|\n\t\tzone)(?=\\s|\\.|:|,)',
+        '(?ix)(?<=^|\\s)(\nabap-source|\nabstract|\naccept|\naccepting|\naccess|\naction|\nactivation|\nactual|\nadd|\nadd-corresponding|\nadjacent|\nalias|\naliases|\nalign|\nall|\nallocate|\nalpha|\namdp|\nanalysis|\nanalyzer|\nappend|\nappending|\napplication|\narchive|\narea|\narithmetic|\nas|\nascending|\nassert|\nassign|\nassigned|\nassigning|\nassociation|\nasynchronous|\nat|\nattributes|\nauthority|\nauthority-check|\nauthorization|\nauto|\nback|\nbackground|\nbackward|\nbadi|\nbase|\nbefore|\nbegin|\nbehavior|\nbetween|\nbinary|\nbit|\nblank|\nblanks|\nblock|\nblocks|\nbound|\nboundaries|\nbounds|\nboxed|\nbreak|\nbreak-point|\nbuffer|\nby|\nbypassing|\nbyte|\nbyte-order|\ncall|\ncalling|\ncast|\ncasting|\ncds|\ncenter|\ncentered|\nchange|\nchanging|\nchannels|\nchar-to-hex|\ncharacter|\ncheck|\ncheckbox|\ncid|\ncircular|\nclass|\nclass-data|\nclass-events|\nclass-method|\nclass-methods|\nclass-pool|\ncleanup|\nclear|\nclient|\nclients|\nclock|\nclone|\nclose|\ncnt|\ncode|\ncollect|\ncolor|\ncolumn|\ncomment|\ncomments|\ncommit|\ncommon|\ncommunication|\ncomparing|\ncomponent|\ncomponents|\ncompression|\ncompute|\nconcatenate|\ncond|\ncondense|\ncondition|\nconnection|\nconstant|\nconstants|\ncontext|\ncontexts|\ncontrol|\ncontrols|\nconv|\nconversion|\nconvert|\ncopy|\ncorresponding|\ncount|\ncountry|\ncover|\ncreate|\ncurrency|\ncurrent|\ncursor|\ncustomer-function|\ndata|\ndatabase|\ndatainfo|\ndataset|\ndate|\ndaylight|\nddl|\ndeallocate|\ndecimals|\ndeclarations|\ndeep|\ndefault|\ndeferred|\ndefine|\ndelete|\ndeleting|\ndemand|\ndescending|\ndescribe|\ndestination|\ndetail|\ndetermine|\ndialog|\ndid|\ndirectory|\ndiscarding|\ndisplay|\ndisplay-mode|\ndistance|\ndistinct|\ndivide|\ndivide-corresponding|\ndummy|\nduplicate|\nduplicates|\nduration|\nduring|\ndynpro|\nedit|\neditor-call|\nempty|\nenabled|\nenabling|\nencoding|\nend|\nend-enhancement-section|\nend-of-definition|\nend-of-page|\nend-of-selection|\nend-test-injection|\nend-test-seam|\nendenhancement|\nendexec|\nendfunction|\nendian|\nending|\nendmodule|\nendprovide|\nendselect|\nendwith|\nengineering|\nenhancement|\nenhancement-point|\nenhancement-section|\nenhancements|\nentities|\nentity|\nentries|\nentry|\nenum|\nenvironment|\nequiv|\nerrors|\nescape|\nescaping|\nevent|\nevents|\nexact|\nexcept|\nexception|\nexception-table|\nexceptions|\nexcluding|\nexec|\nexecute|\nexists|\nexit|\nexit-command|\nexpanding|\nexplicit|\nexponent|\nexport|\nexporting|\nextended|\nextension|\nextract|\nfail|\nfailed|\nfeatures|\nfetch|\nfield|\nfield-groups|\nfield-symbols|\nfields|\nfile|\nfill|\nfilter|\nfilters|\nfinal|\nfind|\nfirst|\nfirst-line|\nfixed-point|\nflush|\nfor|\nformat|\nforward|\nfound|\nframe|\nframes|\nfree|\nfrom|\nfull|\nfunction|\nfunction-pool|\ngenerate|\nget|\ngiving|\ngraph|\ngroup|\ngroups|\nhandle|\nhandler|\nhashed|\nhaving|\nheader|\nheaders|\nheading|\nhelp-id|\nhelp-request|\nhide|\nhint|\nhold|\nhotspot|\nicon|\nid|\nidentification|\nidentifier|\nignore|\nignoring|\nimmediately|\nimplemented|\nimplicit|\nimport|\nimporting|\nin|\ninactive|\nincl|\ninclude|\nincludes|\nincrement|\nindex|\nindex-line|\ninfotypes|\ninheriting|\ninit|\ninitial|\ninitialization|\ninner|\ninput|\ninsert|\ninstance|\ninstances|\nintensified|\ninterface|\ninterface-pool|\ninterfaces|\ninternal|\nintervals|\ninto|\ninverse|\ninverted-date|\nis|\niso|\njob|\njoin|\nkeep|\nkeeping|\nkernel|\nkey|\nkeys|\nkeywords|\nkind|\nlanguage|\nlast|\nlate|\nlayout|\nleading|\nleave|\nleft|\nleft-justified|\nleftplus|\nleftspace|\nlegacy|\nlength|\nlet|\nlevel|\nlevels|\nlike|\nline|\nline-count|\nline-selection|\nline-size|\nlinefeed|\nlines|\nlink|\nlist|\nlist-processing|\nlistbox|\nload|\nload-of-program|\nlocal|\nlocale|\nlock|\nlocks|\nlog-point|\nlogical|\nlower|\nmapped|\nmapping|\nmargin|\nmark|\nmask|\nmatch|\nmatchcode|\nmaximum|\nmembers|\nmemory|\nmesh|\nmessage|\nmessage-id|\nmessages|\nmessaging|\nmethod|\nmethods|\nmode|\nmodif|\nmodifier|\nmodify|\nmodule|\nmove|\nmove-corresponding|\nmultiply|\nmultiply-corresponding|\nname|\nnametab|\nnative|\nnested|\nnesting|\nnew|\nnew-line|\nnew-page|\nnew-section|\nnext|\nno|\nno-display|\nno-extension|\nno-gap|\nno-gaps|\nno-grouping|\nno-heading|\nno-scrolling|\nno-sign|\nno-title|\nno-zero|\nnodes|\nnon-unicode|\nnon-unique|\nnumber|\nobject|\nobjects|\nobjmgr|\nobligatory|\noccurence|\noccurences|\noccurrence|\noccurrences|\noccurs|\nof|\noffset|\non|\nonly|\nopen|\noptional|\noption|\noptions|\norder|\nothers|\nout|\nouter|\noutput|\noutput-length|\noverflow|\noverlay|\npack|\npackage|\npad|\npadding|\npage|\nparameter|\nparameter-table|\nparameters|\npart|\npartially|\npcre|\nperform|\nperforming|\npermissions|\npf-status|\nplaces|\npool|\nposition|\npragmas|\nprecompiled|\npreferred|\npreserving|\nprimary|\nprint|\nprint-control|\nprivate|\nprivileged|\nprocedure|\nprogram|\nproperty|\nprotected|\nprovide|\npush|\npushbutton|\nput|\nquery|\nqueue-only|\nqueueonly|\nquickinfo|\nradiobutton|\nraising|\nrange|\nranges|\nread|\nread-only|\nreceive|\nreceived|\nreceiving|\nredefinition|\nreduce|\nref|\nreference|\nrefresh|\nregex|\nreject|\nrenaming|\nreplace|\nreplacement|\nreplacing|\nreport|\nreported|\nrequest|\nrequested|\nrequired|\nreserve|\nreset|\nresolution|\nrespecting|\nresponse|\nrestore|\nresult|\nresults|\nresumable|\nresume|\nretry|\nreturn|\nreturning|\nright|\nright-justified|\nrightplus|\nrightspace|\nrollback|\nrows|\nrp-provide-from-last|\nrun|\nsap|\nsap-spool|\nsave|\nsaving|\nscale_preserving|\nscale_preserving_scientific|\nscan|\nscientific|\nscientific_with_leading_zero|\nscreen|\nscroll|\nscroll-boundary|\nscrolling|\nsearch|\nseconds|\nsection|\nselect|\nselect-options|\nselection|\nselection-screen|\nselection-set|\nselection-sets|\nselection-table|\nselections|\nsend|\nseparate|\nseparated|\nsession|\nset|\nshared|\nshift|\nshortdump|\nshortdump-id|\nsign|\nsign_as_postfix|\nsimple|\nsimulation|\nsingle|\nsize|\nskip|\nskipping|\nsmart|\nsome|\nsort|\nsortable|\nsorted|\nsource|\nspecified|\nsplit|\nspool|\nspots|\nsql|\nstable|\nstamp|\nstandard|\nstart-of-selection|\nstarting|\nstate|\nstatement|\nstatements|\nstatic|\nstatics|\nstatusinfo|\nstep|\nstep-loop|\nstop|\nstructure|\nstructures|\nstyle|\nsubkey|\nsubmatches|\nsubmit|\nsubroutine|\nsubscreen|\nsubstring|\nsubtract|\nsubtract-corresponding|\nsuffix|\nsum|\nsummary|\nsupplied|\nsupply|\nsuppress|\nswitch|\nsymbol|\nsyntax-check|\nsyntax-trace|\nsystem-call|\nsystem-exceptions|\ntab|\ntabbed|\ntable|\ntables|\ntableview|\ntabstrip|\ntarget|\ntask|\ntasks|\ntest|\ntest-injection|\ntest-seam|\ntesting|\ntext|\ntextpool|\nthen|\nthrow|\ntime|\ntimes|\ntimestamp|\ntimezone|\ntitle|\ntitlebar|\nto|\ntokens|\ntop-lines|\ntop-of-page|\ntrace-file|\ntrace-table|\ntrailing|\ntransaction|\ntransfer|\ntransformation|\ntranslate|\ntransporting|\ntrmac|\ntruncate|\ntruncation|\ntype|\ntype-pool|\ntype-pools|\ntypes|\nuline|\nunassign|\nunder|\nunicode|\nunion|\nunique|\nunit|\nunix|\nunpack|\nuntil|\nunwind|\nup|\nupdate|\nupper|\nuser|\nuser-command|\nusing|\nutf-8|\nuuid|\nvalid|\nvalidate|\nvalue|\nvalue-request|\nvalues|\nvary|\nvarying|\nversion|\nvia|\nvisible|\nwait|\nwhen|\nwhere|\nwidth|\nwindow|\nwindows|\nwith|\nwith-heading|\nwith-title|\nwithout|\nword|\nwork|\nworkspace|\nwrite|\nxml|\nxsd|\nyes|\nzero|\nzone\n\t\t        \t)(?=\\s|\\.|:|,)',
       name: 'keyword.control.simple.abap'
     },
     operators: {
@@ -236,12 +244,22 @@ const grammar = {
       ]
     },
     other_operator: {
-      match: '(?<=\\s)(&&|\\?=|\\+=|-=|\\/=|\\*=|&&=)(?=\\s)',
+      match: '(?<=\\s)(&&|&|\\?=|\\+=|-=|\\/=|\\*=|&&=|&=)(?=\\s)',
       name: 'keyword.control.simple.abap'
     },
     reserved_names: {
       match: '(?ix)(?<=\\s)(me|super)(?=\\s|\\.|,|->)',
       name: 'constant.language.abap'
+    },
+    sql_functions: {
+      match:
+        '(?ix)(?<=\\s)(abs|ceil|div|division|floor|mod|round|concat|concat_with_space|instr|left|length|like_regexpr|lower|lpad|ltrim|occurrences_regexpr|replace|replace_regexpr|rigth|rpad|rtrim|substring|upper|coalesce|uuid|bintohex|hextobin|to_clob|to_blob|currency_conversion|datn_days_between|datn_add_days|datn_add_months|dats_is_valid|dats_days_between|dats_add_days|dats_add_months|tims_is_valid|utcl_current|utcl_add_seconds|utcl_seconds_between|tstmp_is_valid|tstmp_current_utctimestamp|tstmp_seconds_between|tstmp_add_seconds|abap_system_timezone|abap_user_timezone|tstmp_to_dats|tstmp_to_tims|tstmp_to_dst|dats_tims_to_tstmp|tstmpl_to_utcl|tstmpl_from_utcl|dats_to_datn|dats_from_datn|tims_to_timn|tims_from_timn|avg|median|max|min|sum|product|stddev|var|corr|corr_spearman|string_agg|count|grouping|allow_precision_loss|over|cast)(?=\\()',
+      name: 'entity.name.function.sql.abap'
+    },
+    sql_types: {
+      match:
+        '(?ix)(?<=\\s)(char|clnt|cuky|curr|datn|dats|dec|decfloat16|decfloat34|fltp|int1|int2|int4|int8|lang|numc|quan|raw|sstring|timn|tims|unit|utclong)(?=\\s|\\(|\\))',
+      name: 'entity.name.type.sql.abap'
     },
     system_fields: {
       captures: {

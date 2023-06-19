@@ -29,7 +29,8 @@ const grammar = {
     '.metal',
     '.re',
     '.tcc',
-    '.tpp'
+    '.tpp',
+    '.txx'
   ],
   names: [
     'ags',

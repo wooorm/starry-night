@@ -54,8 +54,6 @@ source.camlp4.ocaml:
 source.cfscript:
   source.sql: true
   text.html.javadoc: false
-source.clean:
-  source.gfm: false
 source.cobol:
   source.java: false
   source.sql: false
@@ -99,6 +97,11 @@ source.cython:
   source.sql: false
 source.d:
   text.html.javadoc: true
+source.d2:
+  source.go: false
+  source.js: false
+  source.shell: false
+  text.html.markdown.d2: false
 source.dircolors:
   source.opts: false
 source.ditroff:
@@ -121,8 +124,6 @@ source.fontdir:
   source.xlfd: true
 source.fortran.modern:
   source.fortran: true
-source.fsharp:
-  source.gfm: false
 source.futhark:
   etc: true
 source.gdresource:
@@ -197,6 +198,8 @@ source.hack:
   text.html.basic: true
 source.haskell:
   annotation.liquidhaskell.haskell: false
+source.hosts:
+  etc: true
 source.httpspec:
   source.json: true
 source.hxml:
@@ -262,7 +265,6 @@ source.lean.markdown:
   source.diff: false
   source.dockerfile: false
   source.fsharp: false
-  source.gfm: false
   source.go: false
   source.groovy: false
   source.ini: false
@@ -314,13 +316,62 @@ source.makefile:
   source.shell: true
 source.mask:
   source.css: false
-  source.gfm: false
   source.js: true
   text.html.basic: true
 source.mathematica:
   source.sql: false
 source.matlab:
   source.shell: false
+source.mdx:
+  source.c: false
+  source.c++: false
+  source.clojure: false
+  source.coffee: false
+  source.cs: false
+  source.css: false
+  source.css.less: false
+  source.css.scss: false
+  source.diff: false
+  source.dockerfile: false
+  source.elixir: false
+  source.elm: false
+  source.erlang: false
+  source.gitconfig: false
+  source.go: false
+  source.graphql: false
+  source.haskell: false
+  source.ini: false
+  source.java: false
+  source.js: false
+  source.json: false
+  source.julia: false
+  source.kotlin: false
+  source.lua: false
+  source.makefile: false
+  source.objc: false
+  source.perl: false
+  source.python: false
+  source.r: false
+  source.raku: false
+  source.ruby: false
+  source.rust: false
+  source.scala: false
+  source.shell: false
+  source.sql: false
+  source.swift: false
+  source.toml: false
+  source.ts: false
+  source.tsx: true
+  source.vbnet: false
+  source.yaml: false
+  text.html.asciidoc: false
+  text.html.basic: false
+  text.html.markdown.source.gfm.apib: false
+  text.html.php: false
+  text.python.console: false
+  text.shell-session: false
+  text.xml: false
+  text.xml.svg: false
 source.mermaid:
   source.css: false
   source.js: false
@@ -460,6 +511,8 @@ source.regexp.raku:
   source.raku: true
 source.renpy:
   source.regexp.python: true
+source.rescript:
+  source.js: false
 source.rpgle:
   source.sql: true
 source.rpm-spec:
@@ -494,7 +547,6 @@ source.shaderlab:
   source.hlsl: false
 source.shell:
   source.applescript: false
-  source.gfm: false
   source.python: false
   source.ruby: false
   text.html.basic: false
@@ -557,6 +609,8 @@ source.yaml.salt:
   source.python: true
 source.yasnippet:
   source.emacs.lisp: true
+text.adblock:
+  source.js: false
 text.cfml.basic:
   source.cfscript: false
   source.sql: false
@@ -573,7 +627,6 @@ text.haml:
   source.coffee: false
   source.css: false
   source.css.scss: false
-  source.gfm: false
   source.js: false
   source.ruby: true
   source.sass: false
@@ -643,6 +696,56 @@ text.html.liquid:
 text.html.mako:
   source.python: false
   text.html.basic: true
+text.html.markdown.d2:
+  source.batchfile: false
+  source.c: false
+  source.c++: false
+  source.clojure: false
+  source.coffee: false
+  source.cs: false
+  source.css: false
+  source.css.less: false
+  source.css.scss: false
+  source.d2: false
+  source.dart: false
+  source.diff: false
+  source.dockerfile: false
+  source.elixir: false
+  source.erlang: false
+  source.fsharp: false
+  source.go: false
+  source.groovy: false
+  source.ini: false
+  source.java: false
+  source.js: false
+  source.js.regexp: false
+  source.json: false
+  source.lua: false
+  source.makefile: false
+  source.objc: false
+  source.perl: false
+  source.perl.6: false
+  source.powershell: false
+  source.python: false
+  source.r: false
+  source.regexp.python: false
+  source.ruby: false
+  source.rust: false
+  source.scala: false
+  source.shell: false
+  source.sql: false
+  source.swift: false
+  source.ts: false
+  source.tsx: false
+  source.yaml: false
+  text.bibtex: false
+  text.html.basic: false
+  text.html.handlebars: false
+  text.html.php: false
+  text.jade: false
+  text.tex.latex: false
+  text.xml: false
+  text.xml.xsl: false
 text.html.markdown.source.gfm.apib:
   source.c: false
   source.c++: false
@@ -764,7 +867,58 @@ text.marko:
   source.css: false
   source.css.less: false
   source.css.scss: false
-  source.ts: true
+  source.js: true
+text.md:
+  source.c: false
+  source.c++: false
+  source.clojure: false
+  source.coffee: false
+  source.cs: false
+  source.css: false
+  source.css.less: false
+  source.css.scss: false
+  source.diff: false
+  source.dockerfile: false
+  source.elixir: false
+  source.elm: false
+  source.erlang: false
+  source.gitconfig: false
+  source.go: false
+  source.graphql: false
+  source.haskell: false
+  source.ini: false
+  source.java: false
+  source.js: false
+  source.json: false
+  source.julia: false
+  source.kotlin: false
+  source.lua: false
+  source.makefile: false
+  source.mdx: false
+  source.objc: false
+  source.perl: false
+  source.python: false
+  source.r: false
+  source.raku: false
+  source.ruby: false
+  source.rust: false
+  source.scala: false
+  source.shell: false
+  source.sql: false
+  source.swift: false
+  source.toml: false
+  source.ts: false
+  source.tsx: false
+  source.vbnet: false
+  source.yaml: false
+  text.html.asciidoc: false
+  text.html.basic: false
+  text.html.markdown.source.gfm.apib: false
+  text.html.php: false
+  text.python.console: false
+  text.shell-session: false
+  text.xml: false
+  text.xml.svg: false
 text.muse:
   text.html.basic: false
   text.tex.latex: false
@@ -830,7 +984,6 @@ text.slim:
   source.css: false
   source.css.less: false
   source.css.scss: false
-  source.gfm: false
   source.js: false
   source.ruby: false
   source.sass: false

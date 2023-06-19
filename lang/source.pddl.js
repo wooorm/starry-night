@@ -27,12 +27,12 @@ const grammar = {
         },
         {
           match:
-            ':(strips|typing|negative-preconditions|disjunctive-preconditions|equality|existential-preconditions|universal-preconditions|quantified-preconditions|conditional-effects|fluents|numeric-fluents|object-fluents|adl|durative-actions|duration-inequalities|continuous-effects|derived-predicates|derived-functions|timed-initial-literals|timed-effects|preferences|constraints|action-costs|timed-initial-fluents|time|supply-demand)\\b',
+            ':(strips|typing|negative-preconditions|disjunctive-preconditions|equality|existential-preconditions|universal-preconditions|quantified-preconditions|conditional-effects|fluents|numeric-fluents|object-fluents|adl|durative-actions|duration-inequalities|continuous-effects|derived-predicates|derived-functions|timed-initial-literals|timed-effects|preferences|constraints|action-costs|timed-initial-fluents|time|supply-demand|job-scheduling)\\b',
           name: 'keyword.control.pddl.requirements'
         },
         {
           match:
-            ':(requirements|types|constants|predicates|functions|derived|action|durative-action|event|process|domain|objects|init|goal|metric)\\b',
+            ':(requirements|types|constants|predicates|functions|derived|action|durative-action|event|process|job|domain|objects|init|goal|metric)\\b',
           name: 'keyword.control.pddl.global'
         },
         {
@@ -42,6 +42,10 @@ const grammar = {
         {
           match: ':(parameters|duration|condition|effect)\\b',
           name: 'keyword.control.pddl.action.durative'
+        },
+        {
+          match: ':(parameters|duration|condition|effect)\\b',
+          name: 'keyword.control.pddl.action.job'
         }
       ]
     },

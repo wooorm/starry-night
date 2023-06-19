@@ -9,8 +9,6 @@ const grammar = {
     '.bi',
     '.ctl',
     '.dsr',
-    '.frm',
-    '.frm',
     '.rbbas',
     '.rbfrm',
     '.rbmnu',
@@ -18,7 +16,6 @@ const grammar = {
     '.rbtbar',
     '.rbuistate',
     '.vb',
-    '.vba',
     '.vbhtml',
     '.vbs'
   ],
@@ -31,15 +28,13 @@ const grammar = {
     'vb-6',
     'vb.net',
     'vb6',
-    'vba',
     'vbnet',
     'vbscript',
     'visual-basic',
     'visual-basic-.net',
     'visual-basic-6',
     'visual-basic-6.0',
-    'visual-basic-classic',
-    'visual-basic-for-applications'
+    'visual-basic-classic'
   ],
   patterns: [
     {include: '#comment-single-quote'},

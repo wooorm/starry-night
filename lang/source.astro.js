@@ -172,7 +172,7 @@ const grammar = {
                   name: 'string.unquoted.astro'
                 },
                 {
-                  begin: '([\'"])',
+                  begin: '(["])',
                   beginCaptures: {
                     0: {name: 'punctuation.definition.string.begin.astro'}
                   },
@@ -200,6 +200,42 @@ const grammar = {
                         0: {name: 'punctuation.definition.comment.begin.js'}
                       },
                       end: '(?=\\")|\\*/',
+                      endCaptures: {
+                        0: {name: 'punctuation.definition.comment.end.js'}
+                      },
+                      name: 'comment.block.js'
+                    }
+                  ]
+                },
+                {
+                  begin: "(['])",
+                  beginCaptures: {
+                    0: {name: 'punctuation.definition.string.begin.astro'}
+                  },
+                  end: '\\1',
+                  endCaptures: {
+                    0: {name: 'punctuation.definition.string.end.astro'}
+                  },
+                  name: 'string.quoted.astro',
+                  patterns: [
+                    {
+                      captures: {0: {patterns: [{include: 'source.js'}]}},
+                      match: "([^\\n\\'/]|/(?![/*]))+"
+                    },
+                    {
+                      begin: '//',
+                      beginCaptures: {
+                        0: {name: 'punctuation.definition.comment.js'}
+                      },
+                      end: "(?=\\')|\\n",
+                      name: 'comment.line.double-slash.js'
+                    },
+                    {
+                      begin: '/\\*',
+                      beginCaptures: {
+                        0: {name: 'punctuation.definition.comment.begin.js'}
+                      },
+                      end: "(?=\\')|\\*/",
                       endCaptures: {
                         0: {name: 'punctuation.definition.comment.end.js'}
                       },

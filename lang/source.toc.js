@@ -22,12 +22,12 @@ const grammar = {
             },
             {
               match:
-                '(?i)(Interface|Title|Notes|RequiredDeps|\\bDep[^:]*|OptionalDeps|LoadOnDemand|LoadWith|LoadManagers|SavedVariablesPerCharacter|SavedVariables|DefaultState|Author|Version)',
+                '(?i)(Interface|Title|Notes|RequiredDeps|\\bDep[^:]*|OptionalDeps|LoadOnDemand|LoadWith|LoadManagers|SavedVariablesPerCharacter|SavedVariables|DefaultState|Author|Version|AddonCompartmentFunc|AddonCompartmentFuncOnEnter|AddonCompartmentFuncOnLeave|IconAtlas|IconTexture)',
               name: 'entity.name.tag.toc'
             },
             {
               match:
-                '(?i)(AllowLoad|OnlyBetaAndPTR|SavedVariablesMachine|Secure)',
+                '(?i)(AllowLoad|OnlyBetaAndPTR|SavedVariablesMachine|Secure|GuardedAddOn)',
               name: 'entity.name.tag.restricted.toc'
             },
             {match: '\\S[^:]+', name: 'invalid.tag.toc'}

@@ -21,7 +21,7 @@ const grammar = {
   ],
   repository: {
     commands: {
-      begin: '^\\s*(-)\\s([^\\s<>"\']+)',
+      begin: '^\\s*(-)\\s([^\\s<>"\':]+)',
       captures: {
         1: {name: 'operator.dash.denizenscript'},
         2: {name: 'entity.other.command.denizenscript'}
@@ -34,7 +34,7 @@ const grammar = {
       name: 'comment.line.number-sign.denizenscript'
     },
     def_brackets: {
-      begin: '(?<=\\w|<)\\[',
+      begin: '(?<=\\w|<|&)\\[',
       end: '\\]',
       name: 'entity.name.tag.def_brackets.denizenscript',
       patterns: [{include: '#tags'}]
@@ -85,7 +85,7 @@ const grammar = {
       begin: '<(?!-|\\s|=)',
       end: '>',
       name: 'constant.language.tag.denizenscript',
-      patterns: [{include: '#def_brackets'}]
+      patterns: [{include: '#def_brackets'}, {include: '#tags'}]
     },
     todo_comments: {
       begin: '(?i)^\\s*#\\s*(?:todo)',

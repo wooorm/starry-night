@@ -1,5 +1,7 @@
 // This is a TextMate grammar distributed by `starry-night`.
-// This grammar is licensed `bsd-2-clause`.
+// This grammar is developed at
+// <https://github.com/jflex-de/jflex.tmbundle>
+// and licensed `bsd-2-clause`.
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {

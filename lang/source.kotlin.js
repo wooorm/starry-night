@@ -442,7 +442,7 @@ const grammar = {
                 0: {name: 'punctuation.definition.string.end.kotlin'}
               },
               name: 'string.quoted.triple.kotlin',
-              patterns: [{include: '#string-content'}]
+              patterns: [{include: '#raw-string-content'}]
             },
             {
               begin: '(?!\')"',
@@ -470,6 +470,26 @@ const grammar = {
             }
           ],
           repository: {
+            'raw-string-content': {
+              patterns: [
+                {
+                  begin: '\\$(\\{)',
+                  beginCaptures: {
+                    1: {name: 'punctuation.section.block.begin.kotlin'}
+                  },
+                  end: '\\}',
+                  endCaptures: {
+                    0: {name: 'punctuation.section.block.end.kotlin'}
+                  },
+                  name: 'entity.string.template.element.kotlin',
+                  patterns: [{include: '#code'}]
+                },
+                {
+                  match: '\\$[a-zA-Z_]\\w*',
+                  name: 'entity.string.template.element.kotlin'
+                }
+              ]
+            },
             'string-content': {
               patterns: [
                 {

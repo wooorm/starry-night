@@ -107,7 +107,7 @@ To illustrate, Astro costs 2.1 kB and TSX costs 25.4 kB.
 essentially the same)!
 
 `PrettyLights` is responsible for taking the flag `markdown`, looking it up in
-[`languages.yml`][languages-yml] from `github/linguist` to figure out that that
+[`languages.yml`][languages-yml] from `github-linguist` to figure out that that
 means markdown, taking a corresponding grammar (in this case
 [`atom/language-gfm`][language-gfm]), doing some GPL magic in C, and turning it
 into spans with classes.
@@ -265,7 +265,7 @@ Highlight `value` (code) as `scope` (a TextMate scope).
 *   `value` (`string`)
     — code to highlight
 *   `scope` (`string`)
-    — registered grammar scope to highlight as (such as `'source.gfm'`)
+    — registered grammar scope to highlight as (such as `'text.md'`)
 
 ###### Returns
 
@@ -299,7 +299,7 @@ Yields:
 
 ### `starryNight.flagToScope(flag)`
 
-Get the grammar scope (such as `source.gfm`) associated with a grammar name
+Get the grammar scope (such as `text.md`) associated with a grammar name
 (such as `markdown` or `pandoc`) or grammar extension (such as `.mdwn` or
 `.rmd`).
 
@@ -336,7 +336,7 @@ console.log(1)
 
 ###### Returns
 
-Grammar scope, such as `'source.gfm'` (`string?`)
+Grammar scope, such as `'text.md'` (`string?`)
 
 ###### Example
 
@@ -345,9 +345,9 @@ import {createStarryNight, common} from '@wooorm/starry-night'
 
 const starryNight = await createStarryNight(common)
 
-console.log(starryNight.flagToScope('pandoc')) // `'source.gfm'`
-console.log(starryNight.flagToScope('workbook')) // `'source.gfm'`
-console.log(starryNight.flagToScope('.workbook')) // `'source.gfm'`
+console.log(starryNight.flagToScope('pandoc')) // `'text.md'`
+console.log(starryNight.flagToScope('workbook')) // `'text.md'`
+console.log(starryNight.flagToScope('.workbook')) // `'text.md'`
 console.log(starryNight.flagToScope('whatever')) // `undefined`
 ```
 
@@ -357,7 +357,7 @@ List all registered scopes.
 
 ###### Returns
 
-List of grammar scopes, such as `'source.gfm'` (`Array<string>`).
+List of grammar scopes, such as `'text.md'` (`Array<string>`).
 
 ###### Example
 
@@ -391,7 +391,7 @@ When you register `text.xml.svg` without `text.xml`, it will be listed here.
 
 ###### Returns
 
-List of grammar scopes, such as `'source.gfm'` (`Array<string>`).
+List of grammar scopes, such as `'text.md'` (`Array<string>`).
 
 ###### Example
 
@@ -432,18 +432,18 @@ A promise resolving to nothing (`Promise<undefined>`).
 ````js
 import {toHtml} from 'hast-util-to-html'
 import {createStarryNight} from '@wooorm/starry-night'
-import sourceGfm from '@wooorm/starry-night/lang/source.gfm.js'
+import textMd from '@wooorm/starry-night/lang/text.md.js'
 import sourceCss from '@wooorm/starry-night/lang/source.css.js'
 
 const markdown = '```css\nem { color: red }\n```'
 
-const starryNight = await createStarryNight([sourceGfm])
+const starryNight = await createStarryNight([textMd])
 
-console.log(toHtml(starryNight.highlight(markdown, 'source.gfm')))
+console.log(toHtml(starryNight.highlight(markdown, 'text.md')))
 
 await starryNight.register([sourceCss])
 
-console.log(toHtml(starryNight.highlight(markdown, 'source.gfm')))
+console.log(toHtml(starryNight.highlight(markdown, 'text.md')))
 ````
 
 Yields:
@@ -696,7 +696,7 @@ const starryNight = await createStarryNight(common)
 
 const tree = starryNight.highlight(
   '# Some heading\n\n```js\nalert(1)\n```\n***',
-  'source.gfm'
+  'text.md'
 )
 
 starryNightGutter(tree)
@@ -968,7 +968,7 @@ You are responsible for loading those.
 
 All licenses are permissive and made available in [`notice`][notice].
 Changes should go to upstream repos and [`languages.yml`][languages-yml] in
-`github/linguist`.
+`github-linguist`.
 
 <!--support start-->
 
@@ -980,7 +980,6 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [x] [`source.css.less`](lang/source.css.less.js) (mit) — [upstream](https://github.com/atom/language-less) — needs: `source.css`
 *   [x] [`source.css.scss`](lang/source.css.scss.js) (mit) — [upstream](https://github.com/atom/language-sass) — needs: `source.css`
 *   [x] [`source.diff`](lang/source.diff.js)
-*   [x] [`source.gfm`](lang/source.gfm.js) (mit) — [upstream](https://github.com/atom/language-gfm)
 *   [x] [`source.go`](lang/source.go.js) (bsd-3-clause) — [upstream](https://github.com/AlanQuatermain/go-tmbundle)
 *   [x] [`source.graphql`](lang/source.graphql.js) (mit) — [upstream](https://github.com/graphql/graphiql)
 *   [x] [`source.ini`](lang/source.ini.js)
@@ -1005,6 +1004,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [x] [`source.yaml`](lang/source.yaml.js) (mit) — [upstream](https://github.com/atom/language-yaml)
 *   [x] [`text.html.basic`](lang/text.html.basic.js) (mit) — [upstream](https://github.com/atom/language-html)
 *   [x] [`text.html.php`](lang/text.html.php.js) — needs: `text.html.basic`
+*   [x] [`text.md`](lang/text.md.js) (mit) — [upstream](https://github.com/wooorm/markdown-tm-language)
 *   [x] [`text.xml`](lang/text.xml.js)
 *   [x] [`text.xml.svg`](lang/text.xml.svg.js) (isc) — [upstream](https://github.com/Alhadis/language-etc) — needs: `text.xml`
 *   [ ] [`config.xcompose`](lang/config.xcompose.js) (mit)
@@ -1033,6 +1033,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.angelscript`](lang/source.angelscript.js) (unlicense) — [upstream](https://github.com/wronex/sublime-angelscript)
 *   [ ] [`source.antlr`](lang/source.antlr.js)
 *   [ ] [`source.apache-config`](lang/source.apache-config.js)
+*   [ ] [`source.apex`](lang/source.apex.js) (bsd-3-clause) — [upstream](https://github.com/forcedotcom/apex-tmLanguage)
 *   [ ] [`source.apl`](lang/source.apl.js) (isc) — [upstream](https://github.com/Alhadis/language-apl)
 *   [ ] [`source.applescript`](lang/source.applescript.js)
 *   [ ] [`source.arr`](lang/source.arr.js) (mit) — [upstream](https://github.com/samuela/language-pyret)
@@ -1087,7 +1088,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.coffee`](lang/source.coffee.js) (mit) — [upstream](https://github.com/atom/language-coffee-script) — needs: `source.js`
 *   [ ] [`source.cool`](lang/source.cool.js) (mit)
 *   [ ] [`source.coq`](lang/source.coq.js) (mit)
-*   [ ] [`source.crystal`](lang/source.crystal.js) (mit) — needs: `text.html.basic`
+*   [ ] [`source.crystal`](lang/source.crystal.js) (mit) — [upstream](https://github.com/atom-crystal/language-crystal) — needs: `text.html.basic`
 *   [ ] [`source.csound`](lang/source.csound.js) (mit) — [upstream](https://github.com/nwhetsell/language-csound)
 *   [ ] [`source.csound-document`](lang/source.csound-document.js) (mit) — [upstream](https://github.com/nwhetsell/language-csound) — needs: `source.csound`, `text.xml`
 *   [ ] [`source.csound-score`](lang/source.csound-score.js) (mit) — [upstream](https://github.com/nwhetsell/language-csound) — needs: `source.csound`
@@ -1103,6 +1104,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.cypher`](lang/source.cypher.js) (apache-2.0) — [upstream](https://github.com/fredbenenson/sublime-cypher)
 *   [ ] [`source.cython`](lang/source.cython.js) — needs: `source.regexp.python`
 *   [ ] [`source.d`](lang/source.d.js) — [upstream](https://github.com/textmate/d.tmbundle) — needs: `text.html.javadoc`
+*   [ ] [`source.d2`](lang/source.d2.js) (bsd-3-clause) — [upstream](https://github.com/terrastruct/d2-vscode)
 *   [ ] [`source.dart`](lang/source.dart.js) (bsd-3-clause) — [upstream](https://github.com/dart-lang/dart-syntax-highlight)
 *   [ ] [`source.data-weave`](lang/source.data-weave.js) (mit) — [upstream](https://github.com/mulesoft-labs/data-weave-tmLanguage)
 *   [ ] [`source.deb-control`](lang/source.deb-control.js) (mit) — [upstream](https://github.com/tsbarnes/language-debian)
@@ -1111,7 +1113,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.dircolors`](lang/source.dircolors.js) (mit)
 *   [ ] [`source.ditroff`](lang/source.ditroff.js) (isc) — [upstream](https://github.com/Alhadis/language-roff) — needs: `source.ditroff.desc`, `text.roff`
 *   [ ] [`source.ditroff.desc`](lang/source.ditroff.desc.js) (isc) — [upstream](https://github.com/Alhadis/language-roff)
-*   [ ] [`source.dm`](lang/source.dm.js) (mit)
+*   [ ] [`source.dm`](lang/source.dm.js) (mit) — [upstream](https://github.com/PJB3005/atomic-dreams)
 *   [ ] [`source.dockerfile`](lang/source.dockerfile.js) (mit) — [upstream](https://github.com/asbjornenge/Docker.tmbundle)
 *   [ ] [`source.dot`](lang/source.dot.js)
 *   [ ] [`source.dotenv`](lang/source.dotenv.js) (isc) — [upstream](https://github.com/Alhadis/language-etc)
@@ -1181,6 +1183,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.hlsl`](lang/source.hlsl.js) (mit)
 *   [ ] [`source.hocon`](lang/source.hocon.js) (mit) — [upstream](https://github.com/jacobwgillespie/language-hocon)
 *   [ ] [`source.hoon`](lang/source.hoon.js) (mit) — [upstream](https://github.com/pkova/hoon-grammar)
+*   [ ] [`source.hosts`](lang/source.hosts.js) (isc) — [upstream](https://github.com/Alhadis/language-etc) — needs: `etc`
 *   [ ] [`source.hql`](lang/source.hql.js) (mit)
 *   [ ] [`source.httpspec`](lang/source.httpspec.js) (mit) — [upstream](https://github.com/samsalisbury/Sublime-HTTP) — needs: `source.json`
 *   [ ] [`source.hx`](lang/source.hx.js) (mit) — [upstream](https://github.com/vshaxe/haxe-TmLanguage)
@@ -1206,7 +1209,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.java-properties`](lang/source.java-properties.js) — [upstream](https://github.com/textmate/java.tmbundle)
 *   [ ] [`source.jcl`](lang/source.jcl.js) (mit) — [upstream](https://github.com/spgennard/vscode_cobol)
 *   [ ] [`source.jest.snap`](lang/source.jest.snap.js) (mit) — [upstream](https://github.com/jest-community/vscode-jest)
-*   [ ] [`source.jflex`](lang/source.jflex.js) (bsd-2-clause) — needs: `source.java`
+*   [ ] [`source.jflex`](lang/source.jflex.js) (bsd-2-clause) — [upstream](https://github.com/jflex-de/jflex.tmbundle) — needs: `source.java`
 *   [ ] [`source.jison`](lang/source.jison.js) (mit) — needs: `source.jisonlex`
 *   [ ] [`source.jisonlex`](lang/source.jisonlex.js) (mit) — needs: `source.jison`, `source.js`
 *   [ ] [`source.jolie`](lang/source.jolie.js) (mit)
@@ -1233,6 +1236,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.llvm`](lang/source.llvm.js) (mit) — [upstream](https://github.com/whitequark/llvm.tmbundle)
 *   [ ] [`source.logos`](lang/source.logos.js) (mit) — [upstream](https://github.com/Cykey/Sublime-Logos) — needs: `source.c++`, `source.objc`
 *   [ ] [`source.logtalk`](lang/source.logtalk.js)
+*   [ ] [`source.lolcode`](lang/source.lolcode.js) (mit) — [upstream](https://github.com/KrazIvan/LOLCODE-grammar-vscode)
 *   [ ] [`source.loomscript`](lang/source.loomscript.js) (mit)
 *   [ ] [`source.lsl`](lang/source.lsl.js)
 *   [ ] [`source.ltspice.symbol`](lang/source.ltspice.symbol.js) (isc) — [upstream](https://github.com/Alhadis/language-pcb)
@@ -1245,6 +1249,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.maxscript`](lang/source.maxscript.js) (isc)
 *   [ ] [`source.mc`](lang/source.mc.js) (mit)
 *   [ ] [`source.mcfunction`](lang/source.mcfunction.js) (mit) — [upstream](https://github.com/Arcensoth/language-mcfunction)
+*   [ ] [`source.mdx`](lang/source.mdx.js) (mit) — [upstream](https://github.com/wooorm/markdown-tm-language) — needs: `source.tsx`
 *   [ ] [`source.mercury`](lang/source.mercury.js) (mit)
 *   [ ] [`source.mermaid`](lang/source.mermaid.js) (isc) — [upstream](https://github.com/Alhadis/language-mermaid) — needs: `source.mermaid.c4c-diagram`, `source.mermaid.class-diagram`, `source.mermaid.er-diagram`, `source.mermaid.flowchart`, `source.mermaid.gantt`, `source.mermaid.gitgraph`, `source.mermaid.mindmap`, `source.mermaid.pie-chart`, `source.mermaid.requirement-diagram`, `source.mermaid.sequence-diagram`, `source.mermaid.state-diagram`, `source.mermaid.user-journey`
 *   [ ] [`source.mermaid.c4c-diagram`](lang/source.mermaid.c4c-diagram.js) (isc) — [upstream](https://github.com/Alhadis/language-mermaid) — needs: `source.mermaid`, `source.mermaid.user-journey`, `source.wsd`
@@ -1253,6 +1258,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.mermaid.flowchart`](lang/source.mermaid.flowchart.js) (isc) — [upstream](https://github.com/Alhadis/language-mermaid) — needs: `source.mermaid`
 *   [ ] [`source.mermaid.gantt`](lang/source.mermaid.gantt.js) (isc) — [upstream](https://github.com/Alhadis/language-mermaid) — needs: `source.mermaid`, `source.mermaid.flowchart`
 *   [ ] [`source.mermaid.gitgraph`](lang/source.mermaid.gitgraph.js) (isc) — [upstream](https://github.com/Alhadis/language-mermaid) — needs: `source.json`, `source.mermaid`
+*   [ ] [`source.mermaid.mindmap`](lang/source.mermaid.mindmap.js) (isc) — [upstream](https://github.com/Alhadis/language-mermaid) — needs: `source.mermaid`, `source.mermaid.flowchart`
 *   [ ] [`source.mermaid.pie-chart`](lang/source.mermaid.pie-chart.js) (isc) — [upstream](https://github.com/Alhadis/language-mermaid) — needs: `source.mermaid`
 *   [ ] [`source.mermaid.requirement-diagram`](lang/source.mermaid.requirement-diagram.js) (isc) — [upstream](https://github.com/Alhadis/language-mermaid) — needs: `source.mermaid`
 *   [ ] [`source.mermaid.sequence-diagram`](lang/source.mermaid.sequence-diagram.js) (isc) — [upstream](https://github.com/Alhadis/language-mermaid) — needs: `source.json`, `source.mermaid`
@@ -1275,6 +1281,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.msl`](lang/source.msl.js) (mit) — [upstream](https://github.com/gen-angry/language-msl)
 *   [ ] [`source.mupad`](lang/source.mupad.js) (mit) — [upstream](https://github.com/ccreutzig/sublime-MuPAD)
 *   [ ] [`source.nanorc`](lang/source.nanorc.js) (isc) — [upstream](https://github.com/Alhadis/language-etc) — needs: `injections.etc`
+*   [ ] [`source.nasal`](lang/source.nasal.js) (mit) — [upstream](https://github.com/BobDotCom/Nasal.tmbundle)
 *   [ ] [`source.nasl`](lang/source.nasl.js) (mit) — [upstream](https://github.com/tenable/sublimetext-nasl)
 *   [ ] [`source.ncl`](lang/source.ncl.js) (mit)
 *   [ ] [`source.ne`](lang/source.ne.js) (unlicense) — [upstream](https://github.com/Hardmath123/sublime-nearley)
@@ -1293,6 +1300,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.nsis`](lang/source.nsis.js) (apache-2.0)
 *   [ ] [`source.nu`](lang/source.nu.js) (apache-2.0)
 *   [ ] [`source.nunjucks`](lang/source.nunjucks.js) (mit)
+*   [ ] [`source.nushell`](lang/source.nushell.js) (mit) — [upstream](https://github.com/hustcer/nu-grammar)
 *   [ ] [`source.nut`](lang/source.nut.js) (mit)
 *   [ ] [`source.objc++`](lang/source.objc++.js) — needs: `source.c++`, `source.objc`
 *   [ ] [`source.objectscript`](lang/source.objectscript.js) (mit) — needs: `source.objectscript_macros`
@@ -1308,6 +1316,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.ox`](lang/source.ox.js) (mit)
 *   [ ] [`source.oz`](lang/source.oz.js) (mit)
 *   [ ] [`source.p4`](lang/source.p4.js) (mit)
+*   [ ] [`source.pact`](lang/source.pact.js) (bsd-3-clause) — [upstream](https://github.com/kadena-io/pact-atom)
 *   [ ] [`source.pan`](lang/source.pan.js) (mit)
 *   [ ] [`source.papyrus.skyrim`](lang/source.papyrus.skyrim.js) (mit)
 *   [ ] [`source.parrot.pir`](lang/source.parrot.pir.js)
@@ -1354,6 +1363,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.racket`](lang/source.racket.js) (mit)
 *   [ ] [`source.raku`](lang/source.raku.js) — [upstream](https://github.com/perl6/atom-language-perl6) — needs: `source.quoting.raku`
 *   [ ] [`source.rascal`](lang/source.rascal.js) (bsd-2-clause) — [upstream](https://github.com/usethesource/rascal-syntax-highlighting)
+*   [ ] [`source.rbs`](lang/source.rbs.js) (mit) — [upstream](https://github.com/soutaro/vscode-rbs-syntax)
 *   [ ] [`source.reason`](lang/source.reason.js) (mit) — [upstream](https://github.com/reasonml-editor/language-reason)
 *   [ ] [`source.rebol`](lang/source.rebol.js) (mit) — [upstream](https://github.com/Oldes/Sublime-REBOL)
 *   [ ] [`source.record-jar`](lang/source.record-jar.js) (isc) — [upstream](https://github.com/Alhadis/language-etc) — needs: `etc`
@@ -1409,7 +1419,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.string-template`](lang/source.string-template.js) (isc) — [upstream](https://github.com/Alhadis/language-etc) — needs: `etc`
 *   [ ] [`source.stylus`](lang/source.stylus.js) (mit)
 *   [ ] [`source.supercollider`](lang/source.supercollider.js) (mit) — [upstream](https://github.com/supercollider/language-supercollider)
-*   [ ] [`source.svelte`](lang/source.svelte.js) (mit) — [upstream](https://github.com/umanghome/svelte-atom) — needs: `source.css`, `source.js`, `source.ts`
+*   [ ] [`source.svelte`](lang/source.svelte.js) (mit) — [upstream](https://github.com/sebastinez/svelte-atom) — needs: `source.css`, `source.js`, `source.ts`
 *   [ ] [`source.sway`](lang/source.sway.js) (apache-2.0) — [upstream](https://github.com/FuelLabs/sway-vscode-plugin)
 *   [ ] [`source.sy`](lang/source.sy.js) (isc) — [upstream](https://github.com/Alhadis/language-regexp) — needs: `source.regexp`
 *   [ ] [`source.systemverilog`](lang/source.systemverilog.js) (apache-2.0) — [upstream](https://github.com/TheClams/SystemVerilog)
@@ -1422,6 +1432,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.thrift`](lang/source.thrift.js)
 *   [ ] [`source.tl`](lang/source.tl.js) (mit)
 *   [ ] [`source.tla`](lang/source.tla.js) (mit)
+*   [ ] [`source.tlverilog`](lang/source.tlverilog.js) (mit) — [upstream](https://github.com/adamint/tlv-vscode)
 *   [ ] [`source.tm-properties`](lang/source.tm-properties.js) — [upstream](https://github.com/textmate/textmate.tmbundle)
 *   [ ] [`source.toc`](lang/source.toc.js) (unlicense) — [upstream](https://github.com/nebularg/language-toc-wow)
 *   [ ] [`source.toml`](lang/source.toml.js) — [upstream](https://github.com/textmate/toml.tmbundle)
@@ -1434,6 +1445,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.v`](lang/source.v.js) (mit) — [upstream](https://github.com/0x9ef/vscode-vlang)
 *   [ ] [`source.vala`](lang/source.vala.js) (mit) — [upstream](https://github.com/technosophos/Vala-TMBundle)
 *   [ ] [`source.varnish.vcl`](lang/source.varnish.vcl.js) (mit) — [upstream](https://github.com/brandonwamboldt/sublime-varnish)
+*   [ ] [`source.vba`](lang/source.vba.js) (mpl-2.0) — [upstream](https://github.com/tiabeast/vscode-vba-json)
 *   [ ] [`source.velocity`](lang/source.velocity.js) (mit) — [upstream](https://github.com/animecyc/AtomLanguageVelocity)
 *   [ ] [`source.verilog`](lang/source.verilog.js)
 *   [ ] [`source.vhdl`](lang/source.vhdl.js)
@@ -1446,8 +1458,10 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.webassembly`](lang/source.webassembly.js) (isc) — [upstream](https://github.com/Alhadis/language-webassembly)
 *   [ ] [`source.webidl`](lang/source.webidl.js) (mit) — [upstream](https://github.com/andik/IDL-Syntax)
 *   [ ] [`source.wgetrc`](lang/source.wgetrc.js) (isc) — [upstream](https://github.com/Alhadis/language-etc) — needs: `etc`
+*   [ ] [`source.wgsl`](lang/source.wgsl.js) — [upstream](https://github.com/wgsl-analyzer/wgsl-analyzer)
 *   [ ] [`source.whiley`](lang/source.whiley.js) (apache-2.0) — [upstream](https://github.com/Whiley/WhileySyntaxBundle)
 *   [ ] [`source.win32-messages`](lang/source.win32-messages.js) (isc) — [upstream](https://github.com/Nixinova/NovaGrammars)
+*   [ ] [`source.wit`](lang/source.wit.js) (apache-2.0) — [upstream](https://github.com/bytecodealliance/vscode-wit)
 *   [ ] [`source.witcherscript`](lang/source.witcherscript.js) (mit) — [upstream](https://github.com/ADawesomeguy/witcherscript-grammar)
 *   [ ] [`source.wollok`](lang/source.wollok.js) (mit)
 *   [ ] [`source.wren`](lang/source.wren.js) (mit) — [upstream](https://github.com/Nelarius/vscode-wren)
@@ -1470,7 +1484,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.zenscript`](lang/source.zenscript.js) (mit) — [upstream](https://github.com/CraftTweaker/ZenScript-tmLanguage)
 *   [ ] [`source.zig`](lang/source.zig.js) (mit) — [upstream](https://github.com/ziglang/sublime-zig-language)
 *   [ ] [`source.zil`](lang/source.zil.js)
-*   [ ] [`text.adblock`](lang/text.adblock.js) (mit) — [upstream](https://github.com/ameshkov/VscodeAdblockSyntax)
+*   [ ] [`text.adblock`](lang/text.adblock.js) (mit) — [upstream](https://github.com/AdguardTeam/VscodeAdblockSyntax)
 *   [ ] [`text.bibtex`](lang/text.bibtex.js) — [upstream](https://github.com/textmate/latex.tmbundle)
 *   [ ] [`text.browserslist`](lang/text.browserslist.js) (mit) — [upstream](https://github.com/browserslist/browserslist-vscode)
 *   [ ] [`text.cfml.basic`](lang/text.cfml.basic.js) (mit)
@@ -1491,7 +1505,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`text.html.cshtml`](lang/text.html.cshtml.js) (mit) — [upstream](https://github.com/github-linguist/razor-plus) — needs: `source.cs`, `text.html.basic`
 *   [ ] [`text.html.django`](lang/text.html.django.js) — needs: `text.html.basic`
 *   [ ] [`text.html.ecmarkup`](lang/text.html.ecmarkup.js) (isc) — [upstream](https://github.com/Alhadis/language-etc) — needs: `etc`, `source.yaml`, `text.grammarkdown`, `text.html.basic`
-*   [ ] [`text.html.ecr`](lang/text.html.ecr.js) (mit) — needs: `source.crystal`, `text.html.basic`
+*   [ ] [`text.html.ecr`](lang/text.html.ecr.js) (mit) — [upstream](https://github.com/atom-crystal/language-crystal) — needs: `source.crystal`, `text.html.basic`
 *   [ ] [`text.html.elixir`](lang/text.html.elixir.js) (apache-2.0) — [upstream](https://github.com/elixir-lang/elixir-tmbundle) — needs: `text.elixir`, `text.html.basic`
 *   [ ] [`text.html.erb`](lang/text.html.erb.js) (mit) — [upstream](https://github.com/atom/language-ruby) — needs: `source.ruby`, `text.html.basic`
 *   [ ] [`text.html.ftl`](lang/text.html.ftl.js) (mit) — needs: `text.html.basic`
@@ -1514,7 +1528,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`text.html.twig`](lang/text.html.twig.js) (bsd-3-clause) — [upstream](https://github.com/Anomareh/PHP-Twig.tmbundle)
 *   [ ] [`text.html.vue`](lang/text.html.vue.js) (mit) — [upstream](https://github.com/vuejs/vue-syntax-highlight)
 *   [ ] [`text.jade`](lang/text.jade.js) (mit) — needs: `source.js`, `text.html.basic`
-*   [ ] [`text.marko`](lang/text.marko.js) (mit) — [upstream](https://github.com/marko-js/marko-tmbundle) — needs: `source.ts`
+*   [ ] [`text.marko`](lang/text.marko.js) (mit) — [upstream](https://github.com/marko-js/marko-tmbundle) — needs: `source.js`
 *   [ ] [`text.muse`](lang/text.muse.js) (isc) — [upstream](https://github.com/Alhadis/language-emacs-lisp)
 *   [ ] [`text.python.console`](lang/text.python.console.js) (mit) — [upstream](https://github.com/MagicStack/MagicPython) — needs: `source.python`
 *   [ ] [`text.python.traceback`](lang/text.python.traceback.js) (mit) — [upstream](https://github.com/MagicStack/MagicPython) — needs: `source.python`
@@ -1656,6 +1670,6 @@ All other files [MIT][license] © [Titus Wormer][author]
 
 [language-gfm]: https://github.com/atom/language-gfm
 
-[languages-yml]: https://github.com/github/linguist/blob/cddf747/lib/linguist/languages.yml#L3691
+[languages-yml]: https://github.com/github-linguist/linguist/blob/b5432eb/lib/linguist/languages.yml#L4031
 
 [css]: #css

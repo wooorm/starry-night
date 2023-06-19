@@ -532,6 +532,7 @@ const grammar = {
               name: 'storage.type.rpgle.free.definition.complex.end'
             },
             {include: '#freedefkeywords'},
+            {include: '#freeidentifiers'},
             {include: '#rpglecommon'}
           ]
         },
@@ -541,7 +542,7 @@ const grammar = {
         },
         {
           match:
-            '(?i)\\b(Z\\-SUB|Z\\-ADD|XML\\-SAX|XML\\-INTO|XLATE|XFOOT|WRITE|WHEN|UPDATE|UNLOCK|TIME|TESTZ|TESTN|TESTB|TEST|TAG|SUBST|SUBDUR|SUB|SQRT|SQLSTATE|SQLCODE|SORTA|SND\\-MSG|SHTDN|SETON|SETOFF|SETLL|SETGT|SELECT|SCAN|ROLBK|RETURN|RESET|REL|REALLOC|READPE|READP|READE|READC|READ|POST|PLIST|PARM|OUT|OTHER|OR|OPEN|ON\\-EXIT|ON\\-EXCP|ON\\-ERROR|OCCUR|NEXT|MVR|MULT|MOVEL|MOVEA|MOVE|MONITOR|MLLZO|MLHZO|MHLZO|MHHZO|LOOKUP|LEAVESR|LEAVE|KLIST|KFLD|ITER|IN|IF|GOTO|FORCE|FOR\\-EACH|FOR|FEOD|EXTRCT|EXSR|EXFMT|EXCEPT|EVAL-CORR|EVALR|EVAL|ENDSR|ENDMON|ENDFOR|ENDIF|ENDDO|ENDCS|ENDWH|ENDSL|END|ELSEIF|ELSE|DUMP|DSPLY|DOW|DOU|DO|DIV|DELETE|DEFINE|DEALLOC|DATA-INTO|COMP|COMMIT|CLOSE|CLEAR|CHECKR|CHECK|CHAIN|CAT|CAS|CALLP|CALLB|CALL|CAB|BITON|BITOFF|BEGSR|AND|ALLOC|ADDUR|ADD|ACQ)\\b',
+            '(?i)\\b(Z\\-SUB|Z\\-ADD|XML\\-SAX|XML\\-INTO|XLATE|XFOOT|WRITE|WHEN-IN|WHEN-IS|WHEN|UPDATE|UNLOCK|TIME|TESTZ|TESTN|TESTB|TEST|TAG|SUBST|SUBDUR|SUB|SQRT|SQLSTATE|SQLCODE|SORTA|SND\\-MSG|SHTDN|SETON|SETOFF|SETLL|SETGT|SELECT|SCAN|ROLBK|RETURN|RESET|REL|REALLOC|READPE|READP|READE|READC|READ|POST|PLIST|PARM|OUT|OTHER|OR|OPEN|ON\\-EXIT|ON\\-EXCP|ON\\-ERROR|OCCUR|NEXT|MVR|MULT|MOVEL|MOVEA|MOVE|MONITOR|MLLZO|MLHZO|MHLZO|MHHZO|LOOKUP|LEAVESR|LEAVE|KLIST|KFLD|ITER|IN|IF|GOTO|FORCE|FOR\\-EACH|FOR|FEOD|EXTRCT|EXSR|EXFMT|EXCEPT|EVAL-CORR|EVALR|EVAL|ENDSR|ENDMON|ENDFOR|ENDIF|ENDDO|ENDCS|ENDWH|ENDSL|END|ELSEIF|ELSE|DUMP|DSPLY|DOW|DOU|DO|DIV|DELETE|DEFINE|DEALLOC|DATA-INTO|COMP|COMMIT|CLOSE|CLEAR|CHECKR|CHECK|CHAIN|CAT|CAS|CALLP|CALLB|CALL|CAB|BITON|BITOFF|BEGSR|AND|ALLOC|ADDUR|ADD|ACQ)\\b',
           name: 'keyword.other.rpgle.free'
         },
         {include: '#freeidentifiers'},
@@ -553,7 +554,7 @@ const grammar = {
         {
           begin: '[a-zA-Z_][a-zA-Z0-9_]*',
           end: '(?=\n)',
-          name: 'rpgle.free.definition.identifier',
+          name: 'variable.other.rpgle.free.definition.identifier',
           patterns: [{include: '#freedefkeywords'}, {include: '#rpglecommon'}]
         }
       ]
@@ -561,39 +562,53 @@ const grammar = {
     keywords: {
       patterns: [
         {
-          match:
-            ':|\\.|\\,|\\*{1,2}(=)?|=|<>|((<|>|\\+|\\-|\\/)(=)?)|((\\b(?i)(TO|BY|DOWNTO|AND|IN|OR|NOT)\\b))',
+          match: '\\*{1,2}(=)?|=|<>|((<|>|\\+|\\-|\\/)(=)?)',
+          name: 'keyword.operator.rpgle'
+        },
+        {
+          match: ':|\\.|\\,|((\\b(?i)(TO|BY|DOWNTO|IN|AND|OR|NOT)\\b))',
           name: 'keyword.other.rpgle'
         },
         {
           match:
-            '[%](?i)(YEARS|XML|XLATE|XFOOT|UPPER|UNSH|UNS|UCS2|TRIMR|TRIML|TRIM|TLOOKUPLT|TLOOKUPLE|TLOOKUPGT|TLOOKUPGE|TLOOKUP|TIMESTAMP|TIME|THIS|TARGET|SUBST|SUBDT|SUBARR|STR|STATUS|SQRT|SPLIT|SIZE|SHTDN|SECONDS|SCANRPL|SCANR|SCAN|REPLACE|REM|REALLOC|RANGE|PROC|PARSER|PARMNUM|PARMS|PADDR|OPEN|OCCUR|NULLIND|MSG|MSECONDS|MONTHS|MINUTES|MINARR|MIN|MAXARR|MAX|LOWER|LOOKUPLT|LOOKUPLE|LOOKUPGT|LOOKUPGE|LOOKUP|LIST|LEN|KDS|INTH|INT|HOURS|HANDLER|GRAPH|FOUND|FLOAT|FIELDS|ERROR|EQUAL|EOF|ELEM|EDITW|EDITFLT|EDITC|DIV|DIFF|DECPOS|DECH|DEC|DAYS|DATE|DATA|CONCATARR|CONCAT|CHECKR|CHECK|CHARCOUNT|CHAR|BITXOR|BITOR|BITNOT|BITAND|ALLOC|ADDR|ABS)',
-          name: 'keyword.other.rpgle.bif'
+            '[%](?i)(YEARS|XML|XLATE|XFOOT|UPPER|UNSH|UNS|UCS2|TRIMR|TRIML|TRIM|TLOOKUPLT|TLOOKUPLE|TLOOKUPGT|TLOOKUPGE|TLOOKUP|TIMESTAMP|TIME|THIS|TARGET|SUBST|SUBDT|SUBARR|STR|STATUS|SQRT|SPLIT|SIZE|SHTDN|SECONDS|SCANRPL|SCANR|SCAN|REPLACE|REM|REALLOC|RANGE|PROC|PASSED|PARSER|PARMNUM|PARMS|PADDR|OPEN|OMITTED|OCCUR|NULLIND|MSG|MSECONDS|MONTHS|MINUTES|MINARR|MIN|MAXARR|MAX|LOWER|LOOKUPLT|LOOKUPLE|LOOKUPGT|LOOKUPGE|LOOKUP|LIST|LEN|KDS|INTH|INT|HOURS|HANDLER|GRAPH|FOUND|FLOAT|FIELDS|ERROR|EQUAL|EOF|ELEM|EDITW|EDITFLT|EDITC|DIV|DIFF|DECPOS|DECH|DEC|DAYS|DATE|DATA|CONCATARR|CONCAT|CHECKR|CHECK|CHARCOUNT|CHAR|BITXOR|BITOR|BITNOT|BITAND|ALLOC|ADDR|ABS)',
+          name: 'support.function.rpgle.bif'
         }
       ]
     },
     precompiler: {
       patterns: [
         {
-          begin: '(?i)(?<=^.{5})(H|\\s)[\\/](TITLE)',
+          begin: '(?i)(?<=^.{5})(H|F|D|I|C|O|P|\\s)(\\/TITLE)',
+          beginCaptures: {
+            1: {name: 'keyword.other.rpgle.fixed.precompiler.title'},
+            2: {name: 'keyword.control.rpgle.fixed.precompiler.title'}
+          },
           end: '\n',
-          name: 'keyword.other.rpgle.fixed.precompiler.title',
+          name: 'rpgle.fixed.precompiler.title',
           patterns: [
             {match: '.*', name: 'comment.line.rpgle.fixed.precompiler.title'}
           ]
         },
         {
-          begin: '(?i)^(\\s)*(C)?(\\s)*[\\/](TITLE)',
+          begin: '(?i)^\\s*(\\/TITLE)',
+          beginCaptures: {
+            1: {name: 'keyword.control.rpgle.free.precompiler.title'}
+          },
           end: '\n',
-          name: 'keyword.other.rpgle.fixed.precompiler.title',
+          name: 'rpgle.free.precompiler.title',
           patterns: [
             {match: '.*', name: 'comment.line.rpgle.free.precompiler.title'}
           ]
         },
         {
-          begin: '(?i)^(\\s)*([C|D])?(\\s)*[\\/](INCLUDE|COPY|EJECT)\\s',
+          begin: '(?i)(?<=^.{5})(H|F|D|I|C|O|P|\\s)(\\/(INCLUDE|COPY))\\s',
+          beginCaptures: {
+            1: {name: 'keyword.other.rpgle.fixed.precompiler.include'},
+            2: {name: 'keyword.control.rpgle.fixed.precompiler.include'}
+          },
           end: '\n',
-          name: 'keyword.other.rpgle.fixed.precompiler.include',
+          name: 'rpgle.fixed.precompiler.include',
           patterns: [
             {
               begin: '\\S',
@@ -604,13 +619,39 @@ const grammar = {
           ]
         },
         {
+          begin: '(?i)^\\s*(\\/(INCLUDE|COPY))\\s+(\\S+)(.*)',
+          beginCaptures: {
+            1: {name: 'keyword.control.rpgle.free.precompiler.include'},
+            3: {name: 'string.other.rpgle.precompiler.include'},
+            4: {name: 'comment.other.rpgle.precompiler.include'}
+          },
+          end: '\n',
+          name: 'rpgle.free.precompiler.include'
+        },
+        {
+          begin:
+            '(?i)(?<=^.{5})(H|F|D|I|C|O|P|\\s)(\\/(ELSEIF|IF))\\b(NOT|UNDEFINED|DEFINED)\\b(.*)',
+          beginCaptures: {
+            1: {name: 'keyword.other.rpgle.fixed.precompiler.conditional'},
+            2: {name: 'keyword.control.rpgle.fixed.precompiler.conditional'},
+            3: {name: 'keyword.other.rpgle.fixed.precompiler.defcheck'}
+          },
+          end: '(?i)(?=^.{5})(H|F|D|I|C|O|P|\\s)(\\/ENDIF)',
+          endCaptures: {
+            1: {name: 'keyword.other.rpgle.fixed.precompiler.conditional'},
+            2: {name: 'keyword.control.rpgle.fixed.precompiler.conditional'}
+          },
+          name: 'rpgle.fixed.precompiler.conditional',
+          patterns: [{include: '#fixedformat'}]
+        },
+        {
           begin: '(?i)(?=(^[\\s]*\\/IF))',
           end: '(?i)(?=(^[\\s]*\\/ENDIF))',
-          name: 'rpgle.precompiler.conditional',
+          name: 'rpgle.free.precompiler.conditional',
           patterns: [
             {
               match: '(?i)^[\\s]*\\/(ELSEIF|IF)',
-              name: 'keyword.other.rpgle.precompiler.if'
+              name: 'keyword.control.rpgle.precompiler.if'
             },
             {
               match: '(?i)\\s*\\b(NOT|UNDEFINED|DEFINED)\\b',
@@ -627,7 +668,7 @@ const grammar = {
           patterns: [
             {
               match: '(?i)^[\\s]*\\/CHARCOUNT',
-              name: 'keyword.other.rpgle.precompiler.charcount'
+              name: 'keyword.control.rpgle.precompiler.charcount'
             },
             {
               match: '(?i)\\s*\\b(NATURAL|STDCHARSIZE)\\b',
@@ -636,10 +677,25 @@ const grammar = {
           ]
         },
         {
-          match:
-            '(?i)^[\\s]*[\\/](UNDEFINE|TITLE|SPACE|INCLUDE|FREE|EOF|ENDIF|END-FREE|ELSE|EJECT|DEFINE|COPY|CHARCOUNT)\\b',
-          name: 'keyword.other.rpgle.fixed.precompiler.misc',
-          patterns: [{match: '.*', name: 'keyword.other.rpgle.precompiler'}]
+          begin:
+            '(?i)(?<=^.{5})(H|F|D|I|C|O|P|\\s)(\\/(UNDEFINE|SPACE|FREE|EOF|END-FREE|ELSE|EJECT|DEFINE|CHARCOUNT))\\b',
+          beginCaptures: {
+            1: {name: 'keyword.other.rpgle.fixed.precompiler.misc'},
+            2: {name: 'keyword.control.rpgle.fixed.precompiler.misc'}
+          },
+          end: '\n',
+          name: 'rpgle.fixed.precompiler.misc',
+          patterns: [{match: '.*', name: 'keyword.control.rpgle.precompiler'}]
+        },
+        {
+          begin:
+            '(?i)^[\\s]*(\\/(UNDEFINE|TITLE|SPACE|INCLUDE|FREE|EOF|ENDIF|END-FREE|ELSE|EJECT|DEFINE|COPY|CHARCOUNT))\\b',
+          beginCaptures: {
+            1: {name: 'keyword.control.rpgle.free.precompiler.misc'}
+          },
+          end: '\n',
+          name: 'rpgle.free.precompiler.misc',
+          patterns: [{match: '.*', name: 'keyword.control.rpgle.precompiler'}]
         }
       ]
     },
@@ -695,14 +751,17 @@ const grammar = {
           patterns: [
             {
               match: '(?i)^.*(\\/FREE\\b)',
-              name: 'keyword.other.rpgle.precompiler'
+              name: 'keyword.control.rpgle.precompiler'
             },
             {include: '#rpglecommon'},
             {include: '#freeformat'},
             {include: '#freeSQL'}
           ]
         },
-        {match: '^.*(\\/END-FREE\\b)', name: 'keyword.other.rpgle.precompiler'}
+        {
+          match: '^.*(\\/END-FREE\\b)',
+          name: 'keyword.control.rpgle.precompiler'
+        }
       ]
     }
   },

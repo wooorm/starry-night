@@ -358,7 +358,7 @@ const grammar = {
     },
     'procedure-definition': {
       begin:
-        "(?i)\\b(proce|proced|procedu|procedur|procedure)\\b\\s+('[\\w\\.-]*':U|'[\\w\\.-]*'|[\\w\\.-]*)?(\\s+(EXTERNAL)\\s+(\")([\\w\\.-]*)(\"))?",
+        "(?i)\\b(proce|proced|procedu|procedur|procedure)\\b\\s+('[\\w\\.\\-\\{\\}\\&]*':U|'[\\w\\.\\-\\{\\}\\&]*'|[\\w\\.\\-\\{\\}\\&]*)?(\\s+(EXTERNAL)\\s+(\")([\\w\\.-]*)(\"))?",
       beginCaptures: {
         1: {name: 'keyword.other.abl'},
         2: {name: 'entity.name.function.abl'},

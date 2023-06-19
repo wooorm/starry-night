@@ -334,7 +334,7 @@ const grammar = {
     },
     elementDef: {
       begin:
-        '\\b(virtual(?:\\s+))?(key(?:\\s+))?(masked(?:\\s+))?(element(?:\\s+))?',
+        '(?=\\()|\\b(virtual(?:\\s+))?(key(?:\\s+))?(masked(?:\\s+))?(element(?:\\s+))?',
       beginCaptures: {
         1: {name: 'keyword.cds'},
         2: {name: 'keyword.strong.cds'},
@@ -348,13 +348,31 @@ const grammar = {
         {include: '#strings'},
         {include: '#comments'},
         {include: '#keywords'},
-        {match: ':', name: 'keyword.operator.cds'},
+        {
+          begin: '\\(',
+          beginCaptures: {0: {name: 'punctuation.section.scope.begin.cds'}},
+          end: '\\)',
+          endCaptures: {0: {name: 'punctuation.section.scope.end.cds'}},
+          patterns: [
+            {
+              captures: {0: {name: 'entity.name.type.attribute-name.cds'}},
+              match:
+                '[$_a-zA-Z][$_a-zA-Z0-9]*|\\"[^\\"]*(\\"\\"[^\\"]*)*\\"|!\\\\[[^\\\\]]*(\\\\]\\\\][^\\\\]]*)*\\\\]'
+            },
+            {include: '#operators'}
+          ]
+        },
         {
           begin:
             '([$_a-zA-Z][$_a-zA-Z0-9]*|"[^"]*(""[^"]*)*"|!\\[[^\\]]*(\\]\\][^\\]]*)*\\])(?=\\s*[:{,])',
           beginCaptures: {1: {name: 'entity.name.type.attribute-name.cds'}},
           end: '(,)|(?=\\s*[:{])',
           endCaptures: {1: {name: 'punctuation.separator.object.cds'}}
+        },
+        {
+          captures: {1: {name: 'entity.name.type.attribute-name.cds'}},
+          match:
+            '^\\s*([$_a-zA-Z][$_a-zA-Z0-9]*|"[^"]*(""[^"]*)*"|!\\[[^\\]]*(\\]\\][^\\]]*)*\\])\\s*$'
         },
         {include: '#identifiers'},
         {include: '#operators'},
@@ -456,7 +474,7 @@ const grammar = {
       patterns: [
         {
           match:
-            '(?<!\\.|\\$)\\b(Association\\s*(?:\\[[0-9.eE+, *-]*\\]\\s*)?to\\s*(?:(many|one)\\s*)?|Composition\\s*(?:\\[[0-9.eE+, *-]*\\]\\s*)?of\\s*(?:(many|one)\\s*)?|(Binary|Boolean|Date|DateTime|Decimal|DecimalFloat|Double|Int(16|32|64)|Integer|Integer64|LargeBinary|LargeString|Number|String|Time|Timestamp|UInt8|UUID)\\s*(\\([^()]*\\))?)(?!\\$|\\s*:)',
+            '(?<!\\.|\\$)\\b(Association\\s*(?:\\[[0-9.eE+, *-]*\\]\\s*)?to\\s*(?:(many|one)\\s*)?|Composition\\s*(?:\\[[0-9.eE+, *-]*\\]\\s*)?of\\s*(?:(many|one)\\s*)?|(Binary|Boolean|DateTime|Date|DecimalFloat|Decimal|Double|Int(16|32|64)|Integer64|Integer|LargeBinary|LargeString|Number|String|Timestamp|Time|UInt8|UUID)\\s*(\\([^()]*\\))?)(?!\\$|\\s*:)',
           name: 'support.class.cds'
         },
         {
@@ -530,7 +548,7 @@ const grammar = {
         {match: '&&|!|\\|\\|', name: 'keyword.operator.logical.cds'},
         {match: '&|\\||\\^|~', name: 'keyword.operator.bitwise.cds'},
         {match: '\\:\\s*(localized)\\s+', name: 'keyword.cds'},
-        {match: '\\:', name: 'keyword.operator.cds'},
+        {match: '[?:]', name: 'keyword.operator.cds'},
         {match: '!', name: 'keyword.operator.logical.cds'},
         {match: '=|\\:', name: 'keyword.operator.assignment.cds'},
         {match: '\\-\\-', name: 'keyword.operator.decrement.cds'},

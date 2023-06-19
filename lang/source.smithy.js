@@ -130,15 +130,13 @@ const grammar = {
       patterns: [{include: '#shape_inner'}]
     },
     {
-      begin: '^(apply)\\s+([A-Z-a-z0-9_]+)\\s+',
-      beginCaptures: {
-        1: {name: 'keyword.statement.smithy'},
-        2: {name: 'entity.name.type.smithy'}
-      },
+      begin: '^(apply)\\s+',
+      beginCaptures: {1: {name: 'keyword.statement.smithy'}},
       end: '\\n',
       name: 'meta.keyword.statement.apply.smithy',
       patterns: [
         {include: '#trait'},
+        {include: '#shapeid'},
         {match: '[^\\n]', name: 'invalid.illegal.apply.smithy'}
       ]
     }

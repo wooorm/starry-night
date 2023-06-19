@@ -76,7 +76,7 @@ const grammar = {
         1: {name: 'variable.assignment.bsl'},
         2: {name: 'keyword.operator.assignment.bsl'}
       },
-      end: '(?=;)',
+      end: '(?i:(?=(;|Иначе|Конец|Els|End)))',
       name: 'meta.var-single-variable.bsl',
       patterns: [{include: '#basic'}, {include: '#miscellaneous'}]
     },
@@ -89,6 +89,7 @@ const grammar = {
       match: '(?i)#(Использовать|Use)(?=[^\\wа-яё\\.]|$)',
       name: 'keyword.control.import.bsl'
     },
+    {match: '(?i)#native', name: 'keyword.control.native.bsl'},
     {
       match:
         '(?i:(?<=[^\\wа-яё\\.]|^)(Прервать|Break|Продолжить|Continue|Возврат|Return)(?=[^\\wа-яё\\.]|$))',

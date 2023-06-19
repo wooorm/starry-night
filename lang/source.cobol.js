@@ -682,13 +682,6 @@ const grammar = {
       match: '(?<![-_])(?i:System-Info|Terminal-Info)(?![0-9A-Za-z_-])',
       name: 'support.type.cobol.acu strong'
     },
-    {
-      begin: '(?<![-_\\*])(?i:remarks)',
-      beginCaptures: {0: {name: 'keyword.cobol'}},
-      end: '(?i:end\\-remark|\\*{Bench}end|environment\\s+division|data\\s+division|working-storage\\s+section|file-control)',
-      endCaptures: {0: {name: 'keyword.cobol'}},
-      name: 'comment.2.block.cobol.remark'
-    },
     {match: '(?<![-_])(?i:alter)(?=\\s|\\.)', name: 'invalid.illegal.cobol'},
     {
       match:

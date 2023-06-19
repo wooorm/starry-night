@@ -104,10 +104,6 @@ const grammar = {
         {include: '#switch-statement-keyword'}
       ]
     },
-    'catch-statement-keyword': {
-      match: '\\b(catch|do)\\b',
-      name: 'kewyord.control.catch.motoko'
-    },
     'char-literal': {
       begin: "'",
       beginCaptures: {0: {name: 'string.quoted.double.motoko'}},
@@ -321,7 +317,7 @@ const grammar = {
         },
         {
           match:
-            '\\b(assert|break|case|continue|default|debug|debug_show|else|if|ignore|in|for|label|null|return|switch|while|loop|try|throw|catch|do|to_candid|from_candid|with)\\b',
+            '\\b(assert|break|case|continue|debug|debug_show|else|if|ignore|in|for|label|null|return|switch|while|loop|try|throw|catch|do|to_candid|from_candid|with)\\b',
           name: 'keyword.statement.motoko'
         },
         {match: '\\b(flexible|query|stable)\\b', name: 'keyword.other.motoko'}
@@ -422,7 +418,7 @@ const grammar = {
       name: 'comment.line.shebang.motoko'
     },
     'storage-type': {
-      match: '\\b(var|func|let|class|enum)\\b',
+      match: '\\b(var|func|let|class|module|actor)\\b',
       name: 'storage.type.motoko'
     },
     'string-literal': {
@@ -442,7 +438,7 @@ const grammar = {
       ]
     },
     'switch-statement-keyword': {
-      match: '\\b(switch|case|default)\\b',
+      match: '\\b(switch|case)\\b',
       name: 'keyword.control.switch.motoko'
     },
     type: {

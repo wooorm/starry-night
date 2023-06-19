@@ -243,7 +243,7 @@ const grammar = {
         {include: '#decorator'},
         {
           begin: '(?<=:)\\s*',
-          end: '(?=\\s|[;),}\\]:\\-\\+]|;|^\\s*$|(?:^\\s*(?:abstract|async|class|const|declare|enum|export|function|import|interface|let|module|namespace|return|type|var)\\b))',
+          end: '(?=\\s|[;),}\\]:\\-\\+]|;|^\\s*$|(?:^\\s*(?:abstract|async|break|case|catch|class|const|continue|declare|do|else|enum|export|finally|function|for|goto|if|import|interface|let|module|namespace|switch|return|throw|try|type|var|while)\\b))',
           patterns: [{include: '#expression'}]
         },
         {include: '#method-declaration'},
@@ -349,7 +349,7 @@ const grammar = {
           begin:
             '(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(return)(?![_$[:alnum:]])(?:(?=\\.\\.\\.)|(?!\\.))',
           beginCaptures: {0: {name: 'keyword.control.flow.ts'}},
-          end: '(?=[;}]|$|;|^\\s*$|(?:^\\s*(?:abstract|async|class|const|declare|enum|export|function|import|interface|let|module|namespace|return|type|var)\\b))',
+          end: '(?=[;}]|$|;|^\\s*$|(?:^\\s*(?:abstract|async|break|case|catch|class|const|continue|declare|do|else|enum|export|finally|function|for|goto|if|import|interface|let|module|namespace|switch|return|throw|try|type|var|while)\\b))',
           patterns: [{include: '#expression'}]
         },
         {
@@ -832,7 +832,7 @@ const grammar = {
             3: {name: 'keyword.operator.assignment.ts'},
             4: {name: 'keyword.control.default.ts'}
           },
-          end: '(?=$|;|^\\s*$|(?:^\\s*(?:abstract|async|class|const|declare|enum|export|function|import|interface|let|module|namespace|return|type|var)\\b))',
+          end: '(?=$|;|^\\s*$|(?:^\\s*(?:abstract|async|break|case|catch|class|const|continue|declare|do|else|enum|export|finally|function|for|goto|if|import|interface|let|module|namespace|switch|return|throw|try|type|var|while)\\b))',
           name: 'meta.export.default.ts',
           patterns: [
             {include: '#interface-declaration'},
@@ -841,12 +841,12 @@ const grammar = {
         },
         {
           begin:
-            '(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(export)(?:\\s+(type))?\\b(?!(\\$)|(\\s*:))((?=\\s*[\\{*])|((?=\\s*[_$[:alpha:]][_$[:alnum:]]*(\\s|,))(?!\\s*(?:abstract|async|class|const|declare|enum|export|function|import|interface|let|module|namespace|return|type|var)\\b)))',
+            '(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(export)(?:\\s+(type))?\\b(?!(\\$)|(\\s*:))((?=\\s*[\\{*])|((?=\\s*[_$[:alpha:]][_$[:alnum:]]*(\\s|,))(?!\\s*(?:abstract|async|break|case|catch|class|const|continue|declare|do|else|enum|export|finally|function|for|goto|if|import|interface|let|module|namespace|switch|return|throw|try|type|var|while)\\b)))',
           beginCaptures: {
             1: {name: 'keyword.control.export.ts'},
             2: {name: 'keyword.control.type.ts'}
           },
-          end: '(?=$|;|^\\s*$|(?:^\\s*(?:abstract|async|class|const|declare|enum|export|function|import|interface|let|module|namespace|return|type|var)\\b))',
+          end: '(?=$|;|^\\s*$|(?:^\\s*(?:abstract|async|break|case|catch|class|const|continue|declare|do|else|enum|export|finally|function|for|goto|if|import|interface|let|module|namespace|switch|return|throw|try|type|var|while)\\b))',
           name: 'meta.export.ts',
           patterns: [{include: '#import-export-declaration'}]
         }
@@ -1177,7 +1177,7 @@ const grammar = {
         5: {name: 'keyword.generator.asterisk.ts'},
         6: {name: 'meta.definition.function.ts entity.name.function.ts'}
       },
-      end: '(?=;|^\\s*$|(?:^\\s*(?:abstract|async|class|const|declare|enum|export|function|import|interface|let|module|namespace|return|type|var)\\b))|(?<=\\})',
+      end: '(?=;|^\\s*$|(?:^\\s*(?:abstract|async|break|case|catch|class|const|continue|declare|do|else|enum|export|finally|function|for|goto|if|import|interface|let|module|namespace|switch|return|throw|try|type|var|while)\\b))|(?<=\\})',
       name: 'meta.function.ts',
       patterns: [{include: '#function-name'}, {include: '#function-body'}]
     },
@@ -1684,7 +1684,7 @@ const grammar = {
         2: {name: 'storage.modifier.ts'},
         3: {name: 'storage.type.namespace.ts'}
       },
-      end: '(?<=\\})|(?=;|^\\s*$|(?:^\\s*(?:abstract|async|class|const|declare|enum|export|function|import|interface|let|module|namespace|return|type|var)\\b))',
+      end: '(?<=\\})|(?=;|^\\s*$|(?:^\\s*(?:abstract|async|break|case|catch|class|const|continue|declare|do|else|enum|export|finally|function|for|goto|if|import|interface|let|module|namespace|switch|return|throw|try|type|var|while)\\b))',
       name: 'meta.namespace.declaration.ts',
       patterns: [
         {include: '#comment'},
@@ -2813,7 +2813,7 @@ const grammar = {
         3: {name: 'storage.type.type.ts'},
         4: {name: 'entity.name.type.alias.ts'}
       },
-      end: '(?=\\}|;|^\\s*$|(?:^\\s*(?:abstract|async|class|const|declare|enum|export|function|import|interface|let|module|namespace|return|type|var)\\b))',
+      end: '(?=\\}|;|^\\s*$|(?:^\\s*(?:abstract|async|break|case|catch|class|const|continue|declare|do|else|enum|export|finally|function|for|goto|if|import|interface|let|module|namespace|switch|return|throw|try|type|var|while)\\b))',
       name: 'meta.type.declaration.ts',
       patterns: [
         {include: '#comment'},
@@ -2824,13 +2824,13 @@ const grammar = {
             1: {name: 'keyword.operator.assignment.ts'},
             2: {name: 'keyword.control.intrinsic.ts'}
           },
-          end: '(?=\\}|;|^\\s*$|(?:^\\s*(?:abstract|async|class|const|declare|enum|export|function|import|interface|let|module|namespace|return|type|var)\\b))',
+          end: '(?=\\}|;|^\\s*$|(?:^\\s*(?:abstract|async|break|case|catch|class|const|continue|declare|do|else|enum|export|finally|function|for|goto|if|import|interface|let|module|namespace|switch|return|throw|try|type|var|while)\\b))',
           patterns: [{include: '#type'}]
         },
         {
           begin: '(=)\\s*',
           beginCaptures: {1: {name: 'keyword.operator.assignment.ts'}},
-          end: '(?=\\}|;|^\\s*$|(?:^\\s*(?:abstract|async|class|const|declare|enum|export|function|import|interface|let|module|namespace|return|type|var)\\b))',
+          end: '(?=\\}|;|^\\s*$|(?:^\\s*(?:abstract|async|break|case|catch|class|const|continue|declare|do|else|enum|export|finally|function|for|goto|if|import|interface|let|module|namespace|switch|return|throw|try|type|var|while)\\b))',
           patterns: [{include: '#type'}]
         }
       ]
@@ -3201,7 +3201,7 @@ const grammar = {
       begin:
         '(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))typeof(?![_$[:alnum:]])(?:(?=\\.\\.\\.)|(?!\\.))',
       beginCaptures: {0: {name: 'keyword.operator.expression.typeof.ts'}},
-      end: '(?=[,);}\\]=>:&|{\\?]|(extends\\s+)|$|;|^\\s*$|(?:^\\s*(?:abstract|async|class|const|declare|enum|export|function|import|interface|let|module|namespace|return|type|var)\\b))',
+      end: '(?=[,);}\\]=>:&|{\\?]|(extends\\s+)|$|;|^\\s*$|(?:^\\s*(?:abstract|async|break|case|catch|class|const|continue|declare|do|else|enum|export|finally|function|for|goto|if|import|interface|let|module|namespace|switch|return|throw|try|type|var|while)\\b))',
       patterns: [{include: '#type-arguments'}, {include: '#expression'}]
     },
     'undefined-literal': {
@@ -3214,7 +3214,7 @@ const grammar = {
         {
           begin:
             '(?=(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(?:(\\bexport)\\s+)?(?:(\\bdeclare)\\s+)?\\b(var|let)(?![_$[:alnum:]])(?:(?=\\.\\.\\.)|(?!\\.)))',
-          end: '(?!(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(?:(\\bexport)\\s+)?(?:(\\bdeclare)\\s+)?\\b(var|let)(?![_$[:alnum:]])(?:(?=\\.\\.\\.)|(?!\\.)))((?=;|}|((?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(of|in)\\s+)|;|^\\s*$|(?:^\\s*(?:abstract|async|class|const|declare|enum|export|function|import|interface|let|module|namespace|return|type|var)\\b))|((?<!^let|[^\\._$[:alnum:]]let|^var|[^\\._$[:alnum:]]var)(?=\\s*$)))',
+          end: '(?!(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(?:(\\bexport)\\s+)?(?:(\\bdeclare)\\s+)?\\b(var|let)(?![_$[:alnum:]])(?:(?=\\.\\.\\.)|(?!\\.)))((?=^|;|}|((?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(of|in)\\s+)|;|^\\s*$|(?:^\\s*(?:abstract|async|break|case|catch|class|const|continue|declare|do|else|enum|export|finally|function|for|goto|if|import|interface|let|module|namespace|switch|return|throw|try|type|var|while)\\b))|((?<!^let|[^\\._$[:alnum:]]let|^var|[^\\._$[:alnum:]]var)(?=\\s*$)))',
           name: 'meta.var.expr.ts',
           patterns: [
             {
@@ -3232,7 +3232,7 @@ const grammar = {
             {include: '#variable-initializer'},
             {include: '#comment'},
             {
-              begin: '(,)\\s*((?!\\S)|(?=\\/\\/))',
+              begin: '(,)\\s*(?=$|\\/\\/)',
               beginCaptures: {1: {name: 'punctuation.separator.comma.ts'}},
               end: '(?<!,)(((?==|;|}|((?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(of|in)\\s+)|^\\s*$))|((?<=\\S)(?=\\s*$)))',
               patterns: [
@@ -3254,7 +3254,7 @@ const grammar = {
             2: {name: 'storage.modifier.ts'},
             3: {name: 'storage.type.ts'}
           },
-          end: '(?!(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(?:(\\bexport)\\s+)?(?:(\\bdeclare)\\s+)?\\b(const(?!\\s+enum\\b))(?![_$[:alnum:]])(?:(?=\\.\\.\\.)|(?!\\.)))((?=;|}|((?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(of|in)\\s+)|;|^\\s*$|(?:^\\s*(?:abstract|async|class|const|declare|enum|export|function|import|interface|let|module|namespace|return|type|var)\\b))|((?<!^const|[^\\._$[:alnum:]]const)(?=\\s*$)))',
+          end: '(?!(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(?:(\\bexport)\\s+)?(?:(\\bdeclare)\\s+)?\\b(const(?!\\s+enum\\b))(?![_$[:alnum:]])(?:(?=\\.\\.\\.)|(?!\\.)))((?=^|;|}|((?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(of|in)\\s+)|;|^\\s*$|(?:^\\s*(?:abstract|async|break|case|catch|class|const|continue|declare|do|else|enum|export|finally|function|for|goto|if|import|interface|let|module|namespace|switch|return|throw|try|type|var|while)\\b))|((?<!^const|[^\\._$[:alnum:]]const)(?=\\s*$)))',
           name: 'meta.var.expr.ts',
           patterns: [
             {
@@ -3272,7 +3272,7 @@ const grammar = {
             {include: '#variable-initializer'},
             {include: '#comment'},
             {
-              begin: '(,)\\s*((?!\\S)|(?=\\/\\/))',
+              begin: '(,)\\s*(?=$|\\/\\/)',
               beginCaptures: {1: {name: 'punctuation.separator.comma.ts'}},
               end: '(?<!,)(((?==|;|}|((?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(of|in)\\s+)|^\\s*$))|((?<=\\S)(?=\\s*$)))',
               patterns: [
@@ -3298,7 +3298,7 @@ const grammar = {
               name: 'meta.definition.variable.ts variable.other.constant.ts entity.name.function.ts'
             }
           },
-          end: '(?=$|^|[;,=}]|((?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(of|in)\\s+))',
+          end: '(?=$|^|[;,=}]|((?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(of|in)\\s+)|(;|^\\s*$|(?:^\\s*(?:abstract|async|break|case|catch|class|const|continue|declare|do|else|enum|export|finally|function|for|goto|if|import|interface|let|module|namespace|switch|return|throw|try|type|var|while)\\b)))',
           name: 'meta.var-single-variable.expr.ts',
           patterns: [{include: '#var-single-variable-type-annotation'}]
         },
@@ -3307,7 +3307,7 @@ const grammar = {
           beginCaptures: {
             1: {name: 'meta.definition.variable.ts variable.other.constant.ts'}
           },
-          end: '(?=$|^|[;,=}]|((?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(of|in)\\s+))',
+          end: '(?=$|^|[;,=}]|((?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(of|in)\\s+)|(;|^\\s*$|(?:^\\s*(?:abstract|async|break|case|catch|class|const|continue|declare|do|else|enum|export|finally|function|for|goto|if|import|interface|let|module|namespace|switch|return|throw|try|type|var|while)\\b)))',
           name: 'meta.var-single-variable.expr.ts',
           patterns: [{include: '#var-single-variable-type-annotation'}]
         }
@@ -3322,7 +3322,7 @@ const grammar = {
             1: {name: 'meta.definition.variable.ts entity.name.function.ts'},
             2: {name: 'keyword.operator.definiteassignment.ts'}
           },
-          end: '(?=$|^|[;,=}]|((?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(of|in)\\s+))',
+          end: '(?=$|^|[;,=}]|((?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(of|in)\\s+)|(;|^\\s*$|(?:^\\s*(?:abstract|async|break|case|catch|class|const|continue|declare|do|else|enum|export|finally|function|for|goto|if|import|interface|let|module|namespace|switch|return|throw|try|type|var|while)\\b)))',
           name: 'meta.var-single-variable.expr.ts',
           patterns: [{include: '#var-single-variable-type-annotation'}]
         },
@@ -3332,7 +3332,7 @@ const grammar = {
             1: {name: 'meta.definition.variable.ts variable.other.constant.ts'},
             2: {name: 'keyword.operator.definiteassignment.ts'}
           },
-          end: '(?=$|^|[;,=}]|((?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(of|in)\\s+))',
+          end: '(?=$|^|[;,=}]|((?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(of|in)\\s+)|(;|^\\s*$|(?:^\\s*(?:abstract|async|break|case|catch|class|const|continue|declare|do|else|enum|export|finally|function|for|goto|if|import|interface|let|module|namespace|switch|return|throw|try|type|var|while)\\b)))',
           name: 'meta.var-single-variable.expr.ts',
           patterns: [{include: '#var-single-variable-type-annotation'}]
         },
@@ -3344,7 +3344,7 @@ const grammar = {
             },
             2: {name: 'keyword.operator.definiteassignment.ts'}
           },
-          end: '(?=$|^|[;,=}]|((?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(of|in)\\s+))',
+          end: '(?=$|^|[;,=}]|((?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(of|in)\\s+)|(;|^\\s*$|(?:^\\s*(?:abstract|async|break|case|catch|class|const|continue|declare|do|else|enum|export|finally|function|for|goto|if|import|interface|let|module|namespace|switch|return|throw|try|type|var|while)\\b)))',
           name: 'meta.var-single-variable.expr.ts',
           patterns: [{include: '#var-single-variable-type-annotation'}]
         }

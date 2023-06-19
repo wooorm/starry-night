@@ -1,3 +1,8 @@
+// This is a TextMate grammar distributed by `starry-night`.
+// This grammar is developed at
+// <https://github.com/Alhadis/language-mermaid>
+// and licensed `isc`.
+// See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
   dependencies: ['source.mermaid', 'source.mermaid.flowchart'],

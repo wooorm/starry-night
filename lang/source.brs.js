@@ -34,7 +34,7 @@ const grammar = {
     },
     apostrophe_comment: {
       captures: {1: {name: 'punctuation.definition.comment.brs'}},
-      match: "(').*$\\n?",
+      match: "('[^\\r\\n]*)$",
       name: 'comment.line.apostrophe.brs'
     },
     class_declaration: {
@@ -215,16 +215,47 @@ const grammar = {
       patterns: [
         {include: '#comment'},
         {include: '#annotation'},
-        {
-          begin: '(?i)\\s*\\b([a-z0-9_]+)(?:[\\s\\t]*(as))?',
-          beginCaptures: {
-            1: {name: 'variable.object.property.brs'},
-            2: {name: 'keyword.control.as.brs'}
-          },
-          end: '\r?\n',
-          patterns: [{include: '#type_expression'}]
-        }
+        {include: '#interface_function'},
+        {include: '#interface_field'}
       ]
+    },
+    interface_field: {
+      begin: '(?i)\\s*\\b([a-z0-9_]+)(?:[\\s\\t]*(as))?',
+      beginCaptures: {
+        1: {name: 'variable.object.property.brs'},
+        2: {name: 'keyword.control.as.brs'}
+      },
+      end: '\r?\n',
+      patterns: [{include: '#type_expression'}, {include: '#comment'}]
+    },
+    interface_function: {
+      patterns: [
+        {include: '#interface_function_with_return_type'},
+        {include: '#interface_function_plain'}
+      ]
+    },
+    interface_function_plain: {
+      captures: {
+        1: {name: 'storage.type.function.brs'},
+        2: {name: 'entity.name.function.member.brs'},
+        3: {name: 'punctuation.definition.parameters.begin.brs'},
+        4: {name: 'punctuation.definition.parameters.end.brs'},
+        5: {name: 'keyword.control.as.brs'}
+      },
+      match: '(?i:\\s*\\b(function|sub)[\\s\\t]+([a-z0-9_]+)(\\())(\\))[\\s\\t]'
+    },
+    interface_function_with_return_type: {
+      begin:
+        '(?i:\\s*\\b(function|sub)[\\s\\t]+([a-z0-9_]+)(\\()).*?(\\))[\\s\\t]+(as)',
+      beginCaptures: {
+        1: {name: 'storage.type.function.brs'},
+        2: {name: 'entity.name.function.member.brs'},
+        3: {name: 'punctuation.definition.parameters.begin.brs'},
+        4: {name: 'punctuation.definition.parameters.end.brs'},
+        5: {name: 'keyword.control.as.brs'}
+      },
+      end: '\r?\n',
+      patterns: [{include: '#type_expression'}, {include: '#comment'}]
     },
     keyword_logical_operator: {
       match: '(?i:\\b(and|or|not)\\b)',
@@ -446,7 +477,7 @@ const grammar = {
     },
     rem_comment: {
       captures: {1: {name: 'punctuation.definition.comment.brs'}},
-      match: '^\\s*?(?i:rem\\s).*$\\n?',
+      match: '^\\s*?(?i:rem\\s.*)$',
       name: 'comment.line.rem.brs'
     },
     storage_types: {
