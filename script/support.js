@@ -1,7 +1,7 @@
 /**
- * @typedef {import('mdast').Root} Root
- * @typedef {import('mdast').PhrasingContent} PhrasingContent
  * @typedef {import('mdast').ListContent} ListContent
+ * @typedef {import('mdast').PhrasingContent} PhrasingContent
+ * @typedef {import('mdast').Root} Root
  */
 
 import {zone} from 'mdast-zone'

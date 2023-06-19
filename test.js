@@ -3,18 +3,18 @@ import test from 'node:test'
 import {toHtml} from 'hast-util-to-html'
 import sourceAssembly from './lang/source.assembly.js'
 import sourceCss from './lang/source.css.js'
-import textMd from './lang/text.md.js'
 import textPhp from './lang/text.html.php.js'
+import textMd from './lang/text.md.js'
 import textXml from './lang/text.xml.js'
 import textXmlSvg from './lang/text.xml.svg.js'
-import {createStarryNight, common} from './index.js'
+import {common, createStarryNight} from './index.js'
 
 test('.flagToScope(flag)', async () => {
   const starryNight = await createStarryNight(common)
 
   assert.throws(
     () => {
-      // @ts-expect-error runtime.
+      // @ts-expect-error check that the runtime throws an error.
       starryNight.flagToScope()
     },
     /Expected `string` for `flag`, got `undefined`/,
@@ -216,7 +216,7 @@ test('.highlight(value, scope)', async () => {
 
   assert.throws(
     () => {
-      // @ts-expect-error runtime.
+      // @ts-expect-error check that the runtime throws an error.
       starryNight.highlight()
     },
     /Expected `string` for `value`, got `undefined`/,
@@ -225,7 +225,7 @@ test('.highlight(value, scope)', async () => {
 
   assert.throws(
     () => {
-      // @ts-expect-error runtime.
+      // @ts-expect-error check that the runtime throws an error.
       starryNight.highlight('alert(1)')
     },
     /Expected `string` for `scope`, got `undefined`/,

@@ -1,24 +1,24 @@
 /**
+ * @typedef Dep
+ * @property {string} name
+ * @property {string} license
+ * @property {Array<License>} licenses
+ * @property {string | undefined} homepage
+ * @property {Array<string>} notices
+ * @property {'git_submodule'} type
+ * @property {string} version
+ *
+ * @typedef Info
+ * @property {Array<string> | undefined} dependencies
+ * @property {string | undefined} homepage
+ * @property {string | undefined} license
+ *
  * @typedef License
  * @property {string | undefined} sources
  * @property {string} text
- *
- * @typedef Dep
- * @property {string} name
- * @property {string} version
- * @property {'git_submodule'} type
- * @property {string | undefined} homepage
- * @property {string} license
- * @property {Array<License>} licenses
- * @property {Array<string>} notices
- *
- * @typedef Info
- * @property {string | undefined} homepage
- * @property {string | undefined} license
- * @property {Array<string> | undefined} dependencies
  */
 
-import assert from 'node:assert'
+import assert from 'node:assert/strict'
 import fs from 'node:fs/promises'
 import process from 'node:process'
 import {parse as parseYaml} from 'yaml'
@@ -126,7 +126,7 @@ forth below.
 The following files/folders contain third party software:`
   ]
 
-  /** @type {Array<Promise<void>>} */
+  /** @type {Array<Promise<undefined>>} */
   const commentPromises = []
 
   /** @type {Record<string, Info>} */

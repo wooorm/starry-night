@@ -714,7 +714,7 @@ function clean(value, schema, path) {
 /**
  * @param {Rule} rule
  * @param {boolean | null | undefined} [local=false]
- * @returns {{referenced: Set<string>, defined: Set<string>}}
+ * @returns {{defined: Set<string>, referenced: Set<string>}}
  */
 function analyze(rule, local) {
   /** @type {Set<string>} */
@@ -722,21 +722,25 @@ function analyze(rule, local) {
   /** @type {Set<string>} */
   const referenced = new Set()
 
-  visit(rule, (rule) => {
-    if ('repository' in rule && rule.repository) {
-      for (const key of Object.keys(rule.repository)) {
-        defined.add(key)
+  visit(
+    rule,
+    /** @returns {undefined} */
+    (rule) => {
+      if ('repository' in rule && rule.repository) {
+        for (const key of Object.keys(rule.repository)) {
+          defined.add(key)
+        }
+      }
+
+      if (
+        'include' in rule &&
+        rule.include &&
+        (!local || rule.include.startsWith('#'))
+      ) {
+        referenced.add(rule.include)
       }
     }
-
-    if (
-      'include' in rule &&
-      rule.include &&
-      (!local || rule.include.startsWith('#'))
-    ) {
-      referenced.add(rule.include)
-    }
-  })
+  )
 
   return {referenced, defined}
 }
@@ -744,7 +748,7 @@ function analyze(rule, local) {
 /**
  *
  * @param {Rule} rule
- * @param {(rule: Rule) => boolean | undefined | void} callback
+ * @param {(rule: Rule) => boolean | undefined} callback
  * @returns {boolean}
  */
 function visit(rule, callback) {

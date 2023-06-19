@@ -1,39 +1,40 @@
 /**
- * @typedef {import('css').Rule} Rule
- * @typedef {import('css').Stylesheet} Stylesheet
- * @typedef {import('css').Declaration} Declaration
- * @typedef {import('css').Comment} Comment
  * @typedef {import('css').Charset} Charset
+ * @typedef {import('css').Comment} Comment
  * @typedef {import('css').CustomMedia} CustomMedia
+ * @typedef {import('css').Declaration} Declaration
  * @typedef {import('css').Document} Document
  * @typedef {import('css').FontFace} FontFace
  * @typedef {import('css').Host} Host
  * @typedef {import('css').Import} Import
- * @typedef {import('css').KeyFrames} KeyFrames
  * @typedef {import('css').KeyFrame} KeyFrame
+ * @typedef {import('css').KeyFrames} KeyFrames
  * @typedef {import('css').Media} Media
  * @typedef {import('css').Namespace} Namespace
  * @typedef {import('css').Page} Page
+ * @typedef {import('css').Rule} Rule
+ * @typedef {import('css').Stylesheet} Stylesheet
  * @typedef {import('css').Supports} Supports
+ *
  */
 
 /**
- * @typedef {Rule | Stylesheet | Declaration | Comment | Charset | CustomMedia | Document | FontFace | Host | Import | KeyFrames | KeyFrame | Media | Namespace | Page | Supports} Node
- * @typedef {'light' | 'light_high_contrast' | 'light_colorblind' | 'light_tritanopia'} Light
- * @typedef {'dark' | 'dark_high_contrast' | 'dark_colorblind' | 'dark_tritanopia' | 'dark_dimmed'} Dark
+ * @typedef {Charset | Comment | CustomMedia | Declaration | Document | FontFace | Host | Import | KeyFrames | KeyFrame | Media | Namespace | Page | Rule | Stylesheet | Supports} Node
+ * @typedef {'light' | 'light_colorblind' | 'light_high_contrast' | 'light_tritanopia'} Light
+ * @typedef {'dark' | 'dark_colorblind' | 'dark_dimmed' | 'dark_high_contrast' | 'dark_tritanopia'} Dark
  *
  * @typedef Schema
- * @property {Light | undefined} light
- * @property {Dark | undefined} dark
+ * @property {Light | null | undefined} light
+ * @property {Dark | null | undefined} dark
  **/
 
-import assert from 'node:assert'
+import assert from 'node:assert/strict'
 import fs from 'node:fs/promises'
 import {fileURLToPath} from 'node:url'
-import prettier from 'prettier'
+import css from 'css'
 // @ts-expect-error: hush
 import generateGithubMarkdownCss from 'generate-github-markdown-css'
-import css from 'css'
+import prettier from 'prettier'
 
 const prettierConfig = await prettier.resolveConfig(
   fileURLToPath(import.meta.url)
@@ -45,14 +46,6 @@ const prettierConfig = await prettier.resolveConfig(
 // So we don’t need to worry about multiple requests.
 
 // See `./node_modules/.bin/github-markdown-css --list`
-/** @type {Array<Light>} */
-const lights = [
-  'light',
-  'light_high_contrast',
-  'light_colorblind',
-  'light_tritanopia'
-]
-
 /** @type {Array<Dark>} */
 const darks = [
   'dark',
@@ -60,6 +53,14 @@ const darks = [
   'dark_colorblind',
   'dark_tritanopia',
   'dark_dimmed'
+]
+
+/** @type {Array<Light>} */
+const lights = [
+  'light',
+  'light_high_contrast',
+  'light_colorblind',
+  'light_tritanopia'
 ]
 
 /** @type {Record<string, Schema>} */
@@ -101,7 +102,7 @@ const selectorsMap = new Map()
 /** @type {Map<string, string>} */
 const themeMap = new Map()
 
-/** @type {Array<Promise<void>>} */
+/** @type {Array<Promise<undefined>>} */
 const generatePromises = []
 
 for (const light of lights) {
@@ -116,7 +117,7 @@ for (const dark of darks) {
 await Promise.all(generatePromises)
 
 const fileNames = Object.keys(files)
-/** @type {Array<Promise<void>>} */
+/** @type {Array<Promise<undefined>>} */
 const writePromises = []
 
 const base = new URL('../style/', import.meta.url)
@@ -143,6 +144,7 @@ for (const fileName of fileNames) {
   }
 
   writePromises.push(
+    // @ts-expect-error: To do: TS should be able to assign `void` to undefined.
     fs.writeFile(
       new URL(fileName, base),
       prettier.format(
@@ -161,26 +163,28 @@ await Promise.all(writePromises)
 /**
  * @param {Light} light
  * @param {Dark} dark
+ * @returns {Promise<undefined>}
  */
 async function generate(light, dark) {
+  /** @type {string} */
   const result = await generateGithubMarkdownCss({light, dark})
-  const ast = css.parse(result)
+  const tree = css.parse(result)
   const scopePrefix = '.markdown-body '
   const prefix = '.pl-'
 
-  assert(ast.stylesheet, 'expected `stylesheet` to be set')
+  assert(tree.stylesheet, 'expected `stylesheet` to be set')
 
   // Get themes.
   // Note: types don’t put media as children, force any node.
-  const darkMedia = /** @type {Node|undefined} */ (ast.stylesheet.rules[0])
-  const lightMedia = /** @type {Node|undefined} */ (ast.stylesheet.rules[1])
+  const darkMedia = /** @type {Node | undefined} */ (tree.stylesheet.rules[0])
+  const lightMedia = /** @type {Node | undefined} */ (tree.stylesheet.rules[1])
   themeMap.set(dark, generateMedia(darkMedia, 'dark'))
   themeMap.set(light, generateMedia(lightMedia, 'light'))
 
   // Get the rules.
   // These use variables (if light and dark are not the same) and hence are the
   // same for each theme.
-  for (const rule of walkRules(ast)) {
+  for (const rule of walkRules(tree)) {
     if (rule.selectors) {
       const selectors = rule.selectors
         .filter((d) => d.startsWith(scopePrefix))
@@ -199,8 +203,8 @@ async function generate(light, dark) {
 }
 
 /**
- * @param {Node|undefined} media
- * @param {'dark'|'light'} mode
+ * @param {Node | null | undefined} media
+ * @param {'dark' | 'light'} mode
  * @returns {string}
  */
 function generateMedia(media, mode) {
@@ -239,12 +243,12 @@ function generateMedia(media, mode) {
 }
 
 /**
- * @param {Node} ast
+ * @param {Node} tree
  * @returns {Generator<Rule>}
  */
-function* walkRules(ast) {
-  if (ast.type === 'stylesheet' && 'stylesheet' in ast && ast.stylesheet) {
-    for (const rule of ast.stylesheet.rules) {
+function* walkRules(tree) {
+  if (tree.type === 'stylesheet' && 'stylesheet' in tree && tree.stylesheet) {
+    for (const rule of tree.stylesheet.rules) {
       if (rule.type === 'rule') {
         yield rule
       } else {

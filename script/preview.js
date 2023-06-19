@@ -25,13 +25,13 @@ body { max-width: 51.625rem; margin: calc(1em + 1ex) auto; padding: 0 calc(1em +
 <p>In a browser, include the module:</p>
 ${generate(
   `<script type="module">
-  import {createStarryNight, common} from 'https://esm.sh/@wooorm/starry-night@1?bundle'
+  import {createStarryNight, common} from 'https://esm.sh/@wooorm/starry-night@2?bundle'
 </script>`,
   'text.html.basic'
 )}
 <p>…add the CSS:</p>
 ${generate(
-  `<link rel="stylesheet" href="https://esm.sh/@wooorm/starry-night@1/style/both.css">`,
+  `<link rel="stylesheet" href="https://esm.sh/@wooorm/starry-night@2/style/both.css">`,
   'text.html.basic'
 )}
 <p>…then to use <code>starry-night</code>:</p>
