@@ -209,11 +209,11 @@ There is no default export.
 
 ### `all`
 
-List of all grammars ([Array<Grammar>][api-grammar])
+List of all grammars ([`Array<Grammar>`][api-grammar])
 
 ### `common`
 
-List of ±35 common grammars ([Array<Grammar>][api-grammar])
+List of ±35 common grammars ([`Array<Grammar>`][api-grammar])
 
 ### `createStarryNight(grammars[, options])`
 
