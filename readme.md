@@ -22,12 +22,18 @@ source and JavaScript!
 *   [Install](#install)
 *   [Use](#use)
 *   [API](#api)
+    *   [`all`](#all)
+    *   [`common`](#common)
     *   [`createStarryNight(grammars[, options])`](#createstarrynightgrammars-options)
-    *   [`starryNight.highlight(value, scope)`](#starrynighthighlightvalue-scope)
     *   [`starryNight.flagToScope(flag)`](#starrynightflagtoscopeflag)
-    *   [`starryNight.scopes()`](#starrynightscopes)
+    *   [`starryNight.highlight(value, scope)`](#starrynighthighlightvalue-scope)
     *   [`starryNight.missingScopes()`](#starrynightmissingscopes)
     *   [`starryNight.register(grammars)`](#starrynightregistergrammars)
+    *   [`starryNight.scopes()`](#starrynightscopes)
+    *   [`GetOnigurumaUrl`](#getonigurumaurl)
+    *   [`Grammar`](#grammar)
+    *   [`Options`](#options)
+    *   [`Root`](#root)
 *   [Examples](#examples)
     *   [Example: serializing hast as html](#example-serializing-hast-as-html)
     *   [Example: using `starry-night` on the client](#example-using-starry-night-on-the-client)
@@ -49,7 +55,7 @@ source and JavaScript!
 
 This package is an open source version of GitHub’s closed-source `PrettyLights`
 project (more on that later).
-It supports **520+ grammars** and its **extremely high quality**.
+It supports **580+ grammars** and its **extremely high quality**.
 It uses TextMate grammars which are also used in popular editors (SublimeText,
 Atom, VS Code, \&c).
 They’re heavy but high quality.
@@ -80,9 +86,9 @@ diffing can be performant, or when you’re working with [`hast`][hast] or
 [`rehype`][rehype].
 
 Bundled, minified, and gzipped, `starry-night` and the WASM binary are 185 kB.
-There are two lists of grammars you can use: `common` (33 languages, good for
-your own site) adds 250 kB and `all` (\~600 languages, useful if you are making
-a site like GitHub) is 1.6 MB.
+There are two lists of grammars you can use: [`common`][api-common] (±35
+languages, good for your own site) adds 250 kB and [`all`][api-all] (\~600
+languages, useful if you are making a site like GitHub) is 1.6 MB.
 You can also manually choose which grammars to include (or add to `common`): a
 language is typically between 3 and 5 kB.
 To illustrate, Astro costs 2.1 kB and TSX costs 25.4 kB.
@@ -131,7 +137,7 @@ I’m hopeful that that will be open sourced in the future and we can mimic both
 ## Install
 
 This package is [ESM only][esm].
-In Node.js (version 12.20+, 14.14+, 16.0+, 18.0+), install with [npm][]:
+In Node.js (version 14.14+), install with [npm][]:
 
 ```sh
 npm install @wooorm/starry-night
@@ -140,14 +146,14 @@ npm install @wooorm/starry-night
 In Deno with [`esm.sh`][esmsh]:
 
 ```js
-import {createStarryNight, common} from 'https://esm.sh/@wooorm/starry-night@2'
+import {common, createStarryNight} from 'https://esm.sh/@wooorm/starry-night@2'
 ```
 
 In browsers with [`esm.sh`][esmsh]:
 
 ```html
 <script type="module">
-  import {createStarryNight, common} from 'https://esm.sh/@wooorm/starry-night@2?bundle'
+  import {common, createStarryNight} from 'https://esm.sh/@wooorm/starry-night@2?bundle'
 </script>
 ```
 
@@ -161,7 +167,7 @@ To get the CSS in browsers, do (see [CSS][] for more info):
 ## Use
 
 ```js
-import {createStarryNight, common} from '@wooorm/starry-night'
+import {common, createStarryNight} from '@wooorm/starry-night'
 
 const starryNight = await createStarryNight(common)
 
@@ -181,7 +187,15 @@ Yields:
       type: 'element',
       tagName: 'span',
       properties: {className: ['pl-mh']},
-      children: [{type: 'text', value: '# hi'}]
+      children: [
+        {type: 'text', value: '# '},
+        {
+          type: 'element',
+          tagName: 'span',
+          properties: {className: ['pl-en']},
+          children: [{type: 'text', value: 'hi'}]
+        }
+      ]
     }
   ]
 }
@@ -189,8 +203,17 @@ Yields:
 
 ## API
 
-This package exports the identifiers `createStarryNight`, `common`, and `all`.
+This package exports the identifiers [`all`][api-all],
+[`common`][api-common], and [`createStarryNight`][api-create-starry-night].
 There is no default export.
+
+### `all`
+
+List of all grammars ([Array<Grammar>][api-grammar])
+
+### `common`
+
+List of ±35 common grammars ([Array<Grammar>][api-grammar])
 
 ### `createStarryNight(grammars[, options])`
 
@@ -202,63 +225,71 @@ only used for WASM.
 
 *   `grammars` (`Array<Grammar>`)
     — grammars to support
-*   `options` (`Options`)
-    — configuration
+*   `options` (`Options`, default: `{}`)
+    — configuration (optional)
 
 ###### Returns
 
 Promise that resolves to an instance which highlights based on the bound
 grammars (`Promise<StarryNight>`).
 
-#### `Options`
+### `starryNight.flagToScope(flag)`
 
-Configuration (optional).
+Get the grammar scope (such as `text.md`) associated with a grammar name
+(such as `markdown` or `pandoc`) or grammar extension (such as `.mdwn` or
+`.rmd`).
 
-###### `options.getOnigurumaUrlFetch`
+This function is designed to accept the first word (when splitting on
+spaces and tabs) that is used after the opening of a fenced code block:
 
-Get a URL to the oniguruma WASM, typically used in browsers (`GetOnigurumaUrl`,
-optional).
+````markdown
+```js
+console.log(1)
+```
+````
 
-###### `options.getOnigurumaUrlFs`
+To match GitHub, this also accepts entire paths:
 
-Get a URL to the oniguruma WASM, typically used in Node.js (`GetOnigurumaUrl`,
-optional).
+````markdown
+```path/to/example.js
+console.log(1)
+```
+````
 
-#### `GetOnigurumaUrl`
+> **Note**: languages can use the same extensions.
+> For example, `.h` is reused by many languages.
+> In those cases, you will get one scope back, but it might not be the
+> most popular language associated with an extension.
+> For example, `.md` is registeded by a Lisp-like language instead of
+> markdown.
+> 🤷‍♂️
 
-Function to get a URL to the oniguruma WASM.
+###### Parameters
 
-> 👉 **Note**: this must currently result in a version 1 URL of
-> `onig.wasm` from [`vscode-oniguruma`][vscode-oniguruma].
-
-> ⚠️ **Danger**: when you use this functionality, your project might break at
-> any time (when reinstalling dependencies), except when you make sure that
-> the WASM binary you load manually is what our internally used
-> `vscode-oniguruma` dependency expects.
-> To solve this, you could for example use an npm script called
-> [`dependencies`][npm-script-dependencies] (which runs everytime
-> `node_modules` is changed) which copies
-> `vscode-oniguruma/release/onig.wasm` to the place you want to host it.
+*   `flag` (`string`)
+    — grammar name (such as `'markdown'` or `'pandoc'`), grammar extension
+    (such as `'.mdwn'` or `'.rmd'`), or entire file path ending in extension
 
 ###### Returns
 
-URL object to a WASM binary (`URL` or `Promise<URL>`).
+Grammar scope, such as `'text.md'` (`string` or `undefined`).
 
 ###### Example
 
 ```js
-import {createStarryNight, common} from '@wooorm/starry-night'
+import {common, createStarryNight} from '@wooorm/starry-night'
 
-const starryNight = await createStarryNight(common, {
-  getOnigurumaUrlFetch() {
-    return new URL('/onig.wasm', window.location.href);
-  }
-})
+const starryNight = await createStarryNight(common)
+
+console.log(starryNight.flagToScope('pandoc')) // `'text.md'`
+console.log(starryNight.flagToScope('workbook')) // `'text.md'`
+console.log(starryNight.flagToScope('.workbook')) // `'text.md'`
+console.log(starryNight.flagToScope('whatever')) // `undefined`
 ```
 
 ### `starryNight.highlight(value, scope)`
 
-Highlight `value` (code) as `scope` (a TextMate scope).
+Highlight programming code.
 
 ###### Parameters
 
@@ -290,66 +321,85 @@ Yields:
   children: [
     {type: 'element', tagName: 'span', properties: [Object], children: [Array]},
     {type: 'text', value: ' { '},
-    // …
+    {type: 'element', tagName: 'span', properties: [Object], children: [Array]},
+    {type: 'text', value: ': '},
     {type: 'element', tagName: 'span', properties: [Object], children: [Array]},
     {type: 'text', value: ' }'}
   ]
 }
 ```
 
-### `starryNight.flagToScope(flag)`
+### `starryNight.missingScopes()`
 
-Get the grammar scope (such as `text.md`) associated with a grammar name
-(such as `markdown` or `pandoc`) or grammar extension (such as `.mdwn` or
-`.rmd`).
+List scopes that are needed by the registered grammars but that are
+missing.
 
-This function is designed to accept the first word (when splitting on
-spaces and tabs) that is used after the opening of a fenced code block:
-
-````markdown
-```js
-console.log(1)
-```
-````
-
-To match GitHub, this also accepts entire paths:
-
-````markdown
-```path/to/example.js
-console.log(1)
-```
-````
-
-> **Note**: languages can use the same extensions.
-> For example, `.h` is reused by many languages.
-> Importantly, you don’t always get the most popular language associated
-> with an extension.
-> For example, `.md` is registeded by a Lisp-like language instead of
-> markdown.
-> 🤷‍♂️
-
-###### Parameters
-
-*   `flag` (`string`)
-    — grammar name (such as `'markdown'` or `'pandoc'`), grammar extension
-    (such as `'.mdwn'` or `'.rmd'`), or entire file path ending in extension
+To illustrate, the `text.xml.svg` grammar needs the `text.xml` grammar.
+When you register `text.xml.svg` without `text.xml`, it will be listed here.
 
 ###### Returns
 
-Grammar scope, such as `'text.md'` (`string?`)
+List of grammar scopes, such as `'text.md'` (`Array<string>`).
 
 ###### Example
 
 ```js
-import {createStarryNight, common} from '@wooorm/starry-night'
+import {createStarryNight} from '@wooorm/starry-night'
+import textXml from '@wooorm/starry-night/lang/text.xml.js'
+import textXmlSvg from '@wooorm/starry-night/lang/text.xml.svg.js'
 
-const starryNight = await createStarryNight(common)
+const svg = await createStarryNight([textXmlSvg])
+console.log(svg.missingScopes()) //=> ['text.xml']
 
-console.log(starryNight.flagToScope('pandoc')) // `'text.md'`
-console.log(starryNight.flagToScope('workbook')) // `'text.md'`
-console.log(starryNight.flagToScope('.workbook')) // `'text.md'`
-console.log(starryNight.flagToScope('whatever')) // `undefined`
+const svgAndXml = await createStarryNight([textXmlSvg, textXml])
+console.log(svgAndXml.missingScopes()) //=> []
 ```
+
+### `starryNight.register(grammars)`
+
+Add more grammars.
+
+###### Parameters
+
+*   `grammars` (`Array<Grammar>`)
+    — grammars to support
+
+###### Returns
+
+Promise resolving to nothing (`Promise<undefined>`).
+
+###### Example
+
+````js
+import {createStarryNight} from '@wooorm/starry-night'
+import sourceCss from '@wooorm/starry-night/lang/source.css.js'
+import textMd from '@wooorm/starry-night/lang/text.md.js'
+import {toHtml} from 'hast-util-to-html'
+
+const markdown = '```css\nem { color: red }\n```'
+
+const starryNight = await createStarryNight([textMd])
+
+console.log(toHtml(starryNight.highlight(markdown, 'text.md')))
+
+await starryNight.register([sourceCss])
+
+console.log(toHtml(starryNight.highlight(markdown, 'text.md')))
+````
+
+Yields:
+
+````html
+<span class="pl-s">```</span><span class="pl-en">css</span>
+<span class="pl-c1">em { color: red }</span>
+<span class="pl-s">```</span>
+````
+
+````html
+<span class="pl-s">```</span><span class="pl-en">css</span>
+<span class="pl-ent">em</span> { <span class="pl-c1">color</span>: <span class="pl-c1">red</span> }
+<span class="pl-s">```</span>
+````
 
 ### `starryNight.scopes()`
 
@@ -362,7 +412,7 @@ List of grammar scopes, such as `'text.md'` (`Array<string>`).
 ###### Example
 
 ```js
-import {createStarryNight, common} from '@wooorm/starry-night'
+import {common, createStarryNight} from '@wooorm/starry-night'
 
 const starryNight = await createStarryNight(common)
 
@@ -381,84 +431,83 @@ Yields:
 ]
 ```
 
-### `starryNight.missingScopes()`
+### `GetOnigurumaUrl`
 
-List all scopes that are needed by the registered grammars, but that are not
-registered.
+Function to get a URL to the oniguruma WASM (TypeScript type).
 
-To illustrate, the `text.xml.svg` grammar needs the `text.xml` grammar.
-When you register `text.xml.svg` without `text.xml`, it will be listed here.
+> 👉 **Note**: this must currently result in a version 1 URL of
+> `onig.wasm` from [`vscode-oniguruma`][vscode-oniguruma].
+
+> ⚠️ **Danger**: when you use this functionality, your project might break at
+> any time (when reinstalling dependencies), except when you make sure that
+> the WASM binary you load manually is what our internally used
+> `vscode-oniguruma` dependency expects.
+> To solve this, you could for example use an npm script called
+> [`dependencies`][npm-script-dependencies] (which runs everytime
+> `node_modules` is changed) which copies
+> `vscode-oniguruma/release/onig.wasm` to the place you want to host it.
 
 ###### Returns
 
-List of grammar scopes, such as `'text.md'` (`Array<string>`).
+URL object to a WASM binary (`URL` or `Promise<URL>`).
 
 ###### Example
 
 ```js
-import {createStarryNight} from '@wooorm/starry-night'
-import textXml from '@wooorm/starry-night/lang/text.xml.js'
-import textXmlSvg from '@wooorm/starry-night/lang/text.xml.svg.js'
+import {common, createStarryNight} from '@wooorm/starry-night'
 
-const svg = await createStarryNight([textXmlSvg])
-console.log(svg.missingScopes())
-
-const svgAndXml = await createStarryNight([textXmlSvg, textXml])
-console.log(svgAndXml.missingScopes())
+const starryNight = await createStarryNight(common, {
+  getOnigurumaUrlFetch() {
+    return new URL('/onig.wasm', window.location.href);
+  }
+})
 ```
 
-Yields:
+### `Grammar`
 
-```js
-['text.xml']
-[]
+TextMate grammar with some extra info (TypeScript type).
+
+###### Fields
+
+*   `scopeName` (`string`, example: `'source.mdx'`)
+    — scope
+*   `names` (`Array<string>`, example: `['mdx']`)
+    — list of names
+*   `dependencies` (`Array<string> | undefined`, example: `['source.tsx']`)
+    — list of scopes that are needed for this grammar to work
+*   `extensions` (`Array<string>`, example: `['.mdx']`)
+    — list of extensions
+*   `extensionsWithDot` (`Array<string> | undefined`, example: `[]`)
+    — list of extensions that only match if used w/ a dot
+*   `patterns` (`unknown`)
+    — TextMate patterns
+*   `repository` (`unknown`)
+    — TextMate repository
+*   `injections` (`unknown`)
+    — TextMate injections
+
+### `Options`
+
+Configuration (TypeScript type).
+
+###### Fields
+
+*   `getOnigurumaUrlFetch` ([`GetOnigurumaUrl`][api-get-oniguruma-url],
+    optional)
+    — get a URL to the oniguruma WASM, typically used in browsers
+*   `getOnigurumaUrlFs` ([`GetOnigurumaUrl`][api-get-oniguruma-url],
+    optional)
+    — get a URL to the oniguruma WASM, typically used in Node.js
+
+### `Root`
+
+Root node (TypeScript type).
+
+###### type
+
+```ts
+export type {Root} from 'hast'
 ```
-
-### `starryNight.register(grammars)`
-
-Add more grammars.
-
-###### Parameters
-
-*   `grammars` (`Array<Grammar>`)
-    — grammars to support
-
-###### Returns
-
-A promise resolving to nothing (`Promise<undefined>`).
-
-###### Example
-
-````js
-import {toHtml} from 'hast-util-to-html'
-import {createStarryNight} from '@wooorm/starry-night'
-import textMd from '@wooorm/starry-night/lang/text.md.js'
-import sourceCss from '@wooorm/starry-night/lang/source.css.js'
-
-const markdown = '```css\nem { color: red }\n```'
-
-const starryNight = await createStarryNight([textMd])
-
-console.log(toHtml(starryNight.highlight(markdown, 'text.md')))
-
-await starryNight.register([sourceCss])
-
-console.log(toHtml(starryNight.highlight(markdown, 'text.md')))
-````
-
-Yields:
-
-````html
-<span class="pl-c1">```css</span>
-em { color: red }
-<span class="pl-c1">```</span>
-````
-
-````html
-<span class="pl-c1">```css</span>
-<span class="pl-ent">em</span> { <span class="pl-c1">color</span>: <span class="pl-c1">red</span> }
-<span class="pl-c1">```</span>
-````
 
 ## Examples
 
@@ -468,8 +517,8 @@ em { color: red }
 [`hast-util-to-html`][hast-util-to-html]:
 
 ```js
+import {common, createStarryNight} from '@wooorm/starry-night'
 import {toHtml} from 'hast-util-to-html'
-import {createStarryNight, common} from '@wooorm/starry-night'
 
 const starryNight = await createStarryNight(common)
 
@@ -499,7 +548,7 @@ turn the AST into DOM nodes.
 Say we have this `example.js` on our browser (no bundling needed!):
 
 ```js
-import {createStarryNight, common} from 'https://esm.sh/@wooorm/starry-night@1?bundle'
+import {common, createStarryNight} from 'https://esm.sh/@wooorm/starry-night@2?bundle'
 import {toDom} from 'https://esm.sh/hast-util-to-dom@3?bundle'
 
 const starryNight = await createStarryNight(common)
@@ -523,11 +572,11 @@ for (const node of nodes) {
 <!doctype html>
 <meta charset=utf8>
 <title>Hello</title>
-<link rel=stylesheet href=https://esm.sh/@wooorm/starry-night@1/style/both.css>
+<link rel=stylesheet href=https://esm.sh/@wooorm/starry-night@2/style/both.css>
 <body>
 <h1>Hello</h1>
 <p>…world!</p>
-<pre><code class="language-js">console.log('it works!')
+<pre><code class=language-js>console.log('it works!')
 </code></pre>
 <script type=module src=./example.js></script>
 </body>
@@ -547,9 +596,9 @@ solid, svelte, vue, etc., with
 [`hast-util-to-jsx-runtime`][hast-util-to-jsx-runtime]:
 
 ```js
-import {Fragment, jsx, jsxs} from 'react/jsx-runtime'
-import {createStarryNight, common} from '@wooorm/starry-night'
+import {common, createStarryNight} from '@wooorm/starry-night'
 import {toJsxRuntime} from 'hast-util-to-jsx-runtime'
+import {Fragment, jsx, jsxs} from 'react/jsx-runtime'
 
 const starryNight = await createStarryNight(common)
 
@@ -586,10 +635,10 @@ Say we have our utility as `hast-util-starry-night-gutter.js`:
 
 ```js
 /**
+ * @typedef {import('hast').Element} Element
+ * @typedef {import('hast').ElementContent} ElementContent
  * @typedef {import('hast').Root} Root
  * @typedef {import('hast').RootContent} RootContent
- * @typedef {import('hast').ElementContent} ElementContent
- * @typedef {import('hast').Element} Element
  */
 
 /**
@@ -688,8 +737,8 @@ function createLine(children, line) {
 …and a module `example.js`:
 
 ````js
+import {common, createStarryNight} from '@wooorm/starry-night'
 import {toHtml} from 'hast-util-to-html'
-import {createStarryNight, common} from '@wooorm/starry-night'
 import {starryNightGutter} from './hast-util-starry-night-gutter.js'
 
 const starryNight = await createStarryNight(common)
@@ -707,12 +756,12 @@ console.log(toHtml(tree))
 Now running `node example.js` yields:
 
 ````html
-<span class="line" data-line-number="1"><span class="pl-mh"># Some heading</span></span>
+<span class="line" data-line-number="1"><span class="pl-mh"># <span class="pl-en">Some heading</span></span></span>
 <span class="line" data-line-number="2"></span>
-<span class="line" data-line-number="3"><span class="pl-c1">```js</span></span>
+<span class="line" data-line-number="3"><span class="pl-s">```</span><span class="pl-en">js</span></span>
 <span class="line" data-line-number="4"><span class="pl-en">alert</span>(<span class="pl-c1">1</span>)</span>
-<span class="line" data-line-number="5"><span class="pl-c1">```</span></span>
-<span class="line" data-line-number="6"><span class="pl-c">***</span></span>
+<span class="line" data-line-number="5"><span class="pl-s">```</span></span>
+<span class="line" data-line-number="6"><span class="pl-ms">***</span></span>
 ````
 
 ### Example: integrate with unified, remark, and rehype
@@ -736,27 +785,29 @@ console.log('it works!')
 
 ```js
 /**
- * @typedef {import('hast').Root} Root
- * @typedef {import('hast').ElementContent} ElementContent
  * @typedef {import('@wooorm/starry-night').Grammar} Grammar
- *
+ * @typedef {import('hast').ElementContent} ElementContent
+ * @typedef {import('hast').Root} Root
+ */
+
+/**
  * @typedef Options
  *   Configuration (optional)
- * @property {Array<Grammar>} [grammars]
+ * @property {Array<Grammar> | null | undefined} [grammars]
  *   Grammars to support (defaults: `common`).
  */
 
-import {createStarryNight, common} from '@wooorm/starry-night'
-import {visit} from 'unist-util-visit'
+import {common, createStarryNight} from '@wooorm/starry-night'
 import {toString} from 'hast-util-to-string'
+import {visit} from 'unist-util-visit'
 
 /**
  * Plugin to highlight code with `starry-night`.
  *
- * @type {import('unified').Plugin<[Options?], Root>}
+ * @type {import('unified').Plugin<[(Options | null | undefined)?], Root>}
  */
-export default function rehypeStarryNight(options = {}) {
-  const grammars = options.grammars || common
+export default function rehypeStarryNight(options) {
+  const grammars = (options || {}).grammars || common
   const starryNightPromise = createStarryNight(grammars)
   const prefix = 'language-'
 
@@ -861,7 +912,7 @@ console.log('it works!')
 
 ```js
 import fs from 'node:fs/promises'
-import {createStarryNight, common} from '@wooorm/starry-night'
+import {common, createStarryNight} from '@wooorm/starry-night'
 import {toHtml} from 'hast-util-to-html'
 import markdownIt from 'markdown-it'
 
@@ -955,8 +1006,9 @@ The shipped themes are as follows:
 
 ## Languages
 
-Checked grammars are included in `common`.
-Everything (that’s needed) is available through `all`.
+Checked grammars are included in [`common`][api-common].
+Everything (that’s needed) is available through
+[`all`][api-all].
 You can add more grammars as you please.
 
 Each grammar has several associated names and extensions.
@@ -964,7 +1016,8 @@ See source files for which are known and use `flagToScope` to turn them into
 scopes.
 
 Some grammars need other grammars to work.
-You are responsible for loading those.
+You are responsible for loading those, use `missingScopes` to find which
+dependencies are needed.
 
 All licenses are permissive and made available in [`notice`][notice].
 Changes should go to upstream repos and [`languages.yml`][languages-yml] in
@@ -1560,14 +1613,17 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 ## Types
 
 This package is fully typed with [TypeScript][].
-It exports additional `Grammar`, `Root`, `Options`, and `GetOnigurumaUrl`
-types that model their respective interfaces.
+It exports the additional types [`GetOnigurumaUrl`][api-get-oniguruma-url],
+[`Grammar`][api-grammar], [`Options`][api-options], and [`Root`][api-root].
 
 ## Compatibility
 
-This package is at least compatible with all maintained versions of Node.js.
-As of now, that is Node.js 14.14+, 16.0+, and 18.0+.
-It also works in Deno and modern browsers.
+This project is compatible with maintained versions of Node.js.
+
+When we cut a new major release, we drop support for unmaintained versions of
+Node.
+This means we try to keep the current release line, `vfile@^6`,
+compatible with Node.js 14.14+.
 
 You can pass your own TextMate grammars, provided that they work with
 [`vscode-textmate`][vscode-textmate], and that they have the added fields
@@ -1673,3 +1729,17 @@ All other files [MIT][license] © [Titus Wormer][author]
 [languages-yml]: https://github.com/github-linguist/linguist/blob/b5432eb/lib/linguist/languages.yml#L4031
 
 [css]: #css
+
+[api-all]: #all
+
+[api-common]: #common
+
+[api-create-starry-night]: #createstarrynightgrammars-options
+
+[api-get-oniguruma-url]: #getonigurumaurl
+
+[api-grammar]: #grammar
+
+[api-options]: #options
+
+[api-root]: #root
