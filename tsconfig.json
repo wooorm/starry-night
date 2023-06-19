@@ -1,17 +1,17 @@
 {
-  "include": ["**/**.js"],
-  "exclude": ["coverage/", "node_modules/", "lang/"],
   "compilerOptions": {
     "checkJs": true,
+    "customConditions": ["development"],
     "declaration": true,
     "emitDeclarationOnly": true,
     "exactOptionalPropertyTypes": true,
-    "forceConsistentCasingInFileNames": true,
     "lib": ["es2020"],
     "module": "node16",
-    "newLine": "lf",
+    // `vscode-oniguruma` has bugs :'(. Or depends on DOM or so?
     "skipLibCheck": true,
     "strict": true,
     "target": "es2020"
-  }
+  },
+  "exclude": ["coverage/", "lang/", "node_modules/"],
+  "include": ["**/*.js"]
 }
