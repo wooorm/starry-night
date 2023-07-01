@@ -46,15 +46,15 @@ async function list() {
   const infoFolder = new URL('info/', base)
 
   const scopes = new Set(all.map((d) => d.scopeName))
-  /** @type {Record<string, Array<string>>} */
-  const grammars = parseYaml(
-    await readOrFetch(
-      new URL('grammars.yml', base),
-      new URL(
-        'https://raw.githubusercontent.com/github-linguist/linguist/master/grammars.yml'
-      )
+  const grammarsBody = await readOrFetch(
+    new URL('grammars.yml', base),
+    new URL(
+      'https://raw.githubusercontent.com/github-linguist/linguist/master/grammars.yml'
     )
   )
+  assert(grammarsBody, 'expected grammars')
+  /** @type {Record<string, Array<string>>} */
+  const grammars = parseYaml(grammarsBody)
   await fs.mkdir(infoFolder, {recursive: true})
   /** @type {Map<string, string>} */
   const scopeToVendor = new Map()
@@ -135,9 +135,16 @@ The following files/folders contain third party software:`
   while (++index < vendors.length) {
     const vendor = vendors[index]
     const scopes = vendorToScope.get(vendor)
+    const infoBody = rawInfo[index]
     assert(scopes)
+
+    if (!infoBody) {
+      console.log('No info for `%s`', vendor)
+      continue
+    }
+
     /** @type {Dep} */
-    const info = parseYaml(rawInfo[index])
+    const info = parseYaml(infoBody)
     const license =
       info.license === 'other' || info.license === 'permissive'
         ? undefined
@@ -212,7 +219,7 @@ ${info.licenses
 /**
  * @param {URL} localUrl
  * @param {URL} remoteUrl
- * @returns {Promise<string>}
+ * @returns {Promise<string | undefined>}
  */
 async function readOrFetch(localUrl, remoteUrl) {
   try {
@@ -224,11 +231,15 @@ async function readOrFetch(localUrl, remoteUrl) {
     }
   }
 
-  // @ts-expect-error: hush!
-  const response = await fetch(remoteUrl, {
-    headers: {Authorization: 'bearer ' + ghKey}
-  })
-  const responseText = await response.text()
-  await fs.writeFile(localUrl, responseText)
-  return responseText
+  try {
+    // @ts-expect-error: hush!
+    const response = await fetch(remoteUrl, {
+      headers: {Authorization: 'bearer ' + ghKey}
+    })
+    const responseText = await response.text()
+    await fs.writeFile(localUrl, responseText)
+    return responseText
+  } catch (error) {
+    console.error('Could not fetch `%s`', remoteUrl, error)
+  }
 }
