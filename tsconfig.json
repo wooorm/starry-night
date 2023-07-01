@@ -12,6 +12,6 @@
     "strict": true,
     "target": "es2020"
   },
-  "exclude": ["coverage/", "lang/", "node_modules/"],
+  "exclude": ["coverage/", "node_modules/"],
   "include": ["**/*.js"]
 }

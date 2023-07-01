@@ -123,6 +123,9 @@
     "atLeast": 100,
     "detail": true,
     "ignoreCatch": true,
+    "ignoreFiles": [
+      "lang/*.js"
+    ],
     "strict": true
   },
   "xo": {
