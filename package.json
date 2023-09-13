@@ -4,18 +4,18 @@
   "description": "Syntax highlighting, like GitHub",
   "license": "MIT",
   "keywords": [
-    "syntax",
-    "code",
     "ast",
-    "virtual",
+    "code",
     "dom",
+    "github",
+    "gogh",
     "highlight",
     "highlighting",
-    "gogh",
-    "github",
     "linguist",
     "prettylights",
-    "treelights"
+    "syntax",
+    "treelights",
+    "virtual"
   ],
   "repository": "wooorm/starry-night",
   "bugs": "https://github.com/wooorm/starry-night/issues",
@@ -74,17 +74,17 @@
     "yaml": "^2.0.0"
   },
   "scripts": {
-    "prepack": "npm run build && npm run format",
-    "generate-crawl": "gem install github-linguist -i gems",
-    "generate-build": "node --conditions development script/build.js",
-    "generate-list": "node --conditions development script/list.js",
-    "generate-css": "node --conditions development script/css.js",
-    "generate": "npm run generate-build && npm run generate-list && npm run generate-css",
     "build": "tsc --build --clean && tsc --build && type-coverage",
-    "format": "remark . -qfo && prettier . -w --log-level warn && xo --fix",
+    "generate-build": "node --conditions development script/build.js",
+    "generate-css": "node --conditions development script/css.js",
+    "generate-crawl": "gem install github-linguist -i gems",
+    "generate-list": "node --conditions development script/list.js",
+    "generate": "npm run generate-build && npm run generate-css && npm run generate-list",
+    "prepack": "npm run build && npm run format",
+    "format": "remark . --frail --output --quiet && prettier . --log-level warn --write && xo --fix",
+    "test": "npm run generate && npm run build && npm run format && npm run test-coverage",
     "test-api": "node --conditions development test.js",
-    "test-coverage": "c8 --100 --reporter lcov npm run test-api",
-    "test": "npm run generate && npm run build && npm run format && npm run test-coverage"
+    "test-coverage": "c8 --100 --reporter lcov npm run test-api"
   },
   "prettier": {
     "bracketSpacing": false,
