@@ -1,183 +1,183 @@
-/** @type {Record<string, {homepage?: string, license?: string, dependencies?: Array<string>}>} */
+/** @type {Record<string, {homepage?: string, license?: string, dependencies?: ReadonlyArray<string>}>} */
 export const info = {
   'source.al': {
-    license: 'mit',
-    homepage: 'https://github.com/microsoft/AL'
+    homepage: 'https://github.com/microsoft/AL',
+    license: 'mit'
   },
   'source.alloy': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/macekond/Alloy.tmbundle'
+    homepage: 'https://github.com/macekond/Alloy.tmbundle',
+    license: 'apache-2.0'
   },
   'source.x86': {
-    license: 'mit',
-    homepage: 'https://github.com/calculuswhiz/Assembly-Syntax-Definition'
+    homepage: 'https://github.com/calculuswhiz/Assembly-Syntax-Definition',
+    license: 'mit'
   },
   'source.postscript': {
-    license: 'isc',
-    homepage: 'https://github.com/Alhadis/Atom-PostScript'
+    homepage: 'https://github.com/Alhadis/Atom-PostScript',
+    license: 'isc'
   },
   'source.velocity': {
-    license: 'mit',
-    homepage: 'https://github.com/animecyc/AtomLanguageVelocity'
+    homepage: 'https://github.com/animecyc/AtomLanguageVelocity',
+    license: 'mit'
   },
   'source.ahk': {
-    license: 'unlicense',
-    homepage: 'https://github.com/ahkscript/SublimeAutoHotkey'
+    homepage: 'https://github.com/ahkscript/SublimeAutoHotkey',
+    license: 'unlicense'
   },
   'source.cuesheet': {
-    license: 'mit',
-    homepage: 'https://github.com/relikd/CUE-Sheet_sublime'
+    homepage: 'https://github.com/relikd/CUE-Sheet_sublime',
+    license: 'mit'
   },
   'source.gsc': {
-    license: 'unlicense',
-    homepage: 'https://github.com/Jake-NotTheMuss/CoDT7-Sublime'
+    homepage: 'https://github.com/Jake-NotTheMuss/CoDT7-Sublime',
+    license: 'unlicense'
   },
   'source.cfscript': {
-    license: 'mit',
-    dependencies: ['source.sql']
+    dependencies: ['source.sql'],
+    license: 'mit'
   },
   'text.cfml.basic': {
     license: 'mit'
   },
   'text.html.cfm': {
-    license: 'mit',
-    dependencies: ['source.cfscript', 'text.cfml.basic']
+    dependencies: ['source.cfscript', 'text.cfml.basic'],
+    license: 'mit'
   },
   'text.dfy.dafny': {
-    license: 'mit',
-    homepage: 'https://github.com/DafnyVSCode/Dafny-VSCode'
+    homepage: 'https://github.com/DafnyVSCode/Dafny-VSCode',
+    license: 'mit'
   },
   'source.dockerfile': {
-    license: 'mit',
-    homepage: 'https://github.com/asbjornenge/Docker.tmbundle'
+    homepage: 'https://github.com/asbjornenge/Docker.tmbundle',
+    license: 'mit'
   },
   'source.elm': {
-    license: 'mit',
-    homepage: 'https://github.com/elm-community/Elm.tmLanguage'
+    homepage: 'https://github.com/elm-community/Elm.tmLanguage',
+    license: 'mit'
   },
   'text.html.ftl': {
-    license: 'mit',
-    dependencies: ['text.html.basic']
+    dependencies: ['text.html.basic'],
+    license: 'mit'
   },
   'text.html.handlebars': {
-    license: 'mit',
-    dependencies: ['text.html.basic']
+    dependencies: ['text.html.basic'],
+    license: 'mit'
   },
   'source.webidl': {
-    license: 'mit',
-    homepage: 'https://github.com/andik/IDL-Syntax'
+    homepage: 'https://github.com/andik/IDL-Syntax',
+    license: 'mit'
   },
   'source.isabelle.root': {
-    license: 'bsd-2-clause',
-    homepage: 'https://github.com/lsf37/Isabelle.tmbundle'
+    homepage: 'https://github.com/lsf37/Isabelle.tmbundle',
+    license: 'bsd-2-clause'
   },
   'source.isabelle.theory': {
-    license: 'bsd-2-clause',
-    homepage: 'https://github.com/lsf37/Isabelle.tmbundle'
+    homepage: 'https://github.com/lsf37/Isabelle.tmbundle',
+    license: 'bsd-2-clause'
   },
   'source.j': {
-    license: 'mit',
-    homepage: 'https://github.com/tikkanz/JSyntax'
+    homepage: 'https://github.com/tikkanz/JSyntax',
+    license: 'mit'
   },
   'source.lolcode': {
-    license: 'mit',
-    homepage: 'https://github.com/KrazIvan/LOLCODE-grammar-vscode'
+    homepage: 'https://github.com/KrazIvan/LOLCODE-grammar-vscode',
+    license: 'mit'
   },
   'source.ligo': {
-    license: 'mit',
-    homepage: 'https://github.com/pewulfman/Ligo-grammar'
+    homepage: 'https://github.com/pewulfman/Ligo-grammar',
+    license: 'mit'
   },
   'source.mligo': {
-    license: 'mit',
-    homepage: 'https://github.com/pewulfman/Ligo-grammar'
+    homepage: 'https://github.com/pewulfman/Ligo-grammar',
+    license: 'mit'
   },
   'source.religo': {
-    license: 'mit',
-    homepage: 'https://github.com/pewulfman/Ligo-grammar'
+    homepage: 'https://github.com/pewulfman/Ligo-grammar',
+    license: 'mit'
   },
   'source.livescript': {
-    license: 'mit',
-    homepage: 'https://github.com/paulmillr/LiveScript.tmbundle'
+    homepage: 'https://github.com/paulmillr/LiveScript.tmbundle',
+    license: 'mit'
   },
   'source.matlab': {
-    license: 'bsd-2-clause',
-    homepage: 'https://github.com/mathworks/MATLAB-Language-grammar'
+    homepage: 'https://github.com/mathworks/MATLAB-Language-grammar',
+    license: 'bsd-2-clause'
   },
   'source.mql5': {
     license: 'mit'
   },
   'source.python': {
-    license: 'mit',
-    homepage: 'https://github.com/MagicStack/MagicPython'
+    homepage: 'https://github.com/MagicStack/MagicPython',
+    license: 'mit'
   },
   'source.regexp.python': {
-    license: 'mit',
-    homepage: 'https://github.com/MagicStack/MagicPython'
+    homepage: 'https://github.com/MagicStack/MagicPython',
+    license: 'mit'
   },
   'text.python.console': {
-    license: 'mit',
+    dependencies: ['source.python'],
     homepage: 'https://github.com/MagicStack/MagicPython',
-    dependencies: ['source.python']
+    license: 'mit'
   },
   'text.python.traceback': {
-    license: 'mit',
+    dependencies: ['source.python'],
     homepage: 'https://github.com/MagicStack/MagicPython',
-    dependencies: ['source.python']
+    license: 'mit'
   },
   'source.modelica': {
-    license: 'mit',
-    homepage: 'https://github.com/BorisChumichev/modelicaSublimeTextPackage'
+    homepage: 'https://github.com/BorisChumichev/modelicaSublimeTextPackage',
+    license: 'mit'
   },
   'source.nsis': {
     license: 'apache-2.0'
   },
   'source.nasal': {
-    license: 'mit',
-    homepage: 'https://github.com/BobDotCom/Nasal.tmbundle'
+    homepage: 'https://github.com/BobDotCom/Nasal.tmbundle',
+    license: 'mit'
   },
   'source.nim': {
-    license: 'mit',
-    homepage: 'https://github.com/nim-lang/NimLime'
+    homepage: 'https://github.com/nim-lang/NimLime',
+    license: 'mit'
   },
   'source.git-revlist': {
-    license: 'isc',
-    homepage: 'https://github.com/Nixinova/NovaGrammars'
+    homepage: 'https://github.com/Nixinova/NovaGrammars',
+    license: 'isc'
   },
   'source.json': {
-    license: 'isc',
-    homepage: 'https://github.com/Nixinova/NovaGrammars'
+    homepage: 'https://github.com/Nixinova/NovaGrammars',
+    license: 'isc'
   },
   'source.keyvalues': {
-    license: 'isc',
-    homepage: 'https://github.com/Nixinova/NovaGrammars'
+    homepage: 'https://github.com/Nixinova/NovaGrammars',
+    license: 'isc'
   },
   'source.redirects': {
-    license: 'isc',
-    homepage: 'https://github.com/Nixinova/NovaGrammars'
+    homepage: 'https://github.com/Nixinova/NovaGrammars',
+    license: 'isc'
   },
   'source.solution': {
-    license: 'isc',
-    homepage: 'https://github.com/Nixinova/NovaGrammars'
+    homepage: 'https://github.com/Nixinova/NovaGrammars',
+    license: 'isc'
   },
   'source.win32-messages': {
-    license: 'isc',
-    homepage: 'https://github.com/Nixinova/NovaGrammars'
+    homepage: 'https://github.com/Nixinova/NovaGrammars',
+    license: 'isc'
   },
   'text.robots-txt': {
-    license: 'isc',
-    homepage: 'https://github.com/Nixinova/NovaGrammars'
+    homepage: 'https://github.com/Nixinova/NovaGrammars',
+    license: 'isc'
   },
   'source.objectscript': {
-    license: 'mit',
-    dependencies: ['source.objectscript_macros']
+    dependencies: ['source.objectscript_macros'],
+    license: 'mit'
   },
   'source.objectscript_macros': {
-    license: 'mit',
-    dependencies: ['source.objectscript']
+    dependencies: ['source.objectscript'],
+    license: 'mit'
   },
   'text.html.twig': {
-    license: 'bsd-3-clause',
-    homepage: 'https://github.com/Anomareh/PHP-Twig.tmbundle'
+    homepage: 'https://github.com/Anomareh/PHP-Twig.tmbundle',
+    license: 'bsd-3-clause'
   },
   'source.pogoscript': {
     license: 'mit'
@@ -192,21 +192,21 @@ export const info = {
     license: 'unlicense'
   },
   'source.scaml': {
-    license: 'apache-2.0',
+    dependencies: ['source.scala'],
     homepage: 'https://github.com/scalate/Scalate.tmbundle',
-    dependencies: ['source.scala']
+    license: 'apache-2.0'
   },
   'source.scenic': {
-    license: 'mit',
-    homepage: 'https://github.com/UCSCFormalMethods/Scenic-tmLanguage'
+    homepage: 'https://github.com/UCSCFormalMethods/Scenic-tmLanguage',
+    license: 'mit'
   },
   'text.html.slash': {
-    license: 'mit',
-    dependencies: ['text.html.basic']
+    dependencies: ['text.html.basic'],
+    license: 'mit'
   },
   'source.stata': {
-    license: 'mit',
-    homepage: 'https://github.com/pschumm/Stata.tmbundle'
+    homepage: 'https://github.com/pschumm/Stata.tmbundle',
+    license: 'mit'
   },
   'source.stylus': {
     license: 'mit'
@@ -215,9 +215,9 @@ export const info = {
     license: 'mit'
   },
   'source.httpspec': {
-    license: 'mit',
+    dependencies: ['source.json'],
     homepage: 'https://github.com/samsalisbury/Sublime-HTTP',
-    dependencies: ['source.json']
+    license: 'mit'
   },
   'file.lasso': {
     license: 'public domain'
@@ -226,8 +226,8 @@ export const info = {
     license: 'mit'
   },
   'source.modula2': {
-    license: 'mit',
-    homepage: 'https://github.com/harogaston/Sublime-Modula-2'
+    homepage: 'https://github.com/harogaston/Sublime-Modula-2',
+    license: 'mit'
   },
   'source.nit': {
     license: 'wtfpl'
@@ -236,51 +236,51 @@ export const info = {
     license: 'wtfpl'
   },
   'source.qml': {
-    license: 'mit',
-    dependencies: ['source.js']
+    dependencies: ['source.js'],
+    license: 'mit'
   },
   'source.rebol': {
-    license: 'mit',
-    homepage: 'https://github.com/Oldes/Sublime-REBOL'
+    homepage: 'https://github.com/Oldes/Sublime-REBOL',
+    license: 'mit'
   },
   'source.red': {
-    license: 'mit',
-    homepage: 'https://github.com/Oldes/Sublime-Red'
+    homepage: 'https://github.com/Oldes/Sublime-Red',
+    license: 'mit'
   },
   'source.sqf': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/JonBons/Sublime-SQF-Language'
+    homepage: 'https://github.com/JonBons/Sublime-SQF-Language',
+    license: 'apache-2.0'
   },
   'source.bf': {
-    license: 'mit',
-    homepage: 'https://github.com/Drako/SublimeBrainfuck'
+    homepage: 'https://github.com/Drako/SublimeBrainfuck',
+    license: 'mit'
   },
   'source.clarion': {
-    license: 'mit',
-    homepage: 'https://github.com/fushnisoft/SublimeClarion'
+    homepage: 'https://github.com/fushnisoft/SublimeClarion',
+    license: 'mit'
   },
   'source.solidity': {
-    license: 'mit',
-    homepage: 'https://github.com/davidhq/SublimeEthereum'
+    homepage: 'https://github.com/davidhq/SublimeEthereum',
+    license: 'mit'
   },
   'source.vyper': {
-    license: 'mit',
-    homepage: 'https://github.com/davidhq/SublimeEthereum'
+    homepage: 'https://github.com/davidhq/SublimeEthereum',
+    license: 'mit'
   },
   'source.yul': {
-    license: 'mit',
-    homepage: 'https://github.com/davidhq/SublimeEthereum'
+    homepage: 'https://github.com/davidhq/SublimeEthereum',
+    license: 'mit'
   },
   'source.gdb': {
-    license: 'zlib',
-    homepage: 'https://github.com/quarnster/SublimeGDB'
+    homepage: 'https://github.com/quarnster/SublimeGDB',
+    license: 'zlib'
   },
   'source.papyrus.skyrim': {
     license: 'mit'
   },
   'source.puppet': {
-    license: 'mit',
-    homepage: 'https://github.com/russCloak/SublimePuppet'
+    homepage: 'https://github.com/russCloak/SublimePuppet',
+    license: 'mit'
   },
   'source.xtend': {
     license: 'mit'
@@ -292,160 +292,160 @@ export const info = {
     license: 'mit'
   },
   'source.systemverilog': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/TheClams/SystemVerilog'
+    homepage: 'https://github.com/TheClams/SystemVerilog',
+    license: 'apache-2.0'
   },
   'source.tla': {
     license: 'mit'
   },
   'source.txl': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/MikeHoffert/Sublime-Text-TXL-syntax'
+    homepage: 'https://github.com/MikeHoffert/Sublime-Text-TXL-syntax',
+    license: 'apache-2.0'
   },
   'source.terraform': {
-    license: 'mit',
-    homepage: 'https://github.com/alexlouden/Terraform.tmLanguage'
+    homepage: 'https://github.com/alexlouden/Terraform.tmLanguage',
+    license: 'mit'
   },
   'source.gosu.2': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/jpcamara/Textmate-Gosu-Bundle'
+    homepage: 'https://github.com/jpcamara/Textmate-Gosu-Bundle',
+    license: 'apache-2.0'
   },
   'source.ts': {
-    license: 'mit',
-    homepage: 'https://github.com/Microsoft/TypeScript-TmLanguage'
+    homepage: 'https://github.com/Microsoft/TypeScript-TmLanguage',
+    license: 'mit'
   },
   'source.tsx': {
-    license: 'mit',
-    homepage: 'https://github.com/Microsoft/TypeScript-TmLanguage'
+    homepage: 'https://github.com/Microsoft/TypeScript-TmLanguage',
+    license: 'mit'
   },
   'source.ur': {
     license: 'mit'
   },
   'source.vbnet': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/angryant0007/VBDotNetSyntax'
+    homepage: 'https://github.com/angryant0007/VBDotNetSyntax',
+    license: 'apache-2.0'
   },
   'source.vala': {
-    license: 'mit',
-    homepage: 'https://github.com/technosophos/Vala-TMBundle'
+    homepage: 'https://github.com/technosophos/Vala-TMBundle',
+    license: 'mit'
   },
   'text.adblock': {
-    license: 'mit',
-    homepage: 'https://github.com/AdguardTeam/VscodeAdblockSyntax'
+    homepage: 'https://github.com/AdguardTeam/VscodeAdblockSyntax',
+    license: 'mit'
   },
   'source.whiley': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/Whiley/WhileySyntaxBundle'
+    homepage: 'https://github.com/Whiley/WhileySyntaxBundle',
+    license: 'apache-2.0'
   },
   'source.x10': {
     license: 'apache-2.0'
   },
   'source.xojo': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/jimmckay/XojoSyntaxTM'
+    homepage: 'https://github.com/jimmckay/XojoSyntaxTM',
+    license: 'apache-2.0'
   },
   'source.zenscript': {
-    license: 'mit',
-    homepage: 'https://github.com/CraftTweaker/ZenScript-tmLanguage'
+    homepage: 'https://github.com/CraftTweaker/ZenScript-tmLanguage',
+    license: 'mit'
   },
   'source.abapcds': {
-    license: 'unlicense',
-    homepage: 'https://github.com/FreHu/abap-cds-grammar'
+    homepage: 'https://github.com/FreHu/abap-cds-grammar',
+    license: 'unlicense'
   },
   'source.abap': {
     homepage: 'https://github.com/pvl/abap.tmbundle'
   },
   'source.abl': {
-    license: 'mit',
-    homepage: 'https://github.com/chriscamicas/abl-tmlanguage'
+    homepage: 'https://github.com/chriscamicas/abl-tmlanguage',
+    license: 'mit'
   },
   'source.actionscript.3': {
-    license: 'mit',
+    dependencies: ['text.html.asdoc', 'text.xml'],
     homepage: 'https://github.com/simongregory/actionscript3-tmbundle',
-    dependencies: ['text.html.asdoc', 'text.xml']
+    license: 'mit'
   },
   'text.html.asdoc': {
-    license: 'mit',
+    dependencies: ['text.html.basic'],
     homepage: 'https://github.com/simongregory/actionscript3-tmbundle',
-    dependencies: ['text.html.basic']
+    license: 'mit'
   },
   'source.ada': {},
   'source.agda': {
-    license: 'mit',
-    homepage: 'https://github.com/agda/agda-github-syntax-highlighting'
+    homepage: 'https://github.com/agda/agda-github-syntax-highlighting',
+    license: 'mit'
   },
   'source.aidl': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/google/aidl-language'
+    homepage: 'https://github.com/google/aidl-language',
+    license: 'apache-2.0'
   },
   'source.ampl': {
     license: 'mit'
   },
   'source.bp': {
-    license: 'mit',
-    homepage: 'https://github.com/flimberger/android-system-tools'
+    homepage: 'https://github.com/flimberger/android-system-tools',
+    license: 'mit'
   },
   'text.xml.ant': {
-    license: 'mit',
-    dependencies: ['text.xml']
+    dependencies: ['text.xml'],
+    license: 'mit'
   },
   'source.antlr': {},
   'source.apache-config': {},
   'source.apex': {
-    license: 'bsd-3-clause',
-    homepage: 'https://github.com/forcedotcom/apex-tmLanguage'
+    homepage: 'https://github.com/forcedotcom/apex-tmLanguage',
+    license: 'bsd-3-clause'
   },
   'text.html.markdown.source.gfm.apib': {
-    license: 'mit',
+    dependencies: ['source.js', 'text.html.markdown.source.gfm.mson'],
     homepage: 'https://github.com/apiaryio/api-blueprint-sublime-plugin',
-    dependencies: ['source.js', 'text.html.markdown.source.gfm.mson']
+    license: 'mit'
   },
   'text.html.markdown.source.gfm.mson': {
-    license: 'mit',
-    homepage: 'https://github.com/apiaryio/api-blueprint-sublime-plugin'
+    homepage: 'https://github.com/apiaryio/api-blueprint-sublime-plugin',
+    license: 'mit'
   },
   'source.applescript': {},
   'text.html.asciidoc': {
-    license: 'mit',
+    dependencies: ['text.html.basic'],
     homepage: 'https://github.com/zuckschwerdt/asciidoc.tmbundle',
-    dependencies: ['text.html.basic']
+    license: 'mit'
   },
   'source.asp': {},
   'text.html.asp': {
     dependencies: ['source.asp', 'text.html.basic']
   },
   'objdump.x86asm': {
-    license: 'mit',
-    dependencies: ['source.c', 'source.c++']
+    dependencies: ['source.c', 'source.c++'],
+    license: 'mit'
   },
   'source.astro': {
-    license: 'mit',
+    dependencies: ['source.js', 'source.ts', 'source.tsx'],
     homepage: 'https://github.com/withastro/language-tools',
-    dependencies: ['source.js', 'source.ts', 'source.tsx']
+    license: 'mit'
   },
   'source.editorconfig': {
-    license: 'mit',
-    homepage: 'https://github.com/sindresorhus/atom-editorconfig'
+    homepage: 'https://github.com/sindresorhus/atom-editorconfig',
+    license: 'mit'
   },
   'source.firestore': {
     license: 'mit'
   },
   'source.fstar': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/FStarLang/atom-fstar'
+    homepage: 'https://github.com/FStarLang/atom-fstar',
+    license: 'apache-2.0'
   },
   'source.bsl': {
-    license: 'mit',
+    dependencies: ['source.sdbl'],
     homepage: 'https://github.com/xDrivenDevelopment/atom-language-1c-bsl',
-    dependencies: ['source.sdbl']
+    license: 'mit'
   },
   'source.sdbl': {
-    license: 'mit',
-    homepage: 'https://github.com/xDrivenDevelopment/atom-language-1c-bsl'
+    homepage: 'https://github.com/xDrivenDevelopment/atom-language-1c-bsl',
+    license: 'mit'
   },
   'source.cairo': {
-    license: 'mit',
-    homepage: 'https://github.com/xshitaka/atom-language-cairo'
+    homepage: 'https://github.com/xshitaka/atom-language-cairo',
+    license: 'mit'
   },
   'source.clean': {
     license: 'mit'
@@ -454,17 +454,17 @@ export const info = {
     license: 'mit'
   },
   'source.inno': {
-    license: 'mit',
+    dependencies: ['source.pascal'],
     homepage: 'https://github.com/idleberg/atom-language-innosetup',
-    dependencies: ['source.pascal']
+    license: 'mit'
   },
   'source.julia': {
-    license: 'mit',
-    homepage: 'https://github.com/JuliaEditorSupport/atom-language-julia'
+    homepage: 'https://github.com/JuliaEditorSupport/atom-language-julia',
+    license: 'mit'
   },
   'source.nextflow': {
-    license: 'mit',
-    dependencies: ['source.nextflow-groovy']
+    dependencies: ['source.nextflow-groovy'],
+    license: 'mit'
   },
   'source.nextflow-groovy': {
     license: 'mit'
@@ -473,75 +473,75 @@ export const info = {
     license: 'mit'
   },
   'source.quoting.raku': {
-    homepage: 'https://github.com/perl6/atom-language-perl6',
-    dependencies: ['source.raku']
+    dependencies: ['source.raku'],
+    homepage: 'https://github.com/perl6/atom-language-perl6'
   },
   'source.raku': {
-    homepage: 'https://github.com/perl6/atom-language-perl6',
-    dependencies: ['source.quoting.raku']
+    dependencies: ['source.quoting.raku'],
+    homepage: 'https://github.com/perl6/atom-language-perl6'
   },
   'source.purescript': {
-    license: 'mit',
-    homepage: 'https://github.com/purescript-contrib/atom-language-purescript'
+    homepage: 'https://github.com/purescript-contrib/atom-language-purescript',
+    license: 'mit'
   },
   'source.stan': {
-    license: 'mit',
-    homepage: 'https://github.com/stan-dev/atom-language-stan'
+    homepage: 'https://github.com/stan-dev/atom-language-stan',
+    license: 'mit'
   },
   'source.miniyaml': {
-    license: 'mit',
-    homepage: 'https://github.com/OpenRA/atom-miniyaml'
+    homepage: 'https://github.com/OpenRA/atom-miniyaml',
+    license: 'mit'
   },
   'source.yaml.salt': {
-    license: 'mit',
+    dependencies: ['source.python'],
     homepage: 'https://github.com/saltstack/atom-salt',
-    dependencies: ['source.python']
+    license: 'mit'
   },
   'source.dm': {
-    license: 'mit',
-    homepage: 'https://github.com/PJB3005/atomic-dreams'
+    homepage: 'https://github.com/PJB3005/atomic-dreams',
+    license: 'mit'
   },
   'source.ats': {
     license: 'mit'
   },
   'source.avro': {
-    license: 'mit',
-    homepage: 'https://github.com/Jason3S/avro.tmLanguage'
+    homepage: 'https://github.com/Jason3S/avro.tmLanguage',
+    license: 'mit'
   },
   'source.awk': {
     license: 'mit'
   },
   'source.ballerina': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/ballerina-platform/ballerina-grammar'
+    homepage: 'https://github.com/ballerina-platform/ballerina-grammar',
+    license: 'apache-2.0'
   },
   'source.berry': {
-    license: 'mit',
-    homepage: 'https://github.com/berry-lang/berry-grammar'
+    homepage: 'https://github.com/berry-lang/berry-grammar',
+    license: 'mit'
   },
   'source.bicep': {
-    license: 'mit',
-    homepage: 'https://github.com/azure/bicep'
+    homepage: 'https://github.com/azure/bicep',
+    license: 'mit'
   },
   'source.csswg': {
     homepage: 'https://github.com/tabatkins/bikeshed'
   },
   'source.blitzmax': {},
   'source.boogie': {
-    license: 'mit',
-    homepage: 'https://github.com/boogie-org/boogie-vscode'
+    homepage: 'https://github.com/boogie-org/boogie-vscode',
+    license: 'mit'
   },
   'text.browserslist': {
-    license: 'mit',
-    homepage: 'https://github.com/browserslist/browserslist-vscode'
+    homepage: 'https://github.com/browserslist/browserslist-vscode',
+    license: 'mit'
   },
   'source.c': {
-    homepage: 'https://github.com/textmate/c.tmbundle',
-    dependencies: ['source.c.platform']
+    dependencies: ['source.c.platform'],
+    homepage: 'https://github.com/textmate/c.tmbundle'
   },
   'source.c++': {
-    homepage: 'https://github.com/textmate/c.tmbundle',
-    dependencies: ['source.c']
+    dependencies: ['source.c'],
+    homepage: 'https://github.com/textmate/c.tmbundle'
   },
   'source.c.platform': {
     homepage: 'https://github.com/textmate/c.tmbundle'
@@ -551,23 +551,23 @@ export const info = {
     license: 'mit'
   },
   'source.cds': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/SAP/cds-textmate-grammar'
+    homepage: 'https://github.com/SAP/cds-textmate-grammar',
+    license: 'apache-2.0'
   },
   'source.ceylon': {
     license: 'apache-2.0'
   },
   'source.chapel': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/chapel-lang/chapel-tmbundle'
+    homepage: 'https://github.com/chapel-lang/chapel-tmbundle',
+    license: 'apache-2.0'
   },
   'source.circom': {
-    license: 'mit',
-    homepage: 'https://github.com/iden3/circom-highlighting-vscode'
+    homepage: 'https://github.com/iden3/circom-highlighting-vscode',
+    license: 'mit'
   },
   'source.clar': {
-    license: 'mit',
-    homepage: 'https://github.com/hirosystems/clarity.tmbundle'
+    homepage: 'https://github.com/hirosystems/clarity.tmbundle',
+    license: 'mit'
   },
   'source.cmake': {},
   'text.conllu': {
@@ -578,85 +578,85 @@ export const info = {
   },
   'source.qmake': {},
   'text.html.creole': {
-    license: 'mit',
+    dependencies: ['text.html.basic'],
     homepage: 'https://github.com/Siddley/Creole',
-    dependencies: ['text.html.basic']
+    license: 'mit'
   },
   'source.cs': {
-    license: 'mit',
-    homepage: 'https://github.com/dotnet/csharp-tmLanguage'
+    homepage: 'https://github.com/dotnet/csharp-tmLanguage',
+    license: 'mit'
   },
   'text.gherkin.feature': {
-    license: 'mit',
-    homepage: 'https://github.com/cucumber/cucumber-tmbundle'
+    homepage: 'https://github.com/cucumber/cucumber-tmbundle',
+    license: 'mit'
   },
   'source.cython': {
     dependencies: ['source.regexp.python']
   },
   'source.d': {
-    homepage: 'https://github.com/textmate/d.tmbundle',
-    dependencies: ['text.html.javadoc']
+    dependencies: ['text.html.javadoc'],
+    homepage: 'https://github.com/textmate/d.tmbundle'
   },
   'source.d2': {
-    license: 'bsd-3-clause',
-    homepage: 'https://github.com/terrastruct/d2-vscode'
+    homepage: 'https://github.com/terrastruct/d2-vscode',
+    license: 'bsd-3-clause'
   },
   'source.dart': {
-    license: 'bsd-3-clause',
-    homepage: 'https://github.com/dart-lang/dart-syntax-highlight'
+    homepage: 'https://github.com/dart-lang/dart-syntax-highlight',
+    license: 'bsd-3-clause'
   },
   'source.data-weave': {
-    license: 'mit',
-    homepage: 'https://github.com/mulesoft-labs/data-weave-tmLanguage'
+    homepage: 'https://github.com/mulesoft-labs/data-weave-tmLanguage',
+    license: 'mit'
   },
   'source.denizenscript': {
-    license: 'mit',
-    homepage: 'https://github.com/DenizenScript/denizenscript-grammar'
+    homepage: 'https://github.com/DenizenScript/denizenscript-grammar',
+    license: 'mit'
   },
   'source.desktop': {},
   'source.diff': {},
   'source.dylan': {},
   'source.earthfile': {
-    license: 'mpl-2.0',
-    homepage: 'https://github.com/earthly/earthfile-grammar'
+    homepage: 'https://github.com/earthly/earthfile-grammar',
+    license: 'mpl-2.0'
   },
   'source.c.ec': {
-    license: 'unlicense',
+    dependencies: ['source.c'],
     homepage: 'https://github.com/ecere/ec.tmbundle',
-    dependencies: ['source.c']
+    license: 'unlicense'
   },
   'source.ecl': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/hpcc-systems/ecl-tmLanguage'
+    homepage: 'https://github.com/hpcc-systems/ecl-tmLanguage',
+    license: 'apache-2.0'
   },
   'source.eiffel': {},
   'text.html.js': {
-    license: 'mit',
-    dependencies: ['text.html.basic']
+    dependencies: ['text.html.basic'],
+    license: 'mit'
   },
   'source.elixir': {
-    license: 'apache-2.0',
+    dependencies: ['text.elixir'],
     homepage: 'https://github.com/elixir-lang/elixir-tmbundle',
-    dependencies: ['text.elixir']
+    license: 'apache-2.0'
   },
   'text.elixir': {
-    license: 'apache-2.0',
+    dependencies: ['source.elixir'],
     homepage: 'https://github.com/elixir-lang/elixir-tmbundle',
-    dependencies: ['source.elixir']
+    license: 'apache-2.0'
   },
   'text.html.elixir': {
-    license: 'apache-2.0',
+    dependencies: ['text.elixir', 'text.html.basic'],
     homepage: 'https://github.com/elixir-lang/elixir-tmbundle',
-    dependencies: ['text.elixir', 'text.html.basic']
+    license: 'apache-2.0'
   },
   'source.elvish': {
-    license: 'bsd-2-clause',
-    homepage: 'https://github.com/elves/elvish'
+    homepage: 'https://github.com/elves/elvish',
+    license: 'bsd-2-clause'
   },
   'source.elvish-transcript': {
-    license: 'bsd-2-clause',
+    dependencies: ['source.elvish'],
     homepage: 'https://github.com/elves/elvish',
-    dependencies: ['source.elvish']
+    license: 'bsd-2-clause'
   },
   'source.erlang': {
     homepage: 'https://github.com/textmate/erlang.tmbundle'
@@ -665,8 +665,8 @@ export const info = {
     license: 'bsd-2-clause'
   },
   'source.fancy': {
-    license: 'bsd-3-clause',
-    homepage: 'https://github.com/fancy-lang/fancy-tmbundle'
+    homepage: 'https://github.com/fancy-lang/fancy-tmbundle',
+    license: 'bsd-3-clause'
   },
   'source.fish': {
     license: 'mit'
@@ -680,94 +680,94 @@ export const info = {
     homepage: 'https://github.com/dhowden/gap-tmbundle'
   },
   'source.gemfile-lock': {
-    license: 'mit',
-    homepage: 'https://github.com/hmarr/gemfile-lock-tmlanguage'
+    homepage: 'https://github.com/hmarr/gemfile-lock-tmlanguage',
+    license: 'mit'
   },
   'source.gemini': {
-    license: 'mit',
-    homepage: 'https://github.com/printfn/gemini-vscode'
+    homepage: 'https://github.com/printfn/gemini-vscode',
+    license: 'mit'
   },
   'source.genero': {
-    license: 'mit',
-    homepage: 'https://github.com/alienriver49/genero.tmbundle'
+    homepage: 'https://github.com/alienriver49/genero.tmbundle',
+    license: 'mit'
   },
   'source.genero-forms': {
-    license: 'mit',
-    homepage: 'https://github.com/alienriver49/genero.tmbundle'
+    homepage: 'https://github.com/alienriver49/genero.tmbundle',
+    license: 'mit'
   },
   'source.po': {},
   'source.gnuplot': {
     license: 'mit'
   },
   'source.go': {
-    license: 'bsd-3-clause',
-    homepage: 'https://github.com/AlanQuatermain/go-tmbundle'
+    homepage: 'https://github.com/AlanQuatermain/go-tmbundle',
+    license: 'bsd-3-clause'
   },
   'source.gdresource': {
-    license: 'mit',
-    homepage: 'https://github.com/godotengine/godot-vscode-plugin'
+    homepage: 'https://github.com/godotengine/godot-vscode-plugin',
+    license: 'mit'
   },
   'source.gdscript': {
-    license: 'mit',
-    homepage: 'https://github.com/godotengine/godot-vscode-plugin'
+    homepage: 'https://github.com/godotengine/godot-vscode-plugin',
+    license: 'mit'
   },
   'source.grace': {
     license: 'mit'
   },
   'source.groovy.gradle': {
-    license: 'apache-2.0',
-    dependencies: ['source.groovy']
+    dependencies: ['source.groovy'],
+    license: 'apache-2.0'
   },
   'source.graphql': {
-    license: 'mit',
-    homepage: 'https://github.com/graphql/graphiql'
+    homepage: 'https://github.com/graphql/graphiql',
+    license: 'mit'
   },
   'source.dot': {},
   'source.groovy': {},
   'source.hx': {
-    license: 'mit',
-    homepage: 'https://github.com/vshaxe/haxe-TmLanguage'
+    homepage: 'https://github.com/vshaxe/haxe-TmLanguage',
+    license: 'mit'
   },
   'source.hxml': {
-    license: 'mit',
+    dependencies: ['source.hx'],
     homepage: 'https://github.com/vshaxe/haxe-TmLanguage',
-    dependencies: ['source.hx']
+    license: 'mit'
   },
   'source.hc': {
     license: 'unlicense'
   },
   'source.hoon': {
-    license: 'mit',
-    homepage: 'https://github.com/pkova/hoon-grammar'
+    homepage: 'https://github.com/pkova/hoon-grammar',
+    license: 'mit'
   },
   'source.idl': {
-    license: 'bsd-3-clause',
-    homepage: 'https://github.com/mgalloy/idl.tmbundle'
+    homepage: 'https://github.com/mgalloy/idl.tmbundle',
+    license: 'bsd-3-clause'
   },
   'source.idris': {
-    license: 'mit',
-    homepage: 'https://github.com/idris-hackers/idris-sublime'
+    homepage: 'https://github.com/idris-hackers/idris-sublime',
+    license: 'mit'
   },
   'source.imba': {
-    license: 'mit',
-    homepage: 'https://github.com/imba/imba-linguist-grammar'
+    homepage: 'https://github.com/imba/imba-linguist-grammar',
+    license: 'mit'
   },
   'source.ini': {},
   'source.ink': {
-    license: 'mit',
-    homepage: 'https://github.com/inkle/ink-tmlanguage'
+    homepage: 'https://github.com/inkle/ink-tmlanguage',
+    license: 'mit'
   },
   'source.io': {},
   'source.ioke': {
     license: 'mit'
   },
   'source.fsharp': {
-    license: 'mit',
-    homepage: 'https://github.com/ionide/ionide-fsgrammar'
+    homepage: 'https://github.com/ionide/ionide-fsgrammar',
+    license: 'mit'
   },
   'text.jade': {
-    license: 'mit',
-    dependencies: ['source.js', 'text.html.basic']
+    dependencies: ['source.js', 'text.html.basic'],
+    license: 'mit'
   },
   'source.jasmin': {
     license: 'mit'
@@ -779,26 +779,26 @@ export const info = {
     homepage: 'https://github.com/textmate/java.tmbundle'
   },
   'text.html.jsp': {
-    homepage: 'https://github.com/textmate/java.tmbundle',
-    dependencies: ['text.html.basic']
+    dependencies: ['text.html.basic'],
+    homepage: 'https://github.com/textmate/java.tmbundle'
   },
   'text.html.javadoc': {},
   'source.js.objj': {
     dependencies: ['source.js']
   },
   'source.jflex': {
-    license: 'bsd-2-clause',
+    dependencies: ['source.java'],
     homepage: 'https://github.com/jflex-de/jflex.tmbundle',
-    dependencies: ['source.java']
+    license: 'bsd-2-clause'
   },
   'source.python.kivy': {
-    license: 'mit',
+    dependencies: ['source.python'],
     homepage: 'https://github.com/p0lygun/kivy-language-grammer',
-    dependencies: ['source.python']
+    license: 'mit'
   },
   'source.kusto': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/mmanela/kusto-sublime'
+    homepage: 'https://github.com/mmanela/kusto-sublime',
+    license: 'apache-2.0'
   },
   'source.4dm': {
     license: 'mit'
@@ -807,449 +807,452 @@ export const info = {
     license: 'isc'
   },
   'source.apl': {
-    license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-apl'
+    homepage: 'https://github.com/Alhadis/language-apl',
+    license: 'isc'
   },
   'source.asl': {
-    license: 'mit',
-    homepage: 'https://github.com/sebadur/language-asl'
+    homepage: 'https://github.com/sebadur/language-asl',
+    license: 'mit'
   },
   'source.asn': {
-    license: 'mit',
-    homepage: 'https://github.com/ajlangley/language-asn1'
+    homepage: 'https://github.com/ajlangley/language-asn1',
+    license: 'mit'
   },
   'source.basic': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/telnet23/language-basic'
+    homepage: 'https://github.com/telnet23/language-basic',
+    license: 'apache-2.0'
   },
   'source.batchfile': {
-    license: 'mit',
-    homepage: 'https://github.com/mmims/language-batchfile'
+    homepage: 'https://github.com/mmims/language-batchfile',
+    license: 'mit'
   },
   'text.html.php.blade': {
-    license: 'mit',
-    dependencies: ['text.html.basic']
+    dependencies: ['text.html.basic'],
+    license: 'mit'
   },
   'source.click': {
     license: 'mit'
   },
   'source.clojure': {
-    license: 'mit',
-    homepage: 'https://github.com/atom/language-clojure'
+    homepage: 'https://github.com/atom/language-clojure',
+    license: 'mit'
   },
   'text.html.soy': {
-    license: 'mit',
-    dependencies: ['text.html.basic']
+    dependencies: ['text.html.basic'],
+    license: 'mit'
   },
   'source.coffee': {
-    license: 'mit',
+    dependencies: ['source.js'],
     homepage: 'https://github.com/atom/language-coffee-script',
-    dependencies: ['source.js']
+    license: 'mit'
   },
   'source.litcoffee': {
-    license: 'mit',
+    dependencies: ['source.coffee', 'text.html.basic'],
     homepage: 'https://github.com/atom/language-coffee-script',
-    dependencies: ['source.coffee', 'text.html.basic']
+    license: 'mit'
   },
   'source.crystal': {
-    license: 'mit',
+    dependencies: ['text.html.basic'],
     homepage: 'https://github.com/atom-crystal/language-crystal',
-    dependencies: ['text.html.basic']
+    license: 'mit'
   },
   'text.html.ecr': {
-    license: 'mit',
+    dependencies: ['source.crystal', 'text.html.basic'],
     homepage: 'https://github.com/atom-crystal/language-crystal',
-    dependencies: ['source.crystal', 'text.html.basic']
+    license: 'mit'
   },
   'source.csound': {
-    license: 'mit',
-    homepage: 'https://github.com/nwhetsell/language-csound'
+    homepage: 'https://github.com/nwhetsell/language-csound',
+    license: 'mit'
   },
   'source.csound-document': {
-    license: 'mit',
+    dependencies: ['source.csound', 'text.xml'],
     homepage: 'https://github.com/nwhetsell/language-csound',
-    dependencies: ['source.csound', 'text.xml']
+    license: 'mit'
   },
   'source.csound-score': {
-    license: 'mit',
+    dependencies: ['source.csound'],
     homepage: 'https://github.com/nwhetsell/language-csound',
-    dependencies: ['source.csound']
+    license: 'mit'
   },
   'source.css': {
-    license: 'mit',
-    homepage: 'https://github.com/atom/language-css'
+    homepage: 'https://github.com/atom/language-css',
+    license: 'mit'
   },
   'source.cwl': {
     license: 'mit'
   },
   'source.deb-control': {
-    license: 'mit',
-    homepage: 'https://github.com/tsbarnes/language-debian'
+    homepage: 'https://github.com/tsbarnes/language-debian',
+    license: 'mit'
   },
   'source.dircolors': {
     license: 'mit'
   },
   'source.emacs.lisp': {
-    license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-emacs-lisp'
+    homepage: 'https://github.com/Alhadis/language-emacs-lisp',
+    license: 'isc'
   },
   'source.yasnippet': {
-    license: 'isc',
+    dependencies: ['source.emacs.lisp'],
     homepage: 'https://github.com/Alhadis/language-emacs-lisp',
-    dependencies: ['source.emacs.lisp']
+    license: 'isc'
   },
   'text.muse': {
-    license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-emacs-lisp'
+    homepage: 'https://github.com/Alhadis/language-emacs-lisp',
+    license: 'isc'
   },
   'text.eml.basic': {
-    license: 'mit',
-    homepage: 'https://github.com/mariozaizar/language-eml'
+    homepage: 'https://github.com/mariozaizar/language-eml',
+    license: 'mit'
   },
   etc: {
-    license: 'isc',
+    dependencies: ['source.regexp.posix'],
     homepage: 'https://github.com/Alhadis/language-etc',
-    dependencies: ['source.regexp.posix']
+    license: 'isc'
   },
   'injections.etc': {
-    license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-etc'
+    homepage: 'https://github.com/Alhadis/language-etc',
+    license: 'isc'
   },
   'source.2da': {
-    license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-etc'
+    homepage: 'https://github.com/Alhadis/language-etc',
+    license: 'isc'
   },
   'source.c.nwscript': {
-    license: 'isc',
+    dependencies: ['source.c'],
     homepage: 'https://github.com/Alhadis/language-etc',
-    dependencies: ['source.c']
+    license: 'isc'
   },
   'source.curlrc': {
-    license: 'isc',
+    dependencies: ['etc'],
     homepage: 'https://github.com/Alhadis/language-etc',
-    dependencies: ['etc']
+    license: 'isc'
   },
   'source.dotenv': {
-    license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-etc'
+    homepage: 'https://github.com/Alhadis/language-etc',
+    license: 'isc'
   },
   'source.futhark': {
-    license: 'isc',
+    dependencies: ['etc'],
     homepage: 'https://github.com/Alhadis/language-etc',
-    dependencies: ['etc']
+    license: 'isc'
   },
   'source.generic-db': {
-    license: 'isc',
+    dependencies: ['etc'],
     homepage: 'https://github.com/Alhadis/language-etc',
-    dependencies: ['etc']
+    license: 'isc'
   },
   'source.gitattributes': {
-    license: 'isc',
+    dependencies: ['etc', 'source.gitignore'],
     homepage: 'https://github.com/Alhadis/language-etc',
-    dependencies: ['etc', 'source.gitignore']
+    license: 'isc'
   },
   'source.gitconfig': {
-    license: 'isc',
+    dependencies: ['source.shell'],
     homepage: 'https://github.com/Alhadis/language-etc',
-    dependencies: ['source.shell']
+    license: 'isc'
   },
   'source.gitignore': {
-    license: 'isc',
+    dependencies: ['etc'],
     homepage: 'https://github.com/Alhadis/language-etc',
-    dependencies: ['etc']
+    license: 'isc'
   },
   'source.hosts': {
-    license: 'isc',
+    dependencies: ['etc'],
     homepage: 'https://github.com/Alhadis/language-etc',
-    dependencies: ['etc']
+    license: 'isc'
   },
   'source.ini.npmrc': {
-    license: 'isc',
+    dependencies: ['etc'],
     homepage: 'https://github.com/Alhadis/language-etc',
-    dependencies: ['etc']
+    license: 'isc'
   },
   'source.inputrc': {
-    license: 'isc',
+    dependencies: ['etc'],
     homepage: 'https://github.com/Alhadis/language-etc',
-    dependencies: ['etc']
+    license: 'isc'
   },
   'source.m4': {
-    license: 'isc',
+    dependencies: ['etc'],
     homepage: 'https://github.com/Alhadis/language-etc',
-    dependencies: ['etc']
+    license: 'isc'
   },
   'source.nanorc': {
-    license: 'isc',
+    dependencies: ['injections.etc'],
     homepage: 'https://github.com/Alhadis/language-etc',
-    dependencies: ['injections.etc']
+    license: 'isc'
   },
   'source.neon': {
-    license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-etc'
+    homepage: 'https://github.com/Alhadis/language-etc',
+    license: 'isc'
   },
   'source.odin-ehr': {
-    license: 'isc',
+    dependencies: ['etc'],
     homepage: 'https://github.com/Alhadis/language-etc',
-    dependencies: ['etc']
+    license: 'isc'
   },
   'source.opts': {
-    license: 'isc',
+    dependencies: ['etc'],
     homepage: 'https://github.com/Alhadis/language-etc',
-    dependencies: ['etc']
+    license: 'isc'
   },
   'source.record-jar': {
-    license: 'isc',
+    dependencies: ['etc'],
     homepage: 'https://github.com/Alhadis/language-etc',
-    dependencies: ['etc']
+    license: 'isc'
   },
   'source.sfv': {
-    license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-etc'
+    homepage: 'https://github.com/Alhadis/language-etc',
+    license: 'isc'
   },
   'source.shellcheckrc': {
-    license: 'isc',
+    dependencies: ['etc'],
     homepage: 'https://github.com/Alhadis/language-etc',
-    dependencies: ['etc']
+    license: 'isc'
   },
   'source.sieve': {
-    license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-etc'
+    homepage: 'https://github.com/Alhadis/language-etc',
+    license: 'isc'
   },
   'source.smpl': {
-    license: 'isc',
+    dependencies: ['etc'],
     homepage: 'https://github.com/Alhadis/language-etc',
-    dependencies: ['etc']
+    license: 'isc'
   },
   'source.ssh-config': {
-    license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-etc'
+    homepage: 'https://github.com/Alhadis/language-etc',
+    license: 'isc'
   },
   'source.star': {
-    license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-etc'
+    homepage: 'https://github.com/Alhadis/language-etc',
+    license: 'isc'
   },
   'source.stl': {
-    license: 'isc',
+    dependencies: ['etc'],
     homepage: 'https://github.com/Alhadis/language-etc',
-    dependencies: ['etc']
+    license: 'isc'
   },
   'source.string-template': {
-    license: 'isc',
+    dependencies: ['etc'],
     homepage: 'https://github.com/Alhadis/language-etc',
-    dependencies: ['etc']
+    license: 'isc'
   },
   'source.wgetrc': {
-    license: 'isc',
+    dependencies: ['etc'],
     homepage: 'https://github.com/Alhadis/language-etc',
-    dependencies: ['etc']
+    license: 'isc'
   },
   'text.checksums': {
-    license: 'isc',
+    dependencies: ['etc'],
     homepage: 'https://github.com/Alhadis/language-etc',
-    dependencies: ['etc']
+    license: 'isc'
   },
   'text.codeowners': {
-    license: 'isc',
+    dependencies: ['etc'],
     homepage: 'https://github.com/Alhadis/language-etc',
-    dependencies: ['etc']
+    license: 'isc'
   },
   'text.html.ecmarkup': {
-    license: 'isc',
+    dependencies: [
+      'etc',
+      'source.yaml',
+      'text.grammarkdown',
+      'text.html.basic'
+    ],
     homepage: 'https://github.com/Alhadis/language-etc',
-    dependencies: ['etc', 'source.yaml', 'text.grammarkdown', 'text.html.basic']
+    license: 'isc'
   },
   'text.xml.svg': {
-    license: 'isc',
+    dependencies: ['text.xml'],
     homepage: 'https://github.com/Alhadis/language-etc',
-    dependencies: ['text.xml']
+    license: 'isc'
   },
   'source.faust': {
     license: 'mit'
   },
   'source.afm': {
-    license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-fontforge'
+    homepage: 'https://github.com/Alhadis/language-fontforge',
+    license: 'isc'
   },
   'source.bdf': {
-    license: 'isc',
+    dependencies: ['source.xlfd'],
     homepage: 'https://github.com/Alhadis/language-fontforge',
-    dependencies: ['source.xlfd']
+    license: 'isc'
   },
   'source.figfont': {
-    license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-fontforge'
+    homepage: 'https://github.com/Alhadis/language-fontforge',
+    license: 'isc'
   },
   'source.fontdir': {
-    license: 'isc',
+    dependencies: ['source.xlfd'],
     homepage: 'https://github.com/Alhadis/language-fontforge',
-    dependencies: ['source.xlfd']
+    license: 'isc'
   },
   'source.fontforge': {
-    license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-fontforge'
+    homepage: 'https://github.com/Alhadis/language-fontforge',
+    license: 'isc'
   },
   'source.opentype': {
-    license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-fontforge'
+    homepage: 'https://github.com/Alhadis/language-fontforge',
+    license: 'isc'
   },
   'source.xlfd': {
-    license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-fontforge'
+    homepage: 'https://github.com/Alhadis/language-fontforge',
+    license: 'isc'
   },
   'text.sfd': {
-    license: 'isc',
+    dependencies: ['source.fontforge'],
     homepage: 'https://github.com/Alhadis/language-fontforge',
-    dependencies: ['source.fontforge']
+    license: 'isc'
   },
   'source.gf': {
-    license: 'mit',
-    homepage: 'https://github.com/johnjcamilleri/language-gf'
+    homepage: 'https://github.com/johnjcamilleri/language-gf',
+    license: 'mit'
   },
   'source.gn': {
-    license: 'bsd-3-clause',
-    homepage: 'https://github.com/devoncarew/language-gn'
+    homepage: 'https://github.com/devoncarew/language-gn',
+    license: 'bsd-3-clause'
   },
   'source.abnf': {
-    license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-grammars'
+    homepage: 'https://github.com/Alhadis/language-grammars',
+    license: 'isc'
   },
   'source.ebnf': {
-    license: 'isc',
+    dependencies: ['source.lex.regexp'],
     homepage: 'https://github.com/Alhadis/language-grammars',
-    dependencies: ['source.lex.regexp']
+    license: 'isc'
   },
   'source.lark': {
-    license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-grammars'
+    homepage: 'https://github.com/Alhadis/language-grammars',
+    license: 'isc'
   },
   'source.lex': {
-    license: 'isc',
+    dependencies: ['source.c++', 'source.jflex'],
     homepage: 'https://github.com/Alhadis/language-grammars',
-    dependencies: ['source.c++', 'source.jflex']
+    license: 'isc'
   },
   'source.lex.regexp': {
-    license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-grammars'
+    homepage: 'https://github.com/Alhadis/language-grammars',
+    license: 'isc'
   },
   'source.pegjs': {
-    license: 'isc',
+    dependencies: ['source.js'],
     homepage: 'https://github.com/Alhadis/language-grammars',
-    dependencies: ['source.js']
+    license: 'isc'
   },
   'source.yacc': {
-    license: 'isc',
+    dependencies: ['source.c++', 'source.java'],
     homepage: 'https://github.com/Alhadis/language-grammars',
-    dependencies: ['source.c++', 'source.java']
+    license: 'isc'
   },
   'text.grammarkdown': {
-    license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-grammars'
+    homepage: 'https://github.com/Alhadis/language-grammars',
+    license: 'isc'
   },
   'text.haml': {
-    license: 'mit',
-    dependencies: ['source.ruby']
+    dependencies: ['source.ruby'],
+    license: 'mit'
   },
   'source.cabal': {
-    license: 'mit',
-    homepage: 'https://github.com/atom-haskell/language-haskell'
+    homepage: 'https://github.com/atom-haskell/language-haskell',
+    license: 'mit'
   },
   'source.haskell': {
-    license: 'mit',
-    homepage: 'https://github.com/atom-haskell/language-haskell'
+    homepage: 'https://github.com/atom-haskell/language-haskell',
+    license: 'mit'
   },
   'text.tex.latex.haskell': {
-    license: 'mit',
+    dependencies: ['source.haskell', 'text.tex.latex'],
     homepage: 'https://github.com/atom-haskell/language-haskell',
-    dependencies: ['source.haskell', 'text.tex.latex']
+    license: 'mit'
   },
   'source.hocon': {
-    license: 'mit',
-    homepage: 'https://github.com/jacobwgillespie/language-hocon'
+    homepage: 'https://github.com/jacobwgillespie/language-hocon',
+    license: 'mit'
   },
   'source.hql': {
     license: 'mit'
   },
   'text.html.basic': {
-    license: 'mit',
-    homepage: 'https://github.com/atom/language-html'
+    homepage: 'https://github.com/atom/language-html',
+    license: 'mit'
   },
   'source.igor': {
-    license: 'bsd-3-clause',
-    homepage: 'https://github.com/byte-physics/language-igor'
+    homepage: 'https://github.com/byte-physics/language-igor',
+    license: 'bsd-3-clause'
   },
   'source.inform7': {
-    license: 'mit',
-    homepage: 'https://github.com/erkyrath/language-inform7'
+    homepage: 'https://github.com/erkyrath/language-inform7',
+    license: 'mit'
   },
   'source.js': {
-    license: 'mit',
-    homepage: 'https://github.com/atom/language-javascript'
+    homepage: 'https://github.com/atom/language-javascript',
+    license: 'mit'
   },
   'source.jison': {
-    license: 'mit',
-    dependencies: ['source.jisonlex']
+    dependencies: ['source.jisonlex'],
+    license: 'mit'
   },
   'source.jisonlex': {
-    license: 'mit',
-    dependencies: ['source.jison', 'source.js']
+    dependencies: ['source.jison', 'source.js'],
+    license: 'mit'
   },
   'source.jolie': {
     license: 'mit'
   },
   'source.jq': {
-    license: 'mit',
-    homepage: 'https://github.com/wader/language-jq'
+    homepage: 'https://github.com/wader/language-jq',
+    license: 'mit'
   },
   'source.jsoniq': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/wcandillon/language-jsoniq'
+    homepage: 'https://github.com/wcandillon/language-jsoniq',
+    license: 'apache-2.0'
   },
   'source.xq': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/wcandillon/language-jsoniq'
+    homepage: 'https://github.com/wcandillon/language-jsoniq',
+    license: 'apache-2.0'
   },
   'source.jsonnet': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/google/language-jsonnet'
+    homepage: 'https://github.com/google/language-jsonnet',
+    license: 'apache-2.0'
   },
   'source.kakscript': {
-    license: 'unlicense',
-    homepage: 'https://github.com/kakoune-editor/language-kak'
+    homepage: 'https://github.com/kakoune-editor/language-kak',
+    license: 'unlicense'
   },
   'source.kerboscript': {
-    license: 'mit',
-    homepage: 'https://github.com/KSP-KOS/language-kerboscript'
+    homepage: 'https://github.com/KSP-KOS/language-kerboscript',
+    license: 'mit'
   },
   'source.kickstart': {
-    license: 'mit',
-    homepage: 'https://github.com/wgwoods/language-kickstart'
+    homepage: 'https://github.com/wgwoods/language-kickstart',
+    license: 'mit'
   },
   'source.kotlin': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/nishtahir/language-kotlin'
+    homepage: 'https://github.com/nishtahir/language-kotlin',
+    license: 'apache-2.0'
   },
   'source.css.less': {
-    license: 'mit',
+    dependencies: ['source.css'],
     homepage: 'https://github.com/atom/language-less',
-    dependencies: ['source.css']
+    license: 'mit'
   },
   'source.m68k': {
     license: 'mit'
   },
   'source.m2': {
-    license: 'mit',
-    homepage: 'https://github.com/Macaulay2/language-macaulay2'
+    homepage: 'https://github.com/Macaulay2/language-macaulay2',
+    license: 'mit'
   },
   'source.maxscript': {
     license: 'isc'
   },
   'source.mcfunction': {
-    license: 'mit',
-    homepage: 'https://github.com/Arcensoth/language-mcfunction'
+    homepage: 'https://github.com/Arcensoth/language-mcfunction',
+    license: 'mit'
   },
   'source.mermaid': {
-    license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-mermaid',
     dependencies: [
       'source.mermaid.c4c-diagram',
       'source.mermaid.class-diagram',
@@ -1263,79 +1266,81 @@ export const info = {
       'source.mermaid.sequence-diagram',
       'source.mermaid.state-diagram',
       'source.mermaid.user-journey'
-    ]
+    ],
+    homepage: 'https://github.com/Alhadis/language-mermaid',
+    license: 'isc'
   },
   'source.mermaid.c4c-diagram': {
-    license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-mermaid',
     dependencies: [
       'source.mermaid',
       'source.mermaid.user-journey',
       'source.wsd'
-    ]
+    ],
+    homepage: 'https://github.com/Alhadis/language-mermaid',
+    license: 'isc'
   },
   'source.mermaid.class-diagram': {
-    license: 'isc',
+    dependencies: ['source.mermaid', 'source.mermaid.flowchart'],
     homepage: 'https://github.com/Alhadis/language-mermaid',
-    dependencies: ['source.mermaid', 'source.mermaid.flowchart']
+    license: 'isc'
   },
   'source.mermaid.er-diagram': {
-    license: 'isc',
+    dependencies: ['source.mermaid'],
     homepage: 'https://github.com/Alhadis/language-mermaid',
-    dependencies: ['source.mermaid']
+    license: 'isc'
   },
   'source.mermaid.flowchart': {
-    license: 'isc',
+    dependencies: ['source.mermaid'],
     homepage: 'https://github.com/Alhadis/language-mermaid',
-    dependencies: ['source.mermaid']
+    license: 'isc'
   },
   'source.mermaid.gantt': {
-    license: 'isc',
+    dependencies: ['source.mermaid', 'source.mermaid.flowchart'],
     homepage: 'https://github.com/Alhadis/language-mermaid',
-    dependencies: ['source.mermaid', 'source.mermaid.flowchart']
+    license: 'isc'
   },
   'source.mermaid.gitgraph': {
-    license: 'isc',
+    dependencies: ['source.json', 'source.mermaid'],
     homepage: 'https://github.com/Alhadis/language-mermaid',
-    dependencies: ['source.json', 'source.mermaid']
+    license: 'isc'
   },
   'source.mermaid.mindmap': {
-    license: 'isc',
+    dependencies: ['source.mermaid', 'source.mermaid.flowchart'],
     homepage: 'https://github.com/Alhadis/language-mermaid',
-    dependencies: ['source.mermaid', 'source.mermaid.flowchart']
+    license: 'isc'
   },
   'source.mermaid.pie-chart': {
-    license: 'isc',
+    dependencies: ['source.mermaid'],
     homepage: 'https://github.com/Alhadis/language-mermaid',
-    dependencies: ['source.mermaid']
+    license: 'isc'
   },
   'source.mermaid.requirement-diagram': {
-    license: 'isc',
+    dependencies: ['source.mermaid'],
     homepage: 'https://github.com/Alhadis/language-mermaid',
-    dependencies: ['source.mermaid']
+    license: 'isc'
   },
   'source.mermaid.sequence-diagram': {
-    license: 'isc',
+    dependencies: ['source.json', 'source.mermaid'],
     homepage: 'https://github.com/Alhadis/language-mermaid',
-    dependencies: ['source.json', 'source.mermaid']
+    license: 'isc'
   },
   'source.mermaid.state-diagram': {
-    license: 'isc',
+    dependencies: ['source.mermaid'],
     homepage: 'https://github.com/Alhadis/language-mermaid',
-    dependencies: ['source.mermaid']
+    license: 'isc'
   },
   'source.mermaid.user-journey': {
-    license: 'isc',
+    dependencies: ['source.mermaid'],
     homepage: 'https://github.com/Alhadis/language-mermaid',
-    dependencies: ['source.mermaid']
+    license: 'isc'
   },
   'source.meson': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/TingPing/language-meson'
+    homepage: 'https://github.com/TingPing/language-meson',
+    license: 'apache-2.0'
   },
   'source.msl': {
-    license: 'mit',
-    homepage: 'https://github.com/gen-angry/language-msl'
+    homepage: 'https://github.com/gen-angry/language-msl',
+    license: 'mit'
   },
   'source.ncl': {
     license: 'mit'
@@ -1347,230 +1352,234 @@ export const info = {
     license: 'mit'
   },
   'text.html.nunjucks': {
-    license: 'mit',
-    dependencies: ['source.nunjucks', 'text.html.basic']
+    dependencies: ['source.nunjucks', 'text.html.basic'],
+    license: 'mit'
   },
   'source.pan': {
     license: 'mit'
   },
   'source.gerber': {
-    license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-pcb'
+    homepage: 'https://github.com/Alhadis/language-pcb',
+    license: 'isc'
   },
   'source.ltspice.symbol': {
-    license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-pcb'
+    homepage: 'https://github.com/Alhadis/language-pcb',
+    license: 'isc'
   },
   'source.pcb.board': {
-    license: 'isc',
+    dependencies: ['source.pcb.sexp'],
     homepage: 'https://github.com/Alhadis/language-pcb',
-    dependencies: ['source.pcb.sexp']
+    license: 'isc'
   },
   'source.pcb.schematic': {
-    license: 'isc',
+    dependencies: ['source.pcb.sexp', 'source.scheme'],
     homepage: 'https://github.com/Alhadis/language-pcb',
-    dependencies: ['source.pcb.sexp', 'source.scheme']
+    license: 'isc'
   },
   'source.pcb.sexp': {
-    license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-pcb'
+    homepage: 'https://github.com/Alhadis/language-pcb',
+    license: 'isc'
   },
   'source.pov-ray sdl': {
     license: 'mit'
   },
   'source.plist': {
-    license: 'mit',
-    homepage: 'https://github.com/atom/language-property-list'
+    homepage: 'https://github.com/atom/language-property-list',
+    license: 'mit'
   },
   'text.xml.plist': {
-    license: 'mit',
+    dependencies: ['text.xml'],
     homepage: 'https://github.com/atom/language-property-list',
-    dependencies: ['text.xml']
+    license: 'mit'
   },
   'source.arr': {
-    license: 'mit',
-    homepage: 'https://github.com/samuela/language-pyret'
+    homepage: 'https://github.com/samuela/language-pyret',
+    license: 'mit'
   },
   'source.qasm': {
     license: 'mit'
   },
   'source.reason': {
-    license: 'mit',
-    homepage: 'https://github.com/reasonml-editor/language-reason'
+    homepage: 'https://github.com/reasonml-editor/language-reason',
+    license: 'mit'
   },
   'source.reg': {
     license: 'mit'
   },
   'source.regexp': {
-    license: 'isc',
+    dependencies: [
+      'source.regexp.extended',
+      'source.regexp.posix',
+      'source.sy'
+    ],
     homepage: 'https://github.com/Alhadis/language-regexp',
-    dependencies: ['source.regexp.extended', 'source.regexp.posix', 'source.sy']
+    license: 'isc'
   },
   'source.regexp.extended': {
-    license: 'isc',
+    dependencies: ['source.regexp'],
     homepage: 'https://github.com/Alhadis/language-regexp',
-    dependencies: ['source.regexp']
+    license: 'isc'
   },
   'source.regexp.posix': {
-    license: 'isc',
+    dependencies: ['source.regexp'],
     homepage: 'https://github.com/Alhadis/language-regexp',
-    dependencies: ['source.regexp']
+    license: 'isc'
   },
   'source.sy': {
-    license: 'isc',
+    dependencies: ['source.regexp'],
     homepage: 'https://github.com/Alhadis/language-regexp',
-    dependencies: ['source.regexp']
+    license: 'isc'
   },
   'source.renpy': {
-    license: 'mit',
+    dependencies: ['source.regexp.python'],
     homepage: 'https://github.com/williamd1k0/language-renpy',
-    dependencies: ['source.regexp.python']
+    license: 'mit'
   },
   'text.restructuredtext': {
-    license: 'mit',
-    homepage: 'https://github.com/Lukasa/language-restructuredtext'
+    homepage: 'https://github.com/Lukasa/language-restructuredtext',
+    license: 'mit'
   },
   'source.ring': {
     license: 'mit'
   },
   'source.ditroff': {
-    license: 'isc',
+    dependencies: ['source.ditroff.desc', 'text.roff'],
     homepage: 'https://github.com/Alhadis/language-roff',
-    dependencies: ['source.ditroff.desc', 'text.roff']
+    license: 'isc'
   },
   'source.ditroff.desc': {
-    license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-roff'
+    homepage: 'https://github.com/Alhadis/language-roff',
+    license: 'isc'
   },
   'source.gremlin': {
-    license: 'isc',
+    dependencies: ['text.roff'],
     homepage: 'https://github.com/Alhadis/language-roff',
-    dependencies: ['text.roff']
+    license: 'isc'
   },
   'source.ideal': {
-    license: 'isc',
+    dependencies: ['source.pic', 'text.roff'],
     homepage: 'https://github.com/Alhadis/language-roff',
-    dependencies: ['source.pic', 'text.roff']
+    license: 'isc'
   },
   'source.pic': {
-    license: 'isc',
+    dependencies: ['source.shell', 'text.html.basic', 'text.roff'],
     homepage: 'https://github.com/Alhadis/language-roff',
-    dependencies: ['source.shell', 'text.html.basic', 'text.roff']
+    license: 'isc'
   },
   'text.roff': {
-    license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-roff',
     dependencies: [
       'source.ditroff',
       'source.gremlin',
       'source.ideal',
       'source.pic'
-    ]
+    ],
+    homepage: 'https://github.com/Alhadis/language-roff',
+    license: 'isc'
   },
   'text.runoff': {
-    license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-roff'
+    homepage: 'https://github.com/Alhadis/language-roff',
+    license: 'isc'
   },
   'source.changelogs.rpm-spec': {
     license: 'mit'
   },
   'source.rpm-spec': {
-    license: 'mit',
-    dependencies: ['source.changelogs.rpm-spec', 'source.shell']
+    dependencies: ['source.changelogs.rpm-spec', 'source.shell'],
+    license: 'mit'
   },
   'text.rtf': {
-    license: 'mit',
-    homepage: 'https://github.com/nwhetsell/language-rtf'
+    homepage: 'https://github.com/nwhetsell/language-rtf',
+    license: 'mit'
   },
   'source.ruby': {
-    license: 'mit',
-    homepage: 'https://github.com/atom/language-ruby'
+    homepage: 'https://github.com/atom/language-ruby',
+    license: 'mit'
   },
   'text.html.erb': {
-    license: 'mit',
+    dependencies: ['source.ruby', 'text.html.basic'],
     homepage: 'https://github.com/atom/language-ruby',
-    dependencies: ['source.ruby', 'text.html.basic']
+    license: 'mit'
   },
   'source.css.scss': {
-    license: 'mit',
+    dependencies: ['source.css'],
     homepage: 'https://github.com/atom/language-sass',
-    dependencies: ['source.css']
+    license: 'mit'
   },
   'source.sass': {
-    license: 'mit',
+    dependencies: ['source.css'],
     homepage: 'https://github.com/atom/language-sass',
-    dependencies: ['source.css']
+    license: 'mit'
   },
   'source.sed': {
-    license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-sed'
+    homepage: 'https://github.com/Alhadis/language-sed',
+    license: 'isc'
   },
   'source.shell': {
-    license: 'mit',
-    homepage: 'https://github.com/atom/language-shellscript'
+    homepage: 'https://github.com/atom/language-shellscript',
+    license: 'mit'
   },
   'text.shell-session': {
-    license: 'mit',
+    dependencies: ['source.shell'],
     homepage: 'https://github.com/atom/language-shellscript',
-    dependencies: ['source.shell']
+    license: 'mit'
   },
   'text.srt': {
-    license: 'isc',
+    dependencies: ['text.html.basic'],
     homepage: 'https://github.com/Alhadis/language-subtitles',
-    dependencies: ['text.html.basic']
+    license: 'isc'
   },
   'text.vtt': {
-    license: 'isc',
+    dependencies: ['text.html.basic'],
     homepage: 'https://github.com/Alhadis/language-subtitles',
-    dependencies: ['text.html.basic']
+    license: 'isc'
   },
   'source.supercollider': {
-    license: 'mit',
-    homepage: 'https://github.com/supercollider/language-supercollider'
+    homepage: 'https://github.com/supercollider/language-supercollider',
+    license: 'mit'
   },
   'text.texinfo': {
-    license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-texinfo'
+    homepage: 'https://github.com/Alhadis/language-texinfo',
+    license: 'isc'
   },
   'source.toc': {
-    license: 'unlicense',
-    homepage: 'https://github.com/nebularg/language-toc-wow'
+    homepage: 'https://github.com/nebularg/language-toc-wow',
+    license: 'unlicense'
   },
   'source.tsql': {
-    license: 'mit',
-    homepage: 'https://github.com/beau-witter/language-tsql'
+    homepage: 'https://github.com/beau-witter/language-tsql',
+    license: 'mit'
   },
   'source.turing': {
-    license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-turing'
+    homepage: 'https://github.com/Alhadis/language-turing',
+    license: 'isc'
   },
   'source.tl': {
     license: 'mit'
   },
   'source.vim-snippet': {
-    license: 'mit',
-    homepage: 'https://github.com/Alhadis/language-viml'
+    homepage: 'https://github.com/Alhadis/language-viml',
+    license: 'mit'
   },
   'source.viml': {
-    license: 'mit',
-    homepage: 'https://github.com/Alhadis/language-viml'
+    homepage: 'https://github.com/Alhadis/language-viml',
+    license: 'mit'
   },
   'text.vim-help': {
-    license: 'mit',
+    dependencies: ['source.viml'],
     homepage: 'https://github.com/Alhadis/language-viml',
-    dependencies: ['source.viml']
+    license: 'mit'
   },
   'source.wavefront.mtl': {
-    license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-wavefront'
+    homepage: 'https://github.com/Alhadis/language-wavefront',
+    license: 'isc'
   },
   'source.wavefront.obj': {
-    license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-wavefront'
+    homepage: 'https://github.com/Alhadis/language-wavefront',
+    license: 'isc'
   },
   'source.webassembly': {
-    license: 'isc',
-    homepage: 'https://github.com/Alhadis/language-webassembly'
+    homepage: 'https://github.com/Alhadis/language-webassembly',
+    license: 'isc'
   },
   'source.harbour': {
     license: 'mit'
@@ -1579,8 +1588,8 @@ export const info = {
     license: 'mit'
   },
   'source.yaml': {
-    license: 'mit',
-    homepage: 'https://github.com/atom/language-yaml'
+    homepage: 'https://github.com/atom/language-yaml',
+    license: 'mit'
   },
   'source.yang': {
     license: 'mit'
@@ -1589,64 +1598,64 @@ export const info = {
     homepage: 'https://github.com/textmate/latex.tmbundle'
   },
   'text.tex': {
-    homepage: 'https://github.com/textmate/latex.tmbundle',
-    dependencies: ['source.r']
+    dependencies: ['source.r'],
+    homepage: 'https://github.com/textmate/latex.tmbundle'
   },
   'text.tex.latex': {
-    homepage: 'https://github.com/textmate/latex.tmbundle',
-    dependencies: ['text.tex']
+    dependencies: ['text.tex'],
+    homepage: 'https://github.com/textmate/latex.tmbundle'
   },
   'source.lilypond': {
-    license: 'mit',
+    dependencies: ['source.lisp'],
     homepage: 'https://github.com/nwhetsell/linter-lilypond',
-    dependencies: ['source.lisp']
+    license: 'mit'
   },
   'text.html.liquid': {
-    license: 'mit',
+    dependencies: ['text.html.basic'],
     homepage: 'https://github.com/Shopify/liquid-tm-grammar',
-    dependencies: ['text.html.basic']
+    license: 'mit'
   },
   'source.lisp': {},
   'source.llvm': {
-    license: 'mit',
-    homepage: 'https://github.com/whitequark/llvm.tmbundle'
+    homepage: 'https://github.com/whitequark/llvm.tmbundle',
+    license: 'mit'
   },
   'source.logos': {
-    license: 'mit',
+    dependencies: ['source.c++', 'source.objc'],
     homepage: 'https://github.com/Cykey/Sublime-Logos',
-    dependencies: ['source.c++', 'source.objc']
+    license: 'mit'
   },
   'source.logtalk': {},
   'source.lua': {},
   'source.modula-3': {
-    license: 'bsd-3-clause',
-    homepage: 'https://github.com/newgrammars/m3'
+    homepage: 'https://github.com/newgrammars/m3',
+    license: 'bsd-3-clause'
   },
   'source.makefile': {
-    homepage: 'https://github.com/textmate/make.tmbundle',
-    dependencies: ['source.shell']
+    dependencies: ['source.shell'],
+    homepage: 'https://github.com/textmate/make.tmbundle'
   },
   'text.html.mako': {
-    license: 'mit',
-    dependencies: ['text.html.basic']
+    dependencies: ['text.html.basic'],
+    license: 'mit'
   },
   'source.mdx': {
-    license: 'mit',
+    dependencies: ['source.tsx'],
     homepage: 'https://github.com/wooorm/markdown-tm-language',
-    dependencies: ['source.tsx']
+    license: 'mit'
   },
   'text.md': {
-    license: 'mit',
-    homepage: 'https://github.com/wooorm/markdown-tm-language'
+    homepage: 'https://github.com/wooorm/markdown-tm-language',
+    license: 'mit'
   },
   'text.marko': {
-    license: 'mit',
+    dependencies: ['source.js'],
     homepage: 'https://github.com/marko-js/marko-tmbundle',
-    dependencies: ['source.js']
+    license: 'mit'
   },
   'source.mathematica': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/shadanan/mathematica-tmbundle'
+    homepage: 'https://github.com/shadanan/mathematica-tmbundle',
+    license: 'apache-2.0'
   },
   'text.xml.pom': {
     dependencies: ['source.groovy', 'text.xml']
@@ -1656,13 +1665,13 @@ export const info = {
     license: 'mit'
   },
   'source.mint': {
-    license: 'mit',
+    dependencies: ['source.css', 'source.css.scss', 'source.js'],
     homepage: 'https://github.com/mint-lang/mint-vscode',
-    dependencies: ['source.css', 'source.css.scss', 'source.js']
+    license: 'mit'
   },
   'source.mlir': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/jpienaar/mlir-grammar'
+    homepage: 'https://github.com/jpienaar/mlir-grammar',
+    license: 'apache-2.0'
   },
   'source.monkey': {
     license: 'mit'
@@ -1672,16 +1681,16 @@ export const info = {
   },
   'source.nemerle': {},
   'source.nesc': {
-    license: 'mit',
-    dependencies: ['source.c']
+    dependencies: ['source.c'],
+    license: 'mit'
   },
   'source.nix': {
-    license: 'mit',
-    homepage: 'https://github.com/sambacha/nix-linguist'
+    homepage: 'https://github.com/sambacha/nix-linguist',
+    license: 'mit'
   },
   'source.nushell': {
-    license: 'mit',
-    homepage: 'https://github.com/hustcer/nu-grammar'
+    homepage: 'https://github.com/hustcer/nu-grammar',
+    license: 'mit'
   },
   'source.nu': {
     license: 'apache-2.0'
@@ -1703,19 +1712,19 @@ export const info = {
     license: 'bsd-2-clause'
   },
   'source.opa': {
-    license: 'mit',
-    homepage: 'https://github.com/mads379/opa.tmbundle'
+    homepage: 'https://github.com/mads379/opa.tmbundle',
+    license: 'mit'
   },
   'source.scad': {
-    license: 'mit',
-    homepage: 'https://github.com/tbuser/openscad.tmbundle'
+    homepage: 'https://github.com/tbuser/openscad.tmbundle',
+    license: 'mit'
   },
   'source.oz': {
     license: 'mit'
   },
   'source.pact': {
-    license: 'bsd-3-clause',
-    homepage: 'https://github.com/kadena-io/pact-atom'
+    homepage: 'https://github.com/kadena-io/pact-atom',
+    license: 'bsd-3-clause'
   },
   'source.parrot.pir': {},
   'source.pascal': {},
@@ -1738,41 +1747,41 @@ export const info = {
     license: 'unlicense'
   },
   'source.polar': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/osohq/polar-grammar'
+    homepage: 'https://github.com/osohq/polar-grammar',
+    license: 'apache-2.0'
   },
   'source.portugol': {
-    license: 'mit',
-    homepage: 'https://github.com/luisgbr1el/portugol-grammar'
+    homepage: 'https://github.com/luisgbr1el/portugol-grammar',
+    license: 'mit'
   },
   'source.powershell': {
-    license: 'mit',
-    homepage: 'https://github.com/PowerShell/EditorSyntax'
+    homepage: 'https://github.com/PowerShell/EditorSyntax',
+    license: 'mit'
   },
   'source.processing': {},
   'text.html.django': {
     dependencies: ['text.html.basic']
   },
   'source.qsharp': {
-    license: 'mit',
-    homepage: 'https://github.com/microsoft/qsharp-compiler'
+    homepage: 'https://github.com/microsoft/qsharp-compiler',
+    license: 'mit'
   },
   'source.quake': {
     license: 'bsd-3-clause'
   },
   'source.r': {},
   'source.rascal': {
-    license: 'bsd-2-clause',
-    homepage: 'https://github.com/usethesource/rascal-syntax-highlighting'
+    homepage: 'https://github.com/usethesource/rascal-syntax-highlighting',
+    license: 'bsd-2-clause'
   },
   'text.html.cshtml': {
-    license: 'mit',
+    dependencies: ['source.cs', 'text.html.basic'],
     homepage: 'https://github.com/github-linguist/razor-plus',
-    dependencies: ['source.cs', 'text.html.basic']
+    license: 'mit'
   },
   'source.rescript': {
-    license: 'mit',
-    homepage: 'https://github.com/rescript-lang/rescript-vscode'
+    homepage: 'https://github.com/rescript-lang/rescript-vscode',
+    license: 'mit'
   },
   'source.rez': {
     homepage: 'https://github.com/textmate/rez.tmbundle'
@@ -1781,27 +1790,27 @@ export const info = {
     license: 'mit'
   },
   'text.slim': {
-    license: 'mit',
-    dependencies: ['text.html.basic']
+    dependencies: ['text.html.basic'],
+    license: 'mit'
   },
   'source.rust': {
-    license: 'mit',
-    homepage: 'https://github.com/dustypomerleau/rust-syntax'
+    homepage: 'https://github.com/dustypomerleau/rust-syntax',
+    license: 'mit'
   },
   'source.sas': {
-    license: 'mit',
-    homepage: 'https://github.com/rpardee/sas.tmbundle'
+    homepage: 'https://github.com/rpardee/sas.tmbundle',
+    license: 'mit'
   },
   'source.scheme': {},
   'source.scilab': {},
   'source.lsl': {},
   'source.cil': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/google/selinux-policy-languages'
+    homepage: 'https://github.com/google/selinux-policy-languages',
+    license: 'apache-2.0'
   },
   'source.sepolicy': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/google/selinux-policy-languages'
+    homepage: 'https://github.com/google/selinux-policy-languages',
+    license: 'apache-2.0'
   },
   'source.hlsl': {
     license: 'mit'
@@ -1810,38 +1819,38 @@ export const info = {
     license: 'mit'
   },
   'source.smali': {
-    license: 'mit',
-    homepage: 'https://github.com/ShaneWilton/sublime-smali'
+    homepage: 'https://github.com/ShaneWilton/sublime-smali',
+    license: 'mit'
   },
   'source.smalltalk': {
     license: 'mit'
   },
   'source.smithy': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/awslabs/smithy-vscode'
+    homepage: 'https://github.com/awslabs/smithy-vscode',
+    license: 'apache-2.0'
   },
   'source.sourcepawn': {
-    license: 'mit',
-    homepage: 'https://github.com/Dreae/sourcepawn-vscode'
+    homepage: 'https://github.com/Dreae/sourcepawn-vscode',
+    license: 'mit'
   },
   'source.sql': {},
   'source.nut': {
     license: 'mit'
   },
   'text.zone_file': {
-    license: 'mit',
-    homepage: 'https://github.com/sixty4k/st2-zonefile'
+    homepage: 'https://github.com/sixty4k/st2-zonefile',
+    license: 'mit'
   },
   'source.ml': {
     homepage: 'https://github.com/textmate/standard-ml.tmbundle'
   },
   'source.mupad': {
-    license: 'mit',
-    homepage: 'https://github.com/ccreutzig/sublime-MuPAD'
+    homepage: 'https://github.com/ccreutzig/sublime-MuPAD',
+    license: 'mit'
   },
   'source.angelscript': {
-    license: 'unlicense',
-    homepage: 'https://github.com/wronex/sublime-angelscript'
+    homepage: 'https://github.com/wronex/sublime-angelscript',
+    license: 'unlicense'
   },
   'source.aspectj': {
     license: 'mit'
@@ -1853,91 +1862,91 @@ export const info = {
     license: 'mit'
   },
   'source.boo': {
-    license: 'mit',
-    homepage: 'https://github.com/drslump/sublime-boo'
+    homepage: 'https://github.com/drslump/sublime-boo',
+    license: 'mit'
   },
   'source.bsv': {
     license: 'mit'
   },
   'source.cirru': {
-    license: 'mit',
-    homepage: 'https://github.com/Cirru/sublime-cirru'
+    homepage: 'https://github.com/Cirru/sublime-cirru',
+    license: 'mit'
   },
   'source.clips': {
     license: 'mit'
   },
   'source.cypher': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/fredbenenson/sublime-cypher'
+    homepage: 'https://github.com/fredbenenson/sublime-cypher',
+    license: 'apache-2.0'
   },
   'source.fan': {
     license: 'mit'
   },
   'source.glsl': {
-    license: 'unlicense',
-    homepage: 'https://github.com/euler0/sublime-glsl'
+    homepage: 'https://github.com/euler0/sublime-glsl',
+    license: 'unlicense'
   },
   'source.golo': {
-    license: 'mit',
-    homepage: 'https://github.com/TypeUnsafe/sublime-golo'
+    homepage: 'https://github.com/TypeUnsafe/sublime-golo',
+    license: 'mit'
   },
   'source.mask': {
-    license: 'mit',
-    dependencies: ['source.js', 'text.html.basic']
+    dependencies: ['source.js', 'text.html.basic'],
+    license: 'mit'
   },
   'source.ne': {
-    license: 'unlicense',
-    homepage: 'https://github.com/Hardmath123/sublime-nearley'
+    homepage: 'https://github.com/Hardmath123/sublime-nearley',
+    license: 'unlicense'
   },
   'source.netlinx': {
     license: 'mit'
   },
   'source.netlinx.erb': {
-    license: 'mit',
-    dependencies: ['source.netlinx']
+    dependencies: ['source.netlinx'],
+    license: 'mit'
   },
   'source.nginx': {
-    license: 'mit',
-    homepage: 'https://github.com/brandonwamboldt/sublime-nginx'
+    homepage: 'https://github.com/brandonwamboldt/sublime-nginx',
+    license: 'mit'
   },
   'source.odin': {
-    license: 'mit',
-    homepage: 'https://github.com/odin-lang/sublime-odin'
+    homepage: 'https://github.com/odin-lang/sublime-odin',
+    license: 'mit'
   },
   'source.opal': {
-    license: 'mit',
-    homepage: 'https://github.com/artifactz/sublime-opal'
+    homepage: 'https://github.com/artifactz/sublime-opal',
+    license: 'mit'
   },
   'source.pony': {
-    license: 'bsd-2-clause',
-    homepage: 'https://github.com/CausalityLtd/sublime-pony'
+    homepage: 'https://github.com/CausalityLtd/sublime-pony',
+    license: 'bsd-2-clause'
   },
   'source.promela': {
-    license: 'mit',
-    homepage: 'https://github.com/corbanmailloux/sublime-promela-spin'
+    homepage: 'https://github.com/corbanmailloux/sublime-promela-spin',
+    license: 'mit'
   },
   'source.q': {
-    license: 'mit',
-    homepage: 'https://github.com/komsit37/sublime-q'
+    homepage: 'https://github.com/komsit37/sublime-q',
+    license: 'mit'
   },
   'source.rexx': {
-    license: 'mit',
-    homepage: 'https://github.com/mblocker/rexx-sublime'
+    homepage: 'https://github.com/mblocker/rexx-sublime',
+    license: 'mit'
   },
   'text.robot': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/shellderp/sublime-robot-plugin'
+    homepage: 'https://github.com/shellderp/sublime-robot-plugin',
+    license: 'apache-2.0'
   },
   'source.shen': {
     license: 'bsd-3-clause'
   },
   'source.spin': {
-    license: 'zlib',
-    homepage: 'https://github.com/bitbased/sublime-spintools'
+    homepage: 'https://github.com/bitbased/sublime-spintools',
+    license: 'zlib'
   },
   'source.tea': {
-    license: 'apache-2.0',
-    dependencies: ['source.js', 'text.html.basic', 'text.xml']
+    dependencies: ['source.js', 'text.html.basic', 'text.xml'],
+    license: 'apache-2.0'
   },
   'source.terra': {
     license: 'bsd-3-clause'
@@ -1946,45 +1955,45 @@ export const info = {
     license: 'mit'
   },
   'source.varnish.vcl': {
-    license: 'mit',
-    homepage: 'https://github.com/brandonwamboldt/sublime-varnish'
+    homepage: 'https://github.com/brandonwamboldt/sublime-varnish',
+    license: 'mit'
   },
   'source.zig': {
-    license: 'mit',
-    homepage: 'https://github.com/ziglang/sublime-zig-language'
+    homepage: 'https://github.com/ziglang/sublime-zig-language',
+    license: 'mit'
   },
   'source.assembly': {
-    license: 'bsd-3-clause',
-    homepage: 'https://github.com/Nessphoro/sublimeassembly'
+    homepage: 'https://github.com/Nessphoro/sublimeassembly',
+    license: 'bsd-3-clause'
   },
   'source.prolog': {
     license: 'mpl-2.0'
   },
   'source.prolog.eclipse': {
-    license: 'mpl-2.0',
-    dependencies: ['source.prolog']
+    dependencies: ['source.prolog'],
+    license: 'mpl-2.0'
   },
   'source.cuda-c++': {
-    license: 'bsd-3-clause',
+    dependencies: ['source.c++'],
     homepage: 'https://github.com/harrism/sublimetext-cuda-cpp',
-    dependencies: ['source.c++']
+    license: 'bsd-3-clause'
   },
   'source.nasl': {
-    license: 'mit',
-    homepage: 'https://github.com/tenable/sublimetext-nasl'
+    homepage: 'https://github.com/tenable/sublimetext-nasl',
+    license: 'mit'
   },
   'source.svelte': {
-    license: 'mit',
+    dependencies: ['source.css', 'source.js', 'source.ts'],
     homepage: 'https://github.com/sebastinez/svelte-atom',
-    dependencies: ['source.css', 'source.js', 'source.ts']
+    license: 'mit'
   },
   'source.sway': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/FuelLabs/sway-vscode-plugin'
+    homepage: 'https://github.com/FuelLabs/sway-vscode-plugin',
+    license: 'apache-2.0'
   },
   'text.tex.latex.sweave': {
-    homepage: 'https://github.com/textmate/sweave.tmbundle',
-    dependencies: ['source.r', 'text.tex.latex']
+    dependencies: ['source.r', 'text.tex.latex'],
+    homepage: 'https://github.com/textmate/sweave.tmbundle'
   },
   'source.swift': {
     homepage: 'https://github.com/textmate/swift.tmbundle'
@@ -1994,84 +2003,84 @@ export const info = {
     homepage: 'https://github.com/textmate/textmate.tmbundle'
   },
   'source.textproto': {
-    license: 'mit',
-    homepage: 'https://github.com/thejustinwalsh/textproto-grammar'
+    homepage: 'https://github.com/thejustinwalsh/textproto-grammar',
+    license: 'mit'
   },
   'source.thrift': {},
   'source.tlverilog': {
-    license: 'mit',
-    homepage: 'https://github.com/adamint/tlv-vscode'
+    homepage: 'https://github.com/adamint/tlv-vscode',
+    license: 'mit'
   },
   'source.toml': {
     homepage: 'https://github.com/textmate/toml.tmbundle'
   },
   'source.sparql': {
-    license: 'mit',
+    dependencies: ['source.turtle'],
     homepage: 'https://github.com/peta/turtle.tmbundle',
-    dependencies: ['source.turtle']
+    license: 'mit'
   },
   'source.turtle': {
-    license: 'mit',
-    homepage: 'https://github.com/peta/turtle.tmbundle'
+    homepage: 'https://github.com/peta/turtle.tmbundle',
+    license: 'mit'
   },
   'source.typst': {
-    license: 'mit',
-    homepage: 'https://github.com/michidk/typst-grammar'
+    homepage: 'https://github.com/michidk/typst-grammar',
+    license: 'mit'
   },
   'source.verilog': {},
   'source.vhdl': {},
   'source.fnl': {
-    license: 'mit',
-    homepage: 'https://github.com/kongeor/vsc-fennel'
+    homepage: 'https://github.com/kongeor/vsc-fennel',
+    license: 'mit'
   },
   'source.talon': {
-    license: 'mit',
-    homepage: 'https://github.com/mrob95/vscode-TalonScript'
+    homepage: 'https://github.com/mrob95/vscode-TalonScript',
+    license: 'mit'
   },
   'text.html.statamic': {
-    license: 'mit',
+    dependencies: ['text.html.basic'],
     homepage: 'https://github.com/Stillat/vscode-antlers-language-server',
-    dependencies: ['text.html.basic']
+    license: 'mit'
   },
   'source.brs': {
-    license: 'mit',
-    homepage: 'https://github.com/rokucommunity/vscode-brightscript-language'
+    homepage: 'https://github.com/rokucommunity/vscode-brightscript-language',
+    license: 'mit'
   },
   'source.cadence': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/onflow/vscode-cadence'
+    homepage: 'https://github.com/onflow/vscode-cadence',
+    license: 'apache-2.0'
   },
   'source.ql': {
-    license: 'mit',
-    homepage: 'https://github.com/github/vscode-codeql'
+    homepage: 'https://github.com/github/vscode-codeql',
+    license: 'mit'
   },
   'source.cue': {
-    license: 'mit',
-    homepage: 'https://github.com/cue-sh/vscode-cue'
+    homepage: 'https://github.com/cue-sh/vscode-cue',
+    license: 'mit'
   },
   'source.curry': {
-    license: 'mit',
-    homepage: 'https://github.com/fwcd/vscode-curry'
+    homepage: 'https://github.com/fwcd/vscode-curry',
+    license: 'mit'
   },
   'source.euphoria': {
-    license: 'mit',
-    homepage: 'https://github.com/OpenEuphoria/vscode-euphoria'
+    homepage: 'https://github.com/OpenEuphoria/vscode-euphoria',
+    license: 'mit'
   },
   'source.ftl': {
-    license: 'mit',
-    homepage: 'https://github.com/macabeus/vscode-fluent'
+    homepage: 'https://github.com/macabeus/vscode-fluent',
+    license: 'mit'
   },
   'source.gcode': {
-    license: 'mit',
-    homepage: 'https://github.com/appliedengdesign/vscode-gcode-syntax'
+    homepage: 'https://github.com/appliedengdesign/vscode-gcode-syntax',
+    license: 'mit'
   },
   'source.gedcom': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/fguitton/vscode-gedcom'
+    homepage: 'https://github.com/fguitton/vscode-gedcom',
+    license: 'apache-2.0'
   },
   'source.gleam': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/gleam-lang/vscode-gleam'
+    homepage: 'https://github.com/gleam-lang/vscode-gleam',
+    license: 'apache-2.0'
   },
   'go.mod': {
     homepage: 'https://github.com/golang/vscode-go'
@@ -2080,130 +2089,131 @@ export const info = {
     homepage: 'https://github.com/golang/vscode-go'
   },
   'source.hack': {
-    license: 'mit',
+    dependencies: ['text.html.basic'],
     homepage: 'https://github.com/slackhq/vscode-hack',
-    dependencies: ['text.html.basic']
+    license: 'mit'
   },
   'source.hy': {
-    license: 'mit',
-    homepage: 'https://github.com/tshakalekholoane/vscode-hy'
+    homepage: 'https://github.com/tshakalekholoane/vscode-hy',
+    license: 'mit'
   },
   'source.rpgle': {
-    license: 'mit',
+    dependencies: ['source.sql'],
     homepage: 'https://github.com/barrettotte/vscode-ibmi-languages',
-    dependencies: ['source.sql']
+    license: 'mit'
   },
   'source.janet': {
-    license: 'mit',
-    homepage: 'https://github.com/janet-lang/vscode-janet'
+    homepage: 'https://github.com/janet-lang/vscode-janet',
+    license: 'mit'
   },
   'source.jest.snap': {
-    license: 'mit',
-    homepage: 'https://github.com/jest-community/vscode-jest'
+    homepage: 'https://github.com/jest-community/vscode-jest',
+    license: 'mit'
   },
   'source.just': {
-    license: 'mit',
-    homepage: 'https://github.com/skellock/vscode-just'
+    homepage: 'https://github.com/skellock/vscode-just',
+    license: 'mit'
   },
   'source.lean': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/leanprover/vscode-lean'
+    homepage: 'https://github.com/leanprover/vscode-lean',
+    license: 'apache-2.0'
   },
   'source.mc': {
     license: 'mit'
   },
   'source.mo': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/dfinity/vscode-motoko'
+    homepage: 'https://github.com/dfinity/vscode-motoko',
+    license: 'apache-2.0'
   },
   'source.move': {
-    license: 'mit',
-    homepage: 'https://github.com/damirka/vscode-move-syntax'
+    homepage: 'https://github.com/damirka/vscode-move-syntax',
+    license: 'mit'
   },
   'source.rego': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/tsandall/vscode-opa'
+    homepage: 'https://github.com/tsandall/vscode-opa',
+    license: 'apache-2.0'
   },
   'source.pddl': {
-    license: 'mit',
-    homepage: 'https://github.com/jan-dolejsi/vscode-pddl'
+    homepage: 'https://github.com/jan-dolejsi/vscode-pddl',
+    license: 'mit'
   },
   'source.wsd': {
-    license: 'mit',
-    homepage: 'https://github.com/qjebbs/vscode-plantuml'
+    homepage: 'https://github.com/qjebbs/vscode-plantuml',
+    license: 'mit'
   },
   'source.prisma': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/prisma/vscode-prisma'
+    homepage: 'https://github.com/prisma/vscode-prisma',
+    license: 'apache-2.0'
   },
   'source.procfile': {
-    license: 'bsd-3-clause',
+    dependencies: ['source.shell'],
     homepage: 'https://github.com/benspaulding/vscode-procfile',
-    dependencies: ['source.shell']
+    license: 'bsd-3-clause'
   },
   'source.proto': {
-    license: 'mit',
-    homepage: 'https://github.com/zxh0/vscode-proto3'
+    homepage: 'https://github.com/zxh0/vscode-proto3',
+    license: 'mit'
   },
   'source.rbs': {
-    license: 'mit',
-    homepage: 'https://github.com/soutaro/vscode-rbs-syntax'
+    homepage: 'https://github.com/soutaro/vscode-rbs-syntax',
+    license: 'mit'
   },
   'source.scala': {
     homepage: 'https://github.com/scala/vscode-scala-syntax'
   },
   'source.singularity': {
-    license: 'mit',
-    homepage: 'https://github.com/onnovalkering/vscode-singularity'
+    homepage: 'https://github.com/onnovalkering/vscode-singularity',
+    license: 'mit'
   },
   'source.slice': {
-    license: 'bsd-3-clause',
-    homepage: 'https://github.com/zeroc-ice/vscode-slice'
+    homepage: 'https://github.com/zeroc-ice/vscode-slice',
+    license: 'bsd-3-clause'
   },
   'source.vba': {
-    license: 'mpl-2.0',
-    homepage: 'https://github.com/tiabeast/vscode-vba-json'
+    homepage: 'https://github.com/tiabeast/vscode-vba-json',
+    license: 'mpl-2.0'
   },
   'source.v': {
-    license: 'mit',
-    homepage: 'https://github.com/0x9ef/vscode-vlang'
+    homepage: 'https://github.com/0x9ef/vscode-vlang',
+    license: 'mit'
   },
   'source.wit': {
-    license: 'apache-2.0',
-    homepage: 'https://github.com/bytecodealliance/vscode-wit'
+    homepage: 'https://github.com/bytecodealliance/vscode-wit',
+    license: 'apache-2.0'
   },
   'source.wren': {
-    license: 'mit',
-    homepage: 'https://github.com/Nelarius/vscode-wren'
+    homepage: 'https://github.com/Nelarius/vscode-wren',
+    license: 'mit'
   },
   'source.yara': {
-    license: 'mit',
-    homepage: 'https://github.com/infosec-intern/vscode-yara'
+    homepage: 'https://github.com/infosec-intern/vscode-yara',
+    license: 'mit'
   },
   'source.zap': {},
   'source.zil': {},
   'source.cobol': {
-    license: 'mit',
-    homepage: 'https://github.com/spgennard/vscode_cobol'
+    homepage: 'https://github.com/spgennard/vscode_cobol',
+    license: 'mit'
   },
   'source.jcl': {
-    license: 'mit',
-    homepage: 'https://github.com/spgennard/vscode_cobol'
+    homepage: 'https://github.com/spgennard/vscode_cobol',
+    license: 'mit'
   },
   'text.html.vue': {
-    license: 'mit',
-    homepage: 'https://github.com/vuejs/vue-syntax-highlight'
+    homepage: 'https://github.com/vuejs/vue-syntax-highlight',
+    license: 'mit'
   },
   'source.wdl': {
-    license: 'bsd-3-clause',
-    homepage: 'https://github.com/broadinstitute/wdl-sublime-syntax-highlighter'
+    homepage:
+      'https://github.com/broadinstitute/wdl-sublime-syntax-highlighter',
+    license: 'bsd-3-clause'
   },
   'source.wgsl': {
     homepage: 'https://github.com/wgsl-analyzer/wgsl-analyzer'
   },
   'source.witcherscript': {
-    license: 'mit',
-    homepage: 'https://github.com/ADawesomeguy/witcherscript-grammar'
+    homepage: 'https://github.com/ADawesomeguy/witcherscript-grammar',
+    license: 'mit'
   },
   'source.wollok': {
     license: 'mit'
@@ -2216,8 +2226,8 @@ export const info = {
     dependencies: ['text.xml']
   },
   'source.zeek': {
-    license: 'bsd-3-clause',
-    homepage: 'https://github.com/zeek/zeek-sublime'
+    homepage: 'https://github.com/zeek/zeek-sublime',
+    license: 'bsd-3-clause'
   },
   'source.php.zephir': {
     homepage: 'https://github.com/phalcon/zephir-sublime'

@@ -9,20 +9,33 @@ import {u} from 'unist-builder'
 import {common as commonGrammars} from '../index.js'
 import {info} from './info.js'
 
-const common = new Set(commonGrammars.map((d) => d.scopeName))
+const common = new Set(
+  commonGrammars.map(function (d) {
+    return d.scopeName
+  })
+)
 
-/** @type {import('unified').Plugin<[], Root>} */
+/**
+ * @returns
+ *   Transform.
+ */
 export default function support() {
+  /**
+   * @param {Root} tree
+   *   Tree.
+   * @returns {undefined}
+   *   Nothing.
+   */
   return function (tree) {
     /** @type {Array<ListContent>} */
     const items = Object.keys(info)
-      .sort((a, b) => {
+      .sort(function (a, b) {
         const aCommon = common.has(a)
         const bCommon = common.has(b)
         return aCommon === bCommon ? a.localeCompare(b) : aCommon ? -1 : 1
       })
-      .map((scope) => {
-        const {homepage, license, dependencies} = info[scope]
+      .map(function (scope) {
+        const {dependencies, homepage, license} = info[scope]
         /** @type {Array<PhrasingContent>} */
         const content = [
           u('link', {url: 'lang/' + scope + '.js'}, [u('inlineCode', scope)])
@@ -55,10 +68,8 @@ export default function support() {
         ])
       })
 
-    zone(tree, 'support', (start, _, end) => [
-      start,
-      u('list', {spread: false}, items),
-      end
-    ])
+    zone(tree, 'support', function (start, _, end) {
+      return [start, u('list', {spread: false}, items), end]
+    })
   }
 }

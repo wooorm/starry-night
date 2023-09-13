@@ -1,21 +1,36 @@
 /**
  * @typedef Dep
+ *   Dependency.
  * @property {string} name
+ *   Name.
  * @property {string} license
- * @property {Array<License>} licenses
+ *   License.
+ * @property {ReadonlyArray<Readonly<License>>} licenses
+ *   Licenses.
  * @property {string | undefined} homepage
- * @property {Array<string>} notices
+ *   Homepage.
+ * @property {ReadonlyArray<string>} notices
+ *   Notices.
  * @property {'git_submodule'} type
+ *   Type.
  * @property {string} version
+ *   Version.
  *
  * @typedef Info
- * @property {Array<string> | undefined} dependencies
+ *   Info.
+ * @property {ReadonlyArray<string> | undefined} dependencies
+ *   Dependencies.
  * @property {string | undefined} homepage
+ *   Homepage.
  * @property {string | undefined} license
+ *   License.
  *
  * @typedef License
+ *   License.
  * @property {string | undefined} sources
+ *   Sources.
  * @property {string} text
+ *   Text.
  */
 
 import assert from 'node:assert/strict'
@@ -23,8 +38,6 @@ import fs from 'node:fs/promises'
 import process from 'node:process'
 import {parse as parseYaml} from 'yaml'
 import {all} from '../index.js'
-
-const own = {}.hasOwnProperty
 
 /** @type {Record<string, Record<string, boolean>>} */
 const graph = parseYaml(
@@ -45,7 +58,11 @@ async function list() {
   const base = new URL(import.meta.url)
   const infoFolder = new URL('info/', base)
 
-  const scopes = new Set(all.map((d) => d.scopeName))
+  const scopes = new Set(
+    all.map(function (d) {
+      return d.scopeName
+    })
+  )
   const grammarsBody = await readOrFetch(
     new URL('grammars.yml', base),
     new URL(
@@ -53,7 +70,7 @@ async function list() {
     )
   )
   assert(grammarsBody, 'expected grammars')
-  /** @type {Record<string, Array<string>>} */
+  /** @type {Record<string, ReadonlyArray<string>>} */
   const grammars = parseYaml(grammarsBody)
   await fs.mkdir(infoFolder, {recursive: true})
   /** @type {Map<string, string>} */
@@ -63,7 +80,7 @@ async function list() {
 
   const prefix = 'vendor/grammars/'
 
-  const rawVendors = Object.keys(grammars).filter((vendor) => {
+  const rawVendors = Object.keys(grammars).filter(function (vendor) {
     if (!vendor.startsWith(prefix)) {
       console.warn('ignoring funky vendor `%s`', vendor)
       return false
@@ -98,8 +115,8 @@ async function list() {
   const vendors = [...new Set(vendorToScope.keys())].sort()
 
   const rawInfo = await Promise.all(
-    vendors.map((vendor) =>
-      readOrFetch(
+    vendors.map(function (vendor) {
+      return readOrFetch(
         new URL(vendor + '.yml', infoFolder),
         new URL(
           'https://raw.githubusercontent.com/github-linguist/linguist/master/vendor/licenses/git_submodule/' +
@@ -107,7 +124,7 @@ async function list() {
             '.dep.yml'
         )
       )
-    )
+    })
   )
 
   let index = -1
@@ -129,7 +146,7 @@ The following files/folders contain third party software:`
   /** @type {Array<Promise<undefined>>} */
   const commentPromises = []
 
-  /** @type {Record<string, Info>} */
+  /** @type {Record<string, Readonly<Info>>} */
   const scopeToInfo = {}
 
   while (++index < vendors.length) {
@@ -143,7 +160,7 @@ The following files/folders contain third party software:`
       continue
     }
 
-    /** @type {Dep} */
+    /** @type {Readonly<Dep>} */
     const info = parseYaml(infoBody)
     const license =
       info.license === 'other' || info.license === 'permissive'
@@ -170,7 +187,7 @@ The following files/folders contain third party software:`
     while (++scopeIndex < scopes.length) {
       const scope = scopes[scopeIndex]
 
-      const dependencies = own.call(graph, scope) ? graph[scope] : {}
+      const dependencies = Object.hasOwn(graph, scope) ? graph[scope] : {}
       /** @type {Array<string>} */
       const required = []
 
@@ -181,13 +198,13 @@ The following files/folders contain third party software:`
       }
 
       scopeToInfo[scope] = {
-        license,
+        dependencies: required.length === 0 ? undefined : required,
         homepage,
-        dependencies: required.length === 0 ? undefined : required
+        license
       }
 
       commentPromises.push(
-        (async () => {
+        (async function () {
           const url = new URL('../lang/' + scope + '.js', import.meta.url)
           const file = String(await fs.readFile(url))
           if (!file.startsWith(comment)) {
@@ -198,28 +215,39 @@ The following files/folders contain third party software:`
     }
 
     thirdPartyStuff.push(`${'='.repeat(105)}
-Files in \`starry-night\`: ${scopes.map((d) => `lang/${d}.js`).join(', ')}
+Files in \`starry-night\`: ${scopes
+      .map(function (d) {
+        return `lang/${d}.js`
+      })
+      .join(', ')}
 From source: <${homepage || ''}>
 SPDX: ${license || 'permissive'}
 ${'-'.repeat(105)}
 ${info.licenses
-  .map((d) => `License from source file: ${d.sources || '?'}\n\n${d.text}`)
+  .map(function (d) {
+    return `License from source file: ${d.sources || '?'}\n\n${d.text}`
+  })
   .join('\n\n')}`)
   }
 
   await fs.writeFile('notice', thirdPartyStuff.join('\n\n'))
   await fs.writeFile(
     new URL('info.js', import.meta.url),
-    '/** @type {Record<string, {homepage?: string, license?: string, dependencies?: Array<string>}>} */\nexport const info = ' +
+    '/** @type {Record<string, {homepage?: string, license?: string, dependencies?: ReadonlyArray<string>}>} */\nexport const info = ' +
       JSON.stringify(scopeToInfo, null, 2) +
       '\n'
   )
 }
 
 /**
- * @param {URL} localUrl
- * @param {URL} remoteUrl
+ * Get a file.
+ *
+ * @param {Readonly<URL>} localUrl
+ *   URL to file system.
+ * @param {Readonly<URL>} remoteUrl
+ *   URL to remote.
  * @returns {Promise<string | undefined>}
+ *   Content, if local or remote.
  */
 async function readOrFetch(localUrl, remoteUrl) {
   try {

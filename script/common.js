@@ -1,8 +1,8 @@
 // These are all manually mapped from highlight.js/lowlight/refractor:
-// * <https://github.com/wooorm/lowlight/blob/0803fc3/script/build-registry.js#L10>
-// * <https://github.com/wooorm/lowlight/blob/0803fc3/lib/common.js>,
+// * <https://github.com/wooorm/lowlight/blob/bf86b3c/script/build-registry.js#L8>
+// * <https://github.com/wooorm/lowlight/blob/bf86b3c/lib/common.js>,
 // into scopes matching `linguist.yml`.
-/** @type {Array<string>} */
+/** @type {ReadonlyArray<string>} */
 export const common = [
   'source.c', // `c`
   'source.c++', // `arduino`, `cpp`

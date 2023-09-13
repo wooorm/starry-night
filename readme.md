@@ -557,7 +557,9 @@ const prefix = 'language-'
 const nodes = Array.from(document.body.querySelectorAll('code'))
 
 for (const node of nodes) {
-  const className = Array.from(node.classList).find((d) => d.startsWith(prefix))
+  const className = Array.from(node.classList).find(function (d) {
+    return d.startsWith(prefix)
+  })
   if (!className) continue
   const scope = starryNight.flagToScope(className.slice(prefix.length))
   if (!scope) continue
@@ -642,9 +644,10 @@ Say we have our utility as `hast-util-starry-night-gutter.js`:
  */
 
 /**
- * @template {Root} Tree
  * @param {Tree} tree
- * @returns {Tree}
+ *   Tree.
+ * @returns {undefined}
+ *   Nothing.
  */
 export function starryNightGutter(tree) {
   /** @type {Array<RootContent>} */
@@ -794,7 +797,7 @@ console.log('it works!')
  * @typedef Options
  *   Configuration (optional)
  * @property {Array<Grammar> | null | undefined} [grammars]
- *   Grammars to support (defaults: `common`).
+ *   Grammars to support (default: `common`).
  */
 
 import {common, createStarryNight} from '@wooorm/starry-night'
@@ -802,15 +805,27 @@ import {toString} from 'hast-util-to-string'
 import {visit} from 'unist-util-visit'
 
 /**
- * Plugin to highlight code with `starry-night`.
+ * Highlight code with `starry-night`.
  *
- * @type {import('unified').Plugin<[(Options | null | undefined)?], Root>}
+ * @param {Options | null | undefined} options
+ *   Configuration (optional).
+ * @returns
+ *   Transform.
  */
 export default function rehypeStarryNight(options) {
-  const grammars = (options || {}).grammars || common
+  const settings = options || {}
+  const grammars = settings.grammars || common
   const starryNightPromise = createStarryNight(grammars)
   const prefix = 'language-'
 
+  /**
+   * Transform.
+   *
+   * @param {Root} tree
+   *   Tree.
+   * @returns {undefined}
+   *   Nothing.
+   */
   return async function (tree) {
     const starryNight = await starryNightPromise
 
@@ -834,9 +849,9 @@ export default function rehypeStarryNight(options) {
 
       if (!Array.isArray(classes)) return
 
-      const language = classes.find(
-        (d) => typeof d === 'string' && d.startsWith(prefix)
-      )
+      const language = classes.find(function (d) {
+        return typeof d === 'string' && d.startsWith(prefix)
+      })
 
       if (typeof language !== 'string') return
 
@@ -868,10 +883,10 @@ export default function rehypeStarryNight(options) {
 
 ```js
 import fs from 'node:fs/promises'
-import {unified} from 'unified'
+import rehypeStringify from 'rehype-stringify'
 import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
-import rehypeStringify from 'rehype-stringify'
+import {unified} from 'unified'
 import rehypeStarryNight from './rehype-starry-night.js'
 
 const file = await unified()

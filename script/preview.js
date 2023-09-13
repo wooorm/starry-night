@@ -8,7 +8,7 @@
 // 8. Lay then over `cover.jpg` in media, export as `-dark` and `-light`.
 import fs from 'node:fs/promises'
 import {toHtml} from 'hast-util-to-html'
-import {createStarryNight, common} from '../index.js'
+import {common, createStarryNight} from '../index.js'
 
 const highlighter = await createStarryNight(common)
 
@@ -25,7 +25,7 @@ body { max-width: 51.625rem; margin: calc(1em + 1ex) auto; padding: 0 calc(1em +
 <p>In a browser, include the module:</p>
 ${generate(
   `<script type="module">
-  import {createStarryNight, common} from 'https://esm.sh/@wooorm/starry-night@2?bundle'
+  import {common, createStarryNight} from 'https://esm.sh/@wooorm/starry-night@2?bundle'
 </script>`,
   'text.html.basic'
 )}
@@ -53,7 +53,9 @@ fs.writeFile(new URL('../media/preview.html', import.meta.url), doc)
 
 /**
  * @param {string} value
+ *   Value to highlight.
  * @param {string} scope
+ *   Scope to highlight with.
  */
 function generate(value, scope) {
   const className = scope.replace(/^source\./, '').replace(/\./g, '-')

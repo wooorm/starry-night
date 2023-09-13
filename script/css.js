@@ -15,24 +15,30 @@
  * @typedef {import('css').Rule} Rule
  * @typedef {import('css').Stylesheet} Stylesheet
  * @typedef {import('css').Supports} Supports
- *
  */
 
 /**
  * @typedef {Charset | Comment | CustomMedia | Declaration | Document | FontFace | Host | Import | KeyFrames | KeyFrame | Media | Namespace | Page | Rule | Stylesheet | Supports} Node
+ *   CSS node.
+ *
  * @typedef {'light' | 'light_colorblind' | 'light_high_contrast' | 'light_tritanopia'} Light
+ *   Light theme name.
  * @typedef {'dark' | 'dark_colorblind' | 'dark_dimmed' | 'dark_high_contrast' | 'dark_tritanopia'} Dark
+ *   Dark theme name.
  *
  * @typedef Schema
- * @property {Light | null | undefined} light
- * @property {Dark | null | undefined} dark
- **/
+ *   Schema.
+ * @property {Dark} [dark]
+ *   Dark theme name (optional).
+ * @property {Light} [light]
+ *   Light theme name (optional).
+ */
 
 import assert from 'node:assert/strict'
 import fs from 'node:fs/promises'
 import {fileURLToPath} from 'node:url'
 import css from 'css'
-// @ts-expect-error: hush
+// @ts-expect-error: untyped.
 import generateGithubMarkdownCss from 'generate-github-markdown-css'
 import prettier from 'prettier'
 
@@ -46,7 +52,7 @@ const prettierConfig = await prettier.resolveConfig(
 // So we don’t need to worry about multiple requests.
 
 // See `./node_modules/.bin/github-markdown-css --list`
-/** @type {Array<Dark>} */
+/** @type {ReadonlyArray<Dark>} */
 const darks = [
   'dark',
   'dark_high_contrast',
@@ -55,7 +61,7 @@ const darks = [
   'dark_dimmed'
 ]
 
-/** @type {Array<Light>} */
+/** @type {ReadonlyArray<Light>} */
 const lights = [
   'light',
   'light_high_contrast',
@@ -65,36 +71,30 @@ const lights = [
 
 /** @type {Record<string, Schema>} */
 const files = {
-  'core.css': {light: undefined, dark: undefined},
+  'core.css': {},
 
-  'both.css': {light: 'light', dark: 'dark'},
-  'light.css': {light: 'light', dark: undefined},
-  'dark.css': {light: undefined, dark: 'dark'},
+  'both.css': {dark: 'dark', light: 'light'},
+  'light.css': {light: 'light'},
+  'dark.css': {dark: 'dark'},
 
   // Dimmed is only available for dark.
-  'dimmed.css': {light: 'light', dark: 'dark_dimmed'},
-  'dimmed-dark.css': {light: undefined, dark: 'dark_dimmed'},
+  'dimmed.css': {dark: 'dark_dimmed', light: 'light'},
+  'dimmed-dark.css': {dark: 'dark_dimmed'},
 
   'high-contrast.css': {
     light: 'light_high_contrast',
     dark: 'dark_high_contrast'
   },
-  'high-contrast-light.css': {
-    light: 'light_high_contrast',
-    dark: undefined
-  },
-  'high-contrast-dark.css': {
-    light: undefined,
-    dark: 'dark_high_contrast'
-  },
+  'high-contrast-light.css': {light: 'light_high_contrast'},
+  'high-contrast-dark.css': {dark: 'dark_high_contrast'},
 
-  'colorblind.css': {light: 'light_colorblind', dark: 'dark_colorblind'},
-  'colorblind-light.css': {light: 'light_colorblind', dark: undefined},
-  'colorblind-dark.css': {light: undefined, dark: 'dark_colorblind'},
+  'colorblind.css': {dark: 'dark_colorblind', light: 'light_colorblind'},
+  'colorblind-light.css': {light: 'light_colorblind'},
+  'colorblind-dark.css': {dark: 'dark_colorblind'},
 
-  'tritanopia.css': {light: 'light_tritanopia', dark: 'dark_tritanopia'},
-  'tritanopia-light.css': {light: 'light_tritanopia', dark: undefined},
-  'tritanopia-dark.css': {light: undefined, dark: 'dark_tritanopia'}
+  'tritanopia.css': {dark: 'dark_tritanopia', light: 'light_tritanopia'},
+  'tritanopia-light.css': {light: 'light_tritanopia'},
+  'tritanopia-dark.css': {dark: 'dark_tritanopia'}
 }
 
 /** @type {Map<string, string>} */
@@ -124,7 +124,7 @@ const base = new URL('../style/', import.meta.url)
 await fs.mkdir(base, {recursive: true})
 
 for (const fileName of fileNames) {
-  const {light, dark} = files[fileName]
+  const {dark, light} = files[fileName]
   const lightCss = light ? themeMap.get(light) : undefined
   const darkCss = dark ? themeMap.get(dark) : undefined
   /** @type {Array<string>} */
@@ -161,12 +161,15 @@ await Promise.all(writePromises)
 
 /**
  * @param {Light} light
+ *   Light theme name.
  * @param {Dark} dark
+ *   Dark theme name.
  * @returns {Promise<undefined>}
+ *   Nothing.
  */
 async function generate(light, dark) {
   /** @type {string} */
-  const result = await generateGithubMarkdownCss({light, dark})
+  const result = await generateGithubMarkdownCss({dark, light})
   const tree = css.parse(result)
   const scopePrefix = '.markdown-body '
   const prefix = '.pl-'
@@ -186,9 +189,15 @@ async function generate(light, dark) {
   for (const rule of walkRules(tree)) {
     if (rule.selectors) {
       const selectors = rule.selectors
-        .filter((d) => d.startsWith(scopePrefix))
-        .map((d) => d.slice(scopePrefix.length))
-        .filter((d) => d.startsWith(prefix))
+        .filter(function (d) {
+          return d.startsWith(scopePrefix)
+        })
+        .map(function (d) {
+          return d.slice(scopePrefix.length)
+        })
+        .filter(function (d) {
+          return d.startsWith(prefix)
+        })
 
       if (selectors.length > 0) {
         const selectorsString = selectors.join(',\n')
@@ -202,9 +211,12 @@ async function generate(light, dark) {
 }
 
 /**
- * @param {Node | null | undefined} media
+ * @param {Node | undefined} media
+ *   Media node.
  * @param {'dark' | 'light'} mode
+ *   Mode.
  * @returns {string}
+ *   CSS.
  */
 function generateMedia(media, mode) {
   assert(
@@ -229,12 +241,13 @@ function generateMedia(media, mode) {
         {
           type: 'rule',
           selectors: [':root'],
-          declarations: rule.declarations.filter(
-            (d) =>
+          declarations: rule.declarations.filter(function (d) {
+            return (
               'property' in d &&
               d.property &&
               d.property.startsWith('--color-prettylights-')
-          )
+            )
+          })
         }
       ]
     }
@@ -243,7 +256,9 @@ function generateMedia(media, mode) {
 
 /**
  * @param {Node} tree
+ *   Tree.
  * @returns {Generator<Rule>}
+ *   Generator.
  */
 function* walkRules(tree) {
   if (tree.type === 'stylesheet' && 'stylesheet' in tree && tree.stylesheet) {
