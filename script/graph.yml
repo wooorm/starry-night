@@ -1002,6 +1002,9 @@ text.tex.latex.haskell:
   annotation.liquidhaskell.haskell: false
   source.haskell: true
   text.tex.latex: true
+text.tex.latex.sweave:
+  source.r: true
+  text.tex.latex: true
 text.texinfo:
   source.emacs.lisp: false
   text.html.basic: false

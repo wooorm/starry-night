@@ -1983,7 +1983,8 @@ export const info = {
     homepage: 'https://github.com/FuelLabs/sway-vscode-plugin'
   },
   'text.tex.latex.sweave': {
-    homepage: 'https://github.com/textmate/sweave.tmbundle'
+    homepage: 'https://github.com/textmate/sweave.tmbundle',
+    dependencies: ['source.r', 'text.tex.latex']
   },
   'source.swift': {
     homepage: 'https://github.com/textmate/swift.tmbundle'
