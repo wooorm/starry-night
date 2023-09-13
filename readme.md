@@ -10,6 +10,7 @@
 [![Build][build-badge]][build]
 [![Coverage][coverage-badge]][coverage]
 [![Downloads][downloads-badge]][downloads]
+[![Size][size-badge]][size]
 
 Syntax highlighting, like what GitHub uses to highlight code, but free and open
 source and JavaScript!
@@ -65,7 +66,7 @@ They’re heavy but high quality.
 `starry-night` is a **high quality** highlighter
 (when your readers or authors are programmers, you want this!)
 that can support **tons of grammars**
-(from new things like Astro to much more!)
+(from new things like MDX to much more!)
 which approaches how GitHub renders code.
 
 It has a WASM dependency, and rather big grammars, which means that
@@ -137,7 +138,7 @@ I’m hopeful that that will be open sourced in the future and we can mimic both
 ## Install
 
 This package is [ESM only][esm].
-In Node.js (version 14.14+), install with [npm][]:
+In Node.js (version 16+), install with [npm][]:
 
 ```sh
 npm install @wooorm/starry-night
@@ -217,30 +218,29 @@ List of ±35 common grammars ([`Array<Grammar>`][api-grammar])
 
 ### `createStarryNight(grammars[, options])`
 
-Create a `StarryNight` that can highlight things based on the given `grammars`.
-This is async to facilitate async loading and registering, which is currently
+Create a `StarryNight` that can highlight things with the given `grammars`.
+This is async to allow async loading and registering, which is currently
 only used for WASM.
 
 ###### Parameters
 
 *   `grammars` (`Array<Grammar>`)
     — grammars to support
-*   `options` (`Options`, default: `{}`)
-    — configuration (optional)
+*   `options` (`Options`, optional)
+    — configuration
 
 ###### Returns
 
-Promise that resolves to an instance which highlights based on the bound
+Promise that resolves to an instance which highlights with the bound
 grammars (`Promise<StarryNight>`).
 
 ### `starryNight.flagToScope(flag)`
 
 Get the grammar scope (such as `text.md`) associated with a grammar name
-(such as `markdown` or `pandoc`) or grammar extension (such as `.mdwn` or
-`.rmd`).
+(such as `markdown`) or grammar extension (such as `.mdwn`).
 
-This function is designed to accept the first word (when splitting on
-spaces and tabs) that is used after the opening of a fenced code block:
+This function uses the first word (when splitting on spaces and tabs) that is
+used after the opening of a fenced code block:
 
 ````markdown
 ```js
@@ -260,15 +260,12 @@ console.log(1)
 > For example, `.h` is reused by many languages.
 > In those cases, you will get one scope back, but it might not be the
 > most popular language associated with an extension.
-> For example, `.md` is registeded by a Lisp-like language instead of
-> markdown.
-> 🤷‍♂️
 
 ###### Parameters
 
 *   `flag` (`string`)
-    — grammar name (such as `'markdown'` or `'pandoc'`), grammar extension
-    (such as `'.mdwn'` or `'.rmd'`), or entire file path ending in extension
+    — grammar name (such as `'markdown'`), grammar extension (such as
+    `'.mdwn'`), or entire file path ending in extension
 
 ###### Returns
 
@@ -284,6 +281,7 @@ const starryNight = await createStarryNight(common)
 console.log(starryNight.flagToScope('pandoc')) // `'text.md'`
 console.log(starryNight.flagToScope('workbook')) // `'text.md'`
 console.log(starryNight.flagToScope('.workbook')) // `'text.md'`
+console.log(starryNight.flagToScope('path/to/example.js')) // `'source.js'`
 console.log(starryNight.flagToScope('whatever')) // `undefined`
 ```
 
@@ -435,7 +433,7 @@ Yields:
 
 Function to get a URL to the oniguruma WASM (TypeScript type).
 
-> 👉 **Note**: this must currently result in a version 1 URL of
+> 👉 **Note**: this must currently result in a version 2 URL of
 > `onig.wasm` from [`vscode-oniguruma`][vscode-oniguruma].
 
 > ⚠️ **Danger**: when you use this functionality, your project might break at
@@ -449,7 +447,7 @@ Function to get a URL to the oniguruma WASM (TypeScript type).
 
 ###### Returns
 
-URL object to a WASM binary (`URL` or `Promise<URL>`).
+URL object to a WASM binary (`Promise<URL>` or `URL`).
 
 ###### Example
 
@@ -469,22 +467,22 @@ TextMate grammar with some extra info (TypeScript type).
 
 ###### Fields
 
-*   `scopeName` (`string`, example: `'source.mdx'`)
-    — scope
-*   `names` (`Array<string>`, example: `['mdx']`)
-    — list of names
-*   `dependencies` (`Array<string> | undefined`, example: `['source.tsx']`)
+*   `dependencies` (`Array<string>`, optional, example: `['source.tsx']`)
     — list of scopes that are needed for this grammar to work
 *   `extensions` (`Array<string>`, example: `['.mdx']`)
     — list of extensions
-*   `extensionsWithDot` (`Array<string> | undefined`, example: `[]`)
+*   `extensionsWithDot` (`Array<string>`, optional, example: `['.php']`)
     — list of extensions that only match if used w/ a dot
-*   `patterns` (`unknown`)
-    — TextMate patterns
-*   `repository` (`unknown`)
-    — TextMate repository
-*   `injections` (`unknown`)
+*   `injections` (`Record<string, Rule>`, optional)
     — TextMate injections
+*   `names` (`Array<string>`, example: `['mdx']`)
+    — list of names
+*   `patterns` (`Array<Rule>`)
+    — TextMate patterns
+*   `repository` (`Record<string, Rule>`, optional)
+    — TextMate repository
+*   `scopeName` (`string`, example: `'source.mdx'`)
+    — scope
 
 ### `Options`
 
@@ -548,8 +546,11 @@ turn the AST into DOM nodes.
 Say we have this `example.js` on our browser (no bundling needed!):
 
 ```js
-import {common, createStarryNight} from 'https://esm.sh/@wooorm/starry-night@2?bundle'
-import {toDom} from 'https://esm.sh/hast-util-to-dom@3?bundle'
+import {
+  common,
+  createStarryNight
+} from 'https://esm.sh/@wooorm/starry-night@2?bundle'
+import {toDom} from 'https://esm.sh/hast-util-to-dom@4?bundle'
 
 const starryNight = await createStarryNight(common)
 const prefix = 'language-'
@@ -644,7 +645,7 @@ Say we have our utility as `hast-util-starry-night-gutter.js`:
  */
 
 /**
- * @param {Tree} tree
+ * @param {Root} tree
  *   Tree.
  * @returns {undefined}
  *   Nothing.
@@ -718,8 +719,6 @@ export function starryNightGutter(tree) {
 
   // Replace children with new array.
   tree.children = replacement
-
-  return tree
 }
 
 /**
@@ -823,7 +822,7 @@ export default function rehypeStarryNight(options) {
    *
    * @param {Root} tree
    *   Tree.
-   * @returns {undefined}
+   * @returns {Promise<undefined>}
    *   Nothing.
    */
   return async function (tree) {
@@ -926,6 +925,10 @@ console.log('it works!')
 …and a module `example.js`:
 
 ```js
+/**
+ * @typedef {import('hast').ElementContent} ElementContent
+ */
+
 import fs from 'node:fs/promises'
 import {common, createStarryNight} from '@wooorm/starry-night'
 import {toHtml} from 'hast-util-to-html'
@@ -950,7 +953,9 @@ const markdownItInstance = markdownIt({
           : undefined
       },
       children: scope
-        ? starryNight.highlight(value, scope).children
+        ? /** @type {Array<ElementContent>} */ (
+            starryNight.highlight(value, scope).children
+          )
         : [{type: 'text', value}]
     })
   }
@@ -1641,11 +1646,11 @@ This project is compatible with maintained versions of Node.js.
 When we cut a new major release, we drop support for unmaintained versions of
 Node.
 This means we try to keep the current release line, `wooorm@starry-night@^2`,
-compatible with Node.js 14+.
+compatible with Node.js 14.
 
 You can pass your own TextMate grammars, provided that they work with
 [`vscode-textmate`][vscode-textmate], and that they have the added fields
-`scopeName`, `names`, and `extensions` (see types for the definitions and the
+`extensions`, `names`, and `scopeName` (see types for the definitions and the
 grammars in `lang/` for examples).
 
 ## Security
@@ -1689,6 +1694,10 @@ All other files [MIT][license] © [Titus Wormer][author]
 [downloads-badge]: https://img.shields.io/npm/dm/@wooorm/starry-night.svg
 
 [downloads]: https://www.npmjs.com/package/@wooorm/starry-night
+
+[size-badge]: https://img.shields.io/bundlejs/size/%40wooorm/starry-night?exports=createStarryNight
+
+[size]: https://bundlejs.com/?q=@wooorm/starry-night
 
 [npm]: https://docs.npmjs.com/cli/install
 
