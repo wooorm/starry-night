@@ -232,7 +232,6 @@ async function readOrFetch(localUrl, remoteUrl) {
   }
 
   try {
-    // @ts-expect-error: hush!
     const response = await fetch(remoteUrl, {
       headers: {Authorization: 'bearer ' + ghKey}
     })

@@ -117,7 +117,7 @@ for (const dark of darks) {
 await Promise.all(generatePromises)
 
 const fileNames = Object.keys(files)
-/** @type {Array<Promise<undefined>>} */
+/** @type {Array<Promise<undefined | void>>} */
 const writePromises = []
 
 const base = new URL('../style/', import.meta.url)
@@ -144,7 +144,6 @@ for (const fileName of fileNames) {
   }
 
   writePromises.push(
-    // @ts-expect-error: To do: TS should be able to assign `void` to undefined.
     fs.writeFile(
       new URL(fileName, base),
       await prettier.format(

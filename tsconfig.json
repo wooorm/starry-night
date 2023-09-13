@@ -7,8 +7,6 @@
     "exactOptionalPropertyTypes": true,
     "lib": ["es2020"],
     "module": "node16",
-    // `vscode-oniguruma` has bugs :'(. Or depends on DOM or so?
-    "skipLibCheck": true,
     "strict": true,
     "target": "es2020"
   },
