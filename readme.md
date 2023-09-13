@@ -34,7 +34,6 @@ source and JavaScript!
     *   [`GetOnigurumaUrl`](#getonigurumaurl)
     *   [`Grammar`](#grammar)
     *   [`Options`](#options)
-    *   [`Root`](#root)
 *   [Examples](#examples)
     *   [Example: serializing hast as html](#example-serializing-hast-as-html)
     *   [Example: using `starry-night` on the client](#example-using-starry-night-on-the-client)
@@ -298,7 +297,7 @@ Highlight programming code.
 
 ###### Returns
 
-Node representing highlighted code ([`Root`][root]).
+Node representing highlighted code ([`Root`][hast-root]).
 
 ###### Example
 
@@ -496,16 +495,6 @@ Configuration (TypeScript type).
 *   `getOnigurumaUrlFs` ([`GetOnigurumaUrl`][api-get-oniguruma-url],
     optional)
     — get a URL to the oniguruma WASM, typically used in Node.js
-
-### `Root`
-
-Root node (TypeScript type).
-
-###### type
-
-```ts
-export type {Root} from 'hast'
-```
 
 ## Examples
 
@@ -1637,7 +1626,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 
 This package is fully typed with [TypeScript][].
 It exports the additional types [`GetOnigurumaUrl`][api-get-oniguruma-url],
-[`Grammar`][api-grammar], [`Options`][api-options], and [`Root`][api-root].
+[`Grammar`][api-grammar], and [`Options`][api-options].
 
 ## Compatibility
 
@@ -1723,7 +1712,7 @@ All other files [MIT][license] © [Titus Wormer][author]
 
 [hast]: https://github.com/syntax-tree/hast
 
-[root]: https://github.com/syntax-tree/hast#root
+[hast-root]: https://github.com/syntax-tree/hast#root
 
 [hast-util-to-html]: https://github.com/syntax-tree/hast-util-to-html
 
@@ -1768,5 +1757,3 @@ All other files [MIT][license] © [Titus Wormer][author]
 [api-grammar]: #grammar
 
 [api-options]: #options
-
-[api-root]: #root
