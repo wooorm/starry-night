@@ -549,13 +549,26 @@ await Promise.all(
           ' */',
           '',
           ...list.map(function (d) {
-            return 'import ' + scopeToId(d) + ' from "../lang/' + d + '.js"'
+            return (
+              'import ' +
+              scopeToId(d) +
+              ' from "@wooorm/starry-night/' +
+              d +
+              '"'
+            )
           }),
           '',
           '/** @type {ReadonlyArray<Grammar>} */',
           'export const grammars = [',
-          ...list.map(function (d) {
-            return '  ' + scopeToId(d) + ','
+          ...list.flatMap(function (d) {
+            const useLine = '  ' + scopeToId(d) + ','
+
+            return d === 'source.json'
+              ? [
+                  '  // @ts-expect-error: TS is wrong, `.json` does not mean JSON.',
+                  useLine
+                ]
+              : useLine
           }),
           ']',
           ''

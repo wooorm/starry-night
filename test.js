@@ -1,17 +1,21 @@
+/**
+ * @typedef {import('@wooorm/starry-night').Grammar} Grammar
+ */
+
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import {toHtml} from 'hast-util-to-html'
-import sourceAssembly from './lang/source.assembly.js'
-import sourceCss from './lang/source.css.js'
-import textPhp from './lang/text.html.php.js'
-import textMd from './lang/text.md.js'
-import textXml from './lang/text.xml.js'
-import textXmlSvg from './lang/text.xml.svg.js'
-import {common, createStarryNight} from './index.js'
+import sourceAssembly from '@wooorm/starry-night/source.assembly'
+import sourceCss from '@wooorm/starry-night/source.css'
+import textPhp from '@wooorm/starry-night/text.html.php'
+import textMd from '@wooorm/starry-night/text.md'
+import textXml from '@wooorm/starry-night/text.xml'
+import textXmlSvg from '@wooorm/starry-night/text.xml.svg'
+import {common, createStarryNight} from '@wooorm/starry-night'
 
 test('@wooorm/starry-night', async function (t) {
   await t.test('should expose the public api', async function () {
-    assert.deepEqual(Object.keys(await import('./index.js')).sort(), [
+    assert.deepEqual(Object.keys(await import('@wooorm/starry-night')).sort(), [
       'all',
       'common',
       'createStarryNight'
@@ -157,7 +161,7 @@ test('.flagToScope(flag)', async function (t) {
   await t.test(
     'should support language names with dots (`.`)',
     async function () {
-      const {default: asn} = await import('./lang/source.asn.js')
+      const {default: asn} = await import('@wooorm/starry-night/source.asn')
       const starryAsn = await createStarryNight([asn])
 
       assert.equal(starryAsn.flagToScope('asn.1'), 'source.asn')
@@ -167,7 +171,7 @@ test('.flagToScope(flag)', async function (t) {
   await t.test(
     'should support language names with number signs (`#`)',
     async function () {
-      const {default: cs} = await import('./lang/source.cs.js')
+      const {default: cs} = await import('@wooorm/starry-night/source.cs')
       const starryCs = await createStarryNight([cs])
 
       assert.equal(starryCs.flagToScope('c#'), 'source.cs')
@@ -177,7 +181,7 @@ test('.flagToScope(flag)', async function (t) {
   await t.test(
     'should support language names with plusses (`+`)',
     async function () {
-      const {default: cpp} = await import('./lang/source.c++.js')
+      const {default: cpp} = await import('@wooorm/starry-night/source.c++')
       const starryCpp = await createStarryNight([cpp])
 
       assert.equal(starryCpp.flagToScope('c++'), 'source.c++')
@@ -187,7 +191,7 @@ test('.flagToScope(flag)', async function (t) {
   await t.test(
     'should support language names with asterisks (`*`)',
     async function () {
-      const {default: fStar} = await import('./lang/source.fstar.js')
+      const {default: fStar} = await import('@wooorm/starry-night/source.fstar')
       const starryFStar = await createStarryNight([fStar])
 
       assert.equal(starryFStar.flagToScope('f*'), 'source.fstar')
@@ -197,7 +201,7 @@ test('.flagToScope(flag)', async function (t) {
   await t.test(
     "should support language names with apostrophes (`'`)",
     async function () {
-      const {default: capnp} = await import('./lang/source.capnp.js')
+      const {default: capnp} = await import('@wooorm/starry-night/source.capnp')
       const starryCapnp = await createStarryNight([capnp])
 
       assert.equal(starryCapnp.flagToScope("cap'n-proto"), 'source.capnp')
@@ -207,7 +211,7 @@ test('.flagToScope(flag)', async function (t) {
   await t.test(
     'should support language names with parens (`(`, `)`)',
     async function () {
-      const {default: dot} = await import('./lang/source.dot.js')
+      const {default: dot} = await import('@wooorm/starry-night/source.dot')
       const starryDot = await createStarryNight([dot])
 
       assert.equal(starryDot.flagToScope('graphviz-(dot)'), 'source.dot')
@@ -217,8 +221,10 @@ test('.flagToScope(flag)', async function (t) {
   await t.test(
     'should support language names with slashes (`/`)',
     async function () {
-      const {default: json} = await import('./lang/source.json.js')
-      const starryJson = await createStarryNight([json])
+      const {default: json} = await import('@wooorm/starry-night/source.json')
+      // @ts-expect-error: TS is wrong, it doesn’t understand that `.json` is not an extension.
+      const grammar = /** @type {Grammar} */ (json)
+      const starryJson = await createStarryNight([grammar])
 
       assert.equal(starryJson.flagToScope('max/msp'), 'source.json')
     }

@@ -31,7 +31,7 @@ ${generate(
 )}
 <p>…add the CSS:</p>
 ${generate(
-  `<link rel="stylesheet" href="https://esm.sh/@wooorm/starry-night@3/style/both.css">`,
+  `<link rel="stylesheet" href="https://esm.sh/@wooorm/starry-night@3/style/both">`,
   'text.html.basic'
 )}
 <p>…then to use <code>starry-night</code>:</p>

@@ -32,11 +32,16 @@
   ],
   "type": "module",
   "main": "index.js",
-  "browser": {
-    "./lib/get-oniguruma.js": "./lib/get-oniguruma.fetch.js"
+  "exports": {
+    ".": "./index.js",
+    "./*": "./lang/*.js",
+    "./style/*": "./style/*.css"
   },
-  "react-native": {
-    "./lib/get-oniguruma.js": "./lib/get-oniguruma.fetch.js"
+  "imports": {
+    "#get-oniguruma": {
+      "node": "./lib/get-oniguruma.fs.js",
+      "default": "./lib/get-oniguruma.default.js"
+    }
   },
   "types": "index.d.ts",
   "files": [
@@ -145,6 +150,7 @@
     "prettier": true,
     "rules": {
       "max-depth": "off",
+      "n/file-extension-in-import": "off",
       "no-bitwise": "off",
       "no-template-curly-in-string": "off",
       "unicorn/prefer-at": "off",

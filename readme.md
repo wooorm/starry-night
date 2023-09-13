@@ -161,7 +161,7 @@ To get the CSS in browsers, do (see [CSS][] for more info):
 
 ```html
 <!-- This supports light and dark mode automatically. -->
-<link rel="stylesheet" href="https://esm.sh/@wooorm/starry-night@2/style/both.css">
+<link rel="stylesheet" href="https://esm.sh/@wooorm/starry-night@2/style/both">
 ```
 
 ## Use
@@ -204,8 +204,18 @@ Yields:
 ## API
 
 This package exports the identifiers [`all`][api-all],
-[`common`][api-common], and [`createStarryNight`][api-create-starry-night].
+[`common`][api-common], and [`createStarryNight`][api-create-starry-night] from
+the main module.
 There is no default export.
+
+It also includes grammars directly in its export map.
+**Do not** use the `lang/` folder or the `.js` extension.
+For CSS files, do use `style/` but don’t use `.css`:
+
+```js
+import mdx from '@wooorm/starry-night/source.mdx' // Grammar.
+import tritanopiaDark from '@wooorm/starry-night/style/tritanopia-dark' // CSS.
+```
 
 ### `all`
 
@@ -303,7 +313,7 @@ Node representing highlighted code ([`Root`][hast-root]).
 
 ```js
 import {createStarryNight} from '@wooorm/starry-night'
-import sourceCss from '@wooorm/starry-night/lang/source.css.js'
+import sourceCss from '@wooorm/starry-night/source.css'
 
 const starryNight = await createStarryNight([sourceCss])
 
@@ -342,8 +352,8 @@ List of grammar scopes, such as `'text.md'` (`Array<string>`).
 
 ```js
 import {createStarryNight} from '@wooorm/starry-night'
-import textXml from '@wooorm/starry-night/lang/text.xml.js'
-import textXmlSvg from '@wooorm/starry-night/lang/text.xml.svg.js'
+import textXml from '@wooorm/starry-night/text.xml'
+import textXmlSvg from '@wooorm/starry-night/text.xml.svg'
 
 const svg = await createStarryNight([textXmlSvg])
 console.log(svg.missingScopes()) //=> ['text.xml']
@@ -369,8 +379,8 @@ Promise resolving to nothing (`Promise<undefined>`).
 
 ````js
 import {createStarryNight} from '@wooorm/starry-night'
-import sourceCss from '@wooorm/starry-night/lang/source.css.js'
-import textMd from '@wooorm/starry-night/lang/text.md.js'
+import sourceCss from '@wooorm/starry-night/source.css'
+import textMd from '@wooorm/starry-night/text.md'
 import {toHtml} from 'hast-util-to-html'
 
 const markdown = '```css\nem { color: red }\n```'
@@ -564,7 +574,7 @@ for (const node of nodes) {
 <!doctype html>
 <meta charset=utf8>
 <title>Hello</title>
-<link rel=stylesheet href=https://esm.sh/@wooorm/starry-night@2/style/both.css>
+<link rel=stylesheet href=https://esm.sh/@wooorm/starry-night@2/style/both>
 <body>
 <h1>Hello</h1>
 <p>…world!</p>
@@ -997,21 +1007,21 @@ The shipped themes are as follows:
 
 | name | Includes light scheme | Includes dark scheme |
 | - | - | - |
-| [`core.css`](style/core.css) | | |
-| [`light.css`](style/light.css) | ✅ | |
-| [`dark.css`](style/dark.css) | | ✅ |
-| [`both.css`](style/both.css) | ✅ | ✅ |
-| [`colorblind-light.css`](style/colorblind-light.css) | ✅ | |
-| [`colorblind-dark.css`](style/colorblind-dark.css) | | ✅ |
-| [`colorblind.css`](style/colorblind.css) | ✅ | ✅ |
-| [`dimmed-dark.css`](style/dimmed-dark.css) | | ✅ |
-| [`dimmed.css`](style/dimmed.css) | ✅ | ✅ |
-| [`high-contrast-light.css`](style/high-contrast-light.css) | ✅ | |
-| [`high-contrast-dark.css`](style/high-contrast-dark.css) | | ✅ |
-| [`high-contrast.css`](style/high-contrast.css) | ✅ | ✅ |
-| [`tritanopia-light.css`](style/tritanopia-light.css) | ✅ | |
-| [`tritanopia-dark.css`](style/tritanopia-dark.css) | | ✅ |
-| [`tritanopia.css`](style/tritanopia.css) | ✅ | ✅ |
+| [`@wooorm/starry-night/style/core`](style/core.css) | | |
+| [`@wooorm/starry-night/style/light`](style/light.css) | ✅ | |
+| [`@wooorm/starry-night/style/dark`](style/dark.css) | | ✅ |
+| [`@wooorm/starry-night/style/both`](style/both.css) | ✅ | ✅ |
+| [`@wooorm/starry-night/style/colorblind-light`](style/colorblind-light.css) | ✅ | |
+| [`@wooorm/starry-night/style/colorblind-dark`](style/colorblind-dark.css) | | ✅ |
+| [`@wooorm/starry-night/style/colorblind`](style/colorblind.css) | ✅ | ✅ |
+| [`@wooorm/starry-night/style/dimmed-dark`](style/dimmed-dark.css) | | ✅ |
+| [`@wooorm/starry-night/style/dimmed`](style/dimmed.css) | ✅ | ✅ |
+| [`@wooorm/starry-night/style/high-contrast-light`](style/high-contrast-light.css) | ✅ | |
+| [`@wooorm/starry-night/style/high-contrast-dark`](style/high-contrast-dark.css) | | ✅ |
+| [`@wooorm/starry-night/style/high-contrast`](style/high-contrast.css) | ✅ | ✅ |
+| [`@wooorm/starry-night/style/tritanopia-light`](style/tritanopia-light.css) | ✅ | |
+| [`@wooorm/starry-night/style/tritanopia-dark`](style/tritanopia-dark.css) | | ✅ |
+| [`@wooorm/starry-night/style/tritanopia`](style/tritanopia.css) | ✅ | ✅ |
 
 ## Languages
 
