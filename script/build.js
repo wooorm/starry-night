@@ -306,7 +306,7 @@ await Promise.all(
 
     await fs.writeFile(
       outputUrl,
-      prettier.format(
+      await prettier.format(
         [
           "/** @type {import('../lib/index.js').Grammar} */",
           'const grammar = ' +
@@ -526,7 +526,7 @@ await Promise.all(
 
     await fs.writeFile(
       new URL('../lib/' + d + '.js', import.meta.url),
-      prettier.format(
+      await prettier.format(
         [
           '/**',
           " * @typedef {import('./index.js').Grammar} Grammar",
@@ -557,7 +557,7 @@ await Promise.all(
 
     await fs.writeFile(
       new URL('../lang/' + from + '.js', import.meta.url),
-      prettier.format(
+      await prettier.format(
         [
           '// This is an alias, please use `' + to + '.js` instead.',
           'export {default} from "./' + to + '.js"',

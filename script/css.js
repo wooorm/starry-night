@@ -147,7 +147,7 @@ for (const fileName of fileNames) {
     // @ts-expect-error: To do: TS should be able to assign `void` to undefined.
     fs.writeFile(
       new URL(fileName, base),
-      prettier.format(
+      await prettier.format(
         '/* This is a theme distributed by `starry-night`.\n' +
           ' * It’s based on what GitHub uses on their site.\n' +
           ' * See <https://github.com/wooorm/starry-night> for more info. */' +

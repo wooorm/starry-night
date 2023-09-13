@@ -54,7 +54,7 @@
     "vscode-textmate": "^9.0.0"
   },
   "devDependencies": {
-    "@types/css": "^0.0.33",
+    "@types/css": "^0.0.34",
     "@types/json-stable-stringify": "^1.0.0",
     "@types/mdast": "^3.0.0",
     "@types/node": "^20.0.0",
@@ -65,13 +65,13 @@
     "hast-util-to-html": "^8.0.0",
     "json-stable-stringify": "^1.0.0",
     "mdast-zone": "^5.0.0",
-    "prettier": "^2.0.0",
+    "prettier": "^3.0.0",
     "remark-cli": "^11.0.0",
     "remark-preset-wooorm": "^9.0.0",
     "type-coverage": "^2.0.0",
     "typescript": "^5.0.0",
     "unist-builder": "^3.0.0",
-    "xo": "^0.54.0",
+    "xo": "^0.56.0",
     "yaml": "^2.0.0"
   },
   "scripts": {
@@ -82,7 +82,7 @@
     "generate-css": "node --conditions development script/css.js",
     "generate": "npm run generate-build && npm run generate-list && npm run generate-css",
     "build": "tsc --build --clean && tsc --build && type-coverage",
-    "format": "remark . -qfo && prettier . -w --loglevel warn && xo --fix",
+    "format": "remark . -qfo && prettier . -w --log-level warn && xo --fix",
     "test-api": "node --conditions development test.js",
     "test-coverage": "c8 --100 --reporter lcov npm run test-api",
     "test": "npm run generate && npm run build && npm run format && npm run test-coverage"
@@ -133,11 +133,23 @@
       "gems/",
       "lang/"
     ],
+    "overrides": [
+      {
+        "files": [
+          "script/**/*.js"
+        ],
+        "rules": {
+          "no-await-in-loop": "off"
+        }
+      }
+    ],
     "prettier": true,
     "rules": {
       "max-depth": "off",
       "no-bitwise": "off",
       "no-template-curly-in-string": "off",
+      "unicorn/prefer-at": "off",
+      "unicorn/prefer-string-replace-all": "off",
       "unicorn/prefer-top-level-await": "off"
     }
   }
