@@ -25,6 +25,7 @@ const grammar = {
     '.tese',
     '.vert',
     '.vrx',
+    '.vs',
     '.vsh',
     '.vshader'
   ],

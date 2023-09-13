@@ -1774,6 +1774,9 @@ export const info = {
     license: 'mit',
     homepage: 'https://github.com/rescript-lang/rescript-vscode'
   },
+  'source.rez': {
+    homepage: 'https://github.com/textmate/rez.tmbundle'
+  },
   'text.html.riot': {
     license: 'mit'
   },
@@ -1979,6 +1982,9 @@ export const info = {
     license: 'apache-2.0',
     homepage: 'https://github.com/FuelLabs/sway-vscode-plugin'
   },
+  'text.tex.latex.sweave': {
+    homepage: 'https://github.com/textmate/sweave.tmbundle'
+  },
   'source.swift': {
     homepage: 'https://github.com/textmate/swift.tmbundle'
   },
@@ -2006,6 +2012,10 @@ export const info = {
   'source.turtle': {
     license: 'mit',
     homepage: 'https://github.com/peta/turtle.tmbundle'
+  },
+  'source.typst': {
+    license: 'mit',
+    homepage: 'https://github.com/michidk/typst-grammar'
   },
   'source.verilog': {},
   'source.vhdl': {},

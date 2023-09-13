@@ -57,7 +57,8 @@ const grammar = {
           begin: '#',
           beginCaptures: {0: {name: 'punctuation.definition.comment.julia'}},
           end: '\\n',
-          name: 'comment.line.number-sign.julia'
+          name: 'comment.line.number-sign.julia',
+          patterns: [{include: '#comment_tags'}]
         }
       ]
     },
@@ -71,8 +72,19 @@ const grammar = {
           end: '=#',
           endCaptures: {0: {name: 'punctuation.definition.comment.end.julia'}},
           name: 'comment.block.number-sign-equals.julia',
-          patterns: [{include: '#comment_block'}]
+          patterns: [{include: '#comment_tags'}, {include: '#comment_block'}]
         }
+      ]
+    },
+    comment_tags: {
+      patterns: [
+        {match: '\\bTODO\\b', name: 'keyword.other.comment-annotation.julia'},
+        {match: '\\bFIXME\\b', name: 'keyword.other.comment-annotation.julia'},
+        {
+          match: '\\bCHANGED\\b',
+          name: 'keyword.other.comment-annotation.julia'
+        },
+        {match: '\\bXXX\\b', name: 'keyword.other.comment-annotation.julia'}
       ]
     },
     function_call: {
@@ -204,10 +216,11 @@ const grammar = {
         {
           captures: {
             1: {name: 'keyword.operator.relation.types.julia'},
-            2: {name: 'support.type.julia'}
+            2: {name: 'support.type.julia'},
+            3: {name: 'keyword.operator.transpose.julia'}
           },
           match:
-            '(?:\\s*(::|>:|<:)\\s*((?:(?:Union)?\\([^)]*\\)|[[:alpha:]_$∇][[:word:]⁺-ₜ!′\\.]*(?:(?:{(?:[^{}]|{(?:[^{}]|{[^{}]*})*})*})|(?:".+?(?<!\\\\)"))?)))(?:\\.\\.\\.)?'
+            '(?:\\s*(::|>:|<:)\\s*((?:(?:Union)?\\([^)]*\\)|[[:alpha:]_$∇][[:word:]⁺-ₜ!′\\.]*(?:(?:{(?:[^{}]|{(?:[^{}]|{[^{}]*})*})*})|(?:".+?(?<!\\\\)"))?)))(?:\\.\\.\\.)?((?:\\.)?\'*)'
         },
         {
           match:
@@ -527,7 +540,10 @@ const grammar = {
             2: {name: 'support.function.macro.julia'}
           },
           name: 'string.interpolated.backtick.julia',
-          patterns: [{include: '#string_escaped_char'}]
+          patterns: [
+            {include: '#string_escaped_char'},
+            {include: '#string_dollar_sign_interpolate'}
+          ]
         },
         {
           begin:
@@ -542,7 +558,10 @@ const grammar = {
             2: {name: 'support.function.macro.julia'}
           },
           name: 'string.interpolated.backtick.julia',
-          patterns: [{include: '#string_escaped_char'}]
+          patterns: [
+            {include: '#string_escaped_char'},
+            {include: '#string_dollar_sign_interpolate'}
+          ]
         }
       ]
     },
@@ -557,7 +576,11 @@ const grammar = {
           begin: '\\$\\(',
           end: '\\)',
           name: 'variable.interpolation.julia',
-          patterns: [{include: '#parentheses'}, {include: '$self'}]
+          patterns: [
+            {match: '\\bfor\\b', name: 'keyword.control.julia'},
+            {include: '#parentheses'},
+            {include: '$self'}
+          ]
         }
       ]
     },

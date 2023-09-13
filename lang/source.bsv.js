@@ -4,7 +4,7 @@
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
   extensions: ['.bsv'],
-  names: ['bluespec'],
+  names: ['bluespec', 'bluespec-bsv', 'bsv'],
   patterns: [
     {
       captures: {

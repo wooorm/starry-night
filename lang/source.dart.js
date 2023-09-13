@@ -182,7 +182,7 @@ const grammar = {
         {match: '(?<!\\$)\\b(new)\\b(?!\\$)', name: 'keyword.control.new.dart'},
         {
           match:
-            '(?<!\\$)\\b(abstract|sealed|base|interface|class|enum|extends|extension|external|factory|implements|get(?!\\()|mixin|native|operator|set(?!\\()|typedef|with|covariant)\\b(?!\\$)',
+            '(?<!\\$)\\b(abstract|sealed|base|interface|inline class|class|enum|extends|extension|external|factory|implements|get(?!\\()|mixin|native|operator|set(?!\\()|typedef|with|covariant)\\b(?!\\$)',
           name: 'keyword.declaration.dart'
         },
         {

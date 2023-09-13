@@ -64,6 +64,8 @@ const grammar = {
       ]
     },
     command: {
+      begin:
+        '(?<!\\w)(?:(\\^)|(?![0-9]|\\$))([\\w.!]+(?:(?: (?!-)[\\w\\-.!]+(?:(?= |\\))|$)|[\\w\\-.!]+))*|(?<=\\^)\\$?(?:"[^"]+"|\'[^\']+\'))',
       beginCaptures: {
         1: {name: 'keyword.operator.nushell'},
         2: {
@@ -109,9 +111,9 @@ const grammar = {
     'constant-value': {
       patterns: [
         {include: '#constant-keywords'},
+        {include: '#datetime'},
         {include: '#numbers'},
         {include: '#numbers-hexa'},
-        {include: '#datetime'},
         {include: '#binary'}
       ]
     },
@@ -122,7 +124,7 @@ const grammar = {
     },
     datetime: {
       match:
-        '\\b\\d{4}-\\d{2}-\\d{2}(?:T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,3})?(?:\\+\\d{2}:?\\d{2}|Z)?)?\\b',
+        '\\b\\d{4}-\\d{2}-\\d{2}(?:T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?(?:\\+\\d{2}:?\\d{2}|Z)?)?\\b',
       name: 'constant.numeric.nushell'
     },
     'define-alias': {
@@ -470,7 +472,10 @@ const grammar = {
         {include: '#comment'}
       ]
     },
-    'variable-fields': {name: 'variable.other.nushell'},
+    'variable-fields': {
+      match: '(?<=\\)|\\}|\\])(?:\\.(?:[\\w-]+|"[\\w\\- ]+"))+',
+      name: 'variable.other.nushell'
+    },
     variables: {
       captures: {
         1: {
@@ -478,9 +483,10 @@ const grammar = {
             {include: '#internal-variables'},
             {match: '\\$.+', name: 'variable.other.nushell'}
           ]
-        }
+        },
+        2: {name: 'variable.other.nushell'}
       },
-      match: '(\\$[a-zA-Z0-9_]+)'
+      match: '(\\$[a-zA-Z0-9_]+)((?:\\.(?:[\\w-]+|"[\\w\\- ]+"))*)'
     }
   },
   scopeName: 'source.nushell'

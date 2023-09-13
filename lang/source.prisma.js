@@ -129,7 +129,7 @@ const grammar = {
             7: {name: 'invalid.illegal.required_type.prisma'}
           },
           match:
-            '^\\s*(\\w+)(\\s*:)?\\s+((?!(?:Int|String|DateTime|Bytes|Decimal|Float|Json|Boolean)\\b)\\b\\w+)?(Int|String|DateTime|Bytes|Decimal|Float|Json|Boolean)?(\\[\\])?(\\?)?(\\!)?'
+            '^\\s*(\\w+)(\\s*:)?\\s+((?!(?:Int|BigInt|String|DateTime|Bytes|Decimal|Float|Json|Boolean)\\b)\\b\\w+)?(Int|BigInt|String|DateTime|Bytes|Decimal|Float|Json|Boolean)?(\\[\\])?(\\?)?(\\!)?'
         },
         {include: '#attribute_with_arguments'},
         {include: '#attribute'}

@@ -185,7 +185,8 @@ const grammar = {
         {include: '#numbers'},
         {include: '#maps'},
         {include: '#paranthesised'},
-        {include: '#paranthesisedBracket'}
+        {include: '#paranthesisedBracket'},
+        {include: '#regex'}
       ]
     },
     comment: {patterns: [{match: '\\/\\/.*', name: 'comment.ballerina'}]},
@@ -381,7 +382,8 @@ const grammar = {
       patterns: [
         {include: '#keywords'},
         {include: '#expressionWithoutIdentifiers'},
-        {include: '#identifiers'}
+        {include: '#identifiers'},
+        {include: '#regex'}
       ]
     },
     'expression-operators': {
@@ -426,7 +428,39 @@ const grammar = {
         {include: '#ternary-expression'},
         {include: '#expression-operators'},
         {include: '#literal'},
-        {include: '#paranthesised'}
+        {include: '#paranthesised'},
+        {include: '#regex'}
+      ]
+    },
+    'flags-on-off': {
+      name: 'meta.flags.regexp.ballerina',
+      patterns: [
+        {
+          begin: '(\\??)([imsx]*)(-?)([imsx]*)(:)',
+          beginCaptures: {
+            1: {
+              name: 'punctuation.other.non-capturing-group-begin.regexp.ballerina'
+            },
+            2: {
+              name: 'keyword.other.non-capturing-group.flags-on.regexp.ballerina'
+            },
+            3: {
+              name: 'punctuation.other.non-capturing-group.off.regexp.ballerina'
+            },
+            4: {
+              name: 'keyword.other.non-capturing-group.flags-off.regexp.ballerina'
+            },
+            5: {
+              name: 'punctuation.other.non-capturing-group-end.regexp.ballerina'
+            }
+          },
+          end: '()',
+          name: 'constant.other.flag.regexp.ballerina',
+          patterns: [
+            {include: '#regexp'},
+            {include: '#template-substitution-element'}
+          ]
+        }
       ]
     },
     'for-loop': {
@@ -500,7 +534,8 @@ const grammar = {
         {include: '#functionName'},
         {include: '#functionParameters'},
         {include: '#punctuation-semicolon'},
-        {include: '#function-body'}
+        {include: '#function-body'},
+        {include: '#regex'}
       ]
     },
     'function-parameters-body': {
@@ -515,6 +550,7 @@ const grammar = {
         {include: '#array-literal'},
         {include: '#variable-initializer'},
         {include: '#identifiers'},
+        {include: '#regex'},
         {match: '\\,', name: 'punctuation.separator.parameter.ballerina'}
       ]
     },
@@ -742,7 +778,8 @@ const grammar = {
                 {include: '#ternary-expression'},
                 {include: '#expression-operators'},
                 {include: '#literal'},
-                {include: '#paranthesised'}
+                {include: '#paranthesised'},
+                {include: '#regex'}
               ]
             },
             {
@@ -822,7 +859,7 @@ const grammar = {
         },
         {
           match:
-            '\\b(limit|outer|equals|order|by|ascending|descending|class|configurable|variable|module|service)\\b',
+            '\\b(limit|outer|equals|order|by|ascending|descending|class|configurable|variable|module|service|group|collect)\\b',
           name: 'keyword.other.ballerina'
         },
         {
@@ -1254,7 +1291,8 @@ const grammar = {
         {include: '#stringTemplate'},
         {include: '#parameter-name'},
         {include: '#variable-initializer'},
-        {include: '#expression'}
+        {include: '#expression'},
+        {include: '#regex'}
       ]
     },
     paranthesisedBracket: {
@@ -1304,6 +1342,126 @@ const grammar = {
         }
       ]
     },
+    regex: {
+      patterns: [
+        {
+          begin: '(\\bre)(\\s*)(`)',
+          beginCaptures: {
+            1: {name: 'support.type.primitive.ballerina'},
+            3: {name: 'punctuation.definition.regexp.template.begin.ballerina'}
+          },
+          end: '`',
+          endCaptures: {
+            1: {name: 'punctuation.definition.regexp.template.end.ballerina'}
+          },
+          name: 'regexp.template.ballerina',
+          patterns: [
+            {include: '#template-substitution-element'},
+            {include: '#regexp'}
+          ]
+        }
+      ]
+    },
+    'regex-character-class': {
+      patterns: [
+        {
+          match: '\\\\[wWsSdDtrn]|\\.',
+          name: 'keyword.other.character-class.regexp.ballerina'
+        },
+        {
+          match: '\\\\[^pPu]',
+          name: 'constant.character.escape.backslash.regexp'
+        }
+      ]
+    },
+    'regex-unicode-properties-general-category': {
+      patterns: [
+        {
+          match:
+            '(Lu|Ll|Lt|Lm|Lo|L|Mn|Mc|Me|M|Nd|Nl|No|N|Pc|Pd|Ps|Pe|Pi|Pf|Po|P|Sm|Sc|Sk|So|S|Zs|Zl|Zp|Z|Cf|Cc|Cn|Co|C)',
+          name: 'constant.other.unicode-property-general-category.regexp.ballerina'
+        }
+      ]
+    },
+    'regex-unicode-property-key': {
+      patterns: [
+        {
+          begin: '(sc=|gc=)',
+          beginCaptures: {
+            1: {name: 'keyword.other.unicode-property-key.regexp.ballerina'}
+          },
+          end: '()',
+          endCaptures: {
+            1: {name: 'punctuation.other.unicode-property.end.regexp.ballerina'}
+          },
+          name: 'keyword.other.unicode-property-key.regexp.ballerina',
+          patterns: [{include: '#regex-unicode-properties-general-category'}]
+        }
+      ]
+    },
+    regexp: {
+      patterns: [
+        {match: '\\^|\\$', name: 'keyword.control.assertion.regexp.ballerina'},
+        {
+          match: '[?+*]|\\{(\\d+,\\d+|\\d+,|,\\d+|\\d+)\\}\\??',
+          name: 'keyword.operator.quantifier.regexp.ballerina'
+        },
+        {match: '\\|', name: 'keyword.operator.or.regexp.ballerina'},
+        {
+          begin: '(\\()',
+          beginCaptures: {
+            1: {name: 'punctuation.definition.group.regexp.ballerina'}
+          },
+          end: '(\\))',
+          endCaptures: {
+            1: {name: 'punctuation.definition.group.regexp.ballerina'}
+          },
+          name: 'meta.group.assertion.regexp.ballerina',
+          patterns: [
+            {include: '#template-substitution-element'},
+            {include: '#regexp'},
+            {include: '#flags-on-off'},
+            {include: '#unicode-property-escape'}
+          ]
+        },
+        {
+          begin: '(\\[)(\\^)?',
+          beginCaptures: {
+            1: {
+              name: 'punctuation.definition.character-class.start.regexp.ballerina'
+            },
+            2: {name: 'keyword.operator.negation.regexp.ballerina'}
+          },
+          end: '(\\])',
+          endCaptures: {
+            1: {
+              name: 'punctuation.definition.character-class.end.regexp.ballerina'
+            }
+          },
+          name: 'constant.other.character-class.set.regexp.ballerina',
+          patterns: [
+            {
+              captures: {
+                1: {name: 'constant.character.numeric.regexp'},
+                2: {name: 'constant.character.escape.backslash.regexp'},
+                3: {name: 'constant.character.numeric.regexp'},
+                4: {name: 'constant.character.escape.backslash.regexp'}
+              },
+              match:
+                '(?:.|(\\\\(?:[0-7]{3}|x[0-9A-Fa-f]{2}|u[0-9A-Fa-f]{4}))|(\\\\[^pPu]))\\-(?:[^\\]\\\\]|(\\\\(?:[0-7]{3}|x[0-9A-Fa-f]{2}|u[0-9A-Fa-f]{4}))|(\\\\[^pPu]))',
+              name: 'constant.other.character-class.range.regexp.ballerina'
+            },
+            {include: '#regex-character-class'},
+            {include: '#unicode-values'},
+            {include: '#unicode-property-escape'}
+          ]
+        },
+        {include: '#template-substitution-element'},
+        {include: '#regex-character-class'},
+        {include: '#unicode-values'},
+        {include: '#unicode-property-escape'}
+      ]
+    },
     'self-literal': {
       patterns: [
         {
@@ -1343,7 +1501,14 @@ const grammar = {
       ]
     },
     serviceName: {
-      patterns: [{include: '#string'}, {name: 'entity.service.path.ballerina'}]
+      patterns: [
+        {include: '#string'},
+        {
+          match:
+            '(\\/([_$[:alpha:]][_$[:alnum:]]*)|\\"[_$[:alpha:]][_$[:alnum:]]*\\")',
+          name: 'entity.service.path.ballerina'
+        }
+      ]
     },
     serviceOn: {
       patterns: [
@@ -1379,7 +1544,8 @@ const grammar = {
         {include: '#comment'},
         {include: '#mdDocumentation'},
         {include: '#keywords'},
-        {include: '#annotationAttachment'}
+        {include: '#annotationAttachment'},
+        {include: '#regex'}
       ]
     },
     string: {
@@ -1520,6 +1686,7 @@ const grammar = {
           patterns: [
             {include: '#booleans'},
             {include: '#stringTemplate'},
+            {include: '#regex'},
             {include: '#self-literal'},
             {include: '#xml'},
             {include: '#call'},
@@ -1647,6 +1814,50 @@ const grammar = {
         {match: '\\b(stream)\\b', name: 'storage.type.ballerina'}
       ]
     },
+    'unicode-property-escape': {
+      patterns: [
+        {
+          begin: '(\\\\p|\\\\P)(\\{)',
+          beginCaptures: {
+            1: {name: 'keyword.other.unicode-property.regexp.ballerina'},
+            2: {
+              name: 'punctuation.other.unicode-property.begin.regexp.ballerina'
+            }
+          },
+          end: '(\\})',
+          endCaptures: {
+            1: {name: 'punctuation.other.unicode-property.end.regexp.ballerina'}
+          },
+          name: 'keyword.other.unicode-property.regexp.ballerina',
+          patterns: [
+            {include: '#regex-unicode-properties-general-category'},
+            {include: '#regex-unicode-property-key'}
+          ]
+        }
+      ]
+    },
+    'unicode-values': {
+      patterns: [
+        {
+          begin: '(\\\\u)(\\{)',
+          beginCaptures: {
+            1: {name: 'keyword.other.unicode-value.regexp.ballerina'},
+            2: {name: 'punctuation.other.unicode-value.begin.regexp.ballerina'}
+          },
+          end: '(\\})',
+          endCaptures: {
+            1: {name: 'punctuation.other.unicode-value.end.regexp.ballerina'}
+          },
+          name: 'keyword.other.unicode-value.ballerina',
+          patterns: [
+            {
+              match: '([0-9A-Fa-f]{1,6})',
+              name: 'constant.other.unicode-value.regexp.ballerina'
+            }
+          ]
+        }
+      ]
+    },
     'var-expr': {
       patterns: [
         {
@@ -1677,7 +1888,8 @@ const grammar = {
             {include: '#punctuation-comma'},
             {include: '#type-annotation'},
             {include: '#keywords'},
-            {include: '#type-tuple'}
+            {include: '#type-tuple'},
+            {include: '#regex'}
           ]
         },
         {include: '#punctuation-comma'},
@@ -1725,7 +1937,8 @@ const grammar = {
             {include: '#punctuation-comma'},
             {include: '#type-annotation'},
             {include: '#keywords'},
-            {include: '#type-tuple'}
+            {include: '#type-tuple'},
+            {include: '#regex'}
           ]
         },
         {include: '#punctuation-comma'}
@@ -1804,7 +2017,8 @@ const grammar = {
             {include: '#xml'},
             {include: '#function-defn'},
             {include: '#expression'},
-            {include: '#punctuation-accessor'}
+            {include: '#punctuation-accessor'},
+            {include: '#regex'}
           ]
         },
         {

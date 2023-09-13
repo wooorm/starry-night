@@ -21,7 +21,7 @@ const grammar = {
             1: {name: 'keyword.control.class.rbs'},
             2: {name: 'entity.name.class'}
           },
-          match: '\\b(class)\\s+([A-Z]\\w*)',
+          match: '\\b(class)\\s+((::)?([A-Z]\\w*(::))*[A-Z]\\w*)',
           name: 'keyword.control.class.rbs'
         },
         {match: '\\b(type)\\b', name: 'keyword.control.type.rbs'},
@@ -47,7 +47,7 @@ const grammar = {
             1: {name: 'keyword.control.interface.rbs'},
             2: {name: 'entity.name.class'}
           },
-          match: '\\b(interface)\\s+(_[A-Z]\\w*)',
+          match: '\\b(interface)\\s+((::)?([A-Z]\\w*(::))*_[A-Z]\\w*)',
           name: 'keyword.control.interface.rbs'
         },
         {match: '\\b(end)\\b', name: 'keyword.control.end.rbs'},
@@ -56,7 +56,7 @@ const grammar = {
             1: {name: 'keyword.control.include.rbs'},
             2: {name: 'variable.other.constant.rbs'}
           },
-          match: '\\b(include)\\s+(_?[A-Z]\\w*)',
+          match: '\\b(include)\\s+((::)?([A-Z]\\w*(::))*_?[A-Z]\\w*)',
           name: 'keyword.control.include.rbs'
         },
         {
@@ -64,7 +64,7 @@ const grammar = {
             1: {name: 'keyword.control.extend.rbs'},
             2: {name: 'variable.other.constant.rbs'}
           },
-          match: '\\b(extend)\\s+(_?[A-Z]\\w*)',
+          match: '\\b(extend)\\s+((::)?([A-Z]\\w*(::))*_?[A-Z]\\w*)',
           name: 'keyword.control.extend.rbs'
         },
         {
@@ -72,7 +72,7 @@ const grammar = {
             1: {name: 'keyword.control.prepend.rbs'},
             2: {name: 'variable.other.constant.rbs'}
           },
-          match: '\\b(prepend)\\s+([A-Z]\\w*)',
+          match: '\\b(prepend)\\s+((::)?([A-Z]\\w*(::))*[A-Z]\\w*)',
           name: 'keyword.control.prepend.rbs'
         },
         {
@@ -80,7 +80,7 @@ const grammar = {
             1: {name: 'keyword.control.module.rbs'},
             2: {name: 'entity.name.class'}
           },
-          match: '\\b(module)\\s+([A-Z]\\w*)',
+          match: '\\b(module)\\s+((::)?([A-Z]\\w*(::))*[A-Z]\\w*)',
           name: 'keyword.control.module.rbs'
         },
         {match: '\\b(attr_reader)\\b', name: 'keyword.control.attr_reader.rbs'},

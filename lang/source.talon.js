@@ -46,7 +46,7 @@ const grammar = {
         },
         4: {name: 'punctuation.definition.parameters.key.talon'}
       },
-      match: '(deck|gamepad|action)(\\()(.*)(\\))',
+      match: '(deck|gamepad|action|face|parrot)(\\()(.*)(\\))',
       name: 'entity.name.function.talon'
     },
     'action-key': {
@@ -134,7 +134,7 @@ const grammar = {
       name: 'constant.character.format.placeholder.talon'
     },
     header: {
-      begin: '(?=^app:|title:|os:|tag:)',
+      begin: '(?=^app:|title:|os:|tag:|list:|language:)',
       end: '(?=^-$)',
       patterns: [{include: '#comment'}, {include: '#context'}]
     },
@@ -143,7 +143,7 @@ const grammar = {
         1: {name: 'keyword.operator.talon'},
         2: {name: 'keyword.control.talon'}
       },
-      match: '(:)(up|down|change|repeat|\\d+)',
+      match: '(:)(up|down|change|repeat|start|stop|\\d+)',
       name: 'keyword.operator.talon'
     },
     'key-prefixes': {

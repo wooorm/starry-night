@@ -26,7 +26,7 @@ const grammar = {
     assembly: {
       patterns: [
         {
-          captures: {1: {name: 'keyword'}},
+          captures: {1: {name: 'entity.name.function'}},
           match:
             '\\b(?<!\\.)(stop|add|sub|mul|div|sdiv|mod|smod|exp|not|lt|gt|slt|sgt|eq|iszero|and|or|xor|byte|shl|shr|sar|addmod|mulmod|signextend|keccak256|pc|pop|mload|mstore|mstore8|sload|sstore|msize|gas|address|balance|selfbalance|caller|callvalue|calldataload|calldatasize|calldatacopy|codesize|codecopy|extcodesize|extcodecopy|returndatasize|returndatacopy|extcodehash|create|create2|call|callcode|delegatecall|staticcall|return|revert|selfdestruct|invalid|log0|log1|log2|log3|log4|chainid|basefee|origin|gasprice|blockhash|coinbase|timestamp|number|difficulty|gaslimit)\\s*\\('
         },
@@ -174,8 +174,12 @@ const grammar = {
         {match: '\\bnew\\b', name: 'keyword'},
         {match: '\\banonymous\\b', name: 'keyword'},
         {match: '\\bunchecked\\b', name: 'keyword'},
-        {match: '([\\"].*?[\\"])', name: 'string.quoted'},
-        {match: "([\\'].*?[\\'])", name: 'string.quoted'}
+        {
+          begin: '(?<!\\\\)[\\"\\\']',
+          end: '(?<!\\\\)[\\"\\\']',
+          name: 'string.quoted',
+          patterns: [{include: '#string'}]
+        }
       ]
     },
     numbers: {
@@ -184,6 +188,13 @@ const grammar = {
           match: '\\b(?:[+-]?\\.?\\d[\\d_eE]*)(?:\\.\\d+[\\deE]*)?\\b',
           name: 'constant.numeric'
         }
+      ]
+    },
+    string: {
+      patterns: [
+        {match: '\\\\"', name: 'constant.character.escape'},
+        {match: "\\\\'", name: 'constant.character.escape'},
+        {match: '.', name: 'string.quoted'}
       ]
     }
   },

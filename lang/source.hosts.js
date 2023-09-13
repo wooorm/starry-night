@@ -7,7 +7,7 @@
 const grammar = {
   dependencies: ['etc'],
   extensions: [],
-  names: ['hosts-file'],
+  names: ['hosts-file', 'hosts'],
   patterns: [{include: '#main'}],
   repository: {
     host: {

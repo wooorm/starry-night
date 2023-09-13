@@ -58,7 +58,7 @@ const grammar = {
         },
         {
           match:
-            '(?i:\\b(Attribute|Call|End (Function|Property|Sub|Type|Enum)|(Static )?(Const|Function|Property|Sub|Type|Enum)|Declare|PtrSafe|WithEvents|Event|RaiseEvent)\\b)',
+            '(?i:\\b(Attribute|Call|End (Function|Property|Sub|Type|Enum)|(Const|Function|Property|Sub|Type|Enum)|Declare|PtrSafe|WithEvents|Event|RaiseEvent)\\b)',
           name: 'keyword.other.vba'
         },
         {
@@ -87,7 +87,7 @@ const grammar = {
       patterns: [
         {
           match:
-            '(?i)\\b(Class|Const|Dim|(G|L|S)et|ReDim( Preserve)?|Erase)\\b',
+            '(?i)\\b(Class|Const|Dim|(G|L|S)et|ReDim( Preserve)?|Erase|Static)\\b',
           name: 'storage.modifier.vba'
         }
       ]
@@ -102,7 +102,7 @@ const grammar = {
         },
         {
           captures: {1: {name: 'support.type'}},
-          match: '(?i)(?<= As )([a-zA-Z]+)'
+          match: '(?i)(?<= As )([a-zA-Z][a-zA-Z0-9_]*)'
         }
       ]
     }

@@ -9,6 +9,7 @@ const grammar = {
   names: ['rescript'],
   patterns: [
     {include: '#storage'},
+    {include: '#ffi-single'},
     {include: '#ffi'},
     {include: '#constant'},
     {include: '#commentLine'},
@@ -141,6 +142,17 @@ const grammar = {
       },
       name: 'source.embedded.javascript',
       patterns: [{include: 'source.js'}]
+    },
+    'ffi-single': {
+      captures: {
+        1: {name: 'punctuation.decorator'},
+        2: {name: 'entity.name.function'},
+        4: {name: 'punctuation.definition.string.template.begin.embedded-js'},
+        5: {patterns: [{include: 'source.js'}]},
+        6: {name: 'punctuation.definition.string.template.end.embedded-js'}
+      },
+      match: '(%|%%)(raw|ffi)(\\()(`)(.*?)(`)(\\))',
+      name: 'source.embedded.javascript.single'
     },
     function: {
       patterns: [

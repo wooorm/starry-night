@@ -3517,10 +3517,7 @@ SOFTWARE.
 
 License from source file: README.md
 
-This extension is licensed under the MIT License. See the [LICENSE][license]
-file for details.
-
-[license]: https://github.com/AdguardTeam/VscodeAdblockSyntax/blob/master/LICENSE.md
+This extension is licensed under the MIT License. See the [LICENSE][license] file for details.
 
 =========================================================================================================
 Files in `starry-night`: lang/source.whiley.js
@@ -10387,7 +10384,7 @@ SPDX: isc
 ---------------------------------------------------------------------------------------------------------
 License from source file: LICENSE.md
 
-Copyright (c) 2016-2021, John Gardner
+Copyright (c) 2016-2023, John Gardner
 
 Permission to use, copy, modify, and/or distribute this software for any
 purpose with or without fee is hereby granted, provided that the above
@@ -15191,6 +15188,22 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 =========================================================================================================
+Files in `starry-night`: lang/source.rez.js
+From source: <https://github.com/textmate/rez.tmbundle>
+SPDX: permissive
+---------------------------------------------------------------------------------------------------------
+License from source file: README.mdown
+
+If not otherwise specified (see below), files in this repository fall under the following license:
+
+	Permission to copy, use, modify, sell and distribute this
+	software is granted. This software is provided "as is" without
+	express or implied warranty, and with no claim as to its
+	suitability for any purpose.
+
+An exception is made for files in readable text which contain their own license information, or files where an accompanying file exists (in the same directory) with a “-license” suffix added to the base-name name of the original file, and an extension of txt, html, or similar. For example “tidy” is accompanied by “tidy-license.txt”.
+
+=========================================================================================================
 Files in `starry-night`: lang/text.html.riot.js
 From source: <>
 SPDX: mit
@@ -17951,6 +17964,22 @@ License from source file: LICENSE
 
 
 =========================================================================================================
+Files in `starry-night`: lang/text.tex.latex.sweave.js
+From source: <https://github.com/textmate/sweave.tmbundle>
+SPDX: permissive
+---------------------------------------------------------------------------------------------------------
+License from source file: README.mdown
+
+If not otherwise specified (see below), files in this repository fall under the following license:
+
+	Permission to copy, use, modify, sell and distribute this
+	software is granted. This software is provided "as is" without
+	express or implied warranty, and with no claim as to its
+	suitability for any purpose.
+
+An exception is made for files in readable text which contain their own license information, or files where an accompanying file exists (in the same directory) with a “-license” suffix added to the base-name name of the original file, and an extension of txt, html, or similar. For example “tidy” is accompanied by “tidy-license.txt”.
+
+=========================================================================================================
 Files in `starry-night`: lang/source.swift.js
 From source: <https://github.com/textmate/swift.tmbundle>
 SPDX: permissive
@@ -18122,6 +18151,32 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+=========================================================================================================
+Files in `starry-night`: lang/source.typst.js
+From source: <https://github.com/michidk/typst-grammar>
+SPDX: mit
+---------------------------------------------------------------------------------------------------------
+License from source file: LICENSE
+
+The MIT License (MIT)
+Copyright (c) 2023 Nathan Varner
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
 
 =========================================================================================================
 Files in `starry-night`: lang/source.verilog.js
@@ -19192,7 +19247,7 @@ License from source file: LICENSE
 
 MIT License
 
-Copyright (c) 2021 Tshaka Eric Lekholoane
+Copyright (c) 2023 Tshaka Eric Lekholoane
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

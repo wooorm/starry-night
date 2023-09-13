@@ -190,6 +190,7 @@ const grammar = {
         {include: '#scriptTag'},
         {include: '#styleTag'},
         {include: '#tag'},
+        {include: '#unescapedBracket'},
         {include: '#unmatchedTag'}
       ]
     },
@@ -283,7 +284,7 @@ const grammar = {
         1: {name: 'punctuation.definition.tag.opening.begin.xml.svg'},
         2: {patterns: [{include: '#tagName'}]}
       },
-      end: '(?i)(</)(\\2)\\s*(>)|(/>)',
+      end: '(?i)(</)(\\2)(?:\\s*(>)|(?=\\s*$))|(/>)',
       endCaptures: {
         1: {name: 'punctuation.definition.tag.closing.begin.xml.svg'},
         2: {patterns: [{include: '#tagName'}]},
@@ -315,6 +316,10 @@ const grammar = {
           name: 'entity.name.tag.localname.xml.svg'
         }
       ]
+    },
+    unescapedBracket: {
+      match: '^\\s*(>)',
+      name: 'punctuation.definition.tag.closing.end.xml.svg'
     },
     unmatchedTag: {
       match: '(</)([A-Za-z_:][-\\w.:]*)\\s*(>)',

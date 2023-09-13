@@ -10,9 +10,9 @@ const grammar = {
   patterns: [
     {include: '#comment'},
     {include: '#semicolon'},
-    {include: '#key_value'},
     {include: '#spread_substitution'},
     {include: '#spread_import'},
+    {include: '#key_value'},
     {include: '#key'},
     {include: '#error'}
   ],
@@ -25,6 +25,7 @@ const grammar = {
       patterns: [
         {include: '#comment'},
         {include: '#semicolon'},
+        {include: '#substitution'},
         {include: '#import'},
         {include: '#spread_substitution'},
         {include: '#spread_import'},
@@ -113,6 +114,7 @@ const grammar = {
         {match: '\\*', name: 'keyword.operator.glob.d2'},
         {match: '\\*\\*', name: 'keyword.operator.double_glob.d2'},
         {match: '&', name: 'keyword.operator.ampersand.d2'},
+        {match: '!&', name: 'keyword.operator.not_ampersand.d2'},
         {
           begin:
             '(?=[^[:space:]\\n#;\\[\\]{}|$\'":.<>*&()])(?!-+-)(?!-+>)(?!-+\\*)',
@@ -179,9 +181,9 @@ const grammar = {
       patterns: [{include: '#key'}]
     },
     spread_substitution: {
-      begin: '\\.\\.\\.\\$',
+      begin: '\\.\\.\\.\\$\\{',
       captures: {0: {name: 'keyword.operator.substitution.d2'}},
-      end: '(?=\\s*[\\n#;\\[\\]{}|$])',
+      end: '\\}',
       name: 'meta.operator.substitution.d2',
       patterns: [{include: '#key'}]
     },
@@ -266,9 +268,9 @@ const grammar = {
       ]
     },
     substitution: {
-      begin: '\\$',
+      begin: '\\$\\{',
       captures: {0: {name: 'keyword.operator.substitution.d2'}},
-      end: '(?=\\s*[\\n#;\\[\\]{}|$])',
+      end: '\\}',
       name: 'meta.operator.substitution.d2',
       patterns: [{include: '#key'}]
     },

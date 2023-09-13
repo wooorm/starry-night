@@ -123,9 +123,9 @@ GitHub is using `PrettyLights` since December 2014, when it
 They wanted to open source it, but [were unable][ref-2] due to licensing issues.
 Recently ([Feb 2019][ref-3]?), GitHub has slowly started to move towards
 `TreeLights`, which is based on TreeSitter, and also closed source.
-If `TreeLights` includes a language (currently: CSS, CodeQL, EJS, Elixir, Go,
-HTML, JS, PHP, Python, Ruby, TS), that’ll be used, for everything else
-`PrettyLights` is used.
+If `TreeLights` includes a language (currently: C, C#, CSS, CodeQL, EJS, Elixir,
+ERB, Gleam, Go, HTML, Java, JS, Nix, PHP, Python, RegEx, Ruby, Rust, TLA, TS),
+that’ll be used, for everything else `PrettyLights` is used.
 
 `starry-night` does what `PrettyLights` does, not what `TreeLights` does.
 I’m hopeful that that will be open sourced in the future and we can mimic both.
@@ -1432,6 +1432,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.renpy`](lang/source.renpy.js) (mit) — [upstream](https://github.com/williamd1k0/language-renpy) — needs: `source.regexp.python`
 *   [ ] [`source.rescript`](lang/source.rescript.js) (mit) — [upstream](https://github.com/rescript-lang/rescript-vscode)
 *   [ ] [`source.rexx`](lang/source.rexx.js) (mit) — [upstream](https://github.com/mblocker/rexx-sublime)
+*   [ ] [`source.rez`](lang/source.rez.js) — [upstream](https://github.com/textmate/rez.tmbundle)
 *   [ ] [`source.ring`](lang/source.ring.js) (mit)
 *   [ ] [`source.rpgle`](lang/source.rpgle.js) (mit) — [upstream](https://github.com/barrettotte/vscode-ibmi-languages) — needs: `source.sql`
 *   [ ] [`source.rpm-spec`](lang/source.rpm-spec.js) (mit) — needs: `source.changelogs.rpm-spec`, `source.shell`
@@ -1494,6 +1495,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.turing`](lang/source.turing.js) (isc) — [upstream](https://github.com/Alhadis/language-turing)
 *   [ ] [`source.turtle`](lang/source.turtle.js) (mit) — [upstream](https://github.com/peta/turtle.tmbundle)
 *   [ ] [`source.txl`](lang/source.txl.js) (apache-2.0) — [upstream](https://github.com/MikeHoffert/Sublime-Text-TXL-syntax)
+*   [ ] [`source.typst`](lang/source.typst.js) (mit) — [upstream](https://github.com/michidk/typst-grammar)
 *   [ ] [`source.ur`](lang/source.ur.js) (mit)
 *   [ ] [`source.v`](lang/source.v.js) (mit) — [upstream](https://github.com/0x9ef/vscode-vlang)
 *   [ ] [`source.vala`](lang/source.vala.js) (mit) — [upstream](https://github.com/technosophos/Vala-TMBundle)
@@ -1599,6 +1601,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`text.tex`](lang/text.tex.js) — [upstream](https://github.com/textmate/latex.tmbundle) — needs: `source.r`
 *   [ ] [`text.tex.latex`](lang/text.tex.latex.js) — [upstream](https://github.com/textmate/latex.tmbundle) — needs: `text.tex`
 *   [ ] [`text.tex.latex.haskell`](lang/text.tex.latex.haskell.js) (mit) — [upstream](https://github.com/atom-haskell/language-haskell) — needs: `source.haskell`, `text.tex.latex`
+*   [ ] [`text.tex.latex.sweave`](lang/text.tex.latex.sweave.js) — [upstream](https://github.com/textmate/sweave.tmbundle)
 *   [ ] [`text.texinfo`](lang/text.texinfo.js) (isc) — [upstream](https://github.com/Alhadis/language-texinfo)
 *   [ ] [`text.vim-help`](lang/text.vim-help.js) (mit) — [upstream](https://github.com/Alhadis/language-viml) — needs: `source.viml`
 *   [ ] [`text.vtt`](lang/text.vtt.js) (isc) — [upstream](https://github.com/Alhadis/language-subtitles) — needs: `text.html.basic`

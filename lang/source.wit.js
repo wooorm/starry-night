@@ -9,28 +9,37 @@ const grammar = {
   names: ['webassembly-interface-type', 'wit'],
   patterns: [
     {include: '#comment'},
+    {include: '#package'},
+    {include: '#toplevel-use'},
     {include: '#world'},
-    {include: '#interface'}
+    {include: '#interface'},
+    {include: '#whitespace'}
   ],
   repository: {
     'block-comments': {
       patterns: [
         {match: '/\\*\\*/', name: 'comment.block.empty.wit'},
         {
+          applyEndPatternLast: true,
           begin: '/\\*\\*',
           end: '\\*/',
           name: 'comment.block.documentation.wit',
-          patterns: [{include: '#block-comments'}]
+          patterns: [
+            {include: '#block-comments'},
+            {include: '#markdown'},
+            {include: '#whitespace'}
+          ]
         },
         {
+          applyEndPatternLast: true,
           begin: '/\\*(?!\\*)',
           end: '\\*/',
           name: 'comment.block.wit',
-          patterns: [{include: '#block-comments'}]
+          patterns: [{include: '#block-comments'}, {include: '#whitespace'}]
         }
       ]
     },
-    boolean: {match: '\\s*\\b(bool)\\b', name: 'entity.name.type.boolean.wit'},
+    boolean: {match: '\\b(bool)\\b', name: 'entity.name.type.boolean.wit'},
     comment: {
       patterns: [
         {include: '#block-comments'},
@@ -49,22 +58,28 @@ const grammar = {
       ]
     },
     'doc-comment': {
-      match: '^\\s*///.*',
-      name: 'comment.line.documentation.wit'
+      begin: '^\\s*///',
+      end: '$',
+      name: 'comment.line.documentation.wit',
+      patterns: [{include: '#markdown'}]
     },
     enum: {
       applyEndPatternLast: true,
       begin:
-        '\\s*\\b(enum)\\b\\s+((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\s*(\\{)\\s*',
+        '\\b(enum)\\b\\s+%?((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\s*(\\{)',
       beginCaptures: {
         1: {name: 'keyword.other.enum.enum-items.wit'},
         2: {name: 'entity.name.type.id.enum-items.wit'},
         7: {name: 'punctuation.brackets.curly.begin.wit'}
       },
-      end: '\\s*(\\})\\s*',
+      end: '(\\})',
       endCaptures: {1: {name: 'punctuation.brackets.curly.end.wit'}},
       name: 'meta.enum-items.wit',
-      patterns: [{include: '#comment'}, {include: '#enum-cases'}]
+      patterns: [
+        {include: '#comment'},
+        {include: '#enum-cases'},
+        {include: '#whitespace'}
+      ]
     },
     'enum-cases': {
       name: 'meta.enum-cases.wit',
@@ -72,10 +87,11 @@ const grammar = {
         {include: '#comment'},
         {
           match:
-            '\\s*\\b((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\b',
+            '\\b%?((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\b',
           name: 'variable.other.enummember.id.enum-cases.wit'
         },
-        {match: '\\s*(\\,)', name: 'punctuation.comma.wit'}
+        {match: '(\\,)', name: 'punctuation.comma.wit'},
+        {include: '#whitespace'}
       ]
     },
     extern: {
@@ -85,14 +101,19 @@ const grammar = {
           name: 'meta.interface-type.wit',
           patterns: [
             {
-              begin: '\\s*\\b(interface)\\b\\s*(\\{)\\s*',
+              applyEndPatternLast: true,
+              begin: '\\b(interface)\\b\\s*(\\{)',
               beginCaptures: {
                 1: {name: 'keyword.other.interface.interface-type.wit'},
                 2: {name: 'ppunctuation.brackets.curly.begin.wit'}
               },
-              end: '\\s*(\\})\\s*',
+              end: '(\\})',
               endCaptures: {1: {name: 'punctuation.brackets.curly.end.wit'}},
-              patterns: [{include: '#comment'}, {include: '#interface-items'}]
+              patterns: [
+                {include: '#comment'},
+                {include: '#interface-items'},
+                {include: '#whitespace'}
+              ]
             }
           ]
         },
@@ -103,16 +124,20 @@ const grammar = {
     flags: {
       applyEndPatternLast: true,
       begin:
-        '\\s*\\b(flags)\\s+((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\s*(\\{)\\s*',
+        '\\b(flags)\\s+%?((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\s*(\\{)',
       beginCaptures: {
         1: {name: 'keyword.other.flags.flags-items.wit'},
         2: {name: 'entity.name.type.id.flags-items.wit'},
         7: {name: 'punctuation.brackets.curly.begin.wit'}
       },
-      end: '\\s*(\\})\\s*',
+      end: '(\\})',
       endCaptures: {1: {name: 'punctuation.brackets.curly.end.wit'}},
       name: 'meta.flags-items.wit',
-      patterns: [{include: '#comment'}, {include: '#flags-fields'}]
+      patterns: [
+        {include: '#comment'},
+        {include: '#flags-fields'},
+        {include: '#whitespace'}
+      ]
     },
     'flags-fields': {
       name: 'meta.flags-fields.wit',
@@ -120,67 +145,45 @@ const grammar = {
         {include: '#comment'},
         {
           match:
-            '\\s*\\b((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\b',
+            '\\b%?((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\b',
           name: 'variable.other.enummember.id.flags-fields.wit'
         },
-        {match: '\\s*(\\,)', name: 'punctuation.comma.wit'}
+        {match: '(\\,)', name: 'punctuation.comma.wit'},
+        {include: '#whitespace'}
       ]
     },
     function: {
       applyEndPatternLast: true,
       begin:
-        '\\s*\\b(static\\s+)?((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\s*(\\:)\\s*',
+        '\\b%?((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\s*(\\:)',
       beginCaptures: {
-        1: {name: 'storage.modifier.static.func-item.wit'},
-        2: {name: 'entity.name.function.id.func-item.wit'},
-        3: {name: 'meta.word.wit'},
-        5: {name: 'meta.word-separator.wit'},
-        6: {name: 'meta.word.wit'},
-        7: {name: 'keyword.operator.key-value.wit'}
+        1: {name: 'entity.name.function.id.func-item.wit'},
+        2: {name: 'meta.word.wit'},
+        4: {name: 'meta.word-separator.wit'},
+        5: {name: 'meta.word.wit'},
+        6: {name: 'keyword.operator.key-value.wit'}
       },
-      end: '\\s*(?<=\\n)',
+      end: '((?<=\\n)|(?=\\}))',
       name: 'meta.func-item.wit',
-      patterns: [{include: '#function-definition'}]
+      patterns: [{include: '#function-definition'}, {include: '#whitespace'}]
     },
     'function-definition': {
       name: 'meta.func-type.wit',
       patterns: [
         {
           applyEndPatternLast: true,
-          begin: '\\s*\\b(func)\\b\\s*(\\()\\s*',
+          begin: '\\b(static\\s+)?(func)\\b',
           beginCaptures: {
-            1: {name: 'keyword.other.func.func-type.wit'},
-            2: {name: 'punctuation.brackets.round.begin.wit'}
+            1: {name: 'storage.modifier.static.func-item.wit'},
+            2: {name: 'keyword.other.func.func-type.wit'}
           },
-          end: '\\s*(\\))\\s*((\\-\\>)(.+))?\\s*',
-          endCaptures: {
-            1: {name: 'punctuation.brackets.round.end.wit'},
-            2: {name: 'meta.result-list.wit'},
-            3: {name: 'keyword.operator.arrow.skinny.wit'},
-            4: {
-              name: 'meta.types.result-list.wit',
-              patterns: [{include: '#comment'}, {include: '#types'}]
-            }
-          },
+          end: '((?<=\\n)|(?=\\}))',
           name: 'meta.function.wit',
           patterns: [
             {include: '#comment'},
-            {
-              applyEndPatternLast: true,
-              begin:
-                '\\s*\\b((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\b\\s*(\\:)\\s*',
-              beginCaptures: {
-                1: {name: 'variable.parameter.id.named-type.wit'},
-                6: {name: 'keyword.operator.key-value.wit'}
-              },
-              end: '\\s*(\\,)?\\s*',
-              endCaptures: {1: {name: 'punctuation.comma.wit'}},
-              name: 'meta.named-type-list.wit',
-              patterns: [
-                {include: '#comment'},
-                {include: '#types', name: 'meta.types.named-type-list.wit'}
-              ]
-            }
+            {include: '#parameter-list'},
+            {include: '#result-list'},
+            {include: '#whitespace'}
           ]
         }
       ]
@@ -193,17 +196,18 @@ const grammar = {
         8: {name: 'punctuation.brackets.angle.end.wit'}
       },
       match:
-        '\\s*\\b(borrow)\\b(\\<)\\s*((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\s*(\\>)\\s*',
+        '\\b(borrow)\\b(\\<)\\s*%?((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\s*(\\>)',
       name: 'meta.handle.ty.wit'
     },
     identifier: {
       match:
-        '\\s*\\b((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\b',
+        '\\b%?((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\b',
       name: 'entity.name.type.id.wit'
     },
     interface: {
+      applyEndPatternLast: true,
       begin:
-        '^\\b(default\\s+)?(interface)\\s+((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\s*(\\{)\\s*',
+        '^\\b(default\\s+)?(interface)\\s+%?((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\s*(\\{)',
       beginCaptures: {
         1: {name: 'storage.modifier.default.interface-item.wit'},
         2: {
@@ -212,10 +216,14 @@ const grammar = {
         3: {name: 'entity.name.type.id.interface-item.wit'},
         8: {name: 'punctuation.brackets.curly.begin.wit'}
       },
-      end: '\\s*(\\})\\s*',
+      end: '(\\})',
       endCaptures: {1: {name: 'punctuation.brackets.curly.end.wit'}},
       name: 'meta.interface-item.wit',
-      patterns: [{include: '#comment'}, {include: '#interface-items'}]
+      patterns: [
+        {include: '#comment'},
+        {include: '#interface-items'},
+        {include: '#whitespace'}
+      ]
     },
     'interface-items': {
       name: 'meta.interface-items.wit',
@@ -228,21 +236,70 @@ const grammar = {
     'line-comment': {match: '\\s*//.*', name: 'comment.line.double-slash.wit'},
     list: {
       applyEndPatternLast: true,
-      begin: '\\s*\\b(list)\\b(\\<)\\s*',
+      begin: '\\b(list)\\b(\\<)',
       beginCaptures: {
         1: {name: 'entity.name.type.list.wit'},
         2: {name: 'punctuation.brackets.angle.begin.wit'}
       },
-      end: '\\s*(\\>)\\s*',
+      end: '(\\>)',
       endCaptures: {1: {name: 'punctuation.brackets.angle.end.wit'}},
       name: 'meta.list.ty.wit',
       patterns: [
         {include: '#comment'},
-        {include: '#types', name: 'meta.types.list.wit'}
+        {include: '#types', name: 'meta.types.list.wit'},
+        {include: '#whitespace'}
+      ]
+    },
+    markdown: {
+      patterns: [
+        {
+          captures: {1: {name: 'markup.heading.markdown'}},
+          match: '\\G\\s*(#+.*)$'
+        },
+        {
+          captures: {2: {name: 'punctuation.definition.quote.begin.markdown'}},
+          match: '\\G\\s*((\\>)\\s+)+'
+        },
+        {
+          captures: {1: {name: 'punctuation.definition.list.begin.markdown'}},
+          match: '\\G\\s*(\\-)\\s+'
+        },
+        {
+          captures: {
+            1: {name: 'markup.list.numbered.markdown'},
+            2: {name: 'punctuation.definition.list.begin.markdown'}
+          },
+          match: '\\G\\s*(([0-9]+\\.)\\s+)'
+        },
+        {captures: {1: {name: 'markup.italic.markdown'}}, match: '(`.*?`)'},
+        {captures: {1: {name: 'markup.bold.markdown'}}, match: '\\b(__.*?__)'},
+        {captures: {1: {name: 'markup.italic.markdown'}}, match: '\\b(_.*?_)'},
+        {
+          captures: {1: {name: 'markup.bold.markdown'}},
+          match: '(\\*\\*.*?\\*\\*)'
+        },
+        {captures: {1: {name: 'markup.italic.markdown'}}, match: '(\\*.*?\\*)'}
+      ]
+    },
+    'named-type-list': {
+      applyEndPatternLast: true,
+      begin:
+        '\\b%?((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\b\\s*(\\:)',
+      beginCaptures: {
+        1: {name: 'variable.parameter.id.named-type.wit'},
+        6: {name: 'keyword.operator.key-value.wit'}
+      },
+      end: '((\\,)|(?=\\))|(?=\\n))',
+      endCaptures: {2: {name: 'punctuation.comma.wit'}},
+      name: 'meta.named-type-list.wit',
+      patterns: [
+        {include: '#comment'},
+        {include: '#types'},
+        {include: '#whitespace'}
       ]
     },
     numeric: {
-      match: '\\s*\\b(u8|u16|u32|u64|s8|s16|s32|s64|float32|float64)\\b',
+      match: '\\b(u8|u16|u32|u64|s8|s16|s32|s64|float32|float64)\\b',
       name: 'entity.name.type.numeric.wit'
     },
     operator: {
@@ -263,17 +320,60 @@ const grammar = {
     },
     option: {
       applyEndPatternLast: true,
-      begin: '\\s*\\b(option)\\b(\\<)\\s*',
+      begin: '\\b(option)\\b(\\<)',
       beginCaptures: {
         1: {name: 'entity.name.type.option.wit'},
         2: {name: 'punctuation.brackets.angle.begin.wit'}
       },
-      end: '\\s*(\\>)\\s*',
+      end: '(\\>)',
       endCaptures: {1: {name: 'punctuation.brackets.angle.end.wit'}},
       name: 'meta.option.ty.wit',
       patterns: [
         {include: '#comment'},
-        {include: '#types', name: 'meta.types.option.wit'}
+        {include: '#types', name: 'meta.types.option.wit'},
+        {include: '#whitespace'}
+      ]
+    },
+    package: {
+      captures: {
+        1: {name: 'storage.modifier.package-decl.wit'},
+        2: {
+          name: 'meta.id.package-decl.wit',
+          patterns: [
+            {
+              captures: {
+                1: {
+                  name: 'entity.name.namespace.package-identifier.wit',
+                  patterns: [{include: '#identifier'}]
+                },
+                2: {name: 'keyword.operator.namespace.package-identifier.wit'},
+                3: {
+                  name: 'entity.name.type.package-identifier.wit',
+                  patterns: [{include: '#identifier'}]
+                },
+                5: {name: 'keyword.operator.versioning.package-identifier.wit'},
+                6: {name: 'constant.numeric.versioning.package-identifier.wit'}
+              },
+              match: '([^\\:]+)(\\:)([^\\@]+)((\\@)([^\\s]+))?',
+              name: 'meta.package-identifier.wit'
+            }
+          ]
+        }
+      },
+      match: '^(package)\\s+([^\\s]+)\\s*',
+      name: 'meta.package-decl.wit'
+    },
+    'parameter-list': {
+      applyEndPatternLast: true,
+      begin: '(\\()',
+      beginCaptures: {1: {name: 'punctuation.brackets.round.begin.wit'}},
+      end: '(\\))',
+      endCaptures: {1: {name: 'punctuation.brackets.round.end.wit'}},
+      name: 'meta.param-list.wit',
+      patterns: [
+        {include: '#comment'},
+        {include: '#named-type-list'},
+        {include: '#whitespace'}
       ]
     },
     primitive: {
@@ -287,102 +387,192 @@ const grammar = {
     record: {
       applyEndPatternLast: true,
       begin:
-        '\\s*\\b(record)\\b\\s+((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\s*(\\{)\\s*',
+        '\\b(record)\\b\\s+%?((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\s*(\\{)',
       beginCaptures: {
         1: {name: 'keyword.declaration.record.record-item.wit'},
         2: {name: 'entity.name.type.id.record-item.wit'},
         7: {name: 'punctuation.brackets.curly.begin.wit'}
       },
-      end: '\\s*(\\})\\s*',
+      end: '(\\})',
       endCaptures: {1: {name: 'punctuation.brackets.curly.end.wit'}},
       name: 'meta.record-item.wit',
-      patterns: [{include: '#comment'}, {include: '#record-fields'}]
+      patterns: [
+        {include: '#comment'},
+        {include: '#record-fields'},
+        {include: '#whitespace'}
+      ]
     },
     'record-fields': {
       applyEndPatternLast: true,
       begin:
-        '\\s*\\b((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\b\\s*(\\:)\\s*',
+        '\\b%?((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\b\\s*(\\:)',
       beginCaptures: {
         1: {name: 'variable.declaration.id.record-fields.wit'},
         6: {name: 'keyword.operator.key-value.wit'}
       },
-      end: '\\s*(\\,)?\\s*',
-      endCaptures: {1: {name: 'punctuation.comma.wit'}},
+      end: '((\\,)|(?=\\})|(?=\\n))',
+      endCaptures: {2: {name: 'punctuation.comma.wit'}},
       name: 'meta.record-fields.wit',
       patterns: [
         {include: '#comment'},
-        {include: '#types', name: 'meta.types.record-fields.wit'}
+        {include: '#types', name: 'meta.types.record-fields.wit'},
+        {include: '#whitespace'}
       ]
     },
     resource: {
+      applyEndPatternLast: true,
       begin:
-        '\\s*\\b(resource)\\b\\s+((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\s*(\\{)\\s*',
+        '\\b(resource)\\b\\s+%?((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)',
       beginCaptures: {
         1: {name: 'keyword.other.resource.wit'},
-        2: {name: 'entity.name.type.id.resource.wit'},
-        7: {name: 'punctuation.brackets.curly.begin.wit'}
+        2: {name: 'entity.name.type.id.resource.wit'}
       },
-      end: '\\s*(\\})\\s*',
+      end: '((?<=\\n)|(?=\\}))',
+      name: 'meta.resource-item.wit',
+      patterns: [
+        {include: '#comment'},
+        {include: '#resource-methods'},
+        {include: '#whitespace'}
+      ]
+    },
+    'resource-methods': {
+      applyEndPatternLast: true,
+      begin: '(\\{)',
+      beginCaptures: {1: {name: 'punctuation.brackets.curly.begin.wit'}},
+      end: '(\\})',
       endCaptures: {1: {name: 'punctuation.brackets.curly.end.wit'}},
-      name: 'meta.resource.wit',
-      patterns: [{include: '#comment'}, {include: '#function'}]
+      name: 'meta.resource-methods.wit',
+      patterns: [
+        {include: '#comment'},
+        {
+          applyEndPatternLast: true,
+          begin: '\\b(constructor)\\b',
+          beginCaptures: {
+            1: {name: 'keyword.other.constructor.constructor-type.wit'},
+            2: {name: 'punctuation.brackets.round.begin.wit'}
+          },
+          end: '((?<=\\n)|(?=\\}))',
+          name: 'meta.constructor-type.wit',
+          patterns: [
+            {include: '#comment'},
+            {include: '#parameter-list'},
+            {include: '#whitespace'}
+          ]
+        },
+        {include: '#function'},
+        {include: '#whitespace'}
+      ]
     },
     result: {
       applyEndPatternLast: true,
-      begin: '\\s*\\b(result)\\b(\\<)?\\s*',
+      begin: '\\b(result)\\b',
       beginCaptures: {
         1: {name: 'entity.name.type.result.wit'},
         2: {name: 'punctuation.brackets.angle.begin.wit'}
       },
-      end: '\\s*(\\>)?\\s*',
-      endCaptures: {1: {name: 'punctuation.brackets.angle.end.wit'}},
+      end: '((?<=\\n)|(?=\\,)|(?=\\}))',
       name: 'meta.result.ty.wit',
       patterns: [
         {include: '#comment'},
         {
-          match: '\\s*(?<!\\w)(\\_)(?!\\w)',
-          name: 'variable.other.inferred-type.result.wit'
+          applyEndPatternLast: true,
+          begin: '(\\<)',
+          beginCaptures: {1: {name: 'punctuation.brackets.angle.begin.wit'}},
+          end: '(\\>)',
+          endCaptures: {1: {name: 'punctuation.brackets.angle.end.wit'}},
+          name: 'meta.inner.result.wit',
+          patterns: [
+            {include: '#comment'},
+            {
+              match: '(?<!\\w)(\\_)(?!\\w)',
+              name: 'variable.other.inferred-type.result.wit'
+            },
+            {include: '#types', name: 'meta.types.result.wit'},
+            {match: '(?<!result)\\s*(\\,)', name: 'punctuation.comma.wit'},
+            {include: '#whitespace'}
+          ]
         },
-        {include: '#types', name: 'meta.types.result.wit'},
-        {match: '\\s*(\\,)', name: 'punctuation.comma.wit'}
+        {include: '#whitespace'}
       ]
     },
-    string: {
-      match: '\\s*\\b(string|char)\\b',
-      name: 'entity.name.type.string.wit'
+    'result-list': {
+      applyEndPatternLast: true,
+      begin: '(\\-\\>)',
+      beginCaptures: {1: {name: 'keyword.operator.arrow.skinny.wit'}},
+      end: '((?<=\\n)|(?=\\}))',
+      name: 'meta.result-list.wit',
+      patterns: [
+        {include: '#comment'},
+        {include: '#types'},
+        {include: '#parameter-list'},
+        {include: '#whitespace'}
+      ]
+    },
+    string: {match: '\\b(string|char)\\b', name: 'entity.name.type.string.wit'},
+    'toplevel-use': {
+      captures: {
+        1: {name: 'keyword.other.use.toplevel-use-item.wit'},
+        2: {
+          name: 'meta.interface.toplevel-use-item.wit',
+          patterns: [
+            {
+              match:
+                '\\b%?((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\b',
+              name: 'entity.name.type.declaration.interface.toplevel-use-item.wit'
+            },
+            {
+              captures: {
+                1: {
+                  name: 'keyword.operator.versioning.interface.toplevel-use-item.wit'
+                },
+                2: {
+                  name: 'constant.numeric.versioning.interface.toplevel-use-item.wit'
+                }
+              },
+              match:
+                '(\\@)((0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?)',
+              name: 'meta.versioning.interface.toplevel-use-item.wit'
+            }
+          ]
+        },
+        4: {name: 'keyword.control.as.toplevel-use-item.wit'},
+        5: {name: 'entity.name.type.toplevel-use-item.wit'}
+      },
+      match: '^(use)\\s+([^\\s]+)(\\s+(as)\\s+([^\\s]+))?\\s*',
+      name: 'meta.toplevel-use-item.wit'
     },
     tuple: {
       applyEndPatternLast: true,
-      begin: '\\s*\\b(tuple)\\b(\\<)\\s*',
+      begin: '\\b(tuple)\\b(\\<)',
       beginCaptures: {
         1: {name: 'entity.name.type.tuple.wit'},
         2: {name: 'punctuation.brackets.angle.begin.wit'}
       },
-      end: '\\s*(\\>)\\s*',
+      end: '(\\>)',
       endCaptures: {1: {name: 'punctuation.brackets.angle.end.wit'}},
       name: 'meta.tuple.ty.wit',
       patterns: [
         {include: '#comment'},
-        {
-          patterns: [
-            {include: '#types', name: 'meta.types.tuple.wit'},
-            {match: '\\s*(\\,)', name: 'punctuation.comma.wit'}
-          ]
-        }
+        {include: '#types', name: 'meta.types.tuple.wit'},
+        {match: '(\\,)', name: 'punctuation.comma.wit'},
+        {include: '#whitespace'}
       ]
     },
     'type-definition': {
       applyEndPatternLast: true,
       begin:
-        '\\s*\\b(type)\\b\\s+((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\s*(\\=)\\s*',
+        '\\b(type)\\b\\s+%?((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\s*(\\=)',
       beginCaptures: {
         1: {name: 'keyword.declaration.type.type-item.wit storage.type.wit'},
         2: {name: 'entity.name.type.id.type-item.wit'},
         7: {name: 'punctuation.equal.wit'}
       },
-      end: '\\s*(?<=\\n)',
+      end: '(?<=\\n)',
       name: 'meta.type-item.wit',
-      patterns: [{include: '#types', name: 'meta.types.type-item.wit'}]
+      patterns: [
+        {include: '#types', name: 'meta.types.type-item.wit'},
+        {include: '#whitespace'}
+      ]
     },
     'typedef-item': {
       name: 'meta.typedef-item.wit',
@@ -390,7 +580,6 @@ const grammar = {
         {include: '#resource'},
         {include: '#variant'},
         {include: '#record'},
-        {include: '#union'},
         {include: '#flags'},
         {include: '#enum'},
         {include: '#type-definition'}
@@ -404,56 +593,45 @@ const grammar = {
         {include: '#identifier'}
       ]
     },
-    union: {
-      applyEndPatternLast: true,
-      begin:
-        '\\s*\\b(union)\\b\\s+((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\s*(\\{)\\s*',
-      beginCaptures: {
-        1: {name: 'keyword.other.union.union-items.wit'},
-        2: {name: 'entity.name.type.declaration.id.union-items.wit'},
-        7: {name: 'punctuation.brackets.curly.begin.wit'}
-      },
-      end: '\\s*(\\})\\s*',
-      endCaptures: {1: {name: 'punctuation.brackets.curly.end.wit'}},
-      name: 'meta.union-items.wit',
-      patterns: [
-        {include: '#comment'},
-        {include: '#types', name: 'meta.types.union-cases.wit'},
-        {match: '\\s*(\\,)', name: 'punctuation.comma.wit'}
-      ]
-    },
     use: {
-      begin: '\\s*\\b(use)\\b\\s+([^\\s]+)(\\.)(\\{)\\s*',
+      applyEndPatternLast: true,
+      begin: '\\b(use)\\b\\s+([^\\s]+)(\\.)(\\{)',
       beginCaptures: {
         1: {name: 'keyword.other.use.use-item.wit'},
-        2: {patterns: [{include: '#use-path'}]},
+        2: {patterns: [{include: '#use-path'}, {include: '#whitespace'}]},
         3: {name: 'keyword.operator.namespace-separator.use-item.wit'},
         4: {name: 'punctuation.brackets.curly.begin.wit'}
       },
-      end: '\\s*(\\})\\s*',
+      end: '(\\})',
       endCaptures: {1: {name: 'punctuation.brackets.curly.end.wit'}},
       name: 'meta.use-item.wit',
       patterns: [
         {include: '#comment'},
         {
           match:
-            '\\b((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\b',
+            '\\b%?((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\b',
           name: 'entity.name.type.declaration.use-names-item.use-item.wit'
         },
-        {match: '\\s*(\\,)', name: 'punctuation.comma.wit'}
+        {match: '(\\,)', name: 'punctuation.comma.wit'},
+        {include: '#whitespace'}
       ]
     },
     'use-path': {
       name: 'meta.use-path.wit',
       patterns: [
         {
-          match: '(?<!\\.)\\b(self|pkg)\\b',
-          name: 'variable.language.self.use-path.wit'
+          match:
+            '\\b%?((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\b',
+          name: 'entity.name.namespace.id.use-path.wit'
         },
         {
+          captures: {
+            1: {name: 'keyword.operator.versioning.id.use-path.wit'},
+            2: {name: 'constant.numeric.versioning.id.use-path.wit'}
+          },
           match:
-            '\\b((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\b',
-          name: 'entity.name.namespace.id.use-path.wit'
+            '(\\@)((0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?)',
+          name: 'meta.versioning.id.use-path.wit'
         },
         {
           match: '\\.',
@@ -464,79 +642,158 @@ const grammar = {
     variant: {
       applyEndPatternLast: true,
       begin:
-        '\\s*\\b(variant)\\s+((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\s*(\\{)\\s*',
+        '\\b(variant)\\s+%?((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\s*(\\{)',
       beginCaptures: {
         1: {name: 'keyword.other.variant.wit'},
         2: {name: 'entity.name.type.id.variant.wit'},
         7: {name: 'punctuation.brackets.curly.begin.wit'}
       },
-      end: '\\s*(\\})\\s*',
+      end: '(\\})',
       endCaptures: {1: {name: 'punctuation.brackets.curly.end.wit'}},
       name: 'meta.variant.wit',
       patterns: [
         {include: '#comment'},
         {include: '#variant-cases'},
-        {include: '#enum-cases'}
+        {include: '#enum-cases'},
+        {include: '#whitespace'}
       ]
     },
     'variant-cases': {
       applyEndPatternLast: true,
       begin:
-        '\\s*\\b((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\b\\s*(\\()\\s*',
+        '\\b%?((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\b\\s*(\\()',
       beginCaptures: {
         1: {name: 'variable.other.enummember.id.variant-cases.wit'},
         6: {name: 'punctuation.brackets.round.begin.wit'}
       },
-      end: '\\s*(\\))\\s*(\\,)?\\s*',
+      end: '(\\))\\s*(\\,)?',
       endCaptures: {
         1: {name: 'punctuation.brackets.round.end.wit'},
         2: {name: 'punctuation.comma.wit'}
       },
       name: 'meta.variant-cases.wit',
-      patterns: [{include: '#types', name: 'meta.types.variant-cases.wit'}]
+      patterns: [
+        {include: '#types', name: 'meta.types.variant-cases.wit'},
+        {include: '#whitespace'}
+      ]
     },
+    whitespace: {match: '\\s+', name: 'meta.whitespace.wit'},
     world: {
+      applyEndPatternLast: true,
       begin:
-        '^\\b(default\\s+)?(world)\\s+((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\s*(\\{)\\s*',
+        '^\\b(default\\s+)?(world)\\s+%?((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\s*(\\{)',
       beginCaptures: {
         1: {name: 'storage.modifier.default.world-item.wit'},
         2: {name: 'keyword.declaration.world.world-item.wit storage.type.wit'},
         3: {name: 'entity.name.type.id.world-item.wit'},
         8: {name: 'punctuation.brackets.curly.begin.wit'}
       },
-      end: '\\s*(\\})\\s*',
+      end: '(\\})',
       endCaptures: {1: {name: 'punctuation.brackets.curly.end.wit'}},
       name: 'meta.world-item.wit',
       patterns: [
         {include: '#comment'},
         {
           applyEndPatternLast: true,
-          begin:
-            '\\s*\\b(export)\\b\\s+((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\s*(\\:)\\s*',
+          begin: '\\b(export)\\b\\s+([^\\s]+)',
           beginCaptures: {
             1: {name: 'keyword.control.export.export-item.wit'},
-            2: {name: 'variable.other.constant.id.export-item.wit'},
-            7: {name: 'keyword.operator.key-value.wit'}
+            2: {
+              name: 'meta.id.export-item.wit',
+              patterns: [
+                {
+                  match:
+                    '\\b%?((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\b',
+                  name: 'variable.other.constant.id.export-item.wit'
+                },
+                {
+                  captures: {
+                    1: {name: 'keyword.operator.versioning.id.export-item.wit'},
+                    2: {name: 'constant.numeric.versioning.id.export-item.wit'}
+                  },
+                  match:
+                    '(\\@)((0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?)',
+                  name: 'meta.versioning.id.export-item.wit'
+                }
+              ]
+            }
           },
-          end: '\\s*(?<=\\n)',
+          end: '((?<=\\n)|(?=\\}))',
           name: 'meta.export-item.wit',
-          patterns: [{include: '#extern'}]
+          patterns: [{include: '#extern'}, {include: '#whitespace'}]
         },
         {
           applyEndPatternLast: true,
-          begin:
-            '\\s*\\b(import)\\s+((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\s*(\\:)',
+          begin: '\\b(import)\\s+([^\\s]+)',
           beginCaptures: {
             1: {name: 'keyword.control.import.import-item.wit'},
-            2: {name: 'variable.other.id.import-item.wit'},
-            7: {name: 'keyword.operator.key-value.wit'}
+            2: {
+              name: 'meta.id.import-item.wit',
+              patterns: [
+                {
+                  match:
+                    '\\b%?((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\b',
+                  name: 'variable.other.id.import-item.wit'
+                },
+                {
+                  captures: {
+                    1: {name: 'keyword.operator.versioning.id.import-item.wit'},
+                    2: {name: 'constant.numeric.versioning.id.import-item.wit'}
+                  },
+                  match:
+                    '(\\@)((0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?)',
+                  name: 'meta.versioning.id.import-item.wit'
+                }
+              ]
+            }
           },
-          end: '\\s*(?<=\\n)',
+          end: '((?<=\\n)|(?=\\}))',
           name: 'meta.import-item.wit',
-          patterns: [{include: '#extern'}]
+          patterns: [{include: '#extern'}, {include: '#whitespace'}]
+        },
+        {
+          applyEndPatternLast: true,
+          begin: '\\b(include)\\s+([^\\s]+)\\s*',
+          beginCaptures: {
+            1: {name: 'keyword.control.include.include-item.wit'},
+            2: {
+              name: 'meta.use-path.include-item.wit',
+              patterns: [{include: '#use-path'}]
+            }
+          },
+          end: '(?<=\\n)',
+          name: 'meta.include-item.wit',
+          patterns: [
+            {
+              applyEndPatternLast: true,
+              begin: '\\b(with)\\b\\s+(\\{)',
+              beginCaptures: {
+                1: {name: 'keyword.control.with.include-item.wit'},
+                2: {name: 'punctuation.brackets.curly.begin.wit'}
+              },
+              end: '(\\})',
+              endCaptures: {1: {name: 'punctuation.brackets.curly.end.wit'}},
+              name: 'meta.with.include-item.wit',
+              patterns: [
+                {include: '#comment'},
+                {
+                  captures: {
+                    1: {name: 'variable.other.id.include-names-item.wit'},
+                    2: {name: 'keyword.control.as.include-names-item.wit'},
+                    3: {name: 'entity.name.type.include-names-item.wit'}
+                  },
+                  match: '([^\\s]+)\\s+(as)\\s+([^\\s\\,]+)',
+                  name: 'meta.include-names-item.wit'
+                },
+                {match: '(\\,)', name: 'punctuation.comma.wit'},
+                {include: '#whitespace'}
+              ]
+            }
+          ]
         },
         {include: '#use'},
-        {include: '#typedef-item'}
+        {include: '#typedef-item'},
+        {include: '#whitespace'}
       ]
     }
   },

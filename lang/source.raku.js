@@ -733,7 +733,9 @@ const grammar = {
                 2: {name: 'punctuation.definition.function.adverb.raku'},
                 3: {name: 'support.type.class.adverb.raku'},
                 4: {patterns: [{include: '$self'}]}
-              }
+              },
+              match:
+                "(?x) ( [\\p{Nd}\\pL\\pM'\\-_]+ ) \\b (:)? (\\w+ \\b )? (\\S+  )?"
             }
           ]
         }
@@ -748,7 +750,10 @@ const grammar = {
       name: 'meta.regexp.named.raku',
       patterns: [
         {match: 'TOP', name: 'entity.name.function.regexp.named.TOP.raku'},
-        {name: 'entity.name.function.regexp.named.raku'},
+        {
+          match: "[\\p{Nd}\\pL\\pM'\\-_]+",
+          name: 'entity.name.function.regexp.named.raku'
+        },
         {
           captures: {
             1: {name: 'punctuation.definition.regexp.adverb.raku'},
@@ -1334,11 +1339,15 @@ const grammar = {
             6: {name: 'keyword.operator.dot.raku'},
             7: {name: 'support.function.raku'},
             8: {
+              begin: '\\(',
               beginCaptures: {0: {name: 'keyword.operator.paren.open.raku'}},
+              end: '\\)',
               endCaptures: {0: {name: 'keyword.operator.paren.close.raku'}},
               patterns: [{include: '$self'}]
             }
           },
+          match:
+            "(?x)\n(?<!\\\\)\n(\\$|@|%|&)\n(?!\\$)\n(\\.|\\*|:|!|\\^|~|=|\\?)?  # Twigils\n([\\pL\\pM_])             # Must start with Alpha or underscore\n(\n   [\\p{Nd}\\pL\\pM_]  # have alphanum/underscore, or a ' or -\n|                           # followed by an Alpha or underscore\n   [\\-'] [\\pL\\pM_]\n)*\n( \\[ .* \\] )?             # postcircumfix [ ]\n## methods\n(?:\n  (?:\n    ( \\. )\n    (\n       [\\pL\\pM]\n        (?:\n          [\\p{Nd}\\pL\\pM_]  # have alphanum/underscore, or a ' or -\n        |                          # followed by an Alpha or underscore\n          [\\-'] [\\pL\\pM_]\n        )*\n\n    )\n  )?\n  ( \\( .*?  \\) )\n)?",
           name: 'variable.other.identifier.interpolated.raku'
         },
         {include: '#hex_escapes'},
@@ -1697,6 +1706,8 @@ const grammar = {
             2: {name: 'support.class.twigil.raku'},
             3: {name: 'variable.other.identifier.raku'}
           },
+          match:
+            "(?x)\n(\\$|@|%|&)\n(\\.|\\*|:|!|\\^|~|=|\\?)?\n(\n    (?:[\\pL\\pM_])           # Must start with Alpha or underscore\n    (?:\n       [\\p{Nd}\\pL\\pM_]  # have alphanum/underscore, or a ' or -\n    |                           # followed by an Alpha or underscore\n       [\\-'] [\\pL\\pM_]\n    )*\n)",
           name: 'meta.variable.container.raku'
         }
       ]

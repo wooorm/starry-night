@@ -8,9 +8,6 @@ const grammar = {
   extensions: ['.nim', '.nim.cfg', '.nimble', '.nimrod', '.nims'],
   names: ['nim'],
   patterns: [
-    {include: '#type-defs'},
-    {include: '#const-defs'},
-    {include: '#var-let-using-defs'},
     {include: '#pragmas'},
     {include: '#brackets'},
     {include: '#punctuations'},
@@ -172,6 +169,7 @@ const grammar = {
               name: 'entity.name.function.nim',
               patterns: [
                 {include: '#builtins'},
+                {match: '[A-Z][\\dA-Za-z]+\\b', name: 'support.type.nim'},
                 {
                   match:
                     '[A-Za-z\\x80-\\xff](?:_?[\\dA-Za-z\\x80-\\xff])*|_|`[^;,\\n`]+`'
@@ -196,17 +194,7 @@ const grammar = {
               end: '(\\))',
               endCaptures: {1: {name: 'punctuation.section.arguments.end.nim'}},
               name: 'meta.function-call.arguments.nim',
-              patterns: [
-                {
-                  captures: {
-                    1: {name: 'variable.parameter.function.nim'},
-                    2: {name: 'punctuation.separator.key-value.nim'}
-                  },
-                  match:
-                    '(?x: (?= (?:[A-Za-z\\x80-\\xff](?:_?[\\dA-Za-z\\x80-\\xff])*|_|`[^;,\\n`]+`) [ ]* [:=](?![-=+*/<>@$~&%|!?^.:\\\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]) ) (?!(?x:addr|and|as|asm|bind|block|break|case|cast|concept |const|continue|converter|defer|discard|distinct|div|do |elif|else|end|enum|except|export|finally|for|from|func |if|import|in|include|interface|is|isnot|iterator|let |macro|method|mixin|mod|nil|not|notin|object|of|or|out |proc|ptr|raise|ref|return|shl|shr|static|template|try |tuple|type|using|var|when|while|xor|yield)\\b ) ([A-Za-z\\x80-\\xff](?:_?[\\dA-Za-z\\x80-\\xff])*|_|`[^;,\\n`]+`)(?:[ ]*(:))? )'
-                },
-                {include: '$self'}
-              ]
+              patterns: [{include: '$self'}]
             },
             {include: '#triplestr_lit'},
             {
@@ -241,61 +229,6 @@ const grammar = {
     },
     comments: {
       patterns: [{include: '#block-comments'}, {include: '#line-comments'}]
-    },
-    'const-defs': {
-      patterns: [
-        {
-          begin: '\\b(const) +(?=[A-Za-z\\x80-\\xff]|\\(|`|_\\b)',
-          beginCaptures: {1: {name: 'storage.modifier.nim'}},
-          end: '([A-Za-z\\x80-\\xff](?:_?[\\dA-Za-z\\x80-\\xff])*|_|`[^;,\\n`]+`)(?: *(\\*))?|(?=[^\\(])',
-          endCaptures: {
-            1: {name: 'entity.name.constant.nim'},
-            2: {name: 'storage.modifier.nim'}
-          },
-          patterns: [{include: '#const-name'}]
-        },
-        {
-          begin: '^const\\b',
-          beginCaptures: {0: {name: 'storage.modifier.nim'}},
-          end: '^(?!  |$)',
-          patterns: [
-            {
-              begin: '^  (?=[A-Za-z\\x80-\\xff]|\\(|`|_\\b)',
-              end: '([A-Za-z\\x80-\\xff](?:_?[\\dA-Za-z\\x80-\\xff])*|_|`[^;,\\n`]+`)(?: *(\\*))?|(?=[^\\(])',
-              endCaptures: {
-                1: {name: 'entity.name.constant.nim'},
-                2: {name: 'storage.modifier.nim'}
-              },
-              patterns: [{include: '#const-name'}]
-            },
-            {include: '$self'}
-          ]
-        }
-      ]
-    },
-    'const-name': {
-      patterns: [
-        {
-          begin: '\\(',
-          beginCaptures: {0: {name: 'punctuation.section.parens.begin.nim'}},
-          end: '(\\))|(?=[^{_`,#A-Za-z\\x80-\\xff\\s])',
-          endCaptures: {1: {name: 'punctuation.section.parens.end.nim'}},
-          patterns: [
-            {
-              captures: {
-                1: {name: 'entity.name.constant.nim'},
-                2: {name: 'storage.modifier.nim'}
-              },
-              match:
-                '([A-Za-z\\x80-\\xff](?:_?[\\dA-Za-z\\x80-\\xff])*|_|`[^;,\\n`]+`)(?: *(\\*))?'
-            },
-            {match: ',', name: 'punctuation.separator.nim'},
-            {include: '#pragmas'},
-            {include: '#doc-comments'},
-            {include: '#comments'}
-          ]
-        }
-      ]
     },
     'do-stmts': {
       patterns: [
@@ -346,7 +279,7 @@ const grammar = {
                 1: {name: 'constant.other.format-spec.nim'},
                 2: {name: 'punctuation.section.embedded.end.nim'}
               },
-              name: 'meta.embedded.nim',
+              name: 'source.nim',
               patterns: [{include: '$self'}]
             }
           ]
@@ -380,7 +313,7 @@ const grammar = {
                 2: {name: 'punctuation.section.embedded.end.nim'},
                 3: {name: 'invalid.illegal.nim'}
               },
-              name: 'meta.embedded.nim',
+              name: 'source.nim',
               patterns: [{include: '$self'}]
             }
           ]
@@ -414,7 +347,7 @@ const grammar = {
                 2: {name: 'punctuation.section.embedded.end.nim'},
                 3: {name: 'invalid.illegal.nim'}
               },
-              name: 'meta.embedded.nim',
+              name: 'source.nim',
               patterns: [
                 {
                   match:
@@ -485,11 +418,6 @@ const grammar = {
     },
     'generic-param-list-0': {
       patterns: [
-        {
-          match:
-            '[A-Za-z\\x80-\\xff](?:_?[\\dA-Za-z\\x80-\\xff])*|_|`[^;,\\n`]+`',
-          name: 'variable.parameter.nim'
-        },
         {match: '[,;]', name: 'punctuation.separator.nim'},
         {
           begin: '(:)|(=)',
@@ -760,11 +688,6 @@ const grammar = {
           endCaptures: {0: {name: 'punctuation.section.parameters.end.nim'}},
           name: 'meta.function.parameters',
           patterns: [
-            {
-              match:
-                '[A-Za-z\\x80-\\xff](?:_?[\\dA-Za-z\\x80-\\xff])*|_|`[^;,\\n`]+`',
-              name: 'variable.parameter.nim'
-            },
             {match: '[,;]', name: 'punctuation.separator.nim'},
             {
               begin: '(:)|(=)',
@@ -803,6 +726,7 @@ const grammar = {
           endCaptures: {0: {name: 'punctuation.section.annotation.end.nim'}},
           name: 'meta.annotation.nim',
           patterns: [
+            {include: '#calls'},
             {
               match:
                 '[A-Za-z\\x80-\\xff](?:_?[\\dA-Za-z\\x80-\\xff])*|_|`[^;,\\n`]+`',
@@ -819,10 +743,7 @@ const grammar = {
                   beginCaptures: {
                     0: {name: 'punctuation.separator.key-value.nim'}
                   },
-                  end: '(,)|(?=\\.?})',
-                  endCaptures: {
-                    1: {name: 'punctuation.separator.sequence.nim'}
-                  },
+                  end: '(?=,|\\.?})',
                   patterns: [{include: '$self'}]
                 }
               ]
@@ -957,49 +878,8 @@ const grammar = {
         }
       ]
     },
-    'type-defs': {
-      patterns: [
-        {
-          begin:
-            '^ *(type) +(?:(?:[A-Za-z\\x80-\\xff](?:_?[\\dA-Za-z\\x80-\\xff])*|_|`[^;,\\n`]+`) *(\\.))?([A-Za-z\\x80-\\xff](?:_?[\\dA-Za-z\\x80-\\xff])*|_|`[^;,\\n`]+`)(?: *(\\*))?',
-          beginCaptures: {
-            1: {name: 'storage.modifier.nim'},
-            2: {name: 'punctuation.accessor.dot.nim'},
-            3: {name: 'entity.name.type.nim'},
-            4: {name: 'storage.modifier.nim'}
-          },
-          end: '(?=[^\\[ ])',
-          patterns: [{include: '#generic-param-list'}]
-        },
-        {
-          begin: '^type\\b',
-          beginCaptures: {0: {name: 'storage.modifier.nim'}},
-          end: '^(?!  |$)',
-          patterns: [
-            {
-              begin:
-                '^  (?:(?:[A-Za-z\\x80-\\xff](?:_?[\\dA-Za-z\\x80-\\xff])*|_|`[^;,\\n`]+`) *(\\.))?([A-Za-z\\x80-\\xff](?:_?[\\dA-Za-z\\x80-\\xff])*|_|`[^;,\\n`]+`)(?: *(\\*))?',
-              beginCaptures: {
-                1: {name: 'punctuation.accessor.dot.nim'},
-                2: {name: 'entity.name.type.nim'},
-                3: {name: 'storage.modifier.nim'}
-              },
-              end: '(?![\\[\\s])',
-              patterns: [{include: '#generic-param-list'}]
-            },
-            {include: '$self'}
-          ]
-        }
-      ]
-    },
     types: {
       patterns: [
-        {
-          begin: '\\btuple(?=\\[)',
-          beginCaptures: {0: {name: 'storage.type.primitive.nim'}},
-          end: '(?=[^\\[ ])',
-          patterns: [{include: '#generic-param-list'}]
-        },
         {
           begin:
             '(?=(?:[A-Za-z](?:_?[\\dA-Za-z])*)\\[)(?x:(out|ptr|ref|array |cstring[Aa]rray|iterable|lent|open[Aa]rray|owned|ptr|range|ref|se[qt] |sink|static|type(?:[Dd]esc)?|varargs)|([A-Z][\\dA-Za-z]+))(\\[)',
@@ -1019,60 +899,6 @@ const grammar = {
           match: '\\b(?:out|tuple|ref|ptr)\\b',
           name: 'storage.type.primitive.nim'
         }
-      ]
-    },
-    'var-let-using-defs': {
-      patterns: [
-        {
-          begin: '(?:^|(;)) *(var|let|using) +(?=[\\(`A-Za-z\\x80-\\xff]|_\\b)',
-          beginCaptures: {
-            1: {name: 'punctuation.terminator.nim'},
-            2: {name: 'storage.modifier.nim'}
-          },
-          end: '(?=[^\\({_`,#A-Za-z\\x80-\\xff\\s])',
-          patterns: [{include: '#var-name'}]
-        },
-        {
-          begin: '^(?:var|let|using)\\b',
-          beginCaptures: {0: {name: 'storage.type.nim'}},
-          end: '^(?!  |$)',
-          patterns: [
-            {
-              begin: '^  (?=[\\(`A-Za-z\\x80-\\xff]|_\\b)',
-              end: '(?=[^\\({_`,#A-Za-z\\x80-\\xff\\s])',
-              patterns: [{include: '#var-name'}]
-            },
-            {include: '$self'}
-          ]
-        }
-      ]
-    },
-    'var-name': {
-      patterns: [
-        {
-          begin: '\\(',
-          beginCaptures: {0: {name: 'punctuation.section.parens.begin.nim'}},
-          end: '(\\))|(?=[^{_`,#A-Za-z\\x80-\\xff\\s])',
-          endCaptures: {1: {name: 'punctuation.section.parens.end.nim'}},
-          patterns: [{include: '#var-name-0'}]
-        },
-        {include: '#var-name-0'}
-      ]
-    },
-    'var-name-0': {
-      patterns: [
-        {
-          captures: {
-            1: {name: 'variable.other.nim'},
-            2: {name: 'storage.modifier.nim'}
-          },
-          match:
-            '([A-Za-z\\x80-\\xff](?:_?[\\dA-Za-z\\x80-\\xff])*|_|`[^;,\\n`]+`)(?: *(\\*))?'
-        },
-        {match: ',', name: 'punctuation.separator.nim'},
-        {include: '#pragmas'},
-        {include: '#doc-comments'},
-        {include: '#comments'}
       ]
     }
   },

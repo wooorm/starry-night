@@ -10,6 +10,7 @@ const grammar = {
     '.bones',
     '.cjs',
     '.code-snippets',
+    '.code-workspace',
     '.cy',
     '.es6',
     '.jake',

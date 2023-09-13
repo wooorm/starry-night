@@ -62,13 +62,27 @@ const grammar = {
       },
       match: '\\b([A-Za-z_]\\w*)(?:\\[(\\d*)\\])?(?:\\[(\\d*)\\])?\\('
     },
-    {match: '([\\"\\\'].*?[\\"\\\'])', name: 'string.quoted'},
     {
       match: '\\b(?:[+-]?\\.?\\d[\\d_eE]*)(?:\\.\\d+[\\deE]*)?\\b',
       name: 'constant.numeric'
     },
-    {match: '\\b(0[xX][a-fA-F0-9]+)\\b', name: 'constant.numeric'}
+    {match: '\\b(0[xX][a-fA-F0-9]+)\\b', name: 'constant.numeric'},
+    {
+      begin: '(?<!\\\\)[\\"\\\']',
+      end: '(?<!\\\\)[\\"\\\']',
+      name: 'string.quoted',
+      patterns: [{include: '#string'}]
+    }
   ],
+  repository: {
+    string: {
+      patterns: [
+        {match: '\\\\"', name: 'constant.character.escape'},
+        {match: "\\\\'", name: 'constant.character.escape'},
+        {match: '.', name: 'string.quoted'}
+      ]
+    }
+  },
   scopeName: 'source.vyper'
 }
 

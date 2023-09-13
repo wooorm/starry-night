@@ -7,7 +7,7 @@
 const grammar = {
   dependencies: ['source.shell', 'text.html.basic', 'text.roff'],
   extensions: ['.pic', '.chem'],
-  names: ['pic'],
+  names: ['pic', 'pikchr'],
   patterns: [
     {include: '#binary'},
     {include: '#tags'},
@@ -50,7 +50,7 @@ const grammar = {
         },
         {
           match:
-            '\\b(aligned|big|bold|fit|italic|small|(?:thickness|color|fill)(?!\\s*(?:[-:+/*%=!<>]?=|<|>))|thick|thin)\\b',
+            '\\b(aligned|big|bold|fit|italic|mono(?:space)?|small|(?:thickness|color|fill)(?!\\s*(?:[-:+/*%=!<>]?=|<|>))|thick|thin)\\b',
           name: 'entity.other.attribute-name.$1.pikchr.pic'
         },
         {

@@ -148,16 +148,23 @@ const grammar = {
           captures: {
             1: {name: 'storage.type.parcelable.aidl'},
             2: {name: 'entity.name.type.parcelable.aidl'},
-            3: {name: 'keyword.aidl'},
-            4: {name: 'punctuation.definition.string.begin.aidl'},
-            5: {name: 'string.quoted.double.aidl'},
-            6: {name: 'punctuation.definition.string.end.aidl'},
-            7: {name: 'punctuation.terminator.aidl'}
+            3: {name: 'punctuation.terminator.aidl'}
           },
           match:
-            '(parcelable)\\s+((?:[_a-zA-Z][_a-zA-Z0-9]*)(?:\\.([_a-zA-Z][_a-zA-Z0-9]*))*)\\s*(cpp_header)\\s*(")([^\\"]*)(")(;)',
+            '(parcelable)\\s+((?:[_a-zA-Z][_a-zA-Z0-9]*)(?:\\.([_a-zA-Z][_a-zA-Z0-9]*))*)\\s*(;)?',
           name: 'meta.parcelable.aidl'
         },
+        {
+          captures: {
+            1: {name: 'keyword.aidl'},
+            2: {name: 'punctuation.definition.string.begin.aidl'},
+            3: {name: 'string.quoted.double.aidl'},
+            4: {name: 'punctuation.definition.string.end.aidl'}
+          },
+          match: '(cpp_header|ndk_header|rust_type)\\s*(")([^\\"]*)(")',
+          name: 'meta.parcelable.aidl'
+        },
+        {match: ';', name: 'punctuation.terminator.aidl'},
         {
           begin: '(enum)\\s+([_a-zA-Z][_a-zA-Z0-9]*)\\s*(\\{)',
           beginCaptures: {

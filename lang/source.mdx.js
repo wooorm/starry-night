@@ -50,6 +50,7 @@ const grammar = {
         0: {name: 'markup.quote.mdx'},
         1: {name: 'punctuation.definition.quote.begin.mdx'}
       },
+      name: 'markup.quote.mdx',
       patterns: [{include: '#markdown-sections'}],
       while: '(?:^|\\G)[\\t ]*(>)[ ]?',
       whileCaptures: {
@@ -383,7 +384,7 @@ const grammar = {
       patterns: [
         {
           begin:
-            '(?:^|\\G)[\\t ]*(`{3,})(?:[\\t ]*((?i:ags|ags\\x2dscript|asymptote|c\\+\\+|edje\\x2ddata\\x2dcollection|game\\x2dmaker\\x2dlanguage|swig|(?:.*\\.)?(?:asc|ash|asy|c\\+\\+|cc|cp|cpp|cppm|cxx|edc|gml|h\\+\\+|hh|hpp|hxx|inl|ino|ipp|ixx|metal|re|tcc|tpp)))(?:[\\t ]+((?:[^\\n\\r`])+))?)(?:[\\t ]*$)',
+            '(?:^|\\G)[\\t ]*(`{3,})(?:[\\t ]*((?i:ags|ags\\x2dscript|asymptote|c\\+\\+|edje\\x2ddata\\x2dcollection|game\\x2dmaker\\x2dlanguage|swig|(?:.*\\.)?(?:asc|ash|asy|c\\+\\+|cc|cp|cpp|cppm|cxx|edc|gml|h\\+\\+|hh|hpp|hxx|inl|ino|ipp|ixx|metal|re|tcc|tpp|txx)))(?:[\\t ]+((?:[^\\n\\r`])+))?)(?:[\\t ]*$)',
           beginCaptures: {
             1: {name: 'string.other.begin.code.fenced.mdx'},
             2: {
@@ -400,7 +401,7 @@ const grammar = {
         },
         {
           begin:
-            '(?:^|\\G)[\\t ]*(~{3,})(?:[\\t ]*((?i:ags|ags\\x2dscript|asymptote|c\\+\\+|edje\\x2ddata\\x2dcollection|game\\x2dmaker\\x2dlanguage|swig|(?:.*\\.)?(?:asc|ash|asy|c\\+\\+|cc|cp|cpp|cppm|cxx|edc|gml|h\\+\\+|hh|hpp|hxx|inl|ino|ipp|ixx|metal|re|tcc|tpp)))(?:[\\t ]+((?:[^\\n\\r])+))?)(?:[\\t ]*$)',
+            '(?:^|\\G)[\\t ]*(~{3,})(?:[\\t ]*((?i:ags|ags\\x2dscript|asymptote|c\\+\\+|edje\\x2ddata\\x2dcollection|game\\x2dmaker\\x2dlanguage|swig|(?:.*\\.)?(?:asc|ash|asy|c\\+\\+|cc|cp|cpp|cppm|cxx|edc|gml|h\\+\\+|hh|hpp|hxx|inl|ino|ipp|ixx|metal|re|tcc|tpp|txx)))(?:[\\t ]+((?:[^\\n\\r])+))?)(?:[\\t ]*$)',
           beginCaptures: {
             1: {name: 'string.other.begin.code.fenced.mdx'},
             2: {
@@ -915,7 +916,7 @@ const grammar = {
       patterns: [
         {
           begin:
-            '(?:^|\\G)[\\t ]*(`{3,})(?:[\\t ]*((?i:apex|chuck|unrealscript|(?:.*\\.)?(?:ck|cls|jav|java|jsh|uc)))(?:[\\t ]+((?:[^\\n\\r`])+))?)(?:[\\t ]*$)',
+            '(?:^|\\G)[\\t ]*(`{3,})(?:[\\t ]*((?i:chuck|unrealscript|(?:.*\\.)?(?:ck|jav|java|jsh|uc)))(?:[\\t ]+((?:[^\\n\\r`])+))?)(?:[\\t ]*$)',
           beginCaptures: {
             1: {name: 'string.other.begin.code.fenced.mdx'},
             2: {
@@ -932,7 +933,7 @@ const grammar = {
         },
         {
           begin:
-            '(?:^|\\G)[\\t ]*(~{3,})(?:[\\t ]*((?i:apex|chuck|unrealscript|(?:.*\\.)?(?:ck|cls|jav|java|jsh|uc)))(?:[\\t ]+((?:[^\\n\\r])+))?)(?:[\\t ]*$)',
+            '(?:^|\\G)[\\t ]*(~{3,})(?:[\\t ]*((?i:chuck|unrealscript|(?:.*\\.)?(?:ck|jav|java|jsh|uc)))(?:[\\t ]+((?:[^\\n\\r])+))?)(?:[\\t ]*$)',
           beginCaptures: {
             1: {name: 'string.other.begin.code.fenced.mdx'},
             2: {
@@ -1219,7 +1220,7 @@ const grammar = {
       patterns: [
         {
           begin:
-            '(?:^|\\G)[\\t ]*(`{3,})(?:[\\t ]*((?i:pandoc|rmarkdown|(?:.*\\.)?(?:livemd|markdown|mdown|mdwn|mkd|mkdn|mkdown|qmd|rmd|ronn|scd|workbook)))(?:[\\t ]+((?:[^\\n\\r`])+))?)(?:[\\t ]*$)',
+            '(?:^|\\G)[\\t ]*(`{3,})(?:[\\t ]*((?i:md|pandoc|rmarkdown|(?:.*\\.)?(?:livemd|markdown|mdown|mdwn|mkd|mkdn|mkdown|qmd|rmd|ronn|scd|workbook)))(?:[\\t ]+((?:[^\\n\\r`])+))?)(?:[\\t ]*$)',
           beginCaptures: {
             1: {name: 'string.other.begin.code.fenced.mdx'},
             2: {
@@ -1236,7 +1237,7 @@ const grammar = {
         },
         {
           begin:
-            '(?:^|\\G)[\\t ]*(~{3,})(?:[\\t ]*((?i:pandoc|rmarkdown|(?:.*\\.)?(?:livemd|markdown|mdown|mdwn|mkd|mkdn|mkdown|qmd|rmd|ronn|scd|workbook)))(?:[\\t ]+((?:[^\\n\\r])+))?)(?:[\\t ]*$)',
+            '(?:^|\\G)[\\t ]*(~{3,})(?:[\\t ]*((?i:md|pandoc|rmarkdown|(?:.*\\.)?(?:livemd|markdown|mdown|mdwn|mkd|mkdn|mkdown|qmd|rmd|ronn|scd|workbook)))(?:[\\t ]+((?:[^\\n\\r])+))?)(?:[\\t ]*$)',
           beginCaptures: {
             1: {name: 'string.other.begin.code.fenced.mdx'},
             2: {
@@ -2015,7 +2016,7 @@ const grammar = {
       patterns: [
         {
           begin:
-            '(?:^|\\G)[\\t ]*(`{3,})(?:[\\t ]*((?i:classic\\x2dvisual\\x2dbasic|fb|freebasic|realbasic|vb\\x2d\\.net|vb\\x2d6|vb\\.net|vb6|vbnet|vbscript|visual\\x2dbasic|visual\\x2dbasic\\x2d\\.net|visual\\x2dbasic\\x2d6|visual\\x2dbasic\\x2d6\\.0|visual\\x2dbasic\\x2dclassic|visual\\x2dbasic\\x2dfor\\x2dapplications|(?:.*\\.)?(?:bi|ctl|dsr|frm|frm|rbbas|rbfrm|rbmnu|rbres|rbtbar|rbuistate|vb|vba|vbhtml|vbs)))(?:[\\t ]+((?:[^\\n\\r`])+))?)(?:[\\t ]*$)',
+            '(?:^|\\G)[\\t ]*(`{3,})(?:[\\t ]*((?i:classic\\x2dvisual\\x2dbasic|fb|freebasic|realbasic|vb\\x2d\\.net|vb\\x2d6|vb\\.net|vb6|vbnet|vbscript|visual\\x2dbasic|visual\\x2dbasic\\x2d\\.net|visual\\x2dbasic\\x2d6|visual\\x2dbasic\\x2d6\\.0|visual\\x2dbasic\\x2dclassic|(?:.*\\.)?(?:bi|ctl|dsr|rbbas|rbfrm|rbmnu|rbres|rbtbar|rbuistate|vb|vbhtml|vbs)))(?:[\\t ]+((?:[^\\n\\r`])+))?)(?:[\\t ]*$)',
           beginCaptures: {
             1: {name: 'string.other.begin.code.fenced.mdx'},
             2: {
@@ -2032,7 +2033,7 @@ const grammar = {
         },
         {
           begin:
-            '(?:^|\\G)[\\t ]*(~{3,})(?:[\\t ]*((?i:classic\\x2dvisual\\x2dbasic|fb|freebasic|realbasic|vb\\x2d\\.net|vb\\x2d6|vb\\.net|vb6|vbnet|vbscript|visual\\x2dbasic|visual\\x2dbasic\\x2d\\.net|visual\\x2dbasic\\x2d6|visual\\x2dbasic\\x2d6\\.0|visual\\x2dbasic\\x2dclassic|visual\\x2dbasic\\x2dfor\\x2dapplications|(?:.*\\.)?(?:bi|ctl|dsr|frm|frm|rbbas|rbfrm|rbmnu|rbres|rbtbar|rbuistate|vb|vba|vbhtml|vbs)))(?:[\\t ]+((?:[^\\n\\r])+))?)(?:[\\t ]*$)',
+            '(?:^|\\G)[\\t ]*(~{3,})(?:[\\t ]*((?i:classic\\x2dvisual\\x2dbasic|fb|freebasic|realbasic|vb\\x2d\\.net|vb\\x2d6|vb\\.net|vb6|vbnet|vbscript|visual\\x2dbasic|visual\\x2dbasic\\x2d\\.net|visual\\x2dbasic\\x2d6|visual\\x2dbasic\\x2d6\\.0|visual\\x2dbasic\\x2dclassic|(?:.*\\.)?(?:bi|ctl|dsr|rbbas|rbfrm|rbmnu|rbres|rbtbar|rbuistate|vb|vbhtml|vbs)))(?:[\\t ]+((?:[^\\n\\r])+))?)(?:[\\t ]*$)',
           beginCaptures: {
             1: {name: 'string.other.begin.code.fenced.mdx'},
             2: {
@@ -2091,7 +2092,7 @@ const grammar = {
       patterns: [
         {
           begin:
-            '(?:^|\\G)[\\t ]*(`{3,})(?:[\\t ]*((?i:jar\\x2dmanifest|kaitai\\x2dstruct|oasv2\\x2dyaml|oasv3\\x2dyaml|unity3d\\x2dasset|yaml|yml|(?:.*\\.)?(?:anim|asset|ksy|lookml|mat|meta|mir|model\\.lkml|prefab|raml|reek|rviz|sublime\\x2dsyntax|syntax|unity|view\\.lkml|yaml\\x2dtmlanguage|yaml\\.sed|yml\\.mysql)))(?:[\\t ]+((?:[^\\n\\r`])+))?)(?:[\\t ]*$)',
+            '(?:^|\\G)[\\t ]*(`{3,})(?:[\\t ]*((?i:jar\\x2dmanifest|kaitai\\x2dstruct|oasv2\\x2dyaml|oasv3\\x2dyaml|unity3d\\x2dasset|yaml|yml|(?:.*\\.)?(?:anim|asset|ksy|lkml|lookml|mat|meta|mir|prefab|raml|reek|rviz|sublime\\x2dsyntax|syntax|unity|yaml\\x2dtmlanguage|yaml\\.sed|yml\\.mysql)))(?:[\\t ]+((?:[^\\n\\r`])+))?)(?:[\\t ]*$)',
           beginCaptures: {
             1: {name: 'string.other.begin.code.fenced.mdx'},
             2: {
@@ -2108,7 +2109,7 @@ const grammar = {
         },
         {
           begin:
-            '(?:^|\\G)[\\t ]*(~{3,})(?:[\\t ]*((?i:jar\\x2dmanifest|kaitai\\x2dstruct|oasv2\\x2dyaml|oasv3\\x2dyaml|unity3d\\x2dasset|yaml|yml|(?:.*\\.)?(?:anim|asset|ksy|lookml|mat|meta|mir|model\\.lkml|prefab|raml|reek|rviz|sublime\\x2dsyntax|syntax|unity|view\\.lkml|yaml\\x2dtmlanguage|yaml\\.sed|yml\\.mysql)))(?:[\\t ]+((?:[^\\n\\r])+))?)(?:[\\t ]*$)',
+            '(?:^|\\G)[\\t ]*(~{3,})(?:[\\t ]*((?i:jar\\x2dmanifest|kaitai\\x2dstruct|oasv2\\x2dyaml|oasv3\\x2dyaml|unity3d\\x2dasset|yaml|yml|(?:.*\\.)?(?:anim|asset|ksy|lkml|lookml|mat|meta|mir|prefab|raml|reek|rviz|sublime\\x2dsyntax|syntax|unity|yaml\\x2dtmlanguage|yaml\\.sed|yml\\.mysql)))(?:[\\t ]+((?:[^\\n\\r])+))?)(?:[\\t ]*$)',
           beginCaptures: {
             1: {name: 'string.other.begin.code.fenced.mdx'},
             2: {

@@ -37,7 +37,7 @@ const grammar = {
       begin: '(?<=\\w|<|&)\\[',
       end: '\\]',
       name: 'entity.name.tag.def_brackets.denizenscript',
-      patterns: [{include: '#tags'}]
+      patterns: [{include: '#tags'}, {include: '#def_brackets'}]
     },
     double_quotes: {
       begin: '(?<=\\s)"',

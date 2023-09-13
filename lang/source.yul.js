@@ -124,8 +124,12 @@ const grammar = {
     {match: '\\banonymous\\b', name: 'keyword'},
     {match: '\\bunchecked\\b', name: 'keyword'},
     {match: '\\b(assembly|switch|let|case|default)\\b', name: 'keyword'},
-    {match: '([\\"].*?[\\"])', name: 'string.quoted'},
-    {match: "([\\'].*?[\\'])", name: 'string.quoted'}
+    {
+      begin: '(?<!\\\\)[\\"\\\']',
+      end: '(?<!\\\\)[\\"\\\']',
+      name: 'string.quoted',
+      patterns: [{include: '#string'}]
+    }
   ],
   repository: {
     numbers: {
@@ -134,6 +138,13 @@ const grammar = {
           match: '\\b(?:[+-]?\\.?\\d[\\d_eE]*)(?:\\.\\d+[\\deE]*)?\\b',
           name: 'constant.numeric'
         }
+      ]
+    },
+    string: {
+      patterns: [
+        {match: '\\\\"', name: 'constant.character.escape'},
+        {match: "\\\\'", name: 'constant.character.escape'},
+        {match: '.', name: 'string.quoted'}
       ]
     }
   },

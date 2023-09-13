@@ -5,8 +5,8 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.kt', '.ktm', '.kts'],
-  names: ['kotlin'],
+  extensions: ['.gradle.kts', '.kt', '.ktm', '.kts'],
+  names: ['gradle-kotlin-dsl', 'kotlin'],
   patterns: [
     {include: '#comments'},
     {include: '#package'},

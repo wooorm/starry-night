@@ -70,7 +70,7 @@ const grammar = {
       beginCaptures: {0: {name: 'punctuation.definition.comment.emacs.lisp'}},
       end: '$',
       name: 'comment.line.semicolon.emacs.lisp',
-      patterns: [{include: '#modeline'}, {include: '#docvar'}]
+      patterns: [{include: '#modeline'}, {include: '#eldoc'}]
     },
     definition: {
       patterns: [
@@ -140,6 +140,49 @@ const grammar = {
         {include: '$self'}
       ]
     },
+    docesc: {
+      patterns: [
+        {
+          match: '\\x5C{2}=',
+          name: 'constant.escape.character.key-sequence.emacs.lisp'
+        },
+        {
+          match: '\\x5C{2}+',
+          name: 'constant.escape.character.suppress-link.emacs.lisp'
+        }
+      ]
+    },
+    dockey: {
+      captures: {
+        1: {name: 'punctuation.definition.reference.begin.emacs.lisp'},
+        2: {name: 'constant.other.reference.link.emacs.lisp'},
+        3: {name: 'punctuation.definition.reference.end.emacs.lisp'}
+      },
+      match: '(\\x5C{2}\\[)((?:[^\\s\\\\]|\\\\.)+)(\\])',
+      name: 'variable.other.reference.key-sequence.emacs.lisp'
+    },
+    docmap: {
+      patterns: [
+        {
+          captures: {
+            1: {name: 'punctuation.definition.reference.begin.emacs.lisp'},
+            2: {name: 'entity.name.tag.keymap.emacs.lisp'},
+            3: {name: 'punctuation.definition.reference.end.emacs.lisp'}
+          },
+          match: '(\\x5C{2}{)((?:[^\\s\\\\]|\\\\.)+)(})',
+          name: 'meta.keymap.summary.emacs.lisp'
+        },
+        {
+          captures: {
+            1: {name: 'punctuation.definition.reference.begin.emacs.lisp'},
+            2: {name: 'entity.name.tag.keymap.emacs.lisp'},
+            3: {name: 'punctuation.definition.reference.end.emacs.lisp'}
+          },
+          match: '(\\x5C{2}<)((?:[^\\s\\\\]|\\\\.)+)(>)',
+          name: 'meta.keymap.specifier.emacs.lisp'
+        }
+      ]
+    },
     docvar: {
       captures: {
         1: {name: 'punctuation.definition.quote.begin.emacs.lisp'},
@@ -147,6 +190,14 @@ const grammar = {
       },
       match: "(`)[^\\s()]+(')",
       name: 'variable.other.literal.emacs.lisp'
+    },
+    eldoc: {
+      patterns: [
+        {include: '#docesc'},
+        {include: '#docvar'},
+        {include: '#dockey'},
+        {include: '#docmap'}
+      ]
     },
     escapes: {
       patterns: [
@@ -953,16 +1004,16 @@ const grammar = {
     },
     'string-innards': {
       patterns: [
+        {include: '#eldoc'},
         {
           match: '(\\\\)$\\n?',
-          name: 'constant.character.escape.newline.emacs.lisp'
+          name: 'constant.escape.character.newline.emacs.lisp'
         },
         {
           captures: {1: {name: 'punctuation.escape.backslash.emacs.lisp'}},
           match: '(\\\\).',
-          name: 'constant.character.escape.emacs.lisp'
-        },
-        {include: '#docvar'}
+          name: 'constant.escape.character.emacs.lisp'
+        }
       ]
     },
     symbols: {

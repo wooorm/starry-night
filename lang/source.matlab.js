@@ -22,7 +22,6 @@ const grammar = {
       beginCaptures: {
         1: {name: 'punctuation.definition.function.anonymous.matlab'}
       },
-      end: '(?=;|(?<=[^.])\\n|%)',
       name: 'meta.function.anonymous.matlab',
       patterns: [
         {
@@ -40,17 +39,18 @@ const grammar = {
               match: '[a-zA-Z][a-zA-Z0-9_]*',
               name: 'variable.parameter.input.matlab'
             },
-            {match: ',', name: 'punctuation.separator.parameter.comma.matlab'}
+            {match: ',', name: 'punctuation.separator.parameter.comma.matlab'},
+            {include: '#line_continuation'}
           ]
         },
         {
           begin: '(?<=\\))[^\\S\\n]*(\\()?',
           beginCaptures: {1: {name: 'punctuation.section.group.begin.matlab'}},
-          end: '(\\))?[^\\S\\n]*(?=;|(?<=[^.])\\n|%)',
           endCaptures: {1: {name: 'punctuation.section.group.end.matlab'}},
           name: 'meta.parameters.matlab',
-          patterns: [{include: '$self'}]
-        }
+          patterns: [{include: '$self'}, {include: '#line_continuation'}]
+        },
+        {include: '#line_continuation'}
       ]
     },
     blocks: {
@@ -734,7 +734,7 @@ const grammar = {
           ]
         }
       },
-      match: '\\b(import)\\b[^\\S\\n]+([a-zA-Z0-9.]*)(?=;|%|$)',
+      match: '\\b(import)\\b[^\\S\\n]+([a-zA-Z0-9.\\*]*)[^\\S\\n]*(?=;|%|$)',
       name: 'meta.import.matlab'
     },
     indexing_by_expression: {

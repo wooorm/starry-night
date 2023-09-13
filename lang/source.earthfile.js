@@ -66,7 +66,7 @@ const grammar = {
         },
         {match: '([=])', name: 'keyword.operator.assignment.earthfile'},
         {
-          match: '(\\B(-)+[a-zA-Z0-9\\-]+)',
+          match: '(\\B(-)+[a-zA-Z0-9\\-_]+)',
           name: 'keyword.operator.flag.earthfile'
         },
         {include: '#special-method'},
@@ -96,7 +96,15 @@ const grammar = {
             1: {name: 'keyword.other.special-method.earthfile'},
             2: {name: 'entity.name.type.base-image.earthfile'}
           },
-          match: '(?<=(^FROM\\s))(\\S+)'
+          match: '^\\s*(FROM)\\s*([^\\s#]+)'
+        },
+        {
+          captures: {
+            1: {name: 'keyword.other.special-method.earthfile'},
+            2: {name: 'entity.name.type.tag.earthfile'}
+          },
+          match:
+            '^\\s*(FROM|COPY|SAVE ARTIFACT|SAVE IMAGE|RUN|LABEL|EXPOSE|VOLUME|USER|ENV|ARG|BUILD|WORKDIR|ENTRYPOINT|CMD|GIT CLONE|DOCKER LOAD|DOCKER PULL|HEALTHCHECK|WITH DOCKER|END|IF|ELSE|ELSE IF|DO|COMMAND|IMPORT|LOCALLY|FOR|VERSION|WAIT|TRY|FINALLY|CACHE|HOST|PIPELINE|TRIGGER|PROJECT|SET|LET|ADD|STOP SIGNAL|ONBUILD|SHELL)\\s((--\\w+(?:-\\w+)*\\s*)+)'
         },
         {
           match: '^\\s*HEALTHCHECK\\s+(NONE|CMD)\\s',
@@ -108,7 +116,7 @@ const grammar = {
         },
         {
           match:
-            '^\\s*(FROM|COPY|SAVE ARTIFACT|SAVE IMAGE|RUN|LABEL|EXPOSE|VOLUME|USER|ENV|ARG|BUILD|WORKDIR|ENTRYPOINT|CMD|GIT CLONE|DOCKER LOAD|DOCKER PULL|HEALTHCHECK|WITH DOCKER|END|IF|ELSE|ELSE IF|DO|COMMAND|IMPORT|LOCALLY|FOR|VERSION)\\s',
+            '^\\s*(FROM|COPY|SAVE ARTIFACT|SAVE IMAGE|RUN|LABEL|EXPOSE|VOLUME|USER|ENV|ARG|BUILD|WORKDIR|ENTRYPOINT|CMD|GIT CLONE|DOCKER LOAD|DOCKER PULL|HEALTHCHECK|WITH DOCKER|END|IF|ELSE|ELSE IF|DO|COMMAND|IMPORT|LOCALLY|FOR|VERSION|WAIT|TRY|FINALLY|CACHE|HOST|PIPELINE|TRIGGER|PROJECT|SET|LET|ADD|STOP SIGNAL|ONBUILD|SHELL)\\s',
           name: 'keyword.other.special-method.earthfile'
         }
       ]
@@ -163,21 +171,18 @@ const grammar = {
     },
     variable: {
       patterns: [
-        {match: '\\$[a-zA-Z0-9_\\-]+', name: 'variable.other.earthfile'},
+        {match: '\\$[a-zA-Z0-9_]+', name: 'variable.other.earthfile'},
         {
           match: '(?<=\\${)([a-zA-Z0-9.\\-_]+)(?=})',
           name: 'variable.other.earthfile'
         },
         {
-          begin: '\\$\\{',
-          beginCaptures: {
-            1: {name: 'punctuation.definition.variable.begin.earthfile'}
+          captures: {
+            1: {name: 'punctuation.definition.variable.begin.earthfile'},
+            2: {name: 'variable.other.earthfile'},
+            3: {name: 'punctuation.definition.variable.end.earthfile'}
           },
-          end: '\\}',
-          endCaptures: {
-            1: {name: 'punctuation.definition.variable.end.earthfile'}
-          },
-          name: 'variable.other.earthfile'
+          match: '(\\${)([a-zA-Z0-9.\\-_#]+)(})'
         }
       ]
     }
