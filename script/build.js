@@ -27,18 +27,20 @@ import {common} from './common.js'
  *
  * This prevents having to introduce breaking changes in `starry-night`.
  *
+ * To do: is this a major? drop the ones here.
+ *
  * @type {Record<string, string>}
  */
 const aliases = {
   // Old names to new names.
-  'source.brightscript': 'source.brs',
-  'source.gfm': 'text.md',
-  'source.vtt': 'text.vtt'
+  // Example: 'source.brightscript': 'source.brs'
 }
 
 const own = {}.hasOwnProperty
 const gemsBase = new URL('../gems/gems/', import.meta.url)
 const languagesBase = new URL('../lang/', import.meta.url)
+
+await fs.mkdir(languagesBase, {recursive: true})
 
 // Human-maintained database of which language needs what language.
 /** @type {Record<string, Record<string, boolean>>} */
