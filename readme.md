@@ -146,14 +146,14 @@ npm install @wooorm/starry-night
 In Deno with [`esm.sh`][esmsh]:
 
 ```js
-import {common, createStarryNight} from 'https://esm.sh/@wooorm/starry-night@2'
+import {common, createStarryNight} from 'https://esm.sh/@wooorm/starry-night@3'
 ```
 
 In browsers with [`esm.sh`][esmsh]:
 
 ```html
 <script type="module">
-  import {common, createStarryNight} from 'https://esm.sh/@wooorm/starry-night@2?bundle'
+  import {common, createStarryNight} from 'https://esm.sh/@wooorm/starry-night@3?bundle'
 </script>
 ```
 
@@ -161,7 +161,7 @@ To get the CSS in browsers, do (see [CSS][] for more info):
 
 ```html
 <!-- This supports light and dark mode automatically. -->
-<link rel="stylesheet" href="https://esm.sh/@wooorm/starry-night@2/style/both">
+<link rel="stylesheet" href="https://esm.sh/@wooorm/starry-night@3/style/both">
 ```
 
 ## Use
@@ -548,7 +548,7 @@ Say we have this `example.js` on our browser (no bundling needed!):
 import {
   common,
   createStarryNight
-} from 'https://esm.sh/@wooorm/starry-night@2?bundle'
+} from 'https://esm.sh/@wooorm/starry-night@3?bundle'
 import {toDom} from 'https://esm.sh/hast-util-to-dom@4?bundle'
 
 const starryNight = await createStarryNight(common)
@@ -574,7 +574,7 @@ for (const node of nodes) {
 <!doctype html>
 <meta charset=utf8>
 <title>Hello</title>
-<link rel=stylesheet href=https://esm.sh/@wooorm/starry-night@2/style/both>
+<link rel=stylesheet href=https://esm.sh/@wooorm/starry-night@3/style/both>
 <body>
 <h1>Hello</h1>
 <p>…world!</p>
