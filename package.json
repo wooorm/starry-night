@@ -54,7 +54,7 @@
   ],
   "dependencies": {
     "@types/hast": "^3.0.0",
-    "import-meta-resolve": "^3.0.0",
+    "import-meta-resolve": "^4.0.0",
     "vscode-oniguruma": "^2.0.0",
     "vscode-textmate": "^9.0.0"
   },
