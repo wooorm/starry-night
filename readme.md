@@ -805,7 +805,7 @@ import {visit} from 'unist-util-visit'
 /**
  * Highlight code with `starry-night`.
  *
- * @param {Options | null | undefined} options
+ * @param {Options | null | undefined} [options]
  *   Configuration (optional).
  * @returns
  *   Transform.
@@ -828,18 +828,13 @@ export default function rehypeStarryNight(options) {
     const starryNight = await starryNightPromise
 
     visit(tree, 'element', function (node, index, parent) {
-      if (!parent || index === null || node.tagName !== 'pre') {
+      if (!parent || index === undefined || node.tagName !== 'pre') {
         return
       }
 
       const head = node.children[0]
 
-      if (
-        !head ||
-        head.type !== 'element' ||
-        head.tagName !== 'code' ||
-        !head.properties
-      ) {
+      if (!head || head.type !== 'element' || head.tagName !== 'code') {
         return
       }
 
