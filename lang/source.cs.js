@@ -60,7 +60,7 @@ const grammar = {
       patterns: [
         {
           begin:
-            '(?x)\n((?:\\b(?:async|static)\\b\\s*)*)\n(@?[_[:alpha:]][_[:alnum:]]*)\\b\\s*\n(=>)',
+            '(?x)\n((?:\\b(?:async|static)\\b\\s*)*)\n(?:\n  (@?[_[:alpha:]][_[:alnum:]]*)\\b|\n  (\\()\n    (?<tuple>(?:[^()]|\\(\\g<tuple>\\))*)\n  (\\))\n)\\s*\n(=>)',
           beginCaptures: {
             1: {
               patterns: [
@@ -68,37 +68,38 @@ const grammar = {
               ]
             },
             2: {name: 'entity.name.variable.parameter.cs'},
-            3: {name: 'keyword.operator.arrow.cs'}
-          },
-          end: '(?=\\)|;|}|,)',
-          patterns: [
-            {include: '#block'},
-            {include: '#ref-modifier'},
-            {include: '#expression'}
-          ]
-        },
-        {
-          begin:
-            '(?x)\n((?:\\b(?:async|static)\\b\\s*)*)\n(?<tuple>\n  \\(\n    (?:[^()]|\\g<tuple>)*\n  \\)\n)\\s*\n(=>)',
-          beginCaptures: {
-            1: {
+            3: {name: 'punctuation.parenthesis.open.cs'},
+            4: {
               patterns: [
-                {match: 'async|static', name: 'storage.modifier.$0.cs'}
+                {include: '#comment'},
+                {include: '#explicit-anonymous-function-parameter'},
+                {include: '#implicit-anonymous-function-parameter'},
+                {include: '#default-argument'},
+                {include: '#punctuation-comma'}
               ]
             },
-            2: {patterns: [{include: '#lambda-parameter-list'}]},
-            3: {name: 'keyword.operator.arrow.cs'}
+            5: {name: 'punctuation.parenthesis.close.cs'},
+            6: {name: 'keyword.operator.arrow.cs'}
           },
-          end: '(?=\\)|;|}|,)',
+          end: '(?=[,;)}])',
           patterns: [
-            {include: '#block'},
-            {include: '#ref-modifier'},
-            {include: '#expression'}
+            {include: '#intrusive'},
+            {
+              begin: '(?={)',
+              end: '(?=[,;)}])',
+              patterns: [{include: '#block'}, {include: '#intrusive'}]
+            },
+            {
+              begin: '\\b(ref)\\b|(?=\\S)',
+              beginCaptures: {1: {name: 'storage.modifier.ref.cs'}},
+              end: '(?=[,;)}])',
+              patterns: [{include: '#expression'}]
+            }
           ]
         },
         {
           begin:
-            '(?x)\n((?:\\b(?:async|static)\\b\\s*)*)\n(?:\\b(delegate)\\b\\s*)',
+            '(?x)\n((?:\\b(?:async|static)\\b\\s*)*)\n\\b(delegate)\\b\\s*',
           beginCaptures: {
             1: {
               patterns: [
@@ -107,9 +108,20 @@ const grammar = {
             },
             2: {name: 'storage.type.delegate.cs'}
           },
-          end: '(?=\\)|;|}|,)',
+          end: '(?<=})|(?=[,;)}])',
           patterns: [
-            {include: '#parenthesized-parameter-list'},
+            {include: '#intrusive'},
+            {
+              begin: '\\(',
+              beginCaptures: {0: {name: 'punctuation.parenthesis.open.cs'}},
+              end: '\\)',
+              endCaptures: {0: {name: 'punctuation.parenthesis.close.cs'}},
+              patterns: [
+                {include: '#intrusive'},
+                {include: '#explicit-anonymous-function-parameter'},
+                {include: '#punctuation-comma'}
+              ]
+            },
             {include: '#block'}
           ]
         }
@@ -374,7 +386,7 @@ const grammar = {
       ]
     },
     'char-character-escape': {
-      match: '\\\\([\'"\\\\0abfnrtv]|x[0-9a-fA-F]{1,4}|u[0-9a-fA-F]{4})',
+      match: '\\\\(x[0-9a-fA-F]{1,4}|u[0-9a-fA-F]{4}|.)',
       name: 'constant.character.escape.cs'
     },
     'char-literal': {
@@ -606,6 +618,12 @@ const grammar = {
         {include: '#punctuation-semicolon'}
       ]
     },
+    'default-argument': {
+      begin: '=',
+      beginCaptures: {0: {name: 'keyword.operator.assignment.cs'}},
+      end: '(?=,|\\))',
+      patterns: [{include: '#expression'}]
+    },
     'default-literal-expression': {
       captures: {1: {name: 'keyword.operator.expression.default.cs'}},
       match: '\\b(default)\\b'
@@ -794,6 +812,15 @@ const grammar = {
           patterns: [{include: '#expression'}, {include: '#punctuation-comma'}]
         }
       ]
+    },
+    'explicit-anonymous-function-parameter': {
+      captures: {
+        1: {name: 'storage.modifier.$1.cs'},
+        2: {patterns: [{include: '#type'}]},
+        7: {name: 'entity.name.variable.parameter.cs'}
+      },
+      match:
+        '(?x)\n(?:\\b(ref|params|out|in)\\b\\s*)?\n(?<type_name>\n  (?:\n    (?:\n      (?:(?<identifier>@?[_[:alpha:]][_[:alnum:]]*)\\s*\\:\\:\\s*)? # alias-qualification\n      (?<name_and_type_args> # identifier + type arguments (if any)\n        \\g<identifier>\\s*\n        (?<type_args><(?:[^<>]|\\g<type_args>)*>\\s*)?\n      )\n      (?:\\s*\\.\\s*\\g<name_and_type_args>)* | # Are there any more names being dotted into?\n      (?<tuple>\\s*\\((?:[^()]|\\g<tuple>)*\\))\n    )\n    (?:\\s*\\?\\s*)? # nullable suffix?\n    (?:\\s* # array suffix?\n      \\[\n        (?:\\s*,\\s*)* # commata for multi-dimensional arrays\n      \\]\n      \\s*\n      (?:\\?)? # arrays can be nullable reference types\n      \\s*\n    )*\n  )\n)\\s*\n\\b(\\g<identifier>)\\b'
     },
     expression: {
       patterns: [
@@ -1076,6 +1103,10 @@ const grammar = {
         {include: '#statement'}
       ]
     },
+    'implicit-anonymous-function-parameter': {
+      match: '\\@?[_[:alpha:]][_[:alnum:]]*\\b',
+      name: 'entity.name.variable.parameter.cs'
+    },
     'indexer-declaration': {
       begin:
         '(?x)\n(?<return_type>\n  (?<type_name>\n    (?:\n      (?:ref\\s+(?:readonly\\s+)?)?   # ref return\n      (?:\n        (?:(?<identifier>@?[_[:alpha:]][_[:alnum:]]*)\\s*\\:\\:\\s*)? # alias-qualification\n        (?<name_and_type_args> # identifier + type arguments (if any)\n          \\g<identifier>\\s*\n          (?<type_args>\\s*<(?:[^<>]|\\g<type_args>)+>\\s*)?\n        )\n        (?:\\s*\\.\\s*\\g<name_and_type_args>)* | # Are there any more names being dotted into?\n        (?<tuple>\\s*\\((?:[^\\(\\)]|\\g<tuple>)+\\))\n      )\n      (?:\\s*\\?\\s*)? # nullable suffix?\n      (?:\\s* # array suffix?\n        \\[\n          (?:\\s*,\\s*)* # commata for multi-dimensional arrays\n        \\]\n        \\s*\n        (?:\\?)? # arrays can be nullable reference types\n        \\s*\n      )*\n    )\n  )\\s+\n)\n(?<interface_name>\\g<type_name>\\s*\\.\\s*)?\n(?<indexer_name>this)\\s*\n(?=\\[)',
@@ -1169,7 +1200,7 @@ const grammar = {
     intrusive: {patterns: [{include: '#preprocessor'}, {include: '#comment'}]},
     'invocation-expression': {
       begin:
-        '(?x)\n(?:\n  (?:(\\?)\\s*)?                                    # preceding null-conditional operator?\n  (\\.)\\s*|                                        # preceding dot?\n  (->)\\s*                                         # preceding pointer arrow?\n)?\n(@?[_[:alpha:]][_[:alnum:]]*)\\s*                  # method name\n(\n  <\n  (?<type_args>\n    [^<>()]+|\n    <\\g<type_args>+>|\n    \\(\\g<type_args>+\\)\n  )+\n  >\\s*\n)?                                                # type arguments\n(?=\\()                                            # open paren of argument list',
+        '(?x)\n(?:\n  (?:(\\?)\\s*)?                                    # preceding null-conditional operator?\n  (\\.)\\s*|                                        # preceding dot?\n  (->)\\s*                                         # preceding pointer arrow?\n)?\n(@?[_[:alpha:]][_[:alnum:]]*)\\s*                  # method name\n(\n  <\n  (?<type_args>\n    [^<>()]++|\n    <\\g<type_args>*+>|\n    \\(\\g<type_args>*+\\)\n  )*+\n  >\\s*\n)?                                                # type arguments\n(?=\\()                                            # open paren of argument list',
       beginCaptures: {
         1: {name: 'keyword.operator.null-conditional.cs'},
         2: {name: 'punctuation.accessor.cs'},
@@ -1225,27 +1256,6 @@ const grammar = {
         2: {name: 'punctuation.separator.colon.cs'}
       },
       match: '(@?[_[:alpha:]][_[:alnum:]]*)\\s*(:)'
-    },
-    'lambda-parameter': {
-      captures: {
-        1: {name: 'storage.modifier.$1.cs'},
-        2: {patterns: [{include: '#type'}]},
-        7: {name: 'entity.name.variable.parameter.cs'}
-      },
-      match:
-        '(?x)\n(?:\\b(ref|out|in)\\b)?\\s*\n(?:(?<type_name>\n  (?:\n    (?:\n      (?:(?<identifier>@?[_[:alpha:]][_[:alnum:]]*)\\s*\\:\\:\\s*)? # alias-qualification\n      (?<name_and_type_args> # identifier + type arguments (if any)\n        \\g<identifier>\\s*\n        (?<type_args>\\s*<(?:[^<>]|\\g<type_args>)+>\\s*)?\n      )\n      (?:\\s*\\.\\s*\\g<name_and_type_args>)* | # Are there any more names being dotted into?\n      (?<tuple>\\s*\\((?:[^\\(\\)]|\\g<tuple>)+\\))\n    )\n    (?:\\s*\\?\\s*)? # nullable suffix?\n    (?:\\s* # array suffix?\n      \\[\n        (?:\\s*,\\s*)* # commata for multi-dimensional arrays\n      \\]\n      \\s*\n      (?:\\?)? # arrays can be nullable reference types\n      \\s*\n    )*\n  )\n)\\s+)?\n(\\g<identifier>)\\b\\s*\n(?=[,)])'
-    },
-    'lambda-parameter-list': {
-      begin: '\\(',
-      beginCaptures: {0: {name: 'punctuation.parenthesis.open.cs'}},
-      end: '\\)',
-      endCaptures: {0: {name: 'punctuation.parenthesis.close.cs'}},
-      patterns: [
-        {include: '#comment'},
-        {include: '#attribute-section'},
-        {include: '#lambda-parameter'},
-        {include: '#punctuation-comma'}
-      ]
     },
     'language-variable': {
       patterns: [
@@ -1667,7 +1677,7 @@ const grammar = {
         7: {name: 'entity.name.variable.parameter.cs'}
       },
       match:
-        '(?x)\n(?:(?:\\b(ref|params|out|in|this)\\b)\\s+)?\n(?<type_name>\n  (?:\n    (?:ref\\s+)?   # ref return\n    (?:\n      (?:(?<identifier>@?[_[:alpha:]][_[:alnum:]]*)\\s*\\:\\:\\s*)? # alias-qualification\n      (?<name_and_type_args> # identifier + type arguments (if any)\n        \\g<identifier>\\s*\n        (?<type_args>\\s*<(?:[^<>]|\\g<type_args>)+>\\s*)?\n      )\n      (?:\\s*\\.\\s*\\g<name_and_type_args>)* | # Are there any more names being dotted into?\n      (?<tuple>\\s*\\((?:[^\\(\\)]|\\g<tuple>)+\\))\n    )\n    (?:\\s*\\?\\s*)? # nullable suffix?\n    (?:\\s* # array suffix?\n      \\[\n        (?:\\s*,\\s*)* # commata for multi-dimensional arrays\n      \\]\n      \\s*\n      (?:\\?)? # arrays can be nullable reference types\n      \\s*\n    )*\n  )\n)\\s+\n(\\g<identifier>)'
+        '(?x)\n(?:(?:\\b(ref|params|out|in|this)\\b)\\s+)?\n(?<type_name>\n  (?:\n    (?:ref\\s+)?   # ref return\n    (?:\n      (?:(?<identifier>@?[_[:alpha:]][_[:alnum:]]*)\\s*\\:\\:\\s*)? # alias-qualification\n      (?<name_and_type_args> # identifier + type arguments (if any)\n        \\g<identifier>\\s*\n        (?<type_args>\\s*<(?:[^<>]|\\g<type_args>)+>\\s*)?\n      )\n      (?:\\s*\\.\\s*\\g<name_and_type_args>)* | # Are there any more names being dotted into?\n      (?<tuple>\\s*\\((?:[^()]|\\g<tuple>)+\\))\n    )\n    (?:\\s*\\?\\s*)? # nullable suffix?\n    (?:\\s* # array suffix?\n      \\[\n        (?:\\s*,\\s*)* # commata for multi-dimensional arrays\n      \\]\n      \\s*\n      (?:\\?)? # arrays can be nullable reference types\n      \\s*\n    )*\n  )\n)\\s+\n(\\g<identifier>)'
     },
     'parenthesized-expression': {
       begin: '\\(',
@@ -2163,7 +2173,7 @@ const grammar = {
         {include: '#yield-statement'},
         {include: '#await-statement'},
         {include: '#try-statement'},
-        {include: '#checked-unchecked-statement'},
+        {include: '#expression-operator-expression'},
         {include: '#context-control-statement'},
         {include: '#context-control-paren-statement'},
         {include: '#labeled-statement'},
@@ -2182,8 +2192,7 @@ const grammar = {
       name: 'storage.modifier.$1.cs'
     },
     'string-character-escape': {
-      match:
-        '\\\\([\'"\\\\0abfnrtv]|x[0-9a-fA-F]{1,4}|U[0-9a-fA-F]{8}|u[0-9a-fA-F]{4})',
+      match: '\\\\(x[0-9a-fA-F]{1,4}|U[0-9a-fA-F]{8}|u[0-9a-fA-F]{4}|.)',
       name: 'constant.character.escape.cs'
     },
     'string-literal': {

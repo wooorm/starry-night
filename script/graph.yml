@@ -113,6 +113,8 @@ source.dotenv:
   source.shell: false
 source.ebnf:
   source.lex.regexp: true
+source.edgeql:
+  source.sql: false
 source.elixir:
   text.elixir: true
   text.html.basic: false
@@ -183,6 +185,8 @@ source.gitconfig:
   source.shell: true
 source.gitignore:
   etc: true
+source.gjs:
+  source.js: true
 source.graphql:
   source.js: false
   source.ts: false
@@ -236,7 +240,6 @@ source.jsdoc:
 source.jsoniq:
   source.xq: false
 source.julia:
-  source.c++: false
   source.js: false
   source.python: false
   source.r: false
@@ -252,6 +255,53 @@ source.lark:
 source.lean:
   source.lean.markdown: false
 source.lean.markdown:
+  source.batchfile: false
+  source.c: false
+  source.c++: false
+  source.clojure: false
+  source.coffee: false
+  source.cs: false
+  source.css: false
+  source.css.less: false
+  source.css.scss: false
+  source.dart: false
+  source.diff: false
+  source.dockerfile: false
+  source.fsharp: false
+  source.go: false
+  source.groovy: false
+  source.ini: false
+  source.java: false
+  source.js: false
+  source.js.regexp: false
+  source.json: false
+  source.lua: false
+  source.makefile: false
+  source.objc: false
+  source.perl: false
+  source.perl.6: false
+  source.powershell: false
+  source.python: false
+  source.r: false
+  source.regexp.python: false
+  source.ruby: false
+  source.rust: false
+  source.scala: false
+  source.shell: false
+  source.sql: false
+  source.swift: false
+  source.ts: false
+  source.tsx: false
+  source.yaml: false
+  text.html.basic: false
+  text.html.handlebars: false
+  text.html.php: false
+  text.jade: false
+  text.xml: false
+  text.xml.xsl: false
+source.lean4:
+  source.lean4.markdown: false
+source.lean4.markdown:
   source.batchfile: false
   source.c: false
   source.c++: false
@@ -833,6 +883,7 @@ text.html.smarty:
 text.html.soy:
   text.html.basic: true
 text.html.statamic:
+  source.js: false
   source.yaml: false
   text.html.basic: true
   text.html.php: false

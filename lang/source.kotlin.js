@@ -88,14 +88,14 @@ const grammar = {
       patterns: [
         {
           begin:
-            '(?=\\b(?:(?:(?:data|value)\\s+)?class|(?:(?:fun|value)\\s+)?interface)\\s+\\w+)\\b',
+            '(?=\\b(?:(?:(?:data|value)\\s+)?class|(?:data\\s+)?object|(?:(?:fun|value)\\s+)?interface)\\s+\\w+)\\b',
           end: '(?=\\}|$)',
           name: 'meta.class.kotlin',
           patterns: [
             {include: '#keywords'},
             {
               begin:
-                '\\b((?:(?:data|value)\\s+)?class|(?:(?:fun|value)\\s+)?interface)\\b\\s+(\\w+)',
+                '\\b((?:(?:data|value)\\s+)?class|(?:data\\s+)?object|(?:(?:fun|value)\\s+)?interface)\\b\\s+(\\w+)',
               beginCaptures: {
                 1: {name: 'storage.modifier.kotlin'},
                 2: {name: 'entity.name.class.kotlin'}

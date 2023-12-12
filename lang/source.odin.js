@@ -87,7 +87,10 @@ const grammar = {
           name: 'keyword.control.odin'
         },
         {match: '\\b(using)\\b', name: 'keyword.control.odin'},
-        {match: '\\b(asm|or_return|or_else)\\b', name: 'keyword.control.odin'},
+        {
+          match: '\\b(asm|or_return|or_else|or_break|or_continue)\\b',
+          name: 'keyword.control.odin'
+        },
         {match: '\\b(distinct)\\b', name: 'keyword.operator.odin'},
         {match: '\\b(context)\\b', name: 'keyword.operator.odin'},
         {match: '\\b(nil|true|false)\\b', name: 'constant.language.odin'},

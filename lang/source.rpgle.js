@@ -519,16 +519,16 @@ const grammar = {
           ]
         },
         {
-          begin: '(?i)(?=(\\b(DCL\\-)(DS|PROC|PR|PI)\\b))',
+          begin: '(?i)(?=(\\b(DCL\\-)(DS|ENUM|PROC|PR|PI)\\b))',
           end: '\n',
           name: 'rpgle.free.definition.complex',
           patterns: [
             {
-              match: '(?i)\\b(DCL\\-)(DS|PROC|PR|PI)\\b',
+              match: '(?i)\\b(DCL\\-)(DS|ENUM|PROC|PR|PI)\\b',
               name: 'storage.type.rpgle.free.definition.complex.dcl'
             },
             {
-              match: '(?i)\\b(END\\-)(DS|PROC|PR|PI)\\b',
+              match: '(?i)\\b(END\\-)(DS|ENUM|PROC|PR|PI)\\b',
               name: 'storage.type.rpgle.free.definition.complex.end'
             },
             {include: '#freedefkeywords'},
@@ -537,7 +537,7 @@ const grammar = {
           ]
         },
         {
-          match: '(?i)\\b(END\\-)(DS|PROC|PR|PI)\\b',
+          match: '(?i)\\b(END\\-)(DS|ENUM|PROC|PR|PI)\\b',
           name: 'storage.type.rpgle.free.definition.complex.end'
         },
         {
@@ -571,7 +571,7 @@ const grammar = {
         },
         {
           match:
-            '[%](?i)(YEARS|XML|XLATE|XFOOT|UPPER|UNSH|UNS|UCS2|TRIMR|TRIML|TRIM|TLOOKUPLT|TLOOKUPLE|TLOOKUPGT|TLOOKUPGE|TLOOKUP|TIMESTAMP|TIME|THIS|TARGET|SUBST|SUBDT|SUBARR|STR|STATUS|SQRT|SPLIT|SIZE|SHTDN|SECONDS|SCANRPL|SCANR|SCAN|REPLACE|REM|REALLOC|RANGE|PROC|PASSED|PARSER|PARMNUM|PARMS|PADDR|OPEN|OMITTED|OCCUR|NULLIND|MSG|MSECONDS|MONTHS|MINUTES|MINARR|MIN|MAXARR|MAX|LOWER|LOOKUPLT|LOOKUPLE|LOOKUPGT|LOOKUPGE|LOOKUP|LIST|LEN|KDS|INTH|INT|HOURS|HANDLER|GRAPH|FOUND|FLOAT|FIELDS|ERROR|EQUAL|EOF|ELEM|EDITW|EDITFLT|EDITC|DIV|DIFF|DECPOS|DECH|DEC|DAYS|DATE|DATA|CONCATARR|CONCAT|CHECKR|CHECK|CHARCOUNT|CHAR|BITXOR|BITOR|BITNOT|BITAND|ALLOC|ADDR|ABS)',
+            '[%](?i)(YEARS|XML|XLATE|XFOOT|UPPER|UNSH|UNS|UCS2|TRIMR|TRIML|TRIM|TLOOKUPLT|TLOOKUPLE|TLOOKUPGT|TLOOKUPGE|TLOOKUP|TIMESTAMP|TIME|THIS|TARGET|SUBST|SUBDT|SUBARR|STR|STATUS|SQRT|SPLIT|SIZE|SHTDN|SECONDS|SCANRPL|SCANR|SCAN|RIGHT|REPLACE|REM|REALLOC|RANGE|PROC|PASSED|PARSER|PARMNUM|PARMS|PADDR|OPEN|OMITTED|OCCUR|NULLIND|MSG|MSECONDS|MONTHS|MINUTES|MINARR|MIN|MAXARR|MAX|LOWER|LOOKUPLT|LOOKUPLE|LOOKUPGT|LOOKUPGE|LOOKUP|LIST|LEN|LEFT|KDS|INTH|INT|HOURS|HANDLER|GRAPH|FOUND|FLOAT|FIELDS|ERROR|EQUAL|EOF|ELEM|EDITW|EDITFLT|EDITC|DIV|DIFF|DECPOS|DECH|DEC|DAYS|DATE|DATA|CONCATARR|CONCAT|CHECKR|CHECK|CHARCOUNT|CHAR|BITXOR|BITOR|BITNOT|BITAND|ALLOC|ADDR|ABS)',
           name: 'support.function.rpgle.bif'
         }
       ]

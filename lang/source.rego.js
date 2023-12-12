@@ -1,6 +1,6 @@
 // This is a TextMate grammar distributed by `starry-night`.
 // This grammar is developed at
-// <https://github.com/tsandall/vscode-opa>
+// <https://github.com/open-policy-agent/vscode-opa>
 // and licensed `apache-2.0`.
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
@@ -11,7 +11,6 @@ const grammar = {
     {include: '#comment'},
     {include: '#keyword'},
     {include: '#operator'},
-    {include: '#head'},
     {include: '#term'}
   ],
   repository: {
@@ -28,13 +27,6 @@ const grammar = {
     constant: {
       match: '\\b(?:true|false|null)\\b',
       name: 'constant.language.rego'
-    },
-    head: {
-      begin: '^([[:alpha:]_][[:alnum:]_]*)',
-      beginCaptures: {1: {name: 'entity.name.function.declaration'}},
-      end: '(=|{|\\n)',
-      name: 'meta.function.rego',
-      patterns: [{include: '#term'}]
     },
     keyword: {
       match:

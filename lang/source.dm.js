@@ -1,6 +1,6 @@
 // This is a TextMate grammar distributed by `starry-night`.
 // This grammar is developed at
-// <https://github.com/PJB3005/atomic-dreams>
+// <https://github.com/spacestation13/dm-syntax>
 // and licensed `mit`.
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
@@ -16,11 +16,11 @@ const grammar = {
       captures: {
         1: {name: 'storage.type.dm'},
         2: {name: 'storage.modifier.dm'},
-        3: {name: 'storage.type.dm'},
+        3: {name: 'support.class.dm'},
         5: {name: 'variable.other.dm'}
       },
       match:
-        '(?x)\n(?:\\b(var))[\\/ ]\n(?:(static|global|tmp|const)\\/)?\n(?:(datum|atom(?:\\/movable)?|obj|mob|turf|area|savefile|list|client|sound|image|database|matrix|regex|exception)\\/)?\n(?:\n\t([a-zA-Z0-9_\\-$]*)\\/\n)*\n\n([A-Za-z0-9_$]*)\\b',
+        '\\b(var)[\\/ ](?:(static|global|tmp|const)\\/)?(?:(area|atom(?:/movable)?|client|database(?:/query)?|datum|exception|generator|icon|image|list|matrix|mob|mutable_appearance|obj|particles|regex|savefile|sound|turf|world)\\/)?(?:([a-zA-Z0-9_\\-$]*)\\/)*([A-Za-z0-9_$]*)\\b',
       name: 'meta.initialization.dm'
     },
     {
@@ -30,56 +30,113 @@ const grammar = {
     },
     {
       match:
-        '\\b(sleep|spawn|break|continue|do|else|for|goto|if|return|switch|while)\\b',
+        '\\b(sleep|spawn|break|continue|do|else|for|goto|if|return|switch|while|try|catch|throw)\\b',
       name: 'keyword.control.dm'
     },
     {match: '\\b(del|new)\\b', name: 'keyword.other.dm'},
-    {
-      match:
-        '\\b(proc|verb|datum|atom(/movable)?|obj|mob|turf|area|savefile|list|client|sound|image|database|matrix|regex|exception)\\b',
-      name: 'storage.type.dm'
-    },
+    {match: '\\b(proc|verb|operator)\\b', name: 'storage.type.dm'},
     {
       match: '\\b(as|const|global|set|static|tmp)\\b',
       name: 'storage.modifier.dm'
     },
-    {match: '\\b(usr|world|src|args)\\b', name: 'variable.language.dm'},
+    {
+      captures: {
+        1: {name: 'keyword.operator.dm'},
+        2: {name: 'support.class.dm'}
+      },
+      match:
+        '(/)(area|atom(/movable)?|client|database(/query)?|datum|exception|generator|icon|image|list|matrix|mob|mutable_appearance|obj|particles|regex|savefile|sound|turf|world)\\b'
+    },
+    {
+      captures: {
+        1: {name: 'keyword.operator.dm'},
+        2: {name: 'support.class.dm'}
+      },
+      match:
+        '(\\(|,)\\s*(area|atom(/movable)?|client|database(/query)?|datum|exception|generator|icon|image|list|matrix|mob|mutable_appearance|obj|particles|regex|savefile|sound|turf|world)(?=/)'
+    },
+    {
+      captures: {1: {name: 'support.function.dm'}},
+      match:
+        '\\b(list|call|input|locate|pick|arglist|CRASH|ASSERT|EXCEPTION|REGEX_QUOTE|REGEX_QUOTE_REPLACEMENT)(?>\\s*\\()'
+    },
+    {match: '\\b(usr|world|src|args|vars)\\b', name: 'variable.language.dm'},
     {
       match:
-        '(\\?|(>|<)(=)?|\\.|:|/(=)?|~|\\+(\\+|=)?|-(-|=)?|\\*(\\*|=)?|%|>>|<<|=(=)?|!(=)?|<>|&|&&|\\^|\\||\\|\\||\\bto\\b|\\bin\\b|\\bstep\\b)',
+        '(\\?|(>|<)(=)?|\\.|:|/(=)?|~|\\+(\\+|=)?|-(-|=)?|\\*(\\*|=)?|%|>>|<<|=(=)?|!(=)?|<>|&|&&|\\^|\\||\\|\\||\\b(to|in|step)\\b)',
       name: 'keyword.operator.dm'
     },
-    {match: '\\b([A-Z_][A-Z_0-9]*)\\b', name: 'constant.language.dm'},
+    {
+      match:
+        '\\b(DM_BUILD|DM_VERSION|__FILE__|__LINE__|__MAIN__|DEBUG|FILE_DIR|TRUE|FALSE)\\b',
+      name: 'constant.language.dm'
+    },
+    {match: '\\b([A-Z_][A-Z_0-9]+)\\b', name: 'constant.language.dm'},
     {match: '\\bnull\\b', name: 'constant.language.dm'},
     {
-      begin: '{"',
+      begin: '@{"',
       beginCaptures: {0: {name: 'punctuation.definition.string.begin.dm'}},
       end: '"}',
       endCaptures: {0: {name: 'punctuation.definition.string.end.dm'}},
-      name: 'string.quoted.triple.dm',
+      name: 'string.quoted.other.dm'
+    },
+    {
+      begin: '@\\(([^)]+)\\)',
+      beginCaptures: {0: {name: 'punctuation.definition.string.begin.dm'}},
+      end: '\\1',
+      endCaptures: {0: {name: 'punctuation.definition.string.end.dm'}},
+      name: 'string.unquoted.dm'
+    },
+    {
+      begin: '@(.)',
+      beginCaptures: {0: {name: 'punctuation.definition.string.begin.dm'}},
+      end: '\\1|$',
+      endCaptures: {0: {name: 'punctuation.definition.string.end.dm'}},
+      name: 'string.quoted.other.dm'
+    },
+    {
+      begin: '({")',
+      beginCaptures: {
+        0: {name: 'string.quoted.triple.dm'},
+        1: {name: 'punctuation.definition.string.begin.dm'}
+      },
+      end: '("})',
+      endCaptures: {
+        0: {name: 'string.quoted.triple.dm'},
+        1: {name: 'punctuation.definition.string.end.dm'}
+      },
+      name: 'meta.interpstring.dm',
       patterns: [
         {include: '#string_escaped_char'},
-        {include: '#string_embedded_expression'}
+        {include: '#string_embedded_expression'},
+        {match: '.', name: 'string.quoted.triple.dm'}
       ]
     },
     {
-      begin: '"',
-      beginCaptures: {0: {name: 'punctuation.definition.string.begin.dm'}},
-      end: '"',
-      endCaptures: {0: {name: 'punctuation.definition.string.end.dm'}},
-      name: 'string.quoted.double.dm',
+      begin: '(")',
+      beginCaptures: {
+        0: {name: 'string.quoted.double.dm'},
+        1: {name: 'punctuation.definition.string.begin.dm'}
+      },
+      end: '("|[^\\\\]$)',
+      endCaptures: {
+        0: {name: 'string.quoted.double.dm'},
+        1: {name: 'punctuation.definition.string.end.dm'}
+      },
+      name: 'meta.interpstring.dm',
       patterns: [
         {include: '#string_escaped_char'},
-        {include: '#string_embedded_expression'}
+        {include: '#string_embedded_expression'},
+        {match: '.', name: 'string.quoted.double.dm'}
       ]
     },
     {
       begin: "'",
       beginCaptures: {0: {name: 'punctuation.definition.string.begin.dm'}},
-      end: "'",
+      end: "'|[^\\\\]$",
       endCaptures: {0: {name: 'punctuation.definition.string.end.dm'}},
       name: 'string.quoted.single.dm',
-      patterns: [{include: '#string_escaped_char'}]
+      patterns: [{match: '\\\\(.|\\n)', name: 'constant.character.escape.dm'}]
     },
     {
       begin:
@@ -212,7 +269,7 @@ const grammar = {
         {
           begin: '//',
           beginCaptures: {0: {name: 'punctuation.definition.comment.dm'}},
-          end: '$\\n?',
+          end: '[^\\\\]$',
           name: 'comment.line.double-slash.dm',
           patterns: [
             {
@@ -225,7 +282,7 @@ const grammar = {
     },
     disabled: {
       begin: '^\\s*#\\s*if(n?def)?\\b.*$',
-      end: '^\\s*#\\s*endif\\b.*$',
+      end: '^\\s*#\\s*endif\\b',
       patterns: [{include: '#disabled'}]
     },
     parens: {
@@ -235,7 +292,7 @@ const grammar = {
       patterns: [{include: '$base'}]
     },
     'preprocessor-rule-disabled': {
-      begin: '^\\s*(#(if)\\s+(0)\\b).*',
+      begin: '^\\s*(#(if)\\s+(0+|FALSE)\\b).*',
       captures: {
         1: {name: 'meta.preprocessor.dm'},
         2: {name: 'keyword.control.import.if.dm'},
@@ -249,18 +306,18 @@ const grammar = {
             1: {name: 'meta.preprocessor.dm'},
             2: {name: 'keyword.control.import.else.dm'}
           },
-          end: '(?=^\\s*#\\s*endif\\b.*$)',
+          end: '(?=^\\s*#\\s*endif\\b)',
           patterns: [{include: '$base'}]
         },
         {
-          end: '(?=^\\s*#\\s*(else|endif)\\b.*$)',
+          end: '(?=^\\s*#\\s*(else|endif)\\b)',
           name: 'comment.block.preprocessor.if-branch',
           patterns: [{include: '#disabled'}]
         }
       ]
     },
     'preprocessor-rule-disabled-block': {
-      begin: '^\\s*(#(if)\\s+(0)\\b).*',
+      begin: '^\\s*(#(if)\\s+(0+|FALSE)\\b).*',
       captures: {
         1: {name: 'meta.preprocessor.dm'},
         2: {name: 'keyword.control.import.if.dm'},
@@ -274,18 +331,18 @@ const grammar = {
             1: {name: 'meta.preprocessor.dm'},
             2: {name: 'keyword.control.import.else.dm'}
           },
-          end: '(?=^\\s*#\\s*endif\\b.*$)',
+          end: '(?=^\\s*#\\s*endif\\b)',
           patterns: [{include: '#block_innards'}]
         },
         {
-          end: '(?=^\\s*#\\s*(else|endif)\\b.*$)',
+          end: '(?=^\\s*#\\s*(else|endif)\\b)',
           name: 'comment.block.preprocessor.if-branch.in-block',
           patterns: [{include: '#disabled'}]
         }
       ]
     },
     'preprocessor-rule-enabled': {
-      begin: '^\\s*(#(if)\\s+(0*1)\\b)',
+      begin: '^\\s*(#(if)\\s+(0*1|TRUE)\\b)',
       captures: {
         1: {name: 'meta.preprocessor.dm'},
         2: {name: 'keyword.control.import.if.dm'},
@@ -300,17 +357,14 @@ const grammar = {
             2: {name: 'keyword.control.import.else.dm'}
           },
           contentName: 'comment.block.preprocessor.else-branch',
-          end: '(?=^\\s*#\\s*endif\\b.*$)',
+          end: '(?=^\\s*#\\s*endif\\b)',
           patterns: [{include: '#disabled'}]
         },
-        {
-          end: '(?=^\\s*#\\s*(else|endif)\\b.*$)',
-          patterns: [{include: '$base'}]
-        }
+        {end: '(?=^\\s*#\\s*(else|endif)\\b)', patterns: [{include: '$base'}]}
       ]
     },
     'preprocessor-rule-enabled-block': {
-      begin: '^\\s*(#(if)\\s+(0*1)\\b)',
+      begin: '^\\s*(#(if)\\s+(0*1|TRUE)\\b)',
       captures: {
         1: {name: 'meta.preprocessor.dm'},
         2: {name: 'keyword.control.import.if.dm'},
@@ -325,11 +379,11 @@ const grammar = {
             2: {name: 'keyword.control.import.else.dm'}
           },
           contentName: 'comment.block.preprocessor.else-branch.in-block',
-          end: '(?=^\\s*#\\s*endif\\b.*$)',
+          end: '(?=^\\s*#\\s*endif\\b)',
           patterns: [{include: '#disabled'}]
         },
         {
-          end: '(?=^\\s*#\\s*(else|endif)\\b.*$)',
+          end: '(?=^\\s*#\\s*(else|endif)\\b)',
           patterns: [{include: '#block_innards'}]
         }
       ]
@@ -340,7 +394,7 @@ const grammar = {
         1: {name: 'meta.preprocessor.dm'},
         2: {name: 'keyword.control.import.dm'}
       },
-      end: '^\\s*((#\\s*(endif))\\b).*$',
+      end: '^\\s*((#\\s*(endif))\\b)',
       patterns: [{include: '$base'}]
     },
     'preprocessor-rule-other-block': {
@@ -349,24 +403,40 @@ const grammar = {
         1: {name: 'meta.preprocessor.dm'},
         2: {name: 'keyword.control.import.dm'}
       },
-      end: '^\\s*(#\\s*(endif)\\b).*$',
+      end: '^\\s*(#\\s*(endif)\\b)',
       patterns: [{include: '#block_innards'}]
     },
     string_embedded_expression: {
       patterns: [
         {
-          begin: '(?<!\\\\)\\[',
-          end: '\\]',
-          name: 'string.interpolated.dm',
-          patterns: [{include: '$self'}]
+          begin: '(\\[)',
+          beginCaptures: {
+            0: {name: 'string.quoted.other.dm'},
+            1: {name: 'punctuation.definition.string.end.dm'}
+          },
+          end: '(\\])',
+          endCaptures: {
+            0: {name: 'string.quoted.other.dm'},
+            1: {name: 'punctuation.definition.string.begin.dm'}
+          },
+          name: 'meta.interpolation.dm',
+          patterns: [
+            {include: '#string_embedded_expression_2'},
+            {include: '$base'}
+          ]
         }
       ]
+    },
+    string_embedded_expression_2: {
+      begin: '(\\[)',
+      end: '(\\])',
+      patterns: [{include: '#string_embedded_expression_2'}, {include: '$base'}]
     },
     string_escaped_char: {
       patterns: [
         {
           match:
-            '(?x)\n\\\\\n(\n\th(?:(?:er|im)self|ers|im)\n\t|([tTsS]?he) # Weird regex to match The, the, She, she and he at once.\n\t|He\n\t|[Hh]is\n\t|[aA]n?\n\t|(?:im)?proper\n\t|\\.\\.\\.\n\t|(?:icon|ref|[Rr]oman)(?=\\[) # Macros which need a [] after them.\n\t|[s<>"n\\n \\[]\n)',
+            '\\\\([Tt]he|[Aa]|[Aa]n|[Hh]e|[Ss]he|[Hh]is|him|himself|herself|hers|proper|improper|th|s|(icon|ref|[Rr]oman)(?=\\[)|\\.\\.\\.|t|n|"|\\\\|<|>| |\n|\\[|x[0-9a-fA-F]{2}|u[0-9a-fA-F]{4}|U[0-9a-fA-F]{6})',
           name: 'constant.character.escape.dm'
         },
         {match: '\\\\.', name: 'invalid.illegal.unknown-escape.dm'}

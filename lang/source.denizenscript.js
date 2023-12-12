@@ -41,7 +41,7 @@ const grammar = {
     },
     double_quotes: {
       begin: '(?<=\\s)"',
-      end: '(?:"|\\n)',
+      end: '(?:")',
       name: 'string.quoted.double.denizenscript',
       patterns: [{include: '#tags'}, {include: '#def_brackets'}]
     },
@@ -77,7 +77,7 @@ const grammar = {
     },
     single_quotes: {
       begin: "(?<=\\s)'",
-      end: "(?:'|\\n)",
+      end: "(?:')",
       name: 'string.quoted.single.denizenscript',
       patterns: [{include: '#tags'}, {include: '#def_brackets'}]
     },
@@ -85,7 +85,7 @@ const grammar = {
       begin: '<(?!-|\\s|=)',
       end: '>',
       name: 'constant.language.tag.denizenscript',
-      patterns: [{include: '#def_brackets'}, {include: '#tags'}]
+      patterns: [{include: '#tags'}, {include: '#def_brackets'}]
     },
     todo_comments: {
       begin: '(?i)^\\s*#\\s*(?:todo)',

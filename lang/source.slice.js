@@ -7,1881 +7,964 @@
 const grammar = {
   extensions: [],
   names: ['slice'],
-  patterns: [
-    {include: '#comment'},
-    {include: '#preprocessor'},
-    {include: '#metadata.global'},
-    {include: '#storage.module'}
-  ],
+  patterns: [{include: '#slice'}],
   repository: {
-    annotation: {
-      patterns: [
-        {
-          captures: {1: {name: 'punctuation.definition.annotation.slice'}},
-          match: '(@)\\S*\\b',
-          name: 'storage.type.annotation.slice'
-        }
-      ]
+    attribute: {
+      patterns: [{include: '#attribute.file'}, {include: '#attribute.local'}]
     },
-    comment: {
-      patterns: [{include: '#comment.line'}, {include: '#comment.block'}]
-    },
-    'comment.block': {
+    'attribute.directive': {
+      begin: '[\\w]+(?:(::)\\w+)*',
+      beginCaptures: {
+        0: {name: 'entity.name.function.attribute.slice'},
+        1: {name: 'punctuation.separator.double-colon.slice'}
+      },
+      end: '(?=\\])|$',
       patterns: [
+        {include: '#comment'},
         {
-          begin: '\\/\\*',
+          begin: '\\(',
           beginCaptures: {
-            0: {name: 'punctuation.definition.comment.block.begin.slice'}
+            0: {name: 'punctuation.parenthesis.open.attribute.slice'}
           },
-          contentName: 'text.slice',
-          end: '\\*\\/',
-          endCaptures: {
-            0: {name: 'punctuation.definition.comment.block.end.slice'}
-          },
-          name: 'comment.block.slice',
+          end: '(?=\\])|$',
+          name: 'meta.attribute.arguments.slice',
           patterns: [
-            {include: '#annotation'},
-            {include: '#link'},
-            {include: '#line.continuation'}
+            {include: '#comment'},
+            {include: '#string-literal'},
+            {
+              match: '\\b\\w+\\b',
+              name: 'variable.other.constant.attribute.slice'
+            },
+            {match: ',', name: 'punctuation.separator.comma.slice'},
+            {
+              begin: '\\)',
+              beginCaptures: {
+                0: {name: 'punctuation.parenthesis.close.attribute.slice'}
+              },
+              end: '(?=\\])|$',
+              patterns: [{include: '#comment'}, {include: '#error'}]
+            },
+            {include: '#error'}
           ]
-        }
+        },
+        {include: '#error'}
       ]
     },
-    'comment.line': {
+    'attribute.file': {
+      begin: '\\[\\[',
+      beginCaptures: {
+        0: {name: 'punctuation.double-bracket.open.attribute.slice'}
+      },
+      end: '(\\]\\])|$',
+      endCaptures: {
+        1: {name: 'punctuation.double-bracket.close.attribute.slice'}
+      },
+      name: 'meta.attribute.file.slice',
       patterns: [
-        {
-          begin: '\\/\\/',
-          beginCaptures: {
-            0: {name: 'punctuation.definition.comment.line.begin.slice'}
-          },
-          contentName: 'text.slice',
-          end: '$',
-          name: 'comment.line.slice',
-          patterns: [
-            {include: '#annotation'},
-            {include: '#link'},
-            {include: '#line.continuation'}
-          ]
-        }
+        {include: '#comment'},
+        {include: '#attribute.directive'},
+        {include: '#error'}
       ]
     },
-    constant: {
+    'attribute.local': {
+      begin: '\\[',
+      beginCaptures: {0: {name: 'punctuation.bracket.open.attribute.slice'}},
+      end: '(\\]|$)',
+      endCaptures: {1: {name: 'punctuation.bracket.close.attribute.slice'}},
+      name: 'meta.attribute.local.slice',
       patterns: [
-        {include: '#constant.boolean'},
-        {include: '#constant.string'},
-        {include: '#constant.numeric.float'},
-        {include: '#constant.numeric.hex'},
-        {include: '#constant.numeric.oct'},
-        {include: '#constant.numeric.dec'}
+        {include: '#comment'},
+        {include: '#attribute.directive'},
+        {include: '#error'}
       ]
     },
-    'constant.boolean': {
-      patterns: [
-        {
-          captures: {
-            0: {name: 'constant.langauge.slice'},
-            1: {name: 'constant.boolean.true.slice'},
-            2: {name: 'constant.boolean.false.slice'}
-          },
-          match: '\\b(?:(true)|(false))\\b'
-        }
-      ]
-    },
-    'constant.numeric.dec': {
-      patterns: [
-        {
-          captures: {1: {name: 'punctuation.definition.numeric.sign.slice'}},
-          match: '(-|\\+)?\\b(?:0|[1-9]\\d*)\\b',
-          name: 'constant.numeric.integer.slice'
-        }
-      ]
-    },
-    'constant.numeric.float': {
-      patterns: [
-        {
-          captures: {
-            1: {name: 'punctuation.numeric.sign.slice'},
-            2: {name: 'punctuation.separator.decimal.slice'},
-            3: {name: 'punctuation.separator.decimal.slice'},
-            4: {name: 'punctuation.numeric.exponent.slice'},
-            5: {name: 'punctuation.definition.float.slice'}
-          },
-          match:
-            '(-|\\+)?(?:\\d+(\\.)\\d*|\\d*(\\.)\\d+|\\d+(?=e|E|f|F))(?:(e|E)-?\\d+)?(f|F)?',
-          name: 'constant.numeric.float.slice'
-        }
-      ]
-    },
-    'constant.numeric.hex': {
-      patterns: [
-        {
-          captures: {
-            1: {name: 'punctuation.definition.numeric.sign.slice'},
-            2: {name: 'punctuation.definition.numeric.hex.slice'}
-          },
-          match: '(-|\\+)?\\b(0x)[\\da-fA-F]+\\b',
-          name: 'constant.numeric.hex.slice'
-        }
-      ]
-    },
-    'constant.numeric.oct': {
-      patterns: [
-        {
-          captures: {
-            1: {name: 'punctuation.definition.numeric.sign.slice'},
-            2: {name: 'punctuation.definition.numeric.oct.slice'},
-            3: {patterns: [{match: '[8-9]', name: 'invalid.illegal.oct.slice'}]}
-          },
-          match: '(-|\\+)?\\b(0)(\\d+)\\b',
-          name: 'constant.numeric.octal.slice'
-        }
-      ]
-    },
-    'constant.string': {
-      patterns: [
-        {
-          begin: '"',
-          beginCaptures: {
-            0: {name: 'punctuation.definition.string.begin.slice'}
-          },
-          end: '(")|$',
-          endCaptures: {
-            1: {name: 'punctuation.definition.string.end.slice'},
-            2: {name: 'invalid.illegal.mismatched-quotes.slice'}
-          },
-          name: 'string.quoted.double.slice',
-          patterns: [{match: '\\\\.'}, {include: '#line.continuation'}]
-        }
-      ]
-    },
-    invalid: {patterns: [{match: '\\S', name: 'invalid.illegal'}]},
-    'line.continuation': {
-      patterns: [
-        {
-          begin: '(\\\\)\\s*$',
-          beginCaptures: {
-            1: {name: 'punctuation.separator.continuation.backslash.slice'}
-          },
-          end: '^'
-        }
-      ]
-    },
-    link: {
-      patterns: [
-        {
-          captures: {1: {name: 'punctuation.definition.link.slice'}},
-          match: '(\\b\\S*)?(#)\\S*\\b',
-          name: 'variable.link.slice'
-        }
-      ]
-    },
-    metadata: {
-      patterns: [{include: '#metadata.global'}, {include: '#metadata.local'}]
-    },
-    'metadata.content': {
+    class: {
+      begin: '(?<!\\\\)\\bclass\\b',
+      beginCaptures: {0: {name: 'storage.type.class.slice'}},
+      end: '}',
+      endCaptures: {0: {name: 'punctuation.brace.close.slice'}},
+      name: 'meta.class.slice',
       patterns: [
         {include: '#standard'},
         {
-          begin: '(")',
-          beginCaptures: {
-            0: {name: 'string.quoted.double.slice'},
-            1: {name: 'punctuation.definition.string.begin.slice'}
-          },
-          end: '(?=\\])|(?<=,)',
+          begin: '\\\\?\\b\\w+\\b',
+          beginCaptures: {0: {patterns: [{include: '#storage.identifier'}]}},
+          end: '(?=})',
           patterns: [
-            {include: '#line.continuation'},
+            {include: '#standard'},
+            {include: '#id-value'},
+            {include: '#field-container-inheritance'},
+            {include: '#field-container'},
+            {include: '#error'}
+          ]
+        },
+        {include: '#field-container'},
+        {include: '#error'}
+      ]
+    },
+    comment: {
+      patterns: [
+        {include: '#doc-comment.line'},
+        {include: '#comment.line'},
+        {include: '#comment.block'}
+      ]
+    },
+    'comment.block': {
+      begin: '\\/\\*',
+      beginCaptures: {
+        0: {name: 'punctuation.definition.comment.block.begin.slice'}
+      },
+      contentName: 'text.slice',
+      end: '\\*\\/',
+      endCaptures: {
+        0: {name: 'punctuation.definition.comment.block.end.slice'}
+      },
+      name: 'comment.block.slice'
+    },
+    'comment.line': {
+      begin: '\\/\\/',
+      beginCaptures: {
+        0: {
+          name: 'punctuation.definition.comment.line.double-slash.begin.slice'
+        }
+      },
+      contentName: 'text.slice',
+      end: '$',
+      name: 'comment.line.double-slash.slice'
+    },
+    'compilation-mode': {
+      begin: '(?<!\\\\)\\bmode\\b',
+      beginCaptures: {0: {name: 'keyword.other.mode.slice'}},
+      end: '$',
+      name: 'meta.mode.slice',
+      patterns: [
+        {include: '#standard'},
+        {
+          begin: '=',
+          beginCaptures: {0: {name: 'keyword.operator.assignment.slice'}},
+          end: '$',
+          patterns: [
+            {include: '#standard'},
             {
-              captures: {1: {patterns: [{include: '#metadata.identifier'}]}},
-              match: '((?:[^\\\\"]|\\\\.)+)',
-              name: 'string.quoted.double.slice'
-            },
-            {
-              begin: '(")',
+              begin: '\\\\?(\\w+)',
               beginCaptures: {
-                0: {name: 'string.quoted.double.slice'},
-                1: {name: 'punctuation.definition.string.end.slice'}
+                1: {
+                  patterns: [
+                    {
+                      match: 'Slice1|Slice2',
+                      name: 'variable.other.constant.mode.slice'
+                    },
+                    {include: '#error'}
+                  ]
+                }
               },
-              end: '(?=\\])|(,)',
-              endCaptures: {1: {name: 'punctuation.separator.metadata.slice'}},
+              end: '$',
               patterns: [{include: '#standard'}]
-            }
+            },
+            {include: '#error'}
+          ]
+        },
+        {include: '#error'}
+      ]
+    },
+    'custom-type': {
+      begin: '(?<!\\\\)\\bcustom\\b',
+      beginCaptures: {0: {name: 'storage.type.custom.slice'}},
+      end: '$',
+      name: 'meta.custom.slice',
+      patterns: [
+        {include: '#standard'},
+        {
+          begin: '\\\\?\\b\\w+\\b',
+          beginCaptures: {0: {patterns: [{include: '#storage.identifier'}]}},
+          end: '$',
+          patterns: [{include: '#standard'}]
+        },
+        {include: '#error'}
+      ]
+    },
+    'doc-comment.line': {
+      begin: '\\/\\/\\/',
+      beginCaptures: {
+        0: {
+          name: 'punctuation.definition.comment.line.documentation.begin.slice'
+        }
+      },
+      end: '$',
+      name: 'comment.line.documentation.slice',
+      patterns: [
+        {include: '#documentation.param-tag'},
+        {include: '#documentation.returns-tag'},
+        {include: '#documentation.throws-tag'},
+        {include: '#documentation.see-tag'},
+        {include: '#documentation.text'}
+      ]
+    },
+    'documentation.identifier': {
+      patterns: [
+        {
+          captures: {
+            1: {name: 'punctuation.separator.double-colon.slice'},
+            2: {name: 'punctuation.separator.double-colon.slice'}
+          },
+          match: '(?:\\b|(::))(?:[a-zA-Z_]\\w*(::)?)+\\b',
+          name: 'variable.link.slice'
+        },
+        {include: '#error'}
+      ]
+    },
+    'documentation.identifier-with-section': {
+      begin: '\\b\\w+\\b',
+      beginCaptures: {0: {patterns: [{include: '#documentation.identifier'}]}},
+      end: '$',
+      patterns: [{include: '#documentation.section'}, {include: '#error'}]
+    },
+    'documentation.inline-tags': {
+      begin: '{(?=\\s*@)',
+      beginCaptures: {0: {name: 'punctuation.brace.open.documentation.slice'}},
+      end: '}',
+      endCaptures: {0: {name: 'punctuation.brace.close.documentation.slice'}},
+      patterns: [{include: '#documentation.link-tag'}, {include: '#error'}]
+    },
+    'documentation.link-tag': {
+      begin: '(@)link\\b',
+      beginCaptures: {
+        0: {name: 'keyword.other.documentation.link.slice'},
+        1: {name: 'punctuation.definition.annotation.documentation.slice'}
+      },
+      end: '(?=})',
+      name: 'meta.documentation.link.slice',
+      patterns: [
+        {
+          begin: '(?:\\b|::)(?:\\w+(?:::)?)+\\b',
+          beginCaptures: {
+            0: {patterns: [{include: '#documentation.identifier'}]}
+          },
+          end: '(?=})',
+          patterns: [{include: '#error'}]
+        },
+        {include: '#error'}
+      ]
+    },
+    'documentation.param-tag': {
+      begin: '(@)param\\b',
+      beginCaptures: {
+        0: {name: 'keyword.other.documentation.param.slice'},
+        1: {name: 'punctuation.definition.annotation.documentation.slice'}
+      },
+      end: '$',
+      name: 'meta.documentation.param.slice',
+      patterns: [
+        {include: '#documentation.identifier-with-section'},
+        {include: '#error'}
+      ]
+    },
+    'documentation.returns-tag': {
+      begin: '(@)returns\\b',
+      beginCaptures: {
+        0: {name: 'keyword.other.documentation.returns.slice'},
+        1: {name: 'punctuation.definition.annotation.documentation.slice'}
+      },
+      end: '$',
+      name: 'meta.documentation.returns.slice',
+      patterns: [
+        {include: '#documentation.identifier-with-section'},
+        {include: '#documentation.section'},
+        {include: '#error'}
+      ]
+    },
+    'documentation.section': {
+      begin: ':',
+      beginCaptures: {
+        0: {name: 'punctuation.separator.colon.documentation.slice'}
+      },
+      end: '$',
+      patterns: [{include: '#documentation.text'}]
+    },
+    'documentation.see-tag': {
+      begin: '(@)see\\b',
+      beginCaptures: {
+        0: {name: 'keyword.other.documentation.see.slice'},
+        1: {name: 'punctuation.definition.annotation.documentation.slice'}
+      },
+      end: '$',
+      name: 'meta.documentation.see.slice',
+      patterns: [
+        {
+          begin: '(?:\\b|::)(?:\\w+(?:::)?)+\\b',
+          beginCaptures: {
+            0: {patterns: [{include: '#documentation.identifier'}]}
+          },
+          end: '$',
+          patterns: [{include: '#error'}]
+        },
+        {include: '#error'}
+      ]
+    },
+    'documentation.text': {
+      begin: '(?=\\S)',
+      end: '$',
+      patterns: [
+        {include: '#documentation.inline-tags'},
+        {match: '.', name: 'text.slice'}
+      ]
+    },
+    'documentation.throws-tag': {
+      begin: '(@)throws\\b',
+      beginCaptures: {
+        0: {name: 'keyword.other.documentation.throws.slice'},
+        1: {name: 'punctuation.definition.annotation.documentation.slice'}
+      },
+      end: '$',
+      name: 'meta.documentation.throws.slice',
+      patterns: [
+        {
+          begin: '(?:\\b|::)(?:\\w+(?:::)?)+\\b',
+          beginCaptures: {
+            0: {patterns: [{include: '#documentation.identifier'}]}
+          },
+          end: '$',
+          patterns: [{include: '#documentation.section'}, {include: '#error'}]
+        },
+        {include: '#error'}
+      ]
+    },
+    enum: {
+      begin: '(?<!\\\\)\\benum\\b',
+      beginCaptures: {0: {name: 'storage.type.enum.slice'}},
+      end: '}',
+      endCaptures: {0: {name: 'punctuation.brace.close.slice'}},
+      name: 'meta.enum.slice',
+      patterns: [
+        {include: '#standard'},
+        {
+          begin: '\\\\?\\b\\w+\\b',
+          beginCaptures: {0: {patterns: [{include: '#storage.identifier'}]}},
+          end: '(?=})',
+          patterns: [
+            {include: '#standard'},
+            {
+              begin: ':',
+              beginCaptures: {0: {name: 'punctuation.separator.colon.slice'}},
+              end: '(?=})',
+              patterns: [
+                {include: '#standard'},
+                {include: '#enumerator-container'},
+                {include: '#type.identifier'},
+                {include: '#error'}
+              ]
+            },
+            {include: '#enumerator-container'},
+            {include: '#error'}
+          ]
+        },
+        {include: '#enumerator-container'},
+        {include: '#error'}
+      ]
+    },
+    enumerator: {
+      begin: '\\\\?\\w+',
+      beginCaptures: {
+        0: {
+          name: 'variable.other.constant.enum.slice',
+          patterns: [{include: '#field.identifier'}]
+        }
+      },
+      end: '(?=[,}])|$',
+      name: 'meta.enumerator.slice',
+      patterns: [
+        {include: '#standard'},
+        {
+          begin: '\\(',
+          beginCaptures: {0: {name: 'punctuation.parenthesis.open.slice'}},
+          end: '\\)',
+          endCaptures: {0: {name: 'punctuation.parenthesis.close.slice'}},
+          patterns: [
+            {include: '#tag'},
+            {include: '#field'},
+            {match: ',', name: 'punctuation.separator.comma.slice'},
+            {include: '#slice'}
+          ]
+        },
+        {include: '#enumerator-value'}
+      ]
+    },
+    'enumerator-container': {
+      begin: '{',
+      beginCaptures: {0: {name: 'punctuation.brace.open.slice'}},
+      end: '(?=})',
+      patterns: [
+        {include: '#enumerator'},
+        {match: ',', name: 'punctuation.separator.comma.slice'},
+        {include: '#slice'}
+      ]
+    },
+    'enumerator-value': {
+      begin: '=',
+      beginCaptures: {0: {name: 'keyword.operator.assignment.slice'}},
+      end: '(?=[,}])|$',
+      patterns: [
+        {include: '#standard'},
+        {
+          begin: '(?=-|\\b)[\\w-]+\\b',
+          beginCaptures: {0: {patterns: [{include: '#integer-literal'}]}},
+          end: '(?=[,}])|$',
+          patterns: [{include: '#standard'}]
+        },
+        {include: '#error'}
+      ]
+    },
+    error: {match: '\\S', name: 'invalid'},
+    exception: {
+      begin: '(?<!\\\\)\\bexception\\b',
+      beginCaptures: {0: {name: 'storage.type.exception.slice'}},
+      end: '}',
+      endCaptures: {0: {name: 'punctuation.brace.close.slice'}},
+      name: 'meta.exception.slice',
+      patterns: [
+        {include: '#standard'},
+        {
+          begin: '\\\\?\\b\\w+\\b',
+          beginCaptures: {0: {patterns: [{include: '#storage.identifier'}]}},
+          end: '(?=})',
+          patterns: [
+            {include: '#standard'},
+            {include: '#field-container-inheritance'},
+            {include: '#field-container'},
+            {include: '#error'}
+          ]
+        },
+        {include: '#field-container'},
+        {include: '#error'}
+      ]
+    },
+    field: {
+      begin: '\\\\?\\w+',
+      beginCaptures: {
+        0: {
+          name: 'entity.name.variable.slice',
+          patterns: [{include: '#field.identifier'}]
+        }
+      },
+      end: '(?=[,}\\)])|$',
+      name: 'meta.field.slice',
+      patterns: [
+        {include: '#standard'},
+        {
+          begin: ':',
+          beginCaptures: {0: {name: 'punctuation.separator.colon.slice'}},
+          end: '(?=[,}\\)])|$',
+          patterns: [
+            {include: '#standard'},
+            {include: '#type.identifier'},
+            {include: '#error'}
+          ]
+        },
+        {include: '#error'}
+      ]
+    },
+    'field-container': {
+      begin: '{',
+      beginCaptures: {0: {name: 'punctuation.brace.open.slice'}},
+      end: '(?=})',
+      patterns: [
+        {include: '#tag'},
+        {include: '#field'},
+        {match: ',', name: 'punctuation.separator.comma.slice'},
+        {include: '#slice'}
+      ]
+    },
+    'field-container-inheritance': {
+      begin: ':',
+      beginCaptures: {0: {name: 'punctuation.separator.colon.slice'}},
+      end: '(?=})',
+      patterns: [
+        {include: '#standard'},
+        {include: '#field-container'},
+        {include: '#type.identifier'},
+        {include: '#error'}
+      ]
+    },
+    'field.identifier': {
+      patterns: [
+        {
+          captures: {
+            1: {name: 'punctuation.definition.identifier.escape.slice'},
+            2: {patterns: [{include: '#reserved-identifiers'}]}
+          },
+          match: '(\\\\?)\\b([a-zA-Z_]\\w*)\\b'
+        },
+        {include: '#error'}
+      ]
+    },
+    'id-value': {
+      begin: '\\(',
+      beginCaptures: {0: {name: 'punctuation.parenthesis.open.slice'}},
+      end: '\\)',
+      endCaptures: {0: {name: 'punctuation.parenthesis.close.slice'}},
+      patterns: [
+        {include: '#standard'},
+        {
+          begin: '[^\\s\\)]+',
+          beginCaptures: {0: {patterns: [{include: '#integer-literal'}]}},
+          end: '(?=\\))',
+          patterns: [{include: '#standard'}, {include: '#error'}]
+        },
+        {include: '#error'}
+      ]
+    },
+    'integer-literal': {
+      patterns: [
+        {
+          captures: {
+            1: {name: 'punctuation.definition.numeric.negative.slice'},
+            2: {name: 'punctuation.definition.numeric.bin.slice'}
+          },
+          match: '(-)?\\b(0b)(?:[0-1_]+)\\b',
+          name: 'constant.numeric.bin.slice'
+        },
+        {
+          captures: {
+            1: {name: 'punctuation.definition.numeric.negative.slice'}
+          },
+          match: '(-)?\\b(?:[\\d_]+)\\b',
+          name: 'constant.numeric.dec.slice'
+        },
+        {
+          captures: {
+            1: {name: 'punctuation.definition.numeric.negative.slice'},
+            2: {name: 'punctuation.definition.numeric.hex.slice'}
+          },
+          match: '(-)?\\b(0x)(?:[\\da-fA-F_]+)\\b',
+          name: 'constant.numeric.hex.slice'
+        },
+        {include: '#error'}
+      ]
+    },
+    interface: {
+      begin: '(?<!\\\\)\\binterface\\b',
+      beginCaptures: {0: {name: 'storage.type.interface.slice'}},
+      end: '}',
+      endCaptures: {0: {name: 'punctuation.brace.close.slice'}},
+      name: 'meta.interface.slice',
+      patterns: [
+        {include: '#standard'},
+        {
+          begin: '\\\\?\\b\\w+\\b',
+          beginCaptures: {0: {patterns: [{include: '#storage.identifier'}]}},
+          end: '(?=})',
+          patterns: [
+            {include: '#standard'},
+            {
+              begin: ':',
+              beginCaptures: {0: {name: 'punctuation.separator.colon.slice'}},
+              end: '(?=})',
+              patterns: [
+                {include: '#standard'},
+                {include: '#operation-container'},
+                {match: ',', name: 'punctuation.separator.comma.slice'},
+                {include: '#type.identifier'},
+                {include: '#error'}
+              ]
+            },
+            {include: '#operation-container'},
+            {include: '#error'}
+          ]
+        },
+        {include: '#operation-container'},
+        {include: '#error'}
+      ]
+    },
+    'modifier-keywords': {
+      captures: {
+        1: {name: 'storage.modifier.compact.slice'},
+        2: {name: 'storage.modifier.idempotent.slice'},
+        3: {name: 'storage.modifier.stream.slice'},
+        4: {name: 'meta.tag.slice', patterns: [{include: '#tag'}]},
+        5: {name: 'storage.modifier.throws.slice'},
+        6: {name: 'storage.modifier.unchecked.slice'}
+      },
+      match:
+        '(?<!\\\\)\\b(?:(compact)|(idempotent)|(stream)|(tag\\([-\\w]+\\))|(throws)|(unchecked))(\\b|(?<=\\W))'
+    },
+    'module-declaration': {
+      begin: '(?<!\\\\)\\bmodule\\b',
+      beginCaptures: {0: {name: 'keyword.other.module.slice'}},
+      end: '$',
+      name: 'meta.module.slice',
+      patterns: [
+        {include: '#standard'},
+        {
+          begin: '(?=\\b|\\\\)[\\\\\\w:]+(?<=\\b|\\W)',
+          beginCaptures: {0: {patterns: [{include: '#storage.identifier'}]}},
+          end: '$',
+          patterns: [{include: '#standard'}]
+        },
+        {include: '#error'}
+      ]
+    },
+    'operation-container': {
+      begin: '{',
+      beginCaptures: {0: {name: 'punctuation.brace.open.slice'}},
+      end: '(?=})',
+      patterns: [
+        {include: '#tag'},
+        {match: '\\bstream\\b', name: 'storage.modifier.stream.slice'},
+        {
+          begin: '\\b(throws)\\b\\s*(\\()',
+          beginCaptures: {
+            1: {name: 'storage.modifier.throws.slice'},
+            2: {name: 'punctuation.parenthesis.open.slice'}
+          },
+          contentName: 'meta.exception-list.slice',
+          end: '\\)',
+          endCaptures: {0: {name: 'punctuation.parenthesis.close.slice'}},
+          patterns: [
+            {include: '#standard'},
+            {match: ',', name: 'punctuation.separator.comma.slice'},
+            {include: '#storage.identifier'},
+            {include: '#slice'}
+          ]
+        },
+        {match: '\\bthrows\\b', name: 'storage.modifier.throws.slice'},
+        {match: '->', name: 'punctuation.definition.returns.slice'},
+        {match: ',', name: 'punctuation.separator.comma.slice'},
+        {
+          begin: '\\(',
+          beginCaptures: {0: {name: 'punctuation.parenthesis.open.slice'}},
+          end: '\\)',
+          endCaptures: {0: {name: 'punctuation.parenthesis.close.slice'}},
+          name: 'meta.parameter-list.slice',
+          patterns: [
+            {include: '#tag'},
+            {include: '#parameter'},
+            {match: ',', name: 'punctuation.separator.comma.slice'},
+            {include: '#slice'}
           ]
         },
         {
-          end: '(?=\\])',
-          patterns: [
-            {include: '#line.continuation'},
-            {
-              captures: {1: {patterns: [{include: '#metadata.identifier'}]}},
-              match: '((?:[^\\\\"\\]]|\\\\.)+)',
-              name: 'string.unquoted.slice'
-            },
-            {
-              match: '"',
-              name: 'invalid.illegal.punctuation.definition.string.slice'
+          captures: {
+            0: {
+              name: 'entity.name.function.slice',
+              patterns: [{include: '#field.identifier'}]
             }
+          },
+          match: '\\\\?\\w+(?=\\s*\\()'
+        },
+        {include: '#slice'}
+      ]
+    },
+    parameter: {
+      begin: '\\\\?\\w+',
+      beginCaptures: {
+        0: {
+          name: 'entity.name.variable.slice',
+          patterns: [{include: '#field.identifier'}]
+        }
+      },
+      end: '(?=[,\\)])|$',
+      name: 'meta.parameter.slice',
+      patterns: [
+        {include: '#standard'},
+        {
+          begin: ':',
+          beginCaptures: {0: {name: 'punctuation.separator.colon.slice'}},
+          end: '(?=[,\\)])|$',
+          patterns: [
+            {include: '#standard'},
+            {match: '\\bstream\\b', name: 'storage.modifier.stream.slice'},
+            {include: '#type.identifier'},
+            {include: '#error'}
           ]
-        }
-      ]
-    },
-    'metadata.global': {
-      patterns: [
-        {
-          begin: '\\[\\[',
-          beginCaptures: {
-            0: {name: 'punctuation.definition.metadata.global.begin.slice'}
-          },
-          end: '\\]\\]',
-          endCaptures: {
-            0: {name: 'punctuation.definition.metadata.global.end.slice'}
-          },
-          name: 'meta.metadata.global.slice',
-          patterns: [{include: '#metadata.content'}]
-        }
-      ]
-    },
-    'metadata.identifier': {
-      patterns: [{match: '\\S+', name: 'entity.metadata.directive.slice'}]
-    },
-    'metadata.local': {
-      patterns: [
-        {
-          begin: '\\[',
-          beginCaptures: {
-            0: {name: 'punctuation.definition.metadata.local.begin.slice'}
-          },
-          end: '\\]',
-          endCaptures: {
-            0: {name: 'punctuation.definition.metadata.local.end.slice'}
-          },
-          name: 'meta.metadata.local.slice',
-          patterns: [{include: '#metadata.content'}]
-        }
+        },
+        {include: '#error'}
       ]
     },
     preprocessor: {
       patterns: [
+        {include: '#preprocessor.define'},
+        {include: '#preprocessor.undef'},
         {include: '#preprocessor.if'},
-        {include: '#preprocessor.ifdef'},
-        {include: '#preprocessor.ifndef'},
         {include: '#preprocessor.elif'},
         {include: '#preprocessor.else'},
         {include: '#preprocessor.endif'},
-        {include: '#preprocessor.define'},
-        {include: '#preprocessor.undef'},
-        {include: '#preprocessor.include'},
-        {include: '#preprocessor.pragma'},
-        {include: '#preprocessor.line'},
-        {include: '#preprocessor.error'},
-        {include: '#preprocessor.null'}
+        {include: '#preprocessor.unknown'},
+        {include: '#preprocessor.unknown'}
       ]
     },
     'preprocessor.define': {
+      begin: '^\\s*((#)\\s*define)\\b',
+      beginCaptures: {
+        1: {name: 'keyword.control.preprocessor.undef.slice'},
+        2: {name: 'punctuation.definition.preprocessor.slice'}
+      },
+      end: '$',
+      name: 'meta.preprocessor.define.slice',
       patterns: [
-        {
-          begin: '(#)\\s*define\\b',
-          beginCaptures: {
-            0: {name: 'keyword.control.preprocessor.define.slice'},
-            1: {name: 'punctuation.definition.preprocessor.slice'}
-          },
-          end: '$',
-          name: 'meta.preprocessor.define.slice',
-          patterns: [
-            {include: '#standardP'},
-            {
-              begin: '\\b(\\w+)((\\())',
-              beginCaptures: {
-                1: {patterns: [{include: '#preprocessor.identifier'}]},
-                2: {name: 'meta.group.parameters.preprocessor.slice'},
-                3: {name: 'punctuation.section.group.parameters.begin.slice'}
-              },
-              end: '$',
-              patterns: [
-                {include: '#standardP'},
-                {
-                  begin: '\\b\\w+\\b',
-                  beginCaptures: {
-                    0: {patterns: [{include: '#preprocessor.identifier'}]}
-                  },
-                  end: '(?=\\))|(,)|($)',
-                  endCaptures: {
-                    1: {
-                      name: 'punctuation.separator.parameter.preprocessor.slice'
-                    },
-                    2: {name: 'invalid.mismatched.parenthesis.slice'}
-                  },
-                  patterns: [{include: '#standardP'}]
-                },
-                {
-                  begin: '\\b\\w+\\b',
-                  beginCaptures: {
-                    0: {
-                      name: 'punctuation.variable.parameter.preprocessor.slice'
-                    }
-                  },
-                  end: '(?=\\))|((,))|($)',
-                  endCaptures: {
-                    1: {
-                      name: 'punctuation.separator.parameter.preprocessor.slice'
-                    },
-                    2: {name: 'invalid.trailing-comma.slice'},
-                    3: {name: 'invalid.mismatched.parenthesis.slice'}
-                  },
-                  patterns: [{include: '#standardP'}]
-                },
-                {
-                  begin: '(\\))',
-                  beginCaptures: {
-                    0: {name: 'meta.group.parameters.preprocessor.slice'},
-                    1: {name: 'punctuation.section.group.parameters.end.slice'}
-                  },
-                  end: '$',
-                  patterns: [
-                    {include: '#standardP'},
-                    {match: '\\S', name: 'constant.preprocessor.slice'}
-                  ]
-                }
-              ]
-            },
-            {
-              begin: '\\b\\w+\\b',
-              beginCaptures: {
-                0: {patterns: [{include: '#preprocessor.identifier'}]}
-              },
-              end: '$',
-              patterns: [
-                {include: '#standardP'},
-                {match: '\\S', name: 'constant.preprocessor.slice'}
-              ]
-            }
-          ]
-        }
+        {include: '#comment.line'},
+        {include: '#preprocessor.single-identifier'},
+        {include: '#error'}
       ]
     },
     'preprocessor.elif': {
-      patterns: [
-        {
-          begin: '(#)\\s*elif\\b',
-          beginCaptures: {
-            0: {name: 'keyword.control.preprocessor.elif.slice'},
-            1: {name: 'punctuation.definition.preprocessor.slice'}
-          },
-          end: '$',
-          name: 'meta.preprocessor.elif.slice',
-          patterns: [{include: '#standardP'}]
-        }
-      ]
+      begin: '^\\s*((#)\\s*elif)\\b',
+      beginCaptures: {
+        1: {name: 'keyword.control.preprocessor.elif.slice'},
+        2: {name: 'punctuation.definition.preprocessor.slice'}
+      },
+      end: '$',
+      name: 'meta.preprocessor.elif.slice',
+      patterns: [{include: '#preprocessor.expression'}]
     },
     'preprocessor.else': {
-      patterns: [
-        {
-          begin: '(#)\\s*else\\b',
-          beginCaptures: {
-            0: {name: 'keyword.control.preprocessor.else.slice'},
-            1: {name: 'punctuation.definition.preprocessor.slice'}
-          },
-          end: '$',
-          name: 'meta.preprocessor.endif.slice',
-          patterns: [{include: '#standardP'}]
-        }
-      ]
+      begin: '^\\s*((#)\\s*else)\\b',
+      beginCaptures: {
+        1: {name: 'keyword.control.preprocessor.else.slice'},
+        2: {name: 'punctuation.definition.preprocessor.slice'}
+      },
+      end: '$',
+      name: 'meta.preprocessor.else.slice',
+      patterns: [{include: '#comment.line'}, {include: '#error'}]
     },
     'preprocessor.endif': {
-      patterns: [
-        {
-          begin: '(#)\\s*endif\\b',
-          beginCaptures: {
-            0: {name: 'keyword.control.preprocessor.endif.slice'},
-            1: {name: 'punctuation.definition.preprocessor.slice'}
-          },
-          end: '$',
-          name: 'meta.preprocessor.endif.slice',
-          patterns: [{include: '#standardP'}]
-        }
-      ]
+      begin: '^\\s*((#)\\s*endif)\\b',
+      beginCaptures: {
+        1: {name: 'keyword.control.preprocessor.endif.slice'},
+        2: {name: 'punctuation.definition.preprocessor.slice'}
+      },
+      end: '$',
+      name: 'meta.preprocessor.endif.slice',
+      patterns: [{include: '#comment.line'}, {include: '#error'}]
     },
-    'preprocessor.error': {
+    'preprocessor.expression': {
       patterns: [
+        {include: '#comment.line'},
         {
-          begin: '((#)\\s*error)\\b',
-          beginCaptures: {
-            1: {name: 'keyword.control.preprocessor.error.slice'},
-            2: {name: 'punctuation.definition.preprocessor.slice'}
+          captures: {
+            1: {name: 'keyword.operator.logical.not.slice'},
+            2: {name: 'keyword.operator.logical.and.slice'},
+            3: {name: 'keyword.operator.logical.or.slice'},
+            4: {name: 'punctuation.parenthesis.open.slice'},
+            5: {name: 'punctuation.parenthesis.close.slice'}
           },
-          end: '$',
-          name: 'meta.preprocessor.error.slice',
-          patterns: [
-            {include: '#standardP'},
-            {match: '.', name: 'text.error.slice'}
-          ]
-        }
+          match: '(!)|(&&)|(\\|\\|)|(\\()|(\\))'
+        },
+        {include: '#preprocessor.identifier'},
+        {include: '#error'}
       ]
     },
     'preprocessor.identifier': {
       patterns: [
         {
-          match: '\\b[a-zA-Z_][a-zA-Z0-9_]*\\b',
-          name: 'entity.identifier.preproprocessor.slice'
+          match: '\\b[a-zA-Z_]\\w*\\b',
+          name: 'constant.other.symbol.preprocessor.slice'
         },
-        {include: '#invalid'}
+        {include: '#error'}
       ]
     },
     'preprocessor.if': {
-      patterns: [
-        {
-          begin: '(#)\\s*if\\b',
-          beginCaptures: {
-            0: {name: 'keyword.control.preprocessor.if.slice'},
-            1: {name: 'punctuation.definition.preprocessor.slice'}
-          },
-          end: '$',
-          name: 'meta.preprocessor.if.slice',
-          patterns: [{include: '#standardP'}]
-        }
-      ]
+      begin: '^\\s*((#)\\s*if)\\b',
+      beginCaptures: {
+        1: {name: 'keyword.control.preprocessor.if.slice'},
+        2: {name: 'punctuation.definition.preprocessor.slice'}
+      },
+      end: '$',
+      name: 'meta.preprocessor.if.slice',
+      patterns: [{include: '#preprocessor.expression'}]
     },
-    'preprocessor.ifdef': {
-      patterns: [
-        {
-          begin: '(#)\\s*ifdef\\b',
-          beginCaptures: {
-            0: {name: 'keyword.control.preprocessor.ifdef.slice'},
-            1: {name: 'punctuation.definition.preprocessor.slice'}
-          },
-          end: '$',
-          name: 'meta.preprocessor.ifdef.slice',
-          patterns: [
-            {include: '#standardP'},
-            {
-              begin: '\\b\\w+\\b',
-              beginCaptures: {
-                0: {patterns: [{include: '#preprocessor.identifier'}]}
-              },
-              end: '$',
-              patterns: [{include: '#standardP'}]
-            }
-          ]
-        }
-      ]
-    },
-    'preprocessor.ifndef': {
-      patterns: [
-        {
-          begin: '(#)\\s*ifndef\\b',
-          beginCaptures: {
-            0: {name: 'keyword.control.preprocessor.ifndef.slice'},
-            1: {name: 'punctuation.definition.preprocessor.slice'}
-          },
-          end: '$',
-          name: 'meta.preprocessor.ifndef.slice',
-          patterns: [
-            {include: '#standardP'},
-            {
-              begin: '\\b\\w+\\b',
-              beginCaptures: {
-                0: {patterns: [{include: '#preprocessor.identifier'}]}
-              },
-              end: '$',
-              patterns: [{include: '#standardP'}]
-            }
-          ]
-        }
-      ]
-    },
-    'preprocessor.include': {
-      patterns: [
-        {
-          begin: '((#)\\s*include)\\b',
-          beginCaptures: {
-            1: {name: 'keyword.control.preprocessor.include.slice'},
-            2: {name: 'punctuation.definition.preprocessor.slice'}
-          },
-          end: '$',
-          name: 'meta.preprocessor.include.slice',
-          patterns: [
-            {include: '#standardP'},
-            {begin: '(?<="|>)', end: '$', patterns: [{include: '#standardP'}]},
-            {
-              begin: '"',
-              beginCaptures: {
-                0: {name: 'punctuation.definition.string.begin.slice'}
-              },
-              contentName: 'entity.name.header.slice',
-              end: '(")|($)',
-              endCaptures: {
-                1: {name: 'punctuation.definition.string.end.slice'},
-                2: {name: 'invalid.illegal.mismatched-quotes.slice'}
-              },
-              name: 'string.quoted.double.slice',
-              patterns: [{match: '\\\\.'}, {include: '#line.continuation'}]
-            },
-            {
-              begin: '<',
-              beginCaptures: {
-                0: {name: 'punctuation.definition.string.begin.slice'}
-              },
-              contentName: 'entity.name.header.slice',
-              end: '(>)|($)',
-              endCaptures: {
-                1: {name: 'punctuation.definition.string.end.slice'},
-                2: {name: 'invalid.illegal.mismatched-quotes.slice'}
-              },
-              name: 'string.quoted.other.angle.slice',
-              patterns: [{match: '\\\\.'}, {include: '#line.continuation'}]
-            }
-          ]
-        }
-      ]
-    },
-    'preprocessor.line': {
-      patterns: [
-        {
-          begin: '((#)\\s*line)\\b',
-          beginCaptures: {
-            1: {name: 'keyword.control.preprocessor.line.slice'},
-            2: {name: 'punctuation.definition.preprocessor.slice'}
-          },
-          end: '$',
-          name: 'meta.preprocessor.line.slice',
-          patterns: [
-            {include: '#standardP'},
-            {
-              begin: '\\b[\\d]+\\b',
-              beginCaptures: {
-                0: {patterns: [{include: '#constant.numeric.dec'}]}
-              },
-              end: '$',
-              patterns: [
-                {include: '#standardP'},
-                {
-                  begin: '(?<=")',
-                  end: '$',
-                  patterns: [{include: '#standardP'}]
-                },
-                {
-                  begin: '"',
-                  beginCaptures: {
-                    0: {name: 'punctuation.definition.string.begin.slice'}
-                  },
-                  contentName: 'entity.name.file.slice',
-                  end: '(")|($)',
-                  endCaptures: {
-                    1: {name: 'punctuation.definition.string.end.slice'},
-                    2: {name: 'invalid.illegal.mismatched-quotes.slice'}
-                  },
-                  name: 'string.quoted.double.slice',
-                  patterns: [{match: '\\\\.'}, {include: '#line.continuation'}]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    'preprocessor.null': {
-      patterns: [
-        {
-          begin: '(#)',
-          beginCaptures: {
-            0: {name: 'punctuation.definition.preprocessor.slice'},
-            1: {name: 'keyword.control.preprocessor.null.slice'}
-          },
-          end: '$',
-          name: 'meta.preprocessor.null.slice',
-          patterns: [{include: '#standardP'}]
-        }
-      ]
-    },
-    'preprocessor.pragma': {
-      patterns: [
-        {
-          begin: '((#)\\s*pragma)\\b',
-          beginCaptures: {
-            1: {name: 'keyword.control.preprocessor.pragma.slice'},
-            2: {name: 'punctuation.definition.preprocessor.slice'}
-          },
-          end: '$',
-          name: 'meta.preprocessor.pragma.slice',
-          patterns: [
-            {include: '#standardP'},
-            {
-              begin: '\\b\\S+\\b',
-              beginCaptures: {
-                0: {name: 'keyword.control.preprocessor.pragma.other.slice'}
-              },
-              end: '$',
-              patterns: [{include: '#standardP'}]
-            }
-          ]
-        }
-      ]
+    'preprocessor.single-identifier': {
+      begin: '\\b\\w+\\b',
+      beginCaptures: {0: {patterns: [{include: '#preprocessor.identifier'}]}},
+      end: '$',
+      patterns: [{include: '#comment.line'}, {include: '#error'}]
     },
     'preprocessor.undef': {
+      begin: '^\\s*((#)\\s*undef)\\b',
+      beginCaptures: {
+        1: {name: 'keyword.control.preprocessor.undef.slice'},
+        2: {name: 'punctuation.definition.preprocessor.slice'}
+      },
+      end: '$',
+      name: 'meta.preprocessor.undef.slice',
       patterns: [
-        {
-          begin: '((#)\\s*undef)\\b',
-          beginCaptures: {
-            1: {name: 'keyword.control.preprocessor.undef.slice'},
-            2: {name: 'punctuation.definition.preprocessor.slice'}
-          },
-          end: '$',
-          name: 'meta.preprocessor.undef.slice',
-          patterns: [
-            {include: '#standardP'},
-            {
-              begin: '\\b\\w+\\b',
-              beginCaptures: {
-                0: {patterns: [{include: '#preprocessor.identifier'}]}
-              },
-              end: '$',
-              patterns: [{include: '#standardP'}]
-            }
-          ]
-        }
+        {include: '#comment.line'},
+        {include: '#preprocessor.single-identifier'},
+        {include: '#error'}
+      ]
+    },
+    'preprocessor.unknown': {
+      begin: '^\\s*((#)\\s*\\w*)\\b',
+      beginCaptures: {
+        1: {name: 'invalid.illegal.slice'},
+        2: {name: 'punctuation.definition.preprocessor.slice'}
+      },
+      end: '$',
+      name: 'meta.preprocessor.unknown.slice',
+      patterns: [{include: '#comment.line'}, {include: '#error'}]
+    },
+    'reserved-identifiers': {
+      match:
+        '(?<!\\\\)\\b(?:module|struct|exception|class|interface|enum|custom|typealias|Sequence|Dictionary|bool|int8|uint8|int16|uint16|int32|uint32|varint32|varuint32|int64|uint64|varint62|varuint62|float32|float64|string|AnyClass|compact|idempotent|mode|stream|tag|throws|unchecked)\\b',
+      name: 'invalid.illegal.identifier.slice'
+    },
+    slice: {
+      patterns: [
+        {include: '#standard'},
+        {include: '#compilation-mode'},
+        {include: '#module-declaration'},
+        {include: '#struct'},
+        {include: '#class'},
+        {include: '#exception'},
+        {include: '#enum'},
+        {include: '#interface'},
+        {include: '#custom-type'},
+        {include: '#type-alias'},
+        {include: '#modifier-keywords'},
+        {include: '#type.identifier'}
       ]
     },
     standard: {
       patterns: [
         {include: '#comment'},
         {include: '#preprocessor'},
-        {include: '#line.continuation'}
-      ]
-    },
-    standardP: {
-      patterns: [{include: '#comment'}, {include: '#line.continuation'}]
-    },
-    storage: {
-      patterns: [
-        {include: '#storage.module'},
-        {include: '#storage.enum'},
-        {include: '#storage.struct'},
-        {include: '#storage.sequence'},
-        {include: '#storage.dictionary'},
-        {include: '#storage.interface'},
-        {include: '#storage.exception'},
-        {include: '#storage.class'},
-        {include: '#storage.basic'}
-      ]
-    },
-    'storage.basic': {
-      patterns: [
-        {include: '#storage.modifier'},
-        {
-          begin: '\\\\?\\bbool\\b\\s*\\??',
-          beginCaptures: {0: {patterns: [{include: '#storage.types'}]}},
-          end: '(;)|((?=}))',
-          endCaptures: {
-            1: {name: 'punctuation.terminator.semicolon.slice'},
-            2: {name: 'invalid.illegal.missing.semicolon.slice'}
-          },
-          name: 'meta.bool.slice',
-          patterns: [
-            {include: '#standard'},
-            {
-              begin: '\\\\?\\b\\w+\\b',
-              beginCaptures: {
-                0: {
-                  name: 'entity.name.bool.slice',
-                  patterns: [{include: '#storage.identifier'}]
-                }
-              },
-              end: '(?=;|})',
-              patterns: [{include: '#storage.basic.assignment'}]
-            }
-          ]
-        },
-        {
-          begin: '\\\\?\\bbyte\\b\\s*\\??',
-          beginCaptures: {0: {patterns: [{include: '#storage.types'}]}},
-          end: '(;)|((?=}))',
-          endCaptures: {
-            1: {name: 'punctuation.terminator.semicolon.slice'},
-            2: {name: 'invalid.illegal.missing.semicolon.slice'}
-          },
-          name: 'meta.byte.slice',
-          patterns: [
-            {include: '#standard'},
-            {
-              begin: '\\\\?\\b\\w+\\b',
-              beginCaptures: {
-                0: {
-                  name: 'entity.name.byte.slice',
-                  patterns: [{include: '#storage.identifier'}]
-                }
-              },
-              end: '(?=;|})',
-              patterns: [{include: '#storage.basic.assignment'}]
-            }
-          ]
-        },
-        {
-          begin: '\\\\?\\bshort\\b\\s*\\??',
-          beginCaptures: {0: {patterns: [{include: '#storage.types'}]}},
-          end: '(;)|((?=}))',
-          endCaptures: {
-            1: {name: 'punctuation.terminator.semicolon.slice'},
-            2: {name: 'invalid.illegal.missing.semicolon.slice'}
-          },
-          name: 'meta.short.slice',
-          patterns: [
-            {include: '#standard'},
-            {
-              begin: '\\\\?\\b\\w+\\b',
-              beginCaptures: {
-                0: {
-                  name: 'entity.name.short.slice',
-                  patterns: [{include: '#storage.identifier'}]
-                }
-              },
-              end: '(?=;|})',
-              patterns: [{include: '#storage.basic.assignment'}]
-            }
-          ]
-        },
-        {
-          begin: '\\\\?\\bushort\\b\\s*\\??',
-          beginCaptures: {0: {patterns: [{include: '#storage.types'}]}},
-          end: '(;)|((?=}))',
-          endCaptures: {
-            1: {name: 'punctuation.terminator.semicolon.slice'},
-            2: {name: 'invalid.illegal.missing.semicolon.slice'}
-          },
-          name: 'meta.ushort.slice',
-          patterns: [
-            {include: '#standard'},
-            {
-              begin: '\\\\?\\b\\w+\\b',
-              beginCaptures: {
-                0: {
-                  name: 'entity.name.ushort.slice',
-                  patterns: [{include: '#storage.identifier'}]
-                }
-              },
-              end: '(?=;|})',
-              patterns: [{include: '#storage.basic.assignment'}]
-            }
-          ]
-        },
-        {
-          begin: '\\\\?\\bint\\b\\s*\\??',
-          beginCaptures: {0: {patterns: [{include: '#storage.types'}]}},
-          end: '(;)|((?=}))',
-          endCaptures: {
-            1: {name: 'punctuation.terminator.semicolon.slice'},
-            2: {name: 'invalid.illegal.missing.semicolon.slice'}
-          },
-          name: 'meta.int.slice',
-          patterns: [
-            {include: '#standard'},
-            {
-              begin: '\\\\?\\b\\w+\\b',
-              beginCaptures: {
-                0: {
-                  name: 'entity.name.int.slice',
-                  patterns: [{include: '#storage.identifier'}]
-                }
-              },
-              end: '(?=;|})',
-              patterns: [{include: '#storage.basic.assignment'}]
-            }
-          ]
-        },
-        {
-          begin: '\\\\?\\buint\\b\\s*\\??',
-          beginCaptures: {0: {patterns: [{include: '#storage.types'}]}},
-          end: '(;)|((?=}))',
-          endCaptures: {
-            1: {name: 'punctuation.terminator.semicolon.slice'},
-            2: {name: 'invalid.illegal.missing.semicolon.slice'}
-          },
-          name: 'meta.uint.slice',
-          patterns: [
-            {include: '#standard'},
-            {
-              begin: '\\\\?\\b\\w+\\b',
-              beginCaptures: {
-                0: {
-                  name: 'entity.name.uint.slice',
-                  patterns: [{include: '#storage.identifier'}]
-                }
-              },
-              end: '(?=;|})',
-              patterns: [{include: '#storage.basic.assignment'}]
-            }
-          ]
-        },
-        {
-          begin: '\\\\?\\bvarint\\b\\s*\\??',
-          beginCaptures: {0: {patterns: [{include: '#storage.types'}]}},
-          end: '(;)|((?=}))',
-          endCaptures: {
-            1: {name: 'punctuation.terminator.semicolon.slice'},
-            2: {name: 'invalid.illegal.missing.semicolon.slice'}
-          },
-          name: 'meta.varint.slice',
-          patterns: [
-            {include: '#standard'},
-            {
-              begin: '\\\\?\\b\\w+\\b',
-              beginCaptures: {
-                0: {
-                  name: 'entity.name.varint.slice',
-                  patterns: [{include: '#storage.identifier'}]
-                }
-              },
-              end: '(?=;|})',
-              patterns: [{include: '#storage.basic.assignment'}]
-            }
-          ]
-        },
-        {
-          begin: '\\\\?\\bvaruint\\b\\s*\\??',
-          beginCaptures: {0: {patterns: [{include: '#storage.types'}]}},
-          end: '(;)|((?=}))',
-          endCaptures: {
-            1: {name: 'punctuation.terminator.semicolon.slice'},
-            2: {name: 'invalid.illegal.missing.semicolon.slice'}
-          },
-          name: 'meta.varuint.slice',
-          patterns: [
-            {include: '#standard'},
-            {
-              begin: '\\\\?\\b\\w+\\b',
-              beginCaptures: {
-                0: {
-                  name: 'entity.name.varuint.slice',
-                  patterns: [{include: '#storage.identifier'}]
-                }
-              },
-              end: '(?=;|})',
-              patterns: [{include: '#storage.basic.assignment'}]
-            }
-          ]
-        },
-        {
-          begin: '\\\\?\\blong\\b\\s*\\??',
-          beginCaptures: {0: {patterns: [{include: '#storage.types'}]}},
-          end: '(;)|((?=}))',
-          endCaptures: {
-            1: {name: 'punctuation.terminator.semicolon.slice'},
-            2: {name: 'invalid.illegal.missing.semicolon.slice'}
-          },
-          name: 'meta.long.slice',
-          patterns: [
-            {include: '#standard'},
-            {
-              begin: '\\\\?\\b\\w+\\b',
-              beginCaptures: {
-                0: {
-                  name: 'entity.name.long.slice',
-                  patterns: [{include: '#storage.identifier'}]
-                }
-              },
-              end: '(?=;|})',
-              patterns: [{include: '#storage.basic.assignment'}]
-            }
-          ]
-        },
-        {
-          begin: '\\\\?\\bulong\\b\\s*\\??',
-          beginCaptures: {0: {patterns: [{include: '#storage.types'}]}},
-          end: '(;)|((?=}))',
-          endCaptures: {
-            1: {name: 'punctuation.terminator.semicolon.slice'},
-            2: {name: 'invalid.illegal.missing.semicolon.slice'}
-          },
-          name: 'meta.ulong.slice',
-          patterns: [
-            {include: '#standard'},
-            {
-              begin: '\\\\?\\b\\w+\\b',
-              beginCaptures: {
-                0: {
-                  name: 'entity.name.ulong.slice',
-                  patterns: [{include: '#storage.identifier'}]
-                }
-              },
-              end: '(?=;|})',
-              patterns: [{include: '#storage.basic.assignment'}]
-            }
-          ]
-        },
-        {
-          begin: '\\\\?\\bvarlong\\b\\s*\\??',
-          beginCaptures: {0: {patterns: [{include: '#storage.types'}]}},
-          end: '(;)|((?=}))',
-          endCaptures: {
-            1: {name: 'punctuation.terminator.semicolon.slice'},
-            2: {name: 'invalid.illegal.missing.semicolon.slice'}
-          },
-          name: 'meta.varlong.slice',
-          patterns: [
-            {include: '#standard'},
-            {
-              begin: '\\\\?\\b\\w+\\b',
-              beginCaptures: {
-                0: {
-                  name: 'entity.name.varlong.slice',
-                  patterns: [{include: '#storage.identifier'}]
-                }
-              },
-              end: '(?=;|})',
-              patterns: [{include: '#storage.basic.assignment'}]
-            }
-          ]
-        },
-        {
-          begin: '\\\\?\\bvarulong\\b\\s*\\??',
-          beginCaptures: {0: {patterns: [{include: '#storage.types'}]}},
-          end: '(;)|((?=}))',
-          endCaptures: {
-            1: {name: 'punctuation.terminator.semicolon.slice'},
-            2: {name: 'invalid.illegal.missing.semicolon.slice'}
-          },
-          name: 'meta.varulong.slice',
-          patterns: [
-            {include: '#standard'},
-            {
-              begin: '\\\\?\\b\\w+\\b',
-              beginCaptures: {
-                0: {
-                  name: 'entity.name.varulong.slice',
-                  patterns: [{include: '#storage.identifier'}]
-                }
-              },
-              end: '(?=;|})',
-              patterns: [{include: '#storage.basic.assignment'}]
-            }
-          ]
-        },
-        {
-          begin: '\\\\?\\bfloat\\b\\s*\\??',
-          beginCaptures: {0: {patterns: [{include: '#storage.types'}]}},
-          end: '(;)|((?=}))',
-          endCaptures: {
-            1: {name: 'punctuation.terminator.semicolon.slice'},
-            2: {name: 'invalid.illegal.missing.semicolon.slice'}
-          },
-          name: 'meta.float.slice',
-          patterns: [
-            {include: '#standard'},
-            {
-              begin: '\\\\?\\b\\w+\\b',
-              beginCaptures: {
-                0: {
-                  name: 'entity.name.float.slice',
-                  patterns: [{include: '#storage.identifier'}]
-                }
-              },
-              end: '(?=;|})',
-              patterns: [{include: '#storage.basic.assignment'}]
-            }
-          ]
-        },
-        {
-          begin: '\\\\?\\bdouble\\b\\s*\\??',
-          beginCaptures: {0: {patterns: [{include: '#storage.types'}]}},
-          end: '(;)|((?=}))',
-          endCaptures: {
-            1: {name: 'punctuation.terminator.semicolon.slice'},
-            2: {name: 'invalid.illegal.missing.semicolon.slice'}
-          },
-          name: 'meta.double.slice',
-          patterns: [
-            {include: '#standard'},
-            {
-              begin: '\\\\?\\b\\w+\\b',
-              beginCaptures: {
-                0: {
-                  name: 'entity.name.double.slice',
-                  patterns: [{include: '#storage.identifier'}]
-                }
-              },
-              end: '(?=;|})',
-              patterns: [{include: '#storage.basic.assignment'}]
-            }
-          ]
-        },
-        {
-          begin: '\\\\?\\bstring\\b\\s*\\??',
-          beginCaptures: {0: {patterns: [{include: '#storage.types'}]}},
-          end: '(;)|((?=}))',
-          endCaptures: {
-            1: {name: 'punctuation.terminator.semicolon.slice'},
-            2: {name: 'invalid.illegal.missing.semicolon.slice'}
-          },
-          name: 'meta.string.slice',
-          patterns: [
-            {include: '#standard'},
-            {
-              begin: '\\\\?\\b\\w+\\b',
-              beginCaptures: {
-                0: {
-                  name: 'entity.name.string.slice',
-                  patterns: [{include: '#storage.identifier'}]
-                }
-              },
-              end: '(?=;|})',
-              patterns: [{include: '#storage.basic.assignment'}]
-            }
-          ]
-        },
-        {
-          begin: '\\\\?\\b[:\\w]+\\b\\s*\\??',
-          beginCaptures: {0: {patterns: [{include: '#storage.types.custom'}]}},
-          end: '(;)|((?=}))',
-          endCaptures: {
-            1: {name: 'punctuation.terminator.semicolon.slice'},
-            2: {name: 'invalid.illegal.missing.semicolon.slice'}
-          },
-          name: 'meta.type.slice',
-          patterns: [
-            {include: '#standard'},
-            {
-              begin: '\\\\?\\b\\w+\\b',
-              beginCaptures: {
-                0: {
-                  name: 'entity.name.slice',
-                  patterns: [{include: '#storage.identifier'}]
-                }
-              },
-              end: '(?=;|})',
-              patterns: [{include: '#storage.basic.assignment'}]
-            }
-          ]
-        }
-      ]
-    },
-    'storage.basic.assignment': {
-      patterns: [
-        {include: '#standard'},
-        {
-          begin: '=',
-          beginCaptures: {0: {name: 'keyword.operator.assignment.slice'}},
-          end: '(?=;|})',
-          patterns: [{include: '#standard'}, {include: '#constant'}]
-        }
-      ]
-    },
-    'storage.class': {
-      patterns: [
-        {include: '#storage.modifier'},
-        {
-          begin: '(?<!\\\\)\\bclass\\b',
-          beginCaptures: {0: {name: 'storage.type.class.slice'}},
-          end: '(})|(;)',
-          endCaptures: {
-            1: {name: 'punctuation.section.block.end.slice'},
-            2: {name: 'punctuation.terminator.semicolon.slice'}
-          },
-          name: 'meta.class.slice',
-          patterns: [
-            {include: '#standard'},
-            {
-              begin: '\\\\?\\b\\w+\\b',
-              beginCaptures: {
-                0: {
-                  name: 'entity.name.class.slice',
-                  patterns: [{include: '#storage.identifier'}]
-                }
-              },
-              end: '(?=}|;)',
-              patterns: [
-                {include: '#standard'},
-                {
-                  begin: '(?<!\\\\)(?:(\\bextends\\b)|(:))',
-                  beginCaptures: {
-                    1: {name: 'storage.modifier.extends.slice'},
-                    2: {name: 'punctuation.storage.modifier.extends.slice'}
-                  },
-                  end: '(?=})|((?=;))',
-                  endCaptures: {
-                    1: {name: 'invalid.illegal.missing-brace.slice'}
-                  },
-                  patterns: [
-                    {include: '#standard'},
-                    {
-                      begin: '\\\\?[:\\w]+',
-                      beginCaptures: {
-                        0: {patterns: [{include: '#storage.types'}]}
-                      },
-                      end: '(?=}|;)',
-                      patterns: [
-                        {include: '#standard'},
-                        {include: '#storage.class.implements'}
-                      ]
-                    },
-                    {
-                      include: '#storage.class.implements',
-                      name: 'invalid.illegal.missing-types.slice'
-                    }
-                  ]
-                },
-                {include: '#storage.class.implements'}
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    'storage.class.body': {
-      patterns: [
-        {
-          begin: '{',
-          beginCaptures: {0: {name: 'punctuation.section.block.begin.slice'}},
-          end: '(?=})',
-          patterns: [{include: '#standard'}, {include: '#storage.basic'}]
-        }
-      ]
-    },
-    'storage.class.implements': {
-      patterns: [
-        {
-          begin: '(?<!\\\\)\\bimplements\\b',
-          beginCaptures: {0: {name: 'storage.modifier.implements.slice'}},
-          end: '(?=})|((?=;))',
-          endCaptures: {1: {name: 'invalid.illegal.missing-brace.slice'}},
-          patterns: [
-            {include: '#standard'},
-            {
-              begin: '\\\\?[:\\w]+',
-              beginCaptures: {0: {patterns: [{include: '#storage.types'}]}},
-              end: '(?={|}|;)|(,)',
-              endCaptures: {
-                1: {name: 'punctuation.separator.class.implements.slice'}
-              },
-              patterns: [{include: '#standard'}]
-            },
-            {include: '#storage.class.body'}
-          ]
-        },
-        {include: '#storage.class.body'}
-      ]
-    },
-    'storage.dictionary': {
-      patterns: [
-        {include: '#storage.modifier'},
-        {
-          begin: '(?<!\\\\)\\bdictionary\\b',
-          beginCaptures: {0: {name: 'storage.type.dictionary.slice'}},
-          end: '(;)|((?=}))',
-          endCaptures: {
-            1: {name: 'punctuation.terminator.semicolon.slice'},
-            2: {name: 'invalid.illegal.missing.semicolon.slice'}
-          },
-          name: 'meta.dictionary.slice',
-          patterns: [
-            {include: '#standard'},
-            {
-              begin: '(\\<)',
-              beginCaptures: {
-                0: {name: 'meta.generic.dictionary.slice'},
-                1: {name: 'punctuation.definition.generic.begin.slice'}
-              },
-              end: '(?=;|})',
-              patterns: [
-                {include: '#standard'},
-                {
-                  begin: '(\\\\?[:\\w]+)|(?=\\>)',
-                  beginCaptures: {
-                    1: {
-                      name: 'meta.generic.dictionary.slice',
-                      patterns: [{include: '#storage.types'}]
-                    },
-                    2: {name: 'invalid.illegal.missing-type.slice'}
-                  },
-                  end: '(?=;|})',
-                  patterns: [
-                    {include: '#standard'},
-                    {
-                      begin: '(,)|(?=\\>)',
-                      beginCaptures: {
-                        0: {name: 'meta.generic.dictionary.slice'},
-                        1: {name: 'punctuation.separator.dictionary.slice'},
-                        2: {name: 'invalid.illegal.missing-type.slice'}
-                      },
-                      end: '(?=;|{|})',
-                      patterns: [
-                        {include: '#standard'},
-                        {
-                          begin: '(\\\\?[:\\w]+)|(?=\\>)',
-                          beginCaptures: {
-                            1: {
-                              name: 'meta.generic.dictionary.slice',
-                              patterns: [{include: '#storage.types'}]
-                            },
-                            2: {name: 'invalid.illegal.missing-type.slice'}
-                          },
-                          end: '(?=;|})',
-                          patterns: [
-                            {include: '#standard'},
-                            {
-                              begin: '(\\>)',
-                              beginCaptures: {
-                                0: {name: 'meta.generic.dictionary.slice'},
-                                1: {
-                                  name: 'punctuation.definition.generic.end.slice'
-                                }
-                              },
-                              end: '(?=;|})',
-                              patterns: [
-                                {include: '#standard'},
-                                {
-                                  begin: '\\\\?\\b\\w+\\b',
-                                  beginCaptures: {
-                                    0: {
-                                      name: 'entity.name.dictionary.slice',
-                                      patterns: [
-                                        {include: '#storage.identifier'}
-                                      ]
-                                    }
-                                  },
-                                  end: '(?=;|})'
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    'storage.enum': {
-      patterns: [
-        {include: '#storage.modifier'},
-        {
-          begin: '(?<!\\\\)\\benum\\b',
-          beginCaptures: {0: {name: 'storage.type.enum.slice'}},
-          end: '}',
-          endCaptures: {0: {name: 'punctuation.section.block.end.slice'}},
-          name: 'meta.enum.slice',
-          patterns: [
-            {include: '#standard'},
-            {
-              begin: '\\\\?\\b\\w+\\b',
-              beginCaptures: {
-                0: {
-                  name: 'entity.name.enum.slice',
-                  patterns: [{include: '#storage.identifier'}]
-                }
-              },
-              end: '(?=})',
-              patterns: [
-                {include: '#standard'},
-                {
-                  begin: '(:)\\s*(\\w*)',
-                  beginCaptures: {
-                    1: {name: 'punctuation.storage.modifier.extends.slice'},
-                    2: {patterns: [{include: '#storage.types'}]}
-                  },
-                  end: '(?=({|;))'
-                },
-                {
-                  begin: '{',
-                  beginCaptures: {
-                    0: {name: 'punctuation.section.block.begin.slice'}
-                  },
-                  end: '(?=})',
-                  patterns: [
-                    {include: '#standard'},
-                    {
-                      begin: '\\\\?\\b\\w+\\b',
-                      beginCaptures: {
-                        0: {
-                          name: 'constant.other.enum.slice',
-                          patterns: [{include: '#identifier'}]
-                        }
-                      },
-                      end: '(?=})|(,)',
-                      endCaptures: {
-                        1: {name: 'punctuation.separator.enum.slice'}
-                      },
-                      patterns: [
-                        {include: '#standard'},
-                        {
-                          begin: '=',
-                          beginCaptures: {
-                            0: {name: 'keyword.operator.assignment.slice'}
-                          },
-                          end: '(?=})|(?=,)',
-                          patterns: [
-                            {include: '#standard'},
-                            {include: '#constant'}
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    'storage.exception': {
-      patterns: [
-        {include: '#storage.modifier'},
-        {
-          begin: '(?<!\\\\)\\bexception\\b',
-          beginCaptures: {0: {name: 'storage.type.exception.slice'}},
-          end: '}',
-          endCaptures: {0: {name: 'punctuation.section.block.end.slice'}},
-          name: 'meta.exception.slice',
-          patterns: [
-            {include: '#standard'},
-            {
-              begin: '\\\\?\\b\\w+\\b',
-              beginCaptures: {
-                0: {
-                  name: 'entity.name.exception.slice',
-                  patterns: [{include: '#storage.identifier'}]
-                }
-              },
-              end: '(?=})',
-              patterns: [
-                {include: '#standard'},
-                {
-                  begin: '(?<!\\\\)(?:(\\bextends\\b)|(:))',
-                  beginCaptures: {
-                    1: {name: 'storage.modifier.extends.slice'},
-                    2: {name: 'punctuation.storage.modifier.extends.slice'}
-                  },
-                  end: '(?=})',
-                  patterns: [
-                    {include: '#standard'},
-                    {
-                      begin: '\\\\?[:\\w]+',
-                      beginCaptures: {
-                        0: {patterns: [{include: '#storage.types'}]}
-                      },
-                      end: '(?={|})|(,)',
-                      endCaptures: {
-                        1: {
-                          name: 'punctuation.separator.exception.extends.slice'
-                        }
-                      },
-                      patterns: [{include: '#standard'}]
-                    },
-                    {include: '#storage.exception.body'}
-                  ]
-                },
-                {include: '#storage.exception.body'}
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    'storage.exception.body': {
-      patterns: [
-        {
-          begin: '{',
-          beginCaptures: {0: {name: 'punctuation.section.block.begin.slice'}},
-          end: '(?=})',
-          patterns: [{include: '#standard'}, {include: '#storage.basic'}]
-        }
+        {include: '#attribute'}
       ]
     },
     'storage.identifier': {
       patterns: [
         {
-          match:
-            '(?<!\\\\)\\b(?:bool|byte|class|const|dictionary|double|enum|exception|extends|false|float|idempotent|implements|int|interface|local|LocalObject|long|module|Object|optional|out|sequence|short|string|struct|tag|throws|true|uint|ulong|ushort|Value|varuint|varulong|void)\\b',
-          name: 'invalid.illegal.reserved.identifier.slice'
-        },
-        {
           captures: {
-            1: {name: 'punctuation.escape.backslash.slice'},
-            2: {
-              patterns: [
-                {
-                  match: '__+|\\b_|_\\b',
-                  name: 'invalid.illegal.underscore.slice'
-                }
-              ]
-            }
+            1: {name: 'punctuation.separator.double-colon.slice'},
+            2: {name: 'punctuation.definition.identifier.escape.slice'},
+            3: {patterns: [{include: '#reserved-identifiers'}]},
+            4: {name: 'punctuation.separator.double-colon.slice'}
           },
-          match: '(\\\\)?\\b([a-zA-Z_][a-zA-Z0-9_]*)\\b'
+          match: '(?:\\b|(::)|(?=\\\\))(?:(\\\\?)([a-zA-Z_]\\w*)(::)?)+\\b',
+          name: 'entity.name.class.slice'
         },
-        {match: '.', name: 'invalid.illegal.identifier.slice'}
+        {include: '#error'}
       ]
     },
-    'storage.interface': {
-      patterns: [
-        {include: '#storage.modifier'},
-        {
-          begin: '(?<!\\\\)\\binterface\\b',
-          beginCaptures: {0: {name: 'storage.type.interface.slice'}},
-          end: '(})|(;)',
-          endCaptures: {
-            1: {name: 'punctuation.section.block.end.slice'},
-            2: {name: 'punctuation.terminator.semicolon.slice'}
-          },
-          name: 'meta.interface.slice',
-          patterns: [
-            {include: '#standard'},
-            {
-              begin: '\\\\?\\b\\w+\\b',
-              beginCaptures: {
-                0: {
-                  name: 'entity.name.interface.slice',
-                  patterns: [{include: '#storage.identifier'}]
-                }
-              },
-              end: '(?=}|;)',
-              patterns: [
-                {include: '#standard'},
-                {
-                  begin: '(?<!\\\\)(?:(\\bextends\\b)|(:))',
-                  beginCaptures: {
-                    1: {name: 'storage.modifier.extends.slice'},
-                    2: {name: 'punctuation.storage.modifier.extends.slice'}
-                  },
-                  end: '(?=})|((?=;))',
-                  endCaptures: {
-                    1: {name: 'invalid.illegal.missing-brace.slice'}
-                  },
-                  patterns: [
-                    {include: '#standard'},
-                    {
-                      begin: '\\\\?[:\\w]+',
-                      beginCaptures: {
-                        0: {patterns: [{include: '#storage.types'}]}
-                      },
-                      end: '(?={|}|;)|(,)',
-                      endCaptures: {
-                        1: {
-                          name: 'punctuation.separator.interface.extends.slice'
-                        }
-                      },
-                      patterns: [{include: '#standard'}]
-                    },
-                    {include: '#storage.interface.body'}
-                  ]
-                },
-                {include: '#storage.interface.body'}
-              ]
-            }
-          ]
-        }
-      ]
+    'string-literal': {
+      begin: '"',
+      beginCaptures: {0: {name: 'punctuation.definition.string.begin.slice'}},
+      end: '(")|$',
+      endCaptures: {1: {name: 'punctuation.definition.string.end.slice'}},
+      name: 'string.quoted.double.slice',
+      patterns: [{match: '\\\\.', name: 'constant.character.escape.slice'}]
     },
-    'storage.interface.body': {
-      patterns: [
-        {
-          begin: '{',
-          beginCaptures: {0: {name: 'punctuation.section.block.begin.slice'}},
-          end: '(?=})',
-          patterns: [{include: '#standard'}, {include: '#storage.operation'}]
-        }
-      ]
-    },
-    'storage.modifier': {
-      patterns: [
-        {
-          begin: '(?=\\[)',
-          end: '(?<=])',
-          patterns: [{include: '#standard'}, {include: '#metadata.local'}]
-        },
-        {
-          captures: {
-            1: {name: 'storage.modifier.local.slice'},
-            2: {name: 'storage.modifier.const.slice'},
-            3: {name: 'storage.modifier.idempotent.slice'},
-            4: {name: 'storage.modifier.out.slice'},
-            5: {name: 'storage.modifier.unchecked.slice'},
-            6: {
-              patterns: [
-                {
-                  captures: {
-                    1: {name: 'storage.modifier.tagged.slice'},
-                    2: {name: 'punctuation.section.group.tagged.begin.slice'},
-                    3: {
-                      patterns: [
-                        {include: '#constant.numeric.oct'},
-                        {include: '#constant.numeric.dec'},
-                        {include: '#constant.numeric.hex'},
-                        {include: '#storage.types.custom'}
-                      ]
-                    },
-                    4: {name: 'punctuation.section.group.tagged.end.slice'}
-                  },
-                  match: '(optional|tag)(\\()([-a-zA-Z0-9:]*)(\\))'
-                }
-              ]
-            }
-          },
-          match:
-            '(?<!\\\\)\\b(?:(local)|(const)|(idempotent)|(out)|(unchecked)|((?:optional|tag)\\([-a-zA-Z0-9:]*\\)))(?:\\b|(?<=\\)))'
-        }
-      ]
-    },
-    'storage.module': {
-      patterns: [
-        {include: '#storage.modifier'},
-        {
-          begin: '(?<!\\\\)\\bmodule\\b',
-          beginCaptures: {0: {name: 'storage.type.module.slice'}},
-          end: '}',
-          endCaptures: {0: {name: 'punctuation.section.block.end.slice'}},
-          name: 'meta.module.slice',
-          patterns: [
-            {include: '#standard'},
-            {
-              begin: '\\\\?\\b\\w+\\b',
-              beginCaptures: {
-                0: {
-                  name: 'entity.name.module.slice',
-                  patterns: [{include: '#storage.identifier'}]
-                }
-              },
-              end: '(?=})',
-              patterns: [
-                {include: '#standard'},
-                {
-                  begin: '{',
-                  beginCaptures: {
-                    0: {name: 'punctuation.section.block.begin.slice'}
-                  },
-                  end: '(?=})',
-                  patterns: [{include: '#standard'}, {include: '#storage'}]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    'storage.operation': {
-      patterns: [
-        {include: '#storage.modifier'},
-        {
-          begin: '\\\\?[:\\w]+\\s*\\??',
-          beginCaptures: {
-            0: {
-              patterns: [
-                {include: '#storage.types.void'},
-                {include: '#storage.types'}
-              ]
-            }
-          },
-          end: '(;)|((?=}))',
-          endCaptures: {
-            1: {name: 'punctuation.terminator.semicolon.slice'},
-            2: {name: 'invalid.illegal.missing-brace.slice'}
-          },
-          name: 'meta.operation.slice',
-          patterns: [{include: '#storage.operation.body'}]
-        },
-        {
-          begin: '\\(',
-          beginCaptures: {
-            0: {
-              name: 'punctuation.section.group.operation.return-tuple.begin.slice'
-            }
-          },
-          end: '(;)|((?=}))',
-          endCaptures: {
-            1: {name: 'punctuation.terminator.semicolon.slice'},
-            2: {name: 'invalid.illegal.missing-brace.slice'}
-          },
-          name: 'meta.operation.slice',
-          patterns: [
-            {include: '#standard'},
-            {
-              begin: '\\)',
-              beginCaptures: {
-                0: {
-                  name: 'punctuation.section.group.operation.return-tuple.end.slice'
-                }
-              },
-              end: '(?=;|})',
-              patterns: [
-                {include: '#standard'},
-                {include: '#storage.operation.body'}
-              ]
-            },
-            {include: '#storage.modifier'},
-            {
-              begin: '\\\\?[:\\w]+\\s*\\??',
-              beginCaptures: {0: {patterns: [{include: '#storage.types'}]}},
-              end: '(?=\\))|(?<=,)',
-              patterns: [
-                {
-                  begin: '\\\\?\\b\\w+\\b',
-                  beginCaptures: {
-                    0: {
-                      name: 'entity.name.operation.return-member',
-                      patterns: [{include: '#storage.identifier'}]
-                    }
-                  },
-                  end: '(?=\\))|(,)',
-                  endCaptures: {
-                    1: {
-                      name: 'punctuation.separator.operation.return-tuple.slice'
-                    }
-                  }
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    'storage.operation.body': {
+    struct: {
+      begin: '(?<!\\\\)\\bstruct\\b',
+      beginCaptures: {0: {name: 'storage.type.struct.slice'}},
+      end: '}',
+      endCaptures: {0: {name: 'punctuation.brace.close.slice'}},
+      name: 'meta.struct.slice',
       patterns: [
         {include: '#standard'},
         {
           begin: '\\\\?\\b\\w+\\b',
-          beginCaptures: {
-            0: {
-              name: 'entity.name.function.slice',
-              patterns: [{include: '#storage.identifier'}]
-            }
-          },
-          end: '(?=;|})',
+          beginCaptures: {0: {patterns: [{include: '#storage.identifier'}]}},
+          end: '(?=})',
           patterns: [
             {include: '#standard'},
-            {
-              begin: '\\(',
-              beginCaptures: {
-                0: {
-                  name: 'punctuation.section.group.operation.parameters.begin.slice'
-                }
-              },
-              end: '(?=;|})',
-              patterns: [
-                {include: '#standard'},
-                {
-                  begin: '\\)',
-                  beginCaptures: {
-                    0: {
-                      name: 'punctuation.section.group.operation.parameters.end.slice'
-                    }
-                  },
-                  end: '(?=;|})',
-                  patterns: [
-                    {include: '#standard'},
-                    {
-                      begin: '(?<!\\\\)\\bthrows\\b',
-                      beginCaptures: {
-                        0: {name: 'storage.modifier.throws.slice'}
-                      },
-                      end: '(?=;|})',
-                      patterns: [
-                        {include: '#standard'},
-                        {
-                          begin: '\\\\?[:\\w]+',
-                          beginCaptures: {
-                            0: {patterns: [{include: '#storage.types'}]}
-                          },
-                          end: '(?=;|})|(,)',
-                          endCaptures: {
-                            1: {
-                              name: 'punctuation.separator.operation.throws.slice'
-                            }
-                          },
-                          patterns: [{include: '#standard'}]
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {include: '#storage.modifier'},
-                {
-                  begin: '\\\\?[:\\w]+\\s*\\??',
-                  beginCaptures: {0: {patterns: [{include: '#storage.types'}]}},
-                  end: '(?=\\))|(?<=,)',
-                  patterns: [
-                    {
-                      begin: '\\\\?\\b\\w+\\b',
-                      beginCaptures: {
-                        0: {
-                          name: 'entity.name.operation.parameter',
-                          patterns: [{include: '#storage.identifier'}]
-                        }
-                      },
-                      end: '(?=\\))|(,)',
-                      endCaptures: {
-                        1: {
-                          name: 'punctuation.separator.operation.parameter.slice'
-                        }
-                      }
-                    }
-                  ]
-                }
-              ]
-            }
+            {include: '#field-container'},
+            {include: '#error'}
           ]
-        }
-      ]
-    },
-    'storage.sequence': {
-      patterns: [
-        {include: '#storage.modifier'},
-        {
-          begin: '(?<!\\\\)\\bsequence\\b',
-          beginCaptures: {0: {name: 'storage.type.sequence.slice'}},
-          end: '(;)|((?=}))',
-          endCaptures: {
-            1: {name: 'punctuation.terminator.semicolon.slice'},
-            2: {name: 'invalid.illegal.missing.semicolon.slice'}
-          },
-          name: 'meta.sequence.slice',
-          patterns: [
-            {include: '#standard'},
-            {
-              begin: '(\\<)',
-              beginCaptures: {
-                0: {name: 'meta.generic.sequence.slice'},
-                1: {name: 'punctuation.definition.generic.begin.slice'}
-              },
-              end: '(?=;|})',
-              patterns: [
-                {include: '#standard'},
-                {
-                  begin: '(\\\\?[:\\w]+)|(?=\\>)',
-                  beginCaptures: {
-                    1: {
-                      name: 'meta.generic.sequence.slice',
-                      patterns: [{include: '#storage.types'}]
-                    },
-                    2: {name: 'invalid.illegal.missing-type.slice'}
-                  },
-                  end: '(?=;|})',
-                  patterns: [
-                    {include: '#standard'},
-                    {
-                      begin: '(\\>)',
-                      beginCaptures: {
-                        0: {name: 'meta.generic.sequence.slice'},
-                        1: {name: 'punctuation.definition.generic.end.slice'}
-                      },
-                      end: '(?=;|})',
-                      patterns: [
-                        {include: '#standard'},
-                        {
-                          begin: '\\\\?\\b\\w+\\b',
-                          beginCaptures: {
-                            0: {
-                              name: 'entity.name.sequence.slice',
-                              patterns: [{include: '#storage.identifier'}]
-                            }
-                          },
-                          end: '(?=;|})'
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    'storage.struct': {
-      patterns: [
-        {include: '#storage.modifier'},
-        {
-          begin: '(?<!\\\\)\\bstruct\\b',
-          beginCaptures: {0: {name: 'storage.type.struct.slice'}},
-          end: '}',
-          endCaptures: {0: {name: 'punctuation.section.block.end.slice'}},
-          name: 'meta.struct.slice',
-          patterns: [
-            {include: '#standard'},
-            {
-              begin: '\\\\?\\b\\w+\\b',
-              beginCaptures: {
-                0: {
-                  name: 'entity.name.struct.slice',
-                  patterns: [{include: '#storage.identifier'}]
-                }
-              },
-              end: '(?=})',
-              patterns: [
-                {include: '#standard'},
-                {
-                  begin: '{',
-                  beginCaptures: {
-                    0: {name: 'punctuation.section.block.begin.slice'}
-                  },
-                  end: '(?=})',
-                  patterns: [
-                    {include: '#standard'},
-                    {include: '#storage.basic'}
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    'storage.types': {
-      patterns: [
-        {
-          captures: {
-            1: {name: 'punctuation.escape.backslash.slice'},
-            10: {name: 'storage.type.long.slice'},
-            11: {name: 'storage.type.ulong.slice'},
-            12: {name: 'storage.type.varlong.slice'},
-            13: {name: 'storage.type.varulong.slice'},
-            14: {name: 'storage.type.float.slice'},
-            15: {name: 'storage.type.double.slice'},
-            16: {name: 'storage.type.string.slice'},
-            17: {name: 'storage.type.object.slice'},
-            18: {name: 'storage.type.localobject.slice'},
-            19: {name: 'storage.type.value.slice'},
-            2: {name: 'storage.type.bool.slice'},
-            20: {name: 'punctuation.storage.modifier.optional.slice'},
-            3: {name: 'storage.type.byte.slice'},
-            4: {name: 'storage.type.short.slice'},
-            5: {name: 'storage.type.ushort.slice'},
-            6: {name: 'storage.type.int.slice'},
-            7: {name: 'storage.type.uint.slice'},
-            8: {name: 'storage.type.varint.slice'},
-            9: {name: 'storage.type.varuint.slice'}
-          },
-          match:
-            '(\\\\)?\\b(?:(bool)|(byte)|(short)|(ushort)|(int)|(uint)|(varint)|(varuint)|(long)|(ulong)|(varlong)|(varulong)|(float)|(double)|(string)|(Object)|(LocalObject)|(Value))\\b\\s*(\\?)?'
         },
-        {include: '#storage.types.custom'}
+        {include: '#field-container'},
+        {include: '#error'}
       ]
     },
-    'storage.types.custom': {
+    tag: {
+      begin: '\\b(tag)\\s*(?=\\()',
+      beginCaptures: {1: {name: 'storage.modifier.tag.slice'}},
+      end: '(?<=\\))',
+      patterns: [{include: '#id-value'}]
+    },
+    'type-alias': {
+      begin: '(?<!\\\\)\\btypealias\\b',
+      beginCaptures: {0: {name: 'storage.type.alias.slice'}},
+      end: '$',
+      name: 'meta.typealias.slice',
       patterns: [
+        {include: '#standard'},
         {
-          captures: {
-            1: {name: 'punctuation.escape.backslash.slice'},
-            2: {
+          begin: '\\\\?\\b\\w+\\b',
+          beginCaptures: {0: {patterns: [{include: '#storage.identifier'}]}},
+          end: '$',
+          patterns: [
+            {include: '#standard'},
+            {
+              begin: '=',
+              beginCaptures: {0: {name: 'keyword.operator.assignment.slice'}},
+              end: '$',
               patterns: [
-                {match: '\\w+', name: 'variable.type.slice'},
-                {match: '::', name: 'punctuation.accessor.slice'},
-                {match: ':', name: 'invalid.illegal.accessor.slice'}
+                {include: '#standard'},
+                {include: '#type.identifier'},
+                {include: '#error'}
               ]
             },
-            3: {name: 'punctuation.storage.modifier.optional.slice'}
-          },
-          match: '(\\\\)?([:\\w]+)\\s*(\\?)?'
+            {include: '#error'}
+          ]
         },
-        {include: '#invalid'}
+        {include: '#error'}
       ]
     },
-    'storage.types.void': {
+    'type-keywords': {
+      captures: {
+        1: {name: 'storage.type.bool.slice'},
+        10: {name: 'storage.type.int64.slice'},
+        11: {name: 'storage.type.uint64.slice'},
+        12: {name: 'storage.type.varint62.slice'},
+        13: {name: 'storage.type.varuint62.slice'},
+        14: {name: 'storage.type.float32.slice'},
+        15: {name: 'storage.type.float64.slice'},
+        16: {name: 'storage.type.string.slice'},
+        17: {name: 'storage.type.AnyClass.slice'},
+        18: {name: 'storage.type.sequence.slice'},
+        19: {name: 'storage.type.dictionary.slice'},
+        2: {name: 'storage.type.int8.slice'},
+        3: {name: 'storage.type.uint8.slice'},
+        4: {name: 'storage.type.int16.slice'},
+        5: {name: 'storage.type.uint16.slice'},
+        6: {name: 'storage.type.int32.slice'},
+        7: {name: 'storage.type.uint32.slice'},
+        8: {name: 'storage.type.varint32.slice'},
+        9: {name: 'storage.type.varuint32.slice'}
+      },
+      match:
+        '(?<!\\\\)\\b(?:(bool)|(int8)|(uint8)|(int16)|(uint16)|(int32)|(uint32)|(varint32)|(varuint32)|(int64)|(uint64)|(varint62)|(varuint62)|(float32)|(float64)|(string)|(AnyClass)|(Sequence)|(Dictionary))\\b'
+    },
+    'type-name': {
+      patterns: [{include: '#type-keywords'}, {include: '#storage.identifier'}]
+    },
+    'type.identifier': {
       patterns: [
         {
-          captures: {1: {name: 'punctuation.escape.backslash.slice'}},
-          match: '(\\\\)?\\bvoid\\b',
-          name: 'storage.type.void.slice'
+          begin: '(?=\\b|\\W)([\\\\\\w:]+)\\s*(\\<)',
+          beginCaptures: {
+            1: {patterns: [{include: '#type-name'}]},
+            2: {name: 'punctuation.angle.open.slice'}
+          },
+          end: '(\\>)\\s*(\\?)?',
+          endCaptures: {
+            1: {name: 'punctuation.angle.close.slice'},
+            2: {name: 'punctuation.definition.optional.slice'}
+          },
+          name: 'meta.generic.parameters.slice',
+          patterns: [
+            {include: '#standard'},
+            {match: ',', name: 'punctuation.separator.comma.slice'},
+            {include: '#type.identifier'},
+            {include: '#error'}
+          ]
+        },
+        {
+          captures: {
+            1: {patterns: [{include: '#type-name'}]},
+            2: {name: 'punctuation.definition.optional.slice'}
+          },
+          match: '(?=\\b|\\W)([\\\\\\w:]+)\\s*(\\?)?(?<=\\b|\\W)'
         }
       ]
     }

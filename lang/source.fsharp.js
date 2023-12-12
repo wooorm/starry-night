@@ -30,7 +30,7 @@ const grammar = {
   repository: {
     abstract_definition: {
       begin:
-        '\\b(abstract)\\s+(member)?(\\s+\\[\\<.*\\>\\])?\\s*([_[:alpha:]0-9,\\._`\\s]+)(:)',
+        '\\b(abstract)\\s+(member)?(\\s+\\[\\<.*\\>\\])?\\s*([_[:alpha:]0-9,\\._`\\s]+)(<)?',
       beginCaptures: {
         1: {name: 'keyword.fsharp'},
         2: {name: 'keyword.fsharp'},
@@ -55,7 +55,7 @@ const grammar = {
         },
         {
           captures: {1: {name: 'entity.name.type.fsharp'}},
-          match: "(?!with|get|set\\b)\\b([\\w0-9'`^._]+)"
+          match: "(?!with|get|set\\b)\\s*([\\w0-9'`^._]+)"
         },
         {include: '#keywords'}
       ]
@@ -164,12 +164,15 @@ const grammar = {
           name: 'comment.block.markdown.fsharp.end'
         },
         {
-          begin: '///',
+          begin: '(?<![!%&+-.<=>?@^|/])///(?!/)',
           name: 'comment.line.markdown.fsharp',
           patterns: [{include: 'source.gfm'}],
-          while: '///'
+          while: '(?<![!%&+-.<=>?@^|/])///(?!/)'
         },
-        {match: '//.*$', name: 'comment.line.double-slash.fsharp'}
+        {
+          match: '(?<![!%&+-.<=>?@^|/])//(.*$)',
+          name: 'comment.line.double-slash.fsharp'
+        }
       ]
     },
     common_binding_definition: {
@@ -553,7 +556,7 @@ const grammar = {
         {match: '(\\->|\\<\\-)', name: 'keyword.symbol.arrow.fsharp'},
         {
           match:
-            '(&&&|\\|\\|\\||\\^\\^\\^|~~~|<<<|>>>|\\|>|:>|:\\?>|:|\\[|\\]|\\;|<>|=|@|\\|\\||&&|{|}|\\||_|\\.\\.|\\,|\\+|\\-|\\*|\\/|\\^|\\!|\\>|\\>\\=|\\>\\>|\\<|\\<\\=|\\(|\\)|\\<\\<)',
+            '(&&&|\\|\\|\\||\\^\\^\\^|~~~|~\\+|~\\-|<<<|>>>|\\|>|:>|:\\?>|:|\\[|\\]|\\;|<>|=|@|\\|\\||&&|&|%|{|}|\\||_|\\.\\.|\\,|\\+|\\-|\\*|\\/|\\^|\\!|\\>|\\>\\=|\\>\\>|\\<|\\<\\=|\\(|\\)|\\<\\<)',
           name: 'keyword.symbol.fsharp'
         }
       ]
@@ -610,7 +613,7 @@ const grammar = {
       patterns: [
         {
           begin:
-            "\\b(namespace global)|\\b(namespace|module)\\s*(public|internal|private|rec)?\\s+([[:alpha:]][[:alpha:]0-9'_. ]*)",
+            "\\b(namespace global)|\\b(namespace|module)\\s*(public|internal|private|rec)?\\s+([[:alpha:]|``][[:alpha:]0-9'_. ]*)",
           beginCaptures: {
             1: {name: 'keyword.fsharp'},
             2: {name: 'keyword.fsharp'},
@@ -633,7 +636,7 @@ const grammar = {
         },
         {
           begin:
-            "\\b(open type|open)\\s+([[:alpha:]][[:alpha:]0-9'_]*)(?=(\\.[A-Z][[:alpha:]0-9_]*)*)",
+            "\\b(open type|open)\\s+([[:alpha:]|``][[:alpha:]0-9'_]*)(?=(\\.[A-Z][[:alpha:]0-9_]*)*)",
           beginCaptures: {
             1: {name: 'keyword.fsharp'},
             2: {name: 'entity.name.section.fsharp'}
@@ -966,7 +969,7 @@ const grammar = {
             2: {name: 'variable.parameter.fsharp'}
           },
           match:
-            "(\\?{0,1})(``[[:alpha:]0-9'`^:,._ ]+``|(?!private\\b)\\b[\\w[:alpha:]0-9'`<>^._ ]+)"
+            "(\\?{0,1})(``[[:alpha:]0-9'`^:,._ ]+``|(?!private|struct\\b)\\b[\\w[:alpha:]0-9'`<>^._ ]+)"
         }
       ]
     }

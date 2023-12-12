@@ -11,7 +11,7 @@ const grammar = {
     'text.html.statamic': {
       patterns: [{include: '#statamic-comments'}, {include: '#antlers-tags'}]
     },
-    'text.html.statamic - (meta.embedded | meta.tag | comment.block.statamic), L:(text.html.statamic meta.tag - (comment.block.statamic | meta.embedded.statamic))':
+    'text.html.statamic - (meta.embedded | meta.tag | comment.block.html | comment.block.statamic), L:(text.html.statamic meta.tag - (comment.block.statamic | meta.embedded.statamic | comment.block.html))':
       {patterns: [{include: 'text.html.basic'}]},
     'text.html.statamic - (meta.embedded | meta.tag), L:((text.html.statamic meta.tag) - (meta.embedded.block.php | meta.embedded.line.php)), L:(source.js - (meta.embedded.block.php | meta.embedded.line.php)), L:(source.css - (meta.embedded.block.php | meta.embedded.line.php))':
       {patterns: [{include: '#php-tag'}]}
@@ -123,6 +123,26 @@ const grammar = {
       captures: {
         1: {
           patterns: [
+            {
+              captures: {
+                1: {name: 'entity.other.attribute-name.html'},
+                2: {name: 'punctuation.separator.key-value.html'},
+                3: {name: 'punctuation.definition.string.begin.html'},
+                4: {patterns: [{include: 'source.js'}]},
+                5: {name: 'punctuation.definition.string.end.html'}
+              },
+              match: '\\\\([\\S:]+?)(=)(\'|")([({].*?[}])(\'|")'
+            },
+            {
+              captures: {
+                1: {name: 'entity.other.attribute-name.html'},
+                2: {name: 'punctuation.separator.key-value.html'},
+                3: {name: 'punctuation.definition.string.begin.html'},
+                4: {name: 'string.quoted.double.html'},
+                5: {name: 'punctuation.definition.string.end.html'}
+              },
+              match: '\\\\([\\S:]+?)(=)(\'|")(.*?)(\\3)'
+            },
             {
               captures: {
                 1: {name: 'entity.other.attribute-name'},

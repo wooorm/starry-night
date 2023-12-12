@@ -118,7 +118,7 @@ const grammar = {
         {
           captures: {2: {name: 'keyword.control.import.source.gsc'}},
           match:
-            '^\\s*#\\s*(if|ifdef|ifndef|else|elif|endif|define|insert|using|precache|using_animtree)\\b',
+            '^\\s*#\\s*(if|ifdef|ifndef|else|elif|endif|define|insert|include|using|precache|using_animtree)\\b',
           name: 'keyword.preprocessor.source.gsc'
         },
         {

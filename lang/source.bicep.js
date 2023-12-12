@@ -71,7 +71,7 @@ const grammar = {
     },
     keyword: {
       match:
-        '\\b(metadata|targetScope|resource|module|param|var|output|for|in|if|existing|import|as|type|with|using|func|assert)\\b',
+        '\\b(metadata|targetScope|resource|module|param|var|output|for|in|if|existing|import|as|type|with|using|func|assert|provider)\\b',
       name: 'keyword.control.declaration.bicep'
     },
     'lambda-start': {

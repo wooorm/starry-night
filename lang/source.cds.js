@@ -9,7 +9,7 @@ const grammar = {
   names: ['cap-cds', 'cds'],
   patterns: [
     {
-      begin: '\\b(aspect|(abstract\\s+)?entity)\\b',
+      begin: '\\b(aspect|(abstract\\s+)?entity|type|event)\\b',
       beginCaptures: {1: {name: 'keyword.strong.cds'}},
       end: '(?<=})(;)?|(;)',
       endCaptures: {
@@ -17,10 +17,12 @@ const grammar = {
         2: {name: 'punctuation.terminator.statement.cds'}
       },
       patterns: [
+        {include: '#atAnnoParen'},
+        {include: '#atAnnoNoParen'},
         {
           begin: ':',
           beginCaptures: {0: {name: 'keyword.operator.cds'}},
-          end: '(?={|;)',
+          end: '(?=[{;@])',
           patterns: [
             {include: '#identifiers'},
             {match: ',', name: 'punctuation.separator.object.cds'}
@@ -33,11 +35,11 @@ const grammar = {
     },
     {
       begin:
-        '(?i)\\b(extend)\\s+((context|service|aspect|entity|projection|type)\\s+)?(\\S+)(\\s+(with)(\\s+(actions|definitions|columns|elements|enum))?|(?=\\s*{))',
+        '(?i)\\b(extend)\\s+((context|service|aspect|entity|projection|type)\\s+)?((?!@)\\S+)(\\s+(with)(\\s+(actions|definitions|columns|elements|enum))?|(?=\\s*{))',
       beginCaptures: {
         1: {name: 'keyword.strong.cds'},
         3: {name: 'keyword.cds'},
-        4: {name: 'identifier.cds'},
+        4: {name: 'entity.name.type.cds'},
         6: {name: 'keyword.cds'},
         8: {name: 'keyword.cds'}
       },
@@ -48,6 +50,8 @@ const grammar = {
       },
       patterns: [
         {include: '#bracedElementDef'},
+        {include: '#atAnnoParen'},
+        {include: '#atAnnoNoParen'},
         {include: '#keywords'},
         {include: '#identifiers'},
         {match: ',', name: 'punctuation.separator.object.cds'}
@@ -56,16 +60,16 @@ const grammar = {
     {
       captures: {
         1: {name: 'keyword.strong.control.import.cds'},
-        2: {name: 'keyword.strong.control.import.cds'}
+        2: {name: 'entity.name.type.cds'},
+        3: {name: 'keyword.strong.control.import.cds'}
       },
-      match: '(?<!\\.)\\b(annotate)\\b\\s*[\\w.]+\\b\\s*\\b(with)?\\b'
+      match: '(?<!\\.)\\b(annotate)\\b\\s*([\\w.]+)\\b\\s*\\b(with)?\\b'
     },
     {
-      begin: '(?<!\\.)\\b(import|using)(?!\\s*:)\\b',
+      begin: '(?<!\\.)\\b(using)(?!\\s*:)\\b',
       beginCaptures: {1: {name: 'keyword.strong.control.import.cds'}},
       end: '(;)|\\n',
       endCaptures: {1: {name: 'punctuation.terminator.statement.cds'}},
-      name: 'meta.import.cds',
       patterns: [
         {
           begin: '{',
@@ -78,40 +82,39 @@ const grammar = {
             {
               captures: {
                 1: {name: 'variable.language.default.cds'},
-                2: {name: 'variable.other.module.cds'},
+                2: {name: 'entity.name.type.cds'},
                 3: {name: 'keyword.strong.cds'},
-                4: {name: 'invalid.illegal.cds'},
-                5: {name: 'variable.other.module-alias.cds'}
+                4: {name: 'entity.name.type.cds'}
               },
               match:
-                '(?:\\b(default)\\b|\\b([$_a-zA-Z][$_a-zA-Z0-9]*)\\b)\\s*(\\bas\\b)\\s*(?:(\\bdefault\\b|\\*)|\\b([$_a-zA-Z][$_a-zA-Z0-9]*)\\b)'
+                '(?:\\b(default)\\b|\\b([$_a-zA-Z][$_a-zA-Z0-9]*)\\b)\\s*(\\bas\\b)\\s*(?:\\b([$_a-zA-Z][$_a-zA-Z0-9]*)\\b)'
             },
             {match: ',', name: 'punctuation.separator.object.cds'},
             {include: '#comments'},
             {
               match: '\\b([$_a-zA-Z][$_a-zA-Z0-9]*)\\b',
-              name: 'variable.other.module.cds'
+              name: 'entity.name.type.cds'
             }
           ]
         },
         {
           captures: {
-            1: {name: 'variable.language.import-all.cds'},
-            2: {name: 'variable.other.module.cds'},
+            1: {name: 'keyword.operator.asterisk'},
+            2: {name: 'entity.name.type.cds'},
             3: {name: 'keyword.strong.control.cds'},
-            4: {name: 'variable.other.module-alias.cds'}
+            4: {name: 'entity.name.type.cds'}
           },
           match:
             '(?:(\\*)|(?=\\D)(\\b[\\$\\.\\w]+\\b))\\s*(\\bas\\b)\\s*(?=\\D)(\\b[\\$\\.\\w]+\\b)'
         },
-        {match: '\\*', name: 'variable.language.import-all.cds'},
+        {match: '\\*', name: 'keyword.operator.asterisk'},
         {match: '\\b(default)\\b', name: 'variable.language.default.cds'},
         {include: '#strings'},
         {include: '#comments'},
         {match: '(?i)\\b(from)\\b', name: 'keyword.strong.control.cds'},
         {
           match: '\\b([$_a-zA-Z][$_a-zA-Z0-9]*)\\b(?=.*\\bfrom\\b)',
-          name: 'variable.other.module.cds'
+          name: 'entity.name.type.cds'
         },
         {match: ',', name: 'punctuation.separator.object.cds'}
       ]
@@ -123,97 +126,18 @@ const grammar = {
         3: {name: 'variable.other.module.cds'}
       },
       match:
-        '\\b(export)\\b\\s*\\b(default)\\b(?:\\s*)\\b((?!\\bclass\\b|\\blet\\b|\\bvar\\b|\\bconst\\b)[$_a-zA-Z][$_a-zA-Z0-9]*)?\\b',
+        '(?i)\\b(export)\\b\\s*\\b(default)\\b(?:\\s*)\\b((?!\\bclass\\b|\\blet\\b|\\bvar\\b|\\bconst\\b)[$_a-zA-Z][$_a-zA-Z0-9]*)?\\b',
       name: 'meta.export.cds'
     },
     {
-      begin: '(?<!\\.)\\b(export)(?!\\s*:)\\b',
-      beginCaptures: {1: {name: 'keyword.control.export.cds'}},
-      end: '(?=;|\\bclass\\b|\\blet\\b|\\bvar\\b|\\bconst\\b|$)',
-      name: 'meta.export.cds',
-      patterns: [
-        {include: '#numbers'},
-        {
-          begin: '{(?=.*\\bfrom\\b)',
-          beginCaptures: {
-            0: {name: 'punctuation.definition.modules.begin.cds'}
-          },
-          end: '}',
-          endCaptures: {0: {name: 'punctuation.definition.modules.end.cds'}},
-          patterns: [
-            {
-              captures: {
-                1: {name: 'variable.language.default.cds'},
-                2: {name: 'variable.other.module.cds'},
-                3: {name: 'keyword.control.cds'},
-                4: {name: 'variable.language.default.cds'},
-                5: {name: 'invalid.illegal.cds'},
-                6: {name: 'variable.other.module-alias.cds'}
-              },
-              match:
-                '(?:\\b(default)\\b|\\b([$_a-zA-Z][$_a-zA-Z0-9]*)\\b)\\s*(\\bas\\b)\\s*(?:\\b(default)\\b|(\\*)|\\b([$_a-zA-Z][$_a-zA-Z0-9]*)\\b)'
-            },
-            {match: ',', name: 'meta.delimiter.object.comma.cds'},
-            {
-              match: '\\b([$_a-zA-Z][$_a-zA-Z0-9]*)\\b',
-              name: 'variable.other.module.cds'
-            }
-          ]
-        },
-        {
-          begin: '(?![\\p{L}$_]){',
-          beginCaptures: {
-            0: {name: 'punctuation.definition.modules.begin.cds'}
-          },
-          end: '}',
-          endCaptures: {0: {name: 'punctuation.definition.modules.end.cds'}},
-          patterns: [
-            {
-              captures: {
-                1: {name: 'invalid.illegal.cds'},
-                2: {name: 'variable.other.module.cds'},
-                3: {name: 'keyword.control.cds'},
-                4: {name: 'variable.language.default.cds'},
-                5: {name: 'invalid.illegal.cds'},
-                6: {name: 'variable.other.module-alias.cds'}
-              },
-              match:
-                '(?:\\b(default)\\b|\\b([$_a-zA-Z][$_a-zA-Z0-9]*)\\b)\\s*(\\bas\\b)\\s*(?:\\b(default)\\b|(\\*)|\\b([$_a-zA-Z][$_a-zA-Z0-9]*)\\b)'
-            },
-            {match: ',', name: 'meta.delimiter.object.comma.cds'},
-            {
-              match: '\\b([$_a-zA-Z][$_a-zA-Z0-9]*)\\b',
-              name: 'variable.other.module.cds'
-            }
-          ]
-        },
-        {
-          match: '\\*(?=.*\\bfrom\\b)',
-          name: 'variable.language.import-all.cds'
-        },
-        {match: '\\b(default)\\b', name: 'variable.language.default.cds'},
-        {include: '#strings'},
-        {include: '#comments'},
-        {match: '(?i)\\b(from)\\b', name: 'keyword.control.cds'},
-        {
-          match: '\\b([$_a-zA-Z][$_a-zA-Z0-9]*)\\b',
-          name: 'variable.other.module.cds'
-        },
-        {match: ',', name: 'meta.delimiter.object.comma.cds'},
-        {include: '#operators'}
-      ]
-    },
-    {
-      begin:
-        '\\b(?:(static)\\s+)?(?!(?:break|case|catch|continue|do|else|finally|for|if|export|import|using|package|return|switch|throw|try|while|with)[\\s\\(])([$_a-zA-Z][$_a-zA-Z0-9]*)\\s*(\\()(?=(?:[^\\(\\)]*)?\\)\\s*{)',
+      begin: '(?i)\\b(action|function)\\s+([$_a-zA-Z][$_a-zA-Z0-9]*)\\s*(\\()',
       beginCaptures: {
-        1: {name: 'storage.modifier.static.cds'},
+        1: {name: 'keyword.strong.cds'},
         2: {name: 'entity.name.function.cds'},
         3: {name: 'punctuation.definition.parameters.begin.cds'}
       },
       end: '\\)',
-      endCaptures: {0: {name: 'punctuation.definition.parameters.begin.cds'}},
-      name: 'meta.method.cds',
+      endCaptures: {0: {name: 'punctuation.definition.parameters.end.cds'}},
       patterns: [{include: '#function-params'}]
     },
     {
@@ -285,10 +209,8 @@ const grammar = {
       name: 'support.class.cds'
     },
     {match: '(?i)(?<=\\.)(prototype)\\b', name: 'keyword.other.cds'},
-    {
-      match: '(?<!\\w)([$_a-zA-Z][$_a-zA-Z0-9]*)(?=\\()',
-      name: 'meta.function-call.cds'
-    },
+    {include: '#atAnnoParen'},
+    {include: '#atAnnoNoParen'},
     {include: '#keywords'},
     {include: '#numbers'},
     {include: '#strings'},
@@ -297,6 +219,71 @@ const grammar = {
     {include: '#identifiers'}
   ],
   repository: {
+    annotationName: {
+      begin: '(?=[$_"!a-zA-Z0-9])',
+      end: '(?:(?<=[$"\\]])(?=\\s*[@:;])|(?<=[_a-zA-Z0-9])\\b)(?!\\s*[#.])',
+      patterns: [
+        {
+          match:
+            '[$_a-zA-Z][$_a-zA-Z0-9]*|"[^"]*(?:""[^"]*)*"|!\\[[^\\]]*(?:\\]\\][^\\]]*)*\\]',
+          name: 'entity.name.tag.cds'
+        },
+        {
+          captures: {
+            1: {name: 'entity.name.tag.dot.cds'},
+            2: {name: 'entity.name.tag.at.cds'}
+          },
+          match: '\\s*(\\.)\\s*(@)?'
+        },
+        {
+          captures: {1: {name: 'entity.name.tag.hash.cds'}},
+          match: '\\s*(#)\\s*'
+        }
+      ]
+    },
+    atAnnoName: {
+      begin: '(@)',
+      beginCaptures: {1: {name: 'entity.name.tag.at.cds'}},
+      end: '(?:(?<=[$"\\]])(?=\\s*[@:;])|(?<=[_a-zA-Z0-9])\\b)(?![#.])',
+      patterns: [{include: '#annotationName'}]
+    },
+    atAnnoNoParen: {
+      begin: '(@)(?!\\s*\\()',
+      captures: {1: {name: 'entity.name.tag.at.cds'}},
+      end: "(?<=[}\\]'`])(?=\\s*($|[@;]))|(?<![@:])(?!\\s*:)(?=$|[\\s@,;(){}\\[\\]'`/\"!]|\\b[$_a-zA-Z])",
+      patterns: [
+        {include: '#annotationName'},
+        {include: '#optColonAndStructure'},
+        {include: '#optColonAndArray'},
+        {include: '#colonAndNumber'},
+        {include: '#colonAndString'},
+        {include: '#colonAndTemplateString'},
+        {include: '#colonAndHashIdent'},
+        {include: '#colonAndConstant'},
+        {include: '#comments'}
+      ]
+    },
+    atAnnoParen: {
+      begin: '(@)\\s*(\\()',
+      beginCaptures: {
+        1: {name: 'entity.name.tag.at.cds'},
+        2: {name: 'punctuation.section.scope.begin.cds'}
+      },
+      end: '\\)',
+      endCaptures: {0: {name: 'punctuation.section.scope.end.cds'}},
+      patterns: [
+        {include: '#annotationName'},
+        {include: '#optColonAndStructure'},
+        {include: '#optColonAndArray'},
+        {include: '#colonAndNumber'},
+        {include: '#colonAndString'},
+        {include: '#colonAndTemplateString'},
+        {include: '#colonAndHashIdent'},
+        {include: '#colonAndConstant'},
+        {match: ',', name: 'punctuation.separator.object.cds'},
+        {include: '#comments'}
+      ]
+    },
     bracedElementDef: {
       begin: '{',
       beginCaptures: {0: {name: 'punctuation.section.scope.begin.cds'}},
@@ -304,13 +291,86 @@ const grammar = {
       endCaptures: {0: {name: 'punctuation.section.scope.end.cds'}},
       patterns: [
         {include: '#comments'},
+        {include: '#atAnnoParen'},
+        {include: '#atAnnoNoParen'},
         {include: '#extendElement'},
+        {include: '#selectItemDef'},
         {include: '#elementDef'}
       ]
     },
+    bracketedExpression: {
+      begin: '\\(',
+      beginCaptures: {0: {name: 'punctuation.section.scope.begin.cds'}},
+      end: '\\)',
+      endCaptures: {0: {name: 'punctuation.section.scope.end.cds'}},
+      patterns: [
+        {include: '#bracedElementDef'},
+        {include: '#keywords'},
+        {
+          captures: {0: {name: 'entity.other.attribute-name.cds'}},
+          match:
+            '(?i)(?<!@|select from )(?:\\$?\\b[_a-zA-Z][$_a-zA-Z0-9]*|"[^"]*(?:""[^"]*)*"|!\\[[^\\]]*(?:\\]\\][^\\]]*)*\\])'
+        },
+        {include: '#identifiers'},
+        {include: '#operators'}
+      ]
+    },
+    colonAndConstant: {
+      captures: {
+        1: {name: 'keyword.operator.colon'},
+        2: {name: 'constant.language.cds'}
+      },
+      match: '(?i)(:)\\s*(null|true|false)\\b',
+      patterns: [{include: '#comments'}]
+    },
+    colonAndHashIdent: {
+      captures: {
+        1: {name: 'keyword.operator.colon'},
+        2: {name: 'entity.name.tag.hash.cds'},
+        3: {name: 'entity.name.tag.cds'}
+      },
+      match:
+        '(:)\\s*(#)\\s*([$_a-zA-Z][$_a-zA-Z0-9]*|"[^"]*(?:""[^"]*)*"|!\\[[^\\]]*(?:\\]\\][^\\]]*)*\\])',
+      patterns: [{include: '#comments'}]
+    },
+    colonAndNumber: {
+      begin: '(:)\\s*(?=[0-9+-])',
+      beginCaptures: {1: {name: 'keyword.operator.colon'}},
+      end: '(?<=[[[:xdigit:]]0-9])\\b',
+      patterns: [{include: '#numbers'}, {include: '#comments'}]
+    },
+    colonAndString: {
+      begin: "(:)\\s*(x|date|time(?:stamp)?)?\\s*(')",
+      beginCaptures: {
+        1: {name: 'keyword.operator.colon'},
+        2: {name: 'support.class.cds'},
+        3: {
+          name: 'string.quoted.single.cds punctuation.definition.string.begin.cds'
+        }
+      },
+      end: "'(?!')",
+      endCaptures: {
+        0: {
+          name: 'string.quoted.single.cds punctuation.definition.string.end.cds'
+        }
+      },
+      patterns: [
+        {
+          match: "''",
+          name: 'string.quoted.single.cds meta.single-quote.doubled.cds'
+        },
+        {match: '.', name: 'string.quoted.single.cds'},
+        {include: '#comments'}
+      ]
+    },
+    colonAndTemplateString: {
+      begin: '(:)\\s*(?=`)',
+      beginCaptures: {1: {name: 'keyword.operator.colon'}},
+      end: '(?<=`)',
+      patterns: [{include: '#strings'}, {include: '#comments'}]
+    },
     comments: {
       patterns: [
-        {match: '@\\(?[\\w.]+\\b', name: 'entity.other.attribute-name'},
         {
           begin: '/\\*\\*(?!/)',
           beginCaptures: {
@@ -334,7 +394,7 @@ const grammar = {
     },
     elementDef: {
       begin:
-        '(?=\\()|\\b(virtual(?:\\s+))?(key(?:\\s+))?(masked(?:\\s+))?(element(?:\\s+))?',
+        '(?!\\s*@)(?:(?=\\()|\\b(virtual(?:\\s+))?(key(?:\\s+))?(masked(?:\\s+))?(element(?:\\s+))?)',
       beginCaptures: {
         1: {name: 'keyword.cds'},
         2: {name: 'keyword.strong.cds'},
@@ -347,36 +407,24 @@ const grammar = {
         {include: '#bracedElementDef'},
         {include: '#strings'},
         {include: '#comments'},
+        {include: '#atAnnoParen'},
+        {include: '#atAnnoNoParen'},
         {include: '#keywords'},
+        {include: '#bracketedExpression'},
         {
-          begin: '\\(',
-          beginCaptures: {0: {name: 'punctuation.section.scope.begin.cds'}},
-          end: '\\)',
-          endCaptures: {0: {name: 'punctuation.section.scope.end.cds'}},
-          patterns: [
-            {
-              captures: {0: {name: 'entity.name.type.attribute-name.cds'}},
-              match:
-                '[$_a-zA-Z][$_a-zA-Z0-9]*|\\"[^\\"]*(\\"\\"[^\\"]*)*\\"|!\\\\[[^\\\\]]*(\\\\]\\\\][^\\\\]]*)*\\\\]'
-            },
-            {include: '#operators'}
-          ]
-        },
-        {
-          begin:
-            '([$_a-zA-Z][$_a-zA-Z0-9]*|"[^"]*(""[^"]*)*"|!\\[[^\\]]*(\\]\\][^\\]]*)*\\])(?=\\s*[:{,])',
-          beginCaptures: {1: {name: 'entity.name.type.attribute-name.cds'}},
-          end: '(,)|(?=\\s*[:{])',
-          endCaptures: {1: {name: 'punctuation.separator.object.cds'}}
-        },
-        {
-          captures: {1: {name: 'entity.name.type.attribute-name.cds'}},
           match:
-            '^\\s*([$_a-zA-Z][$_a-zA-Z0-9]*|"[^"]*(""[^"]*)*"|!\\[[^\\]]*(\\]\\][^\\]]*)*\\])\\s*$'
+            '(?<!@)(?:\\$?\\b[_a-zA-Z][$_a-zA-Z0-9]*|"[^"]*(?:""[^"]*)*"|!\\[[^\\]]*(?:\\]\\][^\\]]*)*\\])(?=\\s*[:{,@])',
+          name: 'entity.other.attribute-name.cds'
+        },
+        {
+          captures: {1: {name: 'entity.other.attribute-name.cds'}},
+          match:
+            '^\\s*([$_a-zA-Z][$_a-zA-Z0-9]*|"[^"]*(?:""[^"]*)*"|!\\[[^\\]]*(?:\\]\\][^\\]]*)*\\])\\s*$'
         },
         {include: '#identifiers'},
         {include: '#operators'},
-        {include: '#numbers'}
+        {include: '#numbers'},
+        {match: ',', name: 'punctuation.separator.object.cds'}
       ]
     },
     escapes: {
@@ -403,12 +451,14 @@ const grammar = {
             },
             {
               match:
-                '[$_a-zA-Z][$_a-zA-Z0-9]*|"[^"]*(""[^"]*)*"|!\\[[^\\]]*(\\]\\][^\\]]*)*\\]',
-              name: 'entity.name.type.attribute-name.cds'
+                '(?<!@)(?:\\$?\\b[_a-zA-Z][$_a-zA-Z0-9]*|"[^"]*(?:""[^"]*)*"|!\\[[^\\]]*(?:\\]\\][^\\]]*)*\\])',
+              name: 'entity.other.attribute-name.cds'
             },
             {include: '#comments'}
           ]
         },
+        {include: '#atAnnoParen'},
+        {include: '#atAnnoNoParen'},
         {
           begin: '{',
           beginCaptures: {0: {name: 'punctuation.section.scope.begin.cds'}},
@@ -428,67 +478,38 @@ const grammar = {
     'function-params': {
       patterns: [
         {
-          begin: '(?=[\\p{L}$_])',
-          end: '(?=[,)/])',
-          patterns: [
-            {
-              match: '\\G[$_a-zA-Z][$_a-zA-Z0-9]*',
-              name: 'variable.parameter.function.cds'
-            }
-          ]
+          match:
+            '\\$?\\b[_a-zA-Z][$_a-zA-Z0-9]*|"[^"]*(?:""[^"]*)*"|!\\[[^\\]]*(?:\\]\\][^\\]]*)*\\]',
+          name: 'variable.parameter.function.cds'
         },
-        {include: '#comments'}
+        {match: ',', name: 'punctuation.separator.object.cds'},
+        {include: '#comments'},
+        {include: '#operators'}
       ]
     },
     identifiers: {
       patterns: [
         {
           match:
-            '[$_a-zA-Z][$_a-zA-Z0-9]*|"[^"]*(""[^"]*)*"|!\\[[^\\]]*(\\]\\][^\\]]*)*\\]',
-          name: 'identifier.cds'
+            '(?<!@)(?:\\$?\\b[_a-zA-Z][$_a-zA-Z0-9]*|"[^"]*(?:""[^"]*)*"|!\\[[^\\]]*(?:\\]\\][^\\]]*)*\\])',
+          name: 'entity.name.type.cds'
         }
-      ]
-    },
-    interpolation: {
-      begin: '\\${',
-      beginCaptures: {0: {name: 'punctuation.section.embedded.begin.cds'}},
-      contentName: 'source.cds',
-      end: '(})',
-      endCaptures: {
-        0: {name: 'punctuation.section.embedded.end.cds'},
-        1: {name: 'source.cds'}
-      },
-      name: 'meta.embedded.line.cds',
-      patterns: [
-        {
-          begin: '{',
-          beginCaptures: {0: {name: 'meta.brace.curly.cds'}},
-          end: '}',
-          endCaptures: {0: {name: 'meta.brace.curly.cds'}},
-          patterns: [{include: '$self'}]
-        },
-        {include: '$self'}
       ]
     },
     keywords: {
       patterns: [
         {
+          captures: {
+            1: {name: 'support.class.cds'},
+            2: {name: 'entity.name.type.cds'}
+          },
           match:
-            '(?<!\\.|\\$)\\b(Association\\s*(?:\\[[0-9.eE+, *-]*\\]\\s*)?to\\s*(?:(many|one)\\s*)?|Composition\\s*(?:\\[[0-9.eE+, *-]*\\]\\s*)?of\\s*(?:(many|one)\\s*)?|(Binary|Boolean|DateTime|Date|DecimalFloat|Decimal|Double|Int(16|32|64)|Integer64|Integer|LargeBinary|LargeString|Number|String|Timestamp|Time|UInt8|UUID)\\s*(\\([^()]*\\))?)(?!\\$|\\s*:)',
+            '(?<!\\.|\\$)\\b(Association\\b\\s*(?:\\[[0-9.eE+, *-]*\\]\\s*)?to\\b\\s*(?:many\\s*|one\\s*)?|Composition\\b\\s*(?:\\[[0-9.eE+, *-]*\\]\\s*)?of\\b\\s*(?:many\\s*|one\\s*)?)(?:(?=\\s*{)|([$_a-zA-Z][$_a-zA-Z0-9]*|"[^"]*(?:""[^"]*)*"|!\\[[^\\]]*(?:\\]\\][^\\]]*)*\\]))'
+        },
+        {
+          match:
+            '(?<!\\.|\\$)\\b(Binary|Boolean|DateTime|Date|DecimalFloat|Decimal|Double|Int(16|32|64)|Integer64|Integer|LargeBinary|LargeString|Number|String|Timestamp|Time|UInt8|UUID)\\b\\s*(\\([^()]*\\))?(?!\\$|\\s*:)',
           name: 'support.class.cds'
-        },
-        {
-          match: '(?<!\\.|\\$)\\b(await)\\b(?!\\$|\\s*:)',
-          name: 'invalid.illegal.cds'
-        },
-        {
-          match:
-            '(?<!\\.|\\$)\\b(implements|interface|package|private|protected|public)\\b(?!\\$|\\s*:)',
-          name: 'invalid.deprecated.cds'
-        },
-        {
-          match: '(?<!\\.|\\$)\\b(class|static|extends)\\b(?!\\$|\\s*:)',
-          name: 'invalid.illegal.cds'
         },
         {
           match:
@@ -501,13 +522,37 @@ const grammar = {
         },
         {
           match:
-            '(?<!\\.|\\$)\\b(after|always|analysis|array of|async|asynchronous|auto|both|cache|column|columns|configuration|current|cycle|day|default|depends|detection|disabled|documents|else|enabled|end|every|existing|export|extended|extract|fast|flush|fulltext|fuzzy|generated|getnumservers|hana|hash|hour|identity|import|increment|index|keeping|language|layout|leading|masked|maxvalue|merge|migration|mime|mining|minute|minutes|minvalue|mode|month|name|new|no|off|only|others|overlay|parameters|partition|partitioning|partitions|phrase|preprocess|priority|projection|projection on|queue|range|ratio|reset|returns|right|roundrobin|row|search|second|separators|start|storage|store|subtype|sync|synchronous|table|technical|temporary|text|then|token|trailing|trim|unique|unload|value|values|virtual|when|with parameters|year)\\b(?!\\$|\\s*:)',
+            '(?<!\\.|\\$)\\b(array of|column|columns|current|day|default|depends|else|enabled|end|generated|hana|hour|identity|import|index|language|layout|leading|masked|merge|minute|minutes|mode|month|name|new|no|off|only|others|parameters|partition|partitions|priority|projection|projection on|queue|range|ratio|reset|returns|right|row|search|second|start|storage|store|table|technical|then|trailing|trim|unique|unload|value|values|virtual|when|with parameters|year)\\b(?!\\$|\\s*:)',
           name: 'keyword.cds'
         },
         {
           match:
-            '(?<!\\.|\\$)\\b(abstract|action|actions|annotation|aspect|context|define|entity|enum|event|expose|extend|facet|function|namespace|service|view)\\b(?!\\$|\\s*:)',
+            '(?<!\\.|\\$)\\b(abstract|action|actions|annotation|aspect|context|define|entity|enum|event|extend|function|namespace|service|view)\\b(?!\\$|\\s*:)',
           name: 'keyword.strong.cds'
+        }
+      ]
+    },
+    literalValue: {
+      patterns: [
+        {
+          captures: {
+            1: {name: 'entity.name.tag.hash.cds'},
+            2: {name: 'entity.name.tag.cds'}
+          },
+          match:
+            '(#)\\s*([$_a-zA-Z][$_a-zA-Z0-9]*|"[^"]*(?:""[^"]*)*"|!\\[[^\\]]*(?:\\]\\][^\\]]*)*\\])'
+        },
+        {match: '(?i)\\b(?:null|true|false)\\b', name: 'constant.language.cds'},
+        {include: '#numbers'},
+        {include: '#strings'},
+        {
+          captures: {
+            1: {name: 'support.class.cds'},
+            2: {name: 'string.quoted.single.cds'},
+            3: {name: 'punctuation.definition.string.begin.cds'},
+            4: {name: 'punctuation.definition.string.end.cds'}
+          },
+          match: "(?i)\\b(x|date|time(?:stamp)?)\\s*((')[^']*('))"
         }
       ]
     },
@@ -533,27 +578,80 @@ const grammar = {
     },
     operators: {
       patterns: [
-        {
-          match: '%=|\\+=|\\-=|\\*=|(?<!\\()/=',
-          name: 'keyword.operator.assignment.compound.cds'
-        },
-        {
-          match: '&=|\\^=|<<=|>>=|>>>=|\\|=',
-          name: 'keyword.operator.assignment.compound.bitwise.cds'
-        },
-        {
-          match: '!==|!=|<=|>=|===|==|<|>',
-          name: 'keyword.operator.comparison.cds'
-        },
-        {match: '&&|!|\\|\\|', name: 'keyword.operator.logical.cds'},
+        {match: '!=|<=|>=|<>|<|>', name: 'keyword.operator.comparison.cds'},
+        {match: '\\|\\|', name: 'keyword.operator.concatenator.cds'},
         {match: '&|\\||\\^|~', name: 'keyword.operator.bitwise.cds'},
-        {match: '\\:\\s*(localized)\\s+', name: 'keyword.cds'},
+        {captures: {1: {name: 'keyword.cds'}}, match: '\\:\\s*(localized)\\s+'},
         {match: '[?:]', name: 'keyword.operator.cds'},
         {match: '!', name: 'keyword.operator.logical.cds'},
         {match: '=|\\:', name: 'keyword.operator.assignment.cds'},
-        {match: '\\-\\-', name: 'keyword.operator.decrement.cds'},
-        {match: '\\+\\+', name: 'keyword.operator.increment.cds'},
         {match: '%|\\*|/|\\-|\\+', name: 'keyword.operator.arithmetic.cds'}
+      ]
+    },
+    optColonAndArray: {
+      begin: '(:)?\\s*(\\[)',
+      beginCaptures: {
+        1: {name: 'keyword.operator.colon'},
+        2: {name: 'punctuation.section.scope.begin.cds'}
+      },
+      end: '\\]',
+      endCaptures: {0: {name: 'punctuation.section.scope.end.cds'}},
+      patterns: [
+        {include: '#atAnnoNoParen'},
+        {include: '#annotationName'},
+        {captures: {0: {name: 'keyword.operator.ellipsis'}}, match: '\\.{3}'},
+        {
+          captures: {1: {name: 'keyword.cds'}, 2: {name: 'keyword.cds'}},
+          match: '(?i)(up)\\s+(to)\\b'
+        },
+        {include: '#optColonAndStructure'},
+        {include: '#optColonAndArray'},
+        {include: '#literalValue'},
+        {match: ',', name: 'punctuation.separator.object.cds'},
+        {include: '#comments'}
+      ]
+    },
+    optColonAndStructure: {
+      begin: '(:)?\\s*({)',
+      beginCaptures: {
+        1: {name: 'keyword.operator.colon'},
+        2: {name: 'punctuation.section.scope.begin.cds'}
+      },
+      end: '}',
+      endCaptures: {0: {name: 'punctuation.section.scope.end.cds'}},
+      patterns: [
+        {include: '#atAnnoNoParen'},
+        {include: '#annotationName'},
+        {include: '#optColonAndStructure'},
+        {include: '#optColonAndArray'},
+        {include: '#colonAndNumber'},
+        {include: '#colonAndString'},
+        {include: '#colonAndTemplateString'},
+        {include: '#colonAndHashIdent'},
+        {include: '#colonAndConstant'},
+        {match: ',', name: 'punctuation.separator.object.cds'},
+        {include: '#comments'}
+      ]
+    },
+    selectItemDef: {
+      begin: '^\\s*(?=\\*|.+\\s+as\\s+)',
+      end: '(?=})|(,)',
+      patterns: [
+        {include: '#bracedElementDef'},
+        {include: '#strings'},
+        {include: '#comments'},
+        {include: '#atAnnoParen'},
+        {include: '#atAnnoNoParen'},
+        {include: '#keywords'},
+        {include: '#bracketedExpression'},
+        {
+          match:
+            '(?<!@)(?:\\$?\\b[_a-zA-Z][$_a-zA-Z0-9]*|"[^"]*(?:""[^"]*)*"|!\\[[^\\]]*(?:\\]\\][^\\]]*)*\\])',
+          name: 'entity.other.attribute-name.cds'
+        },
+        {include: '#operators'},
+        {include: '#numbers'},
+        {match: ',', name: 'punctuation.separator.object.cds'}
       ]
     },
     strings: {
@@ -569,10 +667,14 @@ const grammar = {
         {
           begin: '`',
           beginCaptures: {0: {name: 'punctuation.definition.string.begin.cds'}},
-          end: '`',
+          end: '`(?!`)',
           endCaptures: {0: {name: 'punctuation.definition.string.end.cds'}},
           name: 'string.quoted.other.template.cds',
-          patterns: [{include: '#interpolation'}, {include: '#escapes'}]
+          patterns: [
+            {match: '``', name: 'string.quoted.other.template.block.cds'},
+            {include: '#interpolation'},
+            {include: '#escapes'}
+          ]
         }
       ]
     }

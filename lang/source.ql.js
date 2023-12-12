@@ -144,6 +144,7 @@ const grammar = {
         {include: '#non-context-sensitive'}
       ]
     },
+    'close-angle': {match: '(?x)>', name: 'punctuation.anglebracket.close.ql'},
     'close-brace': {match: '(?x)\\}', name: 'punctuation.curlybrace.close.ql'},
     'close-bracket': {
       match: '(?x)\\]',
@@ -353,10 +354,10 @@ const grammar = {
     'import-directive': {
       begin: '(?x)((?:\\b(?:import)(?:(?!(?:[0-9A-Za-z_])))))',
       beginCaptures: {1: {patterns: [{include: '#import'}]}},
-      end: '(?x)(?:\\b [A-Za-z][0-9A-Za-z_]* (?:(?!(?:[0-9A-Za-z_])))) (?!\\s*(\\.|\\:\\:))',
-      endCaptures: {0: {name: 'entity.name.type.namespace.ql'}},
+      end: '(?x)(?<!\\bimport)(?<=(?:\\>)|[A-Za-z0-9_]) (?!\\s*(\\.|\\:\\:|\\,|(?:<)))',
       name: 'meta.block.import-directive.ql',
       patterns: [
+        {include: '#instantiation-args'},
         {include: '#non-context-sensitive'},
         {
           match: '(?x)(?:\\b [A-Za-z][0-9A-Za-z_]* (?:(?!(?:[0-9A-Za-z_]))))',
@@ -371,6 +372,21 @@ const grammar = {
     instanceof: {
       match: '(?x)\\b(?:instanceof)(?:(?!(?:[0-9A-Za-z_])))',
       name: 'keyword.other.instanceof.ql'
+    },
+    'instantiation-args': {
+      begin: '(?x)((?:<))',
+      beginCaptures: {1: {patterns: [{include: '#open-angle'}]}},
+      end: '(?x)((?:>))',
+      endCaptures: {1: {patterns: [{include: '#close-angle'}]}},
+      name: 'meta.type.parameters.ql',
+      patterns: [
+        {include: '#instantiation-args'},
+        {include: '#non-context-sensitive'},
+        {
+          match: '(?x)(?:\\b [A-Za-z][0-9A-Za-z_]* (?:(?!(?:[0-9A-Za-z_]))))',
+          name: 'entity.name.type.namespace.ql'
+        }
+      ]
     },
     int: {
       match: '(?x)\\b(?:int)(?:(?!(?:[0-9A-Za-z_])))',
@@ -568,6 +584,7 @@ const grammar = {
       match: '(?x)\\b(?:not)(?:(?!(?:[0-9A-Za-z_])))',
       name: 'keyword.other.not.ql'
     },
+    'open-angle': {match: '(?x)<', name: 'punctuation.anglebracket.open.ql'},
     'open-brace': {match: '(?x)\\{', name: 'punctuation.curlybrace.open.ql'},
     'open-bracket': {
       match: '(?x)\\[',
@@ -589,7 +606,9 @@ const grammar = {
         {include: '#open-brace'},
         {include: '#close-brace'},
         {include: '#open-bracket'},
-        {include: '#close-bracket'}
+        {include: '#close-bracket'},
+        {include: '#open-angle'},
+        {include: '#close-angle'}
       ]
     },
     or: {

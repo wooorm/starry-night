@@ -1,7 +1,7 @@
 // This is a TextMate grammar distributed by `starry-night`.
 // This grammar is developed at
-// <https://github.com/textmate/swift.tmbundle>
-// and licensed permissive.
+// <https://github.com/jtbandes/swift-tmlanguage>
+// and licensed `mit`.
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
@@ -12,8 +12,8 @@ const grammar = {
     'async-throws': {
       captures: {
         1: {name: 'invalid.illegal.await-must-precede-throws.swift'},
-        2: {name: 'keyword.control.exception.swift'},
-        3: {name: 'keyword.control.async.swift'}
+        2: {name: 'storage.modifier.exception.swift'},
+        3: {name: 'storage.modifier.async.swift'}
       },
       match:
         '\\b(?:(throws\\s+async|rethrows\\s+async)|(throws|rethrows)|(async))\\b'
@@ -203,79 +203,77 @@ const grammar = {
     },
     'builtin-types': {
       patterns: [
-        {include: '#builtin-class-type'},
-        {include: '#builtin-enum-type'},
-        {include: '#builtin-protocol-type'},
-        {include: '#builtin-struct-type'},
-        {include: '#builtin-typealias'},
+        {include: '#builtin-types-builtin-class-type'},
+        {include: '#builtin-types-builtin-enum-type'},
+        {include: '#builtin-types-builtin-protocol-type'},
+        {include: '#builtin-types-builtin-struct-type'},
+        {include: '#builtin-types-builtin-typealias'},
         {match: '\\bAny\\b', name: 'support.type.any.swift'}
-      ],
-      repository: {
-        'builtin-class-type': {
+      ]
+    },
+    'builtin-types-builtin-class-type': {
+      match:
+        '\\b(Managed(Buffer|ProtoBuffer)|NonObjectiveCBase|AnyGenerator)\\b',
+      name: 'support.class.swift'
+    },
+    'builtin-types-builtin-enum-type': {
+      patterns: [
+        {
+          match: '\\b(?:CommandLine|Process(?=\\.))\\b',
+          name: 'support.constant.swift'
+        },
+        {match: '\\bNever\\b', name: 'support.constant.never.swift'},
+        {
           match:
-            '\\b(Managed(Buffer|ProtoBuffer)|NonObjectiveCBase|AnyGenerator)\\b',
-          name: 'support.class.swift'
+            '\\b(?:ImplicitlyUnwrappedOptional|Representation|MemoryLayout|FloatingPointClassification|SetIndexRepresentation|SetIteratorRepresentation|FloatingPointRoundingRule|UnicodeDecodingResult|Optional|DictionaryIndexRepresentation|AncestorRepresentation|DisplayStyle|PlaygroundQuickLook|Never|FloatingPointSign|Bit|DictionaryIteratorRepresentation)\\b',
+          name: 'support.type.swift'
         },
-        'builtin-enum-type': {
-          patterns: [
-            {
-              match: '\\b(?:CommandLine|Process(?=\\.))\\b',
-              name: 'support.constant.swift'
-            },
-            {match: '\\bNever\\b', name: 'support.constant.never.swift'},
-            {
-              match:
-                '\\b(?:ImplicitlyUnwrappedOptional|Representation|MemoryLayout|FloatingPointClassification|SetIndexRepresentation|SetIteratorRepresentation|FloatingPointRoundingRule|UnicodeDecodingResult|Optional|DictionaryIndexRepresentation|AncestorRepresentation|DisplayStyle|PlaygroundQuickLook|Never|FloatingPointSign|Bit|DictionaryIteratorRepresentation)\\b',
-              name: 'support.type.swift'
-            },
-            {
-              match: '\\b(?:MirrorDisposition|QuickLookObject)\\b',
-              name: 'support.type.swift'
-            }
-          ]
-        },
-        'builtin-protocol-type': {
-          patterns: [
-            {
-              match:
-                '\\b(?:Ra(?:n(?:domAccess(?:Collection|Indexable)|geReplaceable(?:Collection|Indexable))|wRepresentable)|M(?:irrorPath|utable(?:Collection|Indexable))|Bi(?:naryFloatingPoint|twiseOperations|directional(?:Collection|Indexable))|S(?:tr(?:ideable|eamable)|igned(?:Number|Integer)|e(?:tAlgebra|quence))|Hashable|C(?:o(?:llection|mparable)|ustom(?:Reflectable|StringConvertible|DebugStringConvertible|PlaygroundQuickLookable|LeafReflectable)|VarArg)|TextOutputStream|I(?:n(?:teger(?:Arithmetic)?|dexable(?:Base)?)|teratorProtocol)|OptionSet|Un(?:signedInteger|icodeCodec)|E(?:quatable|rror|xpressibleBy(?:BooleanLiteral|String(?:Interpolation|Literal)|NilLiteral|IntegerLiteral|DictionaryLiteral|UnicodeScalarLiteral|ExtendedGraphemeClusterLiteral|FloatLiteral|ArrayLiteral))|FloatingPoint|L(?:osslessStringConvertible|azy(?:SequenceProtocol|CollectionProtocol))|A(?:nyObject|bsoluteValuable))\\b',
-              name: 'support.type.swift'
-            },
-            {
-              match:
-                '\\b(?:Ran(?:domAccessIndexType|geReplaceableCollectionType)|GeneratorType|M(?:irror(?:Type|PathType)|utable(?:Sliceable|CollectionType))|B(?:i(?:twiseOperationsType|directionalIndexType)|oolean(?:Type|LiteralConvertible))|S(?:tring(?:InterpolationConvertible|LiteralConvertible)|i(?:nkType|gned(?:NumberType|IntegerType))|e(?:tAlgebraType|quenceType)|liceable)|NilLiteralConvertible|C(?:ollectionType|VarArgType)|Inte(?:rvalType|ger(?:Type|LiteralConvertible|ArithmeticType))|O(?:utputStreamType|ptionSetType)|DictionaryLiteralConvertible|Un(?:signedIntegerType|icode(?:ScalarLiteralConvertible|CodecType))|E(?:rrorType|xten(?:sibleCollectionType|dedGraphemeClusterLiteralConvertible))|F(?:orwardIndexType|loat(?:ingPointType|LiteralConvertible))|A(?:nyCollectionType|rrayLiteralConvertible))\\b',
-              name: 'support.type.swift'
-            }
-          ]
-        },
-        'builtin-struct-type': {
-          patterns: [
-            {
-              match:
-                '\\b(?:R(?:e(?:peat(?:ed)?|versed(?:RandomAccess(?:Collection|Index)|Collection|Index))|an(?:domAccessSlice|ge(?:Replaceable(?:RandomAccessSlice|BidirectionalSlice|Slice)|Generator)?))|Generator(?:Sequence|OfOne)|M(?:irror|utable(?:Ran(?:domAccessSlice|geReplaceable(?:RandomAccessSlice|BidirectionalSlice|Slice))|BidirectionalSlice|Slice)|anagedBufferPointer)|B(?:idirectionalSlice|ool)|S(?:t(?:aticString|ri(?:ng|deT(?:hrough(?:Generator|Iterator)?|o(?:Generator|Iterator)?)))|et(?:I(?:ndex|terator))?|lice)|HalfOpenInterval|C(?:haracter(?:View)?|o(?:ntiguousArray|untable(?:Range|ClosedRange)|llectionOfOne)|OpaquePointer|losed(?:Range(?:I(?:ndex|terator))?|Interval)|VaListPointer)|I(?:n(?:t(?:16|8|32|64)?|d(?:ices|ex(?:ing(?:Generator|Iterator))?))|terator(?:Sequence|OverOne)?)|Zip2(?:Sequence|Iterator)|O(?:paquePointer|bjectIdentifier)|D(?:ictionary(?:I(?:ndex|terator)|Literal)?|ouble|efault(?:RandomAccessIndices|BidirectionalIndices|Indices))|U(?:n(?:safe(?:RawPointer|Mutable(?:RawPointer|BufferPointer|Pointer)|BufferPointer(?:Generator|Iterator)?|Pointer)|icodeScalar(?:View)?|foldSequence|managed)|TF(?:16(?:View)?|8(?:View)?|32)|Int(?:16|8|32|64)?)|Join(?:Generator|ed(?:Sequence|Iterator))|PermutationGenerator|E(?:numerate(?:Generator|Sequence|d(?:Sequence|Iterator))|mpty(?:Generator|Collection|Iterator))|Fl(?:oat(?:80)?|atten(?:Generator|BidirectionalCollection(?:Index)?|Sequence|Collection(?:Index)?|Iterator))|L(?:egacyChildren|azy(?:RandomAccessCollection|Map(?:RandomAccessCollection|Generator|BidirectionalCollection|Sequence|Collection|Iterator)|BidirectionalCollection|Sequence|Collection|Filter(?:Generator|BidirectionalCollection|Sequence|Collection|I(?:ndex|terator))))|A(?:ny(?:RandomAccessCollection|Generator|BidirectionalCollection|Sequence|Hashable|Collection|I(?:ndex|terator))|utoreleasingUnsafeMutablePointer|rray(?:Slice)?))\\b',
-              name: 'support.type.swift'
-            },
-            {
-              match:
-                '\\b(?:R(?:everse(?:RandomAccess(?:Collection|Index)|Collection|Index)|awByte)|Map(?:Generator|Sequence|Collection)|S(?:inkOf|etGenerator)|Zip2Generator|DictionaryGenerator|Filter(?:Generator|Sequence|Collection(?:Index)?)|LazyForwardCollection|Any(?:RandomAccessIndex|BidirectionalIndex|Forward(?:Collection|Index)))\\b',
-              name: 'support.type.swift'
-            }
-          ]
-        },
-        'builtin-typealias': {
-          patterns: [
-            {
-              match:
-                '\\b(?:Raw(?:Significand|Exponent|Value)|B(?:ooleanLiteralType|uffer|ase)|S(?:t(?:orage|r(?:i(?:ngLiteralType|de)|eam(?:1|2)))|ubSequence)|NativeBuffer|C(?:hild(?:ren)?|Bool|S(?:hort|ignedChar)|odeUnit|Char(?:16|32)?|Int|Double|Unsigned(?:Short|Char|Int|Long(?:Long)?)|Float|WideChar|Long(?:Long)?)|I(?:n(?:t(?:Max|egerLiteralType)|d(?:ices|ex(?:Distance)?))|terator)|Distance|U(?:n(?:icodeScalar(?:Type|Index|View|LiteralType)|foldFirstSequence)|TF(?:16(?:Index|View)|8Index)|IntMax)|E(?:lement(?:s)?|x(?:tendedGraphemeCluster(?:Type|LiteralType)|ponent))|V(?:oid|alue)|Key|Float(?:32|LiteralType|64)|AnyClass)\\b',
-              name: 'support.type.swift'
-            },
-            {
-              match: '\\b(?:Generator|PlaygroundQuickLook|UWord|Word)\\b',
-              name: 'support.type.swift'
-            }
-          ]
+        {
+          match: '\\b(?:MirrorDisposition|QuickLookObject)\\b',
+          name: 'support.type.swift'
         }
-      }
+      ]
+    },
+    'builtin-types-builtin-protocol-type': {
+      patterns: [
+        {
+          match:
+            '\\b(?:Ra(?:n(?:domAccess(?:Collection|Indexable)|geReplaceable(?:Collection|Indexable))|wRepresentable)|M(?:irrorPath|utable(?:Collection|Indexable))|Bi(?:naryFloatingPoint|twiseOperations|directional(?:Collection|Indexable))|S(?:tr(?:ideable|eamable)|igned(?:Number|Integer)|e(?:tAlgebra|quence))|Hashable|C(?:o(?:llection|mparable)|ustom(?:Reflectable|StringConvertible|DebugStringConvertible|PlaygroundQuickLookable|LeafReflectable)|VarArg)|TextOutputStream|I(?:n(?:teger(?:Arithmetic)?|dexable(?:Base)?)|teratorProtocol)|OptionSet|Un(?:signedInteger|icodeCodec)|E(?:quatable|rror|xpressibleBy(?:BooleanLiteral|String(?:Interpolation|Literal)|NilLiteral|IntegerLiteral|DictionaryLiteral|UnicodeScalarLiteral|ExtendedGraphemeClusterLiteral|FloatLiteral|ArrayLiteral))|FloatingPoint|L(?:osslessStringConvertible|azy(?:SequenceProtocol|CollectionProtocol))|A(?:nyObject|bsoluteValuable))\\b',
+          name: 'support.type.swift'
+        },
+        {
+          match:
+            '\\b(?:Ran(?:domAccessIndexType|geReplaceableCollectionType)|GeneratorType|M(?:irror(?:Type|PathType)|utable(?:Sliceable|CollectionType))|B(?:i(?:twiseOperationsType|directionalIndexType)|oolean(?:Type|LiteralConvertible))|S(?:tring(?:InterpolationConvertible|LiteralConvertible)|i(?:nkType|gned(?:NumberType|IntegerType))|e(?:tAlgebraType|quenceType)|liceable)|NilLiteralConvertible|C(?:ollectionType|VarArgType)|Inte(?:rvalType|ger(?:Type|LiteralConvertible|ArithmeticType))|O(?:utputStreamType|ptionSetType)|DictionaryLiteralConvertible|Un(?:signedIntegerType|icode(?:ScalarLiteralConvertible|CodecType))|E(?:rrorType|xten(?:sibleCollectionType|dedGraphemeClusterLiteralConvertible))|F(?:orwardIndexType|loat(?:ingPointType|LiteralConvertible))|A(?:nyCollectionType|rrayLiteralConvertible))\\b',
+          name: 'support.type.swift'
+        }
+      ]
+    },
+    'builtin-types-builtin-struct-type': {
+      patterns: [
+        {
+          match:
+            '\\b(?:R(?:e(?:peat(?:ed)?|versed(?:RandomAccess(?:Collection|Index)|Collection|Index))|an(?:domAccessSlice|ge(?:Replaceable(?:RandomAccessSlice|BidirectionalSlice|Slice)|Generator)?))|Generator(?:Sequence|OfOne)|M(?:irror|utable(?:Ran(?:domAccessSlice|geReplaceable(?:RandomAccessSlice|BidirectionalSlice|Slice))|BidirectionalSlice|Slice)|anagedBufferPointer)|B(?:idirectionalSlice|ool)|S(?:t(?:aticString|ri(?:ng|deT(?:hrough(?:Generator|Iterator)?|o(?:Generator|Iterator)?)))|et(?:I(?:ndex|terator))?|lice)|HalfOpenInterval|C(?:haracter(?:View)?|o(?:ntiguousArray|untable(?:Range|ClosedRange)|llectionOfOne)|OpaquePointer|losed(?:Range(?:I(?:ndex|terator))?|Interval)|VaListPointer)|I(?:n(?:t(?:16|8|32|64)?|d(?:ices|ex(?:ing(?:Generator|Iterator))?))|terator(?:Sequence|OverOne)?)|Zip2(?:Sequence|Iterator)|O(?:paquePointer|bjectIdentifier)|D(?:ictionary(?:I(?:ndex|terator)|Literal)?|ouble|efault(?:RandomAccessIndices|BidirectionalIndices|Indices))|U(?:n(?:safe(?:RawPointer|Mutable(?:RawPointer|BufferPointer|Pointer)|BufferPointer(?:Generator|Iterator)?|Pointer)|icodeScalar(?:View)?|foldSequence|managed)|TF(?:16(?:View)?|8(?:View)?|32)|Int(?:16|8|32|64)?)|Join(?:Generator|ed(?:Sequence|Iterator))|PermutationGenerator|E(?:numerate(?:Generator|Sequence|d(?:Sequence|Iterator))|mpty(?:Generator|Collection|Iterator))|Fl(?:oat(?:80)?|atten(?:Generator|BidirectionalCollection(?:Index)?|Sequence|Collection(?:Index)?|Iterator))|L(?:egacyChildren|azy(?:RandomAccessCollection|Map(?:RandomAccessCollection|Generator|BidirectionalCollection|Sequence|Collection|Iterator)|BidirectionalCollection|Sequence|Collection|Filter(?:Generator|BidirectionalCollection|Sequence|Collection|I(?:ndex|terator))))|A(?:ny(?:RandomAccessCollection|Generator|BidirectionalCollection|Sequence|Hashable|Collection|I(?:ndex|terator))|utoreleasingUnsafeMutablePointer|rray(?:Slice)?))\\b',
+          name: 'support.type.swift'
+        },
+        {
+          match:
+            '\\b(?:R(?:everse(?:RandomAccess(?:Collection|Index)|Collection|Index)|awByte)|Map(?:Generator|Sequence|Collection)|S(?:inkOf|etGenerator)|Zip2Generator|DictionaryGenerator|Filter(?:Generator|Sequence|Collection(?:Index)?)|LazyForwardCollection|Any(?:RandomAccessIndex|BidirectionalIndex|Forward(?:Collection|Index)))\\b',
+          name: 'support.type.swift'
+        }
+      ]
+    },
+    'builtin-types-builtin-typealias': {
+      patterns: [
+        {
+          match:
+            '\\b(?:Raw(?:Significand|Exponent|Value)|B(?:ooleanLiteralType|uffer|ase)|S(?:t(?:orage|r(?:i(?:ngLiteralType|de)|eam(?:1|2)))|ubSequence)|NativeBuffer|C(?:hild(?:ren)?|Bool|S(?:hort|ignedChar)|odeUnit|Char(?:16|32)?|Int|Double|Unsigned(?:Short|Char|Int|Long(?:Long)?)|Float|WideChar|Long(?:Long)?)|I(?:n(?:t(?:Max|egerLiteralType)|d(?:ices|ex(?:Distance)?))|terator)|Distance|U(?:n(?:icodeScalar(?:Type|Index|View|LiteralType)|foldFirstSequence)|TF(?:16(?:Index|View)|8Index)|IntMax)|E(?:lement(?:s)?|x(?:tendedGraphemeCluster(?:Type|LiteralType)|ponent))|V(?:oid|alue)|Key|Float(?:32|LiteralType|64)|AnyClass)\\b',
+          name: 'support.type.swift'
+        },
+        {
+          match: '\\b(?:Generator|PlaygroundQuickLook|UWord|Word)\\b',
+          name: 'support.type.swift'
+        }
+      ]
     },
     'code-block': {
       begin: '\\{',
@@ -299,7 +297,7 @@ const grammar = {
           end: '\\*/',
           endCaptures: {0: {name: 'punctuation.definition.comment.end.swift'}},
           name: 'comment.block.documentation.swift',
-          patterns: [{include: '#nested'}]
+          patterns: [{include: '#comments-nested'}]
         },
         {
           begin: '/\\*:',
@@ -309,7 +307,7 @@ const grammar = {
           end: '\\*/',
           endCaptures: {0: {name: 'punctuation.definition.comment.end.swift'}},
           name: 'comment.block.documentation.playground.swift',
-          patterns: [{include: '#nested'}]
+          patterns: [{include: '#comments-nested'}]
         },
         {
           begin: '/\\*',
@@ -319,7 +317,7 @@ const grammar = {
           end: '\\*/',
           endCaptures: {0: {name: 'punctuation.definition.comment.end.swift'}},
           name: 'comment.block.swift',
-          patterns: [{include: '#nested'}]
+          patterns: [{include: '#comments-nested'}]
         },
         {
           match: '\\*/',
@@ -337,7 +335,7 @@ const grammar = {
               beginCaptures: {
                 0: {name: 'punctuation.definition.comment.swift'}
               },
-              end: '^',
+              end: '$',
               name: 'comment.line.triple-slash.documentation.swift'
             },
             {
@@ -345,7 +343,7 @@ const grammar = {
               beginCaptures: {
                 0: {name: 'punctuation.definition.comment.swift'}
               },
-              end: '^',
+              end: '$',
               name: 'comment.line.double-slash.documentation.swift'
             },
             {
@@ -353,15 +351,17 @@ const grammar = {
               beginCaptures: {
                 0: {name: 'punctuation.definition.comment.swift'}
               },
-              end: '^',
+              end: '$',
               name: 'comment.line.double-slash.swift'
             }
           ]
         }
-      ],
-      repository: {
-        nested: {begin: '/\\*', end: '\\*/', patterns: [{include: '#nested'}]}
-      }
+      ]
+    },
+    'comments-nested': {
+      begin: '/\\*',
+      end: '\\*/',
+      patterns: [{include: '#comments-nested'}]
     },
     'compiler-control': {
       patterns: [
@@ -370,7 +370,7 @@ const grammar = {
           beginCaptures: {
             0: {name: 'meta.preprocessor.conditional.swift'},
             1: {name: 'punctuation.definition.preprocessor.swift'},
-            2: {name: 'keyword.control.preprocessor.conditional.swift'},
+            2: {name: 'keyword.control.import.preprocessor.conditional.swift'},
             3: {name: 'constant.language.boolean.swift'}
           },
           contentName: 'comment.block.preprocessor.swift',
@@ -380,7 +380,7 @@ const grammar = {
           begin: '^\\s*(#)(if|elseif)\\s+',
           captures: {
             1: {name: 'punctuation.definition.preprocessor.swift'},
-            2: {name: 'keyword.control.preprocessor.conditional.swift'}
+            2: {name: 'keyword.control.import.preprocessor.conditional.swift'}
           },
           end: '(?=\\s*(?://|/\\*))|$',
           name: 'meta.preprocessor.conditional.swift',
@@ -460,7 +460,7 @@ const grammar = {
         {
           captures: {
             1: {name: 'punctuation.definition.preprocessor.swift'},
-            2: {name: 'keyword.control.preprocessor.conditional.swift'},
+            2: {name: 'keyword.control.import.preprocessor.conditional.swift'},
             3: {
               patterns: [
                 {
@@ -476,7 +476,9 @@ const grammar = {
         {
           captures: {
             1: {name: 'punctuation.definition.preprocessor.swift'},
-            2: {name: 'keyword.control.preprocessor.sourcelocation.swift'},
+            2: {
+              name: 'keyword.control.import.preprocessor.sourcelocation.swift'
+            },
             4: {name: 'punctuation.definition.parameters.begin.swift'},
             5: {
               patterns: [
@@ -520,1115 +522,1208 @@ const grammar = {
         }
       ]
     },
+    conditionals: {
+      patterns: [
+        {
+          begin: '(?<!\\.)\\b(if|guard|switch|for)\\b',
+          beginCaptures: {1: {patterns: [{include: '#keywords'}]}},
+          end: '(?=\\{)',
+          patterns: [{include: '#expressions-without-trailing-closures'}]
+        },
+        {
+          begin: '(?<!\\.)\\b(while)\\b',
+          beginCaptures: {1: {patterns: [{include: '#keywords'}]}},
+          end: '(?=\\{)|$',
+          patterns: [{include: '#expressions-without-trailing-closures'}]
+        }
+      ]
+    },
     declarations: {
       patterns: [
-        {include: '#function'},
-        {include: '#function-initializer'},
-        {include: '#typed-variable-declaration'},
-        {include: '#import'},
-        {include: '#operator'},
-        {include: '#precedencegroup'},
-        {include: '#protocol'},
-        {include: '#type'},
-        {include: '#extension'},
-        {include: '#typealias'}
-      ],
-      repository: {
-        'available-types': {
-          patterns: [
-            {include: '#comments'},
-            {include: '#builtin-types'},
-            {include: '#attributes'},
-            {match: '\\basync\\b', name: 'keyword.control.async.swift'},
-            {
-              match: '\\b(?:throws|rethrows)\\b',
-              name: 'keyword.control.exception.swift'
-            },
-            {match: '\\bsome\\b', name: 'keyword.operator.type.opaque.swift'},
-            {
-              match: '\\bany\\b',
-              name: 'keyword.operator.type.existential.swift'
-            },
-            {match: '\\b(?:inout|isolated)\\b', name: 'storage.modifier.swift'},
-            {match: '\\bSelf\\b', name: 'variable.language.swift'},
-            {
-              captures: {1: {name: 'keyword.operator.type.function.swift'}},
-              match: '(?<![/=\\-+!*%<>&|\\^~.])(->)(?![/=\\-+!*%<>&|\\^~.])'
-            },
-            {
-              captures: {1: {name: 'keyword.operator.type.composition.swift'}},
-              match: '(?<![/=\\-+!*%<>&|\\^~.])(&)(?![/=\\-+!*%<>&|\\^~.])'
-            },
-            {match: '[?!]', name: 'keyword.operator.type.optional.swift'},
-            {
-              match: '\\.\\.\\.',
-              name: 'keyword.operator.function.variadic-parameter.swift'
-            },
-            {
-              match: '\\bprotocol\\b',
-              name: 'keyword.operator.type.composition.swift'
-            },
-            {
-              match: '(?<=\\.)(?:Protocol|Type)\\b',
-              name: 'keyword.operator.type.metatype.swift'
-            },
-            {include: '#tuple-type'},
-            {include: '#collection-type'},
-            {include: '#generic-argument-clause'}
-          ],
-          repository: {
-            'collection-type': {
-              begin: '\\[',
-              beginCaptures: {
-                0: {name: 'punctuation.section.collection-type.begin.swift'}
-              },
-              end: '\\]|(?=[>){}])',
-              endCaptures: {
-                0: {name: 'punctuation.section.collection-type.end.swift'}
-              },
-              patterns: [
-                {include: '#available-types'},
-                {
-                  begin: ':',
-                  beginCaptures: {
-                    0: {name: 'punctuation.separator.key-value.swift'}
-                  },
-                  end: '(?=\\]|[>){}])',
-                  patterns: [
-                    {
-                      match: ':',
-                      name: 'invalid.illegal.extra-colon-in-dictionary-type.swift'
-                    },
-                    {include: '#available-types'}
-                  ]
-                }
-              ]
-            },
-            'tuple-type': {
-              begin: '\\(',
-              beginCaptures: {
-                0: {name: 'punctuation.section.tuple-type.begin.swift'}
-              },
-              end: '\\)|(?=[>\\]{}])',
-              endCaptures: {
-                0: {name: 'punctuation.section.tuple-type.end.swift'}
-              },
-              patterns: [{include: '#available-types'}]
-            }
-          }
+        {include: '#declarations-function'},
+        {include: '#declarations-function-initializer'},
+        {include: '#declarations-function-subscript'},
+        {include: '#declarations-typed-variable-declaration'},
+        {include: '#declarations-import'},
+        {include: '#declarations-operator'},
+        {include: '#declarations-precedencegroup'},
+        {include: '#declarations-protocol'},
+        {include: '#declarations-type'},
+        {include: '#declarations-extension'},
+        {include: '#declarations-typealias'},
+        {include: '#declarations-macro'}
+      ]
+    },
+    'declarations-available-types': {
+      patterns: [
+        {include: '#comments'},
+        {include: '#builtin-types'},
+        {include: '#attributes'},
+        {match: '\\basync\\b', name: 'storage.modifier.async.swift'},
+        {
+          match: '\\b(?:throws|rethrows)\\b',
+          name: 'storage.modifier.exception.swift'
         },
-        extension: {
-          begin:
-            '\\b(extension)\\s+((?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>))',
-          beginCaptures: {
-            1: {name: 'storage.type.$1.swift'},
-            2: {
-              name: 'entity.name.type.swift',
-              patterns: [{include: '#available-types'}]
-            },
-            3: {name: 'punctuation.definition.identifier.swift'},
-            4: {name: 'punctuation.definition.identifier.swift'}
-          },
-          end: '(?<=\\})',
-          name: 'meta.definition.type.$1.swift',
+        {match: '\\bsome\\b', name: 'keyword.other.operator.type.opaque.swift'},
+        {
+          match: '\\bany\\b',
+          name: 'keyword.other.operator.type.existential.swift'
+        },
+        {match: '\\b(?:repeat|each)\\b', name: 'keyword.control.loop.swift'},
+        {
+          match: '\\b(?:inout|isolated|borrowing|consuming)\\b',
+          name: 'storage.modifier.swift'
+        },
+        {match: '\\bSelf\\b', name: 'variable.language.swift'},
+        {
+          captures: {1: {name: 'keyword.operator.type.function.swift'}},
+          match: '(?<![/=\\-+!*%<>&|\\^~.])(->)(?![/=\\-+!*%<>&|\\^~.])'
+        },
+        {
+          captures: {1: {name: 'keyword.operator.type.composition.swift'}},
+          match: '(?<![/=\\-+!*%<>&|\\^~.])(&)(?![/=\\-+!*%<>&|\\^~.])'
+        },
+        {match: '[?!]', name: 'keyword.operator.type.optional.swift'},
+        {
+          match: '\\.\\.\\.',
+          name: 'keyword.operator.function.variadic-parameter.swift'
+        },
+        {match: '\\bprotocol\\b', name: 'keyword.other.type.composition.swift'},
+        {
+          match: '(?<=\\.)(?:Protocol|Type)\\b',
+          name: 'keyword.other.type.metatype.swift'
+        },
+        {include: '#declarations-available-types-tuple-type'},
+        {include: '#declarations-available-types-collection-type'},
+        {include: '#declarations-generic-argument-clause'}
+      ]
+    },
+    'declarations-available-types-collection-type': {
+      begin: '\\[',
+      beginCaptures: {
+        0: {name: 'punctuation.section.collection-type.begin.swift'}
+      },
+      end: '\\]|(?=[>){}])',
+      endCaptures: {0: {name: 'punctuation.section.collection-type.end.swift'}},
+      patterns: [
+        {include: '#declarations-available-types'},
+        {
+          begin: ':',
+          beginCaptures: {0: {name: 'punctuation.separator.key-value.swift'}},
+          end: '(?=\\]|[>){}])',
           patterns: [
-            {include: '#comments'},
-            {include: '#generic-where-clause'},
-            {include: '#inheritance-clause'},
             {
-              begin: '\\{',
-              beginCaptures: {
-                0: {name: 'punctuation.definition.type.begin.swift'}
-              },
-              end: '\\}',
-              endCaptures: {0: {name: 'punctuation.definition.type.end.swift'}},
-              name: 'meta.definition.type.body.swift',
-              patterns: [{include: '$self'}]
-            }
+              match: ':',
+              name: 'invalid.illegal.extra-colon-in-dictionary-type.swift'
+            },
+            {include: '#declarations-available-types'}
           ]
+        }
+      ]
+    },
+    'declarations-available-types-tuple-type': {
+      begin: '\\(',
+      beginCaptures: {0: {name: 'punctuation.section.tuple-type.begin.swift'}},
+      end: '\\)|(?=[>\\]{}])',
+      endCaptures: {0: {name: 'punctuation.section.tuple-type.end.swift'}},
+      patterns: [{include: '#declarations-available-types'}]
+    },
+    'declarations-extension': {
+      begin:
+        '\\b(extension)\\s+((?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>))',
+      beginCaptures: {
+        1: {name: 'storage.type.$1.swift'},
+        2: {
+          name: 'entity.name.type.swift',
+          patterns: [{include: '#declarations-available-types'}]
         },
-        function: {
-          begin:
-            '(?x)\n\t\t\t\t\t\t\\b\n\t\t\t\t\t\t(?:(nonisolated)\\s+)?\n\t\t\t\t\t\t(func)\n\t\t\t\t\t\t\\s+\n\t\t\t\t\t\t(\n\t\t\t\t\t\t\t(?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>)\n\t\t\t\t\t\t  | (?:\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\t(?<oph>\t\t\t\t\t\t\t\t# operator-head\n\t\t\t\t\t\t\t\t\t\t[/=\\-+!*%<>&|^~?]\n\t\t\t\t\t\t\t\t\t  | [\\x{00A1}-\\x{00A7}]\n\t\t\t\t\t\t\t\t\t  | [\\x{00A9}\\x{00AB}]\n\t\t\t\t\t\t\t\t\t  | [\\x{00AC}\\x{00AE}]\n\t\t\t\t\t\t\t\t\t  | [\\x{00B0}-\\x{00B1}\\x{00B6}\\x{00BB}\\x{00BF}\\x{00D7}\\x{00F7}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2016}-\\x{2017}\\x{2020}-\\x{2027}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2030}-\\x{203E}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2041}-\\x{2053}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2055}-\\x{205E}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2190}-\\x{23FF}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2500}-\\x{2775}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2794}-\\x{2BFF}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2E00}-\\x{2E7F}]\n\t\t\t\t\t\t\t\t\t  | [\\x{3001}-\\x{3003}]\n\t\t\t\t\t\t\t\t\t  | [\\x{3008}-\\x{3030}]\n\t\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\t\t\\g<oph>\n\t\t\t\t\t\t\t\t\t  | (?<opc>\t\t\t\t\t\t\t\t# operator-character\n\t\t\t\t\t\t\t\t\t\t\t[\\x{0300}-\\x{036F}]\n\t\t\t\t\t\t\t\t\t\t  | [\\x{1DC0}-\\x{1DFF}]\n\t\t\t\t\t\t\t\t\t\t  | [\\x{20D0}-\\x{20FF}]\n\t\t\t\t\t\t\t\t\t\t  | [\\x{FE00}-\\x{FE0F}]\n\t\t\t\t\t\t\t\t\t\t  | [\\x{FE20}-\\x{FE2F}]\n\t\t\t\t\t\t\t\t\t\t  | [\\x{E0100}-\\x{E01EF}]\n\t\t\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t\t)*\n\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t  | ( \\. ( \\g<oph> | \\g<opc> | \\. )+ )\t\t\t# Dot operators\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t)\n\t\t\t\t\t\t\\s*\n\t\t\t\t\t\t(?=\\(|<)\n\t\t\t\t\t',
+        3: {name: 'punctuation.definition.identifier.swift'},
+        4: {name: 'punctuation.definition.identifier.swift'}
+      },
+      end: '(?<=\\})',
+      name: 'meta.definition.type.$1.swift',
+      patterns: [
+        {include: '#comments'},
+        {include: '#declarations-generic-where-clause'},
+        {include: '#declarations-inheritance-clause'},
+        {
+          begin: '\\{',
+          beginCaptures: {0: {name: 'punctuation.definition.type.begin.swift'}},
+          end: '\\}',
+          endCaptures: {0: {name: 'punctuation.definition.type.end.swift'}},
+          name: 'meta.definition.type.body.swift',
+          patterns: [{include: '$self'}]
+        }
+      ]
+    },
+    'declarations-function': {
+      begin:
+        '(?x)\n\\b\n(func)\n\\s+\n(\n  (?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>)\n  | (?:\n    (\n      (?<oph>                # operator-head\n        [/=\\-+!*%<>&|^~?]\n        | [\\x{00A1}-\\x{00A7}]\n        | [\\x{00A9}\\x{00AB}]\n        | [\\x{00AC}\\x{00AE}]\n        | [\\x{00B0}-\\x{00B1}\\x{00B6}\\x{00BB}\\x{00BF}\\x{00D7}\\x{00F7}]\n        | [\\x{2016}-\\x{2017}\\x{2020}-\\x{2027}]\n        | [\\x{2030}-\\x{203E}]\n        | [\\x{2041}-\\x{2053}]\n        | [\\x{2055}-\\x{205E}]\n        | [\\x{2190}-\\x{23FF}]\n        | [\\x{2500}-\\x{2775}]\n        | [\\x{2794}-\\x{2BFF}]\n        | [\\x{2E00}-\\x{2E7F}]\n        | [\\x{3001}-\\x{3003}]\n        | [\\x{3008}-\\x{3030}]\n      )\n      (\n        \\g<oph>\n        | (?<opc>                # operator-character\n          [\\x{0300}-\\x{036F}]\n          | [\\x{1DC0}-\\x{1DFF}]\n          | [\\x{20D0}-\\x{20FF}]\n          | [\\x{FE00}-\\x{FE0F}]\n          | [\\x{FE20}-\\x{FE2F}]\n          | [\\x{E0100}-\\x{E01EF}]\n        )\n      )*\n    )\n    | ( \\. ( \\g<oph> | \\g<opc> | \\. )+ )      # Dot operators\n  )\n)\n\\s*\n(?=\\(|<)',
+      beginCaptures: {
+        1: {name: 'storage.type.function.swift'},
+        2: {name: 'entity.name.function.swift'},
+        3: {name: 'punctuation.definition.identifier.swift'},
+        4: {name: 'punctuation.definition.identifier.swift'}
+      },
+      end: '(?<=\\})|$(?# functions in protocol declarations or generated interfaces have no body)',
+      name: 'meta.definition.function.swift',
+      patterns: [
+        {include: '#comments'},
+        {include: '#declarations-generic-parameter-clause'},
+        {include: '#declarations-parameter-clause'},
+        {include: '#declarations-function-result'},
+        {include: '#async-throws'},
+        {include: '#declarations-generic-where-clause'},
+        {
+          begin: '(\\{)',
           beginCaptures: {
-            1: {name: 'storage.modifier.swift'},
-            2: {name: 'storage.type.function.swift'},
-            3: {name: 'entity.name.function.swift'},
-            4: {name: 'punctuation.definition.identifier.swift'},
-            5: {name: 'punctuation.definition.identifier.swift'}
+            1: {name: 'punctuation.section.function.begin.swift'}
           },
-          end: '(?<=\\})|$(?# functions in protocol declarations or generated interfaces have no body)',
-          name: 'meta.definition.function.swift',
-          patterns: [
-            {include: '#comments'},
-            {include: '#generic-parameter-clause'},
-            {include: '#parameter-clause'},
-            {include: '#function-result'},
-            {include: '#async-throws'},
-            {include: '#generic-where-clause'},
-            {
-              begin: '(\\{)',
-              beginCaptures: {
-                1: {name: 'punctuation.section.function.begin.swift'}
-              },
-              end: '(\\})',
-              endCaptures: {
-                1: {name: 'punctuation.section.function.end.swift'}
-              },
-              name: 'meta.definition.function.body.swift',
-              patterns: [{include: '$self'}]
-            }
-          ]
-        },
-        'function-initializer': {
-          begin:
-            '(?<!\\.)\\b(init[?!]*(?# only one is valid, but we want the in⇥ snippet to produce something that looks good))\\s*(?=\\(|<)',
-          beginCaptures: {
-            1: {
-              name: 'storage.type.function.swift',
-              patterns: [
-                {
-                  match: '(?<=[?!])[?!]+',
-                  name: 'invalid.illegal.character-not-allowed-here.swift'
-                }
-              ]
-            }
-          },
-          end: '(?<=\\})|$',
-          name: 'meta.definition.function.initializer.swift',
-          patterns: [
-            {include: '#comments'},
-            {include: '#generic-parameter-clause'},
-            {include: '#parameter-clause'},
-            {include: '#async-throws'},
-            {include: '#generic-where-clause'},
-            {
-              begin: '(\\{)',
-              beginCaptures: {
-                1: {name: 'punctuation.section.function.begin.swift'}
-              },
-              end: '(\\})',
-              endCaptures: {
-                1: {name: 'punctuation.section.function.end.swift'}
-              },
-              name: 'meta.definition.function.body.swift',
-              patterns: [{include: '$self'}]
-            }
-          ]
-        },
-        'function-result': {
-          begin: '(?<![/=\\-+!*%<>&|\\^~.])(->)(?![/=\\-+!*%<>&|\\^~.])\\s*',
-          beginCaptures: {1: {name: 'keyword.operator.function-result.swift'}},
-          end: '(?!\\G)(?=\\{|\\bwhere\\b|;)|$',
-          name: 'meta.function-result.swift',
-          patterns: [{include: '#available-types'}]
-        },
-        'generic-argument-clause': {
-          begin: '<',
-          beginCaptures: {
-            0: {
-              name: 'punctuation.separator.generic-argument-clause.begin.swift'
-            }
-          },
-          end: '>|(?=[)\\]{}])',
-          endCaptures: {
-            0: {name: 'punctuation.separator.generic-argument-clause.end.swift'}
-          },
-          name: 'meta.generic-argument-clause.swift',
-          patterns: [{include: '#available-types'}]
-        },
-        'generic-parameter-clause': {
-          begin: '<',
-          beginCaptures: {
-            0: {
-              name: 'punctuation.separator.generic-parameter-clause.begin.swift'
-            }
-          },
-          end: ">|(?=[^\\w\\d:<>\\s,=&`])(?# characters besides these are never valid in a generic param list -- even if it's not really a valid clause, we should stop trying to parse it if we see one of them.)",
-          endCaptures: {
-            0: {
-              name: 'punctuation.separator.generic-parameter-clause.end.swift'
-            }
-          },
-          name: 'meta.generic-parameter-clause.swift',
-          patterns: [
-            {include: '#comments'},
-            {include: '#generic-where-clause'},
-            {
-              captures: {
-                1: {name: 'variable.language.generic-parameter.swift'}
-              },
-              match: '\\b((?!\\d)\\w[\\w\\d]*)\\b'
-            },
-            {
-              match: ',',
-              name: 'punctuation.separator.generic-parameters.swift'
-            },
-            {
-              begin: '(:)\\s*',
-              beginCaptures: {
-                1: {
-                  name: 'punctuation.separator.generic-parameter-constraint.swift'
-                }
-              },
-              end: '(?=[,>]|(?!\\G)\\bwhere\\b)',
-              name: 'meta.generic-parameter-constraint.swift',
-              patterns: [
-                {
-                  begin: '\\G',
-                  end: '(?=[,>]|(?!\\G)\\bwhere\\b)',
-                  name: 'entity.other.inherited-class.swift',
-                  patterns: [{include: '#type-identifier'}]
-                }
-              ]
-            }
-          ]
-        },
-        'generic-where-clause': {
-          begin: '\\b(where)\\b\\s*',
-          beginCaptures: {
-            1: {name: 'keyword.other.generic-constraint-introducer.swift'}
-          },
-          end: '(?!\\G)$|(?=[>{};\\n]|//|/\\*)',
-          name: 'meta.generic-where-clause.swift',
-          patterns: [{include: '#comments'}, {include: '#requirement-list'}],
-          repository: {
-            'requirement-list': {
-              begin: '\\G|,\\s*',
-              end: '(?=[,>{};\\n]|//|/\\*)',
-              patterns: [
-                {include: '#comments'},
-                {include: '#constraint'},
-                {include: '#available-types'},
-                {
-                  begin:
-                    '(?<![/=\\-+!*%<>&|\\^~.])(==)(?![/=\\-+!*%<>&|\\^~.])',
-                  beginCaptures: {
-                    1: {
-                      name: 'keyword.operator.generic-constraint.same-type.swift'
-                    }
-                  },
-                  end: '(?=\\s*[,>{};\\n]|//|/\\*)',
-                  name: 'meta.generic-where-clause.same-type-requirement.swift',
-                  patterns: [{include: '#available-types'}]
-                },
-                {
-                  begin: '(?<![/=\\-+!*%<>&|\\^~.])(:)(?![/=\\-+!*%<>&|\\^~.])',
-                  beginCaptures: {
-                    1: {
-                      name: 'keyword.operator.generic-constraint.conforms-to.swift'
-                    }
-                  },
-                  end: '(?=\\s*[,>{};\\n]|//|/\\*)',
-                  name: 'meta.generic-where-clause.conformance-requirement.swift',
-                  patterns: [
-                    {
-                      begin: '\\G\\s*',
-                      contentName: 'entity.other.inherited-class.swift',
-                      end: '(?=\\s*[,>{};\\n]|//|/\\*)',
-                      patterns: [{include: '#available-types'}]
-                    }
-                  ]
-                }
-              ]
-            }
-          }
-        },
-        import: {
-          begin: '(?<!\\.)\\b(import)\\s+',
-          beginCaptures: {1: {name: 'keyword.control.import.swift'}},
-          end: '(;)|$\\n?|(?=//|/\\*)',
-          endCaptures: {1: {name: 'punctuation.terminator.statement.swift'}},
-          name: 'meta.import.swift',
+          end: '(\\})',
+          endCaptures: {1: {name: 'punctuation.section.function.end.swift'}},
+          name: 'meta.definition.function.body.swift',
+          patterns: [{include: '$self'}]
+        }
+      ]
+    },
+    'declarations-function-initializer': {
+      begin:
+        '(?<!\\.)\\b(init[?!]*(?# only one is valid, but we want the in⇥ snippet to produce something that looks good))\\s*(?=\\(|<)',
+      beginCaptures: {
+        1: {
+          name: 'storage.type.function.swift',
           patterns: [
             {
-              begin:
-                '\\G(?!;|$|//|/\\*)(?:(typealias|struct|class|actor|enum|protocol|var|func)\\s+)?',
-              beginCaptures: {1: {name: 'storage.modifier.swift'}},
-              end: '(?=;|$|//|/\\*)',
-              patterns: [
-                {
-                  captures: {
-                    1: {name: 'punctuation.definition.identifier.swift'},
-                    2: {name: 'punctuation.definition.identifier.swift'}
-                  },
-                  match:
-                    '(?x)\n\t\t\t\t\t\t\t\t\t\t(?<=\\G|\\.)\n\t\t\t\t\t\t\t\t\t\t(?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>)\n\t\t\t\t\t\t\t\t\t',
-                  name: 'entity.name.type.swift'
-                },
-                {
-                  match:
-                    '(?x)\n\t\t\t\t\t\t\t\t\t\t(?<=\\G|\\.)\n\t\t\t\t\t\t\t\t\t\t\\$[0-9]+\n\t\t\t\t\t\t\t\t\t',
-                  name: 'entity.name.type.swift'
-                },
-                {
-                  captures: {
-                    1: {
-                      patterns: [
-                        {
-                          match: '\\.',
-                          name: 'invalid.illegal.dot-not-allowed-here.swift'
-                        }
-                      ]
-                    }
-                  },
-                  match:
-                    '(?x)\n\t\t\t\t\t\t\t\t\t\t(?<=\\G|\\.)\n\t\t\t\t\t\t\t\t\t\t(?:\n\t\t\t\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\t\t\t\t(?<oph>\t\t\t\t\t\t\t\t# operator-head\n\t\t\t\t\t\t\t\t\t\t\t\t\t[/=\\-+!*%<>&|^~?]\n\t\t\t\t\t\t\t\t\t\t\t\t  | [\\x{00A1}-\\x{00A7}]\n\t\t\t\t\t\t\t\t\t\t\t\t  | [\\x{00A9}\\x{00AB}]\n\t\t\t\t\t\t\t\t\t\t\t\t  | [\\x{00AC}\\x{00AE}]\n\t\t\t\t\t\t\t\t\t\t\t\t  | [\\x{00B0}-\\x{00B1}\\x{00B6}\\x{00BB}\\x{00BF}\\x{00D7}\\x{00F7}]\n\t\t\t\t\t\t\t\t\t\t\t\t  | [\\x{2016}-\\x{2017}\\x{2020}-\\x{2027}]\n\t\t\t\t\t\t\t\t\t\t\t\t  | [\\x{2030}-\\x{203E}]\n\t\t\t\t\t\t\t\t\t\t\t\t  | [\\x{2041}-\\x{2053}]\n\t\t\t\t\t\t\t\t\t\t\t\t  | [\\x{2055}-\\x{205E}]\n\t\t\t\t\t\t\t\t\t\t\t\t  | [\\x{2190}-\\x{23FF}]\n\t\t\t\t\t\t\t\t\t\t\t\t  | [\\x{2500}-\\x{2775}]\n\t\t\t\t\t\t\t\t\t\t\t\t  | [\\x{2794}-\\x{2BFF}]\n\t\t\t\t\t\t\t\t\t\t\t\t  | [\\x{2E00}-\\x{2E7F}]\n\t\t\t\t\t\t\t\t\t\t\t\t  | [\\x{3001}-\\x{3003}]\n\t\t\t\t\t\t\t\t\t\t\t\t  | [\\x{3008}-\\x{3030}]\n\t\t\t\t\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\t\t\t\t\t\\g<oph>\n\t\t\t\t\t\t\t\t\t\t\t\t  | (?<opc>\t\t\t\t\t\t\t\t# operator-character\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t[\\x{0300}-\\x{036F}]\n\t\t\t\t\t\t\t\t\t\t\t\t\t  | [\\x{1DC0}-\\x{1DFF}]\n\t\t\t\t\t\t\t\t\t\t\t\t\t  | [\\x{20D0}-\\x{20FF}]\n\t\t\t\t\t\t\t\t\t\t\t\t\t  | [\\x{FE00}-\\x{FE0F}]\n\t\t\t\t\t\t\t\t\t\t\t\t\t  | [\\x{FE20}-\\x{FE2F}]\n\t\t\t\t\t\t\t\t\t\t\t\t\t  | [\\x{E0100}-\\x{E01EF}]\n\t\t\t\t\t\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t\t\t\t\t)*\n\t\t\t\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t\t\t  | ( \\. ( \\g<oph> | \\g<opc> | \\. )+ )\t\t\t# Dot operators\n\t\t\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t\t\t(?=\\.|;|$|//|/\\*|\\s)\n\t\t\t\t\t\t\t\t\t',
-                  name: 'entity.name.type.swift'
-                },
-                {match: '\\.', name: 'punctuation.separator.import.swift'},
-                {
-                  begin: '(?!\\s*(;|$|//|/\\*))',
-                  end: '(?=\\s*(;|$|//|/\\*))',
-                  name: 'invalid.illegal.character-not-allowed-here.swift'
-                }
-              ]
-            }
-          ]
-        },
-        'inheritance-clause': {
-          begin: '(:)(?=\\s*\\{)|(:)\\s*',
-          beginCaptures: {
-            1: {name: 'invalid.illegal.empty-inheritance-clause.swift'},
-            2: {name: 'punctuation.separator.inheritance-clause.swift'}
-          },
-          end: '(?!\\G)$|(?=[={}]|(?!\\G)\\bwhere\\b)',
-          name: 'meta.inheritance-clause.swift',
-          patterns: [
-            {
-              begin: '\\bclass\\b',
-              beginCaptures: {0: {name: 'storage.type.class.swift'}},
-              end: '(?=[={}]|(?!\\G)\\bwhere\\b)',
-              patterns: [{include: '#comments'}, {include: '#more-types'}]
-            },
-            {
-              begin: '\\G',
-              end: '(?!\\G)$|(?=[={}]|(?!\\G)\\bwhere\\b)',
-              patterns: [
-                {include: '#comments'},
-                {include: '#inherited-type'},
-                {include: '#more-types'}
-              ]
-            }
-          ],
-          repository: {
-            'inherited-type': {
-              begin: '(?=[`\\p{L}_])',
-              end: '(?!\\G)',
-              name: 'entity.other.inherited-class.swift',
-              patterns: [{include: '#type-identifier'}]
-            },
-            'more-types': {
-              begin: ',\\s*',
-              end: '(?!\\G)(?!//|/\\*)|(?=[,={}]|(?!\\G)\\bwhere\\b)',
-              name: 'meta.inheritance-list.more-types',
-              patterns: [
-                {include: '#comments'},
-                {include: '#inherited-type'},
-                {include: '#more-types'}
-              ]
-            }
-          }
-        },
-        operator: {
-          begin:
-            '(?x)\n\t\t\t\t\t\t(?:\n\t\t\t\t\t\t\t\\b(prefix|infix|postfix)\n\t\t\t\t\t\t\t\\s+\n\t\t\t\t\t\t)?\n\t\t\t\t\t\t\\b\n\t\t\t\t\t\t(operator)\n\t\t\t\t\t\t\\s+\n\t\t\t\t\t\t(\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t(?<oph>\t\t\t\t\t\t\t\t\t# operator-head\n\t\t\t\t\t\t\t\t\t[/=\\-+!*%<>&|^~?]\n\t\t\t\t\t\t\t\t  | [\\x{00A1}-\\x{00A7}]\n\t\t\t\t\t\t\t\t  | [\\x{00A9}\\x{00AB}]\n\t\t\t\t\t\t\t\t  | [\\x{00AC}\\x{00AE}]\n\t\t\t\t\t\t\t\t  | [\\x{00B0}-\\x{00B1}\\x{00B6}\\x{00BB}\\x{00BF}\\x{00D7}\\x{00F7}]\n\t\t\t\t\t\t\t\t  | [\\x{2016}-\\x{2017}\\x{2020}-\\x{2027}]\n\t\t\t\t\t\t\t\t  | [\\x{2030}-\\x{203E}]\n\t\t\t\t\t\t\t\t  | [\\x{2041}-\\x{2053}]\n\t\t\t\t\t\t\t\t  | [\\x{2055}-\\x{205E}]\n\t\t\t\t\t\t\t\t  | [\\x{2190}-\\x{23FF}]\n\t\t\t\t\t\t\t\t  | [\\x{2500}-\\x{2775}]\n\t\t\t\t\t\t\t\t  | [\\x{2794}-\\x{2BFF}]\n\t\t\t\t\t\t\t\t  | [\\x{2E00}-\\x{2E7F}]\n\t\t\t\t\t\t\t\t  | [\\x{3001}-\\x{3003}]\n\t\t\t\t\t\t\t\t  | [\\x{3008}-\\x{3030}]\n\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\t\\g<oph>\n\t\t\t\t\t\t\t\t  | \\.\t\t\t\t\t\t\t\t\t# Invalid dot\n\t\t\t\t\t\t\t\t  | (?<opc>\t\t\t\t\t\t\t\t# operator-character\n\t\t\t\t\t\t\t\t\t\t[\\x{0300}-\\x{036F}]\n\t\t\t\t\t\t\t\t\t  | [\\x{1DC0}-\\x{1DFF}]\n\t\t\t\t\t\t\t\t\t  | [\\x{20D0}-\\x{20FF}]\n\t\t\t\t\t\t\t\t\t  | [\\x{FE00}-\\x{FE0F}]\n\t\t\t\t\t\t\t\t\t  | [\\x{FE20}-\\x{FE2F}]\n\t\t\t\t\t\t\t\t\t  | [\\x{E0100}-\\x{E01EF}]\n\t\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t)*+\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t  | ( \\. ( \\g<oph> | \\g<opc> | \\. )++ )\t\t\t# Dot operators\n\t\t\t\t\t\t)\n\t\t\t\t\t\t\\s*\n\t\t\t\t\t',
-          beginCaptures: {
-            1: {name: 'storage.modifier.swift'},
-            2: {name: 'storage.type.function.operator.swift'},
-            3: {name: 'entity.name.function.operator.swift'},
-            4: {
-              patterns: [
-                {
-                  match: '\\.',
-                  name: 'invalid.illegal.dot-not-allowed-here.swift'
-                }
-              ]
-            }
-          },
-          end: '(;)|$\\n?|(?=//|/\\*)',
-          endCaptures: {1: {name: 'punctuation.terminator.statement.swift'}},
-          name: 'meta.definition.operator.swift',
-          patterns: [
-            {include: '#swift2'},
-            {include: '#swift3'},
-            {
-              match: '((?!$|;|//|/\\*)\\S)+',
+              match: '(?<=[?!])[?!]+',
               name: 'invalid.illegal.character-not-allowed-here.swift'
-            }
-          ],
-          repository: {
-            swift2: {
-              begin: '\\G(\\{)',
-              beginCaptures: {
-                1: {name: 'punctuation.definition.operator.begin.swift'}
-              },
-              end: '(\\})',
-              endCaptures: {
-                1: {name: 'punctuation.definition.operator.end.swift'}
-              },
-              patterns: [
-                {include: '#comments'},
-                {
-                  captures: {
-                    1: {name: 'storage.modifier.swift'},
-                    2: {name: 'keyword.other.operator.associativity.swift'}
-                  },
-                  match: '\\b(associativity)\\s+(left|right)\\b'
-                },
-                {
-                  captures: {
-                    1: {name: 'storage.modifier.swift'},
-                    2: {name: 'constant.numeric.integer.swift'}
-                  },
-                  match: '\\b(precedence)\\s+([0-9]+)\\b'
-                },
-                {
-                  captures: {1: {name: 'storage.modifier.swift'}},
-                  match: '\\b(assignment)\\b'
-                }
-              ]
-            },
-            swift3: {
-              captures: {
-                2: {
-                  name: 'entity.other.inherited-class.swift',
-                  patterns: [{include: '#types-precedencegroup'}]
-                },
-                3: {name: 'punctuation.definition.identifier.swift'},
-                4: {name: 'punctuation.definition.identifier.swift'}
-              },
-              match:
-                '\\G(:)\\s*((?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>))'
-            }
-          }
-        },
-        'parameter-clause': {
-          begin: '(\\()',
-          beginCaptures: {
-            1: {name: 'punctuation.definition.parameters.begin.swift'}
-          },
-          end: '(\\))(?:\\s*(async)\\b)?',
-          endCaptures: {
-            1: {name: 'punctuation.definition.parameters.end.swift'},
-            2: {name: 'keyword.control.async.swift'}
-          },
-          name: 'meta.parameter-clause.swift',
-          patterns: [{include: '#parameter-list'}]
-        },
-        'parameter-list': {
-          patterns: [
-            {
-              captures: {
-                1: {name: 'entity.name.function.swift'},
-                2: {name: 'punctuation.definition.identifier.swift'},
-                3: {name: 'punctuation.definition.identifier.swift'},
-                4: {name: 'variable.parameter.function.swift'},
-                5: {name: 'punctuation.definition.identifier.swift'},
-                6: {name: 'punctuation.definition.identifier.swift'}
-              },
-              match:
-                '((?<q1>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q1>))\\s+((?<q2>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q2>))(?=\\s*:)'
-            },
-            {
-              captures: {
-                1: {name: 'variable.parameter.function.swift'},
-                2: {name: 'entity.name.function.swift'},
-                3: {name: 'punctuation.definition.identifier.swift'},
-                4: {name: 'punctuation.definition.identifier.swift'}
-              },
-              match:
-                '(((?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>)))(?=\\s*:)'
-            },
-            {
-              begin: ':\\s*(?!\\s)',
-              end: '(?=[,)])',
-              patterns: [
-                {include: '#available-types'},
-                {
-                  match: ':',
-                  name: 'invalid.illegal.extra-colon-in-parameter-list.swift'
-                },
-                {
-                  begin: '=',
-                  beginCaptures: {
-                    0: {name: 'keyword.operator.assignment.swift'}
-                  },
-                  end: '(?=[,)])',
-                  patterns: [{include: '#expressions'}]
-                }
-              ]
-            }
-          ]
-        },
-        precedencegroup: {
-          begin:
-            '\\b(precedencegroup)\\s+((?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>))\\s*(?=\\{)',
-          beginCaptures: {
-            1: {name: 'storage.type.precedencegroup.swift'},
-            2: {name: 'entity.name.type.precedencegroup.swift'},
-            3: {name: 'punctuation.definition.identifier.swift'},
-            4: {name: 'punctuation.definition.identifier.swift'}
-          },
-          end: '(?!\\G)',
-          name: 'meta.definition.precedencegroup.swift',
-          patterns: [
-            {
-              begin: '\\{',
-              beginCaptures: {
-                0: {name: 'punctuation.definition.precedencegroup.begin.swift'}
-              },
-              end: '\\}',
-              endCaptures: {
-                0: {name: 'punctuation.definition.precedencegroup.end.swift'}
-              },
-              patterns: [
-                {include: '#comments'},
-                {
-                  captures: {
-                    1: {name: 'storage.modifier.swift'},
-                    2: {
-                      name: 'entity.other.inherited-class.swift',
-                      patterns: [{include: '#types-precedencegroup'}]
-                    },
-                    3: {name: 'punctuation.definition.identifier.swift'},
-                    4: {name: 'punctuation.definition.identifier.swift'}
-                  },
-                  match:
-                    '\\b(higherThan|lowerThan)\\s*:\\s*((?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>))'
-                },
-                {
-                  captures: {
-                    1: {name: 'storage.modifier.swift'},
-                    2: {name: 'keyword.other.operator.associativity.swift'}
-                  },
-                  match:
-                    '\\b(associativity)\\b(?:\\s*:\\s*(right|left|none)\\b)?'
-                },
-                {
-                  captures: {
-                    1: {name: 'storage.modifier.swift'},
-                    2: {name: 'constant.language.boolean.swift'}
-                  },
-                  match: '\\b(assignment)\\b(?:\\s*:\\s*(true|false)\\b)?'
-                }
-              ]
-            }
-          ]
-        },
-        protocol: {
-          begin:
-            '\\b(protocol)\\s+((?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>))',
-          beginCaptures: {
-            1: {name: 'storage.type.$1.swift'},
-            2: {name: 'entity.name.type.$1.swift'},
-            3: {name: 'punctuation.definition.identifier.swift'},
-            4: {name: 'punctuation.definition.identifier.swift'}
-          },
-          end: '(?<=\\})',
-          name: 'meta.definition.type.protocol.swift',
-          patterns: [
-            {include: '#comments'},
-            {include: '#inheritance-clause'},
-            {include: '#generic-where-clause'},
-            {
-              begin: '\\{',
-              beginCaptures: {
-                0: {name: 'punctuation.definition.type.begin.swift'}
-              },
-              end: '\\}',
-              endCaptures: {0: {name: 'punctuation.definition.type.end.swift'}},
-              name: 'meta.definition.type.body.swift',
-              patterns: [
-                {include: '#protocol-method'},
-                {include: '#protocol-initializer'},
-                {include: '#associated-type'},
-                {include: '$self'}
-              ]
-            }
-          ],
-          repository: {
-            'associated-type': {
-              begin:
-                '\\b(associatedtype)\\s+((?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>))\\s*',
-              beginCaptures: {
-                1: {name: 'keyword.other.declaration-specifier.swift'},
-                2: {name: 'variable.language.associatedtype.swift'},
-                3: {name: 'punctuation.definition.identifier.swift'},
-                4: {name: 'punctuation.definition.identifier.swift'}
-              },
-              end: '(?!\\G)$|(?=[;}]|$)',
-              name: 'meta.definition.associatedtype.swift',
-              patterns: [
-                {include: '#inheritance-clause'},
-                {include: '#generic-where-clause'},
-                {include: '#typealias-assignment'}
-              ]
-            },
-            'protocol-initializer': {
-              begin:
-                '(?<!\\.)\\b(init[?!]*(?# only one is valid, but we want the in⇥ snippet to produce something that looks good))\\s*(?=\\(|<)',
-              beginCaptures: {
-                1: {
-                  name: 'storage.type.function.swift',
-                  patterns: [
-                    {
-                      match: '(?<=[?!])[?!]+',
-                      name: 'invalid.illegal.character-not-allowed-here.swift'
-                    }
-                  ]
-                }
-              },
-              end: '$|(?=;|//|/\\*|\\})',
-              name: 'meta.definition.function.initializer.swift',
-              patterns: [
-                {include: '#comments'},
-                {include: '#generic-parameter-clause'},
-                {include: '#parameter-clause'},
-                {include: '#async-throws'},
-                {include: '#generic-where-clause'},
-                {
-                  begin: '\\{',
-                  beginCaptures: {
-                    0: {name: 'punctuation.section.function.begin.swift'}
-                  },
-                  end: '\\}',
-                  endCaptures: {
-                    0: {name: 'punctuation.section.function.end.swift'}
-                  },
-                  name: 'invalid.illegal.function-body-not-allowed-in-protocol.swift',
-                  patterns: [{include: '$self'}]
-                }
-              ]
-            },
-            'protocol-method': {
-              begin:
-                '(?x)\n\t\t\t\t\t\t\t\t\\b\n\t\t\t\t\t\t\t\t(func)\n\t\t\t\t\t\t\t\t\\s+\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\t(?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>)\n\t\t  \t\t\t\t\t\t  | (?:\n\t\t  \t\t\t\t\t\t\t\t(\n\t\t  \t\t\t\t\t\t\t\t\t(?<oph>\t\t\t\t\t\t\t\t# operator-head\n\t\t  \t\t\t\t\t\t\t\t\t\t[/=\\-+!*%<>&|^~?]\n\t\t  \t\t\t\t\t\t\t\t\t  | [\\x{00A1}-\\x{00A7}]\n\t\t  \t\t\t\t\t\t\t\t\t  | [\\x{00A9}\\x{00AB}]\n\t\t  \t\t\t\t\t\t\t\t\t  | [\\x{00AC}\\x{00AE}]\n\t\t  \t\t\t\t\t\t\t\t\t  | [\\x{00B0}-\\x{00B1}\\x{00B6}\\x{00BB}\\x{00BF}\\x{00D7}\\x{00F7}]\n\t\t  \t\t\t\t\t\t\t\t\t  | [\\x{2016}-\\x{2017}\\x{2020}-\\x{2027}]\n\t\t  \t\t\t\t\t\t\t\t\t  | [\\x{2030}-\\x{203E}]\n\t\t  \t\t\t\t\t\t\t\t\t  | [\\x{2041}-\\x{2053}]\n\t\t  \t\t\t\t\t\t\t\t\t  | [\\x{2055}-\\x{205E}]\n\t\t  \t\t\t\t\t\t\t\t\t  | [\\x{2190}-\\x{23FF}]\n\t\t  \t\t\t\t\t\t\t\t\t  | [\\x{2500}-\\x{2775}]\n\t\t  \t\t\t\t\t\t\t\t\t  | [\\x{2794}-\\x{2BFF}]\n\t\t  \t\t\t\t\t\t\t\t\t  | [\\x{2E00}-\\x{2E7F}]\n\t\t  \t\t\t\t\t\t\t\t\t  | [\\x{3001}-\\x{3003}]\n\t\t  \t\t\t\t\t\t\t\t\t  | [\\x{3008}-\\x{3030}]\n\t\t  \t\t\t\t\t\t\t\t\t)\n\t\t  \t\t\t\t\t\t\t\t\t(\n\t\t  \t\t\t\t\t\t\t\t\t\t\\g<oph>\n\t\t  \t\t\t\t\t\t\t\t\t  | (?<opc>\t\t\t\t\t\t\t\t# operator-character\n\t\t  \t\t\t\t\t\t\t\t\t\t\t[\\x{0300}-\\x{036F}]\n\t\t  \t\t\t\t\t\t\t\t\t\t  | [\\x{1DC0}-\\x{1DFF}]\n\t\t  \t\t\t\t\t\t\t\t\t\t  | [\\x{20D0}-\\x{20FF}]\n\t\t  \t\t\t\t\t\t\t\t\t\t  | [\\x{FE00}-\\x{FE0F}]\n\t\t  \t\t\t\t\t\t\t\t\t\t  | [\\x{FE20}-\\x{FE2F}]\n\t\t  \t\t\t\t\t\t\t\t\t\t  | [\\x{E0100}-\\x{E01EF}]\n\t\t  \t\t\t\t\t\t\t\t\t\t)\n\t\t  \t\t\t\t\t\t\t\t\t)*\n\t\t  \t\t\t\t\t\t\t\t)\n\t\t  \t\t\t\t\t\t\t  | ( \\. ( \\g<oph> | \\g<opc> | \\. )+ )\t\t\t# Dot operators\n\t\t  \t\t\t\t\t\t\t)\n\t\t  \t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t\\s*\n\t\t\t\t\t\t\t\t(?=\\(|<)\n\t\t\t\t\t\t\t',
-              beginCaptures: {
-                1: {name: 'storage.type.function.swift'},
-                2: {name: 'entity.name.function.swift'},
-                3: {name: 'punctuation.definition.identifier.swift'},
-                4: {name: 'punctuation.definition.identifier.swift'}
-              },
-              end: '$|(?=;|//|/\\*|\\})',
-              name: 'meta.definition.function.swift',
-              patterns: [
-                {include: '#comments'},
-                {include: '#generic-parameter-clause'},
-                {include: '#parameter-clause'},
-                {include: '#function-result'},
-                {include: '#async-throws'},
-                {include: '#generic-where-clause'},
-                {
-                  begin: '\\{',
-                  beginCaptures: {
-                    0: {name: 'punctuation.section.function.begin.swift'}
-                  },
-                  end: '\\}',
-                  endCaptures: {
-                    0: {name: 'punctuation.section.function.end.swift'}
-                  },
-                  name: 'invalid.illegal.function-body-not-allowed-in-protocol.swift',
-                  patterns: [{include: '$self'}]
-                }
-              ]
-            }
-          }
-        },
-        type: {
-          patterns: [
-            {
-              begin:
-                '\\b(class(?!\\s+(?:func|var|let)\\b)|struct|actor)\\s+((?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>))',
-              beginCaptures: {
-                1: {name: 'storage.type.$1.swift'},
-                2: {name: 'entity.name.type.$1.swift'},
-                3: {name: 'punctuation.definition.identifier.swift'},
-                4: {name: 'punctuation.definition.identifier.swift'}
-              },
-              end: '(?<=\\})',
-              name: 'meta.definition.type.$1.swift',
-              patterns: [
-                {include: '#comments'},
-                {include: '#generic-parameter-clause'},
-                {include: '#generic-where-clause'},
-                {include: '#inheritance-clause'},
-                {
-                  begin: '\\{',
-                  beginCaptures: {
-                    0: {name: 'punctuation.definition.type.begin.swift'}
-                  },
-                  end: '\\}',
-                  endCaptures: {
-                    0: {name: 'punctuation.definition.type.end.swift'}
-                  },
-                  name: 'meta.definition.type.body.swift',
-                  patterns: [{include: '$self'}]
-                }
-              ]
-            },
-            {include: '#type-enum'}
-          ]
-        },
-        'type-enum': {
-          begin:
-            '\\b(enum)\\s+((?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>))',
-          beginCaptures: {
-            1: {name: 'storage.type.$1.swift'},
-            2: {name: 'entity.name.type.$1.swift'},
-            3: {name: 'punctuation.definition.identifier.swift'},
-            4: {name: 'punctuation.definition.identifier.swift'}
-          },
-          end: '(?<=\\})',
-          name: 'meta.definition.type.$1.swift',
-          patterns: [
-            {include: '#comments'},
-            {include: '#generic-parameter-clause'},
-            {include: '#generic-where-clause'},
-            {include: '#inheritance-clause'},
-            {
-              begin: '\\{',
-              beginCaptures: {
-                0: {name: 'punctuation.definition.type.begin.swift'}
-              },
-              end: '\\}',
-              endCaptures: {0: {name: 'punctuation.definition.type.end.swift'}},
-              name: 'meta.definition.type.body.swift',
-              patterns: [{include: '#enum-case-clause'}, {include: '$self'}]
-            }
-          ],
-          repository: {
-            'associated-values': {
-              begin: '\\G\\(',
-              beginCaptures: {
-                0: {name: 'punctuation.definition.parameters.begin.swift'}
-              },
-              end: '\\)',
-              endCaptures: {
-                0: {name: 'punctuation.definition.parameters.end.swift'}
-              },
-              patterns: [
-                {include: '#comments'},
-                {
-                  begin:
-                    '(?x)\n\t\t\t\t\t\t\t\t\t\t(?:(_)|((?<q1>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*\\k<q1>))\n\t\t\t\t\t\t\t\t\t\t\\s+\n\t\t\t\t\t\t\t\t\t\t(((?<q2>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*\\k<q2>))\n\t\t\t\t\t\t\t\t\t\t\\s*(:)',
-                  beginCaptures: {
-                    1: {name: 'entity.name.function.swift'},
-                    2: {
-                      name: 'invalid.illegal.distinct-labels-not-allowed.swift'
-                    },
-                    5: {name: 'variable.parameter.function.swift'},
-                    7: {name: 'punctuation.separator.argument-label.swift'}
-                  },
-                  end: '(?=[,)\\]])',
-                  patterns: [{include: '#available-types'}]
-                },
-                {
-                  begin:
-                    '(((?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*\\k<q>))\\s*(:)',
-                  beginCaptures: {
-                    1: {name: 'entity.name.function.swift'},
-                    2: {name: 'variable.parameter.function.swift'},
-                    4: {name: 'punctuation.separator.argument-label.swift'}
-                  },
-                  end: '(?=[,)\\]])',
-                  patterns: [{include: '#available-types'}]
-                },
-                {
-                  begin: '(?![,)\\]])(?=\\S)',
-                  end: '(?=[,)\\]])',
-                  patterns: [
-                    {include: '#available-types'},
-                    {
-                      match: ':',
-                      name: 'invalid.illegal.extra-colon-in-parameter-list.swift'
-                    }
-                  ]
-                }
-              ]
-            },
-            'enum-case': {
-              begin:
-                '(?x)((?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>))\\s*',
-              beginCaptures: {1: {name: 'constant.other.swift'}},
-              end: '(?<=\\))|(?![=(])',
-              patterns: [
-                {include: '#comments'},
-                {include: '#associated-values'},
-                {include: '#raw-value-assignment'}
-              ]
-            },
-            'enum-case-clause': {
-              begin: '\\b(case)\\b\\s*',
-              beginCaptures: {1: {name: 'storage.type.enum.case.swift'}},
-              end: '(?=[;}])|(?!\\G)(?!//|/\\*)(?=[^\\s,])',
-              patterns: [
-                {include: '#comments'},
-                {include: '#enum-case'},
-                {include: '#more-cases'}
-              ]
-            },
-            'more-cases': {
-              begin: ',\\s*',
-              end: '(?!\\G)(?!//|/\\*)(?=[;}]|[^\\s,])',
-              name: 'meta.enum-case.more-cases',
-              patterns: [
-                {include: '#comments'},
-                {include: '#enum-case'},
-                {include: '#more-cases'}
-              ]
-            },
-            'raw-value-assignment': {
-              begin: '(=)\\s*',
-              beginCaptures: {1: {name: 'keyword.operator.assignment.swift'}},
-              end: '(?!\\G)',
-              patterns: [{include: '#comments'}, {include: '#literals'}]
-            }
-          }
-        },
-        'type-identifier': {
-          begin: '((?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>))\\s*',
-          beginCaptures: {
-            1: {
-              name: 'meta.type-name.swift',
-              patterns: [{include: '#builtin-types'}]
-            },
-            2: {name: 'punctuation.definition.identifier.swift'},
-            3: {name: 'punctuation.definition.identifier.swift'}
-          },
-          end: '(?!<)',
-          patterns: [
-            {
-              begin: '(?=<)',
-              end: '(?!\\G)',
-              patterns: [{include: '#generic-argument-clause'}]
-            }
-          ]
-        },
-        typealias: {
-          begin:
-            '\\b(typealias)\\s+((?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>))\\s*',
-          beginCaptures: {
-            1: {name: 'keyword.other.declaration-specifier.swift'},
-            2: {name: 'entity.name.type.typealias.swift'},
-            3: {name: 'punctuation.definition.identifier.swift'},
-            4: {name: 'punctuation.definition.identifier.swift'}
-          },
-          end: '(?!\\G)$|(?=;|//|/\\*|$)',
-          name: 'meta.definition.typealias.swift',
-          patterns: [
-            {
-              begin: '\\G(?=<)',
-              end: '(?!\\G)',
-              patterns: [{include: '#generic-parameter-clause'}]
-            },
-            {include: '#typealias-assignment'}
-          ]
-        },
-        'typealias-assignment': {
-          begin: '(=)\\s*',
-          beginCaptures: {1: {name: 'keyword.operator.assignment.swift'}},
-          end: '(?!\\G)$|(?=;|//|/\\*|$)',
-          patterns: [{include: '#available-types'}]
-        },
-        'typed-variable-declaration': {
-          begin:
-            '(?x)\n\t\t\t\t\t\t\\b(?:(async)\\s+)?(let|var)\\b\\s+\n\t\t\t\t\t\t(?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>)\\s*\n\t\t\t\t\t\t:\n\t\t\t\t\t',
-          beginCaptures: {
-            1: {name: 'keyword.control.async.swift'},
-            2: {name: 'keyword.other.declaration-specifier.swift'}
-          },
-          end: '(?=$|[={])',
-          patterns: [{include: '#available-types'}]
-        },
-        'types-precedencegroup': {
-          patterns: [
-            {
-              match:
-                '\\b(?:BitwiseShift|Assignment|RangeFormation|Casting|Addition|NilCoalescing|Comparison|LogicalConjunction|LogicalDisjunction|Default|Ternary|Multiplication|FunctionArrow)Precedence\\b',
-              name: 'support.type.swift'
             }
           ]
         }
-      }
+      },
+      end: '(?<=\\})|$',
+      name: 'meta.definition.function.initializer.swift',
+      patterns: [
+        {include: '#comments'},
+        {include: '#declarations-generic-parameter-clause'},
+        {include: '#declarations-parameter-clause'},
+        {include: '#async-throws'},
+        {include: '#declarations-generic-where-clause'},
+        {
+          begin: '(\\{)',
+          beginCaptures: {
+            1: {name: 'punctuation.section.function.begin.swift'}
+          },
+          end: '(\\})',
+          endCaptures: {1: {name: 'punctuation.section.function.end.swift'}},
+          name: 'meta.definition.function.body.swift',
+          patterns: [{include: '$self'}]
+        }
+      ]
+    },
+    'declarations-function-result': {
+      begin: '(?<![/=\\-+!*%<>&|\\^~.])(->)(?![/=\\-+!*%<>&|\\^~.])\\s*',
+      beginCaptures: {1: {name: 'keyword.operator.function-result.swift'}},
+      end: '(?!\\G)(?=\\{|\\bwhere\\b|;|=)|$',
+      name: 'meta.function-result.swift',
+      patterns: [{include: '#declarations-available-types'}]
+    },
+    'declarations-function-subscript': {
+      begin: '(?<!\\.)\\b(subscript)\\s*(?=\\(|<)',
+      beginCaptures: {1: {name: 'storage.type.function.swift'}},
+      end: '(?<=\\})|$',
+      name: 'meta.definition.function.subscript.swift',
+      patterns: [
+        {include: '#comments'},
+        {include: '#declarations-generic-parameter-clause'},
+        {include: '#declarations-parameter-clause'},
+        {include: '#declarations-function-result'},
+        {include: '#async-throws'},
+        {include: '#declarations-generic-where-clause'},
+        {
+          begin: '(\\{)',
+          beginCaptures: {
+            1: {name: 'punctuation.section.function.begin.swift'}
+          },
+          end: '(\\})',
+          endCaptures: {1: {name: 'punctuation.section.function.end.swift'}},
+          name: 'meta.definition.function.body.swift',
+          patterns: [{include: '$self'}]
+        }
+      ]
+    },
+    'declarations-generic-argument-clause': {
+      begin: '<',
+      beginCaptures: {
+        0: {name: 'punctuation.separator.generic-argument-clause.begin.swift'}
+      },
+      end: '>|(?=[)\\]{}])',
+      endCaptures: {
+        0: {name: 'punctuation.separator.generic-argument-clause.end.swift'}
+      },
+      name: 'meta.generic-argument-clause.swift',
+      patterns: [{include: '#declarations-available-types'}]
+    },
+    'declarations-generic-parameter-clause': {
+      begin: '<',
+      beginCaptures: {
+        0: {name: 'punctuation.separator.generic-parameter-clause.begin.swift'}
+      },
+      end: ">|(?=[^\\w\\d:<>\\s,=&`])(?# characters besides these are never valid in a generic param list -- even if it's not really a valid clause, we should stop trying to parse it if we see one of them.)",
+      endCaptures: {
+        0: {name: 'punctuation.separator.generic-parameter-clause.end.swift'}
+      },
+      name: 'meta.generic-parameter-clause.swift',
+      patterns: [
+        {include: '#comments'},
+        {include: '#declarations-generic-where-clause'},
+        {match: '\\beach\\b', name: 'keyword.control.loop.swift'},
+        {
+          captures: {1: {name: 'variable.language.generic-parameter.swift'}},
+          match: '\\b((?!\\d)\\w[\\w\\d]*)\\b'
+        },
+        {match: ',', name: 'punctuation.separator.generic-parameters.swift'},
+        {
+          begin: '(:)\\s*',
+          beginCaptures: {
+            1: {
+              name: 'punctuation.separator.generic-parameter-constraint.swift'
+            }
+          },
+          end: '(?=[,>]|(?!\\G)\\bwhere\\b)',
+          name: 'meta.generic-parameter-constraint.swift',
+          patterns: [
+            {
+              begin: '\\G',
+              end: '(?=[,>]|(?!\\G)\\bwhere\\b)',
+              name: 'entity.other.inherited-class.swift',
+              patterns: [
+                {include: '#declarations-type-identifier'},
+                {include: '#declarations-type-operators'}
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    'declarations-generic-where-clause': {
+      begin: '\\b(where)\\b\\s*',
+      beginCaptures: {
+        1: {name: 'keyword.other.generic-constraint-introducer.swift'}
+      },
+      end: '(?!\\G)$|(?=[>{};\\n]|//|/\\*)',
+      name: 'meta.generic-where-clause.swift',
+      patterns: [
+        {include: '#comments'},
+        {include: '#declarations-generic-where-clause-requirement-list'}
+      ]
+    },
+    'declarations-generic-where-clause-requirement-list': {
+      begin: '\\G|,\\s*',
+      end: '(?=[,>{};\\n]|//|/\\*)',
+      patterns: [
+        {include: '#comments'},
+        {include: '#constraint'},
+        {include: '#declarations-available-types'},
+        {
+          begin: '(?<![/=\\-+!*%<>&|\\^~.])(==)(?![/=\\-+!*%<>&|\\^~.])',
+          beginCaptures: {
+            1: {name: 'keyword.operator.generic-constraint.same-type.swift'}
+          },
+          end: '(?=\\s*[,>{};\\n]|//|/\\*)',
+          name: 'meta.generic-where-clause.same-type-requirement.swift',
+          patterns: [{include: '#declarations-available-types'}]
+        },
+        {
+          begin: '(?<![/=\\-+!*%<>&|\\^~.])(:)(?![/=\\-+!*%<>&|\\^~.])',
+          beginCaptures: {
+            1: {name: 'keyword.operator.generic-constraint.conforms-to.swift'}
+          },
+          end: '(?=\\s*[,>{};\\n]|//|/\\*)',
+          name: 'meta.generic-where-clause.conformance-requirement.swift',
+          patterns: [
+            {
+              begin: '\\G\\s*',
+              contentName: 'entity.other.inherited-class.swift',
+              end: '(?=\\s*[,>{};\\n]|//|/\\*)',
+              patterns: [{include: '#declarations-available-types'}]
+            }
+          ]
+        }
+      ]
+    },
+    'declarations-import': {
+      begin: '(?<!\\.)\\b(import)\\s+',
+      beginCaptures: {1: {name: 'keyword.control.import.swift'}},
+      end: '(;)|$\\n?|(?=//|/\\*)',
+      endCaptures: {1: {name: 'punctuation.terminator.statement.swift'}},
+      name: 'meta.import.swift',
+      patterns: [
+        {
+          begin:
+            '\\G(?!;|$|//|/\\*)(?:(typealias|struct|class|actor|enum|protocol|var|func)\\s+)?',
+          beginCaptures: {1: {name: 'storage.modifier.swift'}},
+          end: '(?=;|$|//|/\\*)',
+          patterns: [
+            {
+              captures: {
+                1: {name: 'punctuation.definition.identifier.swift'},
+                2: {name: 'punctuation.definition.identifier.swift'}
+              },
+              match:
+                '(?x)\n(?<=\\G|\\.)\n(?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>)',
+              name: 'entity.name.type.swift'
+            },
+            {
+              match: '(?x)\n(?<=\\G|\\.)\n\\$[0-9]+',
+              name: 'entity.name.type.swift'
+            },
+            {
+              captures: {
+                1: {
+                  patterns: [
+                    {
+                      match: '\\.',
+                      name: 'invalid.illegal.dot-not-allowed-here.swift'
+                    }
+                  ]
+                }
+              },
+              match:
+                '(?x)\n(?<=\\G|\\.)\n(?:\n  (\n    (?<oph>                # operator-head\n      [/=\\-+!*%<>&|^~?]\n      | [\\x{00A1}-\\x{00A7}]\n      | [\\x{00A9}\\x{00AB}]\n      | [\\x{00AC}\\x{00AE}]\n      | [\\x{00B0}-\\x{00B1}\\x{00B6}\\x{00BB}\\x{00BF}\\x{00D7}\\x{00F7}]\n      | [\\x{2016}-\\x{2017}\\x{2020}-\\x{2027}]\n      | [\\x{2030}-\\x{203E}]\n      | [\\x{2041}-\\x{2053}]\n      | [\\x{2055}-\\x{205E}]\n      | [\\x{2190}-\\x{23FF}]\n      | [\\x{2500}-\\x{2775}]\n      | [\\x{2794}-\\x{2BFF}]\n      | [\\x{2E00}-\\x{2E7F}]\n      | [\\x{3001}-\\x{3003}]\n      | [\\x{3008}-\\x{3030}]\n    )\n    (\n      \\g<oph>\n      | (?<opc>                # operator-character\n        [\\x{0300}-\\x{036F}]\n        | [\\x{1DC0}-\\x{1DFF}]\n        | [\\x{20D0}-\\x{20FF}]\n        | [\\x{FE00}-\\x{FE0F}]\n        | [\\x{FE20}-\\x{FE2F}]\n        | [\\x{E0100}-\\x{E01EF}]\n      )\n    )*\n  )\n  | ( \\. ( \\g<oph> | \\g<opc> | \\. )+ )      # Dot operators\n)\n(?=\\.|;|$|//|/\\*|\\s)',
+              name: 'entity.name.type.swift'
+            },
+            {match: '\\.', name: 'punctuation.separator.import.swift'},
+            {
+              begin: '(?!\\s*(;|$|//|/\\*))',
+              end: '(?=\\s*(;|$|//|/\\*))',
+              name: 'invalid.illegal.character-not-allowed-here.swift'
+            }
+          ]
+        }
+      ]
+    },
+    'declarations-inheritance-clause': {
+      begin: '(:)(?=\\s*\\{)|(:)\\s*',
+      beginCaptures: {
+        1: {name: 'invalid.illegal.empty-inheritance-clause.swift'},
+        2: {name: 'punctuation.separator.inheritance-clause.swift'}
+      },
+      end: '(?!\\G)$|(?=[={}]|(?!\\G)\\bwhere\\b)',
+      name: 'meta.inheritance-clause.swift',
+      patterns: [
+        {
+          begin: '\\bclass\\b',
+          beginCaptures: {0: {name: 'storage.type.class.swift'}},
+          end: '(?=[={}]|(?!\\G)\\bwhere\\b)',
+          patterns: [
+            {include: '#comments'},
+            {include: '#declarations-inheritance-clause-more-types'}
+          ]
+        },
+        {
+          begin: '\\G',
+          end: '(?!\\G)$|(?=[={}]|(?!\\G)\\bwhere\\b)',
+          patterns: [
+            {include: '#comments'},
+            {include: '#declarations-inheritance-clause-inherited-type'},
+            {include: '#declarations-inheritance-clause-more-types'},
+            {include: '#declarations-type-operators'}
+          ]
+        }
+      ]
+    },
+    'declarations-inheritance-clause-inherited-type': {
+      begin: '(?=[`\\p{L}_])',
+      end: '(?!\\G)',
+      name: 'entity.other.inherited-class.swift',
+      patterns: [{include: '#declarations-type-identifier'}]
+    },
+    'declarations-inheritance-clause-more-types': {
+      begin: ',\\s*',
+      end: '(?!\\G)(?!//|/\\*)|(?=[,={}]|(?!\\G)\\bwhere\\b)',
+      name: 'meta.inheritance-list.more-types',
+      patterns: [
+        {include: '#comments'},
+        {include: '#declarations-inheritance-clause-inherited-type'},
+        {include: '#declarations-inheritance-clause-more-types'},
+        {include: '#declarations-type-operators'}
+      ]
+    },
+    'declarations-macro': {
+      begin:
+        '(?x)\n\\b\n(macro)\n\\s+\n((?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>))\n\\s*\n(?=\\(|<|=)',
+      beginCaptures: {
+        1: {name: 'storage.type.function.swift'},
+        2: {name: 'entity.name.function.swift'},
+        3: {name: 'punctuation.definition.identifier.swift'},
+        4: {name: 'punctuation.definition.identifier.swift'}
+      },
+      end: '$|(?=;|//|/\\*|\\}|=)',
+      name: 'meta.definition.macro.swift',
+      patterns: [
+        {include: '#comments'},
+        {include: '#declarations-generic-parameter-clause'},
+        {include: '#declarations-parameter-clause'},
+        {include: '#declarations-function-result'},
+        {include: '#async-throws'},
+        {include: '#declarations-generic-where-clause'}
+      ]
+    },
+    'declarations-operator': {
+      begin:
+        '(?x)\n(?:\n  \\b(prefix|infix|postfix)\n  \\s+\n)?\n\\b\n(operator)\n\\s+\n(\n  (\n    (?<oph>                  # operator-head\n      [/=\\-+!*%<>&|^~?]\n      | [\\x{00A1}-\\x{00A7}]\n      | [\\x{00A9}\\x{00AB}]\n      | [\\x{00AC}\\x{00AE}]\n      | [\\x{00B0}-\\x{00B1}\\x{00B6}\\x{00BB}\\x{00BF}\\x{00D7}\\x{00F7}]\n      | [\\x{2016}-\\x{2017}\\x{2020}-\\x{2027}]\n      | [\\x{2030}-\\x{203E}]\n      | [\\x{2041}-\\x{2053}]\n      | [\\x{2055}-\\x{205E}]\n      | [\\x{2190}-\\x{23FF}]\n      | [\\x{2500}-\\x{2775}]\n      | [\\x{2794}-\\x{2BFF}]\n      | [\\x{2E00}-\\x{2E7F}]\n      | [\\x{3001}-\\x{3003}]\n      | [\\x{3008}-\\x{3030}]\n    )\n    (\n      \\g<oph>\n      | \\.                  # Invalid dot\n      | (?<opc>                # operator-character\n        [\\x{0300}-\\x{036F}]\n        | [\\x{1DC0}-\\x{1DFF}]\n        | [\\x{20D0}-\\x{20FF}]\n        | [\\x{FE00}-\\x{FE0F}]\n        | [\\x{FE20}-\\x{FE2F}]\n        | [\\x{E0100}-\\x{E01EF}]\n      )\n    )*+\n  )\n  | ( \\. ( \\g<oph> | \\g<opc> | \\. )++ )      # Dot operators\n)\n\\s*',
+      beginCaptures: {
+        1: {name: 'storage.modifier.swift'},
+        2: {name: 'storage.type.function.operator.swift'},
+        3: {name: 'entity.name.function.operator.swift'},
+        4: {
+          name: 'entity.name.function.operator.swift',
+          patterns: [
+            {match: '\\.', name: 'invalid.illegal.dot-not-allowed-here.swift'}
+          ]
+        }
+      },
+      end: '(;)|$\\n?|(?=//|/\\*)',
+      endCaptures: {1: {name: 'punctuation.terminator.statement.swift'}},
+      name: 'meta.definition.operator.swift',
+      patterns: [
+        {include: '#declarations-operator-swift2'},
+        {include: '#declarations-operator-swift3'},
+        {
+          match: '((?!$|;|//|/\\*)\\S)+',
+          name: 'invalid.illegal.character-not-allowed-here.swift'
+        }
+      ]
+    },
+    'declarations-operator-swift2': {
+      begin: '\\G(\\{)',
+      beginCaptures: {1: {name: 'punctuation.definition.operator.begin.swift'}},
+      end: '(\\})',
+      endCaptures: {1: {name: 'punctuation.definition.operator.end.swift'}},
+      patterns: [
+        {include: '#comments'},
+        {
+          captures: {
+            1: {name: 'storage.modifier.swift'},
+            2: {name: 'keyword.other.operator.associativity.swift'}
+          },
+          match: '\\b(associativity)\\s+(left|right)\\b'
+        },
+        {
+          captures: {
+            1: {name: 'storage.modifier.swift'},
+            2: {name: 'constant.numeric.integer.swift'}
+          },
+          match: '\\b(precedence)\\s+([0-9]+)\\b'
+        },
+        {
+          captures: {1: {name: 'storage.modifier.swift'}},
+          match: '\\b(assignment)\\b'
+        }
+      ]
+    },
+    'declarations-operator-swift3': {
+      captures: {
+        2: {
+          name: 'entity.other.inherited-class.swift',
+          patterns: [{include: '#declarations-types-precedencegroup'}]
+        },
+        3: {name: 'punctuation.definition.identifier.swift'},
+        4: {name: 'punctuation.definition.identifier.swift'}
+      },
+      match: '\\G(:)\\s*((?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>))'
+    },
+    'declarations-parameter-clause': {
+      begin: '(\\()',
+      beginCaptures: {
+        1: {name: 'punctuation.definition.parameters.begin.swift'}
+      },
+      end: '(\\))(?:\\s*(async)\\b)?',
+      endCaptures: {
+        1: {name: 'punctuation.definition.parameters.end.swift'},
+        2: {name: 'storage.modifier.async.swift'}
+      },
+      name: 'meta.parameter-clause.swift',
+      patterns: [{include: '#declarations-parameter-list'}]
+    },
+    'declarations-parameter-list': {
+      patterns: [
+        {
+          captures: {
+            1: {name: 'entity.name.function.swift'},
+            2: {name: 'punctuation.definition.identifier.swift'},
+            3: {name: 'punctuation.definition.identifier.swift'},
+            4: {name: 'variable.parameter.function.swift'},
+            5: {name: 'punctuation.definition.identifier.swift'},
+            6: {name: 'punctuation.definition.identifier.swift'}
+          },
+          match:
+            '((?<q1>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q1>))\\s+((?<q2>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q2>))(?=\\s*:)'
+        },
+        {
+          captures: {
+            1: {name: 'variable.parameter.function.swift'},
+            2: {name: 'entity.name.function.swift'},
+            3: {name: 'punctuation.definition.identifier.swift'},
+            4: {name: 'punctuation.definition.identifier.swift'}
+          },
+          match: '(((?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>)))(?=\\s*:)'
+        },
+        {
+          begin: ':\\s*(?!\\s)',
+          end: '(?=[,)])',
+          patterns: [
+            {include: '#declarations-available-types'},
+            {
+              match: ':',
+              name: 'invalid.illegal.extra-colon-in-parameter-list.swift'
+            },
+            {
+              begin: '=',
+              beginCaptures: {0: {name: 'keyword.operator.assignment.swift'}},
+              end: '(?=[,)])',
+              patterns: [{include: '#expressions'}]
+            }
+          ]
+        }
+      ]
+    },
+    'declarations-precedencegroup': {
+      begin:
+        '\\b(precedencegroup)\\s+((?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>))\\s*(?=\\{)',
+      beginCaptures: {
+        1: {name: 'storage.type.precedencegroup.swift'},
+        2: {name: 'entity.name.type.precedencegroup.swift'},
+        3: {name: 'punctuation.definition.identifier.swift'},
+        4: {name: 'punctuation.definition.identifier.swift'}
+      },
+      end: '(?!\\G)',
+      name: 'meta.definition.precedencegroup.swift',
+      patterns: [
+        {
+          begin: '\\{',
+          beginCaptures: {
+            0: {name: 'punctuation.definition.precedencegroup.begin.swift'}
+          },
+          end: '\\}',
+          endCaptures: {
+            0: {name: 'punctuation.definition.precedencegroup.end.swift'}
+          },
+          patterns: [
+            {include: '#comments'},
+            {
+              captures: {
+                1: {name: 'storage.modifier.swift'},
+                2: {
+                  name: 'entity.other.inherited-class.swift',
+                  patterns: [{include: '#declarations-types-precedencegroup'}]
+                },
+                3: {name: 'punctuation.definition.identifier.swift'},
+                4: {name: 'punctuation.definition.identifier.swift'}
+              },
+              match:
+                '\\b(higherThan|lowerThan)\\s*:\\s*((?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>))'
+            },
+            {
+              captures: {
+                1: {name: 'storage.modifier.swift'},
+                2: {name: 'keyword.other.operator.associativity.swift'}
+              },
+              match: '\\b(associativity)\\b(?:\\s*:\\s*(right|left|none)\\b)?'
+            },
+            {
+              captures: {
+                1: {name: 'storage.modifier.swift'},
+                2: {name: 'constant.language.boolean.swift'}
+              },
+              match: '\\b(assignment)\\b(?:\\s*:\\s*(true|false)\\b)?'
+            }
+          ]
+        }
+      ]
+    },
+    'declarations-protocol': {
+      begin:
+        '\\b(protocol)\\s+((?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>))',
+      beginCaptures: {
+        1: {name: 'storage.type.$1.swift'},
+        2: {name: 'entity.name.type.$1.swift'},
+        3: {name: 'punctuation.definition.identifier.swift'},
+        4: {name: 'punctuation.definition.identifier.swift'}
+      },
+      end: '(?<=\\})',
+      name: 'meta.definition.type.protocol.swift',
+      patterns: [
+        {include: '#comments'},
+        {include: '#declarations-inheritance-clause'},
+        {include: '#declarations-generic-where-clause'},
+        {
+          begin: '\\{',
+          beginCaptures: {0: {name: 'punctuation.definition.type.begin.swift'}},
+          end: '\\}',
+          endCaptures: {0: {name: 'punctuation.definition.type.end.swift'}},
+          name: 'meta.definition.type.body.swift',
+          patterns: [
+            {include: '#declarations-protocol-protocol-method'},
+            {include: '#declarations-protocol-protocol-initializer'},
+            {include: '#declarations-protocol-associated-type'},
+            {include: '$self'}
+          ]
+        }
+      ]
+    },
+    'declarations-protocol-associated-type': {
+      begin:
+        '\\b(associatedtype)\\s+((?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>))\\s*',
+      beginCaptures: {
+        1: {name: 'keyword.other.declaration-specifier.swift'},
+        2: {name: 'variable.language.associatedtype.swift'},
+        3: {name: 'punctuation.definition.identifier.swift'},
+        4: {name: 'punctuation.definition.identifier.swift'}
+      },
+      end: '(?!\\G)$|(?=[;}]|$)',
+      name: 'meta.definition.associatedtype.swift',
+      patterns: [
+        {include: '#declarations-inheritance-clause'},
+        {include: '#declarations-generic-where-clause'},
+        {include: '#declarations-typealias-assignment'}
+      ]
+    },
+    'declarations-protocol-protocol-initializer': {
+      begin:
+        '(?<!\\.)\\b(init[?!]*(?# only one is valid, but we want the in⇥ snippet to produce something that looks good))\\s*(?=\\(|<)',
+      beginCaptures: {
+        1: {
+          name: 'storage.type.function.swift',
+          patterns: [
+            {
+              match: '(?<=[?!])[?!]+',
+              name: 'invalid.illegal.character-not-allowed-here.swift'
+            }
+          ]
+        }
+      },
+      end: '$|(?=;|//|/\\*|\\})',
+      name: 'meta.definition.function.initializer.swift',
+      patterns: [
+        {include: '#comments'},
+        {include: '#declarations-generic-parameter-clause'},
+        {include: '#declarations-parameter-clause'},
+        {include: '#async-throws'},
+        {include: '#declarations-generic-where-clause'},
+        {
+          begin: '\\{',
+          beginCaptures: {
+            0: {name: 'punctuation.section.function.begin.swift'}
+          },
+          end: '\\}',
+          endCaptures: {0: {name: 'punctuation.section.function.end.swift'}},
+          name: 'invalid.illegal.function-body-not-allowed-in-protocol.swift',
+          patterns: [{include: '$self'}]
+        }
+      ]
+    },
+    'declarations-protocol-protocol-method': {
+      begin:
+        '(?x)\n\\b\n(func)\n\\s+\n(\n  (?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>)\n    | (?:\n      (\n        (?<oph>                # operator-head\n          [/=\\-+!*%<>&|^~?]\n          | [\\x{00A1}-\\x{00A7}]\n          | [\\x{00A9}\\x{00AB}]\n          | [\\x{00AC}\\x{00AE}]\n          | [\\x{00B0}-\\x{00B1}\\x{00B6}\\x{00BB}\\x{00BF}\\x{00D7}\\x{00F7}]\n          | [\\x{2016}-\\x{2017}\\x{2020}-\\x{2027}]\n          | [\\x{2030}-\\x{203E}]\n          | [\\x{2041}-\\x{2053}]\n          | [\\x{2055}-\\x{205E}]\n          | [\\x{2190}-\\x{23FF}]\n          | [\\x{2500}-\\x{2775}]\n          | [\\x{2794}-\\x{2BFF}]\n          | [\\x{2E00}-\\x{2E7F}]\n          | [\\x{3001}-\\x{3003}]\n          | [\\x{3008}-\\x{3030}]\n        )\n        (\n          \\g<oph>\n          | (?<opc>                # operator-character\n            [\\x{0300}-\\x{036F}]\n            | [\\x{1DC0}-\\x{1DFF}]\n            | [\\x{20D0}-\\x{20FF}]\n            | [\\x{FE00}-\\x{FE0F}]\n            | [\\x{FE20}-\\x{FE2F}]\n            | [\\x{E0100}-\\x{E01EF}]\n          )\n        )*\n      )\n      | ( \\. ( \\g<oph> | \\g<opc> | \\. )+ )      # Dot operators\n    )\n  )\n\\s*\n(?=\\(|<)',
+      beginCaptures: {
+        1: {name: 'storage.type.function.swift'},
+        2: {name: 'entity.name.function.swift'},
+        3: {name: 'punctuation.definition.identifier.swift'},
+        4: {name: 'punctuation.definition.identifier.swift'}
+      },
+      end: '$|(?=;|//|/\\*|\\})',
+      name: 'meta.definition.function.swift',
+      patterns: [
+        {include: '#comments'},
+        {include: '#declarations-generic-parameter-clause'},
+        {include: '#declarations-parameter-clause'},
+        {include: '#declarations-function-result'},
+        {include: '#async-throws'},
+        {include: '#declarations-generic-where-clause'},
+        {
+          begin: '\\{',
+          beginCaptures: {
+            0: {name: 'punctuation.section.function.begin.swift'}
+          },
+          end: '\\}',
+          endCaptures: {0: {name: 'punctuation.section.function.end.swift'}},
+          name: 'invalid.illegal.function-body-not-allowed-in-protocol.swift',
+          patterns: [{include: '$self'}]
+        }
+      ]
+    },
+    'declarations-type': {
+      patterns: [
+        {
+          begin:
+            '\\b(class(?!\\s+(?:func|var|let)\\b)|struct|actor)\\b\\s*((?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>))',
+          beginCaptures: {
+            1: {name: 'storage.type.$1.swift'},
+            2: {name: 'entity.name.type.$1.swift'},
+            3: {name: 'punctuation.definition.identifier.swift'},
+            4: {name: 'punctuation.definition.identifier.swift'}
+          },
+          end: '(?<=\\})',
+          name: 'meta.definition.type.$1.swift',
+          patterns: [
+            {include: '#comments'},
+            {include: '#declarations-generic-parameter-clause'},
+            {include: '#declarations-generic-where-clause'},
+            {include: '#declarations-inheritance-clause'},
+            {
+              begin: '\\{',
+              beginCaptures: {
+                0: {name: 'punctuation.definition.type.begin.swift'}
+              },
+              end: '\\}',
+              endCaptures: {0: {name: 'punctuation.definition.type.end.swift'}},
+              name: 'meta.definition.type.body.swift',
+              patterns: [{include: '$self'}]
+            }
+          ]
+        },
+        {include: '#declarations-type-enum'}
+      ]
+    },
+    'declarations-type-enum': {
+      begin: '\\b(enum)\\s+((?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>))',
+      beginCaptures: {
+        1: {name: 'storage.type.$1.swift'},
+        2: {name: 'entity.name.type.$1.swift'},
+        3: {name: 'punctuation.definition.identifier.swift'},
+        4: {name: 'punctuation.definition.identifier.swift'}
+      },
+      end: '(?<=\\})',
+      name: 'meta.definition.type.$1.swift',
+      patterns: [
+        {include: '#comments'},
+        {include: '#declarations-generic-parameter-clause'},
+        {include: '#declarations-generic-where-clause'},
+        {include: '#declarations-inheritance-clause'},
+        {
+          begin: '\\{',
+          beginCaptures: {0: {name: 'punctuation.definition.type.begin.swift'}},
+          end: '\\}',
+          endCaptures: {0: {name: 'punctuation.definition.type.end.swift'}},
+          name: 'meta.definition.type.body.swift',
+          patterns: [
+            {include: '#declarations-type-enum-enum-case-clause'},
+            {include: '$self'}
+          ]
+        }
+      ]
+    },
+    'declarations-type-enum-associated-values': {
+      begin: '\\G\\(',
+      beginCaptures: {
+        0: {name: 'punctuation.definition.parameters.begin.swift'}
+      },
+      end: '\\)',
+      endCaptures: {0: {name: 'punctuation.definition.parameters.end.swift'}},
+      patterns: [
+        {include: '#comments'},
+        {
+          begin:
+            '(?x)\n(?:(_)|((?<q1>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*\\k<q1>))\n\\s+\n(((?<q2>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*\\k<q2>))\n\\s*(:)',
+          beginCaptures: {
+            1: {name: 'entity.name.function.swift'},
+            2: {name: 'invalid.illegal.distinct-labels-not-allowed.swift'},
+            5: {name: 'variable.parameter.function.swift'},
+            7: {name: 'punctuation.separator.argument-label.swift'}
+          },
+          end: '(?=[,)\\]])',
+          patterns: [{include: '#declarations-available-types'}]
+        },
+        {
+          begin: '(((?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*\\k<q>))\\s*(:)',
+          beginCaptures: {
+            1: {name: 'entity.name.function.swift'},
+            2: {name: 'variable.parameter.function.swift'},
+            4: {name: 'punctuation.separator.argument-label.swift'}
+          },
+          end: '(?=[,)\\]])',
+          patterns: [{include: '#declarations-available-types'}]
+        },
+        {
+          begin: '(?![,)\\]])(?=\\S)',
+          end: '(?=[,)\\]])',
+          patterns: [
+            {include: '#declarations-available-types'},
+            {
+              match: ':',
+              name: 'invalid.illegal.extra-colon-in-parameter-list.swift'
+            }
+          ]
+        }
+      ]
+    },
+    'declarations-type-enum-enum-case': {
+      begin: '(?x)((?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>))\\s*',
+      beginCaptures: {1: {name: 'variable.other.enummember.swift'}},
+      end: '(?<=\\))|(?![=(])',
+      patterns: [
+        {include: '#comments'},
+        {include: '#declarations-type-enum-associated-values'},
+        {include: '#declarations-type-enum-raw-value-assignment'}
+      ]
+    },
+    'declarations-type-enum-enum-case-clause': {
+      begin: '\\b(case)\\b\\s*',
+      beginCaptures: {1: {name: 'storage.type.enum.case.swift'}},
+      end: '(?=[;}])|(?!\\G)(?!//|/\\*)(?=[^\\s,])',
+      patterns: [
+        {include: '#comments'},
+        {include: '#declarations-type-enum-enum-case'},
+        {include: '#declarations-type-enum-more-cases'}
+      ]
+    },
+    'declarations-type-enum-more-cases': {
+      begin: ',\\s*',
+      end: '(?!\\G)(?!//|/\\*)(?=[;}]|[^\\s,])',
+      name: 'meta.enum-case.more-cases',
+      patterns: [
+        {include: '#comments'},
+        {include: '#declarations-type-enum-enum-case'},
+        {include: '#declarations-type-enum-more-cases'}
+      ]
+    },
+    'declarations-type-enum-raw-value-assignment': {
+      begin: '(=)\\s*',
+      beginCaptures: {1: {name: 'keyword.operator.assignment.swift'}},
+      end: '(?!\\G)',
+      patterns: [{include: '#comments'}, {include: '#literals'}]
+    },
+    'declarations-type-identifier': {
+      begin: '((?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>))\\s*',
+      beginCaptures: {
+        1: {
+          name: 'meta.type-name.swift',
+          patterns: [{include: '#builtin-types'}]
+        },
+        2: {name: 'punctuation.definition.identifier.swift'},
+        3: {name: 'punctuation.definition.identifier.swift'}
+      },
+      end: '(?!<)',
+      patterns: [
+        {
+          begin: '(?=<)',
+          end: '(?!\\G)',
+          patterns: [{include: '#declarations-generic-argument-clause'}]
+        }
+      ]
+    },
+    'declarations-type-operators': {
+      patterns: [
+        {
+          captures: {1: {name: 'keyword.operator.type.composition.swift'}},
+          match: '(?<![/=\\-+!*%<>&|\\^~.])(&)(?![/=\\-+!*%<>&|\\^~.])'
+        },
+        {
+          captures: {
+            1: {name: 'keyword.operator.type.requirement-suppression.swift'}
+          },
+          match: '(?<![/=\\-+!*%<>&|\\^~.])(~)(?![/=\\-+!*%<>&|\\^~.])'
+        }
+      ]
+    },
+    'declarations-typealias': {
+      begin:
+        '\\b(typealias)\\s+((?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>))\\s*',
+      beginCaptures: {
+        1: {name: 'keyword.other.declaration-specifier.swift'},
+        2: {name: 'entity.name.type.typealias.swift'},
+        3: {name: 'punctuation.definition.identifier.swift'},
+        4: {name: 'punctuation.definition.identifier.swift'}
+      },
+      end: '(?!\\G)$|(?=;|//|/\\*|$)',
+      name: 'meta.definition.typealias.swift',
+      patterns: [
+        {
+          begin: '\\G(?=<)',
+          end: '(?!\\G)',
+          patterns: [{include: '#declarations-generic-parameter-clause'}]
+        },
+        {include: '#declarations-typealias-assignment'}
+      ]
+    },
+    'declarations-typealias-assignment': {
+      begin: '(=)\\s*',
+      beginCaptures: {1: {name: 'keyword.operator.assignment.swift'}},
+      end: '(?!\\G)$|(?=;|//|/\\*|$)',
+      patterns: [{include: '#declarations-available-types'}]
+    },
+    'declarations-typed-variable-declaration': {
+      begin:
+        '(?x)\n\\b(?:(async)\\s+)?(let|var)\\b\\s+\n(?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>)\\s*\n:',
+      beginCaptures: {
+        1: {name: 'storage.modifier.async.swift'},
+        2: {name: 'keyword.other.declaration-specifier.swift'}
+      },
+      end: '(?=$|[={])',
+      patterns: [{include: '#declarations-available-types'}]
+    },
+    'declarations-types-precedencegroup': {
+      patterns: [
+        {
+          match:
+            '\\b(?:BitwiseShift|Assignment|RangeFormation|Casting|Addition|NilCoalescing|Comparison|LogicalConjunction|LogicalDisjunction|Default|Ternary|Multiplication|FunctionArrow)Precedence\\b',
+          name: 'support.type.swift'
+        }
+      ]
     },
     expressions: {
+      patterns: [
+        {
+          include: '#expressions-without-trailing-closures-or-member-references'
+        },
+        {include: '#expressions-trailing-closure'},
+        {include: '#member-reference'}
+      ]
+    },
+    'expressions-trailing-closure': {
+      patterns: [
+        {
+          captures: {
+            1: {name: 'support.function.any-method.swift'},
+            2: {name: 'punctuation.definition.identifier.swift'},
+            3: {name: 'punctuation.definition.identifier.swift'}
+          },
+          match:
+            '(#?(?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>))(?=\\s*\\{)',
+          name: 'meta.function-call.trailing-closure-only.swift'
+        },
+        {
+          captures: {
+            1: {
+              name: 'support.function.any-method.trailing-closure-label.swift'
+            },
+            2: {name: 'punctuation.definition.identifier.swift'},
+            3: {name: 'punctuation.definition.identifier.swift'},
+            4: {name: 'punctuation.separator.argument-label.swift'}
+          },
+          match:
+            '((?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>))\\s*(:)(?=\\s*\\{)'
+        }
+      ]
+    },
+    'expressions-without-trailing-closures': {
+      patterns: [
+        {
+          include: '#expressions-without-trailing-closures-or-member-references'
+        },
+        {include: '#member-references'}
+      ]
+    },
+    'expressions-without-trailing-closures-or-member-references': {
       patterns: [
         {include: '#comments'},
         {include: '#code-block'},
         {include: '#attributes'},
-        {include: '#closure-parameter'},
+        {
+          include:
+            '#expressions-without-trailing-closures-or-member-references-closure-parameter'
+        },
         {include: '#literals'},
         {include: '#operators'},
         {include: '#builtin-types'},
         {include: '#builtin-functions'},
         {include: '#builtin-global-functions'},
         {include: '#builtin-properties'},
-        {include: '#compound-name'},
+        {
+          include:
+            '#expressions-without-trailing-closures-or-member-references-compound-name'
+        },
+        {include: '#conditionals'},
         {include: '#keywords'},
-        {include: '#function-call-expression'},
-        {include: '#subscript-expression'},
-        {include: '#parenthesized-expression'},
-        {include: '#member-reference'},
-        {include: '#availability-condition'},
+        {
+          include:
+            '#expressions-without-trailing-closures-or-member-references-availability-condition'
+        },
+        {
+          include:
+            '#expressions-without-trailing-closures-or-member-references-function-or-macro-call-expression'
+        },
+        {
+          include:
+            '#expressions-without-trailing-closures-or-member-references-macro-expansion'
+        },
+        {
+          include:
+            '#expressions-without-trailing-closures-or-member-references-subscript-expression'
+        },
+        {
+          include:
+            '#expressions-without-trailing-closures-or-member-references-parenthesized-expression'
+        },
         {match: '\\b_\\b', name: 'support.variable.discard-value.swift'}
-      ],
-      repository: {
-        'availability-condition': {
-          begin: '\\B(#(?:un)?available)(\\()',
-          beginCaptures: {
-            1: {name: 'support.function.availability-condition.swift'},
-            2: {name: 'punctuation.definition.arguments.begin.swift'}
-          },
-          end: '\\)',
-          endCaptures: {
-            0: {name: 'punctuation.definition.arguments.end.swift'}
-          },
-          patterns: [
-            {
-              captures: {
-                1: {name: 'keyword.other.platform.os.swift'},
-                2: {name: 'constant.numeric.swift'}
-              },
-              match:
-                '\\s*\\b((?:iOS|macOS|OSX|watchOS|tvOS|UIKitForMac)(?:ApplicationExtension)?)\\b(?:\\s+([0-9]+(?:\\.[0-9]+)*\\b))'
-            },
-            {
-              captures: {
-                1: {name: 'keyword.other.platform.all.swift'},
-                2: {name: 'invalid.illegal.character-not-allowed-here.swift'}
-              },
-              match: '(\\*)\\s*(.*?)(?=[,)])'
-            },
-            {
-              match: '[^\\s,)]+',
-              name: 'invalid.illegal.character-not-allowed-here.swift'
-            }
-          ]
-        },
-        'closure-parameter': {
-          match: '\\$[0-9]+',
-          name: 'variable.language.closure-parameter.swift'
-        },
-        'compound-name': {
-          captures: {
-            1: {name: 'entity.name.function.compound-name.swift'},
-            2: {name: 'punctuation.definition.entity.swift'},
-            3: {name: 'punctuation.definition.entity.swift'},
-            4: {
-              patterns: [
-                {
-                  captures: {
-                    1: {name: 'punctuation.definition.entity.swift'},
-                    2: {name: 'punctuation.definition.entity.swift'}
-                  },
-                  match:
-                    '(?<q>`?)(?!_:)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>):',
-                  name: 'entity.name.function.compound-name.swift'
-                }
-              ]
-            }
-          },
-          match:
-            '(?x)\n\t\t\t\t\t\t((?<q1>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q1>))       \t\t# function name\n\t\t\t\t\t\t\\(\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\t((?<q2>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q2>)) \t# argument label\n\t\t\t\t\t\t\t\t\t:\t\t\t\t\t\t\t\t\t\t\t\t# colon\n\t\t\t\t\t\t\t\t)+\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\\)\n\t\t\t\t\t'
-        },
-        'expression-element-list': {
-          patterns: [
-            {include: '#comments'},
-            {
-              begin: '((?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>))\\s*(:)',
-              beginCaptures: {
-                1: {name: 'support.function.any-method.swift'},
-                2: {name: 'punctuation.definition.identifier.swift'},
-                3: {name: 'punctuation.definition.identifier.swift'},
-                4: {name: 'punctuation.separator.argument-label.swift'}
-              },
-              end: '(?=[,)\\]])',
-              patterns: [{include: '#expressions'}]
-            },
-            {
-              begin: '(?![,)\\]])(?=\\S)',
-              end: '(?=[,)\\]])',
-              patterns: [{include: '#expressions'}]
-            }
-          ]
-        },
-        'function-call-expression': {
-          patterns: [
-            {
-              begin:
-                '((?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>))\\s*(\\()',
-              beginCaptures: {
-                1: {name: 'support.function.any-method.swift'},
-                2: {name: 'punctuation.definition.identifier.swift'},
-                3: {name: 'punctuation.definition.identifier.swift'},
-                4: {name: 'punctuation.definition.arguments.begin.swift'}
-              },
-              end: '\\)',
-              endCaptures: {
-                0: {name: 'punctuation.definition.arguments.end.swift'}
-              },
-              name: 'meta.function-call.swift',
-              patterns: [{include: '#expression-element-list'}]
-            },
-            {
-              begin: '(?<=[`\\])}>\\p{L}_\\p{N}\\p{M}])\\s*(\\()',
-              beginCaptures: {
-                1: {name: 'punctuation.definition.arguments.begin.swift'}
-              },
-              end: '\\)',
-              endCaptures: {
-                0: {name: 'punctuation.definition.arguments.end.swift'}
-              },
-              name: 'meta.function-call.swift',
-              patterns: [{include: '#expression-element-list'}]
-            }
-          ]
-        },
-        'member-reference': {
-          patterns: [
-            {
-              captures: {
-                1: {name: 'variable.other.swift'},
-                2: {name: 'punctuation.definition.identifier.swift'},
-                3: {name: 'punctuation.definition.identifier.swift'}
-              },
-              match: '(?<=\\.)((?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>))'
-            }
-          ]
-        },
-        'parenthesized-expression': {
-          begin: '\\(',
-          beginCaptures: {0: {name: 'punctuation.section.tuple.begin.swift'}},
-          end: '(\\))\\s*((?:\\b(?:async|throws|rethrows)\\s)*)',
-          endCaptures: {
-            1: {name: 'punctuation.section.tuple.end.swift'},
-            2: {
-              patterns: [
-                {
-                  match: '\\brethrows\\b',
-                  name: 'invalid.illegal.rethrows-only-allowed-on-function-declarations.swift'
-                },
-                {include: '#async-throws'}
-              ]
-            }
-          },
-          patterns: [{include: '#expression-element-list'}]
-        },
-        'subscript-expression': {
-          begin: '(?<=[`\\p{L}_\\p{N}\\p{M}])\\s*(\\[)',
-          beginCaptures: {
-            1: {name: 'punctuation.definition.arguments.begin.swift'}
-          },
-          end: '\\]',
-          endCaptures: {
-            0: {name: 'punctuation.definition.arguments.end.swift'}
-          },
-          name: 'meta.subscript-expression.swift',
-          patterns: [{include: '#expression-element-list'}]
-        }
-      }
+      ]
     },
+    'expressions-without-trailing-closures-or-member-references-availability-condition':
+      {
+        begin: '\\B(#(?:un)?available)(\\()',
+        beginCaptures: {
+          1: {name: 'support.function.availability-condition.swift'},
+          2: {name: 'punctuation.definition.arguments.begin.swift'}
+        },
+        end: '\\)',
+        endCaptures: {0: {name: 'punctuation.definition.arguments.end.swift'}},
+        patterns: [
+          {
+            captures: {
+              1: {name: 'keyword.other.platform.os.swift'},
+              2: {name: 'constant.numeric.swift'}
+            },
+            match:
+              '\\s*\\b((?:iOS|macOS|OSX|watchOS|tvOS|UIKitForMac)(?:ApplicationExtension)?)\\b(?:\\s+([0-9]+(?:\\.[0-9]+)*\\b))'
+          },
+          {
+            captures: {
+              1: {name: 'keyword.other.platform.all.swift'},
+              2: {name: 'invalid.illegal.character-not-allowed-here.swift'}
+            },
+            match: '(\\*)\\s*(.*?)(?=[,)])'
+          },
+          {
+            match: '[^\\s,)]+',
+            name: 'invalid.illegal.character-not-allowed-here.swift'
+          }
+        ]
+      },
+    'expressions-without-trailing-closures-or-member-references-closure-parameter':
+      {match: '\\$[0-9]+', name: 'variable.language.closure-parameter.swift'},
+    'expressions-without-trailing-closures-or-member-references-compound-name':
+      {
+        captures: {
+          1: {name: 'entity.name.function.compound-name.swift'},
+          2: {name: 'punctuation.definition.entity.swift'},
+          3: {name: 'punctuation.definition.entity.swift'},
+          4: {
+            patterns: [
+              {
+                captures: {
+                  1: {name: 'punctuation.definition.entity.swift'},
+                  2: {name: 'punctuation.definition.entity.swift'}
+                },
+                match: '(?<q>`?)(?!_:)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>):',
+                name: 'entity.name.function.compound-name.swift'
+              }
+            ]
+          }
+        },
+        match:
+          '(?x)\n((?<q1>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q1>))           # function name\n\\(\n  (\n    (\n      ((?<q2>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q2>))   # argument label\n      :                        # colon\n    )+\n  )\n\\)'
+      },
+    'expressions-without-trailing-closures-or-member-references-expression-element-list':
+      {
+        patterns: [
+          {include: '#comments'},
+          {
+            begin: '((?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>))\\s*(:)',
+            beginCaptures: {
+              1: {name: 'support.function.any-method.swift'},
+              2: {name: 'punctuation.definition.identifier.swift'},
+              3: {name: 'punctuation.definition.identifier.swift'},
+              4: {name: 'punctuation.separator.argument-label.swift'}
+            },
+            end: '(?=[,)\\]])',
+            patterns: [{include: '#expressions'}]
+          },
+          {
+            begin: '(?![,)\\]])(?=\\S)',
+            end: '(?=[,)\\]])',
+            patterns: [{include: '#expressions'}]
+          }
+        ]
+      },
+    'expressions-without-trailing-closures-or-member-references-function-or-macro-call-expression':
+      {
+        patterns: [
+          {
+            begin:
+              '(#?(?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>))\\s*(\\()',
+            beginCaptures: {
+              1: {name: 'support.function.any-method.swift'},
+              2: {name: 'punctuation.definition.identifier.swift'},
+              3: {name: 'punctuation.definition.identifier.swift'},
+              4: {name: 'punctuation.definition.arguments.begin.swift'}
+            },
+            end: '\\)',
+            endCaptures: {
+              0: {name: 'punctuation.definition.arguments.end.swift'}
+            },
+            name: 'meta.function-call.swift',
+            patterns: [
+              {
+                include:
+                  '#expressions-without-trailing-closures-or-member-references-expression-element-list'
+              }
+            ]
+          },
+          {
+            begin: '(?<=[`\\])}>\\p{L}_\\p{N}\\p{M}])\\s*(\\()',
+            beginCaptures: {
+              1: {name: 'punctuation.definition.arguments.begin.swift'}
+            },
+            end: '\\)',
+            endCaptures: {
+              0: {name: 'punctuation.definition.arguments.end.swift'}
+            },
+            name: 'meta.function-call.swift',
+            patterns: [
+              {
+                include:
+                  '#expressions-without-trailing-closures-or-member-references-expression-element-list'
+              }
+            ]
+          }
+        ]
+      },
+    'expressions-without-trailing-closures-or-member-references-macro-expansion':
+      {
+        match: '(#(?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>))',
+        name: 'support.function.any-method.swift'
+      },
+    'expressions-without-trailing-closures-or-member-references-parenthesized-expression':
+      {
+        begin: '\\(',
+        beginCaptures: {0: {name: 'punctuation.section.tuple.begin.swift'}},
+        end: '(\\))\\s*((?:\\b(?:async|throws|rethrows)\\s)*)',
+        endCaptures: {
+          1: {name: 'punctuation.section.tuple.end.swift'},
+          2: {
+            patterns: [
+              {
+                match: '\\brethrows\\b',
+                name: 'invalid.illegal.rethrows-only-allowed-on-function-declarations.swift'
+              },
+              {include: '#async-throws'}
+            ]
+          }
+        },
+        patterns: [
+          {
+            include:
+              '#expressions-without-trailing-closures-or-member-references-expression-element-list'
+          }
+        ]
+      },
+    'expressions-without-trailing-closures-or-member-references-subscript-expression':
+      {
+        begin: '(?<=[`\\p{L}_\\p{N}\\p{M}])\\s*(\\[)',
+        beginCaptures: {
+          1: {name: 'punctuation.definition.arguments.begin.swift'}
+        },
+        end: '\\]',
+        endCaptures: {0: {name: 'punctuation.definition.arguments.end.swift'}},
+        name: 'meta.subscript-expression.swift',
+        patterns: [
+          {
+            include:
+              '#expressions-without-trailing-closures-or-member-references-expression-element-list'
+          }
+        ]
+      },
     keywords: {
       patterns: [
         {
@@ -1641,8 +1736,12 @@ const grammar = {
           name: 'keyword.control.transfer.swift'
         },
         {
-          match: '(?<!\\.)\\b(?:while|for|in)\\b',
+          match: '(?<!\\.)\\b(?:while|for|in|each)\\b',
           name: 'keyword.control.loop.swift'
+        },
+        {
+          match: '\\bany\\b(?=\\s*`?[\\p{L}_])',
+          name: 'keyword.other.operator.type.existential.swift'
         },
         {
           captures: {
@@ -1660,8 +1759,12 @@ const grammar = {
           match: '(?<!\\.)\\b(?:(await\\s+try)|(await)\\b)'
         },
         {
-          match: '(?<!\\.)\\b(?:catch|throws?|rethrows|try)\\b|\\btry[?!]\\B',
+          match: '(?<!\\.)\\b(?:catch|throw|try)\\b|\\btry[?!]\\B',
           name: 'keyword.control.exception.swift'
+        },
+        {
+          match: '(?<!\\.)\\b(?:throws|rethrows)\\b',
+          name: 'storage.modifier.exception.swift'
         },
         {
           captures: {
@@ -1672,11 +1775,10 @@ const grammar = {
         },
         {
           captures: {
-            1: {name: 'keyword.control.async.swift'},
-            2: {name: 'storage.modifier.swift'},
-            3: {name: 'keyword.other.declaration-specifier.swift'}
+            1: {name: 'storage.modifier.async.swift'},
+            2: {name: 'keyword.other.declaration-specifier.swift'}
           },
-          match: '(?<!\\.)\\b(?:(?:(async)|(nonisolated))\\s+)?(let|var)\\b'
+          match: '(?<!\\.)\\b(?:(async)\\s+)?(let|var)\\b'
         },
         {
           match: '(?<!\\.)\\b(?:associatedtype|operator|typealias)\\b',
@@ -1684,12 +1786,12 @@ const grammar = {
         },
         {
           match:
-            '(?<!\\.)\\b(class|enum|extension|precedencegroup|protocol|struct|actor)\\b',
+            '(?<!\\.)\\b(class|enum|extension|precedencegroup|protocol|struct|actor)\\b(?=\\s*`?[\\p{L}_])',
           name: 'storage.type.$1.swift'
         },
         {
           match:
-            '(?<!\\.)\\b(?:inout|static|final|lazy|mutating|nonmutating|optional|indirect|required|override|dynamic|convenience|infix|prefix|postfix)\\b',
+            '(?<!\\.)\\b(?:inout|static|final|lazy|mutating|nonmutating|optional|indirect|required|override|dynamic|convenience|infix|prefix|postfix|distributed|nonisolated|borrowing|consuming)\\b',
           name: 'storage.modifier.swift'
         },
         {
@@ -1698,7 +1800,8 @@ const grammar = {
           name: 'storage.type.function.swift'
         },
         {
-          match: '(?<!\\.)\\b(?:fileprivate|private|internal|public|open)\\b',
+          match:
+            '(?<!\\.)\\b(?:fileprivate|private|internal|public|open|package)\\b',
           name: 'keyword.other.declaration-specifier.accessibility.swift'
         },
         {
@@ -1708,8 +1811,8 @@ const grammar = {
         },
         {
           captures: {
-            1: {name: 'keyword.operator.type.swift'},
-            2: {name: 'keyword.operator.type.metatype.swift'}
+            1: {name: 'keyword.other.type.swift'},
+            2: {name: 'keyword.other.type.metatype.swift'}
           },
           match: '(?<=\\.)(?:(dynamicType|self)|(Protocol|Type))\\b'
         },
@@ -1722,18 +1825,30 @@ const grammar = {
             '\\B(?:#file|#filePath|#fileID|#line|#column|#function|#dsohandle)\\b|\\b(?:__FILE__|__LINE__|__COLUMN__|__FUNCTION__|__DSO_HANDLE__)\\b',
           name: 'support.variable.swift'
         },
-        {match: '(?<!\\.)\\bimport\\b', name: 'keyword.control.import.swift'}
+        {match: '(?<!\\.)\\bimport\\b', name: 'keyword.control.import.swift'},
+        {
+          match: '(?<!\\.)\\bconsume(?=\\s+`?[\\p{L}_])',
+          name: 'keyword.control.consume.swift'
+        },
+        {
+          match: '(?<!\\.)\\bcopy(?=\\s+`?[\\p{L}_])',
+          name: 'keyword.control.copy.swift'
+        }
       ]
     },
     literals: {
       patterns: [
-        {include: '#boolean'},
-        {include: '#numeric'},
-        {include: '#string'},
+        {include: '#literals-boolean'},
+        {include: '#literals-numeric'},
+        {include: '#literals-string'},
         {match: '\\bnil\\b', name: 'constant.language.nil.swift'},
         {
           match: '\\B#(colorLiteral|imageLiteral|fileLiteral)\\b',
           name: 'support.function.object-literal.swift'
+        },
+        {
+          match: '\\B#externalMacro\\b',
+          name: 'support.function.builtin-macro.swift'
         },
         {match: '\\B#keyPath\\b', name: 'support.function.key-path.swift'},
         {
@@ -1749,260 +1864,614 @@ const grammar = {
             0: {name: 'punctuation.definition.arguments.end.swift'}
           },
           patterns: [{include: '#expressions'}]
-        }
-      ],
-      repository: {
-        boolean: {
-          match: '\\b(true|false)\\b',
-          name: 'constant.language.boolean.swift'
         },
-        numeric: {
+        {include: '#literals-regular-expression-literal'}
+      ]
+    },
+    'literals-boolean': {
+      match: '\\b(true|false)\\b',
+      name: 'constant.language.boolean.swift'
+    },
+    'literals-numeric': {
+      patterns: [
+        {
+          match:
+            '(\\B\\-|\\b)(?<![\\[\\](){}\\p{L}_\\p{N}\\p{M}]\\.)[0-9][0-9_]*(?=\\.[0-9]|[eE])(?:\\.[0-9][0-9_]*)?(?:[eE][-+]?[0-9][0-9_]*)?\\b(?!\\.[0-9])',
+          name: 'constant.numeric.float.decimal.swift'
+        },
+        {
+          match:
+            '(\\B\\-|\\b)(?<![\\[\\](){}\\p{L}_\\p{N}\\p{M}]\\.)(0x[0-9a-fA-F][0-9a-fA-F_]*)(?:\\.[0-9a-fA-F][0-9a-fA-F_]*)?[pP][-+]?[0-9][0-9_]*\\b(?!\\.[0-9])',
+          name: 'constant.numeric.float.hexadecimal.swift'
+        },
+        {
+          match:
+            '(\\B\\-|\\b)(?<![\\[\\](){}\\p{L}_\\p{N}\\p{M}]\\.)(0x[0-9a-fA-F][0-9a-fA-F_]*)(?:\\.[0-9a-fA-F][0-9a-fA-F_]*)?(?:[pP][-+]?\\w*)\\b(?!\\.[0-9])',
+          name: 'invalid.illegal.numeric.float.invalid-exponent.swift'
+        },
+        {
+          match:
+            '(\\B\\-|\\b)(?<![\\[\\](){}\\p{L}_\\p{N}\\p{M}]\\.)(0x[0-9a-fA-F][0-9a-fA-F_]*)\\.[0-9][\\w.]*',
+          name: 'invalid.illegal.numeric.float.missing-exponent.swift'
+        },
+        {
+          match: '(?<=\\s|^)\\-?\\.[0-9][\\w.]*',
+          name: 'invalid.illegal.numeric.float.missing-leading-zero.swift'
+        },
+        {
+          match: '(\\B\\-|\\b)0[box]_[0-9a-fA-F_]*(?:[pPeE][+-]?\\w+)?[\\w.]+',
+          name: 'invalid.illegal.numeric.leading-underscore.swift'
+        },
+        {match: '(?<=[\\[\\](){}\\p{L}_\\p{N}\\p{M}]\\.)[0-9]+\\b'},
+        {
+          match:
+            '(\\B\\-|\\b)(?<![\\[\\](){}\\p{L}_\\p{N}\\p{M}]\\.)0b[01][01_]*\\b(?!\\.[0-9])',
+          name: 'constant.numeric.integer.binary.swift'
+        },
+        {
+          match:
+            '(\\B\\-|\\b)(?<![\\[\\](){}\\p{L}_\\p{N}\\p{M}]\\.)0o[0-7][0-7_]*\\b(?!\\.[0-9])',
+          name: 'constant.numeric.integer.octal.swift'
+        },
+        {
+          match:
+            '(\\B\\-|\\b)(?<![\\[\\](){}\\p{L}_\\p{N}\\p{M}]\\.)[0-9][0-9_]*\\b(?!\\.[0-9])',
+          name: 'constant.numeric.integer.decimal.swift'
+        },
+        {
+          match:
+            '(\\B\\-|\\b)(?<![\\[\\](){}\\p{L}_\\p{N}\\p{M}]\\.)0x[0-9a-fA-F][0-9a-fA-F_]*\\b(?!\\.[0-9])',
+          name: 'constant.numeric.integer.hexadecimal.swift'
+        },
+        {
+          match: '(\\B\\-|\\b)[0-9][\\w.]*',
+          name: 'invalid.illegal.numeric.other.swift'
+        }
+      ]
+    },
+    'literals-regular-expression-literal': {
+      patterns: [
+        {
+          begin: '(#+)/\\n',
+          end: '/\\1',
+          name: 'string.regexp.block.swift',
+          patterns: [
+            {include: '#literals-regular-expression-literal-regex-guts'},
+            {include: '#literals-regular-expression-literal-line-comment'}
+          ]
+        },
+        {
+          captures: {
+            0: {
+              patterns: [
+                {include: '#literals-regular-expression-literal-regex-guts'}
+              ]
+            },
+            1: {name: 'punctuation.definition.string.begin.regexp.swift'},
+            12: {name: 'punctuation.definition.string.end.regexp.swift'},
+            13: {name: 'invalid.illegal.returns-not-allowed.regexp'}
+          },
+          match:
+            "(?x)\n(((\\#+)?)/)     # (1) for captures, (2) for matching end, (3) for conditionals\n(?(3)|(?!/))   # is not a comment\n(?(3)|(?!\\s))  # does not start with a space or tab\n(\\\\\\s)? # (4) may start with an escaped space or tab\n(?<guts>\n  (?>   # no backtracking, avoids issues with negative lookbehind at end\n    (?:\n      \\\\Q\n        (?:(?!\\\\E)(?!/\\2).)*+\n        (?:\\\\E\n          # A quoted sequence may not have a closing E, in which case it extends to the end of the regex\n          | (?(3)|(?<!\\s))(?=/\\2)\n        )\n      | \\\\.\n      | \\(\\?\\#[^)]*\\)\n      | \\(\\?\n          # we only support a fixed maximum number of braces because otherwise we can't balance the number of open and close braces\n          \\{(?<g1>\\{)?+(?<g2>\\{)?+(?<g3>\\{)?+(?<g4>\\{)?+(?<g5>\\{)?+\n          .+?\n          \\}(?(<g1>)\\})(?(<g2>)\\})(?(<g3>)\\})(?(<g4>)\\})(?(<g5>)\\})\n          (?:\\[(?!\\d)\\w+\\])?\n          [X<>]?\n        \\)\n      | (?<class>\\[ (?:\\\\. | [^\\[\\]] | \\g<class>)+ \\])\n      | \\(\\g<guts>?+\\)\n      | (?:(?!/\\2)[^()\\[\\\\])+  # any character (until end)\n    )+\n  )\n)?+\n# may end with a space only if it is an extended literal or contains only a single escaped space\n(?(3)|(?(5)(?<!\\s)))\n(/\\2)     # (12)\n| \\#+/.+(\\n)",
+          name: 'string.regexp.line.swift'
+        }
+      ]
+    },
+    'literals-regular-expression-literal-backreference-or-subpattern': {
+      patterns: [
+        {
+          captures: {
+            1: {name: 'constant.character.escape.backslash.regexp'},
+            2: {name: 'variable.other.group-name.regexp'},
+            3: {name: 'keyword.operator.recursion-level.regexp'},
+            4: {name: 'constant.numeric.integer.decimal.regexp'},
+            5: {name: 'constant.numeric.integer.decimal.regexp'},
+            6: {name: 'keyword.operator.recursion-level.regexp'},
+            7: {name: 'constant.numeric.integer.decimal.regexp'},
+            8: {name: 'constant.character.escape.backslash.regexp'}
+          },
+          match:
+            '(?x)(\\\\g\\{) (?: ((?!\\d)\\w+) (?:([+-])(\\d+))? | ([+-]?\\d+) (?:([+-])(\\d+))? ) (\\})'
+        },
+        {
+          captures: {
+            1: {name: 'constant.character.escape.backslash.regexp'},
+            2: {name: 'constant.numeric.integer.decimal.regexp'},
+            3: {name: 'keyword.operator.recursion-level.regexp'},
+            4: {name: 'constant.numeric.integer.decimal.regexp'}
+          },
+          match: '(?x)(\\\\g) ([+-]?\\d+) (?:([+-])(\\d+))?'
+        },
+        {
+          captures: {
+            1: {name: 'constant.character.escape.backslash.regexp'},
+            3: {name: 'variable.other.group-name.regexp'},
+            4: {name: 'keyword.operator.recursion-level.regexp'},
+            5: {name: 'constant.numeric.integer.decimal.regexp'},
+            6: {name: 'constant.numeric.integer.decimal.regexp'},
+            7: {name: 'keyword.operator.recursion-level.regexp'},
+            8: {name: 'constant.numeric.integer.decimal.regexp'},
+            9: {name: 'constant.character.escape.backslash.regexp'}
+          },
+          match:
+            "(?x)(\\\\[gk](<)|\\\\[gk]') (?: ((?!\\d)\\w+) (?:([+-])(\\d+))? | ([+-]?\\d+) (?:([+-])(\\d+))? ) ((?(2)>|'))"
+        },
+        {
+          captures: {
+            1: {name: 'constant.character.escape.backslash.regexp'},
+            2: {name: 'variable.other.group-name.regexp'},
+            3: {name: 'keyword.operator.recursion-level.regexp'},
+            4: {name: 'constant.numeric.integer.decimal.regexp'},
+            5: {name: 'constant.character.escape.backslash.regexp'}
+          },
+          match: '(?x)(\\\\k\\{) ((?!\\d)\\w+) (?:([+-])(\\d+))? (\\})'
+        },
+        {match: '\\\\[1-9][0-9]+', name: 'keyword.other.back-reference.regexp'},
+        {
+          captures: {
+            1: {name: 'keyword.other.back-reference.regexp'},
+            2: {name: 'variable.other.group-name.regexp'},
+            3: {name: 'keyword.operator.recursion-level.regexp'},
+            4: {name: 'constant.numeric.integer.decimal.regexp'},
+            5: {name: 'keyword.other.back-reference.regexp'}
+          },
+          match: '(?x)(\\(\\?(?:P[=>]|&)) ((?!\\d)\\w+) (?:([+-])(\\d+))? (\\))'
+        },
+        {match: '\\(\\?R\\)', name: 'keyword.other.back-reference.regexp'},
+        {
+          captures: {
+            1: {name: 'keyword.other.back-reference.regexp'},
+            2: {name: 'constant.numeric.integer.decimal.regexp'},
+            3: {name: 'keyword.operator.recursion-level.regexp'},
+            4: {name: 'constant.numeric.integer.decimal.regexp'},
+            5: {name: 'keyword.other.back-reference.regexp'}
+          },
+          match: '(?x)(\\(\\?) ([+-]?\\d+) (?:([+-])(\\d+))? (\\))'
+        }
+      ]
+    },
+    'literals-regular-expression-literal-backtracking-directive-or-global-matching-option':
+      {
+        captures: {
+          1: {name: 'keyword.control.directive.regexp'},
+          2: {name: 'keyword.control.directive.regexp'},
+          3: {name: 'keyword.control.directive.regexp'},
+          4: {name: 'variable.language.tag.regexp'},
+          5: {name: 'keyword.control.directive.regexp'},
+          6: {name: 'keyword.operator.assignment.regexp'},
+          7: {name: 'constant.numeric.integer.decimal.regexp'},
+          8: {name: 'keyword.control.directive.regexp'},
+          9: {name: 'keyword.control.directive.regexp'}
+        },
+        match:
+          '(?x)\n(\\(\\*)\n(?:\n  (ACCEPT|FAIL|F|MARK(?=:)|(?=:)|COMMIT|PRUNE|SKIP|THEN)\n    (?:(:)([^)]+))?\n  | (?:(LIMIT_(?:DEPTH|HEAP|MATCH))(=)(\\d+))\n  | (\n      CRLF | CR | ANYCRLF | ANY | LF | NUL\n      | BSR_ANYCRLF | BSR_UNICODE\n      | NOTEMPTY_ATSTART | NOTEMPTY\n      | NO_AUTO_POSSESS | NO_DOTSTAR_ANCHOR\n      | NO_JIT | NO_START_OPT | UTF | UCP\n    )\n)\n(\\))'
+      },
+    'literals-regular-expression-literal-callout': {
+      captures: {
+        1: {name: 'punctuation.definition.group.regexp'},
+        10: {name: 'entity.name.function.callout.regexp'},
+        11: {name: 'entity.name.function.callout.regexp'},
+        12: {name: 'punctuation.definition.group.regexp'},
+        13: {name: 'punctuation.definition.group.regexp'},
+        14: {name: 'keyword.control.callout.regexp'},
+        15: {name: 'entity.name.function.callout.regexp'},
+        16: {name: 'variable.language.tag-name.regexp'},
+        17: {name: 'punctuation.definition.group.regexp'},
+        18: {name: 'punctuation.definition.group.regexp'},
+        19: {name: 'keyword.control.callout.regexp'},
+        2: {name: 'keyword.control.callout.regexp'},
+        26: {name: 'variable.language.tag-name.regexp'},
+        27: {name: 'keyword.control.callout.regexp'},
+        28: {name: 'punctuation.definition.group.regexp'},
+        3: {name: 'constant.numeric.integer.decimal.regexp'},
+        4: {name: 'entity.name.function.callout.regexp'},
+        5: {name: 'entity.name.function.callout.regexp'},
+        6: {name: 'entity.name.function.callout.regexp'},
+        7: {name: 'entity.name.function.callout.regexp'},
+        8: {name: 'entity.name.function.callout.regexp'},
+        9: {name: 'entity.name.function.callout.regexp'}
+      },
+      match:
+        "(?x)\n# PCRECallout\n(\\()(?<keyw>\\?C)\n  (?:\n    (?<num>\\d+)\n    | `(?<name>(?:[^`]|``)*)`\n    | '(?<name>(?:[^']|'')*)'\n    | \"(?<name>(?:[^\"]|\"\")*)\"\n    | \\^(?<name>(?:[^\\^]|\\^\\^)*)\\^\n    | %(?<name>(?:[^%]|%%)*)%\n    | \\#(?<name>(?:[^#]|\\#\\#)*)\\#\n    | \\$(?<name>(?:[^$]|\\$\\$)*)\\$\n    | \\{(?<name>(?:[^}]|\\}\\})*)\\}\n  )?\n(\\))\n# NamedCallout\n| (\\()(?<keyw>\\*)\n    (?<name>(?!\\d)\\w+)\n    (?:\\[(?<tag>(?!\\d)\\w+)\\])?\n    (?:\\{ [^,}]+ (?:,[^,}]+)* \\})?\n  (\\))\n# InterpolatedCallout\n| (\\()(?<keyw>\\?)\n    # we only support a fixed maximum number of braces because otherwise we can't balance the number of open and close braces\n    (\\{(?<g1>\\{)?+(?<g2>\\{)?+(?<g3>\\{)?+(?<g4>\\{)?+(?<g5>\\{)?+) .+? \\}(?(<g1>)\\})(?(<g2>)\\})(?(<g3>)\\})(?(<g4>)\\})(?(<g5>)\\})\n    (?:\\[(?<tag>(?!\\d)\\w+)\\])?\n    (?<keyw>[X<>]?)\n  (\\))",
+      name: 'meta.callout.regexp'
+    },
+    'literals-regular-expression-literal-character-properties': {
+      captures: {
+        1: {name: 'support.variable.character-property.regexp'},
+        2: {name: 'punctuation.definition.character-class.regexp'},
+        3: {name: 'support.variable.character-property.regexp'},
+        4: {name: 'punctuation.definition.character-class.regexp'}
+      },
+      match:
+        '(?x)\n\\\\[pP]\\{ ([\\s\\w-]+(?:=[\\s\\w-]+)?) \\}\n| (\\[:) ([\\s\\w-]+(?:=[\\s\\w-]+)?) (:\\])',
+      name: 'constant.other.character-class.set.regexp'
+    },
+    'literals-regular-expression-literal-custom-char-class': {
+      patterns: [
+        {
+          begin: '(\\[)(\\^)?',
+          beginCaptures: {
+            1: {name: 'punctuation.definition.character-class.regexp'},
+            2: {name: 'keyword.operator.negation.regexp'}
+          },
+          end: '\\]',
+          endCaptures: {
+            0: {name: 'punctuation.definition.character-class.regexp'}
+          },
+          name: 'constant.other.character-class.set.regexp',
           patterns: [
             {
-              match:
-                '(\\B\\-|\\b)(?<![\\[\\](){}\\p{L}_\\p{N}\\p{M}]\\.)[0-9][0-9_]*(?=\\.[0-9]|[eE])(?:\\.[0-9][0-9_]*)?(?:[eE][-+]?[0-9][0-9_]*)?\\b(?!\\.[0-9])',
-              name: 'constant.numeric.float.decimal.swift'
+              include:
+                '#literals-regular-expression-literal-custom-char-class-members'
+            }
+          ]
+        }
+      ]
+    },
+    'literals-regular-expression-literal-custom-char-class-members': {
+      patterns: [
+        {match: '\\\\b', name: 'constant.character.escape.backslash.regexp'},
+        {include: '#literals-regular-expression-literal-custom-char-class'},
+        {include: '#literals-regular-expression-literal-quote'},
+        {include: '#literals-regular-expression-literal-set-operators'},
+        {include: '#literals-regular-expression-literal-unicode-scalars'},
+        {include: '#literals-regular-expression-literal-character-properties'}
+      ]
+    },
+    'literals-regular-expression-literal-group-option-toggle': {
+      match:
+        '(?x)\n\\(\\?\n(?:\n  \\^(?:[iJmnsUxwDPSW]|xx|y\\{[gw]\\})*\n  | (?:[iJmnsUxwDPSW]|xx|y\\{[gw]\\})+\n  | (?:[iJmnsUxwDPSW]|xx|y\\{[gw]\\})* - (?:[iJmnsUxwDPSW]|xx|y\\{[gw]\\})*\n)\n\\)',
+      name: 'keyword.other.option-toggle.regexp'
+    },
+    'literals-regular-expression-literal-group-or-conditional': {
+      patterns: [
+        {
+          begin: '(\\()(\\?~)',
+          beginCaptures: {
+            1: {name: 'punctuation.definition.group.regexp'},
+            2: {name: 'keyword.control.conditional.absent.regexp'}
+          },
+          end: '\\)',
+          endCaptures: {0: {name: 'punctuation.definition.group.regexp'}},
+          name: 'meta.group.absent.regexp',
+          patterns: [
+            {include: '#literals-regular-expression-literal-regex-guts'}
+          ]
+        },
+        {
+          begin:
+            "(?x)\n# KnownConditionalStart\n(\\() (?<cond>\\?\\()\n  (?:\n    (?<NumberRef> (?<num>[+-]?\\d+)(?:(?<op>[+-])(?<num>\\d+))? )\n    | (?<cond>R) \\g<NumberRef>?\n    | (?<cond>R&) (?<NamedRef> (?<name>(?!\\d)\\w+) (?:(?<op>[+-])(?<num>\\d+))? )\n    | (?<cond><) (?:\\g<NamedRef>|\\g<NumberRef>) (?<cond>>)\n    | (?<cond>') (?:\\g<NamedRef>|\\g<NumberRef>) (?<cond>')\n    | (?<cond>DEFINE)\n    | (?<cond>VERSION)(?<compar>>?=)(?<num>\\d+\\.\\d+)\n  )\n(?<cond>\\))\n| (\\()(?<cond>\\?)(?=\\()",
+          beginCaptures: {
+            1: {name: 'punctuation.definition.group.regexp'},
+            10: {name: 'variable.other.group-name.regexp'},
+            11: {name: 'keyword.operator.recursion-level.regexp'},
+            12: {name: 'constant.numeric.integer.decimal.regexp'},
+            13: {name: 'keyword.control.conditional.regexp'},
+            14: {name: 'keyword.control.conditional.regexp'},
+            15: {name: 'keyword.control.conditional.regexp'},
+            16: {name: 'keyword.control.conditional.regexp'},
+            17: {name: 'keyword.control.conditional.regexp'},
+            18: {name: 'keyword.control.conditional.regexp'},
+            19: {name: 'keyword.operator.comparison.regexp'},
+            2: {name: 'keyword.control.conditional.regexp'},
+            20: {name: 'constant.numeric.integer.decimal.regexp'},
+            21: {name: 'keyword.control.conditional.regexp'},
+            22: {name: 'punctuation.definition.group.regexp'},
+            23: {name: 'keyword.control.conditional.regexp'},
+            4: {name: 'constant.numeric.integer.decimal.regexp'},
+            5: {name: 'keyword.operator.recursion-level.regexp'},
+            6: {name: 'constant.numeric.integer.decimal.regexp'},
+            7: {name: 'keyword.control.conditional.regexp'},
+            8: {name: 'keyword.control.conditional.regexp'}
+          },
+          end: '\\)',
+          endCaptures: {0: {name: 'punctuation.definition.group.regexp'}},
+          name: 'meta.group.conditional.regexp',
+          patterns: [
+            {include: '#literals-regular-expression-literal-regex-guts'}
+          ]
+        },
+        {
+          begin:
+            "(?x)\n(\\()\n(\n  # BasicGroupKind\n  (\\?)\n  (?:\n    ([:|>=!*] | <[=!*])\n    # named groups\n    | P?< (?:((?!\\d)\\w+) (-))? ((?!\\d)\\w+) >\n    | ' (?:((?!\\d)\\w+) (-))? ((?!\\d)\\w+) '\n    # matching options\n    | (?:\n      \\^(?:[iJmnsUxwDPSW]|xx|y\\{[gw]\\})*\n      | (?:[iJmnsUxwDPSW]|xx|y\\{[gw]\\})+\n      | (?:[iJmnsUxwDPSW]|xx|y\\{[gw]\\})* - (?:[iJmnsUxwDPSW]|xx|y\\{[gw]\\})*\n    ):  # case without : is handled by group-option-toggle\n  )\n  # PCRE2GroupKind\n  | \\*(\n    atomic\n    |pla|positive_lookahead\n    |nla|negative_lookahead\n    |plb|positive_lookbehind\n    |nlb|negative_lookbehind\n    |napla|non_atomic_positive_lookahead\n    |naplb|non_atomic_positive_lookbehind\n    |sr|script_run\n    |asr|atomic_script_run\n  ):\n)?+",
+          beginCaptures: {
+            1: {name: 'punctuation.definition.group.regexp'},
+            10: {name: 'variable.other.group-name.regexp'},
+            2: {name: 'keyword.other.group-options.regexp'},
+            3: {name: 'punctuation.definition.group.regexp'},
+            4: {name: 'punctuation.definition.group.regexp'},
+            5: {name: 'variable.other.group-name.regexp'},
+            6: {name: 'keyword.operator.balancing-group.regexp'},
+            7: {name: 'variable.other.group-name.regexp'},
+            8: {name: 'variable.other.group-name.regexp'},
+            9: {name: 'keyword.operator.balancing-group.regexp'}
+          },
+          end: '\\)',
+          endCaptures: {0: {name: 'punctuation.definition.group.regexp'}},
+          name: 'meta.group.regexp',
+          patterns: [
+            {include: '#literals-regular-expression-literal-regex-guts'}
+          ]
+        }
+      ]
+    },
+    'literals-regular-expression-literal-line-comment': {
+      captures: {1: {name: 'punctuation.definition.comment.regexp'}},
+      match: '(\\#).*$',
+      name: 'comment.line.regexp'
+    },
+    'literals-regular-expression-literal-quote': {
+      begin: '\\\\Q',
+      beginCaptures: {0: {name: 'constant.character.escape.backslash.regexp'}},
+      end: '\\\\E|(\\n)',
+      endCaptures: {
+        0: {name: 'constant.character.escape.backslash.regexp'},
+        1: {name: 'invalid.illegal.returns-not-allowed.regexp'}
+      },
+      name: 'string.quoted.other.regexp.swift'
+    },
+    'literals-regular-expression-literal-regex-guts': {
+      patterns: [
+        {include: '#literals-regular-expression-literal-quote'},
+        {
+          begin: '\\(\\?\\#',
+          beginCaptures: {
+            0: {name: 'punctuation.definition.comment.begin.regexp'}
+          },
+          end: '\\)',
+          endCaptures: {0: {name: 'punctuation.definition.comment.end.regexp'}},
+          name: 'comment.block.regexp'
+        },
+        {
+          begin: '<\\{',
+          beginCaptures: {
+            0: {name: 'punctuation.section.embedded.begin.regexp'}
+          },
+          end: '\\}>',
+          endCaptures: {0: {name: 'punctuation.section.embedded.end.regexp'}},
+          name: 'meta.embedded.expression.regexp'
+        },
+        {include: '#literals-regular-expression-literal-unicode-scalars'},
+        {include: '#literals-regular-expression-literal-character-properties'},
+        {
+          match: '[$^]|\\\\[AbBGyYzZ]|\\\\K',
+          name: 'keyword.control.anchor.regexp'
+        },
+        {
+          include:
+            '#literals-regular-expression-literal-backtracking-directive-or-global-matching-option'
+        },
+        {include: '#literals-regular-expression-literal-callout'},
+        {
+          include:
+            '#literals-regular-expression-literal-backreference-or-subpattern'
+        },
+        {
+          match: '\\.|\\\\[CdDhHNORsSvVwWX]',
+          name: 'constant.character.character-class.regexp'
+        },
+        {
+          match: '\\\\c.',
+          name: 'constant.character.entity.control-character.regexp'
+        },
+        {match: '\\\\[^c]', name: 'constant.character.escape.backslash.regexp'},
+        {match: '\\|', name: 'keyword.operator.or.regexp'},
+        {match: '[*+?]', name: 'keyword.operator.quantifier.regexp'},
+        {
+          match: '\\{\\s*\\d+\\s*(?:,\\s*\\d*\\s*)?\\}|\\{\\s*,\\s*\\d+\\s*\\}',
+          name: 'keyword.operator.quantifier.regexp'
+        },
+        {include: '#literals-regular-expression-literal-custom-char-class'},
+        {include: '#literals-regular-expression-literal-group-option-toggle'},
+        {include: '#literals-regular-expression-literal-group-or-conditional'}
+      ]
+    },
+    'literals-regular-expression-literal-set-operators': {
+      patterns: [
+        {match: '&&', name: 'keyword.operator.intersection.regexp.swift'},
+        {match: '--', name: 'keyword.operator.subtraction.regexp.swift'},
+        {
+          match: '\\~\\~',
+          name: 'keyword.operator.symmetric-difference.regexp.swift'
+        }
+      ]
+    },
+    'literals-regular-expression-literal-unicode-scalars': {
+      match:
+        '(?x)\n\\\\u\\{\\s*(?:[0-9a-fA-F]+\\s*)+\\}\n| \\\\u[0-9a-fA-F]{4}\n| \\\\x\\{[0-9a-fA-F]+\\}\n| \\\\x[0-9a-fA-F]{0,2}\n| \\\\U[0-9a-fA-F]{8}\n| \\\\o\\{[0-7]+\\}\n| \\\\0[0-7]{0,3}\n| \\\\N\\{(?:U\\+[0-9a-fA-F]{1,8} | [\\s\\w-]+)\\}',
+      name: 'constant.character.numeric.regexp'
+    },
+    'literals-string': {
+      patterns: [
+        {
+          begin: '"""',
+          beginCaptures: {
+            0: {name: 'punctuation.definition.string.begin.swift'}
+          },
+          end: '"""(#*)',
+          endCaptures: {
+            0: {name: 'punctuation.definition.string.end.swift'},
+            1: {name: 'invalid.illegal.extra-closing-delimiter.swift'}
+          },
+          name: 'string.quoted.double.block.swift',
+          patterns: [
+            {
+              match: '\\G.+(?=""")|\\G.+',
+              name: 'invalid.illegal.content-after-opening-delimiter.swift'
             },
             {
-              match:
-                '(\\B\\-|\\b)(?<![\\[\\](){}\\p{L}_\\p{N}\\p{M}]\\.)(0x[0-9a-fA-F][0-9a-fA-F_]*)(?:\\.[0-9a-fA-F][0-9a-fA-F_]*)?[pP][-+]?[0-9][0-9_]*\\b(?!\\.[0-9])',
-              name: 'constant.numeric.float.hexadecimal.swift'
+              match: '\\\\\\s*\\n',
+              name: 'constant.character.escape.newline.swift'
             },
+            {include: '#literals-string-string-guts'},
             {
-              match:
-                '(\\B\\-|\\b)(?<![\\[\\](){}\\p{L}_\\p{N}\\p{M}]\\.)(0x[0-9a-fA-F][0-9a-fA-F_]*)(?:\\.[0-9a-fA-F][0-9a-fA-F_]*)?(?:[pP][-+]?\\w*)\\b(?!\\.[0-9])',
-              name: 'invalid.illegal.numeric.float.invalid-exponent.swift'
-            },
-            {
-              match:
-                '(\\B\\-|\\b)(?<![\\[\\](){}\\p{L}_\\p{N}\\p{M}]\\.)(0x[0-9a-fA-F][0-9a-fA-F_]*)\\.[0-9][\\w.]*',
-              name: 'invalid.illegal.numeric.float.missing-exponent.swift'
-            },
-            {
-              match: '(?<=\\s|^)\\-?\\.[0-9][\\w.]*',
-              name: 'invalid.illegal.numeric.float.missing-leading-zero.swift'
-            },
-            {
-              match:
-                '(\\B\\-|\\b)0[box]_[0-9a-fA-F_]*(?:[pPeE][+-]?\\w+)?[\\w.]+',
-              name: 'invalid.illegal.numeric.leading-underscore.swift'
-            },
-            {match: '(?<=[\\[\\](){}\\p{L}_\\p{N}\\p{M}]\\.)[0-9]+\\b'},
-            {
-              match:
-                '(\\B\\-|\\b)(?<![\\[\\](){}\\p{L}_\\p{N}\\p{M}]\\.)0b[01][01_]*\\b(?!\\.[0-9])',
-              name: 'constant.numeric.integer.binary.swift'
-            },
-            {
-              match:
-                '(\\B\\-|\\b)(?<![\\[\\](){}\\p{L}_\\p{N}\\p{M}]\\.)0o[0-7][0-7_]*\\b(?!\\.[0-9])',
-              name: 'constant.numeric.integer.octal.swift'
-            },
-            {
-              match:
-                '(\\B\\-|\\b)(?<![\\[\\](){}\\p{L}_\\p{N}\\p{M}]\\.)[0-9][0-9_]*\\b(?!\\.[0-9])',
-              name: 'constant.numeric.integer.decimal.swift'
-            },
-            {
-              match:
-                '(\\B\\-|\\b)(?<![\\[\\](){}\\p{L}_\\p{N}\\p{M}]\\.)0x[0-9a-fA-F][0-9a-fA-F_]*\\b(?!\\.[0-9])',
-              name: 'constant.numeric.integer.hexadecimal.swift'
-            },
-            {
-              match: '(\\B\\-|\\b)[0-9][\\w.]*',
-              name: 'invalid.illegal.numeric.other.swift'
+              match: '\\S((?!\\\\\\().)*(?=""")',
+              name: 'invalid.illegal.content-before-closing-delimiter.swift'
             }
           ]
         },
-        string: {
+        {
+          begin: '#"""',
+          beginCaptures: {
+            0: {name: 'punctuation.definition.string.begin.swift'}
+          },
+          end: '"""#(#*)',
+          endCaptures: {
+            0: {name: 'punctuation.definition.string.end.swift'},
+            1: {name: 'invalid.illegal.extra-closing-delimiter.swift'}
+          },
+          name: 'string.quoted.double.block.raw.swift',
           patterns: [
             {
-              begin: '"""',
-              beginCaptures: {
-                0: {name: 'punctuation.definition.string.begin.swift'}
-              },
-              end: '"""(#*)',
-              endCaptures: {
-                0: {name: 'punctuation.definition.string.end.swift'},
-                1: {name: 'invalid.illegal.extra-closing-delimiter.swift'}
-              },
-              name: 'string.quoted.double.block.swift',
-              patterns: [
-                {
-                  match: '\\G.+(?=""")|\\G.+',
-                  name: 'invalid.illegal.content-after-opening-delimiter.swift'
-                },
-                {
-                  match: '\\\\\\s*\\n',
-                  name: 'constant.character.escape.newline.swift'
-                },
-                {include: '#string-guts'},
-                {
-                  match: '\\S((?!\\\\\\().)*(?=""")',
-                  name: 'invalid.illegal.content-before-closing-delimiter.swift'
-                }
-              ]
+              match: '\\G.+(?=""")|\\G.+',
+              name: 'invalid.illegal.content-after-opening-delimiter.swift'
             },
             {
-              begin: '#"""',
-              beginCaptures: {
-                0: {name: 'punctuation.definition.string.begin.swift'}
-              },
-              end: '"""#(#*)',
-              endCaptures: {
-                0: {name: 'punctuation.definition.string.end.swift'},
-                1: {name: 'invalid.illegal.extra-closing-delimiter.swift'}
-              },
-              name: 'string.quoted.double.block.raw.swift',
-              patterns: [
-                {
-                  match: '\\G.+(?=""")|\\G.+',
-                  name: 'invalid.illegal.content-after-opening-delimiter.swift'
-                },
-                {
-                  match: '\\\\#\\s*\\n',
-                  name: 'constant.character.escape.newline.swift'
-                },
-                {include: '#raw-string-guts'},
-                {
-                  match: '\\S((?!\\\\#\\().)*(?=""")',
-                  name: 'invalid.illegal.content-before-closing-delimiter.swift'
-                }
-              ]
+              match: '\\\\#\\s*\\n',
+              name: 'constant.character.escape.newline.swift'
             },
+            {include: '#literals-string-raw-string-guts'},
             {
-              begin: '(##+)"""',
-              beginCaptures: {
-                0: {name: 'punctuation.definition.string.begin.swift'}
-              },
-              end: '"""\\1(#*)',
-              endCaptures: {
-                0: {name: 'punctuation.definition.string.end.swift'},
-                1: {name: 'invalid.illegal.extra-closing-delimiter.swift'}
-              },
-              name: 'string.quoted.double.block.raw.swift',
-              patterns: [
-                {
-                  match: '\\G.+(?=""")|\\G.+',
-                  name: 'invalid.illegal.content-after-opening-delimiter.swift'
-                }
-              ]
-            },
-            {
-              begin: '"',
-              beginCaptures: {
-                0: {name: 'punctuation.definition.string.begin.swift'}
-              },
-              end: '"(#*)',
-              endCaptures: {
-                0: {name: 'punctuation.definition.string.end.swift'},
-                1: {name: 'invalid.illegal.extra-closing-delimiter.swift'}
-              },
-              name: 'string.quoted.double.single-line.swift',
-              patterns: [
-                {
-                  match: '\\r|\\n',
-                  name: 'invalid.illegal.returns-not-allowed.swift'
-                },
-                {include: '#string-guts'}
-              ]
-            },
-            {
-              begin: '(##+)"',
-              beginCaptures: {
-                0: {name: 'punctuation.definition.string.begin.raw.swift'}
-              },
-              end: '"\\1(#*)',
-              endCaptures: {
-                0: {name: 'punctuation.definition.string.end.raw.swift'},
-                1: {name: 'invalid.illegal.extra-closing-delimiter.swift'}
-              },
-              name: 'string.quoted.double.single-line.raw.swift',
-              patterns: [
-                {
-                  match: '\\r|\\n',
-                  name: 'invalid.illegal.returns-not-allowed.swift'
-                }
-              ]
-            },
-            {
-              begin: '#"',
-              beginCaptures: {
-                0: {name: 'punctuation.definition.string.begin.raw.swift'}
-              },
-              end: '"#(#*)',
-              endCaptures: {
-                0: {name: 'punctuation.definition.string.end.raw.swift'},
-                1: {name: 'invalid.illegal.extra-closing-delimiter.swift'}
-              },
-              name: 'string.quoted.double.single-line.raw.swift',
-              patterns: [
-                {
-                  match: '\\r|\\n',
-                  name: 'invalid.illegal.returns-not-allowed.swift'
-                },
-                {include: '#raw-string-guts'}
-              ]
+              match: '\\S((?!\\\\#\\().)*(?=""")',
+              name: 'invalid.illegal.content-before-closing-delimiter.swift'
             }
-          ],
-          repository: {
-            'raw-string-guts': {
-              patterns: [
-                {
-                  match: '\\\\#[0\\\\tnr"\']',
-                  name: 'constant.character.escape.swift'
-                },
-                {
-                  match: '\\\\#u\\{[0-9a-fA-F]{1,8}\\}',
-                  name: 'constant.character.escape.unicode.swift'
-                },
-                {
-                  begin: '\\\\#\\(',
-                  beginCaptures: {
-                    0: {name: 'punctuation.section.embedded.begin.swift'}
-                  },
-                  contentName: 'source.swift',
-                  end: '(\\))',
-                  endCaptures: {
-                    0: {name: 'punctuation.section.embedded.end.swift'},
-                    1: {name: 'source.swift'}
-                  },
-                  name: 'meta.embedded.line.swift',
-                  patterns: [{include: '$self'}, {begin: '\\(', end: '\\)'}]
-                },
-                {match: '\\\\#.', name: 'invalid.illegal.escape-not-recognized'}
-              ]
-            },
-            'string-guts': {
-              patterns: [
-                {
-                  match: '\\\\[0\\\\tnr"\']',
-                  name: 'constant.character.escape.swift'
-                },
-                {
-                  match: '\\\\u\\{[0-9a-fA-F]{1,8}\\}',
-                  name: 'constant.character.escape.unicode.swift'
-                },
-                {
-                  begin: '\\\\\\(',
-                  beginCaptures: {
-                    0: {name: 'punctuation.section.embedded.begin.swift'}
-                  },
-                  contentName: 'source.swift',
-                  end: '(\\))',
-                  endCaptures: {
-                    0: {name: 'punctuation.section.embedded.end.swift'},
-                    1: {name: 'source.swift'}
-                  },
-                  name: 'meta.embedded.line.swift',
-                  patterns: [{include: '$self'}, {begin: '\\(', end: '\\)'}]
-                },
-                {match: '\\\\.', name: 'invalid.illegal.escape-not-recognized'}
-              ]
+          ]
+        },
+        {
+          begin: '(##+)"""',
+          beginCaptures: {
+            0: {name: 'punctuation.definition.string.begin.swift'}
+          },
+          end: '"""\\1(#*)',
+          endCaptures: {
+            0: {name: 'punctuation.definition.string.end.swift'},
+            1: {name: 'invalid.illegal.extra-closing-delimiter.swift'}
+          },
+          name: 'string.quoted.double.block.raw.swift',
+          patterns: [
+            {
+              match: '\\G.+(?=""")|\\G.+',
+              name: 'invalid.illegal.content-after-opening-delimiter.swift'
             }
-          }
+          ]
+        },
+        {
+          begin: '"',
+          beginCaptures: {
+            0: {name: 'punctuation.definition.string.begin.swift'}
+          },
+          end: '"(#*)',
+          endCaptures: {
+            0: {name: 'punctuation.definition.string.end.swift'},
+            1: {name: 'invalid.illegal.extra-closing-delimiter.swift'}
+          },
+          name: 'string.quoted.double.single-line.swift',
+          patterns: [
+            {
+              match: '\\r|\\n',
+              name: 'invalid.illegal.returns-not-allowed.swift'
+            },
+            {include: '#literals-string-string-guts'}
+          ]
+        },
+        {
+          begin: '(##+)"',
+          beginCaptures: {
+            0: {name: 'punctuation.definition.string.begin.raw.swift'}
+          },
+          end: '"\\1(#*)',
+          endCaptures: {
+            0: {name: 'punctuation.definition.string.end.raw.swift'},
+            1: {name: 'invalid.illegal.extra-closing-delimiter.swift'}
+          },
+          name: 'string.quoted.double.single-line.raw.swift',
+          patterns: [
+            {
+              match: '\\r|\\n',
+              name: 'invalid.illegal.returns-not-allowed.swift'
+            }
+          ]
+        },
+        {
+          begin: '#"',
+          beginCaptures: {
+            0: {name: 'punctuation.definition.string.begin.raw.swift'}
+          },
+          end: '"#(#*)',
+          endCaptures: {
+            0: {name: 'punctuation.definition.string.end.raw.swift'},
+            1: {name: 'invalid.illegal.extra-closing-delimiter.swift'}
+          },
+          name: 'string.quoted.double.single-line.raw.swift',
+          patterns: [
+            {
+              match: '\\r|\\n',
+              name: 'invalid.illegal.returns-not-allowed.swift'
+            },
+            {include: '#literals-string-raw-string-guts'}
+          ]
         }
-      }
+      ]
+    },
+    'literals-string-raw-string-guts': {
+      patterns: [
+        {match: '\\\\#[0\\\\tnr"\']', name: 'constant.character.escape.swift'},
+        {
+          match: '\\\\#u\\{[0-9a-fA-F]{1,8}\\}',
+          name: 'constant.character.escape.unicode.swift'
+        },
+        {
+          begin: '\\\\#\\(',
+          beginCaptures: {
+            0: {name: 'punctuation.section.embedded.begin.swift'}
+          },
+          contentName: 'source.swift',
+          end: '(\\))',
+          endCaptures: {
+            0: {name: 'punctuation.section.embedded.end.swift'},
+            1: {name: 'source.swift'}
+          },
+          name: 'meta.embedded.line.swift',
+          patterns: [{include: '$self'}, {begin: '\\(', end: '\\)'}]
+        },
+        {match: '\\\\#.', name: 'invalid.illegal.escape-not-recognized'}
+      ]
+    },
+    'literals-string-string-guts': {
+      patterns: [
+        {match: '\\\\[0\\\\tnr"\']', name: 'constant.character.escape.swift'},
+        {
+          match: '\\\\u\\{[0-9a-fA-F]{1,8}\\}',
+          name: 'constant.character.escape.unicode.swift'
+        },
+        {
+          begin: '\\\\\\(',
+          beginCaptures: {
+            0: {name: 'punctuation.section.embedded.begin.swift'}
+          },
+          contentName: 'source.swift',
+          end: '(\\))',
+          endCaptures: {
+            0: {name: 'punctuation.section.embedded.end.swift'},
+            1: {name: 'source.swift'}
+          },
+          name: 'meta.embedded.line.swift',
+          patterns: [{include: '$self'}, {begin: '\\(', end: '\\)'}]
+        },
+        {match: '\\\\.', name: 'invalid.illegal.escape-not-recognized'}
+      ]
+    },
+    'member-reference': {
+      patterns: [
+        {
+          captures: {
+            1: {name: 'variable.other.swift'},
+            2: {name: 'punctuation.definition.identifier.swift'},
+            3: {name: 'punctuation.definition.identifier.swift'}
+          },
+          match: '(?<=\\.)((?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>))'
+        }
+      ]
     },
     operators: {
       patterns: [
@@ -2012,7 +2481,7 @@ const grammar = {
         },
         {
           begin:
-            '(?x)\n\t\t\t\t\t\t(?=\n\t\t\t\t\t\t\t(?<oph>\t\t\t\t\t\t\t\t# operator-head\n\t\t\t\t\t\t\t\t[/=\\-+!*%<>&|^~?]\n\t\t\t\t\t\t\t  | [\\x{00A1}-\\x{00A7}]\n\t\t\t\t\t\t\t  | [\\x{00A9}\\x{00AB}]\n\t\t\t\t\t\t\t  | [\\x{00AC}\\x{00AE}]\n\t\t\t\t\t\t\t  | [\\x{00B0}-\\x{00B1}\\x{00B6}\\x{00BB}\\x{00BF}\\x{00D7}\\x{00F7}]\n\t\t\t\t\t\t\t  | [\\x{2016}-\\x{2017}\\x{2020}-\\x{2027}]\n\t\t\t\t\t\t\t  | [\\x{2030}-\\x{203E}]\n\t\t\t\t\t\t\t  | [\\x{2041}-\\x{2053}]\n\t\t\t\t\t\t\t  | [\\x{2055}-\\x{205E}]\n\t\t\t\t\t\t\t  | [\\x{2190}-\\x{23FF}]\n\t\t\t\t\t\t\t  | [\\x{2500}-\\x{2775}]\n\t\t\t\t\t\t\t  | [\\x{2794}-\\x{2BFF}]\n\t\t\t\t\t\t\t  | [\\x{2E00}-\\x{2E7F}]\n\t\t\t\t\t\t\t  | [\\x{3001}-\\x{3003}]\n\t\t\t\t\t\t\t  | [\\x{3008}-\\x{3030}]\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t  | \\.\n\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\\g<oph>\t\t\t\t\t\t\t# operator-head\n\t\t\t\t\t\t\t  | \\.\n\t\t\t\t\t\t\t  | [\\x{0300}-\\x{036F}]\t\t\t\t# operator-character\n\t\t\t\t\t\t\t  | [\\x{1DC0}-\\x{1DFF}]\n\t\t\t\t\t\t\t  | [\\x{20D0}-\\x{20FF}]\n\t\t\t\t\t\t\t  | [\\x{FE00}-\\x{FE0F}]\n\t\t\t\t\t\t\t  | [\\x{FE20}-\\x{FE2F}]\n\t\t\t\t\t\t\t  | [\\x{E0100}-\\x{E01EF}]\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t)\n\t\t\t\t\t',
+            '(?x)\n(?=\n  (?<oph>                # operator-head\n    [/=\\-+!*%<>&|^~?]\n    | [\\x{00A1}-\\x{00A7}]\n    | [\\x{00A9}\\x{00AB}]\n    | [\\x{00AC}\\x{00AE}]\n    | [\\x{00B0}-\\x{00B1}\\x{00B6}\\x{00BB}\\x{00BF}\\x{00D7}\\x{00F7}]\n    | [\\x{2016}-\\x{2017}\\x{2020}-\\x{2027}]\n    | [\\x{2030}-\\x{203E}]\n    | [\\x{2041}-\\x{2053}]\n    | [\\x{2055}-\\x{205E}]\n    | [\\x{2190}-\\x{23FF}]\n    | [\\x{2500}-\\x{2775}]\n    | [\\x{2794}-\\x{2BFF}]\n    | [\\x{2E00}-\\x{2E7F}]\n    | [\\x{3001}-\\x{3003}]\n    | [\\x{3008}-\\x{3030}]\n  )\n  | \\.\n  (\n    \\g<oph>              # operator-head\n    | \\.\n    | [\\x{0300}-\\x{036F}]        # operator-character\n    | [\\x{1DC0}-\\x{1DFF}]\n    | [\\x{20D0}-\\x{20FF}]\n    | [\\x{FE00}-\\x{FE0F}]\n    | [\\x{FE20}-\\x{FE2F}]\n    | [\\x{E0100}-\\x{E01EF}]\n  )\n)',
           end: '(?!\\G)',
           patterns: [
             {
@@ -2040,7 +2509,7 @@ const grammar = {
                 }
               },
               match:
-                '(?x)\n\t\t\t\t\t\t\t\t\\G\t\t\t\t\t\t\t\t\t\t# Matching from the beginning ensures\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t# that we start with operator-head\n\t\t\t\t\t\t\t\t(?<=^|[\\s(\\[{,;:])\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\t(?!(//|/\\*|\\*/))\n\t\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\t\t[/=\\-+!*%<>&|^~?]\t\t\t\t# operator-head\n\t\t\t\t\t\t\t\t\t  | [\\x{00A1}-\\x{00A7}]\n\t\t\t\t\t\t\t\t\t  | [\\x{00A9}\\x{00AB}]\n\t\t\t\t\t\t\t\t\t  | [\\x{00AC}\\x{00AE}]\n\t\t\t\t\t\t\t\t\t  | [\\x{00B0}-\\x{00B1}\\x{00B6}\\x{00BB}\\x{00BF}\\x{00D7}\\x{00F7}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2016}-\\x{2017}\\x{2020}-\\x{2027}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2030}-\\x{203E}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2041}-\\x{2053}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2055}-\\x{205E}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2190}-\\x{23FF}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2500}-\\x{2775}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2794}-\\x{2BFF}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2E00}-\\x{2E7F}]\n\t\t\t\t\t\t\t\t\t  | [\\x{3001}-\\x{3003}]\n\t\t\t\t\t\t\t\t\t  | [\\x{3008}-\\x{3030}]\n\t\t\t\t\t\t\t\t  \n\t\t\t\t\t\t\t\t\t  | [\\x{0300}-\\x{036F}]\t\t\t\t# operator-character\n\t\t\t\t\t\t\t\t\t  | [\\x{1DC0}-\\x{1DFF}]\n\t\t\t\t\t\t\t\t\t  | [\\x{20D0}-\\x{20FF}]\n\t\t\t\t\t\t\t\t\t  | [\\x{FE00}-\\x{FE0F}]\n\t\t\t\t\t\t\t\t\t  | [\\x{FE20}-\\x{FE2F}]\n\t\t\t\t\t\t\t\t\t  | [\\x{E0100}-\\x{E01EF}]\n\t\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t)++\n\t\t\t\t\t\t\t\t(?![\\s)\\]},;:]|\\z)\n\t\t\t\t\t\t\t'
+                '(?x)\n\\G                    # Matching from the beginning ensures\n                    # that we start with operator-head\n(?<=^|[\\s(\\[{,;:])\n(\n  (?!(//|/\\*|\\*/))\n  (\n    [/=\\-+!*%<>&|^~?]        # operator-head\n    | [\\x{00A1}-\\x{00A7}]\n    | [\\x{00A9}\\x{00AB}]\n    | [\\x{00AC}\\x{00AE}]\n    | [\\x{00B0}-\\x{00B1}\\x{00B6}\\x{00BB}\\x{00BF}\\x{00D7}\\x{00F7}]\n    | [\\x{2016}-\\x{2017}\\x{2020}-\\x{2027}]\n    | [\\x{2030}-\\x{203E}]\n    | [\\x{2041}-\\x{2053}]\n    | [\\x{2055}-\\x{205E}]\n    | [\\x{2190}-\\x{23FF}]\n    | [\\x{2500}-\\x{2775}]\n    | [\\x{2794}-\\x{2BFF}]\n    | [\\x{2E00}-\\x{2E7F}]\n    | [\\x{3001}-\\x{3003}]\n    | [\\x{3008}-\\x{3030}]\n  \n    | [\\x{0300}-\\x{036F}]        # operator-character\n    | [\\x{1DC0}-\\x{1DFF}]\n    | [\\x{20D0}-\\x{20FF}]\n    | [\\x{FE00}-\\x{FE0F}]\n    | [\\x{FE20}-\\x{FE2F}]\n    | [\\x{E0100}-\\x{E01EF}]\n  )\n)++\n(?![\\s)\\]},;:]|\\z)'
             },
             {
               captures: {
@@ -2059,7 +2528,7 @@ const grammar = {
                 }
               },
               match:
-                '(?x)\n\t\t\t\t\t\t\t\t\\G\t\t\t\t\t\t\t\t\t\t# Matching from the beginning ensures\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t# that we start with operator-head\n\t\t\t\t\t\t\t\t(?<!^|[\\s(\\[{,;:])\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\t(?!(//|/\\*|\\*/))\n\t\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\t\t[/=\\-+!*%<>&|^~?]\t\t\t\t# operator-head\n\t\t\t\t\t\t\t\t\t  | [\\x{00A1}-\\x{00A7}]\n\t\t\t\t\t\t\t\t\t  | [\\x{00A9}\\x{00AB}]\n\t\t\t\t\t\t\t\t\t  | [\\x{00AC}\\x{00AE}]\n\t\t\t\t\t\t\t\t\t  | [\\x{00B0}-\\x{00B1}\\x{00B6}\\x{00BB}\\x{00BF}\\x{00D7}\\x{00F7}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2016}-\\x{2017}\\x{2020}-\\x{2027}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2030}-\\x{203E}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2041}-\\x{2053}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2055}-\\x{205E}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2190}-\\x{23FF}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2500}-\\x{2775}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2794}-\\x{2BFF}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2E00}-\\x{2E7F}]\n\t\t\t\t\t\t\t\t\t  | [\\x{3001}-\\x{3003}]\n\t\t\t\t\t\t\t\t\t  | [\\x{3008}-\\x{3030}]\n\t\t\t\t\t\t\t\t  \n\t\t\t\t\t\t\t\t\t  | [\\x{0300}-\\x{036F}]\t\t\t\t# operator-character\n\t\t\t\t\t\t\t\t\t  | [\\x{1DC0}-\\x{1DFF}]\n\t\t\t\t\t\t\t\t\t  | [\\x{20D0}-\\x{20FF}]\n\t\t\t\t\t\t\t\t\t  | [\\x{FE00}-\\x{FE0F}]\n\t\t\t\t\t\t\t\t\t  | [\\x{FE20}-\\x{FE2F}]\n\t\t\t\t\t\t\t\t\t  | [\\x{E0100}-\\x{E01EF}]\n\t\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t)++\n\t\t\t\t\t\t\t\t(?=[\\s)\\]},;:]|\\z)\n\t\t\t\t\t\t\t'
+                '(?x)\n\\G                    # Matching from the beginning ensures\n                    # that we start with operator-head\n(?<!^|[\\s(\\[{,;:])\n(\n  (?!(//|/\\*|\\*/))\n  (\n    [/=\\-+!*%<>&|^~?]        # operator-head\n    | [\\x{00A1}-\\x{00A7}]\n    | [\\x{00A9}\\x{00AB}]\n    | [\\x{00AC}\\x{00AE}]\n    | [\\x{00B0}-\\x{00B1}\\x{00B6}\\x{00BB}\\x{00BF}\\x{00D7}\\x{00F7}]\n    | [\\x{2016}-\\x{2017}\\x{2020}-\\x{2027}]\n    | [\\x{2030}-\\x{203E}]\n    | [\\x{2041}-\\x{2053}]\n    | [\\x{2055}-\\x{205E}]\n    | [\\x{2190}-\\x{23FF}]\n    | [\\x{2500}-\\x{2775}]\n    | [\\x{2794}-\\x{2BFF}]\n    | [\\x{2E00}-\\x{2E7F}]\n    | [\\x{3001}-\\x{3003}]\n    | [\\x{3008}-\\x{3030}]\n  \n    | [\\x{0300}-\\x{036F}]        # operator-character\n    | [\\x{1DC0}-\\x{1DFF}]\n    | [\\x{20D0}-\\x{20FF}]\n    | [\\x{FE00}-\\x{FE0F}]\n    | [\\x{FE20}-\\x{FE2F}]\n    | [\\x{E0100}-\\x{E01EF}]\n  )\n)++\n(?=[\\s)\\]},;:]|\\z)'
             },
             {
               captures: {
@@ -2108,7 +2577,7 @@ const grammar = {
                 }
               },
               match:
-                '(?x)\n\t\t\t\t\t\t\t\t\\G\t\t\t\t\t\t\t\t\t\t# Matching from the beginning ensures\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t# that we start with operator-head\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\t(?!(//|/\\*|\\*/))\n\t\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\t\t[/=\\-+!*%<>&|^~?]\t\t\t\t# operator-head\n\t\t\t\t\t\t\t\t\t  | [\\x{00A1}-\\x{00A7}]\n\t\t\t\t\t\t\t\t\t  | [\\x{00A9}\\x{00AB}]\n\t\t\t\t\t\t\t\t\t  | [\\x{00AC}\\x{00AE}]\n\t\t\t\t\t\t\t\t\t  | [\\x{00B0}-\\x{00B1}\\x{00B6}\\x{00BB}\\x{00BF}\\x{00D7}\\x{00F7}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2016}-\\x{2017}\\x{2020}-\\x{2027}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2030}-\\x{203E}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2041}-\\x{2053}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2055}-\\x{205E}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2190}-\\x{23FF}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2500}-\\x{2775}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2794}-\\x{2BFF}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2E00}-\\x{2E7F}]\n\t\t\t\t\t\t\t\t\t  | [\\x{3001}-\\x{3003}]\n\t\t\t\t\t\t\t\t\t  | [\\x{3008}-\\x{3030}]\n\t\t\t\t\t\t\t\t  \n\t\t\t\t\t\t\t\t\t  | [\\x{0300}-\\x{036F}]\t\t\t\t# operator-character\n\t\t\t\t\t\t\t\t\t  | [\\x{1DC0}-\\x{1DFF}]\n\t\t\t\t\t\t\t\t\t  | [\\x{20D0}-\\x{20FF}]\n\t\t\t\t\t\t\t\t\t  | [\\x{FE00}-\\x{FE0F}]\n\t\t\t\t\t\t\t\t\t  | [\\x{FE20}-\\x{FE2F}]\n\t\t\t\t\t\t\t\t\t  | [\\x{E0100}-\\x{E01EF}]\n\t\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t)++\n\t\t\t\t\t\t\t'
+                '(?x)\n\\G                    # Matching from the beginning ensures\n                    # that we start with operator-head\n(\n  (?!(//|/\\*|\\*/))\n  (\n    [/=\\-+!*%<>&|^~?]        # operator-head\n    | [\\x{00A1}-\\x{00A7}]\n    | [\\x{00A9}\\x{00AB}]\n    | [\\x{00AC}\\x{00AE}]\n    | [\\x{00B0}-\\x{00B1}\\x{00B6}\\x{00BB}\\x{00BF}\\x{00D7}\\x{00F7}]\n    | [\\x{2016}-\\x{2017}\\x{2020}-\\x{2027}]\n    | [\\x{2030}-\\x{203E}]\n    | [\\x{2041}-\\x{2053}]\n    | [\\x{2055}-\\x{205E}]\n    | [\\x{2190}-\\x{23FF}]\n    | [\\x{2500}-\\x{2775}]\n    | [\\x{2794}-\\x{2BFF}]\n    | [\\x{2E00}-\\x{2E7F}]\n    | [\\x{3001}-\\x{3003}]\n    | [\\x{3008}-\\x{3030}]\n  \n    | [\\x{0300}-\\x{036F}]        # operator-character\n    | [\\x{1DC0}-\\x{1DFF}]\n    | [\\x{20D0}-\\x{20FF}]\n    | [\\x{FE00}-\\x{FE0F}]\n    | [\\x{FE20}-\\x{FE2F}]\n    | [\\x{E0100}-\\x{E01EF}]\n  )\n)++'
             },
             {
               captures: {
@@ -2122,7 +2591,7 @@ const grammar = {
                 }
               },
               match:
-                '(?x)\n\t\t\t\t\t\t\t\t\\G\t\t\t\t\t\t\t\t\t\t# Matching from the beginning ensures\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t# that we start with operator-head\n\t\t\t\t\t\t\t\t(?<=^|[\\s(\\[{,;:])\n\t\t\t\t\t\t\t\t\\.\t\t\t\t\t\t\t\t\t\t# dot\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\t(?!(//|/\\*|\\*/))\n\t\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\t\t\\.\t\t\t\t\t\t\t\t# dot\n\t\t\t\t\t\t\t\t\t  | [/=\\-+!*%<>&|^~?]\t\t\t\t# operator-head\n\t\t\t\t\t\t\t\t\t  | [\\x{00A1}-\\x{00A7}]\n\t\t\t\t\t\t\t\t\t  | [\\x{00A9}\\x{00AB}]\n\t\t\t\t\t\t\t\t\t  | [\\x{00AC}\\x{00AE}]\n\t\t\t\t\t\t\t\t\t  | [\\x{00B0}-\\x{00B1}\\x{00B6}\\x{00BB}\\x{00BF}\\x{00D7}\\x{00F7}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2016}-\\x{2017}\\x{2020}-\\x{2027}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2030}-\\x{203E}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2041}-\\x{2053}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2055}-\\x{205E}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2190}-\\x{23FF}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2500}-\\x{2775}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2794}-\\x{2BFF}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2E00}-\\x{2E7F}]\n\t\t\t\t\t\t\t\t\t  | [\\x{3001}-\\x{3003}]\n\t\t\t\t\t\t\t\t\t  | [\\x{3008}-\\x{3030}]\n\t\t\t\t\t\t\t\t  \n\t\t\t\t\t\t\t\t\t  | [\\x{0300}-\\x{036F}]\t\t\t\t# operator-character\n\t\t\t\t\t\t\t\t\t  | [\\x{1DC0}-\\x{1DFF}]\n\t\t\t\t\t\t\t\t\t  | [\\x{20D0}-\\x{20FF}]\n\t\t\t\t\t\t\t\t\t  | [\\x{FE00}-\\x{FE0F}]\n\t\t\t\t\t\t\t\t\t  | [\\x{FE20}-\\x{FE2F}]\n\t\t\t\t\t\t\t\t\t  | [\\x{E0100}-\\x{E01EF}]\n\t\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t)++\n\t\t\t\t\t\t\t\t(?![\\s)\\]},;:]|\\z)\n\t\t\t\t\t\t\t'
+                '(?x)\n\\G                    # Matching from the beginning ensures\n                    # that we start with operator-head\n(?<=^|[\\s(\\[{,;:])\n\\.                    # dot\n(\n  (?!(//|/\\*|\\*/))\n  (\n    \\.                # dot\n    | [/=\\-+!*%<>&|^~?]        # operator-head\n    | [\\x{00A1}-\\x{00A7}]\n    | [\\x{00A9}\\x{00AB}]\n    | [\\x{00AC}\\x{00AE}]\n    | [\\x{00B0}-\\x{00B1}\\x{00B6}\\x{00BB}\\x{00BF}\\x{00D7}\\x{00F7}]\n    | [\\x{2016}-\\x{2017}\\x{2020}-\\x{2027}]\n    | [\\x{2030}-\\x{203E}]\n    | [\\x{2041}-\\x{2053}]\n    | [\\x{2055}-\\x{205E}]\n    | [\\x{2190}-\\x{23FF}]\n    | [\\x{2500}-\\x{2775}]\n    | [\\x{2794}-\\x{2BFF}]\n    | [\\x{2E00}-\\x{2E7F}]\n    | [\\x{3001}-\\x{3003}]\n    | [\\x{3008}-\\x{3030}]\n  \n    | [\\x{0300}-\\x{036F}]        # operator-character\n    | [\\x{1DC0}-\\x{1DFF}]\n    | [\\x{20D0}-\\x{20FF}]\n    | [\\x{FE00}-\\x{FE0F}]\n    | [\\x{FE20}-\\x{FE2F}]\n    | [\\x{E0100}-\\x{E01EF}]\n  )\n)++\n(?![\\s)\\]},;:]|\\z)'
             },
             {
               captures: {
@@ -2136,7 +2605,7 @@ const grammar = {
                 }
               },
               match:
-                '(?x)\n\t\t\t\t\t\t\t\t\\G\t\t\t\t\t\t\t\t\t\t# Matching from the beginning ensures\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t# that we start with operator-head\n\t\t\t\t\t\t\t\t(?<!^|[\\s(\\[{,;:])\n\t\t\t\t\t\t\t\t\\.\t\t\t\t\t\t\t\t\t\t# dot\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\t(?!(//|/\\*|\\*/))\n\t\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\t\t\\.\t\t\t\t\t\t\t\t# dot\n\t\t\t\t\t\t\t\t\t  | [/=\\-+!*%<>&|^~?]\t\t\t\t# operator-head\n\t\t\t\t\t\t\t\t\t  | [\\x{00A1}-\\x{00A7}]\n\t\t\t\t\t\t\t\t\t  | [\\x{00A9}\\x{00AB}]\n\t\t\t\t\t\t\t\t\t  | [\\x{00AC}\\x{00AE}]\n\t\t\t\t\t\t\t\t\t  | [\\x{00B0}-\\x{00B1}\\x{00B6}\\x{00BB}\\x{00BF}\\x{00D7}\\x{00F7}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2016}-\\x{2017}\\x{2020}-\\x{2027}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2030}-\\x{203E}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2041}-\\x{2053}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2055}-\\x{205E}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2190}-\\x{23FF}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2500}-\\x{2775}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2794}-\\x{2BFF}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2E00}-\\x{2E7F}]\n\t\t\t\t\t\t\t\t\t  | [\\x{3001}-\\x{3003}]\n\t\t\t\t\t\t\t\t\t  | [\\x{3008}-\\x{3030}]\n\t\t\t\t\t\t\t\t  \n\t\t\t\t\t\t\t\t\t  | [\\x{0300}-\\x{036F}]\t\t\t\t# operator-character\n\t\t\t\t\t\t\t\t\t  | [\\x{1DC0}-\\x{1DFF}]\n\t\t\t\t\t\t\t\t\t  | [\\x{20D0}-\\x{20FF}]\n\t\t\t\t\t\t\t\t\t  | [\\x{FE00}-\\x{FE0F}]\n\t\t\t\t\t\t\t\t\t  | [\\x{FE20}-\\x{FE2F}]\n\t\t\t\t\t\t\t\t\t  | [\\x{E0100}-\\x{E01EF}]\n\t\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t)++\n\t\t\t\t\t\t\t\t(?=[\\s)\\]},;:]|\\z)\n\t\t\t\t\t\t\t'
+                '(?x)\n\\G                    # Matching from the beginning ensures\n                    # that we start with operator-head\n(?<!^|[\\s(\\[{,;:])\n\\.                    # dot\n(\n  (?!(//|/\\*|\\*/))\n  (\n    \\.                # dot\n    | [/=\\-+!*%<>&|^~?]        # operator-head\n    | [\\x{00A1}-\\x{00A7}]\n    | [\\x{00A9}\\x{00AB}]\n    | [\\x{00AC}\\x{00AE}]\n    | [\\x{00B0}-\\x{00B1}\\x{00B6}\\x{00BB}\\x{00BF}\\x{00D7}\\x{00F7}]\n    | [\\x{2016}-\\x{2017}\\x{2020}-\\x{2027}]\n    | [\\x{2030}-\\x{203E}]\n    | [\\x{2041}-\\x{2053}]\n    | [\\x{2055}-\\x{205E}]\n    | [\\x{2190}-\\x{23FF}]\n    | [\\x{2500}-\\x{2775}]\n    | [\\x{2794}-\\x{2BFF}]\n    | [\\x{2E00}-\\x{2E7F}]\n    | [\\x{3001}-\\x{3003}]\n    | [\\x{3008}-\\x{3030}]\n  \n    | [\\x{0300}-\\x{036F}]        # operator-character\n    | [\\x{1DC0}-\\x{1DFF}]\n    | [\\x{20D0}-\\x{20FF}]\n    | [\\x{FE00}-\\x{FE0F}]\n    | [\\x{FE20}-\\x{FE2F}]\n    | [\\x{E0100}-\\x{E01EF}]\n  )\n)++\n(?=[\\s)\\]},;:]|\\z)'
             },
             {
               captures: {
@@ -2154,7 +2623,7 @@ const grammar = {
                 }
               },
               match:
-                '(?x)\n\t\t\t\t\t\t\t\t\\G\t\t\t\t\t\t\t\t\t\t# Matching from the beginning ensures\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t# that we start with operator-head\n\t\t\t\t\t\t\t\t\\.\t\t\t\t\t\t\t\t\t\t# dot\n\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\t(?!(//|/\\*|\\*/))\n\t\t\t\t\t\t\t\t\t(\n\t\t\t\t\t\t\t\t\t\t\\.\t\t\t\t\t\t\t\t# dot\n\t\t\t\t\t\t\t\t\t  | [/=\\-+!*%<>&|^~?]\t\t\t\t# operator-head\n\t\t\t\t\t\t\t\t\t  | [\\x{00A1}-\\x{00A7}]\n\t\t\t\t\t\t\t\t\t  | [\\x{00A9}\\x{00AB}]\n\t\t\t\t\t\t\t\t\t  | [\\x{00AC}\\x{00AE}]\n\t\t\t\t\t\t\t\t\t  | [\\x{00B0}-\\x{00B1}\\x{00B6}\\x{00BB}\\x{00BF}\\x{00D7}\\x{00F7}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2016}-\\x{2017}\\x{2020}-\\x{2027}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2030}-\\x{203E}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2041}-\\x{2053}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2055}-\\x{205E}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2190}-\\x{23FF}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2500}-\\x{2775}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2794}-\\x{2BFF}]\n\t\t\t\t\t\t\t\t\t  | [\\x{2E00}-\\x{2E7F}]\n\t\t\t\t\t\t\t\t\t  | [\\x{3001}-\\x{3003}]\n\t\t\t\t\t\t\t\t\t  | [\\x{3008}-\\x{3030}]\n\t\t\t\t\t\t\t\t  \n\t\t\t\t\t\t\t\t\t  | [\\x{0300}-\\x{036F}]\t\t\t\t# operator-character\n\t\t\t\t\t\t\t\t\t  | [\\x{1DC0}-\\x{1DFF}]\n\t\t\t\t\t\t\t\t\t  | [\\x{20D0}-\\x{20FF}]\n\t\t\t\t\t\t\t\t\t  | [\\x{FE00}-\\x{FE0F}]\n\t\t\t\t\t\t\t\t\t  | [\\x{FE20}-\\x{FE2F}]\n\t\t\t\t\t\t\t\t\t  | [\\x{E0100}-\\x{E01EF}]\n\t\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t)++\n\t\t\t\t\t\t\t'
+                '(?x)\n\\G                    # Matching from the beginning ensures\n                    # that we start with operator-head\n\\.                    # dot\n(\n  (?!(//|/\\*|\\*/))\n  (\n    \\.                # dot\n    | [/=\\-+!*%<>&|^~?]        # operator-head\n    | [\\x{00A1}-\\x{00A7}]\n    | [\\x{00A9}\\x{00AB}]\n    | [\\x{00AC}\\x{00AE}]\n    | [\\x{00B0}-\\x{00B1}\\x{00B6}\\x{00BB}\\x{00BF}\\x{00D7}\\x{00F7}]\n    | [\\x{2016}-\\x{2017}\\x{2020}-\\x{2027}]\n    | [\\x{2030}-\\x{203E}]\n    | [\\x{2041}-\\x{2053}]\n    | [\\x{2055}-\\x{205E}]\n    | [\\x{2190}-\\x{23FF}]\n    | [\\x{2500}-\\x{2775}]\n    | [\\x{2794}-\\x{2BFF}]\n    | [\\x{2E00}-\\x{2E7F}]\n    | [\\x{3001}-\\x{3003}]\n    | [\\x{3008}-\\x{3030}]\n  \n    | [\\x{0300}-\\x{036F}]        # operator-character\n    | [\\x{1DC0}-\\x{1DFF}]\n    | [\\x{20D0}-\\x{20FF}]\n    | [\\x{FE00}-\\x{FE0F}]\n    | [\\x{FE20}-\\x{FE2F}]\n    | [\\x{E0100}-\\x{E01EF}]\n  )\n)++'
             }
           ]
         },

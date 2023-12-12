@@ -204,7 +204,8 @@ const grammar = {
         {
           match: '(^[0-9 ][0-9 ][0-9 ][0-9 ][0-9 ][0-9 ])',
           name: 'constant.numeric.cobol'
-        }
+        },
+        {match: '(?i:with|debugging|mode)', name: 'keyword.identifiers.cobol'}
       ]
     },
     {

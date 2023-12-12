@@ -470,7 +470,7 @@ const grammar = {
         }
       },
       match:
-        '(?<=^|[^.]\\n|;|,|=)([^\\S\\n]*)(?# A> )(\\b\\w+\\b)([^\\S\\n]+)(?# B> )((?!(\\+|-|\\*|\\.\\*|\\/|\\.\\/|\\\\|\\.\\\\|\\^|\\.\\^|==|~=|&|&&|\\||\\|\\||=|:|>|>=|<|<=|\\.\\.\\.)[^\\S\\n])[^\\s({=;%][^\\n;%]*)',
+        '(?<=^|[^.]\\n|;|,|=)([^\\S\\n]*)(?# A> )(\\b\\w+\\b)([^\\S\\n]+)(?# B> )((?!(\\+|-|\\*|\\.\\*|\\/|\\.\\/|\\\\|\\.\\\\|\\^|\\.\\^|==|~=|&|&&|\\||\\|\\||=|:|>|>=|<|<=|\\.\\.\\.)[^\\S\\n]?)[^\\s({=;%][^\\n;%]*)',
       name: 'meta.function-call.command.matlab'
     },
     comment_block: {
@@ -709,7 +709,6 @@ const grammar = {
         },
         2: {name: 'punctuation.section.parens.begin.matlab'}
       },
-      end: '(\\)|(?<!\\.\\.\\.)\\n)',
       endCaptures: {0: {name: 'punctuation.section.parens.end.matlab'}},
       name: 'meta.function-call.parens.matlab',
       patterns: [
@@ -745,7 +744,6 @@ const grammar = {
         3: {name: 'punctuation.section.parens.begin.matlab'}
       },
       contentName: 'meta.parens.matlab',
-      end: '(\\)|(?<!\\.\\.\\.)\\n)',
       endCaptures: {0: {name: 'punctuation.section.parens.end.matlab'}},
       patterns: [
         {include: '#rules_before_command_dual'},
@@ -754,18 +752,7 @@ const grammar = {
     },
     indexing_curly_brackets: {
       begin: '([a-zA-Z][a-zA-Z0-9_\\.]*\\s*)\\{',
-      beginCaptures: {
-        1: {
-          patterns: [
-            {
-              match: '([a-zA-Z][a-zA-Z0-9_]*)(?=\\s*\\{)',
-              name: 'variable.other.readwrite.matlab'
-            },
-            {include: '$self'}
-          ]
-        }
-      },
-      end: '(\\}|(?<!\\.\\.\\.)\\n)',
+      beginCaptures: {1: {patterns: [{include: '#variables'}]}},
       patterns: [
         {include: '#end_in_parentheses'},
         {include: '#rules_before_command_dual'},
@@ -833,11 +820,12 @@ const grammar = {
         },
         {
           match:
-            '(?<=[a-zA-Z0-9\\s])(\\+|-|\\*|\\.\\*|/|\\./|\\\\|\\.\\\\|\\^|\\.\\^)(?=[a-zA-Z0-9\\s])',
+            '(?<=[a-zA-Z0-9\\s])(\\+|-|\\*|\\.\\*|/|\\./|\\\\|\\.\\\\|\\^|\\.\\^)(?=[a-zA-Z0-9\\s]|(?:\\.\\.\\.))',
           name: 'keyword.operator.arithmetic.matlab'
         },
         {
-          match: '(?<=[a-zA-Z0-9\\s])(==|~=|&|&&|\\||\\|\\|)(?=[a-zA-Z0-9\\s])',
+          match:
+            '(?<=[a-zA-Z0-9\\s])(==|~=|&|&&|\\||\\|\\|)(?=[a-zA-Z0-9\\s]|(?:\\.\\.\\.))',
           name: 'keyword.operator.logical.matlab'
         },
         {
@@ -845,11 +833,13 @@ const grammar = {
           name: 'keyword.operator.assignment.matlab'
         },
         {
-          match: '(?<=[a-zA-Z0-9_\\s(){,]|^):(?=[a-zA-Z0-9_\\s()},]|$)',
+          match:
+            '(?<=[a-zA-Z0-9_\\s(){,]|^):(?=[a-zA-Z0-9_\\s()},]|$||(?:\\.\\.\\.))',
           name: 'keyword.operator.vector.colon.matlab'
         },
         {
-          match: '(?<=[a-zA-Z0-9\\s])(>|>=|<|<=)(?=\\s)',
+          match:
+            '(?<=[a-zA-Z0-9\\s])(>|>=|<|<=)(?=[a-zA-Z0-9\\s]|(?:\\.\\.\\.))',
           name: 'keyword.operator.relational.matlab'
         }
       ]
@@ -858,7 +848,6 @@ const grammar = {
       begin: '\\(',
       beginCaptures: {0: {name: 'punctuation.section.parens.begin.matlab'}},
       contentName: 'meta.parens.matlab',
-      end: '(\\)|(?<!\\.\\.\\.)\\n)',
       endCaptures: {0: {name: 'punctuation.section.parens.end.matlab'}},
       patterns: [
         {include: '#end_in_parentheses'},
@@ -1024,7 +1013,6 @@ const grammar = {
         },
         4: {name: 'punctuation.section.parens.begin.matlab'}
       },
-      end: '(\\)|(?<!\\.\\.\\.)\\n)',
       endCaptures: {0: {name: 'punctuation.section.parens.end.matlab'}},
       name: 'meta.method-call.parens.matlab',
       patterns: [

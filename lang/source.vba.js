@@ -10,6 +10,7 @@ const grammar = {
   patterns: [
     {include: '#comments'},
     {include: '#keywords'},
+    {include: '#metadata'},
     {include: '#numbers'},
     {include: '#storage'},
     {include: '#strings'},
@@ -38,11 +39,6 @@ const grammar = {
       patterns: [
         {
           match:
-            '(?i)\\bOption (Base [01]|Compare (Binary|Text)|Explicit|Private Module)\\b',
-          name: 'keyword.other.option.vba'
-        },
-        {
-          match:
             '(?i:\\b(Do(( While)|( Until))?|While|Case( Else)?|Else(If)?|For( Each)?|(I)?If|In|New|(Select )?Case|Then|To|Step|With)\\b)',
           name: 'keyword.conditional.vba'
         },
@@ -58,8 +54,19 @@ const grammar = {
         },
         {
           match:
-            '(?i:\\b(Attribute|Call|End (Function|Property|Sub|Type|Enum)|(Const|Function|Property|Sub|Type|Enum)|Declare|PtrSafe|WithEvents|Event|RaiseEvent)\\b)',
+            '(?i:\\b(Open|Close|Line Input|Lock|Unlock|Print|Seek|Get|Put|Write)\\b)',
+          name: 'keyword.io.vba'
+        },
+        {match: '(?i:\\b(Input)(?= #))', name: 'keyword.io.vba'},
+        {
+          match:
+            '(?i:\\b(Attribute|Call|End (Function|Property|Sub|Type|Enum)|(Const|Function|Property|Sub|Type|Enum)|Declare|PtrSafe|WithEvents|Event|RaiseEvent|Implements)\\b)',
           name: 'keyword.other.vba'
+        },
+        {
+          match:
+            '(?i)\\bOption (Base [01]|Compare (Binary|Text)|Explicit|Private Module)\\b',
+          name: 'keyword.other.option.vba'
         },
         {
           match: '(?i:\\b(Private|Public|Friend)\\b)',
@@ -70,6 +77,14 @@ const grammar = {
           name: 'constant.language.vba'
         }
       ]
+    },
+    metadata: {
+      begin: '(?i)^\\s*(BEGIN)\\b',
+      beginCaptures: {1: {name: 'keyword.metadata.vba'}},
+      end: '(?i)^\\s*(END)\\b',
+      endCaptures: {0: {name: 'keyword.metadata.vba'}},
+      name: 'metadata.vba',
+      patterns: [{include: 'source.vba'}]
     },
     numbers: {
       patterns: [

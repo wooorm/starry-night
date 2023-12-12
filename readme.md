@@ -1065,7 +1065,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [x] [`source.rust`](lang/source.rust.js) (mit) — [upstream](https://github.com/dustypomerleau/rust-syntax)
 *   [x] [`source.shell`](lang/source.shell.js) (mit) — [upstream](https://github.com/atom/language-shellscript)
 *   [x] [`source.sql`](lang/source.sql.js)
-*   [x] [`source.swift`](lang/source.swift.js) — [upstream](https://github.com/textmate/swift.tmbundle)
+*   [x] [`source.swift`](lang/source.swift.js) (mit) — [upstream](https://github.com/jtbandes/swift-tmlanguage)
 *   [x] [`source.ts`](lang/source.ts.js) (mit) — [upstream](https://github.com/Microsoft/TypeScript-TmLanguage)
 *   [x] [`source.vbnet`](lang/source.vbnet.js) (apache-2.0) — [upstream](https://github.com/angryant0007/VBDotNetSyntax)
 *   [x] [`source.yaml`](lang/source.yaml.js) (mit) — [upstream](https://github.com/atom/language-yaml)
@@ -1180,7 +1180,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.dircolors`](lang/source.dircolors.js) (mit)
 *   [ ] [`source.ditroff`](lang/source.ditroff.js) (isc) — [upstream](https://github.com/Alhadis/language-roff) — needs: `source.ditroff.desc`, `text.roff`
 *   [ ] [`source.ditroff.desc`](lang/source.ditroff.desc.js) (isc) — [upstream](https://github.com/Alhadis/language-roff)
-*   [ ] [`source.dm`](lang/source.dm.js) (mit) — [upstream](https://github.com/PJB3005/atomic-dreams)
+*   [ ] [`source.dm`](lang/source.dm.js) (mit) — [upstream](https://github.com/spacestation13/dm-syntax)
 *   [ ] [`source.dockerfile`](lang/source.dockerfile.js) (mit) — [upstream](https://github.com/asbjornenge/Docker.tmbundle)
 *   [ ] [`source.dot`](lang/source.dot.js)
 *   [ ] [`source.dotenv`](lang/source.dotenv.js) (isc) — [upstream](https://github.com/Alhadis/language-etc)
@@ -1188,6 +1188,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.earthfile`](lang/source.earthfile.js) (mpl-2.0) — [upstream](https://github.com/earthly/earthfile-grammar)
 *   [ ] [`source.ebnf`](lang/source.ebnf.js) (isc) — [upstream](https://github.com/Alhadis/language-grammars) — needs: `source.lex.regexp`
 *   [ ] [`source.ecl`](lang/source.ecl.js) (apache-2.0) — [upstream](https://github.com/hpcc-systems/ecl-tmLanguage)
+*   [ ] [`source.edgeql`](lang/source.edgeql.js) (mit) — [upstream](https://github.com/edgedb/edgedb-editor-plugin)
 *   [ ] [`source.editorconfig`](lang/source.editorconfig.js) (mit) — [upstream](https://github.com/sindresorhus/atom-editorconfig)
 *   [ ] [`source.eiffel`](lang/source.eiffel.js)
 *   [ ] [`source.elixir`](lang/source.elixir.js) (apache-2.0) — [upstream](https://github.com/elixir-lang/elixir-tmbundle) — needs: `text.elixir`
@@ -1223,14 +1224,15 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.gemfile-lock`](lang/source.gemfile-lock.js) (mit) — [upstream](https://github.com/hmarr/gemfile-lock-tmlanguage)
 *   [ ] [`source.gemini`](lang/source.gemini.js) (mit) — [upstream](https://github.com/printfn/gemini-vscode)
 *   [ ] [`source.generic-db`](lang/source.generic-db.js) (isc) — [upstream](https://github.com/Alhadis/language-etc) — needs: `etc`
-*   [ ] [`source.genero`](lang/source.genero.js) (mit) — [upstream](https://github.com/alienriver49/genero.tmbundle)
-*   [ ] [`source.genero-forms`](lang/source.genero-forms.js) (mit) — [upstream](https://github.com/alienriver49/genero.tmbundle)
+*   [ ] [`source.genero-4gl`](lang/source.genero-4gl.js) (unlicense) — [upstream](https://github.com/FourjsGenero/GeneroFgl.tmbundle)
+*   [ ] [`source.genero-per`](lang/source.genero-per.js) (unlicense) — [upstream](https://github.com/FourjsGenero/GeneroFgl.tmbundle)
 *   [ ] [`source.gerber`](lang/source.gerber.js) (isc) — [upstream](https://github.com/Alhadis/language-pcb)
 *   [ ] [`source.gf`](lang/source.gf.js) (mit) — [upstream](https://github.com/johnjcamilleri/language-gf)
 *   [ ] [`source.git-revlist`](lang/source.git-revlist.js) (isc) — [upstream](https://github.com/Nixinova/NovaGrammars)
 *   [ ] [`source.gitattributes`](lang/source.gitattributes.js) (isc) — [upstream](https://github.com/Alhadis/language-etc) — needs: `etc`, `source.gitignore`
 *   [ ] [`source.gitconfig`](lang/source.gitconfig.js) (isc) — [upstream](https://github.com/Alhadis/language-etc) — needs: `source.shell`
 *   [ ] [`source.gitignore`](lang/source.gitignore.js) (isc) — [upstream](https://github.com/Alhadis/language-etc) — needs: `etc`
+*   [ ] [`source.gjs`](lang/source.gjs.js) (mit) — [upstream](https://github.com/lifeart/vsc-ember-syntax) — needs: `source.js`
 *   [ ] [`source.gleam`](lang/source.gleam.js) (apache-2.0) — [upstream](https://github.com/gleam-lang/vscode-gleam)
 *   [ ] [`source.glsl`](lang/source.glsl.js) (unlicense) — [upstream](https://github.com/euler0/sublime-glsl)
 *   [ ] [`source.gn`](lang/source.gn.js) (bsd-3-clause) — [upstream](https://github.com/devoncarew/language-gn)
@@ -1247,6 +1249,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.harbour`](lang/source.harbour.js) (mit)
 *   [ ] [`source.haskell`](lang/source.haskell.js) (mit) — [upstream](https://github.com/atom-haskell/language-haskell)
 *   [ ] [`source.hc`](lang/source.hc.js) (unlicense)
+*   [ ] [`source.hcl.terraform`](lang/source.hcl.terraform.js) (mpl-2.0) — [upstream](https://github.com/hashicorp/syntax)
 *   [ ] [`source.hlsl`](lang/source.hlsl.js) (mit)
 *   [ ] [`source.hocon`](lang/source.hocon.js) (mit) — [upstream](https://github.com/jacobwgillespie/language-hocon)
 *   [ ] [`source.hoon`](lang/source.hoon.js) (mit) — [upstream](https://github.com/pkova/hoon-grammar)
@@ -1293,6 +1296,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.kusto`](lang/source.kusto.js) (apache-2.0) — [upstream](https://github.com/mmanela/kusto-sublime)
 *   [ ] [`source.lark`](lang/source.lark.js) (isc) — [upstream](https://github.com/Alhadis/language-grammars)
 *   [ ] [`source.lean`](lang/source.lean.js) (apache-2.0) — [upstream](https://github.com/leanprover/vscode-lean)
+*   [ ] [`source.lean4`](lang/source.lean4.js) (apache-2.0) — [upstream](https://github.com/leanprover/vscode-lean4)
 *   [ ] [`source.lex`](lang/source.lex.js) (isc) — [upstream](https://github.com/Alhadis/language-grammars) — needs: `source.c++`, `source.jflex`
 *   [ ] [`source.lex.regexp`](lang/source.lex.regexp.js) (isc) — [upstream](https://github.com/Alhadis/language-grammars)
 *   [ ] [`source.ligo`](lang/source.ligo.js) (mit) — [upstream](https://github.com/pewulfman/Ligo-grammar)
@@ -1409,6 +1413,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.postscript`](lang/source.postscript.js) (isc) — [upstream](https://github.com/Alhadis/Atom-PostScript)
 *   [ ] [`source.pov-ray sdl`](<lang/source.pov-ray sdl.js>) (mit)
 *   [ ] [`source.powershell`](lang/source.powershell.js) (mit) — [upstream](https://github.com/PowerShell/EditorSyntax)
+*   [ ] [`source.praat`](lang/source.praat.js) (mit) — [upstream](https://github.com/orhunulusahin/praatvscode)
 *   [ ] [`source.prisma`](lang/source.prisma.js) (apache-2.0) — [upstream](https://github.com/prisma/vscode-prisma)
 *   [ ] [`source.processing`](lang/source.processing.js)
 *   [ ] [`source.procfile`](lang/source.procfile.js) (bsd-3-clause) — [upstream](https://github.com/benspaulding/vscode-procfile) — needs: `source.shell`
@@ -1441,7 +1446,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.regexp.extended`](lang/source.regexp.extended.js) (isc) — [upstream](https://github.com/Alhadis/language-regexp) — needs: `source.regexp`
 *   [ ] [`source.regexp.posix`](lang/source.regexp.posix.js) (isc) — [upstream](https://github.com/Alhadis/language-regexp) — needs: `source.regexp`
 *   [ ] [`source.regexp.python`](lang/source.regexp.python.js) (mit) — [upstream](https://github.com/MagicStack/MagicPython)
-*   [ ] [`source.rego`](lang/source.rego.js) (apache-2.0) — [upstream](https://github.com/tsandall/vscode-opa)
+*   [ ] [`source.rego`](lang/source.rego.js) (apache-2.0) — [upstream](https://github.com/open-policy-agent/vscode-opa)
 *   [ ] [`source.religo`](lang/source.religo.js) (mit) — [upstream](https://github.com/pewulfman/Ligo-grammar)
 *   [ ] [`source.renpy`](lang/source.renpy.js) (mit) — [upstream](https://github.com/williamd1k0/language-renpy) — needs: `source.regexp.python`
 *   [ ] [`source.rescript`](lang/source.rescript.js) (mit) — [upstream](https://github.com/rescript-lang/rescript-vscode)
@@ -1503,6 +1508,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.tlverilog`](lang/source.tlverilog.js) (mit) — [upstream](https://github.com/adamint/tlv-vscode)
 *   [ ] [`source.tm-properties`](lang/source.tm-properties.js) — [upstream](https://github.com/textmate/textmate.tmbundle)
 *   [ ] [`source.toc`](lang/source.toc.js) (unlicense) — [upstream](https://github.com/nebularg/language-toc-wow)
+*   [ ] [`source.toit`](lang/source.toit.js) (mit) — [upstream](https://github.com/toitware/ide-tools)
 *   [ ] [`source.toml`](lang/source.toml.js) — [upstream](https://github.com/textmate/toml.tmbundle)
 *   [ ] [`source.tsql`](lang/source.tsql.js) (mit) — [upstream](https://github.com/beau-witter/language-tsql)
 *   [ ] [`source.tsx`](lang/source.tsx.js) (mit) — [upstream](https://github.com/Microsoft/TypeScript-TmLanguage)
@@ -1578,7 +1584,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`text.html.elixir`](lang/text.html.elixir.js) (apache-2.0) — [upstream](https://github.com/elixir-lang/elixir-tmbundle) — needs: `text.elixir`, `text.html.basic`
 *   [ ] [`text.html.erb`](lang/text.html.erb.js) (mit) — [upstream](https://github.com/atom/language-ruby) — needs: `source.ruby`, `text.html.basic`
 *   [ ] [`text.html.ftl`](lang/text.html.ftl.js) (mit) — needs: `text.html.basic`
-*   [ ] [`text.html.handlebars`](lang/text.html.handlebars.js) (mit) — needs: `text.html.basic`
+*   [ ] [`text.html.handlebars`](lang/text.html.handlebars.js) (mit) — [upstream](https://github.com/daaain/Handlebars) — needs: `text.html.basic`
 *   [ ] [`text.html.javadoc`](lang/text.html.javadoc.js)
 *   [ ] [`text.html.js`](lang/text.html.js.js) (mit) — needs: `text.html.basic`
 *   [ ] [`text.html.jsp`](lang/text.html.jsp.js) — [upstream](https://github.com/textmate/java.tmbundle) — needs: `text.html.basic`

@@ -62,27 +62,6 @@ const grammar = {
       name: 'meta.macro.rules.rust'
     },
     {
-      begin: '(#)(\\!?)(\\[)',
-      beginCaptures: {
-        1: {name: 'punctuation.definition.attribute.rust'},
-        2: {name: 'keyword.operator.attribute.inner.rust'},
-        3: {name: 'punctuation.brackets.attribute.rust'}
-      },
-      end: '\\]',
-      endCaptures: {0: {name: 'punctuation.brackets.attribute.rust'}},
-      name: 'meta.attribute.rust',
-      patterns: [
-        {include: '#block-comments'},
-        {include: '#comments'},
-        {include: '#keywords'},
-        {include: '#lifetimes'},
-        {include: '#punctuation'},
-        {include: '#strings'},
-        {include: '#gtypes'},
-        {include: '#types'}
-      ]
-    },
-    {
       captures: {
         1: {name: 'storage.type.rust'},
         2: {name: 'entity.name.module.rust'}
@@ -123,6 +102,7 @@ const grammar = {
     },
     {include: '#block-comments'},
     {include: '#comments'},
+    {include: '#attributes'},
     {include: '#lvariables'},
     {include: '#constants'},
     {include: '#gtypes'},
@@ -137,6 +117,26 @@ const grammar = {
     {include: '#variables'}
   ],
   repository: {
+    attributes: {
+      begin: '(#)(\\!?)(\\[)',
+      beginCaptures: {
+        1: {name: 'punctuation.definition.attribute.rust'},
+        3: {name: 'punctuation.brackets.attribute.rust'}
+      },
+      end: '\\]',
+      endCaptures: {0: {name: 'punctuation.brackets.attribute.rust'}},
+      name: 'meta.attribute.rust',
+      patterns: [
+        {include: '#block-comments'},
+        {include: '#comments'},
+        {include: '#keywords'},
+        {include: '#lifetimes'},
+        {include: '#punctuation'},
+        {include: '#strings'},
+        {include: '#gtypes'},
+        {include: '#types'}
+      ]
+    },
     'block-comments': {
       patterns: [
         {match: '/\\*\\*/', name: 'comment.block.rust'},
@@ -179,7 +179,7 @@ const grammar = {
             5: {name: 'entity.name.type.numeric.rust'}
           },
           match:
-            '\\b\\d[\\d_]*(\\.?)[\\d_]*(?:(E)([+-])([\\d_]+))?(f32|f64|i128|i16|i32|i64|i8|isize|u128|u16|u32|u64|u8|usize)?\\b',
+            '\\b\\d[\\d_]*(\\.?)[\\d_]*(?:(E|e)([+-]?)([\\d_]+))?(f32|f64|i128|i16|i32|i64|i8|isize|u128|u16|u32|u64|u8|usize)?\\b',
           name: 'constant.numeric.decimal.rust'
         },
         {
@@ -212,7 +212,7 @@ const grammar = {
         5: {name: 'constant.character.escape.unicode.punctuation.rust'}
       },
       match:
-        '(\\\\)(?:(?:(x[0-7][0-7a-fA-F])|(u(\\{)[\\da-fA-F]{4,6}(\\}))|.))',
+        '(\\\\)(?:(?:(x[0-7][\\da-fA-F])|(u(\\{)[\\da-fA-F]{4,6}(\\}))|.))',
       name: 'constant.character.escape.rust'
     },
     functions: {
@@ -265,6 +265,7 @@ const grammar = {
           patterns: [
             {include: '#block-comments'},
             {include: '#comments'},
+            {include: '#attributes'},
             {include: '#keywords'},
             {include: '#lvariables'},
             {include: '#constants'},
@@ -288,6 +289,7 @@ const grammar = {
           patterns: [
             {include: '#block-comments'},
             {include: '#comments'},
+            {include: '#attributes'},
             {include: '#keywords'},
             {include: '#lvariables'},
             {include: '#constants'},
@@ -448,7 +450,7 @@ const grammar = {
             1: {name: 'entity.name.namespace.rust'},
             2: {name: 'keyword.operator.namespace.rust'}
           },
-          match: '(?<![A-Za-z0-9_])([a-z0-9_]+)((?<!super|self)::)'
+          match: '(?<![A-Za-z0-9_])([A-Za-z0-9_]+)((?<!super|self)::)'
         }
       ]
     },
@@ -510,7 +512,7 @@ const grammar = {
             '(?<![A-Za-z])(f32|f64|i128|i16|i32|i64|i8|isize|u128|u16|u32|u64|u8|usize)\\b'
         },
         {
-          begin: '\\b([A-Z][A-Za-z0-9]*)(<)',
+          begin: '\\b(_?[A-Z][A-Za-z0-9_]*)(<)',
           beginCaptures: {
             1: {name: 'entity.name.type.rust'},
             2: {name: 'punctuation.brackets.angle.rust'}
@@ -537,30 +539,33 @@ const grammar = {
             1: {name: 'keyword.declaration.trait.rust storage.type.rust'},
             2: {name: 'entity.name.type.trait.rust'}
           },
-          match: '\\b(trait)\\s+([A-Z][A-Za-z0-9]*)\\b'
+          match: '\\b(trait)\\s+(_?[A-Z][A-Za-z0-9_]*)\\b'
         },
         {
           captures: {
             1: {name: 'keyword.declaration.struct.rust storage.type.rust'},
             2: {name: 'entity.name.type.struct.rust'}
           },
-          match: '\\b(struct)\\s+([A-Z][A-Za-z0-9]*)\\b'
+          match: '\\b(struct)\\s+(_?[A-Z][A-Za-z0-9_]*)\\b'
         },
         {
           captures: {
             1: {name: 'keyword.declaration.enum.rust storage.type.rust'},
             2: {name: 'entity.name.type.enum.rust'}
           },
-          match: '\\b(enum)\\s+([A-Z][A-Za-z0-9_]*)\\b'
+          match: '\\b(enum)\\s+(_?[A-Z][A-Za-z0-9_]*)\\b'
         },
         {
           captures: {
             1: {name: 'keyword.declaration.type.rust storage.type.rust'},
             2: {name: 'entity.name.type.declaration.rust'}
           },
-          match: '\\b(type)\\s+([A-Z][A-Za-z0-9_]*)\\b'
+          match: '\\b(type)\\s+(_?[A-Z][A-Za-z0-9_]*)\\b'
         },
-        {match: '\\b[A-Z][A-Za-z0-9]*\\b(?!!)', name: 'entity.name.type.rust'}
+        {
+          match: '\\b_?[A-Z][A-Za-z0-9_]*\\b(?!!)',
+          name: 'entity.name.type.rust'
+        }
       ]
     },
     variables: {

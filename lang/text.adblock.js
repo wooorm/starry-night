@@ -141,7 +141,7 @@ const grammar = {
             2: {name: 'keyword.operator.adblock'},
             3: {name: 'string.unquoted.adblock'}
           },
-          match: '(redirect|redirect-rule|csp|cookie)(=)(((\\\\,)|[^,])+)',
+          match: '(redirect|redirect-rule|csp|cookie)(=)?(((\\\\,)|[^,])+)?',
           name: 'keyword.other.adblock'
         },
         {
@@ -169,7 +169,7 @@ const grammar = {
               ]
             }
           },
-          match: '(removeheader)(=)(((\\\\,)|[^,])+)',
+          match: '(removeheader)(=)?(((\\\\,)|[^,])+)?',
           name: 'keyword.other.adblock'
         },
         {
@@ -189,7 +189,7 @@ const grammar = {
             3: {name: 'keyword.other.adblock'},
             4: {name: 'string.unquoted.adblock'}
           },
-          match: '(removeparam|queryprune)(=)(~)?(((\\\\,)|[^,])+)',
+          match: '(removeparam|queryprune)(=)?(~)?(((\\\\,)|[^,])+)?',
           name: 'keyword.other.adblock'
         },
         {
@@ -210,14 +210,56 @@ const grammar = {
           match: '(method)(=)([^,]+)'
         },
         {
+          captures: {
+            1: {name: 'keyword.other.adblock'},
+            2: {name: 'keyword.operator.adblock'},
+            3: {
+              patterns: [
+                {
+                  match:
+                    '(?i)(no-referrer|no-referrer-when-downgrade|origin|origin-when-cross-origin|same-origin|strict-origin|strict-origin-when-cross-origin|unsafe-url)',
+                  name: 'string.unquoted.adblock'
+                },
+                {match: '~|\\|.+', name: 'invalid.illegal.referrerpolicy-value'}
+              ]
+            }
+          },
+          match: '(referrerpolicy)(=)?((\\w|-)+)?'
+        },
+        {
+          captures: {
+            1: {name: 'keyword.other.adblock'},
+            2: {name: 'keyword.operator.adblock'},
+            3: {name: 'string.unquoted.adblock'}
+          },
+          match: '(permissions)(=)?(((\\\\,)|[^,])+)?'
+        },
+        {
+          captures: {
+            1: {name: 'keyword.other.adblock'},
+            2: {name: 'keyword.operator.adblock'},
+            3: {name: 'string.unquoted.adblock'}
+          },
+          match: '(header)(=)([^,]+)'
+        },
+        {
           match:
-            '(inline-script|inline-font|mp4|empty|badfilter|genericblock|generichide|network|popup|popunder|important|cookie|csp|replace|stealth|removeparam|queryprune)',
+            '(inline-script|inline-font|mp4|empty|badfilter|genericblock|generichide|network|popup|popunder|important|replace|stealth)',
           name: 'keyword.other.adblock'
         },
         {
           match:
-            '(~?)(xhr|first-party|third-party|match-case|elemhide|content|jsinject|urlblock|document|image|stylesheet|script|object-subrequest|object|font|media|subdocument|xmlhttprequest|websocket|other|webrtc|ping|extension|all|1p|3p|css|frame|ghide|ehide|shide|specifichide)',
+            '(~?)(first-party|third-party|match-case|elemhide|content|jsinject|urlblock|extension|all|strict1p|strict3p|1p|3p|css|frame|ghide|ehide|shide|specifichide)',
           name: 'keyword.other.adblock'
+        },
+        {
+          match:
+            '(~)?(document|doc|font|image|media|object|other|ping|beacon|script|stylesheet|css|subdocument|frame|websocket|xmlhttprequest|xhr|webrtc)(,|$)',
+          name: 'keyword.other.adblock'
+        },
+        {
+          match: '(~)?(object-subrequest)',
+          name: 'invalid.illegal.removed.modifier'
         },
         {match: ',', name: 'punctuation.definition.adblock'},
         {match: '\\$', name: 'invalid.illegal.redundant.modifier.separator'}
@@ -238,9 +280,11 @@ const grammar = {
     },
     comments: {
       patterns: [
-        {match: '^!.*', name: 'comment.line'},
-        {match: '^# .*', name: 'comment.line.batch-style'},
-        {match: '^#$', name: 'comment.line.batch-style'}
+        {match: '^!.*', name: 'comment.line.exclamation-sign'},
+        {
+          match: '^#(?!(?:@?(?:\\$?\\?|\\$|%)?#)).*',
+          name: 'comment.line.hashtag-sign'
+        }
       ]
     },
     contentAttributes: {
@@ -300,6 +344,14 @@ const grammar = {
                 3: {patterns: [{include: '#appListPipeSeparated'}]}
               },
               match: '(app)(=)([^,]+)'
+            },
+            {
+              captures: {
+                1: {name: 'keyword.other.adblock'},
+                2: {name: 'keyword.operator.adblock'},
+                3: {name: 'string.unquoted.adblock'}
+              },
+              match: '(url)(=)([^,]+)'
             },
             {match: '\\$', name: 'keyword.control.adblock'},
             {match: ',', name: 'punctuation.definition.adblock'},
@@ -445,20 +497,30 @@ const grammar = {
         {
           captures: {
             1: {name: 'keyword.preprocessor.directive'},
-            2: {
+            2: {name: 'keyword.other.delimiter.whitespace'},
+            3: {
               patterns: [
                 {
-                  match:
-                    '(?x)\n(\n  adguard_app_windows\n  |adguard_app_mac\n  |adguard_app_android\n  |adguard_app_ios\n  |adguard_ext_chromium\n  |adguard_ext_firefox\n  |adguard_ext_edge\n  |adguard_ext_safari\n  |adguard_ext_opera\n  |adguard_ext_android_cb\n  |adguard|ext_abp\n  |ext_ublock\n  |env_chromium\n  |env_edge\n  |env_firefox\n  |env_mobile\n  |env_safari\n  |false\n  |cap_html_filtering\n  |cap_user_stylesheet\n  |env_legacy\n)',
+                  match: '[A-Za-z]+[\\w_-]*',
                   name: 'constant.language.platform.name'
                 },
-                {match: '(&&|!|\\|\\|| )', name: 'keyword.control.characters'},
-                {match: '(\\(|\\))', name: 'keyword.control.characters'},
+                {match: '&&', name: 'keyword.operator.logical.and'},
+                {match: '\\|\\|', name: 'keyword.operator.logical.or'},
+                {match: '!', name: 'keyword.operator.logical.not'},
+                {
+                  match: '\\(',
+                  name: 'keyword.control.characters.parenthesis.open'
+                },
+                {
+                  match: '\\)',
+                  name: 'keyword.control.characters.parenthesis.close'
+                },
+                {match: '\\s+', name: 'keyword.other.delimiter.whitespace'},
                 {match: '.*', name: 'invalid.illegal'}
               ]
             }
           },
-          match: '^(!#if) (.*)$'
+          match: '^(!#if)(\\s)(.*)$'
         },
         {
           captures: {
@@ -467,7 +529,20 @@ const grammar = {
           },
           match: '^(!#include) (.*)$'
         },
-        {match: '^!#endif\\s*$', name: 'keyword.preprocessor.directive'},
+        {
+          captures: {
+            1: {name: 'keyword.preprocessor.directive'},
+            2: {name: 'keyword.other.delimiter.whitespace'}
+          },
+          match: '^(!#else)(\\s*)$'
+        },
+        {
+          captures: {
+            1: {name: 'keyword.preprocessor.directive'},
+            2: {name: 'keyword.other.delimiter.whitespace'}
+          },
+          match: '^(!#endif)(\\s*)$'
+        },
         {
           captures: {
             1: {name: 'keyword.preprocessor.directive'},
@@ -543,7 +618,7 @@ const grammar = {
             1: {name: 'string.quoted.adblock'},
             2: {name: 'keyword.operator.adblock'}
           },
-          match: '([^,]*)(,\\s*)?'
+          match: '((?:[^\\\\,]+|\\\\.?)*)(,|$)'
         },
         {match: '.*', name: 'invalid.illegal.adblock'}
       ]
@@ -575,7 +650,7 @@ const grammar = {
             5: {patterns: [{include: '#scriptletFunctionUBO'}]},
             6: {name: 'punctuation.section.adblock'}
           },
-          match: '^(.*?)(##)(\\+js)(\\()(.+)(\\)\\s*)$'
+          match: '^(.*?)(#@?#)(\\+js)(\\()(.+)(\\)\\s*)$'
         }
       ]
     },
@@ -587,7 +662,7 @@ const grammar = {
             2: {name: 'keyword.control.adblock'},
             3: {name: 'constant.character.snippet.adblock'}
           },
-          match: '^(.*?)(#\\$#)([^{]+)$'
+          match: '^(.*?)(#@?\\$#)([^{]+)$'
         }
       ]
     },

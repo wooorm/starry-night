@@ -153,6 +153,11 @@ const grammar = {
           match:
             '\\b(?x:any|array|auto|bool|byte |c(?:double|float|u?(?:long(?:long)?|char|int|short)|longdouble|schar |size(?:_t)?|string(?:[Aa]rray)?) |char|float(?:32|64)?|iterable|lent|open[Aa]rray|owned|pointer|ptr|range|ref|se[qt] |sink|static|string|typed?|type[Dd]esc|u?int(?:8|16|32|64)?|untyped|varargs|void)\\b',
           name: 'storage.type.primitive.nim'
+        },
+        {
+          match:
+            '(?x:appType|Compile(?:Date|Time)|cpuEndian |host(?:CPU|OS) |isMainModule|NaN|(?:Neg)?Inf|Nim(?:Major|Minor|Patch|Version)|nimvm|off|on |Quit(?:Failure|Success))',
+          name: 'support.constant.builtin.nim'
         }
       ]
     },

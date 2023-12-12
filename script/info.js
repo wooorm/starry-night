@@ -59,8 +59,17 @@ export const info = {
     dependencies: ['text.html.basic'],
     license: 'mit'
   },
+  'source.genero-4gl': {
+    homepage: 'https://github.com/FourjsGenero/GeneroFgl.tmbundle',
+    license: 'unlicense'
+  },
+  'source.genero-per': {
+    homepage: 'https://github.com/FourjsGenero/GeneroFgl.tmbundle',
+    license: 'unlicense'
+  },
   'text.html.handlebars': {
     dependencies: ['text.html.basic'],
+    homepage: 'https://github.com/daaain/Handlebars',
     license: 'mit'
   },
   'source.webidl': {
@@ -497,10 +506,6 @@ export const info = {
     homepage: 'https://github.com/saltstack/atom-salt',
     license: 'mit'
   },
-  'source.dm': {
-    homepage: 'https://github.com/PJB3005/atomic-dreams',
-    license: 'mit'
-  },
   'source.ats': {
     license: 'mit'
   },
@@ -615,6 +620,10 @@ export const info = {
   },
   'source.desktop': {},
   'source.diff': {},
+  'source.dm': {
+    homepage: 'https://github.com/spacestation13/dm-syntax',
+    license: 'mit'
+  },
   'source.dylan': {},
   'source.earthfile': {
     homepage: 'https://github.com/earthly/earthfile-grammar',
@@ -628,6 +637,10 @@ export const info = {
   'source.ecl': {
     homepage: 'https://github.com/hpcc-systems/ecl-tmLanguage',
     license: 'apache-2.0'
+  },
+  'source.edgeql': {
+    homepage: 'https://github.com/edgedb/edgedb-editor-plugin',
+    license: 'mit'
   },
   'source.eiffel': {},
   'text.html.js': {
@@ -687,14 +700,6 @@ export const info = {
     homepage: 'https://github.com/printfn/gemini-vscode',
     license: 'mit'
   },
-  'source.genero': {
-    homepage: 'https://github.com/alienriver49/genero.tmbundle',
-    license: 'mit'
-  },
-  'source.genero-forms': {
-    homepage: 'https://github.com/alienriver49/genero.tmbundle',
-    license: 'mit'
-  },
   'source.po': {},
   'source.gnuplot': {
     license: 'mit'
@@ -738,6 +743,10 @@ export const info = {
   },
   'source.hoon': {
     homepage: 'https://github.com/pkova/hoon-grammar',
+    license: 'mit'
+  },
+  'source.toit': {
+    homepage: 'https://github.com/toitware/ide-tools',
     license: 'mit'
   },
   'source.idl': {
@@ -1758,6 +1767,10 @@ export const info = {
     homepage: 'https://github.com/PowerShell/EditorSyntax',
     license: 'mit'
   },
+  'source.praat': {
+    homepage: 'https://github.com/orhunulusahin/praatvscode',
+    license: 'mit'
+  },
   'source.processing': {},
   'text.html.django': {
     dependencies: ['text.html.basic']
@@ -1996,7 +2009,12 @@ export const info = {
     homepage: 'https://github.com/textmate/sweave.tmbundle'
   },
   'source.swift': {
-    homepage: 'https://github.com/textmate/swift.tmbundle'
+    homepage: 'https://github.com/jtbandes/swift-tmlanguage',
+    license: 'mit'
+  },
+  'source.hcl.terraform': {
+    homepage: 'https://github.com/hashicorp/syntax',
+    license: 'mpl-2.0'
   },
   'source.tcl': {},
   'source.tm-properties': {
@@ -2029,6 +2047,11 @@ export const info = {
   },
   'source.verilog': {},
   'source.vhdl': {},
+  'source.gjs': {
+    dependencies: ['source.js'],
+    homepage: 'https://github.com/lifeart/vsc-ember-syntax',
+    license: 'mit'
+  },
   'source.fnl': {
     homepage: 'https://github.com/kongeor/vsc-fennel',
     license: 'mit'
@@ -2118,6 +2141,10 @@ export const info = {
     homepage: 'https://github.com/leanprover/vscode-lean',
     license: 'apache-2.0'
   },
+  'source.lean4': {
+    homepage: 'https://github.com/leanprover/vscode-lean4',
+    license: 'apache-2.0'
+  },
   'source.mc': {
     license: 'mit'
   },
@@ -2130,7 +2157,7 @@ export const info = {
     license: 'mit'
   },
   'source.rego': {
-    homepage: 'https://github.com/tsandall/vscode-opa',
+    homepage: 'https://github.com/open-policy-agent/vscode-opa',
     license: 'apache-2.0'
   },
   'source.pddl': {

@@ -141,8 +141,10 @@ const grammar = {
           contentName: 'variable.other.source.dart',
           end: '```'
         },
-        {captures: {0: {name: 'variable.other.source.dart'}}, match: '(`.*?`)'},
-        {captures: {0: {name: 'variable.other.source.dart'}}, match: '(`.*?`)'},
+        {
+          captures: {0: {name: 'variable.other.source.dart'}},
+          match: '(`[^`]+?`)'
+        },
         {
           captures: {2: {name: 'variable.other.source.dart'}},
           match: '(\\* ((    ).*))$'
@@ -182,7 +184,7 @@ const grammar = {
         {match: '(?<!\\$)\\b(new)\\b(?!\\$)', name: 'keyword.control.new.dart'},
         {
           match:
-            '(?<!\\$)\\b(abstract|sealed|base|interface|inline class|class|enum|extends|extension|external|factory|implements|get(?!\\()|mixin|native|operator|set(?!\\()|typedef|with|covariant)\\b(?!\\$)',
+            '(?<!\\$)\\b(abstract|sealed|base|interface|class|enum|extends|extension type|extension|external|factory|implements|get(?!\\()|mixin|native|operator|set(?!\\()|typedef|with|covariant)\\b(?!\\$)',
           name: 'keyword.declaration.dart'
         },
         {
@@ -233,17 +235,15 @@ const grammar = {
       patterns: [
         {
           captures: {1: {name: 'variable.parameter.dart'}},
-          match: '\\$([a-zA-Z0-9_]+)'
+          match: '\\$([a-zA-Z0-9_]+)',
+          name: 'string.interpolated.expression.dart'
         },
         {
           begin: '\\$\\{',
           end: '\\}',
           name: 'string.interpolated.expression.dart',
           patterns: [
-            {
-              include: '#constants-and-special-vars',
-              name: 'variable.parameter.dart'
-            },
+            {include: '#constants-and-special-vars'},
             {include: '#strings'},
             {match: '[a-zA-Z0-9_]+', name: 'variable.parameter.dart'}
           ]

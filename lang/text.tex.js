@@ -12,7 +12,7 @@ const grammar = {
     {
       captures: {1: {name: 'punctuation.definition.keyword.tex'}},
       match:
-        '(\\\\)(backmatter|else|fi|frontmatter|ftrue|mainmatter|if(case|cat|dim|eof|false|hbox|hmode|inner|mmode|num|odd|undefined|vbox|vmode|void|x)?)\\b',
+        '(\\\\)(backmatter|csname|else|endcsname|fi|frontmatter|mainmatter|unless|if(case|cat|csname|defined|dim|eof|false|fontchar|hbox|hmode|inner|mmode|num|odd|true|vbox|vmode|void|x)?)\\b',
       name: 'keyword.control.tex'
     },
     {

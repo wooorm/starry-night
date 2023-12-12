@@ -15,7 +15,7 @@ const grammar = {
     {include: '#string'},
     {include: '#variable'},
     {include: '#target'},
-    {include: '#user-command'}
+    {include: '#function'}
   ],
   repository: {
     comment: {
@@ -54,7 +54,15 @@ const grammar = {
         },
         {
           match: '([a-zA-Z0-9._\\-/:]*\\+[A-Z][a-zA-Z0-9._]*)',
-          name: 'entity.name.function.user-command.earthfile'
+          name: 'entity.name.function.function.earthfile'
+        }
+      ]
+    },
+    function: {
+      patterns: [
+        {
+          captures: {1: {name: 'entity.name.function.function.earthfile'}},
+          match: '^\\s*([A-Z][a-zA-Z0-9._]*):'
         }
       ]
     },
@@ -71,7 +79,7 @@ const grammar = {
         },
         {include: '#special-method'},
         {include: '#target'},
-        {include: '#user-command'}
+        {include: '#function'}
       ]
     },
     'special-method': {
@@ -104,7 +112,7 @@ const grammar = {
             2: {name: 'entity.name.type.tag.earthfile'}
           },
           match:
-            '^\\s*(FROM|COPY|SAVE ARTIFACT|SAVE IMAGE|RUN|LABEL|EXPOSE|VOLUME|USER|ENV|ARG|BUILD|WORKDIR|ENTRYPOINT|CMD|GIT CLONE|DOCKER LOAD|DOCKER PULL|HEALTHCHECK|WITH DOCKER|END|IF|ELSE|ELSE IF|DO|COMMAND|IMPORT|LOCALLY|FOR|VERSION|WAIT|TRY|FINALLY|CACHE|HOST|PIPELINE|TRIGGER|PROJECT|SET|LET|ADD|STOP SIGNAL|ONBUILD|SHELL)\\s((--\\w+(?:-\\w+)*\\s*)+)'
+            '^\\s*(FROM|COPY|SAVE ARTIFACT|SAVE IMAGE|RUN|LABEL|EXPOSE|VOLUME|USER|ENV|ARG|BUILD|WORKDIR|ENTRYPOINT|CMD|GIT CLONE|DOCKER LOAD|DOCKER PULL|HEALTHCHECK|WITH DOCKER|END|IF|ELSE IF|ELSE|DO|COMMAND|FUNCTION|IMPORT|LOCALLY|FOR|VERSION|WAIT|TRY|FINALLY|CACHE|HOST|PIPELINE|TRIGGER|PROJECT|SET|LET|ADD|STOP SIGNAL|ONBUILD|SHELL)\\s((--\\w+(?:-\\w+)*\\s*)+)'
         },
         {
           match: '^\\s*HEALTHCHECK\\s+(NONE|CMD)\\s',
@@ -116,7 +124,7 @@ const grammar = {
         },
         {
           match:
-            '^\\s*(FROM|COPY|SAVE ARTIFACT|SAVE IMAGE|RUN|LABEL|EXPOSE|VOLUME|USER|ENV|ARG|BUILD|WORKDIR|ENTRYPOINT|CMD|GIT CLONE|DOCKER LOAD|DOCKER PULL|HEALTHCHECK|WITH DOCKER|END|IF|ELSE|ELSE IF|DO|COMMAND|IMPORT|LOCALLY|FOR|VERSION|WAIT|TRY|FINALLY|CACHE|HOST|PIPELINE|TRIGGER|PROJECT|SET|LET|ADD|STOP SIGNAL|ONBUILD|SHELL)\\s',
+            '^\\s*(FROM|COPY|SAVE ARTIFACT|SAVE IMAGE|RUN|LABEL|EXPOSE|VOLUME|USER|ENV|ARG|BUILD|WORKDIR|ENTRYPOINT|CMD|GIT CLONE|DOCKER LOAD|DOCKER PULL|HEALTHCHECK|WITH DOCKER|END|IF|ELSE IF|ELSE|DO|COMMAND|FUNCTION|IMPORT|LOCALLY|FOR|VERSION|WAIT|TRY|FINALLY|CACHE|HOST|PIPELINE|TRIGGER|PROJECT|SET|LET|ADD|STOP SIGNAL|ONBUILD|SHELL)\\s',
           name: 'keyword.other.special-method.earthfile'
         }
       ]
@@ -158,14 +166,6 @@ const grammar = {
         {
           captures: {1: {name: 'entity.name.class.target.earthfile'}},
           match: '^\\s*([a-z]([a-zA-Z0-9.]|-)*):'
-        }
-      ]
-    },
-    'user-command': {
-      patterns: [
-        {
-          captures: {1: {name: 'entity.name.function.user-command.earthfile'}},
-          match: '^\\s*([A-Z][a-zA-Z0-9._]*):'
         }
       ]
     },

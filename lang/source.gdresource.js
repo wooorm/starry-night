@@ -69,7 +69,8 @@ const grammar = {
           name: 'constant.character.escape.gdresource'
         },
         {
-          match: '"[^"\\\\]*(?:\\\\.[^"\\\\]*)*"',
+          begin: '"',
+          end: '"',
           name: 'string.quoted.double.basic.line.gdresource',
           patterns: [
             {
@@ -82,41 +83,40 @@ const grammar = {
             }
           ]
         },
-        {begin: "'''", end: "'''", name: 'invalid.illegal.escape.gdresource'},
         {match: "'.*?'", name: 'string.quoted.single.literal.line.gdresource'},
         {
-          captures: {1: {name: 'constant.language.gdresource'}},
-          match: '(?<!\\w)(true|false)(?!\\w)'
+          match: '(?<!\\w)(true|false)(?!\\w)',
+          name: 'constant.language.gdresource'
         },
         {
-          captures: {1: {name: 'constant.numeric.float.gdresource'}},
           match:
-            '(?<!\\w)([\\+\\-]?(0|([1-9](([0-9]|_[0-9])+)?))(?:(?:\\.(0|([1-9](([0-9]|_[0-9])+)?)))?[eE][\\+\\-]?[1-9]_?[0-9]*|(?:\\.[0-9_]*)))(?!\\w)'
+            '(?<!\\w)([\\+\\-]?(0|([1-9](([0-9]|_[0-9])+)?))(?:(?:\\.(0|([1-9](([0-9]|_[0-9])+)?)))?[eE][\\+\\-]?[1-9]_?[0-9]*|(?:\\.[0-9_]*)))(?!\\w)',
+          name: 'constant.numeric.float.gdresource'
         },
         {
-          captures: {1: {name: 'constant.numeric.integer.gdresource'}},
-          match: '(?<!\\w)((?:[\\+\\-]?(0|([1-9](([0-9]|_[0-9])+)?))))(?!\\w)'
+          match: '(?<!\\w)((?:[\\+\\-]?(0|([1-9](([0-9]|_[0-9])+)?))))(?!\\w)',
+          name: 'constant.numeric.integer.gdresource'
         },
         {
-          captures: {1: {name: 'constant.numeric.inf.gdresource'}},
-          match: '(?<!\\w)([\\+\\-]?inf)(?!\\w)'
+          match: '(?<!\\w)([\\+\\-]?inf)(?!\\w)',
+          name: 'constant.numeric.inf.gdresource'
         },
         {
-          captures: {1: {name: 'constant.numeric.nan.gdresource'}},
-          match: '(?<!\\w)([\\+\\-]?nan)(?!\\w)'
+          match: '(?<!\\w)([\\+\\-]?nan)(?!\\w)',
+          name: 'constant.numeric.nan.gdresource'
         },
         {
-          captures: {1: {name: 'constant.numeric.hex.gdresource'}},
           match:
-            '(?<!\\w)((?:0x(([0-9a-fA-F](([0-9a-fA-F]|_[0-9a-fA-F])+)?))))(?!\\w)'
+            '(?<!\\w)((?:0x(([0-9a-fA-F](([0-9a-fA-F]|_[0-9a-fA-F])+)?))))(?!\\w)',
+          name: 'constant.numeric.hex.gdresource'
         },
         {
-          captures: {1: {name: 'constant.numeric.oct.gdresource'}},
-          match: '(?<!\\w)(0o[0-7](_?[0-7])*)(?!\\w)'
+          match: '(?<!\\w)(0o[0-7](_?[0-7])*)(?!\\w)',
+          name: 'constant.numeric.oct.gdresource'
         },
         {
-          captures: {1: {name: 'constant.numeric.bin.gdresource'}},
-          match: '(?<!\\w)(0b[01](_?[01])*)(?!\\w)'
+          match: '(?<!\\w)(0b[01](_?[01])*)(?!\\w)',
+          name: 'constant.numeric.bin.gdresource'
         },
         {
           begin:
@@ -156,7 +156,7 @@ const grammar = {
       patterns: [
         {
           match: '(\\s*[A-Za-z_\\-][A-Za-z0-9_\\-]*\\s*=)(?=\\s*$)',
-          name: 'invalid.deprecated.noValue.gdresource'
+          name: 'invalid.illegal.noValue.gdresource'
         },
         {
           begin: '\\s*([A-Za-z_-][^\\s]*|".+"|\'.+\'|[0-9]+)\\s*(=)\\s*',
@@ -173,7 +173,7 @@ const grammar = {
       patterns: [
         {
           match: '(\\s*[A-Za-z_\\-][A-Za-z0-9_\\-]*\\s*=)(?=\\s*$)',
-          name: 'invalid.deprecated.noValue.gdresource'
+          name: 'invalid.illegal.noValue.gdresource'
         },
         {
           begin: '\\s*([A-Za-z_-][^\\s]*|".+"|\'.+\'|[0-9]+)\\s*(=)\\s*',

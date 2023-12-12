@@ -735,7 +735,7 @@ const grammar = {
                 4: {patterns: [{include: '$self'}]}
               },
               match:
-                "(?x) ( [\\p{Nd}\\pL\\pM'\\-_]+ ) \\b (:)? (\\w+ \\b )? (\\S+  )?"
+                "(?x) ( [\\p{Nd}\\p{L}\\p{M}'\\-_]+ ) \\b (:)? (\\w+ \\b )? (\\S+  )?"
             }
           ]
         }
@@ -751,7 +751,7 @@ const grammar = {
       patterns: [
         {match: 'TOP', name: 'entity.name.function.regexp.named.TOP.raku'},
         {
-          match: "[\\p{Nd}\\pL\\pM'\\-_]+",
+          match: "[\\p{Nd}\\p{L}\\p{M}'\\-_]+",
           name: 'entity.name.function.regexp.named.raku'
         },
         {
@@ -1347,7 +1347,7 @@ const grammar = {
             }
           },
           match:
-            "(?x)\n(?<!\\\\)\n(\\$|@|%|&)\n(?!\\$)\n(\\.|\\*|:|!|\\^|~|=|\\?)?  # Twigils\n([\\pL\\pM_])             # Must start with Alpha or underscore\n(\n   [\\p{Nd}\\pL\\pM_]  # have alphanum/underscore, or a ' or -\n|                           # followed by an Alpha or underscore\n   [\\-'] [\\pL\\pM_]\n)*\n( \\[ .* \\] )?             # postcircumfix [ ]\n## methods\n(?:\n  (?:\n    ( \\. )\n    (\n       [\\pL\\pM]\n        (?:\n          [\\p{Nd}\\pL\\pM_]  # have alphanum/underscore, or a ' or -\n        |                          # followed by an Alpha or underscore\n          [\\-'] [\\pL\\pM_]\n        )*\n\n    )\n  )?\n  ( \\( .*?  \\) )\n)?",
+            "(?x)\n(?<!\\\\)\n(\\$|@|%|&)\n(?!\\$)\n(\\.|\\*|:|!|\\^|~|=|\\?)?  # Twigils\n([\\p{L}\\p{M}_])             # Must start with Alpha or underscore\n(\n   [\\p{Nd}\\p{L}\\p{M}_]  # have alphanum/underscore, or a ' or -\n|                           # followed by an Alpha or underscore\n   [\\-'] [\\p{L}\\p{M}_]\n)*\n( \\[ .* \\] )?             # postcircumfix [ ]\n## methods\n(?:\n  (?:\n    ( \\. )\n    (\n       [\\p{L}\\p{M}]\n        (?:\n          [\\p{Nd}\\p{L}\\p{M}_]  # have alphanum/underscore, or a ' or -\n        |                          # followed by an Alpha or underscore\n          [\\-'] [\\p{L}\\p{M}_]\n        )*\n\n    )\n  )?\n  ( \\( .*?  \\) )\n)?",
           name: 'variable.other.identifier.interpolated.raku'
         },
         {include: '#hex_escapes'},
@@ -1707,7 +1707,7 @@ const grammar = {
             3: {name: 'variable.other.identifier.raku'}
           },
           match:
-            "(?x)\n(\\$|@|%|&)\n(\\.|\\*|:|!|\\^|~|=|\\?)?\n(\n    (?:[\\pL\\pM_])           # Must start with Alpha or underscore\n    (?:\n       [\\p{Nd}\\pL\\pM_]  # have alphanum/underscore, or a ' or -\n    |                           # followed by an Alpha or underscore\n       [\\-'] [\\pL\\pM_]\n    )*\n)",
+            "(?x)\n(\\$|@|%|&)\n(\\.|\\*|:|!|\\^|~|=|\\?)?\n(\n    (?:[\\p{L}\\p{M}_])           # Must start with Alpha or underscore\n    (?:\n       [\\p{Nd}\\p{L}\\p{M}_]  # have alphanum/underscore, or a ' or -\n    |                           # followed by an Alpha or underscore\n       [\\-'] [\\p{L}\\p{M}_]\n    )*\n)",
           name: 'meta.variable.container.raku'
         }
       ]
