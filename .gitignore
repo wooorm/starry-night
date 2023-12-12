@@ -4,6 +4,7 @@ media/preview.html
 node_modules/
 script/info/
 script/grammars.yml
+*.d.ts.map
 *.d.ts
 *.log
 .DS_Store

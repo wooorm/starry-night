@@ -43,11 +43,11 @@
       "default": "./lib/get-oniguruma.default.js"
     }
   },
-  "types": "index.d.ts",
   "files": [
     "lang/",
     "lib/",
     "style/",
+    "index.d.ts.map",
     "index.d.ts",
     "index.js",
     "notice"
