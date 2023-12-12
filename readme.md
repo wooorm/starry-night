@@ -233,9 +233,9 @@ only used for WASM.
 
 ###### Parameters
 
-*   `grammars` (`Array<Grammar>`)
+*   `grammars` ([`Array<Grammar>`][api-grammar])
     — grammars to support
-*   `options` (`Options`, optional)
+*   `options` ([`Options`][api-options], optional)
     — configuration
 
 ###### Returns
@@ -265,7 +265,7 @@ console.log(1)
 ```
 ````
 
-> **Note**: languages can use the same extensions.
+> 👉 **Note**: languages can use the same extensions.
 > For example, `.h` is reused by many languages.
 > In those cases, you will get one scope back, but it might not be the
 > most popular language associated with an extension.
@@ -368,7 +368,7 @@ Add more grammars.
 
 ###### Parameters
 
-*   `grammars` (`Array<Grammar>`)
+*   `grammars` ([`Array<Grammar>`][api-grammar])
     — grammars to support
 
 ###### Returns
