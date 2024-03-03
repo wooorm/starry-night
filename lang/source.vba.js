@@ -1,6 +1,6 @@
 // This is a TextMate grammar distributed by `starry-night`.
 // This grammar is developed at
-// <https://github.com/tiabeast/vscode-vba-json>
+// <https://github.com/serkonda7/vscode-vba>
 // and licensed `mpl-2.0`.
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */

@@ -1520,7 +1520,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 *   [ ] [`source.v`](lang/source.v.js) (mit) — [upstream](https://github.com/0x9ef/vscode-vlang)
 *   [ ] [`source.vala`](lang/source.vala.js) (mit) — [upstream](https://github.com/technosophos/Vala-TMBundle)
 *   [ ] [`source.varnish.vcl`](lang/source.varnish.vcl.js) (mit) — [upstream](https://github.com/brandonwamboldt/sublime-varnish)
-*   [ ] [`source.vba`](lang/source.vba.js) (mpl-2.0) — [upstream](https://github.com/tiabeast/vscode-vba-json)
+*   [ ] [`source.vba`](lang/source.vba.js) (mpl-2.0) — [upstream](https://github.com/serkonda7/vscode-vba)
 *   [ ] [`source.velocity`](lang/source.velocity.js) (mit) — [upstream](https://github.com/animecyc/AtomLanguageVelocity)
 *   [ ] [`source.verilog`](lang/source.verilog.js)
 *   [ ] [`source.vhdl`](lang/source.vhdl.js)

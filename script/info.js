@@ -2197,7 +2197,7 @@ export const info = {
     license: 'bsd-3-clause'
   },
   'source.vba': {
-    homepage: 'https://github.com/tiabeast/vscode-vba-json',
+    homepage: 'https://github.com/serkonda7/vscode-vba',
     license: 'mpl-2.0'
   },
   'source.v': {
