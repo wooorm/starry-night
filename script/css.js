@@ -128,19 +128,19 @@ for (const fileName of fileNames) {
   const lightCss = light ? themeMap.get(light) : undefined
   const darkCss = dark ? themeMap.get(dark) : undefined
   /** @type {Array<string>} */
-  const doc = []
+  const document = []
 
   if (lightCss && darkCss) {
-    doc.push(
+    document.push(
       lightCss,
       '@media (prefers-color-scheme: dark) {\n' + darkCss + '\n}'
     )
   } else {
-    doc.push(lightCss || darkCss || '')
+    document.push(lightCss || darkCss || '')
   }
 
   for (const rule of selectorsMap.values()) {
-    doc.push(rule)
+    document.push(rule)
   }
 
   writePromises.push(
@@ -150,7 +150,7 @@ for (const fileName of fileNames) {
         '/* This is a theme distributed by `starry-night`.\n' +
           ' * It’s based on what GitHub uses on their site.\n' +
           ' * See <https://github.com/wooorm/starry-night> for more info. */' +
-          doc.join('\n\n'),
+          document.join('\n\n'),
         {...prettierConfig, parser: 'css'}
       )
     )

@@ -223,10 +223,10 @@ const ruleSchema = {
 const grammarsBase = new URL('grammars/', gemBase)
 const grammarBasenames = await fs.readdir(grammarsBase)
 const scopes = grammarBasenames.flatMap(function (d) {
-  const ext = path.extname(d)
+  const extension = path.extname(d)
 
-  if (ext === '.json') {
-    return path.basename(d, ext)
+  if (extension === '.json') {
+    return path.basename(d, extension)
   }
 
   assert(d === 'version', d)

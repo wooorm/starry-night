@@ -12,7 +12,7 @@ import {common, createStarryNight} from '../index.js'
 
 const highlighter = await createStarryNight(common)
 
-const doc = `<!doctype html>
+const document = `<!doctype html>
 <html lang=en>
 <title>Example</title>
 <link rel="stylesheet" href="https://esm.sh/github-markdown-css/github-markdown.css">
@@ -49,7 +49,7 @@ console.log(tree)`,
 </html>
 `
 
-fs.writeFile(new URL('../media/preview.html', import.meta.url), doc)
+fs.writeFile(new URL('../media/preview.html', import.meta.url), document)
 
 /**
  * @param {string} value
