@@ -290,7 +290,10 @@ const grammar = {
           begin: '(`)',
           end: '\\1',
           name: 'string.template.astro',
-          patterns: [{include: 'source.tsx#template-substitution-element'}]
+          patterns: [
+            {include: 'source.tsx#template-substitution-element'},
+            {include: 'source.tsx#string-character-escape'}
+          ]
         }
       ]
     },

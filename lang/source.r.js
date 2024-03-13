@@ -4,7 +4,7 @@
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
   extensions: ['.r', '.rd', '.rsx'],
-  names: ['r', 'r', 'rscript', 'splus'],
+  names: ['r', 'rscript', 'splus'],
   patterns: [
     {
       captures: {

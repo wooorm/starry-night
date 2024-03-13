@@ -7029,6 +7029,35 @@ If not otherwise specified (see below), files in this repository fall under the 
 An exception is made for files in readable text which contain their own license information, or files where an accompanying file exists (in the same directory) with a “-license” suffix added to the base-name name of the original file, and an extension of txt, html, or similar. For example “tidy” is accompanied by “tidy-license.txt”.
 
 =========================================================================================================
+Files in `starry-night`: lang/source.commonlisp.js
+From source: <https://github.com/qingpeng9802/common-lisp-tmlanguage>
+SPDX: mit
+---------------------------------------------------------------------------------------------------------
+License from source file: LICENSE
+
+MIT License
+
+Copyright (c) 2020 Qingpeng Li
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+=========================================================================================================
 Files in `starry-night`: lang/text.conllu.js
 From source: <>
 SPDX: apache-2.0
@@ -8214,6 +8243,24 @@ Apache License
    limitations under the License.
 
 =========================================================================================================
+Files in `starry-night`: lang/text.html.edge.js
+From source: <https://github.com/edge-js/edge-vscode>
+SPDX: mit
+---------------------------------------------------------------------------------------------------------
+License from source file: LICENSE.md
+
+# The MIT License
+
+Copyright 2022 Harminder Virk, contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+=========================================================================================================
 Files in `starry-night`: lang/source.edgeql.js
 From source: <https://github.com/edgedb/edgedb-editor-plugin>
 SPDX: mit
@@ -8329,7 +8376,7 @@ All source files use the BSD 2-clause license (see [LICENSE](LICENSE)), except
 for the following:
 
 -   Files in [pkg/diff](pkg/diff) and [pkg/rpc](pkg/rpc) are released under the
-    BSD 3-clause license, since they are copied from
+    BSD 3-clause license, since they are derived from
     [Go's source code](https://github.com/golang/go). See
     [pkg/diff/LICENSE](pkg/diff/LICENSE) and [pkg/rpc/LICENSE](pkg/rpc/LICENSE).
 
@@ -10028,6 +10075,46 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
+
+
+=========================================================================================================
+Files in `starry-night`: lang/source.bh.js
+From source: <https://github.com/B-Lang-org/language-bh>
+SPDX: bsd-3-clause
+---------------------------------------------------------------------------------------------------------
+License from source file: LICENSE
+
+Copyright (c) 2023 Thomas Bourgeat
+Copyright (c) 2017 Justus Adam
+
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+
+    * Redistributions in binary form must reproduce the above
+      copyright notice, this list of conditions and the following
+      disclaimer in the documentation and/or other materials provided
+      with the distribution.
+
+    * Neither the name of Justus Adam nor the names of other
+      contributors may be used to endorse or promote products derived
+      from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 =========================================================================================================
@@ -12862,7 +12949,7 @@ SPDX: isc
 ---------------------------------------------------------------------------------------------------------
 License from source file: LICENSE.md
 
-Copyright (c) 2022, John Gardner
+Copyright (c) 2022-2024, John Gardner
 
 Permission to use, copy, modify, and/or distribute this software for any
 purpose with or without fee is hereby granted, provided that the above
@@ -12927,6 +13014,44 @@ ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+
+=========================================================================================================
+Files in `starry-night`: lang/source.8xp.js
+From source: <https://github.com/TIny-Hacker/language-ti-basic>
+SPDX: bsd-3-clause
+---------------------------------------------------------------------------------------------------------
+License from source file: LICENSE
+
+BSD 3-Clause License
+
+Copyright (c) 2023 - 2024, TIny_Hacker
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this
+   list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+
+3. Neither the name of the copyright holder nor the names of its
+   contributors may be used to endorse or promote products derived from
+   this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 =========================================================================================================
@@ -13387,19 +13512,33 @@ An exception is made for files in readable text which contain their own license 
 
 =========================================================================================================
 Files in `starry-night`: lang/source.lua.js
-From source: <>
-SPDX: permissive
+From source: <https://github.com/LuaLS/lua.tmbundle>
+SPDX: mit
 ---------------------------------------------------------------------------------------------------------
-License from source file: ?
+License from source file: LICENSE
 
-If not otherwise specified (see below), files in this repository fall under the following license:
+MIT License
 
-	Permission to copy, use, modify, sell and distribute this
-	software is granted. This software is provided "as is" without
-	express or implied warranty, and with no claim as to its
-	suitability for any purpose.
+Copyright (c) 2022 最萌小汐
 
-An exception is made for files in readable text which contain their own license information, or files where an accompanying file exists (in the same directory) with a “-license” suffix added to the base-name name of the original file, and an extension of txt, html, or similar. For example “tidy” is accompanied by “tidy-license.txt”.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
 
 =========================================================================================================
 Files in `starry-night`: lang/source.modula-3.js
@@ -14076,6 +14215,38 @@ License from source file: LICENSE
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+
+
+=========================================================================================================
+Files in `starry-night`: lang/source.mojo.js
+From source: <https://github.com/modularml/mojo-syntax>
+SPDX: mit
+---------------------------------------------------------------------------------------------------------
+License from source file: LICENSE
+
+The MIT License
+
+Copyright (c) 2022-present Modular Inc.  https://www.modular.com
+Copyright (c) 2015-present MagicStack Inc.  http://magic.io
+Copyright (c) 2015-present Microsoft Corporation
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
 
 
 =========================================================================================================
@@ -15057,7 +15228,7 @@ This extension is [licensed under the MIT License](LICENSE).  Please see the
 source of the TextMate definition that we use.
 
 =========================================================================================================
-Files in `starry-night`: lang/source.praat.js
+Files in `starry-night`: lang/source.praat.js, lang/source.textgrid.js
 From source: <https://github.com/orhunulusahin/praatvscode>
 SPDX: mit
 ---------------------------------------------------------------------------------------------------------
@@ -15318,6 +15489,36 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
+
+=========================================================================================================
+Files in `starry-night`: lang/source.roc.js
+From source: <https://github.com/ivan-demchenko/roc-vscode-unofficial>
+SPDX: mit
+---------------------------------------------------------------------------------------------------------
+License from source file: LICENSE
+
+MIT License
+
+Copyright (c) 2023 Ivan Demchenko
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
 
 =========================================================================================================
 Files in `starry-night`: lang/text.slim.js
@@ -15695,6 +15896,24 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 =========================================================================================================
+Files in `starry-night`: lang/source.slint.js
+From source: <https://github.com/slint-ui/slint-tmLanguage>
+SPDX: mit
+---------------------------------------------------------------------------------------------------------
+License from source file: LICENSE
+
+MIT License
+
+Copyright (c) 2024 SixtyFPS GmbH
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+=========================================================================================================
 Files in `starry-night`: lang/source.smali.js
 From source: <https://github.com/ShaneWilton/sublime-smali>
 SPDX: mit
@@ -15939,14 +16158,14 @@ License from source file: LICENSE
 
 =========================================================================================================
 Files in `starry-night`: lang/source.sourcepawn.js
-From source: <https://github.com/Dreae/sourcepawn-vscode>
+From source: <https://github.com/Sarrus1/sourcepawn-vscode>
 SPDX: mit
 ---------------------------------------------------------------------------------------------------------
 License from source file: LICENSE
 
 MIT License
 
-Copyright (c) 2017-Present Dreae
+Copyright (c) 2021 Sarrus
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -18686,7 +18905,7 @@ If not otherwise specified (see below), files in this repository fall under the 
 An exception is made for files in readable text which contain their own license information, or files where an accompanying file exists (in the same directory) with a “-license” suffix added to the base-name name of the original file, and an extension of txt, html, or similar. For example “tidy” is accompanied by “tidy-license.txt”.
 
 =========================================================================================================
-Files in `starry-night`: lang/source.gjs.js
+Files in `starry-night`: lang/source.gjs.js, lang/source.gts.js
 From source: <https://github.com/lifeart/vsc-ember-syntax>
 SPDX: mit
 ---------------------------------------------------------------------------------------------------------
@@ -18782,6 +19001,44 @@ THE SOFTWARE.
 License from source file: README.md
 
 Antlers Toolbox is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+=========================================================================================================
+Files in `starry-night`: lang/source.bb.js
+From source: <https://github.com/yoctoproject/vscode-bitbake>
+SPDX: mit
+---------------------------------------------------------------------------------------------------------
+License from source file: LICENSE
+
+MIT License
+
+Copyright (c) 2023 Savoir-faire Linux. 
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+The syntax settings used in this project are forked from 
+
+https://github.com/mholo65/vscode-bitbake
+
+Original work Copyright (c) 2016 Richard Leitner
+Modified work Copyright (c) 2017 Martin Björkström
+Modified work Copyright (c) 2018 Eugen Wiens
+
 
 =========================================================================================================
 Files in `starry-night`: lang/source.brs.js
@@ -21205,26 +21462,26 @@ Files in `starry-night`: lang/source.procfile.js
 From source: <https://github.com/benspaulding/vscode-procfile>
 SPDX: bsd-3-clause
 ---------------------------------------------------------------------------------------------------------
-License from source file: LICENSE
+License from source file: LICENSE.txt
 
 BSD 3-Clause License
 
-Copyright (c) 2020, Ben Spaulding.
+Copyright (c) 2024, Ben Spaulding.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
 
 1. Redistributions of source code must retain the above copyright notice, this
-  list of conditions and the following disclaimer.
+   list of conditions and the following disclaimer.
 
 2. Redistributions in binary form must reproduce the above copyright notice,
-  this list of conditions and the following disclaimer in the documentation
-  and/or other materials provided with the distribution.
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
 
 3. Neither the name of the copyright holder nor the names of its
-  contributors may be used to endorse or promote products derived from
-  this software without specific prior written permission.
+   contributors may be used to endorse or promote products derived from
+   this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -21266,6 +21523,36 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+=========================================================================================================
+Files in `starry-night`: lang/source.pip-requirements.js
+From source: <https://github.com/microsoft/vscode-python>
+SPDX: mit
+---------------------------------------------------------------------------------------------------------
+License from source file: LICENSE
+
+Copyright (c) Microsoft Corporation. All rights reserved.
+
+MIT License
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
 
 =========================================================================================================
 Files in `starry-night`: lang/source.rbs.js
@@ -21362,7 +21649,7 @@ SOFTWARE.
 
 
 =========================================================================================================
-Files in `starry-night`: lang/source.slice.js
+Files in `starry-night`: lang/source.ice.js
 From source: <https://github.com/zeroc-ice/vscode-slice>
 SPDX: bsd-3-clause
 ---------------------------------------------------------------------------------------------------------
@@ -21783,9 +22070,9 @@ Exhibit B - "Incompatible With Secondary Licenses" Notice
 
 License from source file: README.md
 
-Source code and grammars are licensed under the [Mozilla Public License (MPL-2.0)](LICENSE.txt).
+Source code, grammars and snippets are provided under the [Mozilla Public License (MPL-2.0)](LICENSE.txt).
 
-The icon is licensed under the [Creative Commons ShareAlike](images/LICENSE) license.
+The icon is provided under [CC-BY-4.0](images/LICENSE.txt), courtesy of the GitHub Explore authors.
 
 
 <!-- links -->
@@ -21799,7 +22086,7 @@ The icon is licensed under the [Creative Commons ShareAlike](images/LICENSE) lic
 
 [discussions]: https://github.com/serkonda7/vscode-vba/discussions
 
-[gh-linguist]: https://github.com/DecimalTurn/linguist/blob/master/vendor/licenses/git_submodule/vscode-vba-json.dep.yml
+[gh-linguist]: https://github.com/github-linguist/linguist/tree/master/vendor
 
 [sponsors-badge]: https://img.shields.io/badge/Sponsor-GitHub-blue.svg
 [sponsors-profile]: https://github.com/sponsors/serkonda7

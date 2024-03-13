@@ -307,11 +307,18 @@ const grammar = {
     },
     preprocessor_keywords: {
       patterns: [
-        {match: '(?i:(#const))', name: 'keyword.preprocessor.if.brs'},
-        {match: '(?i:(#if))', name: 'keyword.preprocessor.if.brs'},
-        {match: '(?i:(#else\\s*if))', name: 'keyword.preprocessor.if.brs'},
-        {match: '(?i:(#end\\s*if))', name: 'keyword.preprocessor.endif.brs'},
-        {match: '(?i:(#else))', name: 'keyword.preprocessor.else.brs'}
+        {match: '(?i:(#[ \t]*const))', name: 'keyword.preprocessor.const.brs'},
+        {match: '(?i:(#[ \t]*if))', name: 'keyword.preprocessor.if.brs'},
+        {
+          match: '(?i:(#[ \t]*else[ \t]*if))',
+          name: 'keyword.preprocessor.elseif.brs'
+        },
+        {
+          match: '(?i:(#[ \t]*end[ \t]*if))',
+          name: 'keyword.preprocessor.endif.brs'
+        },
+        {match: '(?i:(#[ \t]*else))', name: 'keyword.preprocessor.else.brs'},
+        {match: '(?i:(#[ \t]*error))', name: 'keyword.preprocessor.error.brs'}
       ]
     },
     primitive_literal_expression: {

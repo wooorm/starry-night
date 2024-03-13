@@ -2625,7 +2625,7 @@ const grammar = {
     },
     'extension-gfm-table': {
       begin: '(?:^|\\G)[\\t ]*(?=\\|[^\\n\\r]+\\|[ \\t]*$)',
-      end: '^(?=[\\t ]*$)',
+      end: '^(?=[\\t ]*$)|$',
       patterns: [
         {
           captures: {1: {patterns: [{include: '#markdown-text'}]}},
@@ -2700,7 +2700,7 @@ const grammar = {
     },
     'extension-mdx-esm': {
       begin: '(?:^|\\G)(?=(?i:export|import)[ ])',
-      end: '^(?=[\\t ]*$)',
+      end: '^(?=[\\t ]*$)|$',
       name: 'meta.embedded.tsx',
       patterns: [{include: 'source.tsx#statements'}]
     },

@@ -5,7 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.bicep'],
+  extensions: ['.bicep', '.bicepparam'],
   names: ['bicep'],
   patterns: [{include: '#expression'}, {include: '#comments'}],
   repository: {

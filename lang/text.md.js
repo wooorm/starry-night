@@ -2368,21 +2368,21 @@ const grammar = {
         {
           begin:
             '(?=(?:^|\\G)[ ]{0,3}</?(?i:figcaption|(?:blockquot|ifram|figur)e|(?:menuite|para)m|optgroup|c(?:olgroup|aption|enter)|(?:f(?:rame|ield)se|tfoo)t|b(?:asefont|ody)|(?:noframe|detail)s|section|summary|a(?:(?:rticl|sid)e|ddress)|search|l(?:egend|ink)|d(?:i(?:alog|[rv])|[dlt])|header|footer|option|frame|track|thead|tbody|t(?:it|ab)le|menu|head|base|h(?:tml|[1-6r])|form|main|col|nav|t[hr]|li|td|ol|ul|p)(?:[\\t >]|\\/>|$))',
-          end: '^(?=[\\\\t ]*$)',
+          end: '^(?=[\\t ]*$)|$',
           name: 'text.html.basic',
           patterns: [{include: '#whatwg-html'}]
         },
         {
           begin:
             '(?=(?:^|\\G)[ ]{0,3}</[A-Za-z][-0-9A-Za-z]*[\\t\\n\\r ]*>(?:[\\t ]*$))',
-          end: '^(?=[\\t ]*$)',
+          end: '^(?=[\\t ]*$)|$',
           name: 'text.html.basic',
           patterns: [{include: '#whatwg-html'}]
         },
         {
           begin:
             '(?=(?:^|\\G)[ ]{0,3}<[A-Za-z][-0-9A-Za-z]*(?:[\\t\\n\\r ]+[:A-Z_a-z][\\-\\.0-9:A-Z_a-z]*(?:[\\t\\n\\r ]*=[\\t\\n\\r ]*(?:"[^"]*"|\'[^\']*\'|[^\\t\\n\\r "\'\\/<=>`]+))?)*(?:[\\t\\n\\r ]*\\/)?[\\t\\n\\r ]*>(?:[\\t ]*$))',
-          end: '^(?=[\\t ]*$)',
+          end: '^(?=[\\t ]*$)|$',
           name: 'text.html.basic',
           patterns: [{include: '#whatwg-html'}]
         }
@@ -2850,7 +2850,7 @@ const grammar = {
     },
     'extension-gfm-table': {
       begin: '(?:^|\\G)[ ]{0,3}(?=\\|[^\\n\\r]+\\|[ \\t]*$)',
-      end: '^(?=[\\t ]*$)',
+      end: '^(?=[\\t ]*$)|$',
       patterns: [
         {
           captures: {1: {patterns: [{include: '#markdown-text'}]}},

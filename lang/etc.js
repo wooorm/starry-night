@@ -78,6 +78,10 @@ const grammar = {
       match: '\\.',
       name: 'punctuation.delimiter.separator.property.period.dot'
     },
+    dotDec: {
+      match: '(?:\\G|(?<!\\.)\\b)\\d+(?:\\.\\d+)+\\b(?!\\.)',
+      name: 'constant.numeric.other.dot-decimal'
+    },
     dotPair: {
       match: '\\.\\.|‥',
       name: 'keyword.operator.punctuation.dots.splat.range.spread.rest'
@@ -375,10 +379,28 @@ const grammar = {
       match: '[-+]?[0-9]+',
       name: 'constant.numeric.integer.int.decimal.dec'
     },
-    ip: {
-      captures: {0: {patterns: [{include: '#dot'}]}},
-      match: '(?:\\d+\\.){3,}\\d+(?=\\s|$)',
-      name: 'constant.numeric.other.ip-address'
+    ip: {patterns: [{include: '#ipv6'}, {include: '#ipv4'}]},
+    ipv4: {
+      captures: {
+        1: {patterns: [{include: '#dot'}]},
+        2: {name: 'meta.cidr-notation'},
+        3: {name: 'punctuation.separator.network-mask.cidr'},
+        4: {patterns: [{include: '#intNoExp'}]}
+      },
+      match:
+        '(?x) (?:\\G|^|(?<!\\.)\\b)\n(?!\\.)\n((?:\n\t\\.?\n\t(?: 25[0-5]    # 250-255\n\t|   2[0-4]\\d  # 200-249\n\t|   1\\d\\d    # 100-199\n\t|   [1-9]?\\d  # 0-99\n\t)\n){4})\n\n# CIDR notation: “/[0-32]”\n((/)(3[0-2]|[12]?\\d)\\b)?\n\n(?=$|\\s|(?!\\.)\\b)',
+      name: 'constant.numeric.other.ip-address.v4'
+    },
+    ipv6: {
+      captures: {
+        1: {patterns: [{include: '#colon'}]},
+        2: {name: 'meta.cidr-notation'},
+        3: {name: 'punctuation.separator.network-mask.cidr'},
+        4: {patterns: [{include: '#intNoExp'}]}
+      },
+      match:
+        '(?mix) (?:\\G|^|(?<!\\.|:))\n(\n\t:? (?:(?:\\b[A-F0-9]{1,4})?:){7} (?:[A-F0-9]{1,4}\\b)?\n\t|\n\t(?:\\b[A-F0-9]{1,4}:){1,7} ::\n\t|\n\t(?::[A-F0-9]{1,4}){1,7} ::\n)\n\n# CIDR notation: “/[0-128]”\n(\n\t(/)\n\t( 12[0-8]   # 120-128\n\t| 1[01]\\d  # 100-119\n\t| [1-9]?\\d # 0-99\n\t) \\b\n)?\n(?=$|\\s|[^.:/\\s])',
+      name: 'constant.numeric.other.ip-address.v6'
     },
     kolon: {match: ':', name: 'keyword.operator.assignment.key-value.colon'},
     num: {patterns: [{include: '#float'}, {include: '#int'}]},

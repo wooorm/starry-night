@@ -1350,10 +1350,12 @@ const grammar = {
       ]
     },
     'import-export-assert-clause': {
-      begin: '(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(assert)\\s*(\\{)',
+      begin:
+        '(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(?:(with)|(assert))\\s*(\\{)',
       beginCaptures: {
-        1: {name: 'keyword.control.assert.tsx'},
-        2: {name: 'punctuation.definition.block.tsx'}
+        1: {name: 'keyword.control.with.tsx'},
+        2: {name: 'keyword.control.assert.tsx'},
+        3: {name: 'punctuation.definition.block.tsx'}
       },
       end: '\\}',
       endCaptures: {0: {name: 'punctuation.definition.block.tsx'}},

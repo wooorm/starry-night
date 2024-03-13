@@ -9,47 +9,43 @@ const grammar = {
   names: ['vba', 'visual-basic-for-applications'],
   patterns: [
     {include: '#comments'},
+    {include: '#functions'},
     {include: '#keywords'},
     {include: '#metadata'},
     {include: '#numbers'},
     {include: '#storage'},
     {include: '#strings'},
     {include: '#types'},
-    {include: '#functions'},
     {match: '_(?=\\s*\\n)', name: 'constant.other.vba'}
   ],
   repository: {
     comments: {
       begin:
-        "(?=')|(?:^(?:|(\\d*)\\s*|[a-zA-Z][a-zA-Z0-9]{0,254}:\\s*)|:\\s*)(?=(?i:Rem ))",
+        "(?=')|(?:^(?:(\\d*)\\s*|[a-zA-Z][a-zA-Z0-9]{0,254}:\\s*)|:\\s*)(?=(?i:Rem ))",
       beginCaptures: {1: {name: 'constant.numeric.decimal'}},
-      end: '(?<!\\s_)$\n',
+      end: '(?<!\\s_)$\\n',
       patterns: [
-        {match: "'.*", name: 'comment.line.quote'},
+        {match: "\\'.*", name: 'comment.line.quote'},
         {match: 'Rem .*', name: 'comment.line.rem'},
         {match: '^.*', name: 'comment.line.continuation'}
       ]
     },
-    functions: {
-      match:
-        '(?i:\\b(?:(?<=Call )|(?<=Function )|(?<=Sub ))[a-zA-Z][a-zA-Z0-9_]*\\b)(?=\\(\\)?)',
-      name: 'entity.name.function.vba'
-    },
+    functions: {name: 'entity.name.function.vba'},
     keywords: {
       patterns: [
         {
           match:
-            '(?i:\\b(Do(( While)|( Until))?|While|Case( Else)?|Else(If)?|For( Each)?|(I)?If|In|New|(Select )?Case|Then|To|Step|With)\\b)',
+            '(?i:\\b(Do( While| Until)?|While|Case( Else)?|Else(If)?|For( Each)?|(I)?If|In|New|(Select )?Case|Then|To|Step|With)\\b)',
           name: 'keyword.conditional.vba'
         },
         {
           match:
-            '(?i:\\b(End( )?If|End (Select|With)|Next|Wend|Loop(( While)|( Until))?|Exit (For|Do|While))\\b)',
+            '(?i:\\b(End( )?If|End (Select|With)|Next|Wend|Loop( While| Until)?|Exit (For|Do|While))\\b)',
           name: 'keyword.conditional.end.vba'
         },
         {
           match:
-            '(?i:(\\b(Exit (Function|Property|Sub)|As|And|By(Ref|Val)|Goto|Is|Like|Mod|Not|On Error|Optional|Or|Resume Next|Stop|Xor|Eqv|Imp|TypeOf|AddressOf)\\b)|(\\b(End)\\b(?=\\n)))',
+            '(?i:\\b(Exit (Function|Property|Sub)|As|And|By(Ref|Val)|Goto|Is|Like|Mod|Not|On Error|Optional|Or|Resume Next|Stop|Xor|Eqv|Imp|TypeOf|AddressOf)\\b|(\\b(End)\\b(?=\\n)))',
           name: 'keyword.control.vba'
         },
         {
@@ -57,7 +53,7 @@ const grammar = {
             '(?i:\\b(Open|Close|Line Input|Lock|Unlock|Print|Seek|Get|Put|Write)\\b)',
           name: 'keyword.io.vba'
         },
-        {match: '(?i:\\b(Input)(?= #))', name: 'keyword.io.vba'},
+        {match: '(?i:\\b(Input)(?= \\#))', name: 'keyword.io.vba'},
         {
           match:
             '(?i:\\b(Attribute|Call|End (Function|Property|Sub|Type|Enum)|(Const|Function|Property|Sub|Type|Enum)|Declare|PtrSafe|WithEvents|Event|RaiseEvent|Implements)\\b)',
@@ -90,7 +86,7 @@ const grammar = {
       patterns: [
         {
           match:
-            '(?i)#((Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)|[0-9]{1,2})(-|/)[0-9]{1,2}((-|/)[0-9]{1,4})?#',
+            '(?i)\\#((Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)|[0-9]{1,2})(-|\\/)[0-9]{1,2}((-|\\/)[0-9]{1,4})?\\#',
           name: 'constant.numeric.date'
         },
         {match: '(?<!\\w)-?\\d+(\\.\\d+)?', name: 'constant.numeric.decimal'},
@@ -107,7 +103,9 @@ const grammar = {
         }
       ]
     },
-    strings: {begin: '"', end: '"', name: 'string.quoted.double'},
+    strings: {
+      patterns: [{match: '\\"[^\\n\\r\\"]*"', name: 'string.quoted.double'}]
+    },
     types: {
       patterns: [
         {

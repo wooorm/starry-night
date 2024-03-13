@@ -3,7 +3,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.bb', '.bmx', '.decls'],
+  extensions: ['.bmx', '.decls'],
   names: [
     'b3d',
     'blitz3d',

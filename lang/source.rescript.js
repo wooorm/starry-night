@@ -20,7 +20,6 @@ const grammar = {
     {include: '#attribute'},
     {include: '#function'},
     {include: '#list'},
-    {include: '#bracketAccess'},
     {include: '#jsx'},
     {include: '#operator'},
     {include: '#number'},
@@ -29,7 +28,7 @@ const grammar = {
     {include: '#moduleAccess'},
     {include: '#constructor'},
     {include: '#keyword'},
-    {include: '#punctuations'},
+    {include: '#punctuation'},
     {include: '#defaultIdIsVariable'}
   ],
   repository: {
@@ -86,12 +85,6 @@ const grammar = {
           },
           match: '(%%?|@@?)([A-Za-z_][A-Za-z0-9_\\.]*)'
         }
-      ]
-    },
-    bracketAccess: {
-      patterns: [
-        {match: '\\[', name: 'punctuation.section.brackets.begin'},
-        {match: '\\]', name: 'punctuation.section.brackets.end'}
       ]
     },
     character: {
@@ -281,7 +274,7 @@ const grammar = {
         {match: '\\|>', name: 'invalid.deprecated'}
       ]
     },
-    punctuations: {
+    punctuation: {
       patterns: [
         {match: '~', name: 'punctuation.definition.keyword'},
         {match: ';', name: 'punctuation.terminator'},
@@ -291,6 +284,8 @@ const grammar = {
         {match: '\\|(?!\\|)', name: 'punctuation.separator'},
         {match: '\\{', name: 'punctuation.section.braces.begin'},
         {match: '\\}', name: 'punctuation.section.braces.end'},
+        {match: '\\[', name: 'punctuation.section.brackets.begin'},
+        {match: '\\]', name: 'punctuation.section.brackets.end'},
         {match: '\\(', name: 'punctuation.section.parens.begin'},
         {match: '\\)', name: 'punctuation.section.parens.end'}
       ]
@@ -303,12 +298,12 @@ const grammar = {
           end: '"',
           endCaptures: {1: {name: 'punctuation.definition.string.end'}},
           name: 'string.quoted.double',
-          patterns: [{match: '\\\\.', name: 'constant.character.escape'}]
+          patterns: [{include: '#string-character-escape'}]
         },
         {
           begin: '([a-z_][0-9a-zA-Z_]*)?(`)',
           beginCaptures: {
-            1: {name: 'variables.annotation'},
+            1: {name: 'entity.name.function'},
             2: {name: 'punctuation.definition.string.template.begin'}
           },
           end: '(?<!\\\\)`',
@@ -317,6 +312,7 @@ const grammar = {
           },
           name: 'string.template',
           patterns: [
+            {include: '#string-character-escape'},
             {
               begin: '\\$\\{',
               beginCaptures: {
@@ -330,13 +326,18 @@ const grammar = {
               patterns: [
                 {match: '[a-z_][0-9a-zA-Z_]*'},
                 {include: '#operator'},
-                {include: '#punctuations'},
+                {include: '#punctuation'},
                 {include: '#string'}
               ]
             }
           ]
         }
       ]
+    },
+    'string-character-escape': {
+      match:
+        '\\\\(x[0-9A-Fa-f]{2}|u[0-9A-Fa-f]{4}|u{[0-9A-Fa-f]+}|[0-2][0-7]{0,2}|3[0-6][0-7]?|37[0-7]?|[4-7][0-7]?|.|$)',
+      name: 'constant.character.escape'
     },
     typeParameter: {
       patterns: [{match: "'[A-Za-z][A-Za-z0-9_]*", name: 'support.type'}]

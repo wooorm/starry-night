@@ -3,29 +3,11 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: [
-    '.asd',
-    '.cl',
-    '.l',
-    '.l',
-    '.lfe',
-    '.lisp',
-    '.lisp',
-    '.lsp',
-    '.lsp',
-    '.nl',
-    '.nlogo',
-    '.ny',
-    '.podsl',
-    '.sexp',
-    '.srt'
-  ],
+  extensions: ['.lfe', '.nl', '.nlogo', '.srt'],
   extensionsWithDot: ['.md'],
   names: [
-    'common-lisp',
     'gcc-machine-description',
     'lfe',
-    'lisp',
     'netlogo',
     'newlisp',
     'picolisp',

@@ -64,26 +64,43 @@ const grammar = {
       ]
     },
     'char-literal': {
-      begin: "'",
-      beginCaptures: {
-        0: {name: 'punctuation.definition.character.begin.scala'}
-      },
-      end: "'|$",
-      endCaptures: {0: {name: 'punctuation.definition.character.end.scala'}},
-      name: 'string.quoted.other constant.character.literal.scala',
       patterns: [
         {
-          match: '\\\\(?:[btnfr\\\\"\']|[0-7]{1,3}|u[0-9A-Fa-f]{4})',
-          name: 'constant.character.escape.scala'
+          captures: {
+            1: {name: 'punctuation.definition.character.begin.scala'},
+            2: {name: 'punctuation.definition.character.end.scala'}
+          },
+          match: "(')'(')",
+          name: 'string.quoted.other constant.character.literal.scala'
         },
         {
-          match: '\\\\.',
-          name: 'invalid.illegal.unrecognized-character-escape.scala'
-        },
-        {match: "[^']{2,}", name: 'invalid.illegal.character-literal-too-long'},
-        {
-          match: "(?<!')[^']",
-          name: 'invalid.illegal.character-literal-too-long'
+          begin: "'",
+          beginCaptures: {
+            0: {name: 'punctuation.definition.character.begin.scala'}
+          },
+          end: "'|$",
+          endCaptures: {
+            0: {name: 'punctuation.definition.character.end.scala'}
+          },
+          name: 'string.quoted.other constant.character.literal.scala',
+          patterns: [
+            {
+              match: '\\\\(?:[btnfr\\\\"\']|[0-7]{1,3}|u[0-9A-Fa-f]{4})',
+              name: 'constant.character.escape.scala'
+            },
+            {
+              match: '\\\\.',
+              name: 'invalid.illegal.unrecognized-character-escape.scala'
+            },
+            {
+              match: "[^']{2,}",
+              name: 'invalid.illegal.character-literal-too-long'
+            },
+            {
+              match: "(?<!')[^']",
+              name: 'invalid.illegal.character-literal-too-long'
+            }
+          ]
         }
       ]
     },
@@ -153,6 +170,10 @@ const grammar = {
           match: '(\\.[0-9][0-9_]*)([eE](\\+|-)?[0-9][0-9_]*)?[LlFfDd]?\\b',
           name: 'constant.numeric.scala'
         },
+        {
+          match: '\\b0[bB][01]([01_]*[01])?[Ll]?\\b',
+          name: 'constant.numeric.scala'
+        },
         {match: '\\b(this|super)\\b', name: 'variable.language.scala'}
       ]
     },
@@ -212,7 +233,7 @@ const grammar = {
             2: {name: 'variable.stable.declaration.scala'}
           },
           match:
-            '\\b(val)\\b\\s*(?!//|/\\*)((?:(?:[A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}][A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}0-9]*(?:(?<=_)[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)?|[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)|`[^`]+`)(?:\\s*,\\s*(?:(?:[A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}][A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}0-9]*(?:(?<=_)[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)?|[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)|`[^`]+`))*)?'
+            '\\b(val)\\b\\s*(?!//|/\\*)((?:(?:[A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}][A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}0-9]*(?:(?<=_)[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)?|[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)|`[^`]+`)(?:\\s*,\\s*(?:(?:[A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}][A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}0-9]*(?:(?<=_)[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)?|[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)|`[^`]+`))*)?(?!")'
         },
         {
           captures: {
@@ -220,11 +241,11 @@ const grammar = {
             2: {name: 'variable.volatile.declaration.scala'}
           },
           match:
-            '\\b(var)\\b\\s*(?!//|/\\*)((?:(?:[A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}][A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}0-9]*(?:(?<=_)[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)?|[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)|`[^`]+`)(?:\\s*,\\s*(?:(?:[A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}][A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}0-9]*(?:(?<=_)[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)?|[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)|`[^`]+`))*)?'
+            '\\b(var)\\b\\s*(?!//|/\\*)((?:(?:[A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}][A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}0-9]*(?:(?<=_)[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)?|[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)|`[^`]+`)(?:\\s*,\\s*(?:(?:[A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}][A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}0-9]*(?:(?<=_)[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)?|[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)|`[^`]+`))*)?(?!")'
         },
         {
           captures: {
-            1: {name: 'keyword.other.scoping.scala'},
+            1: {name: 'keyword.other.package.scala'},
             2: {name: 'keyword.declaration.scala'},
             3: {name: 'entity.name.class.declaration'}
           },
@@ -233,7 +254,7 @@ const grammar = {
         },
         {
           begin: '\\b(package)\\s+',
-          beginCaptures: {1: {name: 'keyword.other.import.scala'}},
+          beginCaptures: {1: {name: 'keyword.other.package.scala'}},
           end: '(?<=[\\n;])',
           name: 'meta.package.scala',
           patterns: [
@@ -329,6 +350,7 @@ const grammar = {
       patterns: [
         {include: '#comments'},
         {match: '\\b(given)\\b', name: 'keyword.other.import.given.scala'},
+        {match: '\\s(as)\\s', name: 'keyword.other.import.as.scala'},
         {
           match:
             '[A-Z\\p{Lt}\\p{Lu}][A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}0-9]*(?:(?<=_)[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)?',

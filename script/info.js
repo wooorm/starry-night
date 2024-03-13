@@ -575,6 +575,10 @@ export const info = {
     license: 'mit'
   },
   'source.cmake': {},
+  'source.commonlisp': {
+    homepage: 'https://github.com/qingpeng9802/common-lisp-tmlanguage',
+    license: 'mit'
+  },
   'text.conllu': {
     license: 'apache-2.0'
   },
@@ -637,6 +641,10 @@ export const info = {
   'source.ecl': {
     homepage: 'https://github.com/hpcc-systems/ecl-tmLanguage',
     license: 'apache-2.0'
+  },
+  'text.html.edge': {
+    homepage: 'https://github.com/edge-js/edge-vscode',
+    license: 'mit'
   },
   'source.edgeql': {
     homepage: 'https://github.com/edgedb/edgedb-editor-plugin',
@@ -834,6 +842,10 @@ export const info = {
   'source.batchfile': {
     homepage: 'https://github.com/mmims/language-batchfile',
     license: 'mit'
+  },
+  'source.bh': {
+    homepage: 'https://github.com/B-Lang-org/language-bh',
+    license: 'bsd-3-clause'
   },
   'text.html.php.blade': {
     dependencies: ['text.html.basic'],
@@ -1550,6 +1562,10 @@ export const info = {
     homepage: 'https://github.com/Alhadis/language-texinfo',
     license: 'isc'
   },
+  'source.8xp': {
+    homepage: 'https://github.com/TIny-Hacker/language-ti-basic',
+    license: 'bsd-3-clause'
+  },
   'source.toc': {
     homepage: 'https://github.com/nebularg/language-toc-wow',
     license: 'unlicense'
@@ -1635,7 +1651,10 @@ export const info = {
     license: 'mit'
   },
   'source.logtalk': {},
-  'source.lua': {},
+  'source.lua': {
+    homepage: 'https://github.com/LuaLS/lua.tmbundle',
+    license: 'mit'
+  },
   'source.modula-3': {
     homepage: 'https://github.com/newgrammars/m3',
     license: 'bsd-3-clause'
@@ -1681,6 +1700,10 @@ export const info = {
   'source.mlir': {
     homepage: 'https://github.com/jpienaar/mlir-grammar',
     license: 'apache-2.0'
+  },
+  'source.mojo': {
+    homepage: 'https://github.com/modularml/mojo-syntax',
+    license: 'mit'
   },
   'source.monkey': {
     license: 'mit'
@@ -1771,6 +1794,10 @@ export const info = {
     homepage: 'https://github.com/orhunulusahin/praatvscode',
     license: 'mit'
   },
+  'source.textgrid': {
+    homepage: 'https://github.com/orhunulusahin/praatvscode',
+    license: 'mit'
+  },
   'source.processing': {},
   'text.html.django': {
     dependencies: ['text.html.basic']
@@ -1802,6 +1829,10 @@ export const info = {
   'text.html.riot': {
     license: 'mit'
   },
+  'source.roc': {
+    homepage: 'https://github.com/ivan-demchenko/roc-vscode-unofficial',
+    license: 'mit'
+  },
   'text.slim': {
     dependencies: ['text.html.basic'],
     license: 'mit'
@@ -1831,6 +1862,10 @@ export const info = {
   'source.shaderlab': {
     license: 'mit'
   },
+  'source.slint': {
+    homepage: 'https://github.com/slint-ui/slint-tmLanguage',
+    license: 'mit'
+  },
   'source.smali': {
     homepage: 'https://github.com/ShaneWilton/sublime-smali',
     license: 'mit'
@@ -1843,7 +1878,7 @@ export const info = {
     license: 'apache-2.0'
   },
   'source.sourcepawn': {
-    homepage: 'https://github.com/Dreae/sourcepawn-vscode',
+    homepage: 'https://github.com/Sarrus1/sourcepawn-vscode',
     license: 'mit'
   },
   'source.sql': {},
@@ -2052,6 +2087,11 @@ export const info = {
     homepage: 'https://github.com/lifeart/vsc-ember-syntax',
     license: 'mit'
   },
+  'source.gts': {
+    dependencies: ['source.ts'],
+    homepage: 'https://github.com/lifeart/vsc-ember-syntax',
+    license: 'mit'
+  },
   'source.fnl': {
     homepage: 'https://github.com/kongeor/vsc-fennel',
     license: 'mit'
@@ -2063,6 +2103,10 @@ export const info = {
   'text.html.statamic': {
     dependencies: ['text.html.basic'],
     homepage: 'https://github.com/Stillat/vscode-antlers-language-server',
+    license: 'mit'
+  },
+  'source.bb': {
+    homepage: 'https://github.com/yoctoproject/vscode-bitbake',
     license: 'mit'
   },
   'source.brs': {
@@ -2181,6 +2225,10 @@ export const info = {
     homepage: 'https://github.com/zxh0/vscode-proto3',
     license: 'mit'
   },
+  'source.pip-requirements': {
+    homepage: 'https://github.com/microsoft/vscode-python',
+    license: 'mit'
+  },
   'source.rbs': {
     homepage: 'https://github.com/soutaro/vscode-rbs-syntax',
     license: 'mit'
@@ -2192,7 +2240,7 @@ export const info = {
     homepage: 'https://github.com/onnovalkering/vscode-singularity',
     license: 'mit'
   },
-  'source.slice': {
+  'source.ice': {
     homepage: 'https://github.com/zeroc-ice/vscode-slice',
     license: 'bsd-3-clause'
   },

@@ -156,8 +156,16 @@ const grammar = {
     },
     comments: {
       patterns: [
-        {match: '^\\s*///.*', name: 'comment.line.documentation.rust'},
-        {match: '\\s*//.*', name: 'comment.line.double-slash.rust'}
+        {
+          captures: {1: {name: 'punctuation.definition.comment.rust'}},
+          match: '(///).*$',
+          name: 'comment.line.documentation.rust'
+        },
+        {
+          captures: {1: {name: 'punctuation.definition.comment.rust'}},
+          match: '(//).*$',
+          name: 'comment.line.double-slash.rust'
+        }
       ]
     },
     constants: {
@@ -351,7 +359,7 @@ const grammar = {
         {match: '\\b(abstract|static)\\b', name: 'storage.modifier.rust'},
         {
           match:
-            '\\b(as|async|become|box|dyn|move|final|impl|in|override|priv|pub|ref|typeof|union|unsafe|unsized|use|virtual|where)\\b',
+            '\\b(as|async|become|box|dyn|move|final|gen|impl|in|override|priv|pub|ref|typeof|union|unsafe|unsized|use|virtual|where)\\b',
           name: 'keyword.other.rust'
         },
         {match: '\\bfn\\b', name: 'keyword.other.fn.rust'},

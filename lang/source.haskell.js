@@ -6,16 +6,7 @@
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
   extensions: ['.chs', '.dhall', '.hs', '.hs-boot', '.hsc'],
-  names: [
-    'bh',
-    'bluespec-bh',
-    'bluespec-classic',
-    'c2hs',
-    'c2hs-haskell',
-    'dhall',
-    'frege',
-    'haskell'
-  ],
+  names: ['c2hs', 'c2hs-haskell', 'dhall', 'frege', 'haskell'],
   patterns: [{include: '#haskell_source'}],
   repository: {
     arrow: {

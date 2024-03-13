@@ -26,6 +26,7 @@ const grammar = {
     '.mcmeta',
     '.mxt',
     '.pat',
+    '.sarif',
     '.tfstate',
     '.tfstate.backup',
     '.topojson',
@@ -46,6 +47,7 @@ const grammar = {
     'maxmsp',
     'oasv2-json',
     'oasv3-json',
+    'sarif',
     'topojson'
   ],
   patterns: [{include: '#main'}],

@@ -5,15 +5,15 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  dependencies: ['source.js'],
-  extensions: ['.gjs'],
+  dependencies: ['source.ts'],
+  extensions: [],
   injections: {
-    'L:source.gjs -comment -(string -meta.embedded)': {
+    'L:source.gts -comment -(string -meta.embedded)': {
       patterns: [{include: '#main'}]
     }
   },
-  names: ['glimmer-js'],
-  patterns: [{include: 'source.js'}, {include: '#main'}],
+  names: ['glimmer-ts'],
+  patterns: [{include: 'source.ts'}, {include: '#main'}],
   repository: {
     'as-keyword': {match: '\\s\\b(as)\\b(?=\\s\\|)', name: 'keyword.control'},
     'as-params': {
@@ -787,7 +787,7 @@ const grammar = {
     },
     variable: {match: '\\b([a-zA-Z0-9-_]+)\\b', name: 'support.function'}
   },
-  scopeName: 'source.gjs'
+  scopeName: 'source.gts'
 }
 
 export default grammar

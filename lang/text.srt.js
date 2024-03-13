@@ -30,6 +30,16 @@ const grammar = {
         }
       ]
     },
+    align: {
+      captures: {
+        1: {name: 'punctuation.definition.tag.begin.srt'},
+        2: {name: 'entity.name.tag.srt'},
+        3: {name: 'invalid.deprecated.syntax.tag.srt'},
+        4: {name: 'punctuation.definition.tag.end.srt'}
+      },
+      match: '({)(\\\\a(?:n[1-9]|(10|11|(?!4|8)\\d)))(})',
+      name: 'meta.tag.override.line-alignment.srt'
+    },
     arrow: {
       captures: {0: {name: 'punctuation.definition.separator.srt'}},
       match: '-->',
@@ -98,7 +108,8 @@ const grammar = {
         {include: '#italic'},
         {include: '#underline'},
         {include: '#strike'},
-        {include: '#font'}
+        {include: '#font'},
+        {include: '#align'}
       ]
     },
     italic: {

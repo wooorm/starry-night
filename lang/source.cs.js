@@ -5,7 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.bf', '.cake', '.cs', '.csx', '.eq', '.linq', '.uno'],
+  extensions: ['.bf', '.cake', '.cs', '.cs.pp', '.csx', '.eq', '.linq', '.uno'],
   names: ['beef', 'c#', 'cake', 'cakescript', 'csharp', 'eq', 'uno'],
   patterns: [
     {include: '#preprocessor'},
@@ -958,7 +958,7 @@ const grammar = {
           endCaptures: {0: {name: 'punctuation.parenthesis.close.cs'}},
           patterns: [
             {
-              begin: '\\G',
+              begin: '(?=[^;\\)])',
               end: '(?=;|\\))',
               patterns: [
                 {include: '#intrusive'},
@@ -994,13 +994,14 @@ const grammar = {
             {include: '#intrusive'},
             {
               captures: {
-                1: {name: 'storage.type.var.cs'},
-                2: {patterns: [{include: '#type'}]},
-                7: {name: 'entity.name.variable.local.cs'},
-                8: {name: 'keyword.control.loop.in.cs'}
+                1: {name: 'storage.modifier.ref.cs'},
+                2: {name: 'storage.type.var.cs'},
+                3: {patterns: [{include: '#type'}]},
+                8: {name: 'entity.name.variable.local.cs'},
+                9: {name: 'keyword.control.loop.in.cs'}
               },
               match:
-                '(?x)\n(?:\n  (\\bvar\\b)|\n  (?<type_name>\n    (?:\n      (?:\n        (?:(?<identifier>@?[_[:alpha:]][_[:alnum:]]*)\\s*\\:\\:\\s*)? # alias-qualification\n        (?<name_and_type_args> # identifier + type arguments (if any)\n          \\g<identifier>\\s*\n          (?<type_args>\\s*<(?:[^<>]|\\g<type_args>)+>\\s*)?\n        )\n        (?:\\s*\\.\\s*\\g<name_and_type_args>)* | # Are there any more names being dotted into?\n        (?<tuple>\\s*\\((?:[^\\(\\)]|\\g<tuple>)+\\))\n      )\n      (?:\\s*\\?\\s*)? # nullable suffix?\n      (?:\\s* # array suffix?\n        \\[\n          (?:\\s*,\\s*)* # commata for multi-dimensional arrays\n        \\]\n        \\s*\n        (?:\\?)? # arrays can be nullable reference types\n        \\s*\n      )*\n    )\n  )\n)\\s+\n(\\g<identifier>)\\s+\n\\b(in)\\b'
+                '(?x)\n(?:\n  (?:(\\bref)\\s+)?(\\bvar\\b)| # ref local\n  (?<type_name>\n    (?:\n      (?:ref\\s+)?   # ref local\n      (?:\n        (?:(?<identifier>@?[_[:alpha:]][_[:alnum:]]*)\\s*\\:\\:\\s*)? # alias-qualification\n        (?<name_and_type_args> # identifier + type arguments (if any)\n          \\g<identifier>\\s*\n          (?<type_args>\\s*<(?:[^<>]|\\g<type_args>)+>\\s*)?\n        )\n        (?:\\s*\\.\\s*\\g<name_and_type_args>)* | # Are there any more names being dotted into?\n        (?<tuple>\\s*\\((?:[^\\(\\)]|\\g<tuple>)+\\))\n      )\n      (?:\\s*\\?\\s*)? # nullable suffix?\n      (?:\\s* # array suffix?\n        \\[\n          (?:\\s*,\\s*)* # commata for multi-dimensional arrays\n        \\]\n        \\s*\n        (?:\\?)? # arrays can be nullable reference types\n        \\s*\n      )*\n    )\n  )\n)\\s+\n(\\g<identifier>)\\s+\n\\b(in)\\b'
             },
             {
               captures: {
@@ -1031,6 +1032,12 @@ const grammar = {
       patterns: [
         {match: '\\bclass\\b', name: 'storage.type.class.cs'},
         {match: '\\bstruct\\b', name: 'storage.type.struct.cs'},
+        {match: '\\bdefault\\b', name: 'keyword.other.constraint.default.cs'},
+        {match: '\\bnotnull\\b', name: 'keyword.other.constraint.notnull.cs'},
+        {
+          match: '\\bunmanaged\\b',
+          name: 'keyword.other.constraint.unmanaged.cs'
+        },
         {
           captures: {
             1: {name: 'keyword.operator.expression.new.cs'},
@@ -1164,10 +1171,12 @@ const grammar = {
       patterns: [
         {include: '#preprocessor'},
         {include: '#comment'},
+        {include: '#storage-modifier'},
         {include: '#property-declaration'},
         {include: '#event-declaration'},
         {include: '#indexer-declaration'},
         {include: '#method-declaration'},
+        {include: '#operator-declaration'},
         {include: '#attribute-section'},
         {include: '#punctuation-semicolon'}
       ]

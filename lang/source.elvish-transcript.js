@@ -14,7 +14,10 @@ const grammar = {
       contentName: 'meta.embedded.block.elvish',
       patterns: [{include: 'source.elvish'}],
       while: '(^|\\G)   '
-    }
+    },
+    {match: '(^|\\G)# .* #$', name: 'markup.heading.1.elvish-transcript'},
+    {match: '(^|\\G)## .* ##$', name: 'markup.heading.2.elvish-transcript'},
+    {match: '(^|\\G)//.*$', name: 'comment.line.double-slash.elvish-transcript'}
   ],
   scopeName: 'source.elvish-transcript'
 }

@@ -15,11 +15,13 @@ const grammar = {
     {include: '#bracket'},
     {include: '#function_decl'},
     {include: '#function_call'},
+    {include: '#for_block'},
     {include: '#keyword'},
     {include: '#number'},
     {include: '#comment'},
     {include: '#type_decl'},
-    {include: '#symbol'}
+    {include: '#symbol'},
+    {include: '#punctuation'}
   ],
   repository: {
     array: {
@@ -36,8 +38,7 @@ const grammar = {
           patterns: [
             {match: '\\bbegin\\b', name: 'constant.numeric.julia'},
             {match: '\\bend\\b', name: 'constant.numeric.julia'},
-            {match: '\\bfor\\b', name: 'keyword.control.julia'},
-            {include: '$self'}
+            {include: '#self_no_for_block'}
           ]
         }
       ]
@@ -45,8 +46,14 @@ const grammar = {
     bracket: {
       patterns: [
         {
-          match: "(?:\\(|\\)|\\[|\\]|\\{|\\}|,|;)(?!('|(?:\\.'))*\\.?')",
-          name: 'meta.bracket.julia'
+          begin: '\\{',
+          beginCaptures: {0: {name: 'meta.bracket.julia'}},
+          end: "(\\})((?:\\.)?'*)",
+          endCaptures: {
+            1: {name: 'meta.bracket.julia'},
+            2: {name: 'keyword.operator.transpose.julia'}
+          },
+          patterns: [{include: '#self_no_for_block'}]
         }
       ]
     },
@@ -87,6 +94,19 @@ const grammar = {
         {match: '\\bXXX\\b', name: 'keyword.other.comment-annotation.julia'}
       ]
     },
+    for_block: {
+      patterns: [
+        {
+          begin: '\\b(for)\\b',
+          beginCaptures: {0: {name: 'keyword.control.julia'}},
+          end: '(?<!,|\\s)(\\s*\\n)',
+          patterns: [
+            {match: '\\bouter\\b', name: 'keyword.other.julia'},
+            {include: '$self'}
+          ]
+        }
+      ]
+    },
     function_call: {
       patterns: [
         {
@@ -102,10 +122,7 @@ const grammar = {
             0: {name: 'meta.bracket.julia'},
             1: {name: 'keyword.operator.transposed-func.julia'}
           },
-          patterns: [
-            {match: '\\bfor\\b', name: 'keyword.control.julia'},
-            {include: '$self'}
-          ]
+          patterns: [{include: '#self_no_for_block'}]
         }
       ]
     },
@@ -139,17 +156,8 @@ const grammar = {
           name: 'keyword.other.julia'
         },
         {
-          begin: '\\b(for)\\b',
-          beginCaptures: {0: {name: 'keyword.control.julia'}},
-          end: '(?<!,|\\s)(\\s*\\n)',
-          patterns: [
-            {match: '\\bouter\\b', name: 'keyword.other.julia'},
-            {include: '$self'}
-          ]
-        },
-        {
           match:
-            '\\b(?<![:_])(?:if|else|elseif|while|begin|let|do|try|catch|finally|return|break|continue)\\b',
+            '\\b(?<![:_])(?:if|else|elseif|for|while|begin|let|do|try|catch|finally|return|break|continue)\\b',
           name: 'keyword.control.julia'
         },
         {match: '\\b(?<![:_])end\\b', name: 'keyword.control.end.julia'},
@@ -160,6 +168,10 @@ const grammar = {
         {
           match: '\\b(?<![:_])(?:export)\\b',
           name: 'keyword.control.export.julia'
+        },
+        {
+          match: '\\b(?<![:_])(?:public)\\b',
+          name: 'keyword.control.public.julia'
         },
         {
           match: '\\b(?<![:_])(?:import)\\b',
@@ -203,7 +215,11 @@ const grammar = {
     },
     operator: {
       patterns: [
-        {match: '(?:->|<-|-->|=>)', name: 'keyword.operator.arrow.julia'},
+        {
+          match:
+            '\\.?(?:<-->|->|-->|<--|←|→|↔|↚|↛|↞|↠|↢|↣|↦|↤|↮|⇎|⇍|⇏|⇐|⇒|⇔|⇴|⇶|⇷|⇸|⇹|⇺|⇻|⇼|⇽|⇾|⇿|⟵|⟶|⟷|⟹|⟺|⟻|⟼|⟽|⟾|⟿|⤀|⤁|⤂|⤃|⤄|⤅|⤆|⤇|⤌|⤍|⤎|⤏|⤐|⤑|⤔|⤕|⤖|⤗|⤘|⤝|⤞|⤟|⤠|⥄|⥅|⥆|⥇|⥈|⥊|⥋|⥎|⥐|⥒|⥓|⥖|⥗|⥚|⥛|⥞|⥟|⥢|⥤|⥦|⥧|⥨|⥩|⥪|⥫|⥬|⥭|⥰|⧴|⬱|⬰|⬲|⬳|⬴|⬵|⬶|⬷|⬸|⬹|⬺|⬻|⬼|⬽|⬾|⬿|⭀|⭁|⭂|⭃|⥷|⭄|⥺|⭇|⭈|⭉|⭊|⭋|⭌|￩|￫|⇜|⇝|↜|↝|↩|↪|↫|↬|↼|↽|⇀|⇁|⇄|⇆|⇇|⇉|⇋|⇌|⇚|⇛|⇠|⇢|↷|↶|↺|↻|=>)',
+          name: 'keyword.operator.arrow.julia'
+        },
         {
           match:
             '(?::=|\\+=|-=|\\*=|//=|/=|\\.//=|\\./=|\\.\\*=|\\\\=|\\.\\\\=|\\^=|\\.\\^=|%=|\\.%=|÷=|\\.÷=|\\|=|&=|\\.&=|⊻=|\\.⊻=|\\$=|<<=|>>=|>>>=|=(?!=))',
@@ -224,7 +240,7 @@ const grammar = {
         },
         {
           match:
-            '(?:===|∈|\\.∈|∉|\\.∉|∋|\\.∋|∌|\\.∌|≈|\\.≈|≉|\\.≉|≠|\\.≠|≡|\\.≡|≢|\\.≢|⊆|\\.⊆|⊇|\\.⊇|⊈|\\.⊈|⊉|\\.⊉|⊊|\\.⊊|⊋|\\.⊋|\\.==|!==|!=|\\.>=|\\.>|\\.<=|\\.<|\\.≤|\\.≥|==|\\.!=|\\.=|\\.!|<:|>:|:>|(?<!>)>=|(?<!<)<=|>|<|≥|≤)',
+            '(\\.?((?<!<)<=|(?<!>)>=|>|<|≥|≤|===|==|≡|!=|≠|!==|≢|∈|∉|∋|∌|⊆|⊈|⊂|⊄|⊊|∝|∊|∍|∥|∦|∷|∺|∻|∽|∾|≁|≃|≂|≄|≅|≆|≇|≈|≉|≊|≋|≌|≍|≎|≐|≑|≒|≓|≖|≗|≘|≙|≚|≛|≜|≝|≞|≟|≣|≦|≧|≨|≩|≪|≫|≬|≭|≮|≯|≰|≱|≲|≳|≴|≵|≶|≷|≸|≹|≺|≻|≼|≽|≾|≿|⊀|⊁|⊃|⊅|⊇|⊉|⊋|⊏|⊐|⊑|⊒|⊜|⊩|⊬|⊮|⊰|⊱|⊲|⊳|⊴|⊵|⊶|⊷|⋍|⋐|⋑|⋕|⋖|⋗|⋘|⋙|⋚|⋛|⋜|⋝|⋞|⋟|⋠|⋡|⋢|⋣|⋤|⋥|⋦|⋧|⋨|⋩|⋪|⋫|⋬|⋭|⋲|⋳|⋴|⋵|⋶|⋷|⋸|⋹|⋺|⋻|⋼|⋽|⋾|⋿|⟈|⟉|⟒|⦷|⧀|⧁|⧡|⧣|⧤|⧥|⩦|⩧|⩪|⩫|⩬|⩭|⩮|⩯|⩰|⩱|⩲|⩳|⩵|⩶|⩷|⩸|⩹|⩺|⩻|⩼|⩽|⩾|⩿|⪀|⪁|⪂|⪃|⪄|⪅|⪆|⪇|⪈|⪉|⪊|⪋|⪌|⪍|⪎|⪏|⪐|⪑|⪒|⪓|⪔|⪕|⪖|⪗|⪘|⪙|⪚|⪛|⪜|⪝|⪞|⪟|⪠|⪡|⪢|⪣|⪤|⪥|⪦|⪧|⪨|⪩|⪪|⪫|⪬|⪭|⪮|⪯|⪰|⪱|⪲|⪳|⪴|⪵|⪶|⪷|⪸|⪹|⪺|⪻|⪼|⪽|⪾|⪿|⫀|⫁|⫂|⫃|⫄|⫅|⫆|⫇|⫈|⫉|⫊|⫋|⫌|⫍|⫎|⫏|⫐|⫑|⫒|⫓|⫔|⫕|⫖|⫗|⫘|⫙|⫷|⫸|⫹|⫺|⊢|⊣|⟂|⫪|⫫|<:|>:))',
           name: 'keyword.operator.relation.julia'
         },
         {
@@ -246,12 +262,12 @@ const grammar = {
         },
         {match: '(?:\\|>)', name: 'keyword.operator.applies.julia'},
         {
-          match: '(?:\\||\\.\\||\\&|\\.\\&|~|\\.~|⊻|\\.⊻)',
+          match: '(?:\\||\\.\\||\\&|\\.\\&|~|¬|\\.~|⊻|\\.⊻)',
           name: 'keyword.operator.bitwise.julia'
         },
         {
           match:
-            '(?:\\+\\+|--|\\+|\\.\\+|-|\\.\\-|\\*|\\.\\*|//(?!=)|\\.//(?!=)|/|\\./|%|\\.%|\\\\|\\.\\\\|\\^|\\.\\^|÷|\\.÷|⋅|\\.⋅|∩|\\.∩|∪|\\.∪|×|√|∛)',
+            '\\.?(?:\\+\\+|\\-\\-|\\+|\\-|−|¦|\\||⊕|⊖|⊞|⊟|∪|∨|⊔|±|∓|∔|∸|≏|⊎|⊻|⊽|⋎|⋓|⟇|⧺|⧻|⨈|⨢|⨣|⨤|⨥|⨦|⨧|⨨|⨩|⨪|⨫|⨬|⨭|⨮|⨹|⨺|⩁|⩂|⩅|⩊|⩌|⩏|⩐|⩒|⩔|⩖|⩗|⩛|⩝|⩡|⩢|⩣|\\*|//?|⌿|÷|%|&|·|·|⋅|∘|×|\\\\|∩|∧|⊗|⊘|⊙|⊚|⊛|⊠|⊡|⊓|∗|∙|∤|⅋|≀|⊼|⋄|⋆|⋇|⋉|⋊|⋋|⋌|⋏|⋒|⟑|⦸|⦼|⦾|⦿|⧶|⧷|⨇|⨰|⨱|⨲|⨳|⨴|⨵|⨶|⨷|⨸|⨻|⨼|⨽|⩀|⩃|⩄|⩋|⩍|⩎|⩑|⩓|⩕|⩘|⩚|⩜|⩞|⩟|⩠|⫛|⊍|▷|⨝|⟕|⟖|⟗|⨟|\\^|↑|↓|⇵|⟰|⟱|⤈|⤉|⤊|⤋|⤒|⤓|⥉|⥌|⥍|⥏|⥑|⥔|⥕|⥘|⥙|⥜|⥝|⥠|⥡|⥣|⥥|⥮|⥯|￪|￬|√|∛|∜|⋆|±|∓)',
           name: 'keyword.operator.arithmetic.julia'
         },
         {match: '(?:∘)', name: 'keyword.operator.compose.julia'},
@@ -264,7 +280,7 @@ const grammar = {
           name: 'keyword.operator.relation.in.julia'
         },
         {
-          match: '(?:\\.(?=(?:@|_|\\p{L}))|\\.\\.+)',
+          match: '(?:\\.(?=(?:@|_|\\p{L}))|\\.\\.+|…|⁝|⋮|⋱|⋰|⋯)',
           name: 'keyword.operator.dots.julia'
         },
         {match: '(?:\\$)(?=.+)', name: 'keyword.operator.interpolation.julia'},
@@ -299,8 +315,31 @@ const grammar = {
             1: {name: 'meta.bracket.julia'},
             2: {name: 'keyword.operator.transpose.julia'}
           },
-          patterns: [{include: '$self'}]
+          patterns: [{include: '#self_no_for_block'}]
         }
+      ]
+    },
+    punctuation: {
+      patterns: [
+        {match: ',', name: 'punctuation.separator.comma.julia'},
+        {match: ';', name: 'punctuation.separator.semicolon.julia'}
+      ]
+    },
+    self_no_for_block: {
+      patterns: [
+        {include: '#operator'},
+        {include: '#array'},
+        {include: '#string'},
+        {include: '#parentheses'},
+        {include: '#bracket'},
+        {include: '#function_decl'},
+        {include: '#function_call'},
+        {include: '#keyword'},
+        {include: '#number'},
+        {include: '#comment'},
+        {include: '#type_decl'},
+        {include: '#symbol'},
+        {include: '#punctuation'}
       ]
     },
     string: {
@@ -328,11 +367,14 @@ const grammar = {
             1: {name: 'support.function.macro.julia'},
             2: {name: 'punctuation.definition.string.begin.julia'}
           },
-          contentName: 'meta.embedded.inline.cpp',
+          contentName: 'source.cpp',
           end: '"""',
           endCaptures: {0: {name: 'punctuation.definition.string.end.julia'}},
           name: 'embed.cxx.julia',
-          patterns: [{include: '#string_dollar_sign_interpolate'}]
+          patterns: [
+            {include: 'source.c++'},
+            {include: '#string_dollar_sign_interpolate'}
+          ]
         },
         {
           begin: '(py)(""")',
@@ -340,7 +382,7 @@ const grammar = {
             1: {name: 'support.function.macro.julia'},
             2: {name: 'punctuation.definition.string.begin.julia'}
           },
-          contentName: 'meta.embedded.inline.python',
+          contentName: 'source.python',
           end: '([\\s\\w]*)(""")',
           endCaptures: {2: {name: 'punctuation.definition.string.end.julia'}},
           name: 'embed.python.julia',
@@ -355,7 +397,7 @@ const grammar = {
             1: {name: 'support.function.macro.julia'},
             2: {name: 'punctuation.definition.string.begin.julia'}
           },
-          contentName: 'meta.embedded.inline.javascript',
+          contentName: 'source.js',
           end: '"""',
           endCaptures: {0: {name: 'punctuation.definition.string.end.julia'}},
           name: 'embed.js.julia',
@@ -370,7 +412,7 @@ const grammar = {
             1: {name: 'support.function.macro.julia'},
             2: {name: 'punctuation.definition.string.begin.julia'}
           },
-          contentName: 'meta.embedded.inline.r',
+          contentName: 'source.r',
           end: '"""',
           endCaptures: {0: {name: 'punctuation.definition.string.end.julia'}},
           name: 'embed.R.julia',
@@ -387,7 +429,8 @@ const grammar = {
           },
           end: '"""',
           endCaptures: {0: {name: 'punctuation.definition.string.end.julia'}},
-          name: 'string.quoted.other.julia'
+          name: 'string.quoted.other.julia',
+          patterns: [{include: '#string_escaped_char'}]
         },
         {
           begin: '(raw)(")',
@@ -397,7 +440,8 @@ const grammar = {
           },
           end: '"',
           endCaptures: {0: {name: 'punctuation.definition.string.end.julia'}},
-          name: 'string.quoted.other.julia'
+          name: 'string.quoted.other.julia',
+          patterns: [{include: '#string_escaped_char'}]
         },
         {
           begin: '(sql)(""")',
@@ -414,8 +458,18 @@ const grammar = {
             {include: '#string_dollar_sign_interpolate'}
           ]
         },
-        {begin: 'var"""', end: '"""', name: 'constant.other.symbol.julia'},
-        {begin: 'var"', end: '"', name: 'constant.other.symbol.julia'},
+        {
+          begin: 'var"""',
+          end: '"""',
+          name: 'constant.other.symbol.julia',
+          patterns: [{include: '#string_escaped_char'}]
+        },
+        {
+          begin: 'var"',
+          end: '"',
+          name: 'constant.other.symbol.julia',
+          patterns: [{include: '#string_escaped_char'}]
+        },
         {
           begin: '^\\s?(doc)?(""")\\s?$',
           beginCaptures: {
@@ -566,18 +620,16 @@ const grammar = {
       patterns: [
         {
           match:
-            '\\$(?:[[:alpha:]_\\p{Lu}\\p{Ll}\\p{Lt}\\p{Lm}\\p{Lo}\\p{Nl}\\p{Sc}⅀-⅄∿⊾⊿⊤⊥∂∅-∇∎∏∐∑∞∟∫-∳⋀-⋃◸-◿♯⟘⟙⟀⟁⦰-⦴⨀-⨆⨉-⨖⨛⨜𝛁𝛛𝛻𝜕𝜵𝝏𝝯𝞉𝞩𝟃ⁱ-⁾₁-₎∠-∢⦛-⦯℘℮゛-゜𝟎-𝟡]|[^\\P{So}←-⇿])(?:[[:word:]_!\\p{Lu}\\p{Ll}\\p{Lt}\\p{Lm}\\p{Lo}\\p{Nl}\\p{Sc}⅀-⅄∿⊾⊿⊤⊥∂∅-∇∎∏∐∑∞∟∫-∳⋀-⋃◸-◿♯⟘⟙⟀⟁⦰-⦴⨀-⨆⨉-⨖⨛⨜𝛁𝛛𝛻𝜕𝜵𝝏𝝯𝞉𝞩𝟃ⁱ-⁾₁-₎∠-∢⦛-⦯℘℮゛-゜𝟎-𝟡]|[^\\P{Mn}\u0001-¡]|[^\\P{Mc}\u0001-¡]|[^\\P{Nd}\u0001-¡]|[^\\P{Pc}\u0001-¡]|[^\\P{Sk}\u0001-¡]|[^\\P{Me}\u0001-¡]|[^\\P{No}\u0001-¡]|[′-‷⁗]|[^\\P{So}←-⇿])*',
+            '\\$(?:[[:alpha:]_\\p{Lu}\\p{Ll}\\p{Lt}\\p{Lm}\\p{Lo}\\p{Nl}⅀-⅄∿⊾⊿⊤⊥∂∅-∇∎∏∐∑∞∟∫-∳⋀-⋃◸-◿♯⟘⟙⟀⟁⦰-⦴⨀-⨆⨉-⨖⨛⨜𝛁𝛛𝛻𝜕𝜵𝝏𝝯𝞉𝞩𝟃ⁱ-⁾₁-₎∠-∢⦛-⦯℘℮゛-゜𝟎-𝟡]|[^\\P{So}←-⇿]|[^\\p{^Sc}$])(?:[[:word:]_!\\p{Lu}\\p{Ll}\\p{Lt}\\p{Lm}\\p{Lo}\\p{Nl}⅀-⅄∿⊾⊿⊤⊥∂∅-∇∎∏∐∑∞∟∫-∳⋀-⋃◸-◿♯⟘⟙⟀⟁⦰-⦴⨀-⨆⨉-⨖⨛⨜𝛁𝛛𝛻𝜕𝜵𝝏𝝯𝞉𝞩𝟃ⁱ-⁾₁-₎∠-∢⦛-⦯℘℮゛-゜𝟎-𝟡]|[^\\P{Mn}\u0001-¡]|[^\\P{Mc}\u0001-¡]|[^\\P{Nd}\u0001-¡]|[^\\P{Pc}\u0001-¡]|[^\\P{Sk}\u0001-¡]|[^\\P{Me}\u0001-¡]|[^\\P{No}\u0001-¡]|[′-‷⁗]|[^\\P{So}←-⇿]|[^\\p{^Sc}$])*',
           name: 'variable.interpolation.julia'
         },
         {
-          begin: '\\$\\(',
+          begin: '\\$(\\()',
+          beginCaptures: {1: {name: 'meta.bracket.julia'}},
           end: '\\)',
+          endCaptures: {0: {name: 'meta.bracket.julia'}},
           name: 'variable.interpolation.julia',
-          patterns: [
-            {match: '\\bfor\\b', name: 'keyword.control.julia'},
-            {include: '#parentheses'},
-            {include: '$self'}
-          ]
+          patterns: [{include: '#self_no_for_block'}]
         }
       ]
     },

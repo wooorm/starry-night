@@ -36,7 +36,8 @@ import {common} from './common.js'
  */
 const aliases = {
   // Old names to new names.
-  // Example: 'source.brightscript': 'source.brs'
+  // Example: 'source.brightscript': 'source.brs',
+  'source.slice': 'source.ice'
 }
 
 const gemsBase = new URL('../gems/gems/', import.meta.url)

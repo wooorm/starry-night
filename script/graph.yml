@@ -186,7 +186,15 @@ source.gitconfig:
 source.gitignore:
   etc: true
 source.gjs:
+  source.css: false
   source.js: true
+  source.ts: false
+  text.html.basic: false
+source.gts:
+  source.css: false
+  source.js: false
+  source.ts: true
+  text.html.basic: false
 source.graphql:
   source.js: false
   source.ts: false
@@ -240,6 +248,7 @@ source.jsdoc:
 source.jsoniq:
   source.xq: false
 source.julia:
+  source.c++: false
   source.js: false
   source.python: false
   source.r: false
@@ -717,6 +726,9 @@ text.html.ecmarkup:
 text.html.ecr:
   source.crystal: true
   text.html.basic: true
+text.html.edge:
+  source.ts: false
+  text.html.basic: false
 text.html.elixir:
   text.elixir: true
   text.html.basic: true

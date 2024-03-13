@@ -17,7 +17,7 @@ const grammar = {
         '\\b(?<!\\.)(global|local|scoped|partial|unsafe|private|protected|noncomputable)(?!\\.)\\b',
       name: 'storage.modifier.lean4'
     },
-    {match: '\\bsorry\\b', name: 'invalid.illegal.lean4'},
+    {match: '\\b(sorry|admit|stop)\\b', name: 'invalid.illegal.lean4'},
     {
       match: '#(print|eval|reduce|check|check_failure)\\b',
       name: 'keyword.other.lean4'
@@ -41,6 +41,30 @@ const grammar = {
       name: 'keyword.other.lean4'
     },
     {begin: '«', contentName: 'entity.name.lean4', end: '»'},
+    {
+      begin: '(s!)"',
+      beginCaptures: {1: {name: 'keyword.other.lean4'}},
+      end: '"',
+      name: 'string.interpolated.lean4',
+      patterns: [
+        {
+          begin: '(\\{)',
+          beginCaptures: {1: {name: 'keyword.other.lean4'}},
+          end: '(\\})',
+          endCaptures: {1: {name: 'keyword.other.lean4'}},
+          patterns: [{include: '$self'}]
+        },
+        {match: '\\\\[\\\\"ntr\']', name: 'constant.character.escape.lean4'},
+        {
+          match: '\\\\x[0-9A-Fa-f][0-9A-Fa-f]',
+          name: 'constant.character.escape.lean4'
+        },
+        {
+          match: '\\\\u[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f]',
+          name: 'constant.character.escape.lean4'
+        }
+      ]
+    },
     {
       begin: '"',
       end: '"',

@@ -30,15 +30,9 @@ const grammar = {
       patterns: [{match: '[0-9a-fA-F]{2}', name: 'constant.numeric.nushell'}]
     },
     'braced-expression': {
-      begin: '(\\{)(?:\\s*\\|([\\w, ]*)\\|)?',
+      begin: '\\{',
       beginCaptures: {
-        1: {name: 'punctuation.section.block.begin.bracket.curly.nushell'},
-        2: {
-          patterns: [
-            {include: '#function-parameter'},
-            {match: ',', name: 'punctuation.separator.nushell'}
-          ]
-        }
+        0: {name: 'punctuation.section.block.begin.bracket.curly.nushell'}
       },
       end: '\\}',
       endCaptures: {
@@ -47,19 +41,59 @@ const grammar = {
       name: 'meta.expression.braced.nushell',
       patterns: [
         {
-          begin:
-            '((?:(?:[^$\\(\\{\\["\'#\\s][^\\(\\{\\["\'#\\s]*)|\\$?(?:"[^"]+"|\'[^\']+\')))\\s*(:)\\s*',
-          beginCaptures: {
-            1: {
+          begin: '(?<=\\{)\\s*\\|',
+          end: '\\|',
+          name: 'meta.closure.parameters.nushell',
+          patterns: [{include: '#function-parameter'}]
+        },
+        {
+          captures: {
+            1: {name: 'variable.other.nushell'},
+            2: {name: 'keyword.control.nushell'}
+          },
+          match: '(\\w+)\\s*(:)\\s*'
+        },
+        {
+          captures: {
+            1: {name: 'variable.other.nushell'},
+            2: {
               name: 'variable.other.nushell',
               patterns: [{include: '#paren-expression'}]
             },
-            2: {patterns: [{include: '#operators'}]}
+            3: {name: 'keyword.control.nushell'}
           },
-          end: '(?=,|\\s|\\})',
-          name: 'meta.record-entry.nushell',
-          patterns: [{include: '#value'}]
+          match: '(\\$"((?:[^"\\\\]|\\\\.)*)")\\s*(:)\\s*',
+          name: 'meta.record-entry.nushell'
         },
+        {
+          captures: {
+            1: {name: 'variable.other.nushell'},
+            2: {name: 'keyword.control.nushell'}
+          },
+          match: '("(?:[^"\\\\]|\\\\.)*")\\s*(:)\\s*',
+          name: 'meta.record-entry.nushell'
+        },
+        {
+          captures: {
+            1: {name: 'variable.other.nushell'},
+            2: {
+              name: 'variable.other.nushell',
+              patterns: [{include: '#paren-expression'}]
+            },
+            3: {name: 'keyword.control.nushell'}
+          },
+          match: "(\\$'([^']*)')\\s*(:)\\s*",
+          name: 'meta.record-entry.nushell'
+        },
+        {
+          captures: {
+            1: {name: 'variable.other.nushell'},
+            2: {name: 'keyword.control.nushell'}
+          },
+          match: "('[^']*')\\s*(:)\\s*",
+          name: 'meta.record-entry.nushell'
+        },
+        {include: '#spread'},
         {include: 'source.nushell'}
       ]
     },
@@ -101,7 +135,11 @@ const grammar = {
       },
       end: '(?=\\||\\)|\\}|;)|$',
       name: 'meta.command.nushell',
-      patterns: [{include: '#value'}]
+      patterns: [
+        {include: '#parameters'},
+        {include: '#spread'},
+        {include: '#value'}
+      ]
     },
     comment: {match: '(#.*)$', name: 'comment.nushell'},
     'constant-keywords': {
@@ -141,13 +179,14 @@ const grammar = {
         2: {name: 'variable.other.nushell'},
         3: {patterns: [{include: '#operators'}]}
       },
-      match: '(let(?:-env)?|mut|const)\\s+(\\w+)\\s*(=)'
+      match: '(let|mut|(?:export\\s+)?const)\\s+(\\w+)\\s+(=)'
     },
     expression: {
       patterns: [
         {include: '#pre-command'},
         {include: '#for-loop'},
         {include: '#operators'},
+        {match: '\\|', name: 'keyword.control.nushell'},
         {include: '#control-keywords'},
         {include: '#constant-value'},
         {include: '#command'},
@@ -189,12 +228,10 @@ const grammar = {
         3: {name: 'entity.name.function.nushell'}
       },
       end: '(?<=\\})',
-      endCaptures: {0: {name: 'punctuation.definition.function.end.nushell'}},
       patterns: [
         {include: '#function-parameters'},
         {include: '#function-body'},
-        {include: '#function-inout'},
-        {include: '#inout'}
+        {include: '#function-inout'}
       ]
     },
     'function-body': {
@@ -208,44 +245,55 @@ const grammar = {
       patterns: [{include: 'source.nushell'}]
     },
     'function-inout': {
+      patterns: [
+        {include: '#types'},
+        {match: '->', name: 'keyword.operator.nushell'},
+        {include: '#function-multiple-inout'}
+      ]
+    },
+    'function-multiple-inout': {
       beginCaptures: {
         1: {name: 'punctuation.definition.in-out.nushell'},
-        2: {name: 'meta.brace.square.end.nushell'}
+        2: {name: 'meta.brace.square.begin.nushell'}
       },
       end: '\\]',
       endCaptures: {0: {name: 'meta.brace.square.end.nushell'}},
       patterns: [
-        {include: '#inout'},
-        {match: ',', name: 'punctuation.separator.nushell'}
+        {include: '#types'},
+        {
+          captures: {1: {name: 'punctuation.separator.nushell'}},
+          match: '\\s*(,)\\s*'
+        },
+        {
+          captures: {1: {name: 'keyword.operator.nushell'}},
+          match: '\\s+(->)\\s+'
+        }
       ]
     },
     'function-parameter': {
       patterns: [
-        {include: '#function-parameter-declare'},
-        {include: '#function-parameter-default-value'}
+        {
+          captures: {1: {name: 'keyword.control.nushell'}},
+          match: '(-{0,2}|\\.{3})[\\w-]+(?:\\((-[\\w?])\\))?',
+          name: 'variable.parameter.nushell'
+        },
+        {
+          begin: '\\??:\\s*',
+          end: '(?=(?:\\s+(?:-{0,2}|\\.{3})[\\w-]+)|(?:\\s*(?:,|\\]|\\||@|=|#|$)))',
+          patterns: [{include: '#types'}]
+        },
+        {
+          begin: '@(?="|\')',
+          end: '(?<="|\')',
+          patterns: [{include: '#string'}]
+        },
+        {
+          begin: '=\\s*',
+          end: '(?=(?:\\s+-{0,2}[\\w-]+)|(?:\\s*(?:,|\\]|\\||#|$)))',
+          name: 'default.value.nushell',
+          patterns: [{include: '#value'}]
+        }
       ]
-    },
-    'function-parameter-declare': {
-      captures: {
-        1: {name: 'variable.parameter.nushell'},
-        2: {name: 'variable.parameter.nushell'},
-        3: {name: 'keyword.operator.nushell'},
-        4: {name: 'entity.name.type.nushell'},
-        5: {name: 'string.quoted.nushell'}
-      },
-      match:
-        '(-{0,2}[\\w-]+|\\.{3})(?:\\((-[\\w?])\\))?(?:\\s*(\\??:)\\s*(\\w+)(?:@((?:"[^"]+")|(?:\'[^\']+\')))?)?'
-    },
-    'function-parameter-default-value': {
-      begin: '=\\s*',
-      captures: {
-        1: {name: 'variable.parameter.nushell'},
-        2: {name: 'variable.parameter.nushell'},
-        3: {name: 'keyword.operator.nushell'},
-        4: {name: 'entity.name.type.nushell'}
-      },
-      end: '(?=\\])|,|$',
-      patterns: [{include: '#value'}]
     },
     'function-parameters': {
       begin: '\\[',
@@ -255,21 +303,13 @@ const grammar = {
       name: 'meta.function.parameters.nushell',
       patterns: [{include: '#function-parameter'}, {include: '#comment'}]
     },
-    inout: {
-      captures: {
-        1: {name: 'entity.name.type.nushell'},
-        2: {name: 'entity.name.type.nushell'},
-        3: {name: 'punctuation.separator.nushell'}
-      },
-      match: '(\\w+|\\w+<\\w+>)\\s*->\\s*(\\w+|\\w+<\\w+>)\\s*(,)?\\s*'
-    },
     'internal-variables': {
       match: '\\$(?:nu|env)\\b',
       name: 'variable.language.nushell'
     },
     keyword: {match: '(?:def(?:-env)?)', name: 'keyword.other.nushell'},
     module: {
-      begin: '(module)\\s+([\\w\\-]+)\\s*\\{',
+      begin: '((?:export\\s+)?module)\\s+([\\w\\-]+)\\s*\\{',
       beginCaptures: {
         1: {name: 'entity.name.function.nushell'},
         2: {name: 'entity.name.namespace.nushell'}
@@ -297,7 +337,7 @@ const grammar = {
     },
     'operators-symbols': {
       match:
-        '(?<= )(?:\\+|\\-|\\*|\\/|\\/\\/|\\*\\*|!=|[<>=]=?|[!=]~|&&|\\|\\||\\||\\+\\+=?)(?= |$)',
+        '(?<= )(?:(?:\\+|\\-|\\*|\\/)=?|\\/\\/|\\*\\*|!=|[<>=]=?|[!=]~|\\+\\+=?)(?= |$)',
       name: 'keyword.control.nushell'
     },
     'operators-word': {
@@ -305,7 +345,11 @@ const grammar = {
         '(?<= |\\()(?:mod|in|not-in|not|and|or|xor|bit-or|bit-and|bit-xor|bit-shl|bit-shr|starts-with|ends-with)(?= |\\)|$)',
       name: 'keyword.control.nushell'
     },
-    parameters: {match: '\\b-{1,2}[\\w-]*', name: 'variable.parameter.nushell'},
+    parameters: {
+      captures: {1: {name: 'keyword.control.nushell'}},
+      match: '(?<=\\s)(-{1,2})[\\w-]+',
+      name: 'variable.parameter.nushell'
+    },
     'paren-expression': {
       begin: '\\(',
       beginCaptures: {0: {name: 'meta.brace.round.begin.nushell'}},
@@ -323,7 +367,8 @@ const grammar = {
       end: '(?=\\s+)',
       patterns: [{include: '#value'}]
     },
-    ranges: {match: '\\.\\.<?|:', name: 'keyword.control.nushell'},
+    ranges: {match: '\\.\\.<?', name: 'keyword.control.nushell'},
+    spread: {match: '\\.\\.\\.(?=[^\\s\\]}])', name: 'keyword.control.nushell'},
     string: {
       patterns: [
         {include: '#string-single-quote'},
@@ -391,9 +436,34 @@ const grammar = {
       endCaptures: {0: {name: 'meta.brace.square.end.nushell'}},
       name: 'meta.table.nushell',
       patterns: [
+        {include: '#spread'},
         {include: '#value'},
-        {match: ',', name: 'punctuation.separator.nushell'},
-        {include: '#comment'}
+        {match: ',', name: 'punctuation.separator.nushell'}
+      ]
+    },
+    types: {
+      patterns: [
+        {
+          begin: '\\b(list)\\s*<',
+          beginCaptures: {1: {name: 'entity.name.type.nushell'}},
+          end: '>',
+          name: 'meta.list.nushell',
+          patterns: [{include: '#types'}]
+        },
+        {
+          begin: '\\b(record)\\s*<',
+          beginCaptures: {1: {name: 'entity.name.type.nushell'}},
+          end: '>',
+          name: 'meta.record.nushell',
+          patterns: [
+            {
+              captures: {1: {name: 'variable.parameter.nushell'}},
+              match: "([\\w\\-]+|\"[\\w\\- ]+\"|'[^']+')\\s*:\\s*"
+            },
+            {include: '#types'}
+          ]
+        },
+        {match: '\\b(\\w+)\\b', name: 'entity.name.type.nushell'}
       ]
     },
     'use-module': {
@@ -479,7 +549,6 @@ const grammar = {
         {include: '#control-keywords'},
         {include: '#constant-value'},
         {include: '#table'},
-        {include: '#parameters'},
         {include: '#operators'},
         {include: '#paren-expression'},
         {include: '#braced-expression'},

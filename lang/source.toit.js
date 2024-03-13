@@ -169,7 +169,7 @@ const grammar = {
           name: 'constant.language.import-export-all.show.toit'
         },
         {
-          match: '\\b(?<!)as(?!-)\\b',
+          match: '\\b(?<!-)as(?!-)\\b',
           name: 'constant.language.import-export-all.as.toit'
         },
         {
@@ -495,7 +495,7 @@ const grammar = {
         {
           begin: '(/|->) *(?=[\\p{L}_])',
           beginCaptures: {1: {name: 'keyword.control.return_type.toit'}},
-          end: '(?=[^\\w-.?])',
+          end: '(?=[^\\w\\-.?])',
           name: 'entity.name.type.annotation.toit'
         }
       ]
@@ -503,19 +503,19 @@ const grammar = {
     'type-name': {
       patterns: [
         {
-          match: '\\b(?<!-)_?[A-Z][0-9]*(?!-)\\b[?]?',
+          match: '\\b(?<!-)_?[A-Z][A-Z_-]*[a-z][\\w-]*(?<!-)\\b[?]?',
           name: 'entity.name.type.toit'
         },
         {
-          match: '\\b(?<!-)_?[A-Z][A-Z_-]*[a-z][\\w-]*(?!-)\\b[?]?',
+          match: '\\b(?<!-)_?[A-Z][0-9]*_?(?<!-)\\b[?]?',
           name: 'entity.name.type.toit'
         },
         {
-          match: '\\b(?<!-)(int|bool|float|string)(?!-)\\b[?]?',
+          match: '\\b(?<!-)(int|bool|float|string)(?<!-)\\b[?]?',
           name: 'entity.name.type.shorts.toit'
         },
         {
-          match: '\\b(?<!-)(any|none)(?!-)\\b',
+          match: '\\b(?<!-)(any|none)(?<!-)\\b',
           name: 'entity.name.type.any_none.toit'
         }
       ]
@@ -523,7 +523,7 @@ const grammar = {
     variable: {
       patterns: [
         {
-          match: '\\b(?<!-)[\\p{L}_][\\w-]*(?!-)\\b',
+          match: '\\b(?<!-)[\\p{L}_][\\w-]*(?<!-)\\b',
           name: 'entity.name.function.call.toit'
         }
       ]

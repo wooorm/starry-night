@@ -43,7 +43,7 @@ const grammar = {
     },
     control: {
       match:
-        '\\b(for|while|end(for|while|if|form|proc)|from|to|repeat|until|if|then|fi|else|elsif|elif|nowarn|noprogress|nocheck|assert|form|call|procedure|Edit)\\b',
+        '\\b(for|while|end(for|while|if|form|proc|editor)|from|to|repeat|until|if|then|fi|else|elsif|elif|nowarn|noprogress|nocheck|assert|form|call|procedure|Edit|editor)\\b',
       name: 'keyword.control.praat'
     },
     'file-function': {

@@ -152,6 +152,20 @@ const grammar = {
       name: 'invalid.illegal.meta.preprocessor.cobolit'
     },
     {
+      match: '(?i:substitute-case|substitute)\\s+',
+      name: 'invalid.illegal.functions.cobolit'
+    },
+    {
+      captures: {
+        1: {
+          name: 'invalid.illegal.keyword.control.directive.conditional.cobol'
+        },
+        2: {name: 'invalid.illegal.entity.name.function.preprocessor.cobol'},
+        3: {name: 'invalid.illegal.entity.name.function.preprocessor.cobol'}
+      },
+      match: '((((>>|\\$)[\\s]*)(?i:elif))(.*$))'
+    },
+    {
       captures: {
         1: {name: 'keyword.control.directive.conditional.cobol'},
         2: {name: 'entity.name.function.preprocessor.cobol'},
@@ -267,6 +281,7 @@ const grammar = {
       patterns: [
         {match: '(\\()', name: 'meta.symbol.cobol'},
         {include: '#dli-keywords'},
+        {include: '#dli-options'},
         {include: '#string-double-quoted-constant'},
         {include: '#string-quoted-constant'},
         {include: '#number-complex-constant'},
@@ -452,7 +467,7 @@ const grammar = {
     },
     {
       match:
-        '(?<![-_])(?i:max|min|integer-of-date|integer-of-day|integer-part|integer|date-to-yyyymmdd|year-to-yyyy|day-to-yyyyddd|exp|exception-file|exception-location|exception-statement|exception-status|e|variance|integer-of-date|rem|pi|factorial|sqrt|log10|fraction-part|mean|exp|log|char|day-of-integer|date-of-integer|exp10|atan|integer-part|tan|sin|cos|midrange|addr|acos|asin|annuity|present-value|integer-of-day|ord-max|ord-min|ord|random|integer-of-date|sum|standard-deviation|median|reverse|abs|upper-case|lower-case|char-national|numval|mod|range|length|locale-date|locale-time-from-seconds|locale-time|seconds-past-midnight|stored-char-length|substitute-case|substitute|seconds-from-formatted-time|seconds-past-midnight|trim|length-an|numval-c|current-date|national-of|display-of|when-compiled|integer-of-boolean|combined-datetime|concatenate)(?=\\s|\\.|\\(|\\))',
+        '(?<![-_])(?i:max|min|integer-of-date|integer-of-day|integer-part|integer|date-to-yyyymmdd|year-to-yyyy|day-to-yyyyddd|exp|exception-file|exception-location|exception-statement|exception-status|e|variance|integer-of-date|rem|pi|factorial|sqrt|log10|fraction-part|mean|exp|log|char|day-of-integer|date-of-integer|exp10|atan|integer-part|tan|sin|cos|midrange|addr|acos|asin|annuity|present-value|integer-of-day|ord-max|ord-min|ord|random|integer-of-date|sum|standard-deviation|median|reverse|abs|upper-case|lower-case|char-national|numval|mod|range|length|locale-date|locale-time-from-seconds|locale-time|seconds-past-midnight|stored-char-length|seconds-from-formatted-time|seconds-past-midnight|trim|length-an|numval-c|current-date|national-of|display-of|when-compiled|integer-of-boolean|combined-datetime|concatenate)(?=\\s|\\.|\\(|\\))',
       name: 'support.function.cobol'
     },
     {
@@ -633,7 +648,7 @@ const grammar = {
     },
     {
       match:
-        '(\\s+|^)(?i:bold|high|lowlight|low|standard|background-high|background-low|background-standard)(?![0-9A-Za-z_-])',
+        '(\\s+|^)(?i:bold|high|lowlight|low|background-high|background-low|background-standard)(?![0-9A-Za-z_-])',
       name: 'invalid.illegal.screens.acu.cobol'
     },
     {
@@ -697,7 +712,7 @@ const grammar = {
     {match: '(?i:filler)', name: 'keyword.filler.cobol'},
     {
       match:
-        '(?<![-_])(?i:address-of|date|day-of-week|day|debug-content|debug-item|debug-line|debug-item|debug-sub-1|debug-sub-2|debug-sub-3|shift-in|shift-out|sort-control|sort-core-size|sort-file-size|sort-message|sort-return|sort-mode-size|sort-return|tally|time|when-compiled|line-counter|page-counter|return-code|linage-counter|debug-line|debug-name|debug-contents|json-code|json-status|xml-code|xml-event|xml-information|xml-namespace-prefix|xml-namespace|xml-nnamespace-repfix|xml-nnamespace|xml-ntext|jnienvptr)(?![0-9A-Za-z_-])',
+        '(?<![-_])(?i:address-of|date|day-of-week|day|debug-content|debug-item|debug-line|debug-item|debug-sub-1|debug-sub-2|debug-sub-3|shift-in|shift-out|sort-control|sort-core-size|sort-file-size|sort-message|sort-return|sort-mode-size|sort-return|tally|time|when-compiled|line-counter|page-counter|return-code|linage-counter|debug-line|debug-name|debug-contents|json-code|json-status|xml-code|xml-event|xml-information|xml-namespace-prefix|xml-namespace|xml-nnamespace-repfix|xml-nnamespace|xml-ntext|jnienvptr|igy-javaiop-call-exception)(?![0-9A-Za-z_-])',
       name: 'variable.language'
     },
     {
@@ -737,6 +752,11 @@ const grammar = {
       match:
         '(?<![\\-\\w])(?i:accept|chkp|deq|dlet|gnp|gn|gu|isrt|load|log|pos|query|refresh|repl|retrieve|rolb|roll|rols|schd|sets|setu|symchkp|term|xrst)(?![\\-\\w])',
       name: 'keyword.verb.dli'
+    },
+    'dli-options': {
+      match:
+        '(?<![\\-\\w])(?i:statusgroup|checkpoint|chkp|id|lockclass|segment|info|where|from|using|keyfeedback|feedbacklen|variable|first|last|current|seglength|offset|locked|movenext|getfirst|set|setcond|setzero|setparent|fieldlength|keys|maxlength|length[0-9]*|area[0-9]*|psc|pcs|pcb|sysserve|into)(?![\\-\\w])',
+      name: 'keyword.other.dli'
     },
     'number-complex-constant': {
       match:

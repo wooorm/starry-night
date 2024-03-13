@@ -172,7 +172,7 @@ const grammar = {
         },
         {
           match:
-            '(?<!\\$)\\b(break|case|continue|default|do|else|for|if|in|return|switch|while|when)\\b(?!\\$)',
+            '(?<!\\$)\\b(break|case|continue|default|do|else|for|if|in|switch|while|when)\\b(?!\\$)',
           name: 'keyword.control.dart'
         },
         {
@@ -183,8 +183,12 @@ const grammar = {
         {match: '(?<!\\$)\\bassert\\b(?!\\$)', name: 'keyword.control.dart'},
         {match: '(?<!\\$)\\b(new)\\b(?!\\$)', name: 'keyword.control.new.dart'},
         {
+          match: '(?<!\\$)\\b(return)\\b(?!\\$)',
+          name: 'keyword.control.return.dart'
+        },
+        {
           match:
-            '(?<!\\$)\\b(abstract|sealed|base|interface|class|enum|extends|extension type|extension|external|factory|implements|get(?!\\()|mixin|native|operator|set(?!\\()|typedef|with|covariant)\\b(?!\\$)',
+            '(?<!\\$)\\b(abstract|sealed|base|interface|class|enum|extends|extension type|extension|external|factory|implements|get(?![(<])|mixin|native|operator|set(?![(<])|typedef|with|covariant)\\b(?!\\$)',
           name: 'keyword.declaration.dart'
         },
         {

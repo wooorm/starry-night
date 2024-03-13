@@ -155,6 +155,10 @@ const grammar = {
               match: '//',
               name: 'fast-capture.comment.line.double-slash.fsharp'
             },
+            {
+              match: '\\(\\*\\)',
+              name: 'fast-capture.comment.line.mul-operator.fsharp'
+            },
             {include: '#comments'}
           ]
         },

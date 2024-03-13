@@ -1756,7 +1756,7 @@ const grammar = {
             1: {name: 'invalid.illegal.try-must-precede-await.swift'},
             2: {name: 'keyword.control.await.swift'}
           },
-          match: '(?<!\\.)\\b(?:(await\\s+try)|(await)\\b)'
+          match: '(?<!\\.)\\b(?:(await\\s+try)|(await))\\b'
         },
         {
           match: '(?<!\\.)\\b(?:catch|throw|try)\\b|\\btry[?!]\\B',
