@@ -2,7 +2,7 @@
  * It’s based on what GitHub uses on their site.
  * See <https://github.com/wooorm/starry-night> for more info. */
 :root {
-  --color-prettylights-syntax-comment: #6e7781;
+  --color-prettylights-syntax-comment: #57606a;
   --color-prettylights-syntax-constant: #0550ae;
   --color-prettylights-syntax-entity: #6639ba;
   --color-prettylights-syntax-storage-modifier-import: #24292f;
