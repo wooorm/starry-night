@@ -75,7 +75,7 @@
     "type-coverage": "^2.0.0",
     "typescript": "^5.0.0",
     "unist-builder": "^4.0.0",
-    "xo": "^0.57.0",
+    "xo": "^0.58.0",
     "yaml": "^2.0.0"
   },
   "scripts": {
