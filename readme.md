@@ -55,7 +55,7 @@ source and JavaScript!
 
 This package is an open source version of GitHub’s closed-source `PrettyLights`
 project (more on that later).
-It supports **580+ grammars** and its **extremely high quality**.
+It supports **600+ grammars** and its **extremely high quality**.
 It uses TextMate grammars which are also used in popular editors (SublimeText,
 Atom, VS Code, \&c).
 They’re heavy but high quality.
