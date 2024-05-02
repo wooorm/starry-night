@@ -4,6 +4,7 @@
 :root {
   --color-prettylights-syntax-comment: #768390;
   --color-prettylights-syntax-constant: #6cb6ff;
+  --color-prettylights-syntax-constant-other-reference-link: #96d0ff;
   --color-prettylights-syntax-entity: #dcbdfb;
   --color-prettylights-syntax-storage-modifier-import: #adbac7;
   --color-prettylights-syntax-entity-tag: #8ddb8c;
@@ -11,6 +12,7 @@
   --color-prettylights-syntax-string: #96d0ff;
   --color-prettylights-syntax-variable: #f69d50;
   --color-prettylights-syntax-brackethighlighter-unmatched: #e5534b;
+  --color-prettylights-syntax-brackethighlighter-angle: #768390;
   --color-prettylights-syntax-invalid-illegal-text: #cdd9e5;
   --color-prettylights-syntax-invalid-illegal-bg: #922323;
   --color-prettylights-syntax-carriage-return-text: #cdd9e5;
@@ -29,9 +31,7 @@
   --color-prettylights-syntax-markup-ignored-text: #adbac7;
   --color-prettylights-syntax-markup-ignored-bg: #255ab2;
   --color-prettylights-syntax-meta-diff-range: #dcbdfb;
-  --color-prettylights-syntax-brackethighlighter-angle: #768390;
   --color-prettylights-syntax-sublimelinter-gutter-mark: #545d68;
-  --color-prettylights-syntax-constant-other-reference-link: #96d0ff;
 }
 
 .pl-c {

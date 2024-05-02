@@ -4,13 +4,15 @@
 :root {
   --color-prettylights-syntax-comment: #4b535d;
   --color-prettylights-syntax-constant: #023b95;
+  --color-prettylights-syntax-constant-other-reference-link: #032563;
   --color-prettylights-syntax-entity: #512598;
   --color-prettylights-syntax-storage-modifier-import: #0e1116;
-  --color-prettylights-syntax-entity-tag: #024c1a;
+  --color-prettylights-syntax-entity-tag: #023b95;
   --color-prettylights-syntax-keyword: #a0111f;
   --color-prettylights-syntax-string: #032563;
   --color-prettylights-syntax-variable: #702c00;
   --color-prettylights-syntax-brackethighlighter-unmatched: #6e011a;
+  --color-prettylights-syntax-brackethighlighter-angle: #4b535d;
   --color-prettylights-syntax-invalid-illegal-text: #ffffff;
   --color-prettylights-syntax-invalid-illegal-bg: #6e011a;
   --color-prettylights-syntax-carriage-return-text: #ffffff;
@@ -29,22 +31,22 @@
   --color-prettylights-syntax-markup-ignored-text: #e7ecf0;
   --color-prettylights-syntax-markup-ignored-bg: #023b95;
   --color-prettylights-syntax-meta-diff-range: #622cbc;
-  --color-prettylights-syntax-brackethighlighter-angle: #4b535d;
   --color-prettylights-syntax-sublimelinter-gutter-mark: #88929d;
-  --color-prettylights-syntax-constant-other-reference-link: #032563;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --color-prettylights-syntax-comment: #bdc4cc;
     --color-prettylights-syntax-constant: #91cbff;
+    --color-prettylights-syntax-constant-other-reference-link: #addcff;
     --color-prettylights-syntax-entity: #dbb7ff;
     --color-prettylights-syntax-storage-modifier-import: #f0f3f6;
     --color-prettylights-syntax-entity-tag: #72f088;
     --color-prettylights-syntax-keyword: #ff9492;
     --color-prettylights-syntax-string: #addcff;
     --color-prettylights-syntax-variable: #ffb757;
-    --color-prettylights-syntax-brackethighlighter-unmatched: #ff6a69;
+    --color-prettylights-syntax-brackethighlighter-unmatched: #ff8080;
+    --color-prettylights-syntax-brackethighlighter-angle: #bdc4cc;
     --color-prettylights-syntax-invalid-illegal-text: #ffffff;
     --color-prettylights-syntax-invalid-illegal-bg: #e82a2f;
     --color-prettylights-syntax-carriage-return-text: #ffffff;
@@ -63,9 +65,7 @@
     --color-prettylights-syntax-markup-ignored-text: #f0f3f6;
     --color-prettylights-syntax-markup-ignored-bg: #318bf8;
     --color-prettylights-syntax-meta-diff-range: #dbb7ff;
-    --color-prettylights-syntax-brackethighlighter-angle: #bdc4cc;
     --color-prettylights-syntax-sublimelinter-gutter-mark: #7a828e;
-    --color-prettylights-syntax-constant-other-reference-link: #addcff;
   }
 }
 
