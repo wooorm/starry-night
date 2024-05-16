@@ -161,7 +161,7 @@ To get the CSS in browsers, do (see [CSS][] for more info):
 
 ```html
 <!-- This supports light and dark mode automatically. -->
-<link rel="stylesheet" href="https://esm.sh/@wooorm/starry-night@3/style/both">
+<link rel="stylesheet" href="https://esm.sh/@wooorm/starry-night@3/style/both.css">
 ```
 
 ## Use
