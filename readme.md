@@ -115,8 +115,9 @@ essentially the same)!
 `PrettyLights` is responsible for taking the flag `markdown`, looking it up in
 [`languages.yml`][languages-yml] from `github-linguist` to figure out that that
 means markdown, taking a corresponding grammar (in this case
-[`atom/language-gfm`][language-gfm]), doing some GPL magic in C, and turning it
-into spans with classes.
+[`wooorm/markdown-tm-language`][markdown-tm-language]),
+doing some GPL magic in C,
+and turning it into spans with classes.
 
 GitHub is using `PrettyLights` since December 2014, when it
 [replaced `Pygments`][ref-1].
@@ -1762,7 +1763,7 @@ All other files [MIT][license] © [Titus Wormer][author]
 
 [ref-3]: https://github.com/tree-sitter/tree-sitter/pull/283#issuecomment-465509157
 
-[language-gfm]: https://github.com/atom/language-gfm
+[markdown-tm-language]: https://github.com/wooorm/markdown-tm-language
 
 [languages-yml]: https://github.com/github-linguist/linguist/blob/b5432eb/lib/linguist/languages.yml#L4031
 
