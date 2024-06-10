@@ -9,6 +9,14 @@ const grammar = {
   names: ['brighterscript', 'brightscript'],
   patterns: [{include: '#entire_language'}],
   repository: {
+    alias_statement: {
+      captures: {
+        1: {name: 'keyword.declaration.alias.brs'},
+        2: {name: 'entity.name.variable.brs'},
+        3: {name: 'keyword.operator.assignment.brs'}
+      },
+      match: '(?i:(alias)\\s+([a-z0-9_]+)\\s*(=)\\s*)'
+    },
     annotation: {
       patterns: [
         {
@@ -96,6 +104,7 @@ const grammar = {
         {include: '#template_string'},
         {include: '#rem_comment'},
         {include: '#import_statement'},
+        {include: '#alias_statement'},
         {include: '#namespace_declaration'},
         {include: '#enum_declaration'},
         {include: '#end_namespace'},

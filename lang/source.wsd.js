@@ -332,12 +332,12 @@ const grammar = {
       patterns: [
         {
           match:
-            '(?i)^\\s*(usecase|actor|object|participant|boundary|control|entity|database|create|component|interface|package|node|folder|frame|cloud|annotation|enum|abstract\\s+class|abstract|class|state|autonumber(\\s+stop|\\s+resume|\\s+inc)?|activate|deactivate|return|destroy|newpage|alt|else|opt|loop|par|break|critical|group|box|rectangle|namespace|partition|agent|artifact|card|circle|collections|file|hexagon|label|person|queue|stack|storage|mainframe|map|repeat|backward|diamond|goto|binary|clock|concise|robust|compact\\s+concise|compact\\s+robust|json|protocol|struct)\\b',
+            '(?i)^\\s*(switch|case|usecase|actor|object|participant|boundary|control|entity|database|create|component|interface|package|node|folder|frame|cloud|annotation|enum|abstract\\s+class|abstract|class|state|autonumber(\\s+stop|\\s+resume|\\s+inc)?|activate|deactivate|return|destroy|newpage|alt|else|opt|loop|par|break|critical|group|box|rectangle|namespace|partition|agent|artifact|card|circle|collections|file|hexagon|label|person|queue|stack|storage|mainframe|map|repeat|backward|diamond|goto|binary|clock|concise|robust|compact\\s+concise|compact\\s+robust|json|protocol|struct|exception|metaclass|stereotype)\\b',
           name: 'keyword.other.linebegin.source.wsd'
         },
         {
           match:
-            '(?i)^\\s*(split( again)?|endif|repeat|start|stop|end|end\\s+fork|end\\s+split|fork( again)?|detach|end\\s+box|top\\s+to\\s+bottom\\s+direction|left\\s+to\\s+right\\s+direction|kill|end\\s+merge|allow(_)?mixing)\\s*$',
+            '(?i)^\\s*(endswitch|split( again)?|endif|repeat|start|stop|end|end\\s+fork|end\\s+split|fork( again)?|detach|end\\s+box|top\\s+to\\s+bottom\\s+direction|left\\s+to\\s+right\\s+direction|kill|end\\s+merge|allow(_)?mixing)\\s*$',
           name: 'keyword.other.wholeline.source.wsd'
         },
         {

@@ -645,7 +645,6 @@ const grammar = {
     'expression-bare': {
       patterns: [
         {include: '#backticks'},
-        {include: '#illegal-anno'},
         {include: '#literal'},
         {include: '#regexp'},
         {include: '#string'},
@@ -1076,7 +1075,7 @@ const grammar = {
       endCaptures: {1: {name: 'punctuation.section.function.begin.python'}},
       name: 'meta.function.python',
       patterns: [
-        {include: '#raises-modifier'},
+        {include: '#function-modifier'},
         {include: '#function-def-name'},
         {include: '#parameters'},
         {include: '#meta_parameters'},
@@ -1094,6 +1093,10 @@ const grammar = {
         }
       ]
     },
+    'function-modifier': {
+      match: '(raises|capturing)',
+      name: 'storage.modifier'
+    },
     'function-name': {
       patterns: [
         {include: '#builtin-possible-callables'},
@@ -1110,14 +1113,14 @@ const grammar = {
       endCaptures: {0: {name: 'keyword.control.flow.python'}},
       patterns: [{include: '#expression'}]
     },
-    'illegal-anno': {match: '->', name: 'invalid.illegal.annotation.python'},
     'illegal-names': {
       captures: {
         1: {name: 'keyword.control.flow.python'},
-        2: {name: 'keyword.control.import.python'}
+        2: {name: 'storage.type.function.python'},
+        3: {name: 'keyword.control.import.python'}
       },
       match:
-        '(?x)\n  \\b(?:\n    (\n      and | assert | async | await | break | class | struct | trait | continue | def\n       | fn\n      | del | elif | else | except | finally | for | from | global\n      | if | in | is | (?<=\\.)lambda | lambda(?=\\s*[\\.=])\n      | nonlocal | not | or | pass | raise | return | try | while | with\n      | yield\n    ) | (\n      as | import\n    )\n  )\\b\n'
+        '(?x)\n  \\b(?:\n    (\n      and | assert | async | await | break | class | struct | trait | continue | del | elif | else | except | finally | for | from | global\n      | if | in | is | (?<=\\.)lambda | lambda(?=\\s*[\\.=])\n      | nonlocal | not | or | pass | raise | return | try | while | with\n      | yield\n    ) | (def | fn | capturing | raises) | (\n      as | import\n    )\n  )\\b\n'
     },
     'illegal-object-name': {
       match: '\\b(True|False|None)\\b',
@@ -1241,7 +1244,6 @@ const grammar = {
             },
             {include: '#comments'},
             {include: '#backticks'},
-            {include: '#illegal-anno'},
             {include: '#lambda-parameter-with-default'},
             {include: '#line-continuation'},
             {include: '#illegal-operator'}
@@ -1495,7 +1497,6 @@ const grammar = {
         {match: ',', name: 'punctuation.separator.element.python'}
       ]
     },
-    'raises-modifier': {match: '(raises)', name: 'storage.modifier'},
     regexp: {
       patterns: [
         {include: '#regexp-single-three-line'},
@@ -2077,7 +2078,7 @@ const grammar = {
     'statement-keyword': {
       patterns: [
         {
-          match: '\\b((async\\s+)?\\s*def)\\b',
+          match: '\\b((async\\s+)?\\s*(def|fn))\\b',
           name: 'storage.type.function.python'
         },
         {

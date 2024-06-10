@@ -175,8 +175,14 @@ const grammar = {
         {match: '\\banonymous\\b', name: 'keyword'},
         {match: '\\bunchecked\\b', name: 'keyword'},
         {
-          begin: '(?<!\\\\)[\\"\\\']',
-          end: '(?<!\\\\)[\\"\\\']',
+          begin: '(?<!\\\\)[\\"]',
+          end: '(?<!\\\\)[\\"]',
+          name: 'string.quoted',
+          patterns: [{include: '#string'}]
+        },
+        {
+          begin: "(?<!\\\\)[\\']",
+          end: "(?<!\\\\)[\\']",
           name: 'string.quoted',
           patterns: [{include: '#string'}]
         }

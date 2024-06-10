@@ -133,7 +133,7 @@ const grammar = {
     },
     'string-verbatim': {
       begin: "'''",
-      end: "'''",
+      end: "'''(?!')",
       name: 'string.quoted.multi.bicep'
     }
   },

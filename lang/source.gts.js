@@ -13,7 +13,7 @@ const grammar = {
     }
   },
   names: ['glimmer-ts'],
-  patterns: [{include: 'source.ts'}, {include: '#main'}],
+  patterns: [{include: '#main'}, {include: 'source.ts'}],
   repository: {
     'as-keyword': {match: '\\s\\b(as)\\b(?=\\s\\|)', name: 'keyword.control'},
     'as-params': {

@@ -5,7 +5,7 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.zig'],
+  extensions: ['.zig', '.zig.zon'],
   names: ['zig'],
   patterns: [{include: '#dummy_main'}],
   repository: {

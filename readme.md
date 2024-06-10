@@ -1130,12 +1130,14 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 * [ ] [`source.boo`](lang/source.boo.js) (mit) — [upstream](https://github.com/drslump/sublime-boo)
 * [ ] [`source.boogie`](lang/source.boogie.js) (mit) — [upstream](https://github.com/boogie-org/boogie-vscode)
 * [ ] [`source.bp`](lang/source.bp.js) (mit) — [upstream](https://github.com/flimberger/android-system-tools)
+* [ ] [`source.bqn`](lang/source.bqn.js) (mit) — [upstream](https://github.com/razetime/bqn-vscode)
 * [ ] [`source.brs`](lang/source.brs.js) (mit) — [upstream](https://github.com/rokucommunity/vscode-brightscript-language)
 * [ ] [`source.bsl`](lang/source.bsl.js) (mit) — [upstream](https://github.com/xDrivenDevelopment/atom-language-1c-bsl) — needs: `source.sdbl`
 * [ ] [`source.bsv`](lang/source.bsv.js) (mit)
 * [ ] [`source.c.ec`](lang/source.c.ec.js) (unlicense) — [upstream](https://github.com/ecere/ec.tmbundle) — needs: `source.c`
 * [ ] [`source.c.nwscript`](lang/source.c.nwscript.js) (isc) — [upstream](https://github.com/Alhadis/language-etc) — needs: `source.c`
 * [ ] [`source.cabal`](lang/source.cabal.js) (mit) — [upstream](https://github.com/atom-haskell/language-haskell)
+* [ ] [`source.Caddyfile`](lang/source.Caddyfile.js) (mit) — [upstream](https://github.com/caddyserver/vscode-caddyfile)
 * [ ] [`source.cadence`](lang/source.cadence.js) (apache-2.0) — [upstream](https://github.com/onflow/vscode-cadence)
 * [ ] [`source.cairo`](lang/source.cairo.js) (mit) — [upstream](https://github.com/xshitaka/atom-language-cairo)
 * [ ] [`source.camlp4.ocaml`](lang/source.camlp4.ocaml.js) — needs: `source.ocaml`
@@ -1209,6 +1211,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 * [ ] [`source.faust`](lang/source.faust.js) (mit)
 * [ ] [`source.figfont`](lang/source.figfont.js) (isc) — [upstream](https://github.com/Alhadis/language-fontforge)
 * [ ] [`source.firestore`](lang/source.firestore.js) (mit)
+* [ ] [`source.firrtl`](lang/source.firrtl.js) (apache-2.0) — [upstream](https://github.com/chipsalliance/firrtl-syntax)
 * [ ] [`source.fish`](lang/source.fish.js) (mit)
 * [ ] [`source.fnl`](lang/source.fnl.js) (mit) — [upstream](https://github.com/kongeor/vsc-fennel)
 * [ ] [`source.fontdir`](lang/source.fontdir.js) (isc) — [upstream](https://github.com/Alhadis/language-fontforge) — needs: `source.xlfd`
@@ -1255,6 +1258,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 * [ ] [`source.harbour`](lang/source.harbour.js) (mit)
 * [ ] [`source.haskell`](lang/source.haskell.js) (mit) — [upstream](https://github.com/atom-haskell/language-haskell)
 * [ ] [`source.hc`](lang/source.hc.js) (unlicense)
+* [ ] [`source.hcl`](lang/source.hcl.js) (mpl-2.0) — [upstream](https://github.com/hashicorp/syntax)
 * [ ] [`source.hcl.terraform`](lang/source.hcl.terraform.js) (mpl-2.0) — [upstream](https://github.com/hashicorp/syntax)
 * [ ] [`source.hlsl`](lang/source.hlsl.js) (mit)
 * [ ] [`source.hocon`](lang/source.hocon.js) (mit) — [upstream](https://github.com/jacobwgillespie/language-hocon)
@@ -1282,7 +1286,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 * [ ] [`source.isabelle.theory`](lang/source.isabelle.theory.js) (bsd-2-clause) — [upstream](https://github.com/lsf37/Isabelle.tmbundle)
 * [ ] [`source.j`](lang/source.j.js) (mit) — [upstream](https://github.com/tikkanz/JSyntax)
 * [ ] [`source.janet`](lang/source.janet.js) (mit) — [upstream](https://github.com/janet-lang/vscode-janet)
-* [ ] [`source.jasmin`](lang/source.jasmin.js) (mit)
+* [ ] [`source.jasmin`](lang/source.jasmin.js) (wtfpl) — [upstream](https://github.com/atmarksharp/jasmin-sublime)
 * [ ] [`source.java-properties`](lang/source.java-properties.js) — [upstream](https://github.com/textmate/java.tmbundle)
 * [ ] [`source.jcl`](lang/source.jcl.js) (mit) — [upstream](https://github.com/spgennard/vscode_cobol)
 * [ ] [`source.jest.snap`](lang/source.jest.snap.js) (mit) — [upstream](https://github.com/jest-community/vscode-jest)
@@ -1295,6 +1299,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 * [ ] [`source.jsoniq`](lang/source.jsoniq.js) (apache-2.0) — [upstream](https://github.com/wcandillon/language-jsoniq)
 * [ ] [`source.jsonnet`](lang/source.jsonnet.js) (apache-2.0) — [upstream](https://github.com/google/language-jsonnet)
 * [ ] [`source.julia`](lang/source.julia.js) (mit) — [upstream](https://github.com/JuliaEditorSupport/atom-language-julia)
+* [ ] [`source.julia.console`](lang/source.julia.console.js) (mit) — [upstream](https://github.com/JuliaEditorSupport/atom-language-julia) — needs: `source.julia`, `source.shell`
 * [ ] [`source.just`](lang/source.just.js) (mit) — [upstream](https://github.com/skellock/vscode-just)
 * [ ] [`source.kakscript`](lang/source.kakscript.js) (unlicense) — [upstream](https://github.com/kakoune-editor/language-kak)
 * [ ] [`source.kerboscript`](lang/source.kerboscript.js) (mit) — [upstream](https://github.com/KSP-KOS/language-kerboscript)
@@ -1318,6 +1323,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 * [ ] [`source.loomscript`](lang/source.loomscript.js) (mit)
 * [ ] [`source.lsl`](lang/source.lsl.js)
 * [ ] [`source.ltspice.symbol`](lang/source.ltspice.symbol.js) (isc) — [upstream](https://github.com/Alhadis/language-pcb)
+* [ ] [`source.luau`](lang/source.luau.js) (mit) — [upstream](https://github.com/JohnnyMorganz/Luau.tmLanguage)
 * [ ] [`source.m2`](lang/source.m2.js) (mit) — [upstream](https://github.com/Macaulay2/language-macaulay2)
 * [ ] [`source.m4`](lang/source.m4.js) (isc) — [upstream](https://github.com/Alhadis/language-etc) — needs: `etc`
 * [ ] [`source.m68k`](lang/source.m68k.js) (mit)
@@ -1412,6 +1418,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 * [ ] [`source.pig_latin`](lang/source.pig_latin.js) (mit)
 * [ ] [`source.pike`](lang/source.pike.js) (unlicense)
 * [ ] [`source.pip-requirements`](lang/source.pip-requirements.js) (mit) — [upstream](https://github.com/microsoft/vscode-python)
+* [ ] [`source.pkl`](lang/source.pkl.js) (apache-2.0) — [upstream](https://github.com/apple/pkl.tmbundle)
 * [ ] [`source.plist`](lang/source.plist.js) (mit) — [upstream](https://github.com/atom/language-property-list)
 * [ ] [`source.po`](lang/source.po.js)
 * [ ] [`source.pogoscript`](lang/source.pogoscript.js) (mit)
@@ -1463,6 +1470,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 * [ ] [`source.rez`](lang/source.rez.js) — [upstream](https://github.com/textmate/rez.tmbundle)
 * [ ] [`source.ring`](lang/source.ring.js) (mit)
 * [ ] [`source.roc`](lang/source.roc.js) (mit) — [upstream](https://github.com/ivan-demchenko/roc-vscode-unofficial)
+* [ ] [`source.ron`](lang/source.ron.js) (mit) — [upstream](https://github.com/a5huynh/vscode-ron)
 * [ ] [`source.rpgle`](lang/source.rpgle.js) (mit) — [upstream](https://github.com/barrettotte/vscode-ibmi-languages) — needs: `source.sql`
 * [ ] [`source.rpm-spec`](lang/source.rpm-spec.js) (mit) — needs: `source.changelogs.rpm-spec`, `source.shell`
 * [ ] [`source.sas`](lang/source.sas.js) (mit) — [upstream](https://github.com/rpardee/sas.tmbundle)
@@ -1509,8 +1517,8 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 * [ ] [`source.talon`](lang/source.talon.js) (mit) — [upstream](https://github.com/mrob95/vscode-TalonScript)
 * [ ] [`source.tcl`](lang/source.tcl.js)
 * [ ] [`source.tea`](lang/source.tea.js) (apache-2.0) — needs: `source.js`, `text.html.basic`, `text.xml`
+* [ ] [`source.templ`](lang/source.templ.js) (mit) — [upstream](https://github.com/templ-go/templ-vscode) — needs: `source.go`
 * [ ] [`source.terra`](lang/source.terra.js) (bsd-3-clause)
-* [ ] [`source.terraform`](lang/source.terraform.js) (mit) — [upstream](https://github.com/alexlouden/Terraform.tmLanguage)
 * [ ] [`source.textgrid`](lang/source.textgrid.js) (mit) — [upstream](https://github.com/orhunulusahin/praatvscode)
 * [ ] [`source.textproto`](lang/source.textproto.js) (mit) — [upstream](https://github.com/thejustinwalsh/textproto-grammar)
 * [ ] [`source.thrift`](lang/source.thrift.js)
@@ -1577,6 +1585,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 * [ ] [`text.checksums`](lang/text.checksums.js) (isc) — [upstream](https://github.com/Alhadis/language-etc) — needs: `etc`
 * [ ] [`text.codeowners`](lang/text.codeowners.js) (isc) — [upstream](https://github.com/Alhadis/language-etc) — needs: `etc`
 * [ ] [`text.conllu`](lang/text.conllu.js) (apache-2.0)
+* [ ] [`text.crontab`](lang/text.crontab.js)
 * [ ] [`text.dfy.dafny`](lang/text.dfy.dafny.js) (mit) — [upstream](https://github.com/DafnyVSCode/Dafny-VSCode)
 * [ ] [`text.elixir`](lang/text.elixir.js) (apache-2.0) — [upstream](https://github.com/elixir-lang/elixir-tmbundle) — needs: `source.elixir`
 * [ ] [`text.eml.basic`](lang/text.eml.basic.js) (mit) — [upstream](https://github.com/mariozaizar/language-eml)

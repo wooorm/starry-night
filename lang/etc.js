@@ -384,25 +384,115 @@ const grammar = {
       captures: {
         1: {patterns: [{include: '#dot'}]},
         2: {name: 'meta.cidr-notation'},
-        3: {name: 'punctuation.separator.network-mask.cidr'},
+        3: {name: 'keyword.operator.assignment.cidr'},
         4: {patterns: [{include: '#intNoExp'}]}
       },
       match:
-        '(?x) (?:\\G|^|(?<!\\.)\\b)\n(?!\\.)\n((?:\n\t\\.?\n\t(?: 25[0-5]    # 250-255\n\t|   2[0-4]\\d  # 200-249\n\t|   1\\d\\d    # 100-199\n\t|   [1-9]?\\d  # 0-99\n\t)\n){4})\n\n# CIDR notation: “/[0-32]”\n((/)(3[0-2]|[12]?\\d)\\b)?\n\n(?=$|\\s|(?!\\.)\\b)',
+        '(?x) (?:\\G|^|(?<!\\.)\\b)\n(?!\\.)\n((?:\n\t\\.?\n\t(?: 25[0-5]    # 250-255\n\t|   2[0-4]\\d  # 200-249\n\t|   1\\d\\d    # 100-199\n\t|   [1-9]?\\d  # 0-99\n\t)\\b\n){4})\n\n# CIDR notation: “/[0-32]”\n((/)(3[0-2]|[12]?\\d)\\b)?\n\n(?=$|\\s|(?!\\.)\\b)',
       name: 'constant.numeric.other.ip-address.v4'
     },
     ipv6: {
       captures: {
-        1: {patterns: [{include: '#colon'}]},
-        2: {name: 'meta.cidr-notation'},
-        3: {name: 'punctuation.separator.network-mask.cidr'},
-        4: {patterns: [{include: '#intNoExp'}]}
+        0: {
+          patterns: [
+            {
+              captures: {
+                1: {name: 'meta.zone-id'},
+                2: {name: 'keyword.operator.assignment.zone-id'},
+                3: {name: 'entity.other.zone-index'},
+                4: {name: 'meta.cidr-notation'},
+                5: {name: 'keyword.operator.assignment.cidr'},
+                6: {patterns: [{include: '#intNoExp'}]}
+              },
+              match: '(?!$)((%)([^/%]+))?((/)([0-9]+))?$'
+            },
+            {include: '#colon'}
+          ]
+        }
       },
       match:
-        '(?mix) (?:\\G|^|(?<!\\.|:))\n(\n\t:? (?:(?:\\b[A-F0-9]{1,4})?:){7} (?:[A-F0-9]{1,4}\\b)?\n\t|\n\t(?:\\b[A-F0-9]{1,4}:){1,7} ::\n\t|\n\t(?::[A-F0-9]{1,4}){1,7} ::\n)\n\n# CIDR notation: “/[0-128]”\n(\n\t(/)\n\t( 12[0-8]   # 120-128\n\t| 1[01]\\d  # 100-119\n\t| [1-9]?\\d # 0-99\n\t) \\b\n)?\n(?=$|\\s|[^.:/\\s])',
+        '(?mix) (?:\\G|^|(?<!\\.|:|\\w))\n(?<dec>25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d){0}\n(?<hex>[A-F0-9]{1,4}){0}\n(?<v4>\\g<dec>(?:\\.\\g<dec>){3}){0}\n(?<v6>\\g<hex>:){0}\n\n# Address\n(?: \\g<v6>{7} (?:                               \\g<hex>      |:)\n|   \\g<v6>{6} (?:                   \\g<v4>|   :\\g<hex>      |:)\n|   \\g<v6>{5} (?:                  :\\g<v4>|(?::\\g<hex>){1,2}|:)\n|   \\g<v6>{4} (?:(?::\\g<hex>)?    :\\g<v4>|(?::\\g<hex>){1,3}|:)\n|   \\g<v6>{3} (?:(?::\\g<hex>){0,2}:\\g<v4>|(?::\\g<hex>){1,4}|:)\n|   \\g<v6>{2} (?:(?::\\g<hex>){0,3}:\\g<v4>|(?::\\g<hex>){1,5}|:)\n|   \\g<v6>    (?:(?::\\g<hex>){0,4}:\\g<v4>|(?::\\g<hex>){1,6}|:)\n|          (?::(?:(?::\\g<hex>){0,5}:\\g<v4>|(?::\\g<hex>){1,7}|:))\n) (?:(?<!:)\\b|(?<=:)(?!\\w|:))\n\n# Zone ID (RFC 4007): “%ne0”\n(?:\n\t%\n\t(?!\\$)\n\t[^\\s();"/]+\n)?\n\n# CIDR notation: “/[0-128]”\n(?:\n\t/\n\t(?: 12[0-8]   # 120-128\n\t|   1[01]\\d  # 100-119\n\t|   [1-9]?\\d # 0-99\n\t) \\b\n)?\n\n(?=$|\\s|[^.:%/\\s])',
       name: 'constant.numeric.other.ip-address.v6'
     },
     kolon: {match: ':', name: 'keyword.operator.assignment.key-value.colon'},
+    mime: {
+      captures: {
+        1: {name: 'entity.name.type.standard.${1:/downcase}.media-type'},
+        2: {name: 'entity.name.type.nonstandard.${2:/downcase}.media-type'},
+        3: {name: 'entity.name.type.extension.media-type'},
+        4: {name: 'punctuation.separator.slash.media-type'},
+        5: {
+          patterns: [
+            {
+              begin:
+                '(?i)(?:^|\\G)(?:(([-a-z0-9_]+)(\\.))((?:[-a-z0-9_]+\\.)*+))?',
+              beginCaptures: {
+                1: {name: 'entity.other.tree.${2:/downcase}.media-type'},
+                3: {name: 'punctuation.separator.dot.media-type'},
+                4: {
+                  patterns: [
+                    {
+                      captures: {
+                        2: {name: 'punctuation.separator.dot.media-type'}
+                      },
+                      match: '([^.]+)(\\.)',
+                      name: 'entity.other.subtree.${1:/downcase}.media-type'
+                    }
+                  ]
+                }
+              },
+              contentName: 'entity.name.subtype.media-type',
+              end: '((\\+)[-a-z0-9_.]+)?$',
+              endCaptures: {
+                1: {name: 'entity.other.suffix.media-type'},
+                2: {name: 'punctuation.separator.plus.media-type'}
+              }
+            }
+          ]
+        },
+        6: {
+          name: 'meta.parameters.media-type',
+          patterns: [
+            {
+              begin: '\\s*((;))\\s*([^;=]+)\\s*(=)[ \\t]*',
+              beginCaptures: {
+                1: {name: 'punctuation.delimiter.semicolon.media-type'},
+                2: {name: 'sublimelinter.gutter-mark'},
+                3: {name: 'variable.parameter.media-type'},
+                4: {patterns: [{include: '#eql'}]}
+              },
+              end: '(?!\\G)',
+              name: 'meta.parameter.media-type',
+              patterns: [
+                {
+                  captures: {
+                    1: {name: 'punctuation.definition.string.begin.media-type'},
+                    2: {
+                      patterns: [
+                        {
+                          match: '\\\\"',
+                          name: 'constant.character.escape.quote.media-type'
+                        }
+                      ]
+                    },
+                    3: {name: 'punctuation.definition.string.end.media-type'}
+                  },
+                  match: '\\G(")((?:[^"\\\\]|\\\\")*+)(")',
+                  name: 'string.quoted.double.media-type'
+                },
+                {
+                  match: '\\G[^;\\r\\n]+',
+                  name: 'string.unquoted.parameter.media-type'
+                }
+              ]
+            }
+          ]
+        }
+      },
+      match:
+        '(?xi) (?<!-|\\.)\\b\n(?: (application|audio|example|font|image|message|model|multipart|text|video)\n|   (chemical|drawing|magnus-internal|paleovu|xgl|inode(?=/(?:blockdevice|chardevice|directory|door|fifo|mount-point|socket|symlink)))\n|   (x-[-a-z0-9+_.]{1,125})\n) (/) (?![.+])([-a-z0-9+_.]{1,127})(?<![.+])\n\\b (?!-|\\.)\n((?:\n\t# LHS: “; name=”\n\t\\s* ; \\s* [^;=]+ \\s* = [ \\t]*\n\t\n\t# RHS\n\t(?: "(?:[^"\\\\]|\\\\")*+" # Quoted value\n\t|   (?=\\S)[^;\\r\\n]+     # Unquoted value\n\t)?\n)++)?',
+      name: 'constant.other.media-type'
+    },
     num: {patterns: [{include: '#float'}, {include: '#int'}]},
     op: {
       patterns: [

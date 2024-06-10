@@ -167,7 +167,10 @@ for (name in languages) {
 
     assert(
       // This one actually turns into two classes on GH, which must be a bug.
-      scope === 'source.pov-ray sdl' || /^[-a-z\d+_.]+$/.test(scope),
+      scope === 'source.pov-ray sdl' ||
+        // https://github.com/github-linguist/linguist/pull/6862#issuecomment-2157822516
+        scope === 'source.Caddyfile' ||
+        /^[-a-z\d+_.]+$/.test(scope),
       scope
     )
 
@@ -881,6 +884,7 @@ function visit(rule, callback) {
  */
 function scopeToId(value) {
   const id = value
+    .toLowerCase() // `source.Caddyfile` -> `source.caddyfile`
     // For `c++`
     .replace(/\+/g, 'p')
     .replace(/[. -_]([a-z\d])/g, function (_, /** @type {string} */ $1) {

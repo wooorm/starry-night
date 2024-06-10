@@ -8,6 +8,7 @@ const grammar = {
   extensions: ['.d2'],
   names: ['d2', 'd2lang'],
   patterns: [
+    {include: '#block_comment'},
     {include: '#comment'},
     {include: '#semicolon'},
     {include: '#spread_substitution'},
@@ -23,6 +24,7 @@ const grammar = {
       end: '\\]',
       name: 'meta.array.d2',
       patterns: [
+        {include: '#block_comment'},
         {include: '#comment'},
         {include: '#semicolon'},
         {include: '#substitution'},
@@ -33,11 +35,22 @@ const grammar = {
         {include: '#error'}
       ]
     },
+    block_comment: {
+      patterns: [
+        {
+          begin: '"""',
+          beginCaptures: {0: {name: 'punctuation.comment.start.d2'}},
+          end: '"""',
+          endCaptures: {0: {name: 'punctuation.comment.end.d2'}},
+          name: 'comment.block.d2'
+        }
+      ]
+    },
     boolean: {
       match: '(?:true|false)(?=\\s|\\n)',
       name: 'constant.language.boolean.d2'
     },
-    comment: {match: '#.*', name: 'comment.line.number-sign.d2'},
+    comment: {match: '#.*$', name: 'comment.line.number-sign.d2'},
     debug: {
       patterns: [
         {match: '.*invalid\\.illegal.*', name: 'invalid.illegal'},
@@ -107,7 +120,7 @@ const grammar = {
         },
         {
           match:
-            '(?:grid\\-gap|vertical\\-gap|horizontal\\-gap|classes|direction|grid\\-columns|grid\\-rows|text\\-transform|shape|layers|steps|tooltip|font|bold|italic|underline|top|left|icon|constraint|near|opacity|stroke|fill\\-pattern|fill|filled|stroke\\-width|width|height|double\\-border|border\\-radius|source\\-arrowhead|target\\-arrowhead|link|stroke\\-dash|font\\-size|font\\-color|shadow|multiple|3d|animated|class|label|style|import|vars|scenarios|on_click|src|dst)(?=\\s*[\\n#;\\[\\]{}|$\'":.<>*&()]|-+-|-+>|-+\\*)',
+            '(?:grid\\-gap|vertical\\-gap|horizontal\\-gap|classes|direction|grid\\-columns|grid\\-rows|text\\-transform|shape|layers|steps|tooltip|font|bold|italic|underline|top|left|icon|constraint|near|opacity|stroke|fill\\-pattern|fill|filled|stroke\\-width|width|height|double\\-border|border\\-radius|source\\-arrowhead|target\\-arrowhead|link|stroke\\-dash|font\\-size|font\\-color|shadow|multiple|3d|animated|class|label|style|vars|scenarios|on_click|src|dst)(?=\\s*[\\n#;\\[\\]{}|$\'":.<>*&()]|-+-|-+>|-+\\*)',
           name: 'keyword.reserved.d2'
         },
         {match: '\\.', name: 'punctuation.period.d2'},

@@ -41,6 +41,12 @@ source.bdf:
   source.xlfd: true
 source.bsl:
   source.sdbl: true
+source.Caddyfile:
+  source.css: false
+  source.js: false
+  source.json: false
+  text.html.basic: false
+  text.xml: false
 source.c:
   source.c.platform: true
 source.c++:
@@ -247,6 +253,9 @@ source.jsdoc:
   source.js: false
 source.jsoniq:
   source.xq: false
+source.julia.console:
+  source.julia: true
+  source.shell: true
 source.julia:
   source.c++: false
   source.js: false
@@ -643,6 +652,10 @@ source.tea:
   source.js: true
   text.html.basic: true
   text.xml: true
+source.templ:
+  source.css: false
+  source.go: true
+  source.js: false
 source.vala:
   text.html.javadoc: false
 source.vim-snippet:

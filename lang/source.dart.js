@@ -10,7 +10,8 @@ const grammar = {
   patterns: [
     {match: '^(#!.*)$', name: 'meta.preprocessor.script.dart'},
     {
-      begin: '^\\w*\\b(library|import|part of|part|export)\\b',
+      begin:
+        '^\\w*\\b(augment\\s+library|library|import\\s+augment|import|part\\s+of|part|export)\\b',
       beginCaptures: {0: {name: 'keyword.other.import.dart'}},
       end: ';',
       endCaptures: {0: {name: 'punctuation.terminator.dart'}},
@@ -114,7 +115,7 @@ const grammar = {
           name: 'constant.language.dart'
         },
         {
-          match: '(?<!\\$)\\b(this|super)\\b(?!\\$)',
+          match: '(?<!\\$)\\b(this|super|augmented)\\b(?!\\$)',
           name: 'variable.language.dart'
         },
         {
@@ -149,6 +150,14 @@ const grammar = {
           captures: {2: {name: 'variable.other.source.dart'}},
           match: '(\\* ((    ).*))$'
         }
+      ]
+    },
+    expression: {
+      patterns: [
+        {include: '#constants-and-special-vars'},
+        {include: '#strings'},
+        {match: '[a-zA-Z0-9_]+', name: 'variable.parameter.dart'},
+        {begin: '\\{', end: '\\}', patterns: [{include: '#expression'}]}
       ]
     },
     'function-identifier': {
@@ -188,11 +197,12 @@ const grammar = {
         },
         {
           match:
-            '(?<!\\$)\\b(abstract|sealed|base|interface|class|enum|extends|extension type|extension|external|factory|implements|get(?![(<])|mixin|native|operator|set(?![(<])|typedef|with|covariant)\\b(?!\\$)',
+            '(?<!\\$)\\b(abstract|sealed|base|interface|class|enum|extends|extension\\s+type|extension|external|factory|implements|get(?![(<])|mixin|native|operator|set(?![(<])|typedef|with|covariant)\\b(?!\\$)',
           name: 'keyword.declaration.dart'
         },
         {
-          match: '(?<!\\$)\\b(static|final|const|required|late)\\b(?!\\$)',
+          match:
+            '(?<!\\$)\\b(macro|augment|static|final|const|required|late)\\b(?!\\$)',
           name: 'storage.modifier.dart'
         },
         {
@@ -240,17 +250,13 @@ const grammar = {
         {
           captures: {1: {name: 'variable.parameter.dart'}},
           match: '\\$([a-zA-Z0-9_]+)',
-          name: 'string.interpolated.expression.dart'
+          name: 'meta.embedded.expression.dart'
         },
         {
           begin: '\\$\\{',
           end: '\\}',
-          name: 'string.interpolated.expression.dart',
-          patterns: [
-            {include: '#constants-and-special-vars'},
-            {include: '#strings'},
-            {match: '[a-zA-Z0-9_]+', name: 'variable.parameter.dart'}
-          ]
+          name: 'meta.embedded.expression.dart',
+          patterns: [{include: '#expression'}]
         },
         {match: '\\\\.', name: 'constant.character.escape.dart'}
       ]

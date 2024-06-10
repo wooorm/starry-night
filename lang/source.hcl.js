@@ -5,8 +5,8 @@
 // See <https://github.com/wooorm/starry-night> for more info.
 /** @type {import('../lib/index.js').Grammar} */
 const grammar = {
-  extensions: ['.tftpl'],
-  names: ['terraform-template'],
+  extensions: ['.hcl', '.nomad', '.tf', '.tfvars', '.workflow'],
+  names: ['hcl', 'hashicorp-configuration-language', 'terraform'],
   patterns: [
     {include: '#comments'},
     {include: '#attribute_definition'},
@@ -48,15 +48,10 @@ const grammar = {
       endCaptures: {0: {name: 'keyword.operator.splat.hcl'}}
     },
     block: {
-      begin: '([\\w][\\-\\w]*)([\\s\\"\\-\\w]*)(\\{)',
+      begin: '([\\w][\\-\\w]*)([^?\\r\\n]*)(\\{)',
       beginCaptures: {
         1: {
           patterns: [
-            {
-              match:
-                '\\bdata|check|import|locals|module|output|provider|resource|terraform|variable\\b',
-              name: 'entity.name.type.terraform'
-            },
             {
               match: '\\b(?!null|false|true)[[:alpha:]][[:alnum:]_-]*\\b',
               name: 'entity.name.type.hcl'
@@ -65,7 +60,14 @@ const grammar = {
         },
         2: {
           patterns: [
-            {match: '[\\"\\-\\w]+', name: 'variable.other.enummember.hcl'}
+            {
+              match: '\\"[^\\"\\r\\n]*\\"',
+              name: 'variable.other.enummember.hcl'
+            },
+            {
+              match: '[[:alpha:]][[:alnum:]_-]*',
+              name: 'variable.other.enummember.hcl'
+            }
           ]
         },
         3: {name: 'punctuation.section.block.begin.hcl'}
@@ -76,8 +78,8 @@ const grammar = {
       patterns: [
         {include: '#comments'},
         {include: '#attribute_definition'},
-        {include: '#block'},
-        {include: '#expressions'}
+        {include: '#expressions'},
+        {include: '#block'}
       ]
     },
     block_inline_comments: {
@@ -151,12 +153,12 @@ const grammar = {
           patterns: [
             {
               match:
-                '\\b(core::)?(abs|abspath|alltrue|anytrue|base64decode|base64encode|base64gzip|base64sha256|base64sha512|basename|bcrypt|can|ceil|chomp|chunklist|cidrhost|cidrnetmask|cidrsubnet|cidrsubnets|coalesce|coalescelist|compact|concat|contains|csvdecode|dirname|distinct|element|endswith|file|filebase64|filebase64sha256|filebase64sha512|fileexists|filemd5|fileset|filesha1|filesha256|filesha512|flatten|floor|format|formatdate|formatlist|indent|index|join|jsondecode|jsonencode|keys|length|log|lookup|lower|matchkeys|max|md5|merge|min|nonsensitive|one|parseint|pathexpand|plantimestamp|pow|range|regex|regexall|replace|reverse|rsadecrypt|sensitive|setintersection|setproduct|setsubtract|setunion|sha1|sha256|sha512|signum|slice|sort|split|startswith|strcontains|strrev|substr|sum|templatefile|textdecodebase64|textencodebase64|timeadd|timecmp|timestamp|title|tobool|tolist|tomap|tonumber|toset|tostring|transpose|trim|trimprefix|trimspace|trimsuffix|try|upper|urlencode|uuid|uuidv5|values|yamldecode|yamlencode|zipmap)\\b',
-              name: 'support.function.builtin.terraform'
+                '\\b[[:alpha:]][\\w_-]*::([[:alpha:]][\\w_-]*::)?[[:alpha:]][\\w_-]*\\b',
+              name: 'support.function.namespaced.hcl'
             },
             {
-              match: '\\bprovider::[[:alpha:]][\\w_-]*::[[:alpha:]][\\w_-]*\\b',
-              name: 'support.function.provider.terraform'
+              match: '\\b[[:alpha:]][\\w_-]*\\b',
+              name: 'support.function.builtin.hcl'
             }
           ]
         },
@@ -225,17 +227,12 @@ const grammar = {
         {include: '#language_constants'},
         {include: '#string_literals'},
         {include: '#heredoc'},
-        {include: '#hcl_type_keywords'},
-        {include: '#named_value_references'}
+        {include: '#hcl_type_keywords'}
       ]
     },
     local_identifiers: {
       match: '\\b(?!null|false|true)[[:alpha:]][[:alnum:]_-]*\\b',
       name: 'variable.other.readwrite.hcl'
-    },
-    named_value_references: {
-      match: '\\b(var|local|module|data|path|terraform)\\b',
-      name: 'variable.other.readwrite.terraform'
     },
     numeric_literals: {
       patterns: [
@@ -293,23 +290,19 @@ const grammar = {
         {
           captures: {
             1: {name: 'meta.mapping.key.hcl variable.other.readwrite.hcl'},
-            2: {
-              name: 'keyword.operator.assignment.hcl',
-              patterns: [{match: '\\=\\>', name: 'storage.type.function.hcl'}]
-            }
+            2: {name: 'keyword.operator.assignment.hcl'}
           },
           match:
-            '\\b((?!null|false|true)[[:alpha:]][[:alnum:]_-]*)\\s*(\\=\\>?)\\s*'
+            '\\b((?!null|false|true)[[:alpha:]][[:alnum:]_-]*)\\s*(\\=(?!=))\\s*'
         },
         {
           captures: {
-            0: {patterns: [{include: '#named_value_references'}]},
             1: {name: 'meta.mapping.key.hcl string.quoted.double.hcl'},
             2: {name: 'punctuation.definition.string.begin.hcl'},
             3: {name: 'punctuation.definition.string.end.hcl'},
             4: {name: 'keyword.operator.hcl'}
           },
-          match: '\\b((").*("))\\s*(\\=)\\s*'
+          match: '^\\s*((").*("))\\s*(\\=)\\s*'
         },
         {
           begin: '^\\s*\\(',
@@ -321,8 +314,8 @@ const grammar = {
           },
           name: 'meta.mapping.key.hcl',
           patterns: [
-            {include: '#named_value_references'},
-            {include: '#attribute_access'}
+            {include: '#attribute_access'},
+            {include: '#attribute_splat'}
           ]
         },
         {include: '#object_key_values'}
@@ -393,7 +386,7 @@ const grammar = {
       patterns: [{include: '#for_expression_body'}]
     }
   },
-  scopeName: 'source.hcl.terraform'
+  scopeName: 'source.hcl'
 }
 
 export default grammar

@@ -861,6 +861,7 @@ const grammar = {
               end: '(?=;|})',
               patterns: [
                 {include: '#standard'},
+                {include: '#storage.modifier'},
                 {
                   begin: '(\\\\?[:\\w]+)|(?=\\>)',
                   beginCaptures: {
@@ -883,6 +884,7 @@ const grammar = {
                       end: '(?=;|{|})',
                       patterns: [
                         {include: '#standard'},
+                        {include: '#storage.modifier'},
                         {
                           begin: '(\\\\?[:\\w]+)|(?=\\>)',
                           beginCaptures: {
@@ -1340,6 +1342,7 @@ const grammar = {
               end: '(?=;|})',
               patterns: [
                 {include: '#standard'},
+                {include: '#storage.modifier'},
                 {
                   begin: '(\\\\?[:\\w]+)|(?=\\>)',
                   beginCaptures: {

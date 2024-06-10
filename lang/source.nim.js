@@ -156,7 +156,7 @@ const grammar = {
         },
         {
           match:
-            '(?x:appType|Compile(?:Date|Time)|cpuEndian |host(?:CPU|OS) |isMainModule|NaN|(?:Neg)?Inf|Nim(?:Major|Minor|Patch|Version)|nimvm|off|on |Quit(?:Failure|Success))',
+            '\\b(?x:appType|Compile(?:Date|Time)|cpuEndian |host(?:CPU|OS) |isMainModule|NaN|(?:Neg)?Inf|Nim(?:Major|Minor|Patch|Version)|nimvm|off|on |Quit(?:Failure|Success))\\b',
           name: 'support.constant.builtin.nim'
         }
       ]
@@ -165,7 +165,7 @@ const grammar = {
       patterns: [
         {
           begin:
-            '(?x: (?= (?: (?!(?:out|ptr|ref|tuple)\\b) [A-Za-z\\x80-\\xff](?:_?[\\dA-Za-z\\x80-\\xff])*|_|`[^;,\\n`]+` ) (?:\\[.*])? (?: \\( |" |[ ]+ (?: [_\\d"\'`\\[\\(] |(?!\\.|(?:\\*?[ ]*)[:=]|=[^=])[-=+*/<>@$~&%|!?^.:\\\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]+[^\\-=+*/<>@$~&%|!?^.:\\\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔\\s] |(?!as|asm|and|bind|break|concept|const|continue|converter |defer|discard|distinct|div|elif|else|end|except|export|finally|from|import |include|interface|is(?:not)?|let|macro|method|mixin|mod|(?:not)?in|of |raise|sh[lr]|template|using|while|yield|x?or)[A-Za-z\\x80-\\xff] |\\{(?!\\.) ) ) ) )',
+            '(?x: (?= (?: (?!(?:out|ptr|ref|tuple)\\b) [A-Za-z\\x80-\\xff](?:_?[\\dA-Za-z\\x80-\\xff])*|_|`[^;,\\n`]+` ) (?:\\[.*])? (?: \\( |" |[ ]+ (?: [_\\d"\'`\\[\\(] |(?!\\.|(?:\\*?[ ]*)[:=]|=[^=])[-=+*/<>@$~&%|!?^.:\\\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]+[^\\-=+*/<>@$~&%|!?^.:\\\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔\\s] |(?!(as|asm|and|bind|break|concept|const|continue|converter |defer|discard|distinct|div|elif|else|end|except|export|finally|from|import |include|interface|is(?:not)?|let|macro|method|mixin|mod|(?:not)?in|of |raise|sh[lr]|template|using|while|yield|x?or)\\b)[A-Za-z\\x80-\\xff] |\\{(?!\\.) ) ) ) )',
           end: '(?=[^\\[\\(`\\w\\x{80}-\\x{ff}])|(?<=["\\)])',
           patterns: [
             {

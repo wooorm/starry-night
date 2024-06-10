@@ -12,9 +12,18 @@ const grammar = {
     {include: '#comments'},
     {include: '#module'},
     {include: '#script'},
-    {include: '#macros'}
+    {include: '#attributes'},
+    {
+      begin: '\\b(while)\\b',
+      name: 'keyword.control.while.whaaat.move',
+      while: '[a-z]'
+    }
   ],
   repository: {
+    abilities: {
+      match: '\\b(store|key|drop|copy)\\b',
+      name: 'support.type.ability.move'
+    },
     address: {
       begin: '\\b(address)\\b',
       beginCaptures: {1: {name: 'storage.modifier.type.address.keyword.move'}},
@@ -35,41 +44,17 @@ const grammar = {
         {include: '#module'}
       ]
     },
-    address_literal: {
-      patterns: [
-        {
-          match: '\\b(0x[A-Fa-f0-9][A-Fa-f0-9]{,31})\\b',
-          name: 'support.constant.diem.address.move'
-        },
-        {
-          match: '\\b(wallet1\\w{38})',
-          name: 'support.constant.dfinance.address.move'
-        },
-        {match: '\\s([@]\\w+)\\b', name: 'support.constant.named.address.move'}
-      ]
+    as: {match: '\\b(as)\\b', name: 'keyword.control.as.move'},
+    'as-import': {match: '\\b(as)\\b', name: 'meta.import.as.move'},
+    attributes: {
+      match: '#\\[(?:[\\w0-9=,_\\(\\)\\s"\\:=]+)\\]',
+      name: 'support.constant.attribute.move'
     },
-    as: {match: '\\b(as)\\b', name: 'keyword.control.move'},
-    'as-import': {match: '\\b(as)\\b', name: 'meta.import_as.move'},
-    assert: {match: '\\b(assert)\\b', name: 'support.function.assert.move'},
     block: {
       begin: '{',
       end: '}',
       name: 'meta.block.move',
-      patterns: [
-        {include: '#comments'},
-        {include: '#as'},
-        {include: '#mut'},
-        {include: '#let'},
-        {include: '#types'},
-        {include: '#assert'},
-        {include: '#literals'},
-        {include: '#control'},
-        {include: '#move_copy'},
-        {include: '#resource_methods'},
-        {include: '#module_access'},
-        {include: '#fun_call'},
-        {include: '#block'}
-      ]
+      patterns: [{include: '#expr'}]
     },
     'block-comments': {
       patterns: [
@@ -81,9 +66,17 @@ const grammar = {
         {begin: '/\\*', end: '\\*/', name: 'comment.block.move'}
       ]
     },
+    capitalized: {
+      match: '\\b([A-Z][a-zA-Z_0-9]*)\\b',
+      name: 'entity.name.type.use.move'
+    },
     comments: {
       name: 'meta.comments.move',
-      patterns: [{include: '#line-comments'}, {include: '#block-comments'}]
+      patterns: [
+        {include: '#doc-comments'},
+        {include: '#line-comments'},
+        {include: '#block-comments'}
+      ]
     },
     const: {
       begin: '\\b(const)\\b',
@@ -93,7 +86,6 @@ const grammar = {
       patterns: [
         {include: '#comments'},
         {include: '#primitives'},
-        {include: '#vector'},
         {include: '#literals'},
         {match: '\\b([\\w_]+)\\b', name: 'constant.other.move'}
       ]
@@ -102,16 +94,106 @@ const grammar = {
       match: '\\b(return|while|loop|if|else|break|continue|abort)\\b',
       name: 'keyword.control.move'
     },
-    entry_fun: {
-      begin: '\\b(entry)\\b',
-      beginCaptures: {1: {name: 'storage.modifier.entry.move'}},
+    'doc-comments': {
+      begin: '///',
+      end: '$',
+      name: 'comment.block.documentation.move',
+      patterns: [
+        {captures: {1: {name: 'markup.underline.link.move'}}, match: '`(\\w+)`'}
+      ]
+    },
+    entry: {
+      match: '\\b(entry)\\b',
+      name: 'storage.modifier.visibility.entry.move'
+    },
+    enum: {
+      begin: '\\b(enum)\\b',
+      beginCaptures: {1: {name: 'keyword.control.enum.move'}},
       end: '(?<=})',
-      name: 'meta.entry_fun.move',
+      name: 'meta.enum.move',
       patterns: [
         {include: '#comments'},
-        {match: '\\b(native)\\b', name: 'storage.modifier.native.move'},
-        {match: '\\b(public)\\b', name: 'storage.modifier.public.move'},
-        {include: '#fun'}
+        {include: '#escaped_identifier'},
+        {include: '#type_param'},
+        {match: '\\b[A-Z][a-zA-Z_0-9]*\\b', name: 'entity.name.type.enum.move'},
+        {include: '#has'},
+        {include: '#abilities'},
+        {
+          begin: '{',
+          end: '}',
+          name: 'meta.enum.definition.move',
+          patterns: [
+            {include: '#comments'},
+            {
+              begin: '\\(',
+              end: '\\)',
+              name: 'meta.enum.tuple.move',
+              patterns: [{include: '#comments'}, {include: '#types'}]
+            },
+            {
+              begin: '{',
+              end: '}',
+              name: 'meta.enum.struct.move',
+              patterns: [
+                {include: '#comments'},
+                {include: '#escaped_identifier'},
+                {include: '#types'}
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    error_const: {
+      match: '\\b(E[A-Z][A-Za-z_]*)\\b',
+      name: 'variable.language.error.move'
+    },
+    escaped_identifier: {
+      begin: '`',
+      end: '`',
+      name: 'variable.language.escaped.move'
+    },
+    expr: {
+      name: 'meta.expression.move',
+      patterns: [
+        {include: '#comments'},
+        {include: '#escaped_identifier'},
+        {include: '#expr_generic'},
+        {include: '#error_const'},
+        {include: '#packed_field'},
+        {include: '#import'},
+        {include: '#as'},
+        {include: '#mut'},
+        {include: '#let'},
+        {include: '#types'},
+        {include: '#literals'},
+        {include: '#control'},
+        {include: '#move_copy'},
+        {include: '#resource_methods'},
+        {include: '#self_access'},
+        {include: '#module_access'},
+        {include: '#label'},
+        {include: '#macro_call'},
+        {include: '#local_call'},
+        {include: '#method_call'},
+        {include: '#path_access'},
+        {match: '\\$(?=[a-z])', name: 'keyword.operator.macro.dollar.move'},
+        {match: '(?<=[$])[a-z][A-Z_0-9a-z]*', name: 'variable.other.meta.move'},
+        {match: '\\b([A-Z][A-Z_]+)\\b', name: 'constant.other.move'},
+        {match: '\\b([A-Z][a-zA-Z_0-9]*)\\b', name: 'entity.name.type.move'},
+        {include: '#paren'},
+        {include: '#block'}
+      ]
+    },
+    expr_generic: {
+      begin: '<(?=([\\sa-z_,0-9A-Z<>]+>))',
+      end: '>',
+      name: 'meta.expression.generic.type.move',
+      patterns: [
+        {include: '#comments'},
+        {include: '#types'},
+        {include: '#capitalized'},
+        {include: '#expr_generic'}
       ]
     },
     friend: {
@@ -122,31 +204,18 @@ const grammar = {
       patterns: [
         {include: '#comments'},
         {include: '#address_literal'},
-        {match: '\\b(\\w+)\\b', name: 'entity.name.type.module.move'}
+        {
+          match: '\\b([a-zA-Z][A-Za-z_0-9]*)\\b',
+          name: 'entity.name.type.module.move'
+        }
       ]
     },
-    fun: {patterns: [{include: '#fun_signature'}, {include: '#fun_body'}]},
+    fun: {patterns: [{include: '#fun_signature'}, {include: '#block'}]},
     fun_body: {
       begin: '{',
-      end: '}',
+      end: '(?<=})',
       name: 'meta.fun_body.move',
-      patterns: [
-        {include: '#comments'},
-        {include: '#import'},
-        {include: '#as'},
-        {include: '#mut'},
-        {include: '#let'},
-        {include: '#types'},
-        {include: '#assert'},
-        {include: '#literals'},
-        {include: '#control'},
-        {include: '#move_copy'},
-        {include: '#resource_methods'},
-        {include: '#self_access'},
-        {include: '#module_access'},
-        {include: '#fun_call'},
-        {include: '#block'}
-      ]
+      patterns: [{include: '#expr'}]
     },
     fun_call: {
       begin: '\\b(\\w+)\\s*(?:<[\\w\\s,]+>)?\\s*[(]',
@@ -174,14 +243,16 @@ const grammar = {
       patterns: [
         {include: '#comments'},
         {include: '#module_access'},
+        {include: '#capitalized'},
         {include: '#types'},
         {include: '#mut'},
         {
-          begin: '(?<=fun)',
+          begin: '(?<=\\bfun)',
           end: '(?=[<(])',
           name: 'meta.function_name.move',
           patterns: [
             {include: '#comments'},
+            {include: '#escaped_identifier'},
             {match: '\\b(\\w+)\\b', name: 'entity.name.function.move'}
           ]
         },
@@ -193,13 +264,28 @@ const grammar = {
           patterns: [
             {include: '#comments'},
             {include: '#self_access'},
+            {include: '#expr_generic'},
+            {include: '#escaped_identifier'},
             {include: '#module_access'},
+            {include: '#capitalized'},
             {include: '#types'},
             {include: '#mut'}
           ]
         },
         {match: '\\b(acquires)\\b', name: 'storage.modifier'}
       ]
+    },
+    has: {match: '\\b(has)\\b', name: 'keyword.control.ability.has.move'},
+    has_ability: {
+      begin: '(?<=[})])\\s+(has)\\b',
+      beginCaptures: {1: {name: 'storage.modifier.type.move'}},
+      end: ';',
+      name: 'meta.has.ability.move',
+      patterns: [{include: '#comments'}, {include: '#abilities'}]
+    },
+    ident: {
+      match: '\\b([a-zA-Z][A-Z_a-z0-9]*)\\b',
+      name: 'meta.identifier.move'
     },
     import: {
       begin: '\\b(use)\\b',
@@ -208,6 +294,7 @@ const grammar = {
       name: 'meta.import.move',
       patterns: [
         {include: '#comments'},
+        {include: '#use_fun'},
         {include: '#address_literal'},
         {include: '#as-import'},
         {match: '\\b([A-Z]\\w*)\\b', name: 'entity.name.type.move'},
@@ -223,6 +310,7 @@ const grammar = {
         {match: '\\b(\\w+)\\b', name: 'meta.entity.name.type.module.move'}
       ]
     },
+    label: {match: "'[a-z][a-z_0-9]*", name: 'string.quoted.single.label.move'},
     let: {match: '\\b(let)\\b', name: 'keyword.control.move'},
     'line-comments': {
       begin: '//',
@@ -230,9 +318,18 @@ const grammar = {
       name: 'comment.line.double-slash.move'
     },
     literals: {
+      name: 'meta.literal.move',
       patterns: [
         {
-          match: '0x[_a-fA-F0-9]+(?:[iu](?:8|16|32|64|size))?',
+          match: '@0x[A-F0-9a-f]+',
+          name: 'support.constant.address.base16.move'
+        },
+        {
+          match: '@[a-zA-Z][a-zA-Z_0-9]*',
+          name: 'support.constant.address.name.move'
+        },
+        {
+          match: '0x[_a-fA-F0-9]+(?:u(?:8|16|32|64|128|256))?',
           name: 'constant.numeric.hex.move'
         },
         {
@@ -241,14 +338,11 @@ const grammar = {
           name: 'constant.numeric.move'
         },
         {
-          captures: {1: {name: 'constant.character.move'}},
-          match: '\\b(?:h)("[a-fA-F0-9]+")'
-        },
-        {
           begin: '\\bb"',
           end: '"',
-          name: 'meta.ascii_literal.move',
+          name: 'meta.vector.literal.ascii.move',
           patterns: [
+            {match: '\\\\.', name: 'constant.character.escape.move'},
             {match: '\\\\[nrt\\0"]', name: 'constant.character.escape.move'},
             {
               match: '\\\\x[a-fA-F0-9][A-Fa-f0-9]',
@@ -258,17 +352,40 @@ const grammar = {
           ]
         },
         {
-          captures: {1: {name: 'constant.numeric.hex.move'}},
-          match: 'x"([A-F0-9a-f]+)"',
-          name: 'meta.hex_literal.move'
+          begin: 'x"',
+          end: '"',
+          name: 'meta.vector.literal.hex.move',
+          patterns: [{match: '[A-Fa-f0-9]+', name: 'constant.character.move'}]
         },
         {match: '\\b(?:true|false)\\b', name: 'constant.language.boolean.move'},
-        {include: '#address_literal'}
+        {
+          begin: 'vector\\[',
+          end: '\\]',
+          name: 'meta.vector.literal.macro.move',
+          patterns: [{include: '#expr'}]
+        }
       ]
     },
-    macros: {
-      match: '#\\[(?:[\\w0-9=,_\\(\\)\\s"\\:=]+)\\]',
-      name: 'support.constant.macro.move'
+    local_call: {
+      match: '\\b([a-z][_a-z0-9]*)(?=[<\\(])',
+      name: 'entity.name.function.call.local.move'
+    },
+    macro: {
+      begin: '\\b(macro)\\b',
+      beginCaptures: {1: {name: 'keyword.control.macro.move'}},
+      end: '(?<=})',
+      name: 'meta.macro.move',
+      patterns: [{include: '#comments'}, {include: '#fun'}]
+    },
+    macro_call: {
+      captures: {2: {name: 'support.function.macro.move'}},
+      match: '(\\b|\\.)([a-z][A-Za-z0-9_]*)!',
+      name: 'meta.macro.call'
+    },
+    method_call: {
+      captures: {1: {name: 'entity.name.function.call.path.move'}},
+      match: '\\.([a-z][_a-z0-9]*)(?=[<\\(])',
+      name: 'meta.path.call.move'
     },
     module: {
       begin: '\\b(module|spec)\\b',
@@ -281,6 +398,7 @@ const grammar = {
           end: '(?={)',
           patterns: [
             {include: '#comments'},
+            {include: '#escaped_identifier'},
             {end: '(?=[(::){])', name: 'constant.other.move'},
             {begin: '(?<=::)', end: '(?=[\\s{])', name: 'entity.name.type.move'}
           ]
@@ -291,17 +409,20 @@ const grammar = {
           name: 'meta.module_scope.move',
           patterns: [
             {include: '#comments'},
-            {include: '#macros'},
+            {include: '#attributes'},
+            {include: '#entry'},
+            {include: '#public-scope'},
+            {include: '#public'},
+            {include: '#native'},
             {include: '#import'},
             {include: '#friend'},
             {include: '#const'},
             {include: '#struct'},
-            {include: '#entry_fun'},
-            {include: '#native_fun'},
-            {include: '#public_fun'},
+            {include: '#has_ability'},
+            {include: '#enum'},
+            {include: '#macro'},
             {include: '#fun'},
-            {include: '#spec'},
-            {include: '#block'}
+            {include: '#spec'}
           ]
         }
       ]
@@ -315,45 +436,44 @@ const grammar = {
       name: 'meta.module_access.move'
     },
     move_copy: {match: '\\b(move|copy)\\b', name: 'variable.language.move'},
-    mut: {match: '(?<=&)(mut)\\b', name: 'storage.modifier.mut.move'},
-    native_fun: {
-      begin: '\\b(native)\\b',
-      beginCaptures: {1: {name: 'storage.modifier.native.move'}},
-      end: '(?<=[;}])',
-      name: 'meta.native_fun.move',
-      patterns: [
-        {include: '#comments'},
-        {match: '\\b(public)\\b', name: 'storage.modifier.public.move'},
-        {match: '\\b(entry)\\b', name: 'storage.modifier.entry.move'},
-        {include: '#fun_signature'}
-      ]
+    mut: {match: '\\b(mut)\\b', name: 'storage.modifier.mut.move'},
+    native: {
+      match: '\\b(native)\\b',
+      name: 'storage.modifier.visibility.native.move'
+    },
+    packed_field: {
+      match: '[a-z][a-z0-9_]+\\s*:\\s*(?=\\s)',
+      name: 'meta.struct.field.move'
+    },
+    paren: {
+      begin: '\\(',
+      end: '\\)',
+      name: 'meta.paren.move',
+      patterns: [{include: '#expr'}]
+    },
+    path_access: {
+      match: '\\.[a-z][_a-z0-9]*\\b',
+      name: 'meta.path.access.move'
     },
     phantom: {match: '\\b(phantom)\\b', name: 'keyword.control.phantom.move'},
     primitives: {
       match: '\\b(u8|u16|u32|u64|u128|u256|address|bool|signer)\\b',
       name: 'support.type.primitives.move'
     },
-    public_fun: {
-      begin: '\\b(public)\\b',
-      beginCaptures: {1: {name: 'storage.modifier.public.move'}},
-      end: '(?<=[;}])',
-      name: 'meta.public_fun.move',
+    public: {
+      match: '\\b(public)\\b',
+      name: 'storage.modifier.visibility.public.move'
+    },
+    'public-scope': {
+      begin: '(?<=\\b(public))\\s*\\(',
+      end: '\\)',
+      name: 'meta.public.scoped.move',
       patterns: [
         {include: '#comments'},
-        {match: '\\b(native)\\b', name: 'storage.modifier.native.move'},
-        {match: '\\b(entry)\\b', name: 'storage.modifier.entry.move'},
         {
-          begin: '\\(',
-          end: '\\)',
-          patterns: [
-            {include: '#comments'},
-            {
-              match: '\\b(script|friend)\\b',
-              name: 'storage.modifier.public.script.move'
-            }
-          ]
-        },
-        {include: '#fun'}
+          match: '\\b(friend|script|package)\\b',
+          name: 'keyword.control.public.scope.move'
+        }
       ]
     },
     resource_methods: {
@@ -444,7 +564,7 @@ const grammar = {
         {include: '#spec_types'},
         {include: '#types'},
         {
-          begin: '(?<=define)',
+          begin: '(?<=\\bdefine)',
           end: '(?=[(])',
           patterns: [
             {include: '#comments'},
@@ -465,37 +585,56 @@ const grammar = {
     struct: {
       begin: '\\b(struct)\\b',
       beginCaptures: {1: {name: 'storage.modifier.type.move'}},
-      end: '(?<=})',
+      end: '(?<=[};\\)])',
       name: 'meta.struct.move',
       patterns: [
         {include: '#comments'},
+        {include: '#escaped_identifier'},
+        {include: '#has'},
+        {include: '#abilities'},
         {
-          begin: '(?<=struct)',
-          end: '(?={)',
-          name: 'meta.struct_def.move',
+          match: '\\b[A-Z][a-zA-Z_0-9]*\\b',
+          name: 'entity.name.type.struct.move'
+        },
+        {
+          begin: '\\(',
+          end: '\\)',
+          name: 'meta.struct.paren.move',
           patterns: [
             {include: '#comments'},
-            {match: '\\b(has)\\b', name: 'keyword.control.ability.has.move'},
-            {
-              match: '\\b(store|key|drop|copy)\\b',
-              name: 'entity.name.type.ability.move'
-            },
-            {match: '\\b(\\w+)\\b', name: 'entity.name.type.move'},
-            {include: '#type_param'}
+            {include: '#capitalized'},
+            {include: '#types'}
           ]
+        },
+        {include: '#type_param'},
+        {
+          begin: '\\(',
+          end: '(?<=[)])',
+          name: 'meta.struct.paren.move',
+          patterns: [{include: '#comments'}, {include: '#types'}]
         },
         {
           begin: '{',
           end: '}',
-          name: 'meta.struct_body.move',
+          name: 'meta.struct.body.move',
           patterns: [
             {include: '#comments'},
             {include: '#self_access'},
+            {include: '#escaped_identifier'},
             {include: '#module_access'},
+            {include: '#expr_generic'},
+            {include: '#capitalized'},
             {include: '#types'}
           ]
-        }
+        },
+        {include: '#has_ability'}
       ]
+    },
+    struct_pack: {
+      begin: '(?<=[A-Za-z0-9_>])\\s*{',
+      end: '}',
+      name: 'meta.struct.pack.move',
+      patterns: [{include: '#comments'}]
     },
     type_param: {
       begin: '<',
@@ -504,29 +643,34 @@ const grammar = {
       patterns: [
         {include: '#comments'},
         {include: '#phantom'},
+        {include: '#capitalized'},
         {include: '#module_access'},
-        {
-          match: '\\b(store|drop|key|copy)\\b',
-          name: 'entity.name.type.kind.move'
-        }
+        {include: '#abilities'}
       ]
     },
     types: {
       name: 'meta.types.move',
+      patterns: [{include: '#primitives'}, {include: '#vector'}]
+    },
+    use_fun: {
+      begin: '\\b(fun)\\b',
+      beginCaptures: {1: {name: 'storage.modifier.fun.move'}},
+      end: '(?=;)',
+      name: 'meta.import.fun.move',
       patterns: [
-        {include: '#primitives'},
-        {include: '#vector'},
-        {match: '\\b([A-Z][A-Za-z_]+)\\b', name: 'entity.name.type'},
-        {match: '\\b([A-Z_]+)\\b', name: 'constant.other.move'}
+        {include: '#comments'},
+        {match: '\\b(as)\\b', name: 'keyword.control.as.move'},
+        {match: '\\b(Self)\\b', name: 'variable.language.self.use.fun.move'},
+        {
+          match: '\\b(_______[a-z][a-z_0-9]+)\\b',
+          name: 'entity.name.function.use.move'
+        },
+        {include: '#types'},
+        {include: '#escaped_identifier'},
+        {include: '#capitalized'}
       ]
     },
-    vector: {
-      begin: '\\b(vector)<',
-      beginCaptures: {1: {name: 'support.type.vector.move'}},
-      end: '>',
-      name: 'meta.vector.move',
-      patterns: [{include: '#primitives'}, {include: '#vector'}]
-    }
+    vector: {match: '\\b(vector)\\b', name: 'support.type.vector.move'}
   },
   scopeName: 'source.move'
 }

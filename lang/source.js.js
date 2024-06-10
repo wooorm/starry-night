@@ -34,6 +34,7 @@ const grammar = {
     '.sjs',
     '.ssjs',
     '.sublime-build',
+    '.sublime-color-scheme',
     '.sublime-commands',
     '.sublime-completions',
     '.sublime-keymap',

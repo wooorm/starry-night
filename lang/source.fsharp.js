@@ -30,11 +30,12 @@ const grammar = {
   repository: {
     abstract_definition: {
       begin:
-        '\\b(abstract)\\s+(member)?(\\s+\\[\\<.*\\>\\])?\\s*([_[:alpha:]0-9,\\._`\\s]+)(<)?',
+        '\\b(static)?\\s+(abstract)\\s+(member)?(\\s+\\[\\<.*\\>\\])?\\s*([_[:alpha:]0-9,\\._`\\s]+)(<)?',
       beginCaptures: {
         1: {name: 'keyword.fsharp'},
         2: {name: 'keyword.fsharp'},
-        3: {name: 'support.function.attribute.fsharp'},
+        3: {name: 'keyword.fsharp'},
+        4: {name: 'support.function.attribute.fsharp'},
         5: {name: 'keyword.symbol.fsharp'}
       },
       end: '\\s*(with)\\b|=|$',
@@ -352,7 +353,7 @@ const grammar = {
         {match: '\\(\\)', name: 'keyword.symbol.fsharp'},
         {
           match:
-            '\\b-?[0-9][0-9_]*((\\.([0-9][0-9_]*([eE][+-]??[0-9][0-9_]*)?)?)|([eE][+-]??[0-9][0-9_]*))',
+            '\\b-?[0-9][0-9_]*((\\.(?!\\.)([0-9][0-9_]*([eE][+-]??[0-9][0-9_]*)?)?)|([eE][+-]??[0-9][0-9_]*))',
           name: 'constant.numeric.float.fsharp'
         },
         {
@@ -368,7 +369,7 @@ const grammar = {
       patterns: [
         {
           begin:
-            '\\b(let mutable|static let mutable|static let|let inline|let|and|member val|static member inline|static member|default|member|override|let!)(\\s+rec|mutable)?(\\s+\\[\\<.*\\>\\])?\\s*(private|internal|public)?\\s+(\\[[^-=]*\\]|[_[:alpha:]]([_[:alpha:]0-9\\._]+)*|``[_[:alpha:]]([_[:alpha:]0-9\\._`\\s]+|(?<=,)\\s)*)?',
+            '\\b(let mutable|static let mutable|static let|let inline|let|and|member val|member inline|static member inline|static member|default|member|override|let!)(\\s+rec|mutable)?(\\s+\\[\\<.*\\>\\])?\\s*(private|internal|public)?\\s+(\\[[^-=]*\\]|[_[:alpha:]]([_[:alpha:]0-9\\._]+)*|``[_[:alpha:]]([_[:alpha:]0-9\\._`\\s]+|(?<=,)\\s)*)?',
           beginCaptures: {
             1: {name: 'keyword.fsharp'},
             2: {name: 'keyword.fsharp'},
@@ -404,7 +405,7 @@ const grammar = {
         },
         {
           begin:
-            '\\b(static val mutable|val mutable|val)(\\s+rec|mutable)?(\\s+\\[\\<.*\\>\\])?\\s*(private|internal|public)?\\s+(\\[[^-=]*\\]|[_[:alpha:]]([_[:alpha:]0-9,\\._]+)*|``[_[:alpha:]]([_[:alpha:]0-9,\\._`\\s]+|(?<=,)\\s)*)?',
+            '\\b(static val mutable|val mutable|val inline|val)(\\s+rec|mutable)?(\\s+\\[\\<.*\\>\\])?\\s*(private|internal|public)?\\s+(\\[[^-=]*\\]|[_[:alpha:]]([_[:alpha:]0-9,\\._]+)*|``[_[:alpha:]]([_[:alpha:]0-9,\\._`\\s]+|(?<=,)\\s)*)?',
           beginCaptures: {
             1: {name: 'keyword.fsharp'},
             2: {name: 'keyword.fsharp'},

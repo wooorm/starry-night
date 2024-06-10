@@ -108,6 +108,10 @@ export const info = {
     homepage: 'https://github.com/paulmillr/LiveScript.tmbundle',
     license: 'mit'
   },
+  'source.luau': {
+    homepage: 'https://github.com/JohnnyMorganz/Luau.tmLanguage',
+    license: 'mit'
+  },
   'source.matlab': {
     homepage: 'https://github.com/mathworks/MATLAB-Language-grammar',
     license: 'bsd-2-clause'
@@ -311,10 +315,6 @@ export const info = {
     homepage: 'https://github.com/MikeHoffert/Sublime-Text-TXL-syntax',
     license: 'apache-2.0'
   },
-  'source.terraform': {
-    homepage: 'https://github.com/alexlouden/Terraform.tmLanguage',
-    license: 'mit'
-  },
   'source.gosu.2': {
     homepage: 'https://github.com/jpcamara/Textmate-Gosu-Bundle',
     license: 'apache-2.0'
@@ -471,6 +471,11 @@ export const info = {
     homepage: 'https://github.com/JuliaEditorSupport/atom-language-julia',
     license: 'mit'
   },
+  'source.julia.console': {
+    dependencies: ['source.julia', 'source.shell'],
+    homepage: 'https://github.com/JuliaEditorSupport/atom-language-julia',
+    license: 'mit'
+  },
   'source.nextflow': {
     dependencies: ['source.nextflow-groovy'],
     license: 'mit'
@@ -536,6 +541,10 @@ export const info = {
     homepage: 'https://github.com/boogie-org/boogie-vscode',
     license: 'mit'
   },
+  'source.bqn': {
+    homepage: 'https://github.com/razetime/bqn-vscode',
+    license: 'mit'
+  },
   'text.browserslist': {
     homepage: 'https://github.com/browserslist/browserslist-vscode',
     license: 'mit'
@@ -591,6 +600,7 @@ export const info = {
     homepage: 'https://github.com/Siddley/Creole',
     license: 'mit'
   },
+  'text.crontab': {},
   'source.cs': {
     homepage: 'https://github.com/dotnet/csharp-tmLanguage',
     license: 'mit'
@@ -688,6 +698,10 @@ export const info = {
   'source.fancy': {
     homepage: 'https://github.com/fancy-lang/fancy-tmbundle',
     license: 'bsd-3-clause'
+  },
+  'source.firrtl': {
+    homepage: 'https://github.com/chipsalliance/firrtl-syntax',
+    license: 'apache-2.0'
   },
   'source.fish': {
     license: 'mit'
@@ -787,7 +801,8 @@ export const info = {
     license: 'mit'
   },
   'source.jasmin': {
-    license: 'mit'
+    homepage: 'https://github.com/atmarksharp/jasmin-sublime',
+    license: 'wtfpl'
   },
   'source.java': {
     homepage: 'https://github.com/textmate/java.tmbundle'
@@ -1778,6 +1793,10 @@ export const info = {
   'source.pike': {
     license: 'unlicense'
   },
+  'source.pkl': {
+    homepage: 'https://github.com/apple/pkl.tmbundle',
+    license: 'apache-2.0'
+  },
   'source.polar': {
     homepage: 'https://github.com/osohq/polar-grammar',
     license: 'apache-2.0'
@@ -2047,11 +2066,20 @@ export const info = {
     homepage: 'https://github.com/jtbandes/swift-tmlanguage',
     license: 'mit'
   },
+  'source.hcl': {
+    homepage: 'https://github.com/hashicorp/syntax',
+    license: 'mpl-2.0'
+  },
   'source.hcl.terraform': {
     homepage: 'https://github.com/hashicorp/syntax',
     license: 'mpl-2.0'
   },
   'source.tcl': {},
+  'source.templ': {
+    dependencies: ['source.go'],
+    homepage: 'https://github.com/templ-go/templ-vscode',
+    license: 'mit'
+  },
   'source.tm-properties': {
     homepage: 'https://github.com/textmate/textmate.tmbundle'
   },
@@ -2111,6 +2139,10 @@ export const info = {
   },
   'source.brs': {
     homepage: 'https://github.com/rokucommunity/vscode-brightscript-language',
+    license: 'mit'
+  },
+  'source.Caddyfile': {
+    homepage: 'https://github.com/caddyserver/vscode-caddyfile',
     license: 'mit'
   },
   'source.cadence': {
@@ -2231,6 +2263,10 @@ export const info = {
   },
   'source.rbs': {
     homepage: 'https://github.com/soutaro/vscode-rbs-syntax',
+    license: 'mit'
+  },
+  'source.ron': {
+    homepage: 'https://github.com/a5huynh/vscode-ron',
     license: 'mit'
   },
   'source.scala': {

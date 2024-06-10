@@ -234,7 +234,7 @@ ${info.licenses
   await fs.writeFile(
     new URL('info.js', import.meta.url),
     '/** @type {Record<string, {homepage?: string, license?: string, dependencies?: ReadonlyArray<string>}>} */\nexport const info = ' +
-      JSON.stringify(scopeToInfo, null, 2) +
+      JSON.stringify(scopeToInfo, undefined, 2) +
       '\n'
   )
 }

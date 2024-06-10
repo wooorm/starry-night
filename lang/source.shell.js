@@ -26,6 +26,7 @@ const grammar = {
     'alpine-abuild',
     'apkbuild',
     'bash',
+    'envrc',
     'gentoo-ebuild',
     'gentoo-eclass',
     'openrc',

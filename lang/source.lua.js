@@ -109,7 +109,10 @@ const grammar = {
       match: '(::)\\s*[a-zA-Z_][a-zA-Z0-9_]*\\s*(::)',
       name: 'string.tag.lua'
     },
-    {captures: {1: {name: 'string.tag.lua'}}, match: '<\\s*(const|close)\\s*>'},
+    {
+      captures: {0: {name: 'storage.type.attribute.lua'}},
+      match: '<\\s*(const|close)\\s*>'
+    },
     {
       match: '\\<[a-zA-Z_\\*][a-zA-Z0-9_\\.\\*\\-]*\\>',
       name: 'storage.type.generic.lua'
@@ -119,7 +122,7 @@ const grammar = {
         '\\b(break|do|else|for|if|elseif|goto|return|then|repeat|while|until|end|in)\\b',
       name: 'keyword.control.lua'
     },
-    {match: '\\b(local|global)\\b', name: 'keyword.local.lua'},
+    {match: '\\b(local)\\b', name: 'keyword.local.lua'},
     {match: '\\b(function)\\b(?![,:])', name: 'keyword.control.lua'},
     {
       match:
@@ -189,7 +192,7 @@ const grammar = {
               beginCaptures: {
                 0: {name: 'punctuation.definition.comment.begin.lua'}
               },
-              end: '\\]\\1\\]',
+              end: '(--)?\\]\\1\\]',
               endCaptures: {
                 0: {name: 'punctuation.definition.comment.end.lua'}
               },
@@ -200,7 +203,7 @@ const grammar = {
               beginCaptures: {
                 0: {name: 'punctuation.definition.comment.begin.lua'}
               },
-              end: '\\]\\1\\]',
+              end: '(--)?\\]\\1\\]',
               endCaptures: {
                 0: {name: 'punctuation.definition.comment.end.lua'}
               },
@@ -244,6 +247,7 @@ const grammar = {
     emmydoc: {
       patterns: [
         {
+          begin: '(?<=---)[ \\t]*@class',
           beginCaptures: {0: {name: 'storage.type.annotation.lua'}},
           end: '(?=[\\n@#])',
           patterns: [
@@ -255,6 +259,7 @@ const grammar = {
           ]
         },
         {
+          begin: '(?<=---)[ \\t]*@enum',
           beginCaptures: {0: {name: 'storage.type.annotation.lua'}},
           end: '(?=[\\n@#])',
           patterns: [
@@ -266,11 +271,13 @@ const grammar = {
           ]
         },
         {
+          begin: '(?<=---)[ \\t]*@type',
           beginCaptures: {0: {name: 'storage.type.annotation.lua'}},
           end: '(?=[\\n@#])',
           patterns: [{include: '#emmydoc.type'}]
         },
         {
+          begin: '(?<=---)[ \\t]*@alias',
           beginCaptures: {0: {name: 'storage.type.annotation.lua'}},
           end: '(?=[\\n@#])',
           patterns: [
@@ -283,6 +290,7 @@ const grammar = {
           ]
         },
         {
+          begin: '(?<=---)[ \\t]*(@operator)\\s*(\\b[a-z]+)?',
           beginCaptures: {
             1: {name: 'storage.type.annotation.lua'},
             2: {name: 'support.function.library.lua'}
@@ -291,6 +299,7 @@ const grammar = {
           patterns: [{include: '#emmydoc.type'}]
         },
         {
+          begin: '(?<=---)[ \\t]*@cast',
           beginCaptures: {0: {name: 'storage.type.annotation.lua'}},
           end: '(?=[\\n@#])',
           patterns: [
@@ -306,6 +315,7 @@ const grammar = {
           ]
         },
         {
+          begin: '(?<=---)[ \\t]*@param',
           beginCaptures: {0: {name: 'storage.type.annotation.lua'}},
           end: '(?=[\\n@#])',
           patterns: [
@@ -321,6 +331,7 @@ const grammar = {
           ]
         },
         {
+          begin: '(?<=---)[ \\t]*@return',
           beginCaptures: {0: {name: 'storage.type.annotation.lua'}},
           end: '(?=[\\n@#])',
           patterns: [
@@ -329,6 +340,7 @@ const grammar = {
           ]
         },
         {
+          begin: '(?<=---)[ \\t]*@field',
           beginCaptures: {0: {name: 'storage.type.annotation.lua'}},
           end: '(?=[\\n@#])',
           patterns: [
@@ -348,6 +360,7 @@ const grammar = {
           ]
         },
         {
+          begin: '(?<=---)[ \\t]*@generic',
           beginCaptures: {0: {name: 'storage.type.annotation.lua'}},
           end: '(?=[\\n@#])',
           patterns: [
@@ -364,36 +377,44 @@ const grammar = {
           ]
         },
         {
+          begin: '(?<=---)[ \\t]*@vararg',
           beginCaptures: {0: {name: 'storage.type.annotation.lua'}},
           end: '(?=[\\n@#])',
           patterns: [{include: '#emmydoc.type'}]
         },
         {
+          begin: '(?<=---)[ \\t]*@overload',
           beginCaptures: {0: {name: 'storage.type.annotation.lua'}},
           end: '(?=[\\n@#])',
           patterns: [{include: '#emmydoc.type'}]
         },
         {
+          begin: '(?<=---)[ \\t]*@deprecated',
           beginCaptures: {0: {name: 'storage.type.annotation.lua'}},
           end: '(?=[\\n@#])'
         },
         {
+          begin: '(?<=---)[ \\t]*@meta',
           beginCaptures: {0: {name: 'storage.type.annotation.lua'}},
           end: '(?=[\\n@#])'
         },
         {
+          begin: '(?<=---)[ \\t]*@private',
           beginCaptures: {0: {name: 'storage.type.annotation.lua'}},
           end: '(?=[\\n@#])'
         },
         {
+          begin: '(?<=---)[ \\t]*@protected',
           beginCaptures: {0: {name: 'storage.type.annotation.lua'}},
           end: '(?=[\\n@#])'
         },
         {
+          begin: '(?<=---)[ \\t]*@package',
           beginCaptures: {0: {name: 'storage.type.annotation.lua'}},
           end: '(?=[\\n@#])'
         },
         {
+          begin: '(?<=---)[ \\t]*@version',
           beginCaptures: {0: {name: 'storage.type.annotation.lua'}},
           end: '(?=[\\n@#])',
           patterns: [
@@ -405,6 +426,7 @@ const grammar = {
           ]
         },
         {
+          begin: '(?<=---)[ \\t]*@see',
           beginCaptures: {0: {name: 'storage.type.annotation.lua'}},
           end: '(?=[\\n@#])',
           patterns: [
@@ -416,6 +438,7 @@ const grammar = {
           ]
         },
         {
+          begin: '(?<=---)[ \\t]*@diagnostic',
           beginCaptures: {0: {name: 'storage.type.annotation.lua'}},
           end: '(?=[\\n@#])',
           patterns: [
@@ -437,11 +460,15 @@ const grammar = {
           ]
         },
         {
+          begin: '(?<=---)[ \\t]*@module',
           beginCaptures: {0: {name: 'storage.type.annotation.lua'}},
           end: '(?=[\\n@#])',
           patterns: [{include: '#string'}]
         },
-        {name: 'storage.type.annotation.lua'},
+        {
+          match: '(?<=---)[ \\t]*@(async|nodiscard)',
+          name: 'storage.type.annotation.lua'
+        },
         {
           begin: '(?<=---)\\|\\s*[\\>\\+]?',
           beginCaptures: {0: {name: 'storage.type.annotation.lua'}},

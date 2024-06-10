@@ -242,19 +242,40 @@ const grammar = {
     constants: {
       patterns: [
         {match: '\\b(true|false|null)\\b', name: 'constant.language.hx'},
-        {match: '\\b(0(x|X)[0-9a-fA-F]*)\\b', name: 'constant.numeric.hex.hx'},
+        {
+          captures: {
+            0: {name: 'constant.numeric.hex.hx'},
+            1: {name: 'constant.numeric.suffix.hx'}
+          },
+          match: '\\b(?:0[xX][0-9a-fA-F][_0-9a-fA-F]*([iu][0-9][0-9_]*)?)\\b'
+        },
+        {
+          captures: {
+            0: {name: 'constant.numeric.bin.hx'},
+            1: {name: 'constant.numeric.suffix.hx'}
+          },
+          match: '\\b(?:0[bB][01][_01]*([iu][0-9][0-9_]*)?)\\b'
+        },
         {
           captures: {
             0: {name: 'constant.numeric.decimal.hx'},
             1: {name: 'meta.delimiter.decimal.period.hx'},
-            2: {name: 'meta.delimiter.decimal.period.hx'},
+            10: {name: 'meta.delimiter.decimal.period.hx'},
+            11: {name: 'constant.numeric.suffix.hx'},
+            12: {name: 'meta.delimiter.decimal.period.hx'},
+            13: {name: 'constant.numeric.suffix.hx'},
+            14: {name: 'constant.numeric.suffix.hx'},
+            2: {name: 'constant.numeric.suffix.hx'},
             3: {name: 'meta.delimiter.decimal.period.hx'},
-            4: {name: 'meta.delimiter.decimal.period.hx'},
+            4: {name: 'constant.numeric.suffix.hx'},
             5: {name: 'meta.delimiter.decimal.period.hx'},
-            6: {name: 'meta.delimiter.decimal.period.hx'}
+            6: {name: 'constant.numeric.suffix.hx'},
+            7: {name: 'constant.numeric.suffix.hx'},
+            8: {name: 'meta.delimiter.decimal.period.hx'},
+            9: {name: 'constant.numeric.suffix.hx'}
           },
           match:
-            '(?x)\n(?<!\\$)(?:\n  (?:\\b[0-9]+(\\.)[0-9]+[eE][+-]?[0-9]+\\b)| # 1.1E+3\n  (?:\\b[0-9]+(\\.)[eE][+-]?[0-9]+\\b)|       # 1.E+3\n  (?:\\B(\\.)[0-9]+[eE][+-]?[0-9]+\\b)|       # .1E+3\n  (?:\\b[0-9]+[eE][+-]?[0-9]+\\b)|           # 1E+3\n  (?:\\b[0-9]+(\\.)[0-9]+\\b)|                # 1.1\n  (?:\\b[0-9]+(\\.)(?!\\.)\\B)|                # 1.\n  (?:\\B(\\.)[0-9]+\\b)|                      # .1\n  (?:\\b[0-9]+\\b)                           # 1\n)(?!\\$)'
+            '(?x)\n(?<!\\$)(?:\n  (?:\\b[0-9][0-9_]*(\\.)[0-9_]+[eE][+-]?[0-9_]+([fiu][0-9][0-9_]*)?\\b)| # 1.1E+3f64\n  (?:\\b[0-9][0-9_]*(\\.)[eE][+-]?[0-9_]+([fiu][0-9][0-9_]*)?\\b)|       # 1.E+3f64\n  (?:\\B(\\.)[0-9][0-9_]*[eE][+-]?[0-9_]+([fiu][0-9][0-9_]*)?\\b)|       # .1E+3f64\n  (?:\\b[0-9][0-9_]*[eE][+-]?[0-9][0-9_]*([fiu][0-9][0-9_]*)?\\b)|           # 1E+3f64\n  (?:\\b[0-9][0-9_]*(\\.)[0-9_]+([fiu][0-9][0-9_]*)?\\b)|                # 1.1f64\n  (?:\\b[0-9][0-9_]*(\\.)(?!\\.)(?:\\B|([fiu][0-9][0-9_]*)\\b))|           # 1.f64\n  (?:\\B(\\.)[0-9][0-9_]*([fiu][0-9][0-9_]*)?\\b)|                      # .1f64\n  (?:\\b[0-9][0-9_]*([fiu][0-9][0-9_]*)?\\b)                           # 1u64\n)(?!\\$)'
         }
       ]
     },

@@ -12,11 +12,12 @@ const grammar = {
     {include: '#keywords'},
     {include: '#strings'},
     {include: '#constant'},
-    {include: '#entity'}
+    {include: '#entity'},
+    {include: '#discards'}
   ],
   repository: {
     binary_number: {
-      match: '\\b0b[0-1]+\\b',
+      match: '\\b0[bB](_?[01])+\\b',
       name: 'constant.numeric.binary.gleam'
     },
     boolean: {
@@ -35,9 +36,11 @@ const grammar = {
       ]
     },
     decimal_number: {
-      match: '\\b[[:digit:]][[:digit:]_]*(\\.[[:digit:]]*)?\\b',
+      match:
+        '\\b[[:digit:]]+(_?[[:digit:]])*(\\.[[:digit:]]*)?(e-?[[:digit:]]*)?\\b',
       name: 'constant.numeric.decimal.gleam'
     },
+    discards: {match: '\\b_(?:[[:word:]]+)?\\b', name: 'comment.unused.gleam'},
     entity: {
       patterns: [
         {
@@ -57,7 +60,7 @@ const grammar = {
       ]
     },
     hexadecimal_number: {
-      match: '\\b0x[[:xdigit:]]+\\b',
+      match: '\\b0[xX](_?[[:xdigit:]])+\\b',
       name: 'constant.numeric.hexadecimal.gleam'
     },
     keywords: {
@@ -93,7 +96,7 @@ const grammar = {
       ]
     },
     octal_number: {
-      match: '\\b0o[0-7]+\\b',
+      match: '\\b0[oO](_?[0-7])+\\b',
       name: 'constant.numeric.octal.gleam'
     },
     strings: {

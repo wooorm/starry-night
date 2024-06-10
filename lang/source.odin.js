@@ -105,7 +105,7 @@ const grammar = {
         },
         {match: '---', name: 'constant.numeric.odin'},
         {
-          match: '\\b(struct|enum|union|map|bit_set|dynamic)\\b',
+          match: '\\b(struct|enum|union|map|bit_set|bit_field|dynamic)\\b',
           name: 'storage.type.odin'
         },
         {

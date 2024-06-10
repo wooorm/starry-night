@@ -278,6 +278,23 @@ const grammar = {
         }
       ]
     },
+    blockingScriptletRules: {
+      patterns: [
+        {
+          captures: {
+            1: {patterns: [{include: '#cosmeticRulesOptions'}]},
+            2: {patterns: [{include: '#domainListCommaSeparated'}]},
+            3: {name: 'keyword.control.adblock'},
+            4: {name: 'entity.name.function.adblock'},
+            5: {name: 'punctuation.section.adblock'},
+            6: {patterns: [{include: '#scriptletFunction'}]},
+            7: {name: 'punctuation.section.adblock'}
+          },
+          match:
+            '(?x)\n  ^                   # Start of the line\n  \\s*                 # Optional leading whitespace\n  (\\[.+?\\])?          # Group 1. AdGuard modifier list\n  (.*)?               # Group 2. Domain list\n  (\\#%\\#)             # Group 3. Cosmetic rule marker\n  (\\/\\/scriptlet)     # Group 4. Scriptlet marker\n  (\\()                # Group 5. Opening parenthesis\n  (.*\\S.*)            # Group 6. Arguments. Note: we look for a parameter that contain at least one non-whitespace character\n  (\\))                # Group 7. Closing parenthesis\n  \\s*                 # Optional trailing whitespace\n  $                   # End of the line'
+        }
+      ]
+    },
     comments: {
       patterns: [
         {match: '^!.*', name: 'comment.line.exclamation-sign'},
@@ -470,6 +487,33 @@ const grammar = {
         }
       ]
     },
+    emptyScriptletFunction: {
+      patterns: [
+        {match: '\\s*\\z', name: 'entity.name.section.adblock.empty-scriptlet'}
+      ]
+    },
+    exceptionScriptletRules: {
+      patterns: [
+        {
+          captures: {
+            1: {patterns: [{include: '#cosmeticRulesOptions'}]},
+            2: {patterns: [{include: '#domainListCommaSeparated'}]},
+            3: {name: 'keyword.control.adblock'},
+            4: {name: 'entity.name.function.adblock'},
+            5: {name: 'punctuation.section.adblock'},
+            6: {
+              patterns: [
+                {include: '#emptyScriptletFunction'},
+                {include: '#scriptletFunction'}
+              ]
+            },
+            7: {name: 'punctuation.section.adblock'}
+          },
+          match:
+            '(?x)\n  ^                   # Start of the line\n  \\s*                 # Optional leading whitespace\n  (\\[.+?\\])?          # Group 1. AdGuard modifier list\n  (.*)?               # Group 2. Domain list\n  (\\#@%\\#)            # Group 3. Cosmetic rule marker\n  (\\/\\/scriptlet)     # Group 4. Scriptlet marker\n  (\\()                # Group 5. Opening parenthesis\n  (.*)?               # Group 6. Arguments\n  (\\))                # Group 7. Closing parenthesis\n  \\s*                 # Optional trailing whitespace\n  $                   # End of the line'
+        }
+      ]
+    },
     jsRules: {
       patterns: [
         {
@@ -625,18 +669,8 @@ const grammar = {
     },
     scriptletRules: {
       patterns: [
-        {
-          captures: {
-            1: {patterns: [{include: '#cosmeticRulesOptions'}]},
-            2: {patterns: [{include: '#domainListCommaSeparated'}]},
-            3: {name: 'keyword.control.adblock'},
-            4: {name: 'entity.name.function.adblock'},
-            5: {name: 'punctuation.section.adblock'},
-            6: {patterns: [{include: '#scriptletFunction'}]},
-            7: {name: 'punctuation.section.adblock'}
-          },
-          match: '^(\\[.+?\\])?(.*?)(#@?%#)(\\/\\/scriptlet)(\\()(.+)(\\)\\s*)$'
-        }
+        {include: '#exceptionScriptletRules'},
+        {include: '#blockingScriptletRules'}
       ]
     },
     scriptletRulesUBO: {

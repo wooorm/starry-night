@@ -47,20 +47,35 @@ const grammar = {
       ]
     },
     string: {
-      begin: '"',
-      beginCaptures: {0: {name: 'punctuation.definition.string.begin.rego'}},
-      end: '"',
-      endCaptures: {0: {name: 'punctuation.definition.string.end.rego'}},
-      name: 'string.quoted.double.rego',
       patterns: [
         {
-          match:
-            '(?x:                # turn on extended mode\n\t           \\\\                # a literal backslash\n\t           (?:               # ...followed by...\n\t             ["\\\\/bfnrt]     # one of these characters\n\t             |               # ...or...\n\t             u               # a u\n\t             [0-9a-fA-F]{4}  # and four hex digits\n\t           )\n\t         )',
-          name: 'constant.character.escape.rego'
+          begin: '"',
+          beginCaptures: {
+            0: {name: 'punctuation.definition.string.begin.rego'}
+          },
+          end: '"',
+          endCaptures: {0: {name: 'punctuation.definition.string.end.rego'}},
+          name: 'string.quoted.double.rego',
+          patterns: [
+            {
+              match:
+                '(?x:                # turn on extended mode\n\t\t\t\t\t\\\\                # a literal backslash\n\t\t\t\t\t(?:               # ...followed by...\n\t\t\t\t\t\t["\\\\/bfnrt]     # one of these characters\n\t\t\t\t\t\t|               # ...or...\n\t\t\t\t\t\tu               # a u\n\t\t\t\t\t\t[0-9a-fA-F]{4}  # and four hex digits\n\t\t\t\t\t)\n\t\t\t\t\t)',
+              name: 'constant.character.escape.rego'
+            },
+            {
+              match: '\\\\.',
+              name: 'invalid.illegal.unrecognized-string-escape.rego'
+            }
+          ]
         },
         {
-          match: '\\\\.',
-          name: 'invalid.illegal.unrecognized-string-escape.rego'
+          begin: '`',
+          beginCaptures: {
+            0: {name: 'punctuation.definition.string.begin.rego'}
+          },
+          end: '`',
+          endCaptures: {0: {name: 'punctuation.definition.string.end.rego'}},
+          name: 'string.other.raw.rego'
         }
       ]
     },

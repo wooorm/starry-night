@@ -8,7 +8,6 @@ const grammar = {
   extensions: ['.res'],
   names: ['rescript'],
   patterns: [
-    {include: '#storage'},
     {include: '#ffi-single'},
     {include: '#ffi'},
     {include: '#constant'},
@@ -42,7 +41,7 @@ const grammar = {
     },
     RE_KEYWORD_CONTROL: {
       match:
-        '\\b(and|as|assert|async|await|catch|constraint|downto|else|exception|external|for|if|in|lazy|mutable|rec|switch|to|try|when|while|with)\\b',
+        '\\b(and|as|assert|async|await|catch|constraint|downto|else|exception|external|for|if|in|lazy|mutable|rec|switch|to|try|when|while|with|private)\\b',
       name: 'keyword.control'
     },
     RE_TO_DOWNTO_AS_LABELS: {

@@ -250,6 +250,8 @@ const grammar = {
       name: 'keyword.verb.cobol',
       patterns: [
         {match: '(^\\s*\\*.*)$', name: 'comment.line.sql'},
+        {match: '(--.*$)', name: 'comment.line.sql'},
+        {match: '(\\*>.*$)', name: 'comment.line.modern'},
         {match: '(\\:([0-9a-zA-Z\\-_])*)', name: 'variable.cobol'},
         {include: 'source.sql'}
       ]
@@ -299,6 +301,7 @@ const grammar = {
       end: '(?i:end\\-exec)',
       name: 'keyword.verb.cobol',
       patterns: [
+        {match: '(\\*>.*$)', name: 'comment.line.modern'},
         {match: '(\\:([a-zA-Z\\-])*)', name: 'variable.cobol'},
         {include: 'source.sql'}
       ]
@@ -309,6 +312,8 @@ const grammar = {
       end: '(?i:end\\-exec)',
       name: 'keyword.verb.cobol',
       patterns: [
+        {match: '(--.*$)', name: 'comment.line.sql'},
+        {match: '(\\*>.*$)', name: 'comment.line.modern'},
         {match: '(\\:([a-zA-Z\\-])*)', name: 'variable.cobol'},
         {include: 'source.sql'}
       ]
