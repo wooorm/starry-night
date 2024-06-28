@@ -765,9 +765,8 @@ Now running `node example.js` yields:
 
 ### Example: integrate with unified, remark, and rehype
 
-This example shows how to combine `starry-night` with [`unified`][unified]:
-using [`remark`][remark] to parse the markdown and transforming it to HTML with
-[`rehype`][rehype].
+This example shows how to use
+[`rehype-starry-night`][rehype-starry-night] with [`unified`][unified].
 If we have a markdown file `example.md`:
 
 ````markdown
@@ -780,104 +779,15 @@ console.log('it works!')
 ```
 ````
 
-…and a plugin `rehype-starry-night.js`:
-
-```js
-/**
- * @import {Grammar} from '@wooorm/starry-night'
- * @import {ElementContent, Root} from 'hast'
- */
-
-/**
- * @typedef Options
- *   Configuration (optional)
- * @property {Array<Grammar> | null | undefined} [grammars]
- *   Grammars to support (default: `common`).
- */
-
-import {common, createStarryNight} from '@wooorm/starry-night'
-import {toString} from 'hast-util-to-string'
-import {visit} from 'unist-util-visit'
-
-/**
- * Highlight code with `starry-night`.
- *
- * @param {Options | null | undefined} [options]
- *   Configuration (optional).
- * @returns
- *   Transform.
- */
-export default function rehypeStarryNight(options) {
-  const settings = options || {}
-  const grammars = settings.grammars || common
-  const starryNightPromise = createStarryNight(grammars)
-  const prefix = 'language-'
-
-  /**
-   * Transform.
-   *
-   * @param {Root} tree
-   *   Tree.
-   * @returns {Promise<undefined>}
-   *   Nothing.
-   */
-  return async function (tree) {
-    const starryNight = await starryNightPromise
-
-    visit(tree, 'element', function (node, index, parent) {
-      if (!parent || index === undefined || node.tagName !== 'pre') {
-        return
-      }
-
-      const head = node.children[0]
-
-      if (!head || head.type !== 'element' || head.tagName !== 'code') {
-        return
-      }
-
-      const classes = head.properties.className
-
-      if (!Array.isArray(classes)) return
-
-      const language = classes.find(function (d) {
-        return typeof d === 'string' && d.startsWith(prefix)
-      })
-
-      if (typeof language !== 'string') return
-
-      const scope = starryNight.flagToScope(language.slice(prefix.length))
-
-      // Maybe warn?
-      if (!scope) return
-
-      const fragment = starryNight.highlight(toString(head), scope)
-      const children = /** @type {Array<ElementContent>} */ (fragment.children)
-
-      parent.children.splice(index, 1, {
-        type: 'element',
-        tagName: 'div',
-        properties: {
-          className: [
-            'highlight',
-            'highlight-' + scope.replace(/^source\./, '').replace(/\./g, '-')
-          ]
-        },
-        children: [{type: 'element', tagName: 'pre', properties: {}, children}]
-      })
-    })
-  }
-}
-```
-
-…and finally a module `example.js`:
+…and a module `example.js`:
 
 ```js
 import fs from 'node:fs/promises'
+import rehypeStarryNight from 'rehype-starry-night'
 import rehypeStringify from 'rehype-stringify'
 import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
 import {unified} from 'unified'
-import rehypeStarryNight from './rehype-starry-night.js'
 
 const file = await unified()
   .use(remarkParse)
@@ -889,13 +799,13 @@ const file = await unified()
 console.log(String(file))
 ```
 
-Now running `node example.js` yields:
+…then running `node example.js` yields:
 
 ```html
 <h1>Hello</h1>
 <p>…world!</p>
-<div class="highlight highlight-js"><pre><span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>it works!<span class="pl-pds">'</span></span>)
-</pre></div>
+<pre><code class="language-js"><span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>it works!<span class="pl-pds">'</span></span>)
+</code></pre>
 ```
 
 ### Example: integrating with `markdown-it`
@@ -1734,9 +1644,9 @@ All other files [MIT][license] © [Titus Wormer][author]
 
 [unified]: https://github.com/unifiedjs/unified
 
-[remark]: https://github.com/remarkjs/remark
-
 [rehype]: https://github.com/rehypejs/rehype
+
+[rehype-starry-night]: https://github.com/rehypejs/rehype-starry-night
 
 [hast]: https://github.com/syntax-tree/hast
 
