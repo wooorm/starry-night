@@ -3,7 +3,11 @@
 // <https://github.com/Alhadis/language-grammars>
 // and licensed `isc`.
 // See <https://github.com/wooorm/starry-night> for more info.
-/** @type {import('../lib/index.js').Grammar} */
+/**
+ * @import {Grammar} from '@wooorm/starry-night'
+ */
+
+/** @type {Grammar} */
 const grammar = {
   dependencies: ['source.c++', 'source.java'],
   extensions: ['.bison', '.y', '.yacc'],

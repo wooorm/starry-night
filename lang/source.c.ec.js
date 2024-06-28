@@ -3,7 +3,11 @@
 // <https://github.com/ecere/ec.tmbundle>
 // and licensed `unlicense`.
 // See <https://github.com/wooorm/starry-night> for more info.
-/** @type {import('../lib/index.js').Grammar} */
+/**
+ * @import {Grammar} from '@wooorm/starry-night'
+ */
+
+/** @type {Grammar} */
 const grammar = {
   dependencies: ['source.c'],
   extensions: ['.ec', '.eh'],

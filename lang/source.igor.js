@@ -3,7 +3,11 @@
 // <https://github.com/byte-physics/language-igor>
 // and licensed `bsd-3-clause`.
 // See <https://github.com/wooorm/starry-night> for more info.
-/** @type {import('../lib/index.js').Grammar} */
+/**
+ * @import {Grammar} from '@wooorm/starry-night'
+ */
+
+/** @type {Grammar} */
 const grammar = {
   extensions: ['.ipf'],
   names: ['igor-pro', 'igor', 'igorpro'],

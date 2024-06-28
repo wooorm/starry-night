@@ -1,6 +1,5 @@
 /**
- * @typedef {import('../lib/index.js').Grammar} Grammar
- * @typedef {import('../lib/index.js').Rule} Rule
+ * @import {Grammar, Rule} from '../lib/index.js'
  */
 
 /**
@@ -322,7 +321,11 @@ await Promise.all(
       outputUrl,
       await prettier.format(
         [
-          "/** @type {import('../lib/index.js').Grammar} */",
+          '/**',
+          " * @import {Grammar} from '@wooorm/starry-night'",
+          ' */',
+          '',
+          '/** @type {Grammar} */',
           'const grammar = ' +
             jsonStableStringify({
               ...grammar,
@@ -549,7 +552,7 @@ await Promise.all(
       await prettier.format(
         [
           '/**',
-          " * @typedef {import('./index.js').Grammar} Grammar",
+          " * @import {Grammar} from '@wooorm/starry-night'",
           ' */',
           '',
           ...list.map(function (d) {

@@ -3,7 +3,11 @@
 // <https://github.com/zxh0/vscode-proto3>
 // and licensed `mit`.
 // See <https://github.com/wooorm/starry-night> for more info.
-/** @type {import('../lib/index.js').Grammar} */
+/**
+ * @import {Grammar} from '@wooorm/starry-night'
+ */
+
+/** @type {Grammar} */
 const grammar = {
   extensions: ['.proto'],
   names: ['protocol-buffer', 'proto', 'protobuf', 'protocol-buffers'],

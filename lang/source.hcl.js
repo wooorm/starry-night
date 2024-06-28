@@ -3,7 +3,11 @@
 // <https://github.com/hashicorp/syntax>
 // and licensed `mpl-2.0`.
 // See <https://github.com/wooorm/starry-night> for more info.
-/** @type {import('../lib/index.js').Grammar} */
+/**
+ * @import {Grammar} from '@wooorm/starry-night'
+ */
+
+/** @type {Grammar} */
 const grammar = {
   extensions: ['.hcl', '.nomad', '.tf', '.tfvars', '.workflow'],
   names: ['hcl', 'hashicorp-configuration-language', 'terraform'],

@@ -1,7 +1,11 @@
 // This is a TextMate grammar distributed by `starry-night`.
 // This grammar is licensed permissive.
 // See <https://github.com/wooorm/starry-night> for more info.
-/** @type {import('../lib/index.js').Grammar} */
+/**
+ * @import {Grammar} from '@wooorm/starry-night'
+ */
+
+/** @type {Grammar} */
 const grammar = {
   dependencies: ['source.camlp4.ocaml'],
   extensions: ['.ml', '.eliom', '.eliomi', '.ml4', '.mli', '.mll', '.mly'],

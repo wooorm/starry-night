@@ -3,7 +3,11 @@
 // <https://github.com/golang/vscode-go>
 // and licensed permissive.
 // See <https://github.com/wooorm/starry-night> for more info.
-/** @type {import('../lib/index.js').Grammar} */
+/**
+ * @import {Grammar} from '@wooorm/starry-night'
+ */
+
+/** @type {Grammar} */
 const grammar = {
   extensions: [],
   names: ['go-checksums', 'go.sum', 'go-sum', 'go.work.sum', 'go-work-sum'],

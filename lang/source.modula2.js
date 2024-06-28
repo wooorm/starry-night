@@ -3,7 +3,11 @@
 // <https://github.com/harogaston/Sublime-Modula-2>
 // and licensed `mit`.
 // See <https://github.com/wooorm/starry-night> for more info.
-/** @type {import('../lib/index.js').Grammar} */
+/**
+ * @import {Grammar} from '@wooorm/starry-night'
+ */
+
+/** @type {Grammar} */
 const grammar = {
   extensions: ['.ob2'],
   names: ['modula-2', 'oberon'],

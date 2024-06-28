@@ -3,7 +3,11 @@
 // <https://github.com/elixir-lang/elixir-tmbundle>
 // and licensed `apache-2.0`.
 // See <https://github.com/wooorm/starry-night> for more info.
-/** @type {import('../lib/index.js').Grammar} */
+/**
+ * @import {Grammar} from '@wooorm/starry-night'
+ */
+
+/** @type {Grammar} */
 const grammar = {
   dependencies: ['text.elixir', 'text.html.basic'],
   extensions: ['.eex', '.html.heex', '.html.leex'],

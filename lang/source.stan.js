@@ -3,7 +3,11 @@
 // <https://github.com/stan-dev/atom-language-stan>
 // and licensed `mit`.
 // See <https://github.com/wooorm/starry-night> for more info.
-/** @type {import('../lib/index.js').Grammar} */
+/**
+ * @import {Grammar} from '@wooorm/starry-night'
+ */
+
+/** @type {Grammar} */
 const grammar = {
   extensions: ['.stan'],
   names: ['stan'],

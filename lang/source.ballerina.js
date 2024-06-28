@@ -3,7 +3,11 @@
 // <https://github.com/ballerina-platform/ballerina-grammar>
 // and licensed `apache-2.0`.
 // See <https://github.com/wooorm/starry-night> for more info.
-/** @type {import('../lib/index.js').Grammar} */
+/**
+ * @import {Grammar} from '@wooorm/starry-night'
+ */
+
+/** @type {Grammar} */
 const grammar = {
   extensions: ['.bal'],
   names: ['ballerina'],

@@ -1,5 +1,5 @@
 /**
- * @typedef {import('@wooorm/starry-night').Grammar} Grammar
+ * @import {Grammar} from '@wooorm/starry-night'
  */
 
 import assert from 'node:assert/strict'

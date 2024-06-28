@@ -1,7 +1,11 @@
 // This is a TextMate grammar distributed by `starry-night`.
 // This grammar is licensed `wtfpl`.
 // See <https://github.com/wooorm/starry-night> for more info.
-/** @type {import('../lib/index.js').Grammar} */
+/**
+ * @import {Grammar} from '@wooorm/starry-night'
+ */
+
+/** @type {Grammar} */
 const grammar = {
   extensions: ['.nit'],
   names: ['nit'],

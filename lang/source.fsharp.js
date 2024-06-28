@@ -3,7 +3,11 @@
 // <https://github.com/ionide/ionide-fsgrammar>
 // and licensed `mit`.
 // See <https://github.com/wooorm/starry-night> for more info.
-/** @type {import('../lib/index.js').Grammar} */
+/**
+ * @import {Grammar} from '@wooorm/starry-night'
+ */
+
+/** @type {Grammar} */
 const grammar = {
   extensions: ['.fs', '.fsi', '.fsx'],
   names: ['f#', 'fsharp'],

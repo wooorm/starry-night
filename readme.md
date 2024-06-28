@@ -638,10 +638,7 @@ Say we have our utility as `hast-util-starry-night-gutter.js`:
 
 ```js
 /**
- * @typedef {import('hast').Element} Element
- * @typedef {import('hast').ElementContent} ElementContent
- * @typedef {import('hast').Root} Root
- * @typedef {import('hast').RootContent} RootContent
+ * @import {ElementContent, Element, RootContent, Root} from 'hast'
  */
 
 /**
@@ -787,9 +784,8 @@ console.log('it works!')
 
 ```js
 /**
- * @typedef {import('@wooorm/starry-night').Grammar} Grammar
- * @typedef {import('hast').ElementContent} ElementContent
- * @typedef {import('hast').Root} Root
+ * @import {Grammar} from '@wooorm/starry-night'
+ * @import {ElementContent, Root} from 'hast'
  */
 
 /**
@@ -921,7 +917,7 @@ console.log('it works!')
 
 ```js
 /**
- * @typedef {import('hast').ElementContent} ElementContent
+ * @import {ElementContent} from 'hast'
  */
 
 import fs from 'node:fs/promises'

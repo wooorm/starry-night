@@ -3,7 +3,11 @@
 // <https://github.com/dotnet/csharp-tmLanguage>
 // and licensed `mit`.
 // See <https://github.com/wooorm/starry-night> for more info.
-/** @type {import('../lib/index.js').Grammar} */
+/**
+ * @import {Grammar} from '@wooorm/starry-night'
+ */
+
+/** @type {Grammar} */
 const grammar = {
   extensions: ['.bf', '.cake', '.cs', '.cs.pp', '.csx', '.eq', '.linq', '.uno'],
   names: ['beef', 'c#', 'cake', 'cakescript', 'csharp', 'eq', 'uno'],

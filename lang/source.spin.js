@@ -3,7 +3,11 @@
 // <https://github.com/bitbased/sublime-spintools>
 // and licensed `zlib`.
 // See <https://github.com/wooorm/starry-night> for more info.
-/** @type {import('../lib/index.js').Grammar} */
+/**
+ * @import {Grammar} from '@wooorm/starry-night'
+ */
+
+/** @type {Grammar} */
 const grammar = {
   extensions: ['.spin'],
   names: ['propeller-spin'],

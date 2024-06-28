@@ -3,7 +3,11 @@
 // <https://github.com/Jake-NotTheMuss/CoDT7-Sublime>
 // and licensed `unlicense`.
 // See <https://github.com/wooorm/starry-night> for more info.
-/** @type {import('../lib/index.js').Grammar} */
+/**
+ * @import {Grammar} from '@wooorm/starry-night'
+ */
+
+/** @type {Grammar} */
 const grammar = {
   extensions: ['.gsc', '.csc', '.gsh'],
   names: ['gsc'],

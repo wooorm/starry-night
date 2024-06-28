@@ -3,7 +3,11 @@
 // <https://github.com/nishtahir/language-kotlin>
 // and licensed `apache-2.0`.
 // See <https://github.com/wooorm/starry-night> for more info.
-/** @type {import('../lib/index.js').Grammar} */
+/**
+ * @import {Grammar} from '@wooorm/starry-night'
+ */
+
+/** @type {Grammar} */
 const grammar = {
   extensions: ['.gradle.kts', '.kt', '.ktm', '.kts'],
   names: ['gradle-kotlin-dsl', 'kotlin'],

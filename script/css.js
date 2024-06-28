@@ -1,20 +1,22 @@
 /**
- * @typedef {import('css').Charset} Charset
- * @typedef {import('css').Comment} Comment
- * @typedef {import('css').CustomMedia} CustomMedia
- * @typedef {import('css').Declaration} Declaration
- * @typedef {import('css').Document} Document
- * @typedef {import('css').FontFace} FontFace
- * @typedef {import('css').Host} Host
- * @typedef {import('css').Import} Import
- * @typedef {import('css').KeyFrame} KeyFrame
- * @typedef {import('css').KeyFrames} KeyFrames
- * @typedef {import('css').Media} Media
- * @typedef {import('css').Namespace} Namespace
- * @typedef {import('css').Page} Page
- * @typedef {import('css').Rule} Rule
- * @typedef {import('css').Stylesheet} Stylesheet
- * @typedef {import('css').Supports} Supports
+ * @import {
+     Charset,
+     Comment,
+     CustomMedia,
+     Declaration,
+     Document,
+     FontFace,
+     Host,
+     Import,
+     KeyFrame,
+     KeyFrames,
+     Media,
+     Namespace,
+     Page,
+     Rule,
+     Stylesheet,
+     Supports
+   } from 'css'
  */
 
 /**

@@ -3,7 +3,11 @@
 // <https://github.com/ahkscript/SublimeAutoHotkey>
 // and licensed `unlicense`.
 // See <https://github.com/wooorm/starry-night> for more info.
-/** @type {import('../lib/index.js').Grammar} */
+/**
+ * @import {Grammar} from '@wooorm/starry-night'
+ */
+
+/** @type {Grammar} */
 const grammar = {
   extensions: ['.ahk', '.ahkl'],
   names: ['autohotkey', 'ahk'],

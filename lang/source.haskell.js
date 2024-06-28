@@ -3,7 +3,11 @@
 // <https://github.com/atom-haskell/language-haskell>
 // and licensed `mit`.
 // See <https://github.com/wooorm/starry-night> for more info.
-/** @type {import('../lib/index.js').Grammar} */
+/**
+ * @import {Grammar} from '@wooorm/starry-night'
+ */
+
+/** @type {Grammar} */
 const grammar = {
   extensions: ['.chs', '.dhall', '.hs', '.hs-boot', '.hsc'],
   names: ['c2hs', 'c2hs-haskell', 'dhall', 'frege', 'haskell'],

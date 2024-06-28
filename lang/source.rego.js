@@ -3,7 +3,11 @@
 // <https://github.com/open-policy-agent/vscode-opa>
 // and licensed `apache-2.0`.
 // See <https://github.com/wooorm/starry-night> for more info.
-/** @type {import('../lib/index.js').Grammar} */
+/**
+ * @import {Grammar} from '@wooorm/starry-night'
+ */
+
+/** @type {Grammar} */
 const grammar = {
   extensions: ['.rego'],
   names: ['open-policy-agent'],

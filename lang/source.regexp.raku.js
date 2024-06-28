@@ -1,4 +1,8 @@
-/** @type {import('../lib/index.js').Grammar} */
+/**
+ * @import {Grammar} from '@wooorm/starry-night'
+ */
+
+/** @type {Grammar} */
 const grammar = {
   dependencies: ['source.raku'],
   extensions: [],

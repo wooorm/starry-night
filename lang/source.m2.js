@@ -3,7 +3,11 @@
 // <https://github.com/Macaulay2/language-macaulay2>
 // and licensed `mit`.
 // See <https://github.com/wooorm/starry-night> for more info.
-/** @type {import('../lib/index.js').Grammar} */
+/**
+ * @import {Grammar} from '@wooorm/starry-night'
+ */
+
+/** @type {Grammar} */
 const grammar = {
   extensions: ['.m2'],
   names: ['macaulay2', 'm2'],

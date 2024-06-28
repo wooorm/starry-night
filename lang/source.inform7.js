@@ -3,7 +3,11 @@
 // <https://github.com/erkyrath/language-inform7>
 // and licensed `mit`.
 // See <https://github.com/wooorm/starry-night> for more info.
-/** @type {import('../lib/index.js').Grammar} */
+/**
+ * @import {Grammar} from '@wooorm/starry-night'
+ */
+
+/** @type {Grammar} */
 const grammar = {
   extensions: ['.ni', '.i7x'],
   names: ['inform-7', 'i7', 'inform7'],

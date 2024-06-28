@@ -3,7 +3,11 @@
 // <https://github.com/textmate/textmate.tmbundle>
 // and licensed permissive.
 // See <https://github.com/wooorm/starry-night> for more info.
-/** @type {import('../lib/index.js').Grammar} */
+/**
+ * @import {Grammar} from '@wooorm/starry-night'
+ */
+
+/** @type {Grammar} */
 const grammar = {
   extensions: [],
   names: ['textmate-properties', 'tm-properties'],

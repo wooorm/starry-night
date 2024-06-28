@@ -3,7 +3,11 @@
 // <https://github.com/atom/language-ruby>
 // and licensed `mit`.
 // See <https://github.com/wooorm/starry-night> for more info.
-/** @type {import('../lib/index.js').Grammar} */
+/**
+ * @import {Grammar} from '@wooorm/starry-night'
+ */
+
+/** @type {Grammar} */
 const grammar = {
   dependencies: ['source.ruby', 'text.html.basic'],
   extensions: ['.erb', '.erb.deface', '.rhtml'],

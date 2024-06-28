@@ -3,7 +3,11 @@
 // <https://github.com/TIny-Hacker/language-ti-basic>
 // and licensed `bsd-3-clause`.
 // See <https://github.com/wooorm/starry-night> for more info.
-/** @type {import('../lib/index.js').Grammar} */
+/**
+ * @import {Grammar} from '@wooorm/starry-night'
+ */
+
+/** @type {Grammar} */
 const grammar = {
   extensions: ['.8xp', '.8xp.txt'],
   names: ['ti-program'],

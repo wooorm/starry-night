@@ -3,7 +3,11 @@
 // <https://github.com/chapel-lang/chapel-tmbundle>
 // and licensed `apache-2.0`.
 // See <https://github.com/wooorm/starry-night> for more info.
-/** @type {import('../lib/index.js').Grammar} */
+/**
+ * @import {Grammar} from '@wooorm/starry-night'
+ */
+
+/** @type {Grammar} */
 const grammar = {
   extensions: ['.chpl'],
   names: ['chapel', 'chpl'],

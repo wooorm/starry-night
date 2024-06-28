@@ -3,7 +3,11 @@
 // <https://github.com/fancy-lang/fancy-tmbundle>
 // and licensed `bsd-3-clause`.
 // See <https://github.com/wooorm/starry-night> for more info.
-/** @type {import('../lib/index.js').Grammar} */
+/**
+ * @import {Grammar} from '@wooorm/starry-night'
+ */
+
+/** @type {Grammar} */
 const grammar = {
   extensions: ['.fy', '.fancypack'],
   names: ['fancy'],

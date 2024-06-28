@@ -3,7 +3,11 @@
 // <https://github.com/mariozaizar/language-eml>
 // and licensed `mit`.
 // See <https://github.com/wooorm/starry-night> for more info.
-/** @type {import('../lib/index.js').Grammar} */
+/**
+ * @import {Grammar} from '@wooorm/starry-night'
+ */
+
+/** @type {Grammar} */
 const grammar = {
   extensions: ['.eml', '.mbox'],
   names: ['e-mail', 'email', 'eml', 'mail', 'mbox'],

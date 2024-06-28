@@ -3,7 +3,11 @@
 // <https://github.com/atom/language-html>
 // and licensed `mit`.
 // See <https://github.com/wooorm/starry-night> for more info.
-/** @type {import('../lib/index.js').Grammar} */
+/**
+ * @import {Grammar} from '@wooorm/starry-night'
+ */
+
+/** @type {Grammar} */
 const grammar = {
   extensions: ['.hta', '.htm', '.html.hl', '.kit', '.mtml', '.xht', '.xhtml'],
   names: ['html', 'kit', 'mtml', 'xhtml'],
