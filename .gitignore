@@ -9,3 +9,5 @@ script/grammars.yml
 *.log
 .DS_Store
 yarn.lock
+!/lib/types.d.ts
+!/index.d.ts

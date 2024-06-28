@@ -1,5 +1,5 @@
 /**
- * @import {Grammar, Rule} from '../lib/index.js'
+ * @import {Grammar, Rule} from '../lib/types.js'
  */
 
 /**

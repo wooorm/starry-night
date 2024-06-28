@@ -12,5 +12,5 @@
     "target": "es2022"
   },
   "exclude": ["coverage/", "node_modules/"],
-  "include": ["**/*.js"]
+  "include": ["**/*.js", "lib/types.d.ts", "index.d.ts"]
 }
