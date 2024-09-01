@@ -1,7 +1,7 @@
 /**
  * Get a URL to the oniguruma WASM.
  *
- * > **Note**: this must currently result in a version 1 URL of
+ * > **Note**: this must currently result in a version 2 URL of
  * > `onig.wasm` from `vscode-oniguruma`.
  *
  * > **Danger**: when you use this functionality, your project might break at
