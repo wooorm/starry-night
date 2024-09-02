@@ -75,7 +75,7 @@ const grammar = {
       captures: {0: {name: 'punctuation.comment.curry'}},
       end: '(?<!#)-\\}',
       name: 'comment.block.curry',
-      patterns: [{include: '#block_comment'}, {include: '#comments'}]
+      patterns: [{include: '#block_comment'}]
     },
     class_declaration: {
       begin: '^(\\s*)(class)\\b',
@@ -275,7 +275,7 @@ const grammar = {
     },
     function_signature: {
       begin:
-        "^(\\s*)(?!--)(?:(\\(\\W\\)|[\\w']+)|[\\(\\[])(?=[\\w',\\s\\[\\]\\(\\)]*((?:::)|∷))",
+        "^(\\s*)(?!--|where|case|fcase|of|let|in|default|do|mdo|if|then|else|free)(?:(\\(\\W\\)|[\\w']+)|[\\(\\[])(?=[\\w',\\s\\[\\]\\(\\)]*((?:::)|∷))",
       beginCaptures: {2: {name: 'entity.name.function.curry'}},
       end: '^(?!\\1\\s)|(?=})',
       name: 'meta.declaration.function.curry',

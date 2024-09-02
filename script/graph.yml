@@ -55,6 +55,9 @@ source.c.ec:
   source.c: true
 source.c.nwscript:
   source.c: true
+source.cairo0:
+  source.cairo: true
+  source.python: false
 source.camlp4.ocaml:
   source.ocaml: true
 source.cfscript:
@@ -262,6 +265,12 @@ source.julia:
   source.python: false
   source.r: false
   source.sql: false
+source.just:
+  source.js: false
+  source.perl: false
+  source.python: false
+  source.ruby: false
+  source.shell: false
 source.kakscript:
   source.shell: false
 source.kickstart:
@@ -492,8 +501,10 @@ source.mint:
   source.css.scss: true
   source.js: true
 source.nanorc:
+  etc: true
   injections.etc: true
   source.regexp: false
+  source.shell: false
 source.ne:
   source.js: false
 source.nesc:
@@ -532,6 +543,8 @@ source.pcb.schematic:
   source.pcb.sexp: true
   source.scheme: true
   text.xml: false
+source.peggy:
+  source.js: true
 source.pegjs:
   source.js: true
   source.js.regexp: false
@@ -664,6 +677,8 @@ source.vim-snippet:
   source.viml: false
 source.viml:
   text.vim-help: false
+source.wdl:
+  source.shell: false
 source.wgetrc:
   etc: true
 source.win32-messages:
@@ -762,6 +777,11 @@ text.html.js:
   text.html.basic: true
 text.html.jsp:
   source.java: false
+  text.html.basic: true
+text.html.jte:
+  source.css: false
+  source.java: true
+  source.js: false
   text.html.basic: true
 text.html.liquid:
   source.css: false

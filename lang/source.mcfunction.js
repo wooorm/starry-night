@@ -1,6 +1,6 @@
 // This is a TextMate grammar distributed by `starry-night`.
 // This grammar is developed at
-// <https://github.com/Arcensoth/language-mcfunction>
+// <https://github.com/MinecraftCommands/syntax-mcfunction>
 // and licensed `mit`.
 // See <https://github.com/wooorm/starry-night> for more info.
 /**
@@ -11,719 +11,431 @@
 const grammar = {
   extensions: ['.mcfunction'],
   names: ['mcfunction'],
-  patterns: [
-    {include: '#comment'},
-    {include: '#command'},
-    {include: '#unknown'}
-  ],
+  patterns: [{include: '#root'}],
   repository: {
-    block_predicate: {
+    comments: {
       patterns: [
         {
-          captures: {
-            1: {name: 'entity.name.function.mcfunction'},
-            2: {name: 'entity.name.function.mcfunction'},
-            3: {name: 'entity.name.function.mcfunction'},
-            4: {name: 'entity.name.function.mcfunction'}
+          applyEndPatternLast: true,
+          begin: '^\\s*(#[>!#])(.+)$',
+          beginCaptures: {
+            1: {name: 'comment.block.mcfunction'},
+            2: {name: 'markup.bold.mcfunction'}
           },
-          match: '(\\#)([a-z0-9_\\.\\-]+)(\\:)([a-z0-9_\\.\\-\\/]+)'
+          captures: {0: {name: 'comment.block.mcfunction'}},
+          end: '^(?!#)',
+          name: 'meta.comments',
+          patterns: [{include: '#comments_block'}]
         },
         {
-          captures: {
-            1: {name: 'entity.name.function.mcfunction'},
-            2: {name: 'entity.name.function.mcfunction'},
-            3: {name: 'entity.name.function.mcfunction'}
-          },
-          match: '([a-z0-9_\\.\\-]+)(\\:)([a-z0-9_\\.\\-\\/]+)'
-        },
-        {
-          captures: {1: {name: 'entity.name.function.mcfunction'}},
-          match: '([a-z0-9_\\.\\-\\/]+)'
-        },
-        {
-          begin: '(\\[)',
-          beginCaptures: {1: {name: 'variable.language.mcfunction'}},
-          end: '(\\])',
-          endCaptures: {1: {name: 'variable.language.mcfunction'}},
-          patterns: [{include: '#block_predicate.arguments'}]
-        },
-        {
-          begin: '(\\{)',
-          beginCaptures: {1: {name: 'variable.language.mcfunction'}},
-          end: '(\\})',
-          endCaptures: {1: {name: 'variable.language.mcfunction'}},
-          patterns: [{include: '#nbt.compound'}]
+          captures: {0: {name: 'comment.line.mcfunction'}},
+          match: '^\\s*#.*$',
+          name: 'meta.comments'
         }
       ]
     },
-    'block_predicate.argument.boolean': {
-      captures: {1: {name: 'constant.numeric.mcfunction'}},
-      match: '(true|false)(?= *[\\,\\]\\n])',
-      name: 'meta.block_predicate.argument.boolean.mcfunction'
-    },
-    'block_predicate.argument.literal': {
-      captures: {1: {name: 'entity.name.mcfunction'}},
-      match: '([a-z_][a-z0-9_]*)(?= *[\\,\\]\\n])',
-      name: 'meta.block_predicate.argument.literal.mcfunction'
-    },
-    'block_predicate.argument.number': {
-      captures: {1: {name: 'constant.numeric.mcfunction'}},
-      match: '(\\-?\\d*\\.?\\d+)(?= *[\\,\\]\\n])',
-      name: 'meta.block_predicate.argument.number.mcfunction'
-    },
-    'block_predicate.arguments': {
+    comments_block: {
       patterns: [
-        {match: ' +', name: 'meta.block_predicate.argument_spacing.mcfunction'},
         {
-          begin: '([a-z_][a-z0-9_]*) *(\\=) *',
+          applyEndPatternLast: true,
+          begin: '^\\s*#[>!]',
+          captures: {0: {name: 'comment.block.mcfunction'}},
+          end: '$',
+          name: 'meta.comments_block',
+          patterns: [{include: '#comments_block_emphasized'}]
+        },
+        {
+          applyEndPatternLast: true,
+          begin: '^\\s*#',
+          captures: {0: {name: 'comment.block.mcfunction'}},
+          end: '$',
+          name: 'meta.comments_block',
+          patterns: [{include: '#comments_block_normal'}]
+        }
+      ]
+    },
+    comments_block_emphasized: {
+      patterns: [
+        {include: '#comments_block_special'},
+        {
+          captures: {0: {name: 'markup.bold.mcfunction'}},
+          match: '\\S+',
+          name: 'meta.comments_block_emphasized'
+        }
+      ]
+    },
+    comments_block_normal: {
+      patterns: [
+        {include: '#comments_block_special'},
+        {
+          captures: {0: {name: 'comment.block.mcfunction'}},
+          match: '\\S+',
+          name: 'meta.comments_block_normal'
+        },
+        {include: '#whitespace'}
+      ]
+    },
+    comments_block_special: {
+      patterns: [
+        {
+          captures: {0: {name: 'markup.heading.mcfunction'}},
+          match: '@\\S+',
+          name: 'meta.comments_block_special'
+        },
+        {include: '#resource-name'},
+        {
+          captures: {0: {name: 'variable.other.mcfunction'}},
+          match: '[#%$][A-Za-z0-9_.#%$]+',
+          name: 'meta.comments_block_special'
+        }
+      ]
+    },
+    comments_inline: {
+      patterns: [
+        {
+          captures: {0: {name: 'comment.line.mcfunction'}},
+          match: '#.*$',
+          name: 'meta.comments'
+        }
+      ]
+    },
+    literals: {
+      patterns: [
+        {
+          captures: {0: {name: 'constant.numeric.boolean.mcfunction'}},
+          match: '\\b(true|false|True|False)\\b',
+          name: 'meta.literals'
+        },
+        {
+          captures: {0: {name: 'variable.uuid.mcfunction'}},
+          match: '\\b[0-9a-fA-F]+(?:-[0-9a-fA-F]+){4}\\b',
+          name: 'meta.names'
+        },
+        {
+          captures: {0: {name: 'constant.numeric.float.mcfunction'}},
+          match: '[+-]?\\d*\\.?\\d+([eE]?[+-]?\\d+)?[df]?\\b',
+          name: 'meta.literals'
+        },
+        {
+          captures: {0: {name: 'constant.numeric.integer.mcfunction'}},
+          match: '[+-]?\\d+(b|B|L|l|s|S)?\\b',
+          name: 'meta.literals'
+        },
+        {
+          captures: {0: {name: 'variable.other.mcfunction'}},
+          match: '\\.\\.',
+          name: 'meta.ellipse.literals'
+        },
+        {
+          applyEndPatternLast: true,
+          begin: '"',
           beginCaptures: {
-            1: {name: 'variable.other.mcfunction'},
-            2: {name: 'variable.language.mcfunction'}
+            0: {name: 'punctuation.definition.string.begin.mcfunction'}
           },
-          end: '(\\,)(?=[\\]\\n])|(\\,)|(?=[\\]\\n])',
+          end: '"',
           endCaptures: {
-            1: {name: 'invalid.illegal.mcfunction'},
-            2: {name: 'variable.language.mcfunction'}
+            0: {name: 'punctuation.definition.string.end.mcfunction'}
           },
-          name: 'meta.block_predicate.argument.mcfunction',
+          name: 'string.quoted.double.mcfunction',
+          patterns: [{include: '#literals_string-double'}]
+        },
+        {
+          applyEndPatternLast: true,
+          begin: "'",
+          beginCaptures: {
+            0: {name: 'punctuation.definition.string.begin.mcfunction'}
+          },
+          end: "'",
+          endCaptures: {
+            0: {name: 'punctuation.definition.string.begin.mcfunction'}
+          },
+          name: 'string.quoted.single.mcfunction',
+          patterns: [{include: '#literals_string-single'}]
+        }
+      ]
+    },
+    'literals_string-double': {
+      patterns: [
+        {
+          captures: {0: {name: 'constant.character.escape.mcfunction'}},
+          match: '\\\\.',
+          name: 'meta.literals_string-double'
+        },
+        {
+          captures: {0: {name: 'constant.character.escape.mcfunction'}},
+          match: '\\\\',
+          name: 'meta.literals_string-double'
+        },
+        {include: '#macro-name'},
+        {
+          captures: {0: {name: 'string.quoted.double.mcfunction'}},
+          match: '[^\\\\"]',
+          name: 'meta.literals_string-double'
+        }
+      ]
+    },
+    'literals_string-single': {
+      patterns: [
+        {
+          captures: {0: {name: 'constant.character.escape.mcfunction'}},
+          match: '\\\\.',
+          name: 'meta.literals_string-single'
+        },
+        {
+          captures: {0: {name: 'constant.character.escape.mcfunction'}},
+          match: '\\\\',
+          name: 'meta.literals_string-double'
+        },
+        {include: '#macro-name'},
+        {
+          captures: {0: {name: 'string.quoted.single.mcfunction'}},
+          match: "[^\\\\']",
+          name: 'meta.literals_string-single'
+        }
+      ]
+    },
+    'macro-name': {
+      patterns: [
+        {
+          captures: {
+            1: {
+              name: 'punctuation.definition.template-expression.begin.mcfunction'
+            },
+            2: {name: 'variable.other.mcfunction'},
+            3: {
+              name: 'punctuation.definition.template-expression.end.mcfunction'
+            }
+          },
+          match: '(\\$\\()([A-Za-z0-9_]*)(\\))',
+          name: 'meta.macro-name'
+        }
+      ]
+    },
+    names: {
+      patterns: [
+        {
+          captures: {
+            1: {name: 'whitespace.mcfunction'},
+            2: {name: 'keyword.control.flow.mcfunction'}
+          },
+          match: '^(\\s*)([a-z_]+)(?=\\s)',
+          name: 'meta.names'
+        },
+        {
+          captures: {
+            1: {name: 'whitespace.mcfunction'},
+            2: {name: 'markup.italic.mcfunction'},
+            3: {name: 'whitespace.mcfunction'},
+            4: {name: 'keyword.control.flow.mcfunction'}
+          },
+          match: '^(\\s*)(\\$)( ?)([a-z_]*)',
+          name: 'meta.names'
+        },
+        {
+          captures: {
+            1: {name: 'entity.name.mcfunction'},
+            2: {name: 'whitespace.mcfunction'},
+            3: {name: 'keyword.control.flow.mcfunction'}
+          },
+          match: '(run)(\\s+)([a-z_]+)',
+          name: 'meta.names'
+        },
+        {include: '#resource-name'},
+        {
+          captures: {0: {name: 'entity.name.mcfunction'}},
+          match: '[A-Za-z]+(?=\\W)',
+          name: 'meta.names'
+        },
+        {
+          captures: {0: {name: 'string.unquoted.mcfunction'}},
+          match: '[A-Za-z_][A-Za-z0-9_.#%$]*',
+          name: 'meta.names'
+        },
+        {include: '#macro-name'},
+        {
+          captures: {0: {name: 'variable.other.mcfunction'}},
+          match: '([#%$]|((?<=\\s)\\.))[A-Za-z0-9_.#%$\\-]+',
+          name: 'meta.names'
+        }
+      ]
+    },
+    operators: {
+      patterns: [
+        {
+          captures: {0: {name: 'constant.numeric.mcfunction'}},
+          match: '[~^]',
+          name: 'meta.operators'
+        },
+        {
+          captures: {0: {name: 'keyword.operator.mcfunction'}},
+          match: '[\\-%?!+*<>\\\\/|&=.:,;]',
+          name: 'meta.operators'
+        }
+      ]
+    },
+    property: {
+      patterns: [
+        {
+          applyEndPatternLast: true,
+          begin: '\\{',
+          captures: {0: {name: 'punctuation.mcfunction'}},
+          end: '\\}',
+          name: 'meta.property.curly',
           patterns: [
-            {include: '#block_predicate.argument.number'},
-            {include: '#block_predicate.argument.boolean'},
-            {include: '#block_predicate.argument.literal'}
+            {include: '#resource-name'},
+            {include: '#literals'},
+            {include: '#property_key'},
+            {include: '#operators'},
+            {include: '#property_value'},
+            {include: '$self'}
+          ]
+        },
+        {
+          applyEndPatternLast: true,
+          begin: '\\[',
+          captures: {0: {name: 'variable.other.mcfunction'}},
+          end: '\\]',
+          name: 'meta.property.square',
+          patterns: [
+            {include: '#resource-name'},
+            {include: '#literals'},
+            {include: '#property_key'},
+            {include: '#operators'},
+            {include: '#property_value'},
+            {include: '$self'}
+          ]
+        },
+        {
+          applyEndPatternLast: true,
+          begin: '\\(',
+          captures: {0: {name: 'punctuation.mcfunction'}},
+          end: '\\)',
+          name: 'meta.property.paren',
+          patterns: [
+            {include: '#resource-name'},
+            {include: '#literals'},
+            {include: '#property_key'},
+            {include: '#operators'},
+            {include: '#property_value'},
+            {include: '$self'}
           ]
         }
       ]
     },
-    command: {
+    property_key: {
       patterns: [
         {
-          begin: '^\\s*([a-z_][a-z0-9_]*)[ \\n]',
-          beginCaptures: {1: {name: 'keyword.control.mcfunction'}},
-          end: '$',
-          name: 'meta.command.mcfunction',
+          captures: {0: {name: 'variable.other.mcfunction'}},
+          match: '#?[a-z_][a-z_\\.\\-]*\\:[a-z0-9_\\.\\-/]+(?=\\s*\\=:)',
+          name: 'meta.property_key'
+        },
+        {
+          captures: {0: {name: 'variable.other.mcfunction'}},
+          match: '#?[a-z_][a-z0-9_\\.\\-/]+',
+          name: 'meta.property_key'
+        },
+        {
+          captures: {0: {name: 'variable.other.mcfunction'}},
+          match: '[A-Za-z_]+[A-Za-z_\\-\\+]*',
+          name: 'meta.property_key'
+        }
+      ]
+    },
+    property_value: {
+      patterns: [
+        {
+          captures: {0: {name: 'string.unquoted.mcfunction'}},
+          match: '#?[a-z_][a-z_\\.\\-]*\\:[a-z0-9_\\.\\-/]+',
+          name: 'meta.property_value'
+        },
+        {
+          captures: {0: {name: 'string.unquoted.mcfunction'}},
+          match: '#?[a-z_][a-z0-9_\\.\\-/]+',
+          name: 'meta.property_value'
+        }
+      ]
+    },
+    'resource-name': {
+      patterns: [
+        {
+          captures: {0: {name: 'entity.name.function.mcfunction'}},
+          match: '#?[a-z_][a-z0-9_.-]*:[a-z0-9_./-]+',
+          name: 'meta.resource-name'
+        },
+        {
+          captures: {0: {name: 'entity.name.function.mcfunction'}},
+          match: '#?[a-z0-9_\\.\\-]+\\/[a-z0-9_\\.\\-\\/]+',
+          name: 'meta.resource-name'
+        }
+      ]
+    },
+    root: {
+      patterns: [
+        {include: '#literals'},
+        {include: '#comments'},
+        {include: '#say'},
+        {include: '#names'},
+        {include: '#comments_inline'},
+        {include: '#subcommands'},
+        {include: '#property'},
+        {include: '#operators'},
+        {include: '#selectors'}
+      ]
+    },
+    say: {
+      patterns: [
+        {
+          begin: '^(\\s*)(say)',
+          beginCaptures: {
+            1: {name: 'whitespace.mcfunction'},
+            2: {name: 'keyword.control.flow.mcfunction'}
+          },
+          end: '\\n',
+          name: 'meta.say.mcfunction',
           patterns: [
             {
-              begin: '(?<= )',
-              contentName: 'meta.command.token.mcfunction',
-              end: '[ \\n]',
-              patterns: [{include: '#command.tokens'}]
-            }
+              captures: {0: {name: 'constant.character.escape.mcfunction'}},
+              match: '\\\\\\s*\\n'
+            },
+            {include: '#literals_string-double'},
+            {include: '#literals_string-single'}
           ]
-        }
-      ]
-    },
-    'command.token.block_predicate': {
-      begin:
-        '(?<= )(?=(\\#)?([a-z0-9_\\.\\-]+)(\\:)([a-z0-9_\\.\\-\\/]+)(\\[|\\{))',
-      end: '(?=\\n)|(?:(?<=\\])(?!\\{)|(?<=\\}))([^ \\n]*)',
-      endCaptures: {1: {name: 'invalid.illegal.mcfunction'}},
-      name: 'meta.command.token.block_predicate.mcfunction',
-      patterns: [{include: '#block_predicate'}]
-    },
-    'command.token.block_predicate_without_namespace': {
-      begin:
-        '(?<= )(?=(\\#)?([a-z0-9_\\.\\-\\/]+)(\\[ *([a-z_][a-z0-9_]*) *\\=))',
-      end: '(?=\\n)|(?:(?<=\\])(?!\\{)|(?<=\\}))([^ \\n]*)',
-      endCaptures: {1: {name: 'invalid.illegal.mcfunction'}},
-      name: 'meta.command.token.block_predicate_without_namespace.mcfunction',
-      patterns: [{include: '#block_predicate'}]
-    },
-    'command.token.boolean': {
-      captures: {1: {name: 'constant.numeric.mcfunction'}},
-      match: '(?<= )(true|false)(?=[ \\n]|$)',
-      name: 'meta.command.token.boolean.mcfunction'
-    },
-    'command.token.coordinate': {
-      captures: {
-        1: {name: 'constant.numeric.mcfunction'},
-        2: {name: 'constant.numeric.mcfunction'}
-      },
-      match: '(?<= )([\\~\\^])(\\-?\\d*\\.?\\d+)?(?=[ \\n]|$)',
-      name: 'meta.command.token.coordinate.mcfunction'
-    },
-    'command.token.fakeplayer': {
-      captures: {1: {name: 'support.class.mcfunction'}},
-      match: '(?<= )([\\#\\$\\%]\\S+)(?=[ \\n]|$)',
-      name: 'meta.command.token.fakeplayer.mcfunction'
-    },
-    'command.token.greedy_parent': {
-      captures: {
-        1: {name: 'entity.name.mcfunction'},
-        2: {name: 'string.quoted.mcfunction'}
-      },
-      match: '((?<=^say | say ))(.*)$',
-      name: 'meta.command.token.greedy_parent.mcfunction'
-    },
-    'command.token.literal': {
-      captures: {1: {name: 'entity.name.mcfunction'}},
-      match: '(?<= )([a-z_][a-z0-9_]*)(?=[ \\n]|$)',
-      name: 'meta.command.token.literal.mcfunction'
-    },
-    'command.token.nbt_compound': {
-      begin: '(?<= )(\\{)',
-      beginCaptures: {1: {name: 'variable.language.mcfunction'}},
-      end: '(?=\\n)|(\\})([^ \\n]*)',
-      endCaptures: {
-        1: {name: 'variable.language.mcfunction'},
-        2: {name: 'invalid.illegal.mcfunction'}
-      },
-      name: 'meta.command.token.nbt_compound.mcfunction',
-      patterns: [{include: '#nbt.compound'}]
-    },
-    'command.token.nbt_list': {
-      begin: '(?<= )(\\[)(\\w*;)?',
-      beginCaptures: {
-        1: {name: 'variable.language.mcfunction'},
-        2: {name: 'variable.language.mcfunction'}
-      },
-      end: '(?=\\n)|(\\])([^ \\n]*)',
-      endCaptures: {
-        1: {name: 'variable.language.mcfunction'},
-        2: {name: 'invalid.illegal.mcfunction'}
-      },
-      name: 'meta.command.token.nbt_list.mcfunction',
-      patterns: [{include: '#nbt.list'}]
-    },
-    'command.token.nbt_path': {
-      begin: '(?<= )(?=\\w+[\\.\\[\\{])',
-      end: '(?=[ \\n]|$)',
-      name: 'meta.command.token.nbt_path.mcfunction',
-      patterns: [{include: '#nbt_path.property'}]
-    },
-    'command.token.number': {
-      captures: {1: {name: 'constant.numeric.mcfunction'}},
-      match: '(?<= )(\\-?\\d*\\.?\\d+)(?=[ \\n]|$)',
-      name: 'meta.command.token.number.mcfunction'
-    },
-    'command.token.operation': {
-      captures: {1: {name: 'constant.numeric.mcfunction'}},
-      match:
-        '(?<= )(\\%\\=|\\*\\=|\\+\\=|\\-\\=|\\/\\=|\\<|\\=|\\>|\\>\\<|\\<\\=|\\>\\=)(?=[ \\n]|$)',
-      name: 'meta.command.token.operation.mcfunction'
-    },
-    'command.token.quoted_string': {
-      begin: '(?<= )(\\")',
-      beginCaptures: {1: {name: 'string.quoted.mcfunction'}},
-      end: '(?=\\n)|(\\")([^ \\n]*)',
-      endCaptures: {
-        1: {name: 'string.quoted.mcfunction'},
-        2: {name: 'invalid.illegal.mcfunction'}
-      },
-      name: 'meta.command.token.quoted_string.mcfunction',
-      patterns: [{include: '#common.quoted_string'}]
-    },
-    'command.token.range': {
-      captures: {
-        1: {name: 'constant.numeric.mcfunction'},
-        2: {name: 'keyword.control.mcfunction'},
-        3: {name: 'constant.numeric.mcfunction'}
-      },
-      match: '(?<= )(\\-?\\d*\\.?\\d+)?(\\.\\.)(\\-?\\d*\\.?\\d+)?(?=[ \\n]|$)',
-      name: 'meta.command.token.range.mcfunction'
-    },
-    'command.token.resource_location': {
-      captures: {
-        1: {name: 'entity.name.function.mcfunction'},
-        2: {name: 'entity.name.function.mcfunction'},
-        3: {name: 'entity.name.function.mcfunction'}
-      },
-      match: '(?<= )([a-z0-9_\\.\\-]+)(\\:)([a-z0-9_\\.\\-\\/]+)(?=[ \\n]|$)',
-      name: 'meta.command.token.resource_location.mcfunction'
-    },
-    'command.token.root_redirect': {
-      captures: {
-        1: {name: 'entity.name.mcfunction'},
-        2: {name: 'keyword.control.mcfunction'}
-      },
-      match: '(?<= )(run) ([a-z_][a-z0-9_]*)?(?=[ \\n]|$)',
-      name: 'meta.command.token.root_redirect.mcfunction'
-    },
-    'command.token.selector_with_arguments': {
-      begin: '(?<= )(\\@[a-z])(\\[)',
-      beginCaptures: {
-        1: {name: 'support.class.mcfunction'},
-        2: {name: 'support.class.mcfunction'}
-      },
-      end: '(?=\\n)|(\\])([^ \\n]*)',
-      endCaptures: {
-        1: {name: 'support.class.mcfunction'},
-        2: {name: 'invalid.illegal.mcfunction'}
-      },
-      name: 'meta.command.token.selector_with_arguments.mcfunction',
-      patterns: [
-        {match: ' +', name: 'meta.selector.argument_spacing.mcfunction'},
+        },
         {
-          begin:
-            '((?:[a-z_][a-z0-9_]*)|(?:"[^"\n]*")|(?:\\\'[^\\\'\n]*\\\')) *(\\=) *(\\!)? *',
+          begin: '(run)(\\s+)(say)',
           beginCaptures: {
-            1: {name: 'variable.other.mcfunction'},
-            2: {name: 'support.class.mcfunction'},
-            3: {name: 'keyword.control.mcfunction'}
+            1: {name: 'entity.name.mcfunction'},
+            2: {name: 'whitespace.mcfunction'},
+            3: {name: 'keyword.control.flow.mcfunction'}
           },
-          end: '( *\\,)(?=[\\]\\n])|( *\\,)|(?= *[\\]\\n])',
-          endCaptures: {
-            1: {name: 'invalid.illegal.mcfunction'},
-            2: {name: 'support.class.mcfunction'}
-          },
-          name: 'meta.selector.argument.mcfunction',
+          end: '\\n',
+          name: 'meta.say.mcfunction',
           patterns: [
-            {include: '#selector.argument.resource_location'},
-            {include: '#selector.argument.tagged_resource_location'},
-            {include: '#selector.argument.range'},
-            {include: '#selector.argument.number'},
-            {include: '#selector.argument.boolean'},
-            {include: '#selector.argument.property_map'},
-            {include: '#selector.argument.nbt_compound'},
-            {include: '#selector.argument.quoted_string'},
-            {include: '#selector.argument.single_quoted_string'},
-            {include: '#selector.argument.unquoted_string'},
-            {include: '#selector.argument.unknown'}
+            {
+              captures: {0: {name: 'constant.character.escape.mcfunction'}},
+              match: '\\\\\\s*\\n'
+            },
+            {include: '#literals_string-double'},
+            {include: '#literals_string-single'}
           ]
-        },
-        {match: '[^\\]\\n]+', name: 'invalid.illegal.mcfunction'}
-      ]
-    },
-    'command.token.selector_without_arguments': {
-      captures: {1: {name: 'support.class.mcfunction'}},
-      match: '(?<= )(\\@[a-z])(?=[ \\n]|$)',
-      name: 'meta.command.token.selector_without_arguments.mcfunction'
-    },
-    'command.token.single_quoted_string': {
-      begin: "(?<= )(\\')",
-      beginCaptures: {1: {name: 'string.quoted.mcfunction'}},
-      end: "(?=\\n)|(\\')([^ \\n]*)",
-      endCaptures: {
-        1: {name: 'string.quoted.mcfunction'},
-        2: {name: 'invalid.illegal.mcfunction'}
-      },
-      name: 'meta.command.token.single_quoted_string.mcfunction',
-      patterns: [{include: '#common.single_quoted_string'}]
-    },
-    'command.token.tagged_resource_location': {
-      captures: {
-        1: {name: 'entity.name.function.mcfunction'},
-        2: {name: 'entity.name.function.mcfunction'},
-        3: {name: 'entity.name.function.mcfunction'},
-        4: {name: 'entity.name.function.mcfunction'}
-      },
-      match:
-        '(?<= )(\\#)([a-z0-9_\\.\\-]+)(\\:)([a-z0-9_\\.\\-\\/]+)(?=[ \\n]|$)',
-      name: 'meta.command.token.tagged_resource_location.mcfunction'
-    },
-    'command.token.unknown': {
-      captures: {1: {name: 'invalid.illegal.mcfunction'}},
-      match: '(?<= )([^ \\n]*)(?=[ \\n]|$)',
-      name: 'meta.command.token.unknown.mcfunction'
-    },
-    'command.token.unquoted_string': {
-      captures: {1: {name: 'string.unquoted.mcfunction'}},
-      match: '(?<= )(\\S+)(?=[ \\n]|$)',
-      name: 'meta.command.token.unquoted_string.mcfunction'
-    },
-    'command.token.uuid': {
-      captures: {1: {name: 'support.class.mcfunction'}},
-      match: '(?<= )([0-9a-fA-F]+(?:(-)[0-9a-fA-F]+){4})(?=[ \\n]|$)',
-      name: 'meta.command.token.uuid.mcfunction'
-    },
-    'command.tokens': {
-      patterns: [
-        {include: '#command.token.nbt_compound'},
-        {include: '#command.token.nbt_list'},
-        {include: '#command.token.selector_with_arguments'},
-        {include: '#command.token.selector_without_arguments'},
-        {include: '#command.token.block_predicate'},
-        {include: '#command.token.block_predicate_without_namespace'},
-        {include: '#command.token.resource_location'},
-        {include: '#command.token.tagged_resource_location'},
-        {include: '#command.token.range'},
-        {include: '#command.token.number'},
-        {include: '#command.token.coordinate'},
-        {include: '#command.token.boolean'},
-        {include: '#command.token.operation'},
-        {include: '#command.token.root_redirect'},
-        {include: '#command.token.greedy_parent'},
-        {include: '#command.token.literal'},
-        {include: '#command.token.uuid'},
-        {include: '#command.token.fakeplayer'},
-        {include: '#command.token.nbt_path'},
-        {include: '#command.token.quoted_string'},
-        {include: '#command.token.single_quoted_string'},
-        {include: '#command.token.unquoted_string'},
-        {include: '#command.token.unknown'}
-      ]
-    },
-    comment: {
-      patterns: [
-        {
-          begin: '^[ \\t]*((#)([\\#\\>\\~\\!\\@\\$\\%\\^\\*]+)((.*)))$',
-          beginCaptures: {
-            1: {name: 'comment.block.mcfunction'},
-            2: {name: 'markup.list.mcfunction'},
-            3: {name: 'markup.list.mcfunction'},
-            4: {name: 'markup.bold.mcfunction'},
-            5: {name: 'markup.list.mcfunction'}
-          },
-          end: '^(?![ \\t]*#)',
-          name: 'meta.comment.block.mcfunction',
-          patterns: [{include: '#comment.block'}]
-        },
-        {
-          captures: {1: {name: 'comment.line.mcfunction'}},
-          match: '^[ \\t]*(#.*)$',
-          name: 'meta.comment.line.mcfunction'
         }
       ]
     },
-    'comment.block': {
+    selectors: {
       patterns: [
         {
-          begin: '^[ \\t]*((#)[ \\t]*)',
-          beginCaptures: {
-            1: {name: 'comment.block.mcfunction'},
-            2: {name: 'markup.list.mcfunction'}
-          },
-          end: '$',
-          name: 'meta.comment.block_line.mcfunction',
-          patterns: [{include: '#comment.block.line'}]
+          captures: {0: {name: 'support.class.mcfunction'}},
+          match: '@[a-z]+',
+          name: 'meta.selectors'
         }
       ]
     },
-    'comment.block.line': {
+    subcommands: {
       patterns: [
         {
-          captures: {
-            1: {name: 'comment.block.mcfunction'},
-            2: {name: 'markup.heading.mcfunction'},
-            3: {name: 'comment.block.mcfunction'}
-          },
-          match: '((\\@\\w*)\\b(.*))$',
-          name: 'meta.comment.block.annotation.mcfunction'
-        },
-        {
-          captures: {
-            1: {name: 'comment.block.mcfunction'},
-            2: {name: 'markup.list.mcfunction'},
-            3: {name: 'markup.bold.mcfunction'},
-            4: {name: 'markup.list.mcfunction'}
-          },
-          match: '(([\\#\\>\\~\\!\\@\\$\\%\\^\\*]+)((.*)))$',
-          name: 'meta.comment.block.heading.mcfunction'
-        },
-        {
-          captures: {1: {name: 'comment.block.mcfunction'}},
-          match: '(.*)$',
-          name: 'meta.comment.block.text.mcfunction'
-        }
-      ]
-    },
-    'common.quoted_string': {
-      patterns: [
-        {match: '[^\\\\\\"\\n]', name: 'string.quoted.mcfunction'},
-        {match: '\\\\[^\\n]', name: 'constant.character.escape.mcfunction'},
-        {match: '\\\\', name: 'invalid.illegal.mcfunction'}
-      ]
-    },
-    'common.single_quoted_string': {
-      patterns: [
-        {match: "[^\\\\\\'\\n]", name: 'string.quoted.mcfunction'},
-        {match: '\\\\[^\\n]', name: 'constant.character.escape.mcfunction'},
-        {match: '\\\\', name: 'invalid.illegal.mcfunction'}
-      ]
-    },
-    'nbt.compound': {
-      patterns: [
-        {match: ' +'},
-        {
-          begin: '(,)? *([A-Za-z0-9_\\.\\-]+|\\"[^\\n\\"]+\\") *(\\:) *',
-          beginCaptures: {
-            1: {name: 'variable.language.mcfunction'},
-            2: {name: 'string.interpolated.mcfunction'},
-            3: {name: 'variable.language.mcfunction'}
-          },
-          end: ' *(?=[\\n\\}\\,])',
-          patterns: [{include: '#nbt.value'}]
-        },
-        {match: '[^\\n\\}\\,]+', name: 'invalid.illegal.mcfunction'}
-      ]
-    },
-    'nbt.list': {
-      patterns: [
-        {match: ' +'},
-        {
-          begin: '(,)? *(?=[^\\n\\]\\,])',
-          beginCaptures: {1: {name: 'variable.language.mcfunction'}},
-          end: ' *(?=[\\n\\]\\,])',
-          patterns: [{include: '#nbt.value'}]
-        },
-        {match: '[^\\n\\]\\,]+', name: 'invalid.illegal.mcfunction'}
-      ]
-    },
-    'nbt.value': {
-      patterns: [
-        {
-          begin: '(\\{)',
-          beginCaptures: {1: {name: 'variable.language.mcfunction'}},
-          end: '(?=\\n)|(\\})',
-          endCaptures: {1: {name: 'variable.language.mcfunction'}},
-          patterns: [{include: '#nbt.compound'}]
-        },
-        {
-          begin: '(\\[)(\\w*;)?',
-          beginCaptures: {
-            1: {name: 'variable.language.mcfunction'},
-            2: {name: 'variable.language.mcfunction'}
-          },
-          end: '(?=\\n)|(\\])',
-          endCaptures: {1: {name: 'variable.language.mcfunction'}},
-          patterns: [{include: '#nbt.list'}]
-        },
-        {
-          begin: '(\\")',
-          beginCaptures: {1: {name: 'string.quoted.mcfunction'}},
-          end: '(?=\\n)|(\\")',
-          endCaptures: {1: {name: 'string.quoted.mcfunction'}},
-          patterns: [{include: '#common.quoted_string'}]
-        },
-        {
-          begin: "(\\')",
-          beginCaptures: {1: {name: 'string.quoted.mcfunction'}},
-          end: "(?=\\n)|(\\')",
-          endCaptures: {1: {name: 'string.quoted.mcfunction'}},
-          patterns: [{include: '#common.single_quoted_string'}]
-        },
-        {match: '(true|false)', name: 'constant.numeric.mcfunction'},
-        {match: '(\\-?\\d*\\.?\\d+)', name: 'constant.numeric.mcfunction'},
-        {
-          match: '([^\\s\\{\\}\\[\\]\\,\\:\\=]+)',
-          name: 'string.unquoted.mcfunction'
-        },
-        {match: '[^\\n\\,\\]\\}]+', name: 'invalid.illegal.mcfunction'}
-      ]
-    },
-    'nbt_path.index': {
-      patterns: [
-        {
-          captures: {1: {name: 'constant.numeric.mcfunction'}},
-          match: '(?<=\\[)(\\-?\\d+)(?=\\])'
-        },
-        {
-          begin: '(\\{)',
-          beginCaptures: {1: {name: 'variable.language.mcfunction'}},
-          end: '(?=\\n)|(\\})([^\\]\\,\\n]*)',
-          endCaptures: {
-            1: {name: 'variable.language.mcfunction'},
-            2: {name: 'invalid.illegal.mcfunction'}
-          },
-          patterns: [{include: '#nbt.compound'}]
-        },
-        {match: '[^\\n\\]]+', name: 'invalid.illegal.mcfunction'}
-      ]
-    },
-    'nbt_path.property': {
-      patterns: [
-        {
-          begin: '(\\.)?(\\w+)?(\\[)',
-          beginCaptures: {
-            1: {name: 'variable.language.mcfunction'},
-            2: {name: 'string.interpolated.mcfunction'},
-            3: {name: 'variable.language.mcfunction'}
-          },
-          end: '(\\])|(?=\\n)',
-          endCaptures: {1: {name: 'variable.language.mcfunction'}},
-          patterns: [{include: '#nbt_path.index'}]
-        },
-        {
-          begin: '(\\.)?(\\w+)(\\{)',
-          beginCaptures: {
-            1: {name: 'variable.language.mcfunction'},
-            2: {name: 'string.interpolated.mcfunction'},
-            3: {name: 'variable.language.mcfunction'}
-          },
-          end: '(\\})|(?=\\n)',
-          endCaptures: {1: {name: 'variable.language.mcfunction'}},
-          patterns: [{include: '#nbt.compound'}]
-        },
-        {
-          begin: '(\\")',
-          beginCaptures: {1: {name: 'string.quoted.mcfunction'}},
-          end: '(?=\\n)|(\\")([^\\. \\n]*)',
-          endCaptures: {
-            1: {name: 'string.quoted.mcfunction'},
-            2: {name: 'invalid.illegal.mcfunction'}
-          },
-          patterns: [{include: '#common.quoted_string'}]
-        },
-        {
-          captures: {
-            1: {name: 'variable.language.mcfunction'},
-            2: {name: 'string.interpolated.mcfunction'}
-          },
-          match: '(\\.)?(\\w+)'
-        },
-        {
-          captures: {1: {name: 'invalid.illegal.mcfunction'}},
-          match: '(\\.)(?=\\.)'
-        },
-        {match: '[^\\.\\s]+', name: 'invalid.illegal.mcfunction'}
-      ]
-    },
-    property_map: {
-      patterns: [
-        {match: ' +'},
-        {
-          begin: '(,)? *([A-Za-z0-9_\\.\\-]+) *(\\=) *',
-          beginCaptures: {
-            1: {name: 'variable.language.mcfunction'},
-            2: {name: 'entity.name.function.mcfunction'},
-            3: {name: 'variable.language.mcfunction'}
-          },
-          end: ' *(?=[\\n\\}\\,])',
-          patterns: [{include: '#property_map.values'}]
-        },
-        {
-          begin:
-            '(,)? *([a-z0-9_\\.\\-]+\\:[a-z0-9_\\.\\-\\/]+|[a-z0-9_\\.\\-\\/]+) *(\\=) *',
-          beginCaptures: {
-            1: {name: 'variable.language.mcfunction'},
-            2: {name: 'entity.name.function.mcfunction'},
-            3: {name: 'variable.language.mcfunction'}
-          },
-          end: ' *(?=[\\n\\}\\,])',
-          patterns: [{include: '#property_map.values'}]
-        },
-        {match: '[^\\n\\}\\,]+', name: 'invalid.illegal.mcfunction'}
-      ]
-    },
-    'property_map.values': {
-      patterns: [
-        {
-          captures: {1: {name: 'constant.numeric.mcfunction'}},
-          match: '(true|false)'
-        },
-        {
-          captures: {
-            1: {name: 'constant.numeric.mcfunction'},
-            2: {name: 'keyword.control.mcfunction'},
-            3: {name: 'constant.numeric.mcfunction'}
-          },
-          match: '(\\-?\\d*\\.?\\d+)?(\\.\\.)(\\-?\\d*\\.?\\d+)?'
-        },
-        {
-          captures: {1: {name: 'constant.numeric.mcfunction'}},
-          match: '(\\-?\\d*\\.?\\d+)'
-        },
-        {
-          begin: '(\\{) *',
-          beginCaptures: {1: {name: 'variable.language.mcfunction'}},
-          end: '(?=\\n)|(\\}) *([^\\}\\,\\n]*)',
-          endCaptures: {
-            1: {name: 'variable.language.mcfunction'},
-            2: {name: 'invalid.illegal.mcfunction'}
-          },
-          patterns: [{include: '#property_map'}]
-        }
-      ]
-    },
-    'selector.argument.boolean': {
-      captures: {1: {name: 'constant.numeric.mcfunction'}},
-      match: '(true|false)(?= *[\\,\\]\\n])',
-      name: 'meta.selector.argument.boolean.mcfunction'
-    },
-    'selector.argument.nbt_compound': {
-      begin: '(\\{)',
-      beginCaptures: {1: {name: 'variable.language.mcfunction'}},
-      end: '(?=\\n)|(\\}) *([^\\]\\,\\n]*)',
-      endCaptures: {
-        1: {name: 'variable.language.mcfunction'},
-        2: {name: 'invalid.illegal.mcfunction'}
-      },
-      name: 'meta.selector.argument.nbt_compound.mcfunction',
-      patterns: [{include: '#nbt.compound'}]
-    },
-    'selector.argument.number': {
-      captures: {1: {name: 'constant.numeric.mcfunction'}},
-      match: '(\\-?\\d*\\.?\\d+)(?= *[\\,\\]\\n])',
-      name: 'meta.selector.argument.number.mcfunction'
-    },
-    'selector.argument.property_map': {
-      begin:
-        '(\\{)(?= *([a-z0-9_\\.\\-]+\\:[a-z0-9_\\.\\-\\/]+|[a-z0-9_\\.\\-\\/]+|([A-Za-z0-9_\\.\\-]+)) *(\\=))',
-      beginCaptures: {1: {name: 'variable.language.mcfunction'}},
-      end: '(?=\\n)|(\\}) *([^\\]\\,\\n]*)',
-      endCaptures: {
-        1: {name: 'variable.language.mcfunction'},
-        2: {name: 'invalid.illegal.mcfunction'}
-      },
-      name: 'meta.selector.argument.property_map.mcfunction',
-      patterns: [{include: '#property_map'}]
-    },
-    'selector.argument.quoted_string': {
-      begin: '(\\")',
-      beginCaptures: {1: {name: 'string.quoted.mcfunction'}},
-      end: '(?=\\n)|(\\") *([^\\]\\,\\n]*)',
-      endCaptures: {
-        1: {name: 'string.quoted.mcfunction'},
-        2: {name: 'invalid.illegal.mcfunction'}
-      },
-      name: 'meta.selector.argument.quoted_string.mcfunction',
-      patterns: [{include: '#common.quoted_string'}]
-    },
-    'selector.argument.range': {
-      captures: {
-        1: {name: 'constant.numeric.mcfunction'},
-        2: {name: 'keyword.control.mcfunction'},
-        3: {name: 'constant.numeric.mcfunction'}
-      },
-      match: '(\\-?\\d*\\.?\\d+)?(\\.\\.)(\\-?\\d*\\.?\\d+)?(?= *[\\,\\]\\n])',
-      name: 'meta.selector.argument.range.mcfunction'
-    },
-    'selector.argument.resource_location': {
-      captures: {
-        1: {name: 'entity.name.function.mcfunction'},
-        2: {name: 'entity.name.function.mcfunction'},
-        3: {name: 'entity.name.function.mcfunction'}
-      },
-      match: '([a-z0-9_\\.\\-]+)(\\:)([a-z0-9_\\.\\-\\/]+)(?= *[\\,\\]\\n])',
-      name: 'meta.selector.argument.resource_location.mcfunction'
-    },
-    'selector.argument.single_quoted_string': {
-      begin: "(\\')",
-      beginCaptures: {1: {name: 'string.quoted.mcfunction'}},
-      end: "(?=\\n)|(\\') *([^\\]\\,\\n]*)",
-      endCaptures: {
-        1: {name: 'string.quoted.mcfunction'},
-        2: {name: 'invalid.illegal.mcfunction'}
-      },
-      name: 'meta.selector.argument.single_quoted_string.mcfunction',
-      patterns: [{include: '#common.single_quoted_string'}]
-    },
-    'selector.argument.tagged_resource_location': {
-      captures: {
-        1: {name: 'entity.name.function.mcfunction'},
-        2: {name: 'entity.name.function.mcfunction'},
-        3: {name: 'entity.name.function.mcfunction'},
-        4: {name: 'entity.name.function.mcfunction'}
-      },
-      match:
-        '(\\#)([a-z0-9_\\.\\-]+)(\\:)([a-z0-9_\\.\\-\\/]+)(?= *[\\,\\]\\n])',
-      name: 'meta.selector.argument.tagged_resource_location.mcfunction'
-    },
-    'selector.argument.unknown': {
-      captures: {1: {name: 'invalid.illegal.mcfunction'}},
-      match: '([^\\]\\n\\,]+)',
-      name: 'meta.selector.argument.unknown.mcfunction'
-    },
-    'selector.argument.unquoted_string': {
-      captures: {1: {name: 'string.unquoted.mcfunction'}},
-      match: '([^\\s\\{\\}\\[\\]\\,\\:\\=\\!]+)(?= *[\\,\\]\\n])',
-      name: 'meta.selector.argument.unquoted_string.mcfunction'
-    },
-    unknown: {
-      patterns: [
-        {
-          captures: {1: {name: 'invalid.illegal.mcfunction'}},
-          match: '^(.*)$',
-          name: 'meta.unknown.mcfunction'
+          captures: {0: {name: 'entity.name.class.mcfunction'}},
+          match: '[a-z_]+',
+          name: 'meta.literals'
         }
       ]
     }

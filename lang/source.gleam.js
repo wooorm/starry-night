@@ -21,12 +21,8 @@ const grammar = {
   ],
   repository: {
     binary_number: {
-      match: '\\b0[bB](_?[01])+\\b',
+      match: '\\b0[bB]0*1[01_]*\\b',
       name: 'constant.numeric.binary.gleam'
-    },
-    boolean: {
-      match: '\\b(True|False)\\b',
-      name: 'constant.language.boolean.gleam'
     },
     comments: {patterns: [{match: '//.*', name: 'comment.line.gleam'}]},
     constant: {
@@ -36,19 +32,19 @@ const grammar = {
         {include: '#hexadecimal_number'},
         {include: '#decimal_number'},
         {include: '#boolean'},
-        {match: '[[:upper:]][[:word:]]*', name: 'entity.name.type.gleam'}
+        {match: '[[:upper:]][[:alnum:]]*', name: 'entity.name.type.gleam'}
       ]
     },
     decimal_number: {
       match:
-        '\\b[[:digit:]]+(_?[[:digit:]])*(\\.[[:digit:]]*)?(e-?[[:digit:]]*)?\\b',
+        '\\b(0*[1-9][0-9_]*|0)(\\.(0*[1-9][0-9_]*|0)?(e-?0*[1-9][0-9]*)?)?\\b',
       name: 'constant.numeric.decimal.gleam'
     },
     discards: {match: '\\b_(?:[[:word:]]+)?\\b', name: 'comment.unused.gleam'},
     entity: {
       patterns: [
         {
-          begin: '\\b([[:lower:]][[:word:]]*)([[:space:]]*)?\\(',
+          begin: '\\b([[:lower:]][[:word:]]*)\\b[[:space:]]*\\(',
           captures: {1: {name: 'entity.name.function.gleam'}},
           end: '\\)',
           patterns: [{include: '$self'}]
@@ -64,32 +60,30 @@ const grammar = {
       ]
     },
     hexadecimal_number: {
-      match: '\\b0[xX](_?[[:xdigit:]])+\\b',
+      match: '\\b0[xX]0*[1-9a-zA-Z][0-9a-zA-Z]*\\b',
       name: 'constant.numeric.hexadecimal.gleam'
     },
     keywords: {
       patterns: [
         {
           match:
-            '\\b(as|use|case|if|fn|import|let|assert|pub|type|opaque|const|todo|panic)\\b',
+            '\\b(as|use|case|if|fn|import|let|assert|pub|type|opaque|const|todo|panic|else|try)\\b',
           name: 'keyword.control.gleam'
         },
         {match: '(<\\-|\\->)', name: 'keyword.operator.arrow.gleam'},
         {match: '\\|>', name: 'keyword.operator.pipe.gleam'},
         {match: '\\.\\.', name: 'keyword.operator.splat.gleam'},
+        {match: '(==|!=)', name: 'keyword.operator.comparison.gleam'},
         {
-          match: '(<=\\.|>=\\.|==\\.|!=\\.|<\\.|>\\.)',
+          match: '(<=\\.|>=\\.|<\\.|>\\.)',
           name: 'keyword.operator.comparison.float.gleam'
         },
-        {
-          match: '(<=|>=|==|!=|<|>)',
-          name: 'keyword.operator.comparison.int.gleam'
-        },
+        {match: '(<=|>=|<|>)', name: 'keyword.operator.comparison.int.gleam'},
         {match: '(&&|\\|\\|)', name: 'keyword.operator.logical.gleam'},
         {match: '<>', name: 'keyword.operator.string.gleam'},
         {match: '\\|', name: 'keyword.operator.other.gleam'},
         {
-          match: '(\\+\\.|\\-\\.|/\\.|\\*\\.|%\\.)',
+          match: '(\\+\\.|\\-\\.|/\\.|\\*\\.)',
           name: 'keyword.operator.arithmetic.float.gleam'
         },
         {
@@ -100,7 +94,7 @@ const grammar = {
       ]
     },
     octal_number: {
-      match: '\\b0[oO](_?[0-7])+\\b',
+      match: '\\b0[oO]0*[1-7][0-7]*\\b',
       name: 'constant.numeric.octal.gleam'
     },
     strings: {

@@ -9,8 +9,8 @@
 
 /** @type {Grammar} */
 const grammar = {
-  extensions: [],
-  names: ['v', 'vlang'],
+  extensions: ['.carbon'],
+  names: ['carbon', 'v', 'vlang'],
   patterns: [
     {include: '#comments'},
     {include: '#function-decl'},

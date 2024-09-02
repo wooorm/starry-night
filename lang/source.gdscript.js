@@ -18,7 +18,7 @@ const grammar = {
       beginCaptures: {
         1: {name: 'variable.parameter.function.language.gdscript'},
         2: {name: 'punctuation.separator.annotation.gdscript'},
-        3: {name: 'entity.name.type.class.builtin.gdscript'}
+        3: {name: 'entity.name.type.class.gdscript'}
       },
       end: '(,)|(?=\\))',
       endCaptures: {1: {name: 'punctuation.separator.parameters.gdscript'}},
@@ -37,7 +37,7 @@ const grammar = {
     },
     any_method: {
       match: '\\b([A-Za-z_]\\w*)\\b(?=\\s*(?:[(]))',
-      name: 'support.function.any-method.gdscript'
+      name: 'entity.name.function.other.gdscript'
     },
     any_property: {
       captures: {
@@ -53,7 +53,7 @@ const grammar = {
       name: 'variable.other.gdscript'
     },
     arithmetic_operator: {
-      match: '->|\\+=|-=|\\*=|/=|%=|&=|\\|=|\\*|/|%|\\+|-|<<|>>|&|\\||\\^|~|!',
+      match: '->|\\+=|-=|\\*=|\\^=|/=|%=|&=|~=|\\|=|\\*\\*|\\*|/|%|\\+|-',
       name: 'keyword.operator.arithmetic.gdscript'
     },
     assignment_operator: {
@@ -66,11 +66,10 @@ const grammar = {
         {include: '#nodepath_object'},
         {include: '#nodepath_function'},
         {include: '#strings'},
+        {include: '#builtin_classes'},
         {include: '#const_vars'},
         {include: '#keywords'},
-        {include: '#logic_operator'},
-        {include: '#compare_operator'},
-        {include: '#arithmetic_operator'},
+        {include: '#operators'},
         {include: '#lambda_declaration'},
         {include: '#class_declaration'},
         {include: '#variable_declaration'},
@@ -81,6 +80,9 @@ const grammar = {
         {include: '#assignment_operator'},
         {include: '#in_keyword'},
         {include: '#control_flow'},
+        {include: '#match_keyword'},
+        {include: '#curly_braces'},
+        {include: '#square_braces'},
         {include: '#round_braces'},
         {include: '#function_call'},
         {include: '#comment'},
@@ -88,10 +90,17 @@ const grammar = {
         {include: '#func'},
         {include: '#letter'},
         {include: '#numbers'},
-        {include: '#builtin_classes'},
         {include: '#pascal_case_class'},
         {include: '#line_continuation'}
       ]
+    },
+    bitwise_operator: {
+      match: '&|\\||<<=|>>=|<<|>>|\\^|~',
+      name: 'keyword.operator.bitwise.gdscript'
+    },
+    boolean_operator: {
+      match: '(&&|\\|\\|)',
+      name: 'keyword.operator.boolean.gdscript'
     },
     builtin_classes: {
       match:
@@ -182,11 +191,11 @@ const grammar = {
       captures: {
         1: {name: 'punctuation.definition.comment.number-sign.gdscript'}
       },
-      match: '(#).*$\\n?',
+      match: '(##|#).*$\\n?',
       name: 'comment.line.number-sign.gdscript'
     },
     compare_operator: {
-      match: '<=|>=|==|<|>|!=',
+      match: '<=|>=|==|<|>|!=|!',
       name: 'keyword.operator.comparison.gdscript'
     },
     const_vars: {
@@ -195,8 +204,15 @@ const grammar = {
     },
     control_flow: {
       match:
-        '\\b(?:if|elif|else|while|break|continue|pass|return|match|yield|await)\\b',
+        '\\b(?:if|elif|else|while|break|continue|pass|return|when|yield|await)\\b',
       name: 'keyword.control.gdscript'
+    },
+    curly_braces: {
+      begin: '\\{',
+      beginCaptures: {0: {name: 'punctuation.definition.dict.begin.gdscript'}},
+      end: '\\}',
+      endCaptures: {0: {name: 'punctuation.definition.dict.end.gdscript'}},
+      patterns: [{include: '#base_expression'}, {include: '#any_variable'}]
     },
     expression: {
       patterns: [
@@ -254,10 +270,7 @@ const grammar = {
       ]
     },
     function_call: {
-      begin: '(?x)\n  \\b(?=\n    ([a-zA-Z_]\\w*) \\s* (\\()\n  )\n',
-      beginCaptures: {
-        2: {name: 'punctuation.definition.arguments.begin.gdscript'}
-      },
+      begin: '(?=\\b[a-zA-Z_]\\w*\\b\\()',
       end: '(\\))',
       endCaptures: {1: {name: 'punctuation.definition.arguments.end.gdscript'}},
       name: 'meta.function-call.gdscript',
@@ -280,10 +293,8 @@ const grammar = {
     function_name: {
       patterns: [
         {include: '#builtin_classes'},
-        {
-          match: '(?x)\n  \\b ([a-zA-Z_]\\w*) \\b\n',
-          name: 'support.function.any-method.gdscript'
-        }
+        {match: '\\b(preload)\\b', name: 'keyword.language.gdscript'},
+        {match: '\\b([a-zA-Z_]\\w*)\\b', name: 'entity.name.function.gdscript'}
       ]
     },
     getter_setter_godot4: {
@@ -319,7 +330,7 @@ const grammar = {
     },
     keywords: {
       match:
-        '\\b(?:class|class_name|is|onready|tool|static|export|as|void|enum|preload|assert|breakpoint|rpc|sync|remote|master|puppet|slave|remotesync|mastersync|puppetsync|trait|namespace)\\b',
+        '\\b(?:class|class_name|is|onready|tool|static|export|as|void|enum|assert|breakpoint|sync|remote|master|puppet|slave|remotesync|mastersync|puppetsync|trait|namespace)\\b',
       name: 'keyword.language.gdscript'
     },
     lambda_declaration: {
@@ -361,16 +372,16 @@ const grammar = {
         }
       ]
     },
-    logic_operator: {
-      match: '\\b(and|or|not|!)\\b',
-      name: 'keyword.operator.wordlike.gdscript'
-    },
     loose_default: {
       begin: '(=)',
       beginCaptures: {1: {name: 'keyword.operator.gdscript'}},
       end: '(,)|(?=\\))',
       endCaptures: {1: {name: 'punctuation.separator.parameters.gdscript'}},
       patterns: [{include: '#base_expression'}]
+    },
+    match_keyword: {
+      captures: {1: {name: 'keyword.control.gdscript'}},
+      match: '^\n\\s*(match)'
     },
     nodepath_function: {
       begin:
@@ -379,17 +390,20 @@ const grammar = {
         1: {name: 'entity.name.function.gdscript'},
         2: {name: 'punctuation.definition.parameters.begin.gdscript'}
       },
+      contentName: 'meta.function.parameters.gdscript',
       end: '(\\))',
       endCaptures: {
         1: {name: 'punctuation.definition.parameters.end.gdscript'}
       },
+      name: 'meta.function.gdscript',
       patterns: [
         {
           begin: '("|\')',
           end: '\\1',
           name: 'string.quoted.gdscript meta.literal.nodepath.gdscript constant.character.escape',
           patterns: [{match: '%', name: 'keyword.control.flow'}]
-        }
+        },
+        {include: '#base_expression'}
       ]
     },
     nodepath_object: {
@@ -428,6 +442,15 @@ const grammar = {
         {match: '[-]?[0-9][0-9_]*', name: 'constant.numeric.integer.gdscript'}
       ]
     },
+    operators: {
+      patterns: [
+        {include: '#wordlike_operator'},
+        {include: '#boolean_operator'},
+        {include: '#arithmetic_operator'},
+        {include: '#bitwise_operator'},
+        {include: '#compare_operator'}
+      ]
+    },
     parameters: {
       begin: '(\\()',
       beginCaptures: {
@@ -452,7 +475,7 @@ const grammar = {
       ]
     },
     pascal_case_class: {
-      match: '\\b([A-Z][a-z_0-9]*([A-Z]?[a-z_0-9]+)*[A-Z]?)\\b',
+      match: '\\b([A-Z]+[a-z_0-9]*([A-Z]?[a-z_0-9]+)*[A-Z]?)\\b',
       name: 'entity.name.type.class.gdscript'
     },
     round_braces: {
@@ -481,6 +504,13 @@ const grammar = {
       match: '(?x) \\s*\n (signal) \\s+\n ([a-zA-Z_]\\w*)(?=[\\n\\s])',
       name: 'meta.signal.gdscript'
     },
+    square_braces: {
+      begin: '\\[',
+      beginCaptures: {0: {name: 'punctuation.definition.list.begin.gdscript'}},
+      end: '\\]',
+      endCaptures: {0: {name: 'punctuation.definition.list.end.gdscript'}},
+      patterns: [{include: '#base_expression'}, {include: '#any_variable'}]
+    },
     statement: {patterns: [{include: '#extends_statement'}]},
     statement_keyword: {
       patterns: [
@@ -497,7 +527,31 @@ const grammar = {
         }
       ]
     },
-    string_formatting: {
+    string_bracket_placeholders: {
+      patterns: [
+        {
+          captures: {
+            1: {name: 'constant.character.format.placeholder.other.gdscript'},
+            3: {name: 'storage.type.format.gdscript'},
+            4: {name: 'storage.type.format.gdscript'}
+          },
+          match:
+            '(?x)\n  (\n    {{ | }}\n    | (?:\n      {\n        \\w* (\\.[[:alpha:]_]\\w* | \\[[^\\]\'"]+\\])*\n        (![rsa])?\n        ( : \\w? [<>=^]? [-+ ]? \\#?\n          \\d* ,? (\\.\\d+)? [bcdeEfFgGnosxX%]? )?\n      })\n  )\n',
+          name: 'meta.format.brace.gdscript'
+        },
+        {
+          captures: {
+            1: {name: 'constant.character.format.placeholder.other.gdscript'},
+            3: {name: 'storage.type.format.gdscript'},
+            4: {name: 'storage.type.format.gdscript'}
+          },
+          match:
+            '(?x)\n  (\n    {\n      \\w* (\\.[[:alpha:]_]\\w* | \\[[^\\]\'"]+\\])*\n      (![rsa])?\n      (:)\n        [^\'"{}\\n]* (?:\n          \\{ [^\'"}\\n]*? \\} [^\'"{}\\n]*\n        )*\n    }\n  )\n',
+          name: 'meta.format.brace.gdscript'
+        }
+      ]
+    },
+    string_percent_placeholders: {
       captures: {
         1: {name: 'constant.character.format.placeholder.other.gdscript'}
       },
@@ -512,20 +566,18 @@ const grammar = {
       name: 'string.quoted.gdscript',
       patterns: [
         {match: '\\\\.', name: 'constant.character.escape.gdscript'},
-        {include: '#string_formatting'}
+        {include: '#string_percent_placeholders'},
+        {include: '#string_bracket_placeholders'}
       ]
     },
     variable_declaration: {
-      begin:
-        '\\b(?:(var)|(const))\\s+(?:(\\b[A-Z_][A-Z_0-9]*\\b)|([A-Za-z_]\\w*))\\s*',
+      begin: '\\b(?:(var)|(const))\\b',
       beginCaptures: {
         1: {name: 'keyword.language.gdscript storage.type.var.gdscript'},
-        2: {name: 'keyword.language.gdscript storage.type.const.gdscript'},
-        3: {name: 'constant.language.gdscript'},
-        4: {name: 'variable.other.gdscript'}
+        2: {name: 'keyword.language.gdscript storage.type.const.gdscript'}
       },
       end: '$|;',
-      name: 'meta.variable.gdscript',
+      name: 'meta.variable.declaration.gdscript',
       patterns: [
         {
           captures: {
@@ -557,6 +609,10 @@ const grammar = {
         {include: '#any_property'},
         {include: '#keywords'}
       ]
+    },
+    wordlike_operator: {
+      match: '\\b(and|or|not)\\b',
+      name: 'keyword.operator.wordlike.gdscript'
     }
   },
   scopeName: 'source.gdscript'

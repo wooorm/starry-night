@@ -11,8 +11,6 @@
 const grammar = {
   extensions: [
     '.bi',
-    '.ctl',
-    '.dsr',
     '.rbbas',
     '.rbfrm',
     '.rbmnu',
@@ -24,21 +22,15 @@ const grammar = {
     '.vbs'
   ],
   names: [
-    'classic-visual-basic',
     'fb',
     'freebasic',
     'realbasic',
     'vb-.net',
-    'vb-6',
     'vb.net',
-    'vb6',
     'vbnet',
     'vbscript',
     'visual-basic',
-    'visual-basic-.net',
-    'visual-basic-6',
-    'visual-basic-6.0',
-    'visual-basic-classic'
+    'visual-basic-.net'
   ],
   patterns: [
     {include: '#comment-single-quote'},

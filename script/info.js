@@ -43,6 +43,10 @@ export const info = {
     dependencies: ['source.cfscript', 'text.cfml.basic'],
     license: 'mit'
   },
+  'source.cylc': {
+    homepage: 'https://github.com/cylc/Cylc.tmbundle',
+    license: 'bsd-3-clause'
+  },
   'text.dfy.dafny': {
     homepage: 'https://github.com/DafnyVSCode/Dafny-VSCode',
     license: 'mit'
@@ -193,6 +197,10 @@ export const info = {
     license: 'bsd-3-clause'
   },
   'source.pogoscript': {
+    license: 'mit'
+  },
+  'source.powerbuilder': {
+    homepage: 'https://github.com/micha4w/PowerBuilder.tmbundle',
     license: 'mit'
   },
   'text.rdoc': {
@@ -452,10 +460,6 @@ export const info = {
     homepage: 'https://github.com/xDrivenDevelopment/atom-language-1c-bsl',
     license: 'mit'
   },
-  'source.cairo': {
-    homepage: 'https://github.com/xshitaka/atom-language-cairo',
-    license: 'mit'
-  },
   'source.clean': {
     license: 'mit'
   },
@@ -534,7 +538,8 @@ export const info = {
     license: 'mit'
   },
   'source.csswg': {
-    homepage: 'https://github.com/tabatkins/bikeshed'
+    homepage: 'https://github.com/tabatkins/bikeshed',
+    license: 'cc0-1.0'
   },
   'source.blitzmax': {},
   'source.boogie': {
@@ -560,6 +565,15 @@ export const info = {
   'source.c.platform': {
     homepage: 'https://github.com/textmate/c.tmbundle'
   },
+  'source.cairo': {
+    homepage: 'https://github.com/software-mansion-labs/cairo-tm-grammar',
+    license: 'apache-2.0'
+  },
+  'source.cairo0': {
+    dependencies: ['source.cairo'],
+    homepage: 'https://github.com/software-mansion-labs/cairo-tm-grammar',
+    license: 'apache-2.0'
+  },
   'source.capnp': {},
   'source.css.mss': {
     license: 'mit'
@@ -584,6 +598,11 @@ export const info = {
     license: 'mit'
   },
   'source.cmake': {},
+  'source.peggy': {
+    dependencies: ['source.js'],
+    homepage: 'https://github.com/peggyjs/code-peggy-language',
+    license: 'mit'
+  },
   'source.commonlisp': {
     homepage: 'https://github.com/qingpeng9802/common-lisp-tmlanguage',
     license: 'mit'
@@ -767,6 +786,10 @@ export const info = {
     homepage: 'https://github.com/pkova/hoon-grammar',
     license: 'mit'
   },
+  'source.iCalendar': {
+    homepage: 'https://github.com/kimsey0/iCalendar-sublime',
+    license: 'mit'
+  },
   'source.toit': {
     homepage: 'https://github.com/toitware/ide-tools',
     license: 'mit'
@@ -822,6 +845,11 @@ export const info = {
     dependencies: ['source.java'],
     homepage: 'https://github.com/jflex-de/jflex.tmbundle',
     license: 'bsd-2-clause'
+  },
+  'text.html.jte': {
+    dependencies: ['source.java', 'text.html.basic'],
+    homepage: 'https://github.com/maj2c/jte-template-syntax-highlight',
+    license: 'apache-2.0'
   },
   'source.python.kivy': {
     dependencies: ['source.python'],
@@ -1015,7 +1043,7 @@ export const info = {
     license: 'isc'
   },
   'source.nanorc': {
-    dependencies: ['injections.etc'],
+    dependencies: ['etc', 'injections.etc'],
     homepage: 'https://github.com/Alhadis/language-etc',
     license: 'isc'
   },
@@ -1172,11 +1200,6 @@ export const info = {
     homepage: 'https://github.com/Alhadis/language-grammars',
     license: 'isc'
   },
-  'source.pegjs': {
-    dependencies: ['source.js'],
-    homepage: 'https://github.com/Alhadis/language-grammars',
-    license: 'isc'
-  },
   'source.yacc': {
     dependencies: ['source.c++', 'source.java'],
     homepage: 'https://github.com/Alhadis/language-grammars',
@@ -1283,10 +1306,6 @@ export const info = {
   },
   'source.maxscript': {
     license: 'isc'
-  },
-  'source.mcfunction': {
-    homepage: 'https://github.com/Arcensoth/language-mcfunction',
-    license: 'mit'
   },
   'source.mermaid': {
     dependencies: [
@@ -1822,7 +1841,7 @@ export const info = {
     dependencies: ['text.html.basic']
   },
   'source.qsharp': {
-    homepage: 'https://github.com/microsoft/qsharp-compiler',
+    homepage: 'https://github.com/microsoft/qsharp',
     license: 'mit'
   },
   'source.quake': {
@@ -1899,6 +1918,10 @@ export const info = {
   'source.sourcepawn': {
     homepage: 'https://github.com/Sarrus1/sourcepawn-vscode',
     license: 'mit'
+  },
+  'source.wdl': {
+    homepage: 'https://github.com/stjude-rust-labs/sprocket-vscode',
+    license: 'apache-2.0'
   },
   'source.sql': {},
   'source.nut': {
@@ -2074,6 +2097,10 @@ export const info = {
     homepage: 'https://github.com/hashicorp/syntax',
     license: 'mpl-2.0'
   },
+  'source.mcfunction': {
+    homepage: 'https://github.com/MinecraftCommands/syntax-mcfunction',
+    license: 'mit'
+  },
   'source.tcl': {},
   'source.templ': {
     dependencies: ['source.go'],
@@ -2161,6 +2188,10 @@ export const info = {
     homepage: 'https://github.com/fwcd/vscode-curry',
     license: 'mit'
   },
+  'source.dune': {
+    homepage: 'https://github.com/maelvls/vscode-dune',
+    license: 'mit'
+  },
   'source.euphoria': {
     homepage: 'https://github.com/OpenEuphoria/vscode-euphoria',
     license: 'mit'
@@ -2182,10 +2213,12 @@ export const info = {
     license: 'apache-2.0'
   },
   'go.mod': {
-    homepage: 'https://github.com/golang/vscode-go'
+    homepage: 'https://github.com/golang/vscode-go',
+    license: 'mit'
   },
   'go.sum': {
-    homepage: 'https://github.com/golang/vscode-go'
+    homepage: 'https://github.com/golang/vscode-go',
+    license: 'mit'
   },
   'source.hack': {
     dependencies: ['text.html.basic'],
@@ -2210,7 +2243,7 @@ export const info = {
     license: 'mit'
   },
   'source.just': {
-    homepage: 'https://github.com/skellock/vscode-just',
+    homepage: 'https://github.com/nefrob/vscode-just',
     license: 'mit'
   },
   'source.lean': {
@@ -2220,6 +2253,10 @@ export const info = {
   'source.lean4': {
     homepage: 'https://github.com/leanprover/vscode-lean4',
     license: 'apache-2.0'
+  },
+  'source.livecodescript': {
+    homepage: 'https://github.com/Ferruslogic/vscode-livecodescript',
+    license: 'bsd-3-clause'
   },
   'source.mc': {
     license: 'mit'
@@ -2231,6 +2268,10 @@ export const info = {
   'source.move': {
     homepage: 'https://github.com/damirka/vscode-move-syntax',
     license: 'mit'
+  },
+  'source.nr': {
+    homepage: 'https://github.com/noir-lang/vscode-noir',
+    license: 'apache-2.0'
   },
   'source.rego': {
     homepage: 'https://github.com/open-policy-agent/vscode-opa',
@@ -2284,6 +2325,10 @@ export const info = {
     homepage: 'https://github.com/serkonda7/vscode-vba',
     license: 'mpl-2.0'
   },
+  'source.vcard': {
+    homepage: 'https://github.com/cstrachan88/vscode-vcard',
+    license: 'mit'
+  },
   'source.v': {
     homepage: 'https://github.com/0x9ef/vscode-vlang',
     license: 'mit'
@@ -2313,11 +2358,6 @@ export const info = {
   'text.html.vue': {
     homepage: 'https://github.com/vuejs/vue-syntax-highlight',
     license: 'mit'
-  },
-  'source.wdl': {
-    homepage:
-      'https://github.com/broadinstitute/wdl-sublime-syntax-highlighter',
-    license: 'bsd-3-clause'
   },
   'source.wgsl': {
     homepage: 'https://github.com/wgsl-analyzer/wgsl-analyzer'

@@ -9,8 +9,19 @@
 
 /** @type {Grammar} */
 const grammar = {
-  extensions: ['.frm', '.vba'],
-  names: ['vba', 'visual-basic-for-applications'],
+  extensions: ['.bas', '.bas', '.bas', '.ctl', '.dsr', '.frm', '.frm', '.vba'],
+  names: [
+    'b4x',
+    'basic-for-android',
+    'classic-visual-basic',
+    'vb-6',
+    'vb6',
+    'vba',
+    'visual-basic-6',
+    'visual-basic-6.0',
+    'visual-basic-classic',
+    'visual-basic-for-applications'
+  ],
   patterns: [
     {include: '#comments'},
     {include: '#functions'},
@@ -69,7 +80,7 @@ const grammar = {
           name: 'keyword.other.option.vba'
         },
         {
-          match: '(?i:\\b(Private|Public|Friend)\\b)',
+          match: '(?i:\\b(Private|Public|Global|Friend)\\b)',
           name: 'keyword.other.visibility.vba'
         },
         {

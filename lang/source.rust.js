@@ -245,8 +245,11 @@ const grammar = {
             4: {name: 'punctuation.brackets.round.rust'},
             5: {name: 'punctuation.brackets.angle.rust'}
           },
-          end: '\\{|;',
-          endCaptures: {0: {name: 'punctuation.brackets.curly.rust'}},
+          end: '(\\{)|(;)',
+          endCaptures: {
+            1: {name: 'punctuation.brackets.curly.rust'},
+            2: {name: 'punctuation.semi.rust'}
+          },
           name: 'meta.function.definition.rust',
           patterns: [
             {include: '#block-comments'},
@@ -412,7 +415,7 @@ const grammar = {
         {match: '\\.(?!\\.)', name: 'keyword.operator.access.dot.rust'},
         {match: '\\.{2}(=|\\.)?', name: 'keyword.operator.range.rust'},
         {match: ':(?!:)', name: 'keyword.operator.key-value.rust'},
-        {match: '->', name: 'keyword.operator.arrow.skinny.rust'},
+        {match: '->|<-', name: 'keyword.operator.arrow.skinny.rust'},
         {match: '=>', name: 'keyword.operator.arrow.fat.rust'},
         {match: '\\$', name: 'keyword.operator.macro.dollar.rust'},
         {match: '\\?', name: 'keyword.operator.question.rust'}

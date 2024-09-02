@@ -11,6 +11,21 @@
 const grammar = {
   dependencies: ['source.shell'],
   extensions: ['.gitconfig'],
+  injections: {
+    'L:meta.alias.gitconfig source.embedded.shell, L:meta.command.gitconfig - string.quoted':
+      {patterns: [{include: '#escapedNewline'}]},
+    'L:string.quoted.double.gitconfig source.embedded.shell - string.quoted.*.shell':
+      {
+        patterns: [
+          {
+            begin: '\\s*(?<![^\\s;\\\\|\\(&])(#)',
+            beginCaptures: {1: {name: 'punctuation.definition.comment.shell'}},
+            end: '(?=")',
+            name: 'comment.line.number-sign.shell'
+          }
+        ]
+      }
+  },
   names: ['git-config', 'gitconfig', 'gitmodules'],
   patterns: [{include: '#main'}],
   repository: {
@@ -22,31 +37,64 @@ const grammar = {
       },
       end: '(?<!\\\\)$|(?=#|;)',
       name: 'meta.alias.gitconfig',
-      patterns: [{include: '#aliasInnards'}]
+      patterns: [
+        {
+          begin: '\\G\\s*(?=\\\\$)',
+          end: '(?=\\s*(?!\\\\$)(?=\\S))',
+          patterns: [{include: '#escapedNewline'}]
+        },
+        {
+          begin: '\\s*(?!\\\\$)(?=\\S)',
+          end: '(?!\\G)',
+          patterns: [{include: '#aliasInnards'}]
+        }
+      ]
     },
     aliasInnards: {
       patterns: [
         {
-          begin: '\\G\\s*(?:(")(!)|(!)("))\\s*+',
-          beginCaptures: {
-            1: {name: 'punctuation.definition.string.begin.gitconfig'},
-            2: {name: 'keyword.operator.shell-script.gitconfig'},
-            3: {name: 'keyword.operator.shell-script.gitconfig'},
-            4: {name: 'punctuation.definition.string.begin.gitconfig'}
-          },
-          end: '(?<!\\\\)(?:(")|(?=$))',
-          endCaptures: {
-            1: {name: 'punctuation.definition.string.end.gitconfig'}
-          },
-          name: 'meta.quoted.shell.command.gitconfig',
-          patterns: [{include: 'source.shell'}]
+          begin: '\\G\\s*(?=(?:"\\s*)?!)',
+          end: '(?<!\\\\)$',
+          name: 'meta.shell.command.gitconfig',
+          patterns: [
+            {
+              captures: {
+                1: {name: 'punctuation.definition.string.begin.gitconfig'},
+                2: {name: 'keyword.operator.shell-script.gitconfig'},
+                3: {
+                  name: 'source.embedded.shell',
+                  patterns: [{include: '#escapes'}, {include: 'source.shell'}]
+                },
+                4: {name: 'punctuation.definition.string.end.gitconfig'}
+              },
+              match: '\\G(")\\s*(!)((?:[^\\\\"]|\\\\.)*+)(")',
+              name: 'string.quoted.double.gitconfig'
+            },
+            {
+              begin: '\\G(")\\s*(!)',
+              beginCaptures: {
+                1: {name: 'punctuation.definition.string.begin.gitconfig'},
+                2: {name: 'keyword.operator.shell-script.gitconfig'}
+              },
+              contentName: 'source.embedded.shell',
+              end: '(")|((?:[^\\\\"]|\\\\.)*+)$',
+              endCaptures: {
+                1: {name: 'punctuation.definition.string.end.gitconfig'},
+                2: {name: 'invalid.illegal.syntax.unclosed-string.gitconfig'}
+              },
+              name: 'string.quoted.double.gitconfig',
+              patterns: [{include: '#escapes'}, {include: 'source.shell'}]
+            },
+            {match: '\\G!', name: 'keyword.operator.shell-script.gitconfig'},
+            {include: '#cmdInnards'}
+          ]
         },
         {
           begin: '\\G\\s*(!)',
           beginCaptures: {1: {name: 'keyword.operator.shell-script.gitconfig'}},
           end: '(?<!\\\\)(?=$)',
           name: 'meta.unquoted.shell.command.gitconfig',
-          patterns: [{include: 'source.shell'}]
+          patterns: [{include: '#escapedNewline'}, {include: 'source.shell'}]
         },
         {
           begin: '\\G\\s*([^\\s"#;!]+)',
@@ -59,12 +107,21 @@ const grammar = {
       ]
     },
     aliasSection: {
-      begin: '(?i)(?:^|\\G)\\s*(\\[)\\s*(alias)\\s*(\\])',
+      begin:
+        '(?xi)\n(?:^|\\G)\n\\s* (\\[)  #1\n\\s* (alias) #2\n(?:\n\t\\s+ (") ((?:[^\\\\"\\r\\n]|\\\\.)*+) (") #3-5\n\t|\n\t(\\.) ([-A-Za-z0-9]+) #6-7\n)?\n\\s* (\\]) #8',
       beginCaptures: {
         0: {name: 'meta.section.header.gitconfig'},
         1: {name: 'punctuation.definition.bracket.square.begin.gitconfig'},
         2: {name: 'entity.section.name.gitconfig'},
-        3: {name: 'punctuation.definition.bracket.square.end.gitconfig'}
+        3: {name: 'punctuation.definition.subsection.begin.gitconfig'},
+        4: {
+          name: 'entity.subsection.name.gitconfig',
+          patterns: [{include: '#sectionEscapes'}]
+        },
+        5: {name: 'punctuation.definition.subsection.end.gitconfig'},
+        6: {patterns: [{include: '#dot'}]},
+        7: {name: 'entity.subsection.name.deprecated-syntax.gitconfig'},
+        8: {name: 'punctuation.definition.bracket.square.end.gitconfig'}
       },
       end: '(?!\\G)(?=^\\s*\\[)',
       name: 'meta.aliases.section.gitconfig',
@@ -72,6 +129,60 @@ const grammar = {
         {include: '#alias'},
         {include: '#comments'},
         {include: '#variables'}
+      ]
+    },
+    cmd: {
+      begin: '(?:^|(?<=\\])\\G)\\s*(textconv|command|driver)\\s*(=)',
+      beginCaptures: {
+        1: {name: 'variable.parameter.assignment.gitconfig'},
+        2: {name: 'keyword.operator.assignment.key-value.gitconfig'}
+      },
+      end: '(?<!\\\\)$|(?=#|;)',
+      name: 'meta.command.gitconfig',
+      patterns: [
+        {
+          begin: '\\G\\s*(?=\\\\$)',
+          end: '(?=\\s*(?!\\\\$)(?=\\S))',
+          patterns: [{include: '#escapedNewline'}]
+        },
+        {
+          begin: '\\s*(?!\\\\$)(?=\\S)',
+          contentName: 'source.embedded.shell',
+          end: '(?!\\G)',
+          patterns: [{include: '#cmdInnards'}]
+        }
+      ]
+    },
+    cmdInnards: {
+      patterns: [
+        {
+          captures: {
+            1: {name: 'punctuation.definition.string.begin.gitconfig'},
+            2: {
+              name: 'source.embedded.shell',
+              patterns: [{include: '#escapes'}, {include: 'source.shell'}]
+            },
+            3: {name: 'punctuation.definition.string.end.gitconfig'}
+          },
+          match: '(")((?:[^\\\\"]|\\\\.)*+)(")',
+          name: 'string.quoted.double.gitconfig'
+        },
+        {
+          begin: '"',
+          beginCaptures: {
+            0: {name: 'punctuation.definition.string.begin.gitconfig'}
+          },
+          contentName: 'source.embedded.shell',
+          end: '(")|((?:[^\\\\"]|\\\\.)*+)$',
+          endCaptures: {
+            1: {name: 'punctuation.definition.string.end.gitconfig'},
+            2: {name: 'invalid.illegal.syntax.unclosed-string.gitconfig'}
+          },
+          name: 'string.quoted.double.gitconfig',
+          patterns: [{include: '#escapes'}, {include: 'source.shell'}]
+        },
+        {include: '#escapedNewline'},
+        {include: 'source.shell'}
       ]
     },
     comments: {
@@ -92,6 +203,31 @@ const grammar = {
           end: '$',
           name: 'comment.line.semicolon.gitconfig'
         }
+      ]
+    },
+    diffSection: {
+      begin:
+        '(?xi)\n(?:^|\\G)\n\\s* (\\[)  #1\n\\s* (diff) #2\n(?:\n\t\\s+ (") ((?:[^\\\\"\\r\\n]|\\\\.)*+) (") #3-5\n\t|\n\t(\\.) ([-A-Za-z0-9]+) #6-7\n)\n\\s* (\\]) #8',
+      beginCaptures: {
+        0: {name: 'meta.section.header.gitconfig'},
+        1: {name: 'punctuation.definition.bracket.square.begin.gitconfig'},
+        2: {name: 'entity.section.name.gitconfig'},
+        3: {name: 'punctuation.definition.subsection.begin.gitconfig'},
+        4: {
+          name: 'entity.subsection.name.gitconfig',
+          patterns: [{include: '#sectionEscapes'}]
+        },
+        5: {name: 'punctuation.definition.subsection.end.gitconfig'},
+        6: {patterns: [{include: '#dot'}]},
+        7: {name: 'entity.subsection.name.deprecated-syntax.gitconfig'},
+        8: {name: 'punctuation.definition.bracket.square.end.gitconfig'}
+      },
+      end: '(?!\\G)(?=^\\s*\\[)',
+      name: 'meta.diff.section.gitconfig',
+      patterns: [
+        {include: '#cmd'},
+        {include: '#comments'},
+        {include: '#variables'}
       ]
     },
     dot: {
@@ -278,6 +414,7 @@ const grammar = {
         {include: '#comments'},
         {include: '#includeSection'},
         {include: '#aliasSection'},
+        {include: '#diffSection'},
         {include: '#urlSection'},
         {include: '#section'}
       ]
@@ -364,12 +501,6 @@ const grammar = {
     variableInnards: {
       patterns: [
         {
-          captures: {
-            1: {name: 'keyword.operator.assignment.key-value.gitconfig'}
-          },
-          match: '\\G\\s*(=)'
-        },
-        {
           match: '(?i)\\b(true|false|on|off|1|0|yes|no)\\b',
           name: 'constant.logical.boolean.$1.gitconfig'
         },
@@ -413,8 +544,8 @@ const grammar = {
     variables: {
       patterns: [
         {
-          begin: '(?i)\\b(signingkey)(?=\\s|$)',
-          captures: {
+          begin: '(?i)\\b(signingkey)\\s*(=)',
+          beginCaptures: {
             1: {name: 'variable.parameter.assignment.gitconfig'},
             2: {name: 'keyword.operator.assignment.key-value.gitconfig'}
           },
@@ -436,18 +567,11 @@ const grammar = {
           patterns: [{include: '#urlInnards'}]
         },
         {
-          begin: '(?i)\\b(textconv)\\s*(=)',
+          begin: '([0-9A-Za-z][-0-9A-Za-z]*)\\s*(=)',
           beginCaptures: {
             1: {name: 'variable.parameter.assignment.gitconfig'},
             2: {name: 'keyword.operator.assignment.key-value.gitconfig'}
           },
-          end: '(?=\\s*(?:$|#|;))',
-          name: 'meta.variable-field.gitconfig',
-          patterns: [{include: '#aliasInnards'}]
-        },
-        {
-          begin: '[0-9A-Za-z][-0-9A-Za-z]*',
-          beginCaptures: {0: {name: 'variable.parameter.assignment.gitconfig'}},
           end: '(?=\\s*(?:$|#|;))',
           name: 'meta.variable-field.gitconfig',
           patterns: [{include: '#variableInnards'}]

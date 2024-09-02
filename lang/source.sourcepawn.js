@@ -633,7 +633,7 @@ const grammar = {
             6: {patterns: [{include: '#array-indexed-access'}]}
           },
           match:
-            '(?:(stock|public)\\s+)?((?:(?:const|static)\\s+)*)(\\w+)(\\s*(?:\\[[^\\]]*\\]\\s*)*)\\s+(\\w+)\\s*(\\s*(?:\\[[^\\]]*\\]\\s*)*)'
+            '(?:(stock|public)\\s+)?((?:(?:const|static)\\s+)*)(\\w+)(\\s*(?:\\[[^\\]]*\\]\\s*)*)(?:(?:\\s*&\\s*)|\\s+)(\\w+)\\s*(\\s*(?:\\[[^\\]]*\\]\\s*)*)'
         }
       ]
     },

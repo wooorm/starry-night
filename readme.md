@@ -984,8 +984,8 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 * [ ] [`config.xcompose`](lang/config.xcompose.js) (mit)
 * [ ] [`etc`](lang/etc.js) (isc) — [upstream](https://github.com/Alhadis/language-etc) — needs: `source.regexp.posix`
 * [ ] [`file.lasso`](lang/file.lasso.js) (public domain)
-* [ ] [`go.mod`](lang/go.mod.js) — [upstream](https://github.com/golang/vscode-go)
-* [ ] [`go.sum`](lang/go.sum.js) — [upstream](https://github.com/golang/vscode-go)
+* [ ] [`go.mod`](lang/go.mod.js) (mit) — [upstream](https://github.com/golang/vscode-go)
+* [ ] [`go.sum`](lang/go.sum.js) (mit) — [upstream](https://github.com/golang/vscode-go)
 * [ ] [`injections.etc`](lang/injections.etc.js) (isc) — [upstream](https://github.com/Alhadis/language-etc)
 * [ ] [`objdump.x86asm`](lang/objdump.x86asm.js) (mit) — needs: `source.c`, `source.c++`
 * [ ] [`source.2da`](lang/source.2da.js) (isc) — [upstream](https://github.com/Alhadis/language-etc)
@@ -1045,7 +1045,8 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 * [ ] [`source.cabal`](lang/source.cabal.js) (mit) — [upstream](https://github.com/atom-haskell/language-haskell)
 * [ ] [`source.Caddyfile`](lang/source.Caddyfile.js) (mit) — [upstream](https://github.com/caddyserver/vscode-caddyfile)
 * [ ] [`source.cadence`](lang/source.cadence.js) (apache-2.0) — [upstream](https://github.com/onflow/vscode-cadence)
-* [ ] [`source.cairo`](lang/source.cairo.js) (mit) — [upstream](https://github.com/xshitaka/atom-language-cairo)
+* [ ] [`source.cairo`](lang/source.cairo.js) (apache-2.0) — [upstream](https://github.com/software-mansion-labs/cairo-tm-grammar)
+* [ ] [`source.cairo0`](lang/source.cairo0.js) (apache-2.0) — [upstream](https://github.com/software-mansion-labs/cairo-tm-grammar) — needs: `source.cairo`
 * [ ] [`source.camlp4.ocaml`](lang/source.camlp4.ocaml.js) — needs: `source.ocaml`
 * [ ] [`source.capnp`](lang/source.capnp.js)
 * [ ] [`source.cds`](lang/source.cds.js) (apache-2.0) — [upstream](https://github.com/SAP/cds-textmate-grammar)
@@ -1074,13 +1075,14 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 * [ ] [`source.csound-score`](lang/source.csound-score.js) (mit) — [upstream](https://github.com/nwhetsell/language-csound) — needs: `source.csound`
 * [ ] [`source.css.mss`](lang/source.css.mss.js) (mit)
 * [ ] [`source.css.postcss.sugarss`](lang/source.css.postcss.sugarss.js) (mit)
-* [ ] [`source.csswg`](lang/source.csswg.js) — [upstream](https://github.com/tabatkins/bikeshed)
+* [ ] [`source.csswg`](lang/source.csswg.js) (cc0-1.0) — [upstream](https://github.com/tabatkins/bikeshed)
 * [ ] [`source.cuda-c++`](lang/source.cuda-c++.js) (bsd-3-clause) — [upstream](https://github.com/harrism/sublimetext-cuda-cpp) — needs: `source.c++`
 * [ ] [`source.cue`](lang/source.cue.js) (mit) — [upstream](https://github.com/cue-sh/vscode-cue)
 * [ ] [`source.cuesheet`](lang/source.cuesheet.js) (mit) — [upstream](https://github.com/relikd/CUE-Sheet_sublime)
 * [ ] [`source.curlrc`](lang/source.curlrc.js) (isc) — [upstream](https://github.com/Alhadis/language-etc) — needs: `etc`
 * [ ] [`source.curry`](lang/source.curry.js) (mit) — [upstream](https://github.com/fwcd/vscode-curry)
 * [ ] [`source.cwl`](lang/source.cwl.js) (mit)
+* [ ] [`source.cylc`](lang/source.cylc.js) (bsd-3-clause) — [upstream](https://github.com/cylc/Cylc.tmbundle)
 * [ ] [`source.cypher`](lang/source.cypher.js) (apache-2.0) — [upstream](https://github.com/fredbenenson/sublime-cypher)
 * [ ] [`source.cython`](lang/source.cython.js) — needs: `source.regexp.python`
 * [ ] [`source.d`](lang/source.d.js) — [upstream](https://github.com/textmate/d.tmbundle) — needs: `text.html.javadoc`
@@ -1097,6 +1099,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 * [ ] [`source.dockerfile`](lang/source.dockerfile.js) (mit) — [upstream](https://github.com/asbjornenge/Docker.tmbundle)
 * [ ] [`source.dot`](lang/source.dot.js)
 * [ ] [`source.dotenv`](lang/source.dotenv.js) (isc) — [upstream](https://github.com/Alhadis/language-etc)
+* [ ] [`source.dune`](lang/source.dune.js) (mit) — [upstream](https://github.com/maelvls/vscode-dune)
 * [ ] [`source.dylan`](lang/source.dylan.js)
 * [ ] [`source.earthfile`](lang/source.earthfile.js) (mpl-2.0) — [upstream](https://github.com/earthly/earthfile-grammar)
 * [ ] [`source.ebnf`](lang/source.ebnf.js) (isc) — [upstream](https://github.com/Alhadis/language-grammars) — needs: `source.lex.regexp`
@@ -1175,6 +1178,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 * [ ] [`source.hx`](lang/source.hx.js) (mit) — [upstream](https://github.com/vshaxe/haxe-TmLanguage)
 * [ ] [`source.hxml`](lang/source.hxml.js) (mit) — [upstream](https://github.com/vshaxe/haxe-TmLanguage) — needs: `source.hx`
 * [ ] [`source.hy`](lang/source.hy.js) (mit) — [upstream](https://github.com/tshakalekholoane/vscode-hy)
+* [ ] [`source.iCalendar`](lang/source.iCalendar.js) (mit) — [upstream](https://github.com/kimsey0/iCalendar-sublime)
 * [ ] [`source.ice`](lang/source.ice.js) (bsd-3-clause) — [upstream](https://github.com/zeroc-ice/vscode-slice)
 * [ ] [`source.ideal`](lang/source.ideal.js) (isc) — [upstream](https://github.com/Alhadis/language-roff) — needs: `source.pic`, `text.roff`
 * [ ] [`source.idl`](lang/source.idl.js) (bsd-3-clause) — [upstream](https://github.com/mgalloy/idl.tmbundle)
@@ -1206,7 +1210,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 * [ ] [`source.jsonnet`](lang/source.jsonnet.js) (apache-2.0) — [upstream](https://github.com/google/language-jsonnet)
 * [ ] [`source.julia`](lang/source.julia.js) (mit) — [upstream](https://github.com/JuliaEditorSupport/atom-language-julia)
 * [ ] [`source.julia.console`](lang/source.julia.console.js) (mit) — [upstream](https://github.com/JuliaEditorSupport/atom-language-julia) — needs: `source.julia`, `source.shell`
-* [ ] [`source.just`](lang/source.just.js) (mit) — [upstream](https://github.com/skellock/vscode-just)
+* [ ] [`source.just`](lang/source.just.js) (mit) — [upstream](https://github.com/nefrob/vscode-just)
 * [ ] [`source.kakscript`](lang/source.kakscript.js) (unlicense) — [upstream](https://github.com/kakoune-editor/language-kak)
 * [ ] [`source.kerboscript`](lang/source.kerboscript.js) (mit) — [upstream](https://github.com/KSP-KOS/language-kerboscript)
 * [ ] [`source.keyvalues`](lang/source.keyvalues.js) (isc) — [upstream](https://github.com/Nixinova/NovaGrammars)
@@ -1221,6 +1225,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 * [ ] [`source.lilypond`](lang/source.lilypond.js) (mit) — [upstream](https://github.com/nwhetsell/linter-lilypond) — needs: `source.lisp`
 * [ ] [`source.lisp`](lang/source.lisp.js)
 * [ ] [`source.litcoffee`](lang/source.litcoffee.js) (mit) — [upstream](https://github.com/atom/language-coffee-script) — needs: `source.coffee`, `text.html.basic`
+* [ ] [`source.livecodescript`](lang/source.livecodescript.js) (bsd-3-clause) — [upstream](https://github.com/Ferruslogic/vscode-livecodescript)
 * [ ] [`source.livescript`](lang/source.livescript.js) (mit) — [upstream](https://github.com/paulmillr/LiveScript.tmbundle)
 * [ ] [`source.llvm`](lang/source.llvm.js) (mit) — [upstream](https://github.com/whitequark/llvm.tmbundle)
 * [ ] [`source.logos`](lang/source.logos.js) (mit) — [upstream](https://github.com/Cykey/Sublime-Logos) — needs: `source.c++`, `source.objc`
@@ -1238,7 +1243,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 * [ ] [`source.matlab`](lang/source.matlab.js) (bsd-2-clause) — [upstream](https://github.com/mathworks/MATLAB-Language-grammar)
 * [ ] [`source.maxscript`](lang/source.maxscript.js) (isc)
 * [ ] [`source.mc`](lang/source.mc.js) (mit)
-* [ ] [`source.mcfunction`](lang/source.mcfunction.js) (mit) — [upstream](https://github.com/Arcensoth/language-mcfunction)
+* [ ] [`source.mcfunction`](lang/source.mcfunction.js) (mit) — [upstream](https://github.com/MinecraftCommands/syntax-mcfunction)
 * [ ] [`source.mdx`](lang/source.mdx.js) (mit) — [upstream](https://github.com/wooorm/markdown-tm-language) — needs: `source.tsx`
 * [ ] [`source.mercury`](lang/source.mercury.js) (mit)
 * [ ] [`source.mermaid`](lang/source.mermaid.js) (isc) — [upstream](https://github.com/Alhadis/language-mermaid) — needs: `source.mermaid.c4c-diagram`, `source.mermaid.class-diagram`, `source.mermaid.er-diagram`, `source.mermaid.flowchart`, `source.mermaid.gantt`, `source.mermaid.gitgraph`, `source.mermaid.mindmap`, `source.mermaid.pie-chart`, `source.mermaid.requirement-diagram`, `source.mermaid.sequence-diagram`, `source.mermaid.state-diagram`, `source.mermaid.user-journey`
@@ -1271,7 +1276,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 * [ ] [`source.mql5`](lang/source.mql5.js) (mit)
 * [ ] [`source.msl`](lang/source.msl.js) (mit) — [upstream](https://github.com/gen-angry/language-msl)
 * [ ] [`source.mupad`](lang/source.mupad.js) (mit) — [upstream](https://github.com/ccreutzig/sublime-MuPAD)
-* [ ] [`source.nanorc`](lang/source.nanorc.js) (isc) — [upstream](https://github.com/Alhadis/language-etc) — needs: `injections.etc`
+* [ ] [`source.nanorc`](lang/source.nanorc.js) (isc) — [upstream](https://github.com/Alhadis/language-etc) — needs: `etc`, `injections.etc`
 * [ ] [`source.nasal`](lang/source.nasal.js) (mit) — [upstream](https://github.com/BobDotCom/Nasal.tmbundle)
 * [ ] [`source.nasl`](lang/source.nasl.js) (mit) — [upstream](https://github.com/tenable/sublimetext-nasl)
 * [ ] [`source.ncl`](lang/source.ncl.js) (mit)
@@ -1288,6 +1293,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 * [ ] [`source.ninja`](lang/source.ninja.js) (mit)
 * [ ] [`source.nit`](lang/source.nit.js) (wtfpl)
 * [ ] [`source.nix`](lang/source.nix.js) (mit) — [upstream](https://github.com/sambacha/nix-linguist)
+* [ ] [`source.nr`](lang/source.nr.js) (apache-2.0) — [upstream](https://github.com/noir-lang/vscode-noir)
 * [ ] [`source.nsis`](lang/source.nsis.js) (apache-2.0)
 * [ ] [`source.nu`](lang/source.nu.js) (apache-2.0)
 * [ ] [`source.nunjucks`](lang/source.nunjucks.js) (mit)
@@ -1317,7 +1323,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 * [ ] [`source.pcb.schematic`](lang/source.pcb.schematic.js) (isc) — [upstream](https://github.com/Alhadis/language-pcb) — needs: `source.pcb.sexp`, `source.scheme`
 * [ ] [`source.pcb.sexp`](lang/source.pcb.sexp.js) (isc) — [upstream](https://github.com/Alhadis/language-pcb)
 * [ ] [`source.pddl`](lang/source.pddl.js) (mit) — [upstream](https://github.com/jan-dolejsi/vscode-pddl)
-* [ ] [`source.pegjs`](lang/source.pegjs.js) (isc) — [upstream](https://github.com/Alhadis/language-grammars) — needs: `source.js`
+* [ ] [`source.peggy`](lang/source.peggy.js) (mit) — [upstream](https://github.com/peggyjs/code-peggy-language) — needs: `source.js`
 * [ ] [`source.pep8`](lang/source.pep8.js) (wtfpl)
 * [ ] [`source.php.zephir`](lang/source.php.zephir.js) — [upstream](https://github.com/phalcon/zephir-sublime)
 * [ ] [`source.pic`](lang/source.pic.js) (isc) — [upstream](https://github.com/Alhadis/language-roff) — needs: `source.shell`, `text.html.basic`, `text.roff`
@@ -1334,6 +1340,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 * [ ] [`source.postcss`](lang/source.postcss.js) (mit)
 * [ ] [`source.postscript`](lang/source.postscript.js) (isc) — [upstream](https://github.com/Alhadis/Atom-PostScript)
 * [ ] [`source.pov-ray sdl`](<lang/source.pov-ray sdl.js>) (mit)
+* [ ] [`source.powerbuilder`](lang/source.powerbuilder.js) (mit) — [upstream](https://github.com/micha4w/PowerBuilder.tmbundle)
 * [ ] [`source.powershell`](lang/source.powershell.js) (mit) — [upstream](https://github.com/PowerShell/EditorSyntax)
 * [ ] [`source.praat`](lang/source.praat.js) (mit) — [upstream](https://github.com/orhunulusahin/praatvscode)
 * [ ] [`source.prisma`](lang/source.prisma.js) (apache-2.0) — [upstream](https://github.com/prisma/vscode-prisma)
@@ -1351,7 +1358,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 * [ ] [`source.ql`](lang/source.ql.js) (mit) — [upstream](https://github.com/github/vscode-codeql)
 * [ ] [`source.qmake`](lang/source.qmake.js)
 * [ ] [`source.qml`](lang/source.qml.js) (mit) — needs: `source.js`
-* [ ] [`source.qsharp`](lang/source.qsharp.js) (mit) — [upstream](https://github.com/microsoft/qsharp-compiler)
+* [ ] [`source.qsharp`](lang/source.qsharp.js) (mit) — [upstream](https://github.com/microsoft/qsharp)
 * [ ] [`source.quake`](lang/source.quake.js) (bsd-3-clause)
 * [ ] [`source.quoting.raku`](lang/source.quoting.raku.js) — [upstream](https://github.com/perl6/atom-language-perl6) — needs: `source.raku`
 * [ ] [`source.racket`](lang/source.racket.js) (mit)
@@ -1446,6 +1453,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 * [ ] [`source.vala`](lang/source.vala.js) (mit) — [upstream](https://github.com/technosophos/Vala-TMBundle)
 * [ ] [`source.varnish.vcl`](lang/source.varnish.vcl.js) (mit) — [upstream](https://github.com/brandonwamboldt/sublime-varnish)
 * [ ] [`source.vba`](lang/source.vba.js) (mpl-2.0) — [upstream](https://github.com/serkonda7/vscode-vba)
+* [ ] [`source.vcard`](lang/source.vcard.js) (mit) — [upstream](https://github.com/cstrachan88/vscode-vcard)
 * [ ] [`source.velocity`](lang/source.velocity.js) (mit) — [upstream](https://github.com/animecyc/AtomLanguageVelocity)
 * [ ] [`source.verilog`](lang/source.verilog.js)
 * [ ] [`source.vhdl`](lang/source.vhdl.js)
@@ -1454,7 +1462,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 * [ ] [`source.vyper`](lang/source.vyper.js) (mit) — [upstream](https://github.com/davidhq/SublimeEthereum)
 * [ ] [`source.wavefront.mtl`](lang/source.wavefront.mtl.js) (isc) — [upstream](https://github.com/Alhadis/language-wavefront)
 * [ ] [`source.wavefront.obj`](lang/source.wavefront.obj.js) (isc) — [upstream](https://github.com/Alhadis/language-wavefront)
-* [ ] [`source.wdl`](lang/source.wdl.js) (bsd-3-clause) — [upstream](https://github.com/broadinstitute/wdl-sublime-syntax-highlighter)
+* [ ] [`source.wdl`](lang/source.wdl.js) (apache-2.0) — [upstream](https://github.com/stjude-rust-labs/sprocket-vscode)
 * [ ] [`source.webassembly`](lang/source.webassembly.js) (isc) — [upstream](https://github.com/Alhadis/language-webassembly)
 * [ ] [`source.webidl`](lang/source.webidl.js) (mit) — [upstream](https://github.com/andik/IDL-Syntax)
 * [ ] [`source.wgetrc`](lang/source.wgetrc.js) (isc) — [upstream](https://github.com/Alhadis/language-etc) — needs: `etc`
@@ -1515,6 +1523,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 * [ ] [`text.html.javadoc`](lang/text.html.javadoc.js)
 * [ ] [`text.html.js`](lang/text.html.js.js) (mit) — needs: `text.html.basic`
 * [ ] [`text.html.jsp`](lang/text.html.jsp.js) — [upstream](https://github.com/textmate/java.tmbundle) — needs: `text.html.basic`
+* [ ] [`text.html.jte`](lang/text.html.jte.js) (apache-2.0) — [upstream](https://github.com/maj2c/jte-template-syntax-highlight) — needs: `source.java`, `text.html.basic`
 * [ ] [`text.html.liquid`](lang/text.html.liquid.js) (mit) — [upstream](https://github.com/Shopify/liquid-tm-grammar) — needs: `text.html.basic`
 * [ ] [`text.html.mako`](lang/text.html.mako.js) (mit) — needs: `text.html.basic`
 * [ ] [`text.html.markdown.source.gfm.apib`](lang/text.html.markdown.source.gfm.apib.js) (mit) — [upstream](https://github.com/apiaryio/api-blueprint-sublime-plugin) — needs: `source.js`, `text.html.markdown.source.gfm.mson`

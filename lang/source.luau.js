@@ -28,9 +28,22 @@ const grammar = {
     {include: '#parentheses'},
     {include: '#table'},
     {include: '#type_cast'},
-    {include: '#type_annotation'}
+    {include: '#type_annotation'},
+    {include: '#attribute'}
   ],
   repository: {
+    attribute: {
+      patterns: [
+        {
+          captures: {
+            1: {name: 'keyword.operator.attribute.luau'},
+            2: {name: 'storage.type.attribute.luau'}
+          },
+          match: '(@)([a-zA-Z_][a-zA-Z0-9_]*)',
+          name: 'meta.attribute.luau'
+        }
+      ]
+    },
     comment: {
       patterns: [
         {
@@ -235,6 +248,7 @@ const grammar = {
       end: '(?=\\s*do\\b|\\s*[=;]|\\s*$)',
       patterns: [
         {include: '#comment'},
+        {include: '#attribute'},
         {
           begin: '(:)',
           beginCaptures: {1: {name: 'keyword.operator.type.luau'}},

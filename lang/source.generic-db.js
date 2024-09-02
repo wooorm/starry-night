@@ -10,8 +10,8 @@
 /** @type {Grammar} */
 const grammar = {
   dependencies: ['etc'],
-  extensions: ['.tsv'],
-  names: ['tsv'],
+  extensions: ['.tsv', '.vcf'],
+  names: ['tsv', 'tab-seperated-values'],
   patterns: [
     {
       begin:

@@ -68,7 +68,6 @@ const grammar = {
           patterns: [
             {
               begin: '\\G(?!$)',
-              end: '(?<!\\.{3})(?:(?=([,;])(?![^(]*\\)))|$)',
               name: 'meta.for.declaration.matlab',
               patterns: [{include: '$self'}]
             },
@@ -87,28 +86,29 @@ const grammar = {
           patterns: [
             {
               begin: '\\G(?!$)',
-              end: '(?<!\\.{3})(?:(?=([,;])(?![^(]*\\)))|$)',
               name: 'meta.if.declaration.matlab',
               patterns: [{include: '$self'}]
             },
             {
-              captures: {1: {name: 'keyword.control.elseif.matlab'}},
-              match: '(?:\\s*)(?<=^|[\\s,;])(elseif)\\b',
+              begin: '\\s*(?<=^|[\\s,;])(elseif)\\b',
+              beginCaptures: {1: {name: 'keyword.control.elseif.matlab'}},
+              end: '\\s*(?<=^|[\\s,;])(?=elseif|else|end)\\b',
               name: 'meta.elseif.matlab',
               patterns: [
                 {
                   begin: '\\G(?!$)',
-                  end: '(?<!\\.{3})(?:(?=([,;])(?![^(]*\\)))|$)',
                   name: 'meta.elseif.declaration.matlab',
                   patterns: [{include: '$self'}]
-                }
+                },
+                {include: '$self'}
               ]
             },
             {
-              captures: {1: {name: 'keyword.control.else.matlab'}},
-              end: '^',
-              match: '(?:\\s*)(?<=^|[\\s,;])(else)\\b',
-              name: 'meta.else.matlab'
+              begin: '\\s*(?<=^|[\\s,;])(else)\\b',
+              beginCaptures: {1: {name: 'keyword.control.else.matlab'}},
+              end: '\\s*(?<=^|[\\s,;])(?=end)\\b',
+              name: 'meta.else.matlab',
+              patterns: [{include: '$self'}]
             },
             {include: '$self'}
           ]
@@ -122,7 +122,6 @@ const grammar = {
           patterns: [
             {
               begin: '\\G(?!$)',
-              end: '(?<!\\.{3})(?:(?=([,;])(?![^(]*\\)))|$)',
               name: 'meta.for.parallel.declaration.matlab',
               patterns: [{include: '$self'}]
             },
@@ -140,7 +139,6 @@ const grammar = {
           patterns: [
             {
               begin: '\\G(?!$)',
-              end: '(?<!\\.{3})(?:(?=([,;])(?![^(]*\\)))|$)',
               name: 'meta.repeat.parallel.declaration.matlab',
               patterns: [{include: '$self'}]
             },
@@ -148,36 +146,42 @@ const grammar = {
           ]
         },
         {
-          begin: '\\s*(?<=^|[\\s,;])(switch)\\s+([a-zA-Z0-9][a-zA-Z0-9_]*)',
-          beginCaptures: {
-            1: {name: 'keyword.control.switch.matlab'},
-            2: {name: 'variable.other.constant.matlab'}
-          },
+          begin: '\\s*(?<=^|[\\s,;])(switch)\\b',
+          beginCaptures: {1: {name: 'keyword.control.switch.matlab'}},
           end: '\\s*(?<=^|[\\s,;])(end)\\b',
-          endCaptures: {1: {name: 'keyword.control.end.switch.matlab'}},
+          endCaptures: {
+            1: {name: 'keyword.control.end.switch.matlab'},
+            2: {patterns: [{include: '$self'}]}
+          },
           name: 'meta.switch.matlab',
           patterns: [
             {
-              captures: {
-                2: {name: 'keyword.control.switch.case.matlab'},
-                3: {
-                  begin: '\\G(?!$)',
-                  end: '(?<!\\.{3})(?:(?=([,;])(?![^(]*\\)))|$)',
-                  name: 'meta.case.declaration.matlab',
-                  patterns: [{include: '$self'}]
-                }
-              },
-              match:
-                '(\\s*)(?<=^|[\\s,;])(case)\\b(.*?)(?<!\\.{3})(?:(?=([,;])(?![^(]*\\)))|$)',
-              name: 'meta.case.matlab'
+              begin: '\\G(?!$)',
+              name: 'meta.switch.declaration.matlab',
+              patterns: [{include: '$self'}]
             },
             {
-              captures: {
-                2: {name: 'keyword.control.switch.otherwise.matlab'},
-                3: {patterns: [{include: '$self'}]}
+              begin: '\\s*(?<=^|[\\s,;])(case)\\b',
+              beginCaptures: {1: {name: 'keyword.control.switch.case.matlab'}},
+              end: '\\s*(?<=^|[\\s,;])(?=case|otherwise|end)\\b',
+              name: 'meta.case.matlab',
+              patterns: [
+                {
+                  begin: '\\G(?!$)',
+                  name: 'meta.case.declaration.matlab',
+                  patterns: [{include: '$self'}]
+                },
+                {include: '$self'}
+              ]
+            },
+            {
+              begin: '\\s*(?<=^|[\\s,;])(otherwise)\\b',
+              beginCaptures: {
+                1: {name: 'keyword.control.switch.otherwise.matlab'}
               },
-              match: '(\\s*)(?<=^|[\\s,;])(otherwise)\\b',
-              name: 'meta.otherwise.matlab'
+              end: '\\s*(?<=^|[\\s,;])(?=end)\\b',
+              name: 'meta.otherwise.matlab',
+              patterns: [{include: '$self'}]
             },
             {include: '$self'}
           ]
@@ -208,10 +212,9 @@ const grammar = {
           name: 'meta.while.matlab',
           patterns: [
             {
-              begin: '\\G',
-              end: '(?<!\\.{3})(?:(?=([,;])(?![^(]*\\)))|$)',
-              endCaptures: {1: {include: '$self'}},
-              name: 'meta.while.declaration.matlab'
+              begin: '\\G(?!$)',
+              name: 'meta.while.declaration.matlab',
+              patterns: [{include: '$self'}]
             },
             {include: '$self'}
           ]
@@ -225,6 +228,7 @@ const grammar = {
       end: '}',
       endCaptures: {0: {name: 'punctuation.section.block.end.matlab'}},
       patterns: [
+        {include: '#function_call'},
         {include: '#braced_validator_list'},
         {include: '#validator_strings'},
         {include: '#line_continuation'},
@@ -247,54 +251,54 @@ const grammar = {
               name: 'meta.class.declaration.matlab',
               patterns: [
                 {
-                  begin: '\\G(\\([^)]*\\))?\\s*',
-                  beginCaptures: {
-                    1: {
+                  begin: '\\G\\(',
+                  end: '\\)(?=\\s*\\w+)',
+                  name: 'storage.modifier.section.class.matlab',
+                  patterns: [
+                    {
+                      match: ',',
+                      name: 'punctuation.separator.modifier.comma.matlab'
+                    },
+                    {
+                      match: '[a-zA-Z][a-zA-Z0-9_]*',
+                      name: 'storage.modifier.class.matlab'
+                    },
+                    {
+                      begin: '(=)\\s*',
+                      beginCaptures: {
+                        1: {name: 'keyword.operator.assignment.matlab'}
+                      },
+                      end: '(?=\\)|,)',
                       patterns: [
                         {
-                          match: '(?<=\\s)\\(',
-                          name: 'punctuation.section.parens.begin.matlab'
+                          match: 'true|false',
+                          name: 'constant.language.boolean.matlab'
                         },
                         {
-                          match: '\\)\\z',
-                          name: 'punctuation.section.parens.end.matlab'
+                          match: '(?<!\\w)\\?(?=\\w)',
+                          name: 'keyword.operator.other.question.matlab'
                         },
-                        {
-                          match: ',',
-                          name: 'punctuation.separator.modifier.comma.matlab'
-                        },
-                        {
-                          match: '[a-zA-Z][a-zA-Z0-9_]*',
-                          name: 'storage.modifier.class.matlab'
-                        },
-                        {
-                          begin: '(=)\\s*',
-                          beginCaptures: {
-                            1: {name: 'keyword.operator.assignment.matlab'}
-                          },
-                          end: '(?=\\)|,)',
-                          patterns: [
-                            {
-                              match: 'true|false',
-                              name: 'constant.language.boolean.matlab'
-                            },
-                            {include: '#string'}
-                          ]
-                        },
-                        {include: '#comments'},
+                        {include: '#metaclass_literal'},
+                        {include: '#string'},
+                        {include: '#curly_brackets'},
                         {include: '#line_continuation'}
                       ]
-                    }
-                  },
+                    },
+                    {include: '#comments'},
+                    {include: '#line_continuation'}
+                  ]
+                },
+                {
+                  begin: '\\s*(\\w+)',
+                  beginCaptures: {1: {name: 'entity.name.type.class.matlab'}},
                   end: '(?<!\\.{3})(?=\\s*%|\\n)',
                   patterns: [
                     {
-                      begin: '\\G\\s*([a-zA-Z][a-zA-Z0-9_]*)',
-                      beginCaptures: {
-                        1: {name: 'entity.name.type.class.matlab'}
-                      },
+                      begin: '\\G',
                       end: '(?<!\\.{3})(?=\\n)',
                       patterns: [
+                        {include: '#comments'},
+                        {include: '#line_continuation'},
                         {
                           match: '<',
                           name: 'punctuation.separator.lt.inheritance.matlab'
@@ -319,15 +323,14 @@ const grammar = {
                             }
                           ]
                         },
-                        {match: '&', name: 'keyword.operator.type.matlab'},
-                        {include: '#comments'},
-                        {include: '#line_continuation'}
+                        {match: '&', name: 'keyword.operator.type.matlab'}
                       ]
                     },
                     {include: '#comments'},
                     {include: '#line_continuation'}
                   ]
-                }
+                },
+                {include: '#comments'}
               ]
             },
             {
@@ -737,7 +740,8 @@ const grammar = {
           ]
         }
       },
-      match: '\\b(import)\\b[^\\S\\n]+([a-zA-Z0-9.\\*]*)[^\\S\\n]*(?=;|%|$)',
+      match:
+        '[^\\S\\r\\n]*\\b(import)\\b[^\\S\\n]+([a-zA-Z0-9.\\*]*)[^\\S\\n]*(?=;|%|$)',
       name: 'meta.import.matlab'
     },
     indexing_by_expression: {
@@ -770,6 +774,18 @@ const grammar = {
       },
       match: '(\\.{3})(.*)$',
       name: 'meta.continuation.line.matlab'
+    },
+    metaclass_literal: {
+      begin: '(?<=\\?)(?=[a-zA-Z])',
+      end: '(?<=[a-zA-Z0-9_])(?![a-zA-Z0-9_]|\\.|\\(|{)',
+      name: 'meta.metaclass.matlab',
+      patterns: [
+        {
+          match: '(?<=[.\\?])[a-zA-Z][a-zA-Z0-9_]*(?![a-zA-Z0-9_.])',
+          name: 'entity.other.class.matlab'
+        },
+        {match: '[a-zA-Z][a-zA-Z0-9_]*', name: 'entity.name.namespace.matlab'}
+      ]
     },
     multiple_assignment: {
       begin: '\\[(?=[^\\]]+\\]\\s*=[a-zA-Z0-9_\\s(])',
@@ -885,7 +901,7 @@ const grammar = {
     },
     readwrite_variable: {
       match:
-        '(?<![a-zA-Z0-9_]|\\.)[a-zA-Z][a-zA-Z0-9_]*(?![a-zA-Z0-9_]|(?:\\(|\\{|\\.\\())',
+        '(?<![a-zA-Z0-9_]|\\.|\\?)[a-zA-Z][a-zA-Z0-9_]*(?![a-zA-Z0-9_]|(?:\\(|\\{|\\.\\())',
       name: 'variable.other.readwrite.matlab'
     },
     rules_after_command_dual: {
@@ -919,7 +935,8 @@ const grammar = {
         {include: '#multiple_assignment'},
         {include: '#single_assignment'},
         {include: '#square_brackets'},
-        {include: '#curly_brackets'}
+        {include: '#curly_brackets'},
+        {include: '#metaclass_literal'}
       ]
     },
     shell_string: {

@@ -201,7 +201,11 @@ const grammar = {
       ]
     },
     attribute: {
-      patterns: [{include: '#type-name'}, {include: '#attribute-arguments'}]
+      patterns: [
+        {include: '#type-name'},
+        {include: '#type-arguments'},
+        {include: '#attribute-arguments'}
+      ]
     },
     'attribute-arguments': {
       begin: '(\\()',

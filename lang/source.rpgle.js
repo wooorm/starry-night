@@ -337,7 +337,8 @@ const grammar = {
                   name: 'keyword.other.rpgle'
                 },
                 {
-                  match: '((?i)[@#a-zA-Z_][@#a-zA-Z0-9_]*)|\\(|\\)|\\%',
+                  match:
+                    '((?i)[a-zA-Z_#@$§ÆØÅÄÖ£Ñ¥àÐŞİ][a-zA-Z0-9_#@$§ÆØÅÄÖ£Ñ¥àÐŞİ]*)|\\(|\\)|\\%',
                   name: 'variable.other'
                 }
               ]
@@ -350,7 +351,7 @@ const grammar = {
             },
             {
               match:
-                '(?i)(?<=((?<=^.{5}C).{19}))(Z\\-SUB|Z\\-ADD|XML\\-SAX|XML\\-INTO|XLATE|XFOOT|WRITE|WHEN|UPDATE|UNLOCK|TIME|TESTZ|TESTN|TESTB|TEST|TAG|SUBST|SUBDUR|SUB|SQRT|SORTA|SHTDN|SETON|SETOFF|SETLL|SETGT|SELECT|SCAN|ROLBK|RETURN|RESET|REL|REALLOC|READPE|READP|READE|READC|READ|POST|PLIST|PARM|OUT|OTHER|OR|OPEN|ON\\-EXIT|ON\\-ERROR|OCCUR|NEXT|MVR|MULT|MOVEL|MOVEA|MOVE|MONITOR|MLLZO|MLHZO|MHLZO|MHHZO|LOOKUP|LEAVESR|LEAVE|KLIST|KFLD|ITER|IN|IF|GOTO|FORCE|FOR|FEOD|EXTRCT|EXSR|EXFMT|EXCEPT|EVAL-CORR|EVALR|EVAL|ENDFOR|ENDSR|ENDIF|ENDDO|ENDCS|ENDWH|ENDSL|END|ELSEIF|ELSE|DUMP|DSPLY|DOW|DOU|DO|DIV|DELETE|DEFINE|DEALLOC|DATA-INTO|COMP|COMMIT|CLOSE|CLEAR|CHECKR|CHECK|CHAIN|CAT|CAS|CALLP|CALLB|CALL|CAB|BITON|BITOFF|BEGSR|AND|ALLOC|ADDUR|ADD|ACQ)',
+                '(?i)(?<=((?<=^.{5}C).{19}))(Z\\-SUB|Z\\-ADD|XML\\-SAX|XML\\-INTO|XLATE|XFOOT|WRITE|WHEN|UPDATE|UNLOCK|TIME|TESTZ|TESTN|TESTB|TEST|TAG|SUBST|SUBDUR|SUB|SQRT|SORTA|SHTDN|SETON|SETOFF|SETLL|SETGT|SELECT|SCAN|ROLBK|RETURN|RESET|REL|REALLOC|READPE|READP|READE|READC|READ|POST|PLIST|PARM|OUT|OTHER|OR|OPEN|ON\\-EXIT|ON\\-ERROR|OCCUR|NEXT|MVR|MULT|MOVEL|MOVEA|MOVE|MONITOR|MLLZO|MLHZO|MHLZO|MHHZO|LOOKUP|LEAVESR|LEAVE|KLIST|KFLD|ITER|IN|IF|GOTO|FORCE|FOR|FEOD|EXTRCT|EXSR|EXFMT|EXCEPT|EVAL-CORR|EVALR|EVAL|ENDFOR|ENDSR|ENDIF|ENDDO|ENDCS|ENDWH|ENDSL|END|ELSEIF|ELSE|DUMP|DSPLY|DOW|DOU|DO|DIV|DELETE|DEFINE|DEALLOC|DATA-INTO|DATA-GEN|COMP|COMMIT|CLOSE|CLEAR|CHECKR|CHECK|CHAIN|CAT|CAS|CALLP|CALLB|CALL|CAB|BITON|BITOFF|BEGSR|AND|ALLOC|ADDUR|ADD|ACQ)',
               name: 'keyword.other.rpgle.fixed.c.operation'
             },
             {
@@ -523,6 +524,23 @@ const grammar = {
           ]
         },
         {
+          begin: '(?i)(?=(\\b(DCL\\-)(PR|DS)\\b))',
+          end: '\n',
+          name: 'rpgle.free.definition.complex-single',
+          patterns: [
+            {
+              match: '(?i)\\b(DCL\\-)(PR|DS)\\b',
+              name: 'storage.type.rpgle.free.definition.complex-single.dcl'
+            },
+            {
+              match: '(?i)\\b(END\\-)(PR|DS)\\b',
+              name: 'storage.type.rpgle.free.definition.complex-single.end'
+            },
+            {include: '#freedefkeywords'},
+            {include: '#rpglecommon'}
+          ]
+        },
+        {
           begin: '(?i)(?=(\\b(DCL\\-)(DS|ENUM|PROC|PR|PI)\\b))',
           end: '\n',
           name: 'rpgle.free.definition.complex',
@@ -546,7 +564,7 @@ const grammar = {
         },
         {
           match:
-            '(?i)\\b(Z\\-SUB|Z\\-ADD|XML\\-SAX|XML\\-INTO|XLATE|XFOOT|WRITE|WHEN-IN|WHEN-IS|WHEN|UPDATE|UNLOCK|TIME|TESTZ|TESTN|TESTB|TEST|TAG|SUBST|SUBDUR|SUB|SQRT|SQLSTATE|SQLCODE|SORTA|SND\\-MSG|SHTDN|SETON|SETOFF|SETLL|SETGT|SELECT|SCAN|ROLBK|RETURN|RESET|REL|REALLOC|READPE|READP|READE|READC|READ|POST|PLIST|PARM|OUT|OTHER|OR|OPEN|ON\\-EXIT|ON\\-EXCP|ON\\-ERROR|OCCUR|NEXT|MVR|MULT|MOVEL|MOVEA|MOVE|MONITOR|MLLZO|MLHZO|MHLZO|MHHZO|LOOKUP|LEAVESR|LEAVE|KLIST|KFLD|ITER|IN|IF|GOTO|FORCE|FOR\\-EACH|FOR|FEOD|EXTRCT|EXSR|EXFMT|EXCEPT|EVAL-CORR|EVALR|EVAL|ENDSR|ENDMON|ENDFOR|ENDIF|ENDDO|ENDCS|ENDWH|ENDSL|END|ELSEIF|ELSE|DUMP|DSPLY|DOW|DOU|DO|DIV|DELETE|DEFINE|DEALLOC|DATA-INTO|COMP|COMMIT|CLOSE|CLEAR|CHECKR|CHECK|CHAIN|CAT|CAS|CALLP|CALLB|CALL|CAB|BITON|BITOFF|BEGSR|AND|ALLOC|ADDUR|ADD|ACQ)\\b',
+            '(?i)\\b(Z\\-SUB|Z\\-ADD|XML\\-SAX|XML\\-INTO|XLATE|XFOOT|WRITE|WHEN-IN|WHEN-IS|WHEN|UPDATE|UNLOCK|TIME|TESTZ|TESTN|TESTB|TEST|TAG|SUBST|SUBDUR|SUB|SQRT|SQLSTATE|SQLCODE|SORTA|SND\\-MSG|SHTDN|SETON|SETOFF|SETLL|SETGT|SELECT|SCAN|ROLBK|RETURN|RESET|REL|REALLOC|READPE|READP|READE|READC|READ|POST|PLIST|PARM|OUT|OTHER|OR|OPEN|ON\\-EXIT|ON\\-EXCP|ON\\-ERROR|OCCUR|NEXT|MVR|MULT|MOVEL|MOVEA|MOVE|MONITOR|MLLZO|MLHZO|MHLZO|MHHZO|LOOKUP|LEAVESR|LEAVE|KLIST|KFLD|ITER|IN|IF|GOTO|FORCE|FOR\\-EACH|FOR|FEOD|EXTRCT|EXSR|EXFMT|EXCEPT|EVAL-CORR|EVALR|EVAL|ENDSR|ENDMON|ENDFOR|ENDIF|ENDDO|ENDCS|ENDWH|ENDSL|END|ELSEIF|ELSE|DUMP|DSPLY|DOW|DOU|DO|DIV|DELETE|DEFINE|DEALLOC|DATA-INTO|DATA-GEN|COMP|COMMIT|CLOSE|CLEAR|CHECKR|CHECK|CHAIN|CAT|CAS|CALLP|CALLB|CALL|CAB|BITON|BITOFF|BEGSR|AND|ALLOC|ADDUR|ADD|ACQ)\\b',
           name: 'keyword.other.rpgle.free'
         },
         {include: '#freeidentifiers'},
@@ -556,7 +574,7 @@ const grammar = {
     freeidentifiers: {
       patterns: [
         {
-          begin: '[a-zA-Z_][a-zA-Z0-9_]*',
+          begin: '[a-zA-Z_#@$§ÆØÅÄÖ£Ñ¥àÐŞİ][a-zA-Z0-9_#@$§ÆØÅÄÖ£Ñ¥àÐŞİ]*',
           end: '(?=\n)',
           name: 'variable.other.rpgle.free.definition.identifier',
           patterns: [{include: '#freedefkeywords'}, {include: '#rpglecommon'}]
@@ -575,7 +593,7 @@ const grammar = {
         },
         {
           match:
-            '[%](?i)(YEARS|XML|XLATE|XFOOT|UPPER|UNSH|UNS|UCS2|TRIMR|TRIML|TRIM|TLOOKUPLT|TLOOKUPLE|TLOOKUPGT|TLOOKUPGE|TLOOKUP|TIMESTAMP|TIME|THIS|TARGET|SUBST|SUBDT|SUBARR|STR|STATUS|SQRT|SPLIT|SIZE|SHTDN|SECONDS|SCANRPL|SCANR|SCAN|RIGHT|REPLACE|REM|REALLOC|RANGE|PROC|PASSED|PARSER|PARMNUM|PARMS|PADDR|OPEN|OMITTED|OCCUR|NULLIND|MSG|MSECONDS|MONTHS|MINUTES|MINARR|MIN|MAXARR|MAX|LOWER|LOOKUPLT|LOOKUPLE|LOOKUPGT|LOOKUPGE|LOOKUP|LIST|LEN|LEFT|KDS|INTH|INT|HOURS|HANDLER|GRAPH|FOUND|FLOAT|FIELDS|ERROR|EQUAL|EOF|ELEM|EDITW|EDITFLT|EDITC|DIV|DIFF|DECPOS|DECH|DEC|DAYS|DATE|DATA|CONCATARR|CONCAT|CHECKR|CHECK|CHARCOUNT|CHAR|BITXOR|BITOR|BITNOT|BITAND|ALLOC|ADDR|ABS)',
+            '[%](?i)(YEARS|XML|XLATE|XFOOT|UPPER|UNSH|UNS|UCS2|TRIMR|TRIML|TRIM|TLOOKUPLT|TLOOKUPLE|TLOOKUPGT|TLOOKUPGE|TLOOKUP|TIMESTAMP|TIME|THIS|TARGET|SUBST|SUBDT|SUBARR|STR|STATUS|SQRT|SPLIT|SIZE|SHTDN|SECONDS|SCANRPL|SCANR|SCAN|RIGHT|REPLACE|REM|REALLOC|RANGE|PROC|PASSED|PARSER|PARMNUM|PARMS|PADDR|OPEN|OMITTED|OCCUR|NULLIND|MSG|MSECONDS|MONTHS|MINUTES|MINARR|MIN|MAXARR|MAX|LOWER|LOOKUPLT|LOOKUPLE|LOOKUPGT|LOOKUPGE|LOOKUP|LIST|LEN|LEFT|KDS|INTH|INT|HOURS|HANDLER|GRAPH|GEN|FOUND|FLOAT|FIELDS|ERROR|EQUAL|EOF|ELEM|EDITW|EDITFLT|EDITC|DIV|DIFF|DECPOS|DECH|DEC|DAYS|DATE|DATA|CONCATARR|CONCAT|CHECKR|CHECK|CHARCOUNT|CHAR|BITXOR|BITOR|BITNOT|BITAND|ALLOC|ADDR|ABS)',
           name: 'support.function.rpgle.bif'
         }
       ]
@@ -722,15 +740,17 @@ const grammar = {
           name: 'constant.language.rpgle.sql.globals'
         },
         {
-          match: '[a-zA-Z_][a-zA-Z0-9_]*(?=\\()',
+          match:
+            '[a-zA-Z_#@$§ÆØÅÄÖ£Ñ¥àÐŞİ][a-zA-Z0-9_#@$§ÆØÅÄÖ£Ñ¥àÐŞİ]*(?=\\()',
           name: 'support.function.rpgle.sql'
         },
         {
-          match: '[a-zA-Z_][a-zA-Z0-9_]*(\\.|\\/)[a-zA-Z_][a-zA-Z0-9_]*',
+          match:
+            '[a-zA-Z_#@$§ÆØÅÄÖ£Ñ¥àÐŞİ][a-zA-Z0-9_#@$§ÆØÅÄÖ£Ñ¥àÐŞİ]*(\\.|\\/)[a-zA-Z_#@$§ÆØÅÄÖ£Ñ¥àÐŞİ][a-zA-Z0-9_#@$§ÆØÅÄÖ£Ñ¥àÐŞİ]*',
           name: 'constant.language.rpgle.sql.schema'
         },
         {
-          match: '[:][a-zA-Z_@#][a-zA-Z0-9_@#\\.]*',
+          match: '[:][a-zA-Z_#@$§ÆØÅÄÖ£Ñ¥àÐŞİ][a-zA-Z0-9_#@$§ÆØÅÄÖ£Ñ¥àÐŞİ\\.]*',
           name: 'variable.parameter.rpgle.sql'
         },
         {

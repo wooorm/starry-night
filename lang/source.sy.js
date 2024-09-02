@@ -482,7 +482,7 @@ const grammar = {
       ]
     },
     signature: {
-      match: '^(?:\\xC2\\xAD|\\xAD){2,}',
+      match: '^(?:\\xC2\\xAD){2,}',
       name: 'punctuation.whitespace.shy-hyphens.signature.sy'
     },
     string: {

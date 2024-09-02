@@ -9,7 +9,7 @@
 
 /** @type {Grammar} */
 const grammar = {
-  extensions: ['.textproto', '.pbt', '.pbtxt'],
+  extensions: ['.textproto', '.pbtxt'],
   names: ['protocol-buffer-text-format', 'text-proto', 'protobuf-text-format'],
   patterns: [
     {include: '#comments'},

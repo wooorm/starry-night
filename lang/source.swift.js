@@ -43,7 +43,7 @@ const grammar = {
                 2: {name: 'constant.numeric.swift'}
               },
               match:
-                '\\b(swift|(?:iOS|macOS|OSX|watchOS|tvOS|UIKitForMac)(?:ApplicationExtension)?)\\b(?:\\s+([0-9]+(?:\\.[0-9]+)*\\b))?'
+                '\\b(swift|(?:iOS|macOS|OSX|watchOS|tvOS|visionOS|UIKitForMac)(?:ApplicationExtension)?)\\b(?:\\s+([0-9]+(?:\\.[0-9]+)*\\b))?'
             },
             {
               begin: '\\b(introduced|deprecated|obsoleted)\\s*(:)\\s*',
@@ -412,7 +412,7 @@ const grammar = {
                 4: {name: 'punctuation.definition.parameters.end.swift'}
               },
               match:
-                '\\b(os)\\s*(\\()\\s*(?:(macOS|OSX|iOS|tvOS|watchOS|Android|Linux|FreeBSD|Windows|PS4)|\\w+)\\s*(\\))'
+                '\\b(os)\\s*(\\()\\s*(?:(macOS|OSX|iOS|tvOS|watchOS|visionOS|Android|Linux|FreeBSD|Windows|PS4)|\\w+)\\s*(\\))'
             },
             {
               captures: {
@@ -1579,7 +1579,7 @@ const grammar = {
               2: {name: 'constant.numeric.swift'}
             },
             match:
-              '\\s*\\b((?:iOS|macOS|OSX|watchOS|tvOS|UIKitForMac)(?:ApplicationExtension)?)\\b(?:\\s+([0-9]+(?:\\.[0-9]+)*\\b))'
+              '\\s*\\b((?:iOS|macOS|OSX|watchOS|tvOS|visionOS|UIKitForMac)(?:ApplicationExtension)?)\\b(?:\\s+([0-9]+(?:\\.[0-9]+)*\\b))'
           },
           {
             captures: {

@@ -10,7 +10,7 @@
 /** @type {Grammar} */
 const grammar = {
   extensions: ['.vim', '.vimrc', '.vmb'],
-  names: ['vim-script', 'vim', 'viml', 'nvim'],
+  names: ['vim-script', 'vim', 'viml', 'nvim', 'vimscript'],
   patterns: [
     {
       begin: '\\A(?=" Vimball Archiver)',

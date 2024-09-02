@@ -969,6 +969,14 @@ const grammar = {
                   patterns: [
                     {include: '#standard'},
                     {
+                      begin: '(?=\\[)',
+                      end: '(?<=])',
+                      patterns: [
+                        {include: '#standard'},
+                        {include: '#metadata.local'}
+                      ]
+                    },
+                    {
                       begin: '\\\\?\\b\\w+\\b',
                       beginCaptures: {
                         0: {
@@ -1167,13 +1175,13 @@ const grammar = {
                     },
                     4: {name: 'punctuation.section.group.optional.end.ice'}
                   },
-                  match: '((?:optional|tag))(\\()([-a-zA-Z0-9_:]*)(\\))'
+                  match: '(optional)(\\()([-a-zA-Z0-9_:]*)(\\))'
                 }
               ]
             }
           },
           match:
-            '(?<!\\\\)\\b(?:(local)|(const)|(idempotent)|(out)|((?:optional|tag)\\([-a-zA-Z0-9_:]*\\)))(?:\\b|(?<=\\)))'
+            '(?<!\\\\)\\b(?:(local)|(const)|(idempotent)|(out)|(optional\\([-a-zA-Z0-9_:]*\\)))(?:\\b|(?<=\\)))'
         }
       ]
     },

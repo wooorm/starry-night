@@ -9,7 +9,7 @@
 
 /** @type {Grammar} */
 const grammar = {
-  extensions: ['.bas'],
+  extensions: [],
   names: ['basic'],
   patterns: [
     {match: '^\\s*\\d+', name: 'entity.name.tag.basic'},

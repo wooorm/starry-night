@@ -1,7 +1,7 @@
 // This is a TextMate grammar distributed by `starry-night`.
 // This grammar is developed at
 // <https://github.com/golang/vscode-go>
-// and licensed permissive.
+// and licensed `mit`.
 // See <https://github.com/wooorm/starry-night> for more info.
 /**
  * @import {Grammar} from '@wooorm/starry-night'

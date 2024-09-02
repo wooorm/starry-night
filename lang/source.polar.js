@@ -65,11 +65,20 @@ const grammar = {
     },
     'resource-block': {
       begin:
-        '((resource|actor)\\s+([a-zA-Z_][a-zA-Z0-9_]*(?:::[a-zA-Z0-9_]+)*)|(global))\\s*\\{',
+        '(?<resourceType>[a-zA-Z_][a-zA-Z0-9_]*(?:::[a-zA-Z0-9_]+)*){0}((?:(resource|actor)\\s+(\\g<resourceType>)(?:\\s+(extends)\\s+(\\g<resourceType>(?:\\s*,\\s*\\g<resourceType>)*)\\s*,?\\s*)?)|(global))\\s*{',
       beginCaptures: {
-        2: {name: 'keyword.control'},
-        3: {name: 'entity.name.type'},
-        4: {name: 'keyword.control'}
+        3: {name: 'keyword.control'},
+        4: {name: 'entity.name.type'},
+        5: {name: 'keyword.control'},
+        6: {
+          patterns: [
+            {
+              match: '([a-zA-Z_][a-zA-Z0-9_]*(?:::[a-zA-Z0-9_]+)*)',
+              name: 'entity.name.type'
+            }
+          ]
+        },
+        7: {name: 'keyword.control'}
       },
       end: '\\}',
       name: 'meta.resource-block',

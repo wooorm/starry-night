@@ -71,21 +71,21 @@ const grammar = {
       patterns: [
         {
           match:
-            '(?xi)\n(?<=^|\\s|\\() # preceded by space or (\n(?:t|single-float-negative-epsilon|single-float-epsilon|short-float-negative-epsilon|short-float-epsilon|pi|\nnil|multiple-values-limit|most-positive-single-float|most-positive-short-float|most-positive-long-float|\nmost-positive-fixnum|most-positive-double-float|most-negative-single-float|most-negative-short-float|\nmost-negative-long-float|most-negative-fixnum|most-negative-double-float|long-float-negative-epsilon|\nlong-float-epsilon|least-positive-single-float|least-positive-short-float|least-positive-normalized-single-float|\nleast-positive-normalized-short-float|least-positive-normalized-long-float|least-positive-normalized-double-float|\nleast-positive-long-float|least-positive-double-float|least-negative-single-float|least-negative-short-float|\nleast-negative-normalized-single-float|least-negative-normalized-short-float|least-negative-normalized-long-float|\nleast-negative-normalized-double-float|least-negative-long-float|least-negative-double-float|lambda-parameters-limit|\nlambda-list-keywords|internal-time-units-per-second|double-float-negative-epsilon|double-float-epsilon|char-code-limit|\ncall-arguments-limit|boole-xor|boole-set|boole-orc2|boole-orc1|boole-nor|boole-nand|boole-ior|boole-eqv|boole-clr|\nboole-c2|boole-c1|boole-andc2|boole-andc1|boole-and|boole-2|boole-1|array-total-size-limit|array-rank-limit|array-dimension-limit)\n(?=(\\s|\\(|\\))) # followed by space, ( or )',
+            '(?xi)\n(?<=^|\\s|\\(|,@|,\\.|,) # preceded by space , ( or `,`|`,@`|`,.`\n(?:t|single-float-negative-epsilon|single-float-epsilon|short-float-negative-epsilon|short-float-epsilon|pi|\nnil|multiple-values-limit|most-positive-single-float|most-positive-short-float|most-positive-long-float|\nmost-positive-fixnum|most-positive-double-float|most-negative-single-float|most-negative-short-float|\nmost-negative-long-float|most-negative-fixnum|most-negative-double-float|long-float-negative-epsilon|\nlong-float-epsilon|least-positive-single-float|least-positive-short-float|least-positive-normalized-single-float|\nleast-positive-normalized-short-float|least-positive-normalized-long-float|least-positive-normalized-double-float|\nleast-positive-long-float|least-positive-double-float|least-negative-single-float|least-negative-short-float|\nleast-negative-normalized-single-float|least-negative-normalized-short-float|least-negative-normalized-long-float|\nleast-negative-normalized-double-float|least-negative-long-float|least-negative-double-float|lambda-parameters-limit|\nlambda-list-keywords|internal-time-units-per-second|double-float-negative-epsilon|double-float-epsilon|char-code-limit|\ncall-arguments-limit|boole-xor|boole-set|boole-orc2|boole-orc1|boole-nor|boole-nand|boole-ior|boole-eqv|boole-clr|\nboole-c2|boole-c1|boole-andc2|boole-andc1|boole-and|boole-2|boole-1|array-total-size-limit|array-rank-limit|array-dimension-limit)\n(?=(\\s|\\(|\\))) # followed by space, ( or )',
           name: 'constant.language.commonlisp'
         },
         {
           match:
-            '(?x)\n(?<=^|\\s|\\()                           # preceded by space or (\n([+-]?[0-9]+(?:\\/[0-9]+)*|                # ratio\n[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?|   # integer, float\n(\\#b|\\#B)[01\\/+-]+|(\\#o|\\#O)[0-7\\/+-]+|(\\#x|\\#X)[0-9a-fA-F\\/+-]+|(\\#[0-9]+[rR]?)[0-9a-zA-Z\\/+-]+)\n(?=(\\s|\\)))                               # followed by space, )',
+            '(?x)\n(?<=^|\\s|\\(|,@|,\\.|,)                     # preceded by space , ( or `,`|`,@`|`,.`\n([+-]?[0-9]+(?:\\/[0-9]+)*|                # ratio\n[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?|   # integer, float\n(\\#b|\\#B)[01\\/+-]+|(\\#o|\\#O)[0-7\\/+-]+|(\\#x|\\#X)[0-9a-fA-F\\/+-]+|(\\#[0-9]+[rR]?)[0-9a-zA-Z\\/+-]+)\n(?=(\\s|\\)))                               # followed by space, )',
           name: 'constant.numeric.commonlisp'
         },
         {
-          match: '(?xi)\n(?<=\\s) # preceded by space or (\n(\\.)\n(?=\\s)',
+          match: '(?xi)\n(?<=\\s) # preceded by space\n(\\.)\n(?=\\s)',
           name: 'variable.other.constant.dot.commonlisp'
         },
         {
           match:
-            '(?x)\n(?<=^|\\s|\\()                           # preceded by space or (\n([+-]?[0-9]*\\.[0-9]*((e|s|f|d|l|E|S|F|D|L)[+-]?[0-9]+)?|\n[+-]?[0-9]+(\\.[0-9]*)?(e|s|f|d|l|E|S|F|D|L)[+-]?[0-9]+)\n(?=(\\s|\\)))                               # followed by space, )',
+            '(?x)\n(?<=^|\\s|\\(|,@|,\\.|,)                     # preceded by space , ( or `,`|`,@`|`,.`\n([+-]?[0-9]*\\.[0-9]*((e|s|f|d|l|E|S|F|D|L)[+-]?[0-9]+)?|\n[+-]?[0-9]+(\\.[0-9]*)?(e|s|f|d|l|E|S|F|D|L)[+-]?[0-9]+)\n(?=(\\s|\\)))                               # followed by space, )',
           name: 'constant.numeric.commonlisp'
         }
       ]
@@ -396,12 +396,12 @@ const grammar = {
         },
         {
           match:
-            '(?xi)\n(?<=\\S:|^|\\s|\\() # preceded by space or (\n(\\+[^\\s\\+]+\\+)\n(?=(\\s|\\(|\\)))  # followed by space, ( or )',
+            '(?xi)\n(?<=\\S:|^|\\s|\\(|,@|,\\.|,) # preceded by space , ( or `,`|`,@`|`,.`\n(\\+[^\\s\\+]+\\+)\n(?=(\\s|\\(|\\)))  # followed by space, ( or )',
           name: 'variable.other.constant.earmuffsplus.commonlisp'
         },
         {
           match:
-            '(?xi)\n(?<=\\S:|^|\\s|\\() # preceded by space or (\n(\\*[^\\s\\*]+\\*)\n(?=(\\s|\\(|\\)))  # followed by space, ( or )',
+            '(?xi)\n(?<=\\S:|^|\\s|\\(|,@|,\\.|,) # preceded by space , ( or `,`|`,@`|`,.`\n(\\*[^\\s\\*]+\\*)\n(?=(\\s|\\(|\\)))  # followed by space, ( or )',
           name: 'string.regexp.earmuffsasterisk.commonlisp'
         }
       ]
@@ -420,12 +420,12 @@ const grammar = {
       patterns: [
         {
           match:
-            '(?xi)\n(?<=^|\\s|\\() # preceded by space or (\n(?:\\*trace-output\\*|\\*terminal-io\\*|\\*standard-output\\*|\\*standard-input\\*|\\*readtable\\*|\\*read-suppress\\*|\\*read-eval\\*|\n\\*read-default-float-format\\*|\\*read-base\\*|\\*random-state\\*|\\*query-io\\*|\\*print-right-margin\\*|\\*print-readably\\*|\\*print-radix\\*|\\*print-pretty\\*|\n\\*print-pprint-dispatch\\*|\\*print-miser-width\\*|\\*print-lines\\*|\\*print-level\\*|\\*print-length\\*|\\*print-gensym\\*|\\*print-escape\\*|\\*print-circle\\*|\n\\*print-case\\*|\\*print-base\\*|\\*print-array\\*|\\*package\\*|\\*modules\\*|\\*macroexpand-hook\\*|\\*load-verbose\\*|\\*load-truename\\*|\\*load-print\\*|\n\\*load-pathname\\*|\\*gensym-counter\\*|\\*features\\*|\\*error-output\\*|\\*default-pathname-defaults\\*|\\*debugger-hook\\*|\\*debug-io\\*|\\*compile-verbose\\*|\n\\*compile-print\\*|\\*compile-file-truename\\*|\\*compile-file-pathname\\*|\\*break-on-signals\\*)\n(?=(\\s|\\(|\\)))  # followed by space, ( or )',
+            '(?xi)\n(?<=^|\\s|\\(|,@|,\\.|,) # preceded by space , ( or `,`|`,@`|`,.`\n(?:\\*trace-output\\*|\\*terminal-io\\*|\\*standard-output\\*|\\*standard-input\\*|\\*readtable\\*|\\*read-suppress\\*|\\*read-eval\\*|\n\\*read-default-float-format\\*|\\*read-base\\*|\\*random-state\\*|\\*query-io\\*|\\*print-right-margin\\*|\\*print-readably\\*|\\*print-radix\\*|\\*print-pretty\\*|\n\\*print-pprint-dispatch\\*|\\*print-miser-width\\*|\\*print-lines\\*|\\*print-level\\*|\\*print-length\\*|\\*print-gensym\\*|\\*print-escape\\*|\\*print-circle\\*|\n\\*print-case\\*|\\*print-base\\*|\\*print-array\\*|\\*package\\*|\\*modules\\*|\\*macroexpand-hook\\*|\\*load-verbose\\*|\\*load-truename\\*|\\*load-print\\*|\n\\*load-pathname\\*|\\*gensym-counter\\*|\\*features\\*|\\*error-output\\*|\\*default-pathname-defaults\\*|\\*debugger-hook\\*|\\*debug-io\\*|\\*compile-verbose\\*|\n\\*compile-print\\*|\\*compile-file-truename\\*|\\*compile-file-pathname\\*|\\*break-on-signals\\*)\n(?=(\\s|\\(|\\)))  # followed by space, ( or )',
           name: 'string.regexp.earmuffsasterisk.commonlisp'
         },
         {
           match:
-            '(?xi)\n(?<=^|\\s|\\() # preceded by space or (\n(?:\\*\\*\\*|\\*\\*|\\+\\+\\+|\\+\\+|\\/\\/\\/|\\/\\/)\n(?=(\\s|\\(|\\)))  # followed by space, ( or )',
+            '(?xi)\n(?<=^|\\s|\\(|,@|,\\.|,) # preceded by space , ( or `,`|`,@`|`,.`\n(?:\\*\\*\\*|\\*\\*|\\+\\+\\+|\\+\\+|\\/\\/\\/|\\/\\/)\n(?=(\\s|\\(|\\)))  # followed by space, ( or )',
           name: 'variable.other.repl.commonlisp'
         }
       ]

@@ -36,6 +36,7 @@ import {common} from './common.js'
 const aliases = {
   // Old names to new names.
   // Example: 'source.brightscript': 'source.brs',
+  'source.pegjs': 'source.peggy',
   'source.slice': 'source.ice'
 }
 
@@ -169,6 +170,7 @@ for (name in languages) {
       scope === 'source.pov-ray sdl' ||
         // https://github.com/github-linguist/linguist/pull/6862#issuecomment-2157822516
         scope === 'source.Caddyfile' ||
+        scope === 'source.iCalendar' ||
         /^[-a-z\d+_.]+$/.test(scope),
       scope
     )

@@ -9,7 +9,7 @@
 
 /** @type {Grammar} */
 const grammar = {
-  extensions: ['.robot'],
+  extensions: ['.robot', '.resource'],
   names: ['robotframework'],
   patterns: [
     {

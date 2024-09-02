@@ -56,7 +56,8 @@ const grammar = {
           name: 'keyword.operator.assignment.statamic'
         },
         {
-          match: '(?i)(!|\\?\\?|\\?=|\\?|&&|&|\\|\\|)|\\b(and|or|xor)\\b',
+          match:
+            '(?<!-)\\b(?i)(!|\\?\\?|\\?=|\\?|&&|&|\\|\\|)|\\b(and|or|xor)\\b',
           name: 'keyword.operator.logical.statamic'
         },
         {

@@ -20,14 +20,14 @@ const grammar = {
     },
     {begin: "'", end: "'", name: 'string.quoted.single.elvish'},
     {begin: '#', end: '$', name: 'comment.line.number-sign.elvish'},
-    {match: '\\$[\\w\\d_:~-]+', name: 'variable.other.elvish'},
+    {match: '\\$[\\w\\d_:~-]*', name: 'variable.other.elvish'},
     {
       captures: {
         1: {name: 'keyword.other.elvish'},
         2: {name: 'variable.other.elvish'}
       },
       match:
-        '(?<=\\G|^|\\{ |\\{\t|\\(|\\||\\;)\\s*(var|set|tmp|del)((\\s+[\\w\\d_:~-]+)+)'
+        '(?<=\\G|^|\\{ |\\{\t|\\(|\\||\\;)\\s*(var|set|tmp|with|del)((\\s+[\\w\\d_:~-]+)+)'
     },
     {
       captures: {
@@ -41,7 +41,7 @@ const grammar = {
         1: {name: 'keyword.control.elvish'},
         2: {name: 'variable.other.elvish'}
       },
-      match: '(?<=})\\s+(catch|except)\\s+([\\w\\d_:~-]+)'
+      match: '(?<=})\\s+(catch)\\s+([\\w\\d_:~-]+)'
     },
     {
       captures: {1: {name: 'support.function.elvish'}},
@@ -56,7 +56,7 @@ const grammar = {
     {
       captures: {1: {name: 'keyword.other.elvish'}},
       match:
-        '(?<=\\G|^|\\{ |\\{\t|\\(|\\||\\;)\\s*(use|var|set|tmp|del|pragma|fn)(?=[\\s)}<>;|&])'
+        '(?<=\\G|^|\\{ |\\{\t|\\(|\\||\\;)\\s*(use|var|set|tmp|with|del|pragma|fn)(?=[\\s)}<>;|&])'
     },
     {
       captures: {1: {name: 'keyword.control.elvish'}},
@@ -65,7 +65,7 @@ const grammar = {
     },
     {
       captures: {1: {name: 'keyword.control.elvish'}},
-      match: '(?<=})\\s+(elif|else|catch|except|finally)(?=[\\s)}<>;|&])'
+      match: '(?<=})\\s+(elif|else|catch|finally)(?=[\\s)}<>;|&])'
     },
     {match: '[*?|&;<>()\\[\\]{}]', name: 'keyword.operator.elvish'}
   ],

@@ -597,7 +597,8 @@ const grammar = {
             2: {
               patterns: [
                 {
-                  match: '(all|general|privacy|social|security|other|custom)',
+                  match:
+                    '(all|general|privacy|social|security|other|custom|advanced)',
                   name: 'constant.language.contentblocker.name'
                 },
                 {match: '(\\(|\\)|,)', name: 'keyword.control.characters'},

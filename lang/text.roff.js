@@ -57,7 +57,6 @@ const grammar = {
     '.mdoc',
     '.mdoc',
     '.me',
-    '.nr',
     '.roff',
     '.tmac'
   ],
