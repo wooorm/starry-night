@@ -2,17 +2,17 @@
  * It’s based on what GitHub uses on their site.
  * See <https://github.com/wooorm/starry-night> for more info. */
 :root {
-  --color-prettylights-syntax-comment: #8b949e;
+  --color-prettylights-syntax-comment: #9198a1;
   --color-prettylights-syntax-constant: #79c0ff;
   --color-prettylights-syntax-constant-other-reference-link: #a5d6ff;
   --color-prettylights-syntax-entity: #d2a8ff;
-  --color-prettylights-syntax-storage-modifier-import: #c9d1d9;
+  --color-prettylights-syntax-storage-modifier-import: #f0f6fc;
   --color-prettylights-syntax-entity-tag: #a5d6ff;
   --color-prettylights-syntax-keyword: #ff7b72;
   --color-prettylights-syntax-string: #a5d6ff;
   --color-prettylights-syntax-variable: #ffa198;
   --color-prettylights-syntax-brackethighlighter-unmatched: #f85149;
-  --color-prettylights-syntax-brackethighlighter-angle: #8b949e;
+  --color-prettylights-syntax-brackethighlighter-angle: #9198a1;
   --color-prettylights-syntax-invalid-illegal-text: #f0f6fc;
   --color-prettylights-syntax-invalid-illegal-bg: #8e1519;
   --color-prettylights-syntax-carriage-return-text: #f0f6fc;
@@ -20,18 +20,18 @@
   --color-prettylights-syntax-string-regexp: #a5d6ff;
   --color-prettylights-syntax-markup-list: #f2cc60;
   --color-prettylights-syntax-markup-heading: #1f6feb;
-  --color-prettylights-syntax-markup-italic: #c9d1d9;
-  --color-prettylights-syntax-markup-bold: #c9d1d9;
+  --color-prettylights-syntax-markup-italic: #f0f6fc;
+  --color-prettylights-syntax-markup-bold: #f0f6fc;
   --color-prettylights-syntax-markup-deleted-text: #ffdcd7;
   --color-prettylights-syntax-markup-deleted-bg: #67060c;
   --color-prettylights-syntax-markup-inserted-text: #cae8ff;
   --color-prettylights-syntax-markup-inserted-bg: #0c2d6b;
   --color-prettylights-syntax-markup-changed-text: #ffdcd7;
   --color-prettylights-syntax-markup-changed-bg: #67060c;
-  --color-prettylights-syntax-markup-ignored-text: #c9d1d9;
+  --color-prettylights-syntax-markup-ignored-text: #f0f6fc;
   --color-prettylights-syntax-markup-ignored-bg: #1158c7;
   --color-prettylights-syntax-meta-diff-range: #d2a8ff;
-  --color-prettylights-syntax-sublimelinter-gutter-mark: #484f58;
+  --color-prettylights-syntax-sublimelinter-gutter-mark: #3d444d;
 }
 
 .pl-c {

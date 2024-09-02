@@ -2,17 +2,17 @@
  * It’s based on what GitHub uses on their site.
  * See <https://github.com/wooorm/starry-night> for more info. */
 :root {
-  --color-prettylights-syntax-comment: #57606a;
+  --color-prettylights-syntax-comment: #59636e;
   --color-prettylights-syntax-constant: #0550ae;
   --color-prettylights-syntax-constant-other-reference-link: #0a3069;
   --color-prettylights-syntax-entity: #6639ba;
-  --color-prettylights-syntax-storage-modifier-import: #24292f;
+  --color-prettylights-syntax-storage-modifier-import: #1f2328;
   --color-prettylights-syntax-entity-tag: #0550ae;
   --color-prettylights-syntax-keyword: #cf222e;
   --color-prettylights-syntax-string: #0a3069;
   --color-prettylights-syntax-variable: #953800;
   --color-prettylights-syntax-brackethighlighter-unmatched: #82071e;
-  --color-prettylights-syntax-brackethighlighter-angle: #57606a;
+  --color-prettylights-syntax-brackethighlighter-angle: #59636e;
   --color-prettylights-syntax-invalid-illegal-text: #f6f8fa;
   --color-prettylights-syntax-invalid-illegal-bg: #82071e;
   --color-prettylights-syntax-carriage-return-text: #f6f8fa;
@@ -20,52 +20,52 @@
   --color-prettylights-syntax-string-regexp: #116329;
   --color-prettylights-syntax-markup-list: #3b2300;
   --color-prettylights-syntax-markup-heading: #0550ae;
-  --color-prettylights-syntax-markup-italic: #24292f;
-  --color-prettylights-syntax-markup-bold: #24292f;
+  --color-prettylights-syntax-markup-italic: #1f2328;
+  --color-prettylights-syntax-markup-bold: #1f2328;
   --color-prettylights-syntax-markup-deleted-text: #82071e;
   --color-prettylights-syntax-markup-deleted-bg: #ffebe9;
   --color-prettylights-syntax-markup-inserted-text: #116329;
   --color-prettylights-syntax-markup-inserted-bg: #dafbe1;
   --color-prettylights-syntax-markup-changed-text: #953800;
   --color-prettylights-syntax-markup-changed-bg: #ffd8b5;
-  --color-prettylights-syntax-markup-ignored-text: #eaeef2;
+  --color-prettylights-syntax-markup-ignored-text: #d1d9e0;
   --color-prettylights-syntax-markup-ignored-bg: #0550ae;
   --color-prettylights-syntax-meta-diff-range: #8250df;
-  --color-prettylights-syntax-sublimelinter-gutter-mark: #8c959f;
+  --color-prettylights-syntax-sublimelinter-gutter-mark: #818b98;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-prettylights-syntax-comment: #768390;
+    --color-prettylights-syntax-comment: #9198a1;
     --color-prettylights-syntax-constant: #6cb6ff;
     --color-prettylights-syntax-constant-other-reference-link: #96d0ff;
     --color-prettylights-syntax-entity: #dcbdfb;
-    --color-prettylights-syntax-storage-modifier-import: #adbac7;
+    --color-prettylights-syntax-storage-modifier-import: #f0f6fc;
     --color-prettylights-syntax-entity-tag: #8ddb8c;
     --color-prettylights-syntax-keyword: #f47067;
     --color-prettylights-syntax-string: #96d0ff;
     --color-prettylights-syntax-variable: #f69d50;
     --color-prettylights-syntax-brackethighlighter-unmatched: #e5534b;
-    --color-prettylights-syntax-brackethighlighter-angle: #768390;
-    --color-prettylights-syntax-invalid-illegal-text: #cdd9e5;
+    --color-prettylights-syntax-brackethighlighter-angle: #9198a1;
+    --color-prettylights-syntax-invalid-illegal-text: #f0f6fc;
     --color-prettylights-syntax-invalid-illegal-bg: #922323;
-    --color-prettylights-syntax-carriage-return-text: #cdd9e5;
+    --color-prettylights-syntax-carriage-return-text: #f0f6fc;
     --color-prettylights-syntax-carriage-return-bg: #ad2e2c;
     --color-prettylights-syntax-string-regexp: #8ddb8c;
     --color-prettylights-syntax-markup-list: #eac55f;
     --color-prettylights-syntax-markup-heading: #316dca;
-    --color-prettylights-syntax-markup-italic: #adbac7;
-    --color-prettylights-syntax-markup-bold: #adbac7;
+    --color-prettylights-syntax-markup-italic: #f0f6fc;
+    --color-prettylights-syntax-markup-bold: #f0f6fc;
     --color-prettylights-syntax-markup-deleted-text: #ffd8d3;
     --color-prettylights-syntax-markup-deleted-bg: #78191b;
     --color-prettylights-syntax-markup-inserted-text: #b4f1b4;
     --color-prettylights-syntax-markup-inserted-bg: #1b4721;
     --color-prettylights-syntax-markup-changed-text: #ffddb0;
     --color-prettylights-syntax-markup-changed-bg: #682d0f;
-    --color-prettylights-syntax-markup-ignored-text: #adbac7;
+    --color-prettylights-syntax-markup-ignored-text: #f0f6fc;
     --color-prettylights-syntax-markup-ignored-bg: #255ab2;
     --color-prettylights-syntax-meta-diff-range: #dcbdfb;
-    --color-prettylights-syntax-sublimelinter-gutter-mark: #545d68;
+    --color-prettylights-syntax-sublimelinter-gutter-mark: #3d444d;
   }
 }
 

@@ -180,8 +180,20 @@ async function generate(light, dark) {
 
   // Get themes.
   // Note: types don’t put media as children, force any node.
-  const darkMedia = /** @type {Node | undefined} */ (tree.stylesheet.rules[0])
-  const lightMedia = /** @type {Node | undefined} */ (tree.stylesheet.rules[1])
+  const darkMedia = tree.stylesheet.rules.find((d) => {
+    return (
+      d.type === 'media' &&
+      'media' in d &&
+      d.media === '(prefers-color-scheme: dark)'
+    )
+  })
+  const lightMedia = tree.stylesheet.rules.find((d) => {
+    return (
+      d.type === 'media' &&
+      'media' in d &&
+      d.media === '(prefers-color-scheme: light)'
+    )
+  })
   themeMap.set(dark, generateMedia(darkMedia, 'dark'))
   themeMap.set(light, generateMedia(lightMedia, 'light'))
 
