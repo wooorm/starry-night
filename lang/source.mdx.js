@@ -169,7 +169,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.apib.mdx',
           patterns: [
@@ -192,7 +192,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.apib.mdx',
           patterns: [
@@ -219,7 +219,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.asciidoc.mdx',
           patterns: [
@@ -242,7 +242,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.asciidoc.mdx',
           patterns: [
@@ -269,7 +269,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.c.mdx',
           patterns: [
@@ -292,7 +292,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.c.mdx',
           patterns: [
@@ -319,7 +319,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.clojure.mdx',
           patterns: [
@@ -342,7 +342,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.clojure.mdx',
           patterns: [
@@ -369,7 +369,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.coffee.mdx',
           patterns: [
@@ -392,7 +392,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.coffee.mdx',
           patterns: [
@@ -419,7 +419,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.console.mdx',
           patterns: [
@@ -442,7 +442,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.console.mdx',
           patterns: [
@@ -469,7 +469,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.cpp.mdx',
           patterns: [
@@ -492,7 +492,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.cpp.mdx',
           patterns: [
@@ -519,7 +519,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.cs.mdx',
           patterns: [
@@ -542,7 +542,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.cs.mdx',
           patterns: [
@@ -569,7 +569,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.css.mdx',
           patterns: [
@@ -592,7 +592,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.css.mdx',
           patterns: [
@@ -619,7 +619,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.diff.mdx',
           patterns: [
@@ -642,7 +642,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.diff.mdx',
           patterns: [
@@ -669,7 +669,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.dockerfile.mdx',
           patterns: [
@@ -692,7 +692,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.dockerfile.mdx',
           patterns: [
@@ -719,7 +719,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.elixir.mdx',
           patterns: [
@@ -742,7 +742,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.elixir.mdx',
           patterns: [
@@ -769,7 +769,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.elm.mdx',
           patterns: [
@@ -792,7 +792,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.elm.mdx',
           patterns: [
@@ -819,7 +819,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.erlang.mdx',
           patterns: [
@@ -842,7 +842,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.erlang.mdx',
           patterns: [
@@ -869,7 +869,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.gitconfig.mdx',
           patterns: [
@@ -892,7 +892,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.gitconfig.mdx',
           patterns: [
@@ -919,7 +919,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.go.mdx',
           patterns: [
@@ -942,7 +942,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.go.mdx',
           patterns: [
@@ -969,7 +969,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.graphql.mdx',
           patterns: [
@@ -992,7 +992,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.graphql.mdx',
           patterns: [
@@ -1019,7 +1019,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.haskell.mdx',
           patterns: [
@@ -1042,7 +1042,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.haskell.mdx',
           patterns: [
@@ -1069,7 +1069,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.html.mdx',
           patterns: [
@@ -1092,7 +1092,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.html.mdx',
           patterns: [
@@ -1119,7 +1119,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.ini.mdx',
           patterns: [
@@ -1142,7 +1142,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.ini.mdx',
           patterns: [
@@ -1169,7 +1169,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.java.mdx',
           patterns: [
@@ -1192,7 +1192,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.java.mdx',
           patterns: [
@@ -1219,7 +1219,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.js.mdx',
           patterns: [
@@ -1242,7 +1242,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.js.mdx',
           patterns: [
@@ -1269,7 +1269,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.json.mdx',
           patterns: [
@@ -1292,7 +1292,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.json.mdx',
           patterns: [
@@ -1319,7 +1319,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.julia.mdx',
           patterns: [
@@ -1342,7 +1342,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.julia.mdx',
           patterns: [
@@ -1369,7 +1369,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.kotlin.mdx',
           patterns: [
@@ -1392,7 +1392,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.kotlin.mdx',
           patterns: [
@@ -1419,7 +1419,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.less.mdx',
           patterns: [
@@ -1442,7 +1442,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.less.mdx',
           patterns: [
@@ -1469,7 +1469,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.lua.mdx',
           patterns: [
@@ -1492,7 +1492,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.lua.mdx',
           patterns: [
@@ -1519,7 +1519,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.makefile.mdx',
           patterns: [
@@ -1542,7 +1542,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.makefile.mdx',
           patterns: [
@@ -1569,7 +1569,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.md.mdx',
           patterns: [
@@ -1592,7 +1592,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.md.mdx',
           patterns: [
@@ -1619,7 +1619,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.mdx.mdx',
           patterns: [
@@ -1642,7 +1642,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.mdx.mdx',
           patterns: [
@@ -1669,7 +1669,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.objc.mdx',
           patterns: [
@@ -1692,7 +1692,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.objc.mdx',
           patterns: [
@@ -1719,7 +1719,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.perl.mdx',
           patterns: [
@@ -1742,7 +1742,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.perl.mdx',
           patterns: [
@@ -1769,7 +1769,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.php.mdx',
           patterns: [
@@ -1792,7 +1792,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.php.mdx',
           patterns: [
@@ -1819,7 +1819,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.python.mdx',
           patterns: [
@@ -1842,7 +1842,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.python.mdx',
           patterns: [
@@ -1869,7 +1869,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.r.mdx',
           patterns: [
@@ -1892,7 +1892,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.r.mdx',
           patterns: [
@@ -1919,7 +1919,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.raku.mdx',
           patterns: [
@@ -1942,7 +1942,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.raku.mdx',
           patterns: [
@@ -1969,7 +1969,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.ruby.mdx',
           patterns: [
@@ -1992,7 +1992,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.ruby.mdx',
           patterns: [
@@ -2019,7 +2019,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.rust.mdx',
           patterns: [
@@ -2042,7 +2042,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.rust.mdx',
           patterns: [
@@ -2069,7 +2069,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.scala.mdx',
           patterns: [
@@ -2092,7 +2092,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.scala.mdx',
           patterns: [
@@ -2119,7 +2119,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.scss.mdx',
           patterns: [
@@ -2142,7 +2142,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.scss.mdx',
           patterns: [
@@ -2169,7 +2169,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.shell.mdx',
           patterns: [
@@ -2192,7 +2192,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.shell.mdx',
           patterns: [
@@ -2219,7 +2219,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.shell-session.mdx',
           patterns: [
@@ -2242,7 +2242,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.shell-session.mdx',
           patterns: [
@@ -2269,7 +2269,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.sql.mdx',
           patterns: [
@@ -2292,7 +2292,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.sql.mdx',
           patterns: [
@@ -2319,7 +2319,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.svg.mdx',
           patterns: [
@@ -2342,7 +2342,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.svg.mdx',
           patterns: [
@@ -2369,7 +2369,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.swift.mdx',
           patterns: [
@@ -2392,7 +2392,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.swift.mdx',
           patterns: [
@@ -2419,7 +2419,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.toml.mdx',
           patterns: [
@@ -2442,7 +2442,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.toml.mdx',
           patterns: [
@@ -2469,7 +2469,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.ts.mdx',
           patterns: [
@@ -2492,7 +2492,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.ts.mdx',
           patterns: [
@@ -2519,7 +2519,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.tsx.mdx',
           patterns: [
@@ -2542,7 +2542,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.tsx.mdx',
           patterns: [
@@ -2570,7 +2570,7 @@ const grammar = {
             3: {patterns: [{include: '#markdown-string'}]}
           },
           contentName: 'markup.raw.code.fenced.mdx',
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.other.mdx'
         },
@@ -2586,7 +2586,7 @@ const grammar = {
             3: {patterns: [{include: '#markdown-string'}]}
           },
           contentName: 'markup.raw.code.fenced.mdx',
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.other.mdx'
         }
@@ -2596,7 +2596,7 @@ const grammar = {
       patterns: [
         {
           begin:
-            '(?:^|\\G)[\\t ]*(`{3,})(?:[\\t ]*((?i:classic\\x2dvisual\\x2dbasic|fb|freebasic|realbasic|vb\\x2d\\.net|vb\\x2d6|vb\\.net|vb6|vbnet|vbscript|visual\\x2dbasic|visual\\x2dbasic\\x2d\\.net|visual\\x2dbasic\\x2d6|visual\\x2dbasic\\x2d6\\.0|visual\\x2dbasic\\x2dclassic|(?:.*\\.)?(?:bi|ctl|dsr|rbbas|rbfrm|rbmnu|rbres|rbtbar|rbuistate|vb|vbhtml|vbs)))(?:[\\t ]+((?:[^\\n\\r`])+))?)(?:[\\t ]*$)',
+            '(?:^|\\G)[\\t ]*(`{3,})(?:[\\t ]*((?i:fb|freebasic|realbasic|vb\\x2d\\.net|vb\\.net|vbnet|vbscript|visual\\x2dbasic|visual\\x2dbasic\\x2d\\.net|(?:.*\\.)?(?:bi|rbbas|rbfrm|rbmnu|rbres|rbtbar|rbuistate|vb|vbhtml|vbs)))(?:[\\t ]+((?:[^\\n\\r`])+))?)(?:[\\t ]*$)',
           beginCaptures: {
             1: {name: 'string.other.begin.code.fenced.mdx'},
             2: {
@@ -2605,7 +2605,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.vbnet.mdx',
           patterns: [
@@ -2619,7 +2619,7 @@ const grammar = {
         },
         {
           begin:
-            '(?:^|\\G)[\\t ]*(~{3,})(?:[\\t ]*((?i:classic\\x2dvisual\\x2dbasic|fb|freebasic|realbasic|vb\\x2d\\.net|vb\\x2d6|vb\\.net|vb6|vbnet|vbscript|visual\\x2dbasic|visual\\x2dbasic\\x2d\\.net|visual\\x2dbasic\\x2d6|visual\\x2dbasic\\x2d6\\.0|visual\\x2dbasic\\x2dclassic|(?:.*\\.)?(?:bi|ctl|dsr|rbbas|rbfrm|rbmnu|rbres|rbtbar|rbuistate|vb|vbhtml|vbs)))(?:[\\t ]+((?:[^\\n\\r])+))?)(?:[\\t ]*$)',
+            '(?:^|\\G)[\\t ]*(~{3,})(?:[\\t ]*((?i:fb|freebasic|realbasic|vb\\x2d\\.net|vb\\.net|vbnet|vbscript|visual\\x2dbasic|visual\\x2dbasic\\x2d\\.net|(?:.*\\.)?(?:bi|rbbas|rbfrm|rbmnu|rbres|rbtbar|rbuistate|vb|vbhtml|vbs)))(?:[\\t ]+((?:[^\\n\\r])+))?)(?:[\\t ]*$)',
           beginCaptures: {
             1: {name: 'string.other.begin.code.fenced.mdx'},
             2: {
@@ -2628,7 +2628,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.vbnet.mdx',
           patterns: [
@@ -2655,7 +2655,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.xml.mdx',
           patterns: [
@@ -2678,7 +2678,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.xml.mdx',
           patterns: [
@@ -2705,7 +2705,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.yaml.mdx',
           patterns: [
@@ -2728,7 +2728,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[\\t ]*(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.mdx'}},
           name: 'markup.code.yaml.mdx',
           patterns: [
@@ -2840,7 +2840,7 @@ const grammar = {
           },
           match:
             '(?:^|\\G)[\\t ]*(#{3}(?!#))(?:[ \\t]+([^\\r\\n]+?)(?:[ \\t]+(#+?))?)?[ \\t]*$',
-          name: 'markup.heading.atx.2.mdx'
+          name: 'markup.heading.atx.3.mdx'
         },
         {
           captures: {
@@ -2853,7 +2853,7 @@ const grammar = {
           },
           match:
             '(?:^|\\G)[\\t ]*(#{4}(?!#))(?:[ \\t]+([^\\r\\n]+?)(?:[ \\t]+(#+?))?)?[ \\t]*$',
-          name: 'markup.heading.atx.2.mdx'
+          name: 'markup.heading.atx.4.mdx'
         },
         {
           captures: {
@@ -2866,7 +2866,7 @@ const grammar = {
           },
           match:
             '(?:^|\\G)[\\t ]*(#{5}(?!#))(?:[ \\t]+([^\\r\\n]+?)(?:[ \\t]+(#+?))?)?[ \\t]*$',
-          name: 'markup.heading.atx.2.mdx'
+          name: 'markup.heading.atx.5.mdx'
         },
         {
           captures: {
@@ -2879,7 +2879,7 @@ const grammar = {
           },
           match:
             '(?:^|\\G)[\\t ]*(#{6}(?!#))(?:[ \\t]+([^\\r\\n]+?)(?:[ \\t]+(#+?))?)?[ \\t]*$',
-          name: 'markup.heading.atx.2.mdx'
+          name: 'markup.heading.atx.6.mdx'
         }
       ]
     },
@@ -3321,7 +3321,7 @@ const grammar = {
       patterns: [{include: 'source.tsx#statements'}]
     },
     'extension-mdx-expression-flow': {
-      begin: '(?:^|\\G)[\\t ]*(\\{)',
+      begin: '(?:^|\\G)[\\t ]*(\\{)(?!.*\\}[\\t ]*.)',
       beginCaptures: {1: {name: 'string.other.begin.expression.mdx.js'}},
       contentName: 'meta.embedded.tsx',
       end: '(\\})(?:[\\t ]*$)',

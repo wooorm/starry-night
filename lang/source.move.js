@@ -17,11 +17,6 @@ const grammar = {
     {include: '#module'},
     {include: '#script'},
     {include: '#annotation'},
-    {
-      begin: '\\b(while)\\b',
-      name: 'keyword.control.while.whaaat.move',
-      while: '[a-z]'
-    },
     {include: '#comments'},
     {include: '#annotation'},
     {include: '#entry'},
@@ -116,7 +111,9 @@ const grammar = {
         {include: '#comments'},
         {include: '#primitives'},
         {include: '#literals'},
-        {match: '\\b([\\w_]+)\\b', name: 'constant.other.move'}
+        {include: '#types'},
+        {match: '\\b([A-Z][A-Z_0-9]+)\\b', name: 'constant.other.move'},
+        {include: '#error_const'}
       ]
     },
     control: {
@@ -154,10 +151,23 @@ const grammar = {
           patterns: [
             {include: '#comments'},
             {
+              match: '\\b([A-Z][A-Za-z_0-9]*)\\b(?=\\s*\\()',
+              name: 'entity.name.function.enum.move'
+            },
+            {
+              match: '\\b([A-Z][A-Za-z_0-9]*)\\b',
+              name: 'entity.name.type.enum.move'
+            },
+            {
               begin: '\\(',
               end: '\\)',
               name: 'meta.enum.tuple.move',
-              patterns: [{include: '#comments'}, {include: '#types'}]
+              patterns: [
+                {include: '#comments'},
+                {include: '#expr_generic'},
+                {include: '#capitalized'},
+                {include: '#types'}
+              ]
             },
             {
               begin: '{',
@@ -166,6 +176,8 @@ const grammar = {
               patterns: [
                 {include: '#comments'},
                 {include: '#escaped_identifier'},
+                {include: '#expr_generic'},
+                {include: '#capitalized'},
                 {include: '#types'}
               ]
             }
@@ -174,8 +186,8 @@ const grammar = {
       ]
     },
     error_const: {
-      match: '\\b(E[A-Z][A-Za-z_]*)\\b',
-      name: 'variable.language.error.move'
+      match: '\\b(E[A-Z][A-Za-z0-9_]*)\\b',
+      name: 'variable.other.error.const.move'
     },
     escaped_identifier: {
       begin: '`',
@@ -188,7 +200,6 @@ const grammar = {
         {include: '#comments'},
         {include: '#escaped_identifier'},
         {include: '#expr_generic'},
-        {include: '#error_const'},
         {include: '#packed_field'},
         {include: '#import'},
         {include: '#as'},
@@ -210,6 +221,7 @@ const grammar = {
         {match: '\\$(?=[a-z])', name: 'keyword.operator.macro.dollar.move'},
         {match: '(?<=[$])[a-z][A-Z_0-9a-z]*', name: 'variable.other.meta.move'},
         {match: '\\b([A-Z][A-Z_]+)\\b', name: 'constant.other.move'},
+        {include: '#error_const'},
         {match: '\\b([A-Z][a-zA-Z_0-9]*)\\b', name: 'entity.name.type.move'},
         {include: '#paren'},
         {include: '#block'}
@@ -340,6 +352,10 @@ const grammar = {
         {match: '\\b(\\w+)\\b', name: 'meta.entity.name.type.module.move'}
       ]
     },
+    inline: {
+      match: '\\b(inline)\\b',
+      name: 'storage.modifier.visibility.inline.move'
+    },
     label: {match: "'[a-z][a-z_0-9]*", name: 'string.quoted.single.label.move'},
     let: {match: '\\b(let)\\b', name: 'keyword.control.move'},
     'line-comments': {
@@ -439,18 +455,20 @@ const grammar = {
       name: 'meta.path.call.move'
     },
     module: {
-      begin: '\\b(module|spec)\\b',
+      begin: '\\b(module)\\b',
       beginCaptures: {1: {name: 'storage.modifier.type.move'}},
       end: '(?<=[;}])',
       name: 'meta.module.move',
       patterns: [
         {include: '#comments'},
         {
+          begin: '(?<=\\b(module)\\b)',
           end: '(?=[;{])',
           patterns: [
             {include: '#comments'},
             {include: '#escaped_identifier'},
             {
+              begin: '(?<=\\b(module))',
               end: '(?=[(::){])',
               name: 'constant.other.move',
               patterns: [
@@ -508,7 +526,11 @@ const grammar = {
       patterns: [
         {include: '#comments'},
         {include: '#escaped_identifier'},
-        {end: '(?=[(::){])', name: 'constant.other.move'},
+        {
+          begin: '(?<=\\bmodule\\b)',
+          end: '(?=[(::){])',
+          name: 'constant.other.move'
+        },
         {begin: '(?<=::)', end: '(?=[\\s{])', name: 'entity.name.type.move'}
       ]
     },

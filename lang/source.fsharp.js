@@ -34,7 +34,7 @@ const grammar = {
   repository: {
     abstract_definition: {
       begin:
-        '\\b(static)?\\s+(abstract)\\s+(member)?(\\s+\\[\\<.*\\>\\])?\\s*([_[:alpha:]0-9,\\._`\\s]+)(<)?',
+        '\\b(static\\s+)?(abstract)\\s+(member)?(\\s+\\[\\<.*\\>\\])?\\s*([_[:alpha:]0-9,\\._`\\s]+)(<)?',
       beginCaptures: {
         1: {name: 'keyword.fsharp'},
         2: {name: 'keyword.fsharp'},

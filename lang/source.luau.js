@@ -52,7 +52,7 @@ const grammar = {
           name: 'comment.block.luau',
           patterns: [
             {
-              begin: '(```lua)\\s+',
+              begin: '(```luau?)\\s+',
               beginCaptures: {1: {name: 'comment.luau'}},
               end: '(```)',
               endCaptures: {1: {name: 'comment.luau'}},
@@ -429,7 +429,7 @@ const grammar = {
         {include: '#comment'},
         {include: '#string'},
         {match: '\\?|\\&|\\|', name: 'keyword.operator.type.luau'},
-        {match: '->', name: 'keyword.operator.type.luau'},
+        {match: '->', name: 'keyword.operator.type.function.luau'},
         {match: '\\b(false)\\b', name: 'constant.language.boolean.false.luau'},
         {match: '\\b(true)\\b', name: 'constant.language.boolean.true.luau'},
         {
@@ -448,9 +448,13 @@ const grammar = {
         },
         {
           begin: '(<)',
-          beginCaptures: {1: {name: 'keyword.operator.type.luau'}},
+          beginCaptures: {
+            1: {name: 'punctuation.definition.typeparameters.begin.luau'}
+          },
           end: '(>)',
-          endCaptures: {1: {name: 'keyword.operator.type.luau'}},
+          endCaptures: {
+            1: {name: 'punctuation.definition.typeparameters.end.luau'}
+          },
           patterns: [
             {match: '=', name: 'keyword.operator.assignment.luau'},
             {include: '#type_literal'}

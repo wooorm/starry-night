@@ -49,6 +49,45 @@ const grammar = {
       match: "('[^\\r\\n]*)$",
       name: 'comment.line.apostrophe.brs'
     },
+    bsdoc: {
+      patterns: [
+        {include: '#bsdoc_param_and_type'},
+        {include: '#bsdoc_generic'}
+      ]
+    },
+    bsdoc_generic: {
+      captures: {
+        1: {name: 'comment.line.apostrophe.brs'},
+        2: {
+          name: 'punctuation.definition.block.tag.bsdoc storage.type.class.bsdoc'
+        },
+        3: {
+          name: 'punctuation.definition.block.tag.bsdoc storage.type.class.bsdoc'
+        },
+        4: {name: 'comment.block.documentation.brs'}
+      },
+      match: "(?i:\\s*(rem|'+)\\s*(@)(\\w+)(.*$))"
+    },
+    bsdoc_param_and_type: {
+      captures: {
+        1: {name: 'comment.line.apostrophe.brs'},
+        2: {
+          name: 'punctuation.definition.block.tag.bsdoc storage.type.class.bsdoc'
+        },
+        3: {
+          name: 'punctuation.definition.block.tag.bsdoc storage.type.class.bsdoc'
+        },
+        4: {name: 'punctuation.definition.bracket.curly.begin.bsdoc'},
+        5: {
+          name: ' comment.block.documentation.brs entity.name.type.instance.bsdoc'
+        },
+        6: {name: 'punctuation.definition.bracket.curly.end.bsdoc'},
+        7: {name: 'variable.other.bsdoc'},
+        8: {name: 'comment.block.documentation.brs'}
+      },
+      match:
+        "(?i:\\s*(rem|'+)\\s*(@)(param|type)\\s+(?:(\\{)\\s*([^\\}]+)\\s*(\\}))?\\s*([a-z0-9_.]+)?(.*))"
+    },
     class_declaration: {
       captures: {
         1: {name: 'keyword.other.class.brs'},
@@ -61,7 +100,7 @@ const grammar = {
     },
     class_roku_builtin: {
       match:
-        '(?i:\\bro(R(ss(Parser|Article)|e(sourceManager|ctangle|ad(File|WriteFile)|gistry(Section)?))|G(pio(Button|ControlPort)|lobal)|XML(Element|List)|MessagePort|AppInfo|Array|AssociativeArray|AudioGuide|AudioMetadata|AudioPlayer|AudioResource|Bitmap|Boolean|ByteArray|CaptionRenderer|ChannelStore|CodeRegistrationScreen|Compositor|DataGramSocket|DateTime|DeviceInfo|Double|IntrinsicDouble|EVPCipher|EVPDigest|FileSystem|Float|Font|FontMetrics|FontRegistry|Function|GridScreen|HdmiStatus|HMAC|HttpAgent|ImageCanvas|ImageMetadata|Input|Int|Invalid|KeyboardScreen|List|ListScreen|Localization|LongInteger|MessageDialog|MessagePort|Microphone|OneLineDialog|ParagraphScreen|Path|PinEntryDialog|PosterScreen|ProgramGuide|Regex|Region|Registry|RegistrySection|RSA|Screen|SearchHistory|SearchScreen|SlideShow|SocketAddress|SpringboardScreen|Sprite|StreamSocket|String|SystemLog|TextScreen|TextToSpeech|TextureManager|TextureRequest|Timespan|Tuner|UrlTransfer|VideoPlayer|VideoScreen|XMLElement|XMLList|SGScreen|SGNode|SGNodeEvent|SGScreenEvent|AudioPlayerEvent|CaptionRendererEvent|CECStatusEvent|ChannelStoreEvent|CodeRegistrationScreenEvent|DeviceInfoEvent|FileSystemEvent|GridScreenEvent|HdmiHotPlugEvent|HdmiStatusEvent|ImageCanvasEvent|InputEvent|KeyboardScreenEvent|ListScreenEvent|MessageDialogEvent|MicrophoneEvent|OneLineDialogEvent|ParagraphScreenEvent|PinEntryDialogEvent|PosterScreenEvent|SearchScreenEvent|SlideShowEvent|SocketEvent|SpringboardScreenEvent|SystemLogEvent|TextScreenEvent|TextToSpeechEvent|TextureRequestEvent|TunerEvent|UniversalControlEvent|UrlEvent|VideoPlayerEvent|VideoScreenEvent|B(yteArray|oolean|r(Sub|ightPackage))|S(ystemTime|t(orageInfo|ring( )?)|erialPort( )?)|NetworkConfiguration|C(ontrol(Down( )?|Up|Port)|ecInterface|lockWidget|reateFile)|T(imer|ouchScreen( )?|ext(Field|Widget))|I(RRemote( )?|n(t|valid)|mage(Player|Widget))|D(eviceInfo( )?|at(eTime|agram(Receiver|Sender)))|Url(Transfer|Event)|Video(Mode|Input|Player|Event)|Keyboard(Press( )?| )?|Quadravox(Button( )?|SNS5( )?)|Float|List|A(ssociativeArray|udio(Player|Event)|ppendFile|rray))\\b)',
+        '(?i:\\bro(R(ss(Parser|Article)|e(sourceManager|ctangle|ad(File|WriteFile)|gistry(Section)?))|G(pio(Button|ControlPort)|lobal)|XML(Element|List)|MessagePort|AppInfo|AppManager|AppMemoryMonitor|AppMemoryMonitorEvent|Array|AssociativeArray|AudioGuide|AudioMetadata|AudioPlayer|AudioResource|Bitmap|Boolean|ByteArray|CaptionRenderer|CECStatus|ChannelStore|CodeRegistrationScreen|Compositor|DataGramSocket|DateTime|DeviceInfo|DeviceCrypto|Double|Dsa|IntrinsicDouble|EVPCipher|EVPDigest|FileSystem|Float|Font|FontMetrics|FontRegistry|Function|GridScreen|HdmiStatus|HMAC|HttpAgent|ImageCanvas|ImageMetadata|Input|Int|Invalid|KeyboardScreen|List|ListScreen|Localization|LongInteger|MessageDialog|MessagePort|Microphone|OneLineDialog|ParagraphScreen|Path|PinEntryDialog|PosterScreen|ProgramGuide|Regex|Region|Registry|RegistrySection|RemoteInfo|RSA|Screen|SearchHistory|SearchScreen|SlideShow|SocketAddress|SpringboardScreen|Sprite|StreamSocket|String|SystemLog|TextScreen|TextToSpeech|TextureManager|TextureRequest|Timespan|Tuner|UrlTransfer|VideoPlayer|VideoScreen|XMLElement|XMLList|SGScreen|SGNode|SGNodeEvent|SGScreenEvent|AudioPlayerEvent|CaptionRendererEvent|CECStatusEvent|ChannelStoreEvent|CodeRegistrationScreenEvent|DeviceInfoEvent|FileSystemEvent|GridScreenEvent|HdmiHotPlugEvent|HdmiStatusEvent|ImageCanvasEvent|InputEvent|KeyboardScreenEvent|ListScreenEvent|MessageDialogEvent|MicrophoneEvent|OneLineDialogEvent|ParagraphScreenEvent|PinEntryDialogEvent|PosterScreenEvent|SearchScreenEvent|SlideShowEvent|SocketEvent|SpringboardScreenEvent|SystemLogEvent|TextScreenEvent|TextToSpeechEvent|TextureRequestEvent|TunerEvent|UniversalControlEvent|UrlEvent|VideoPlayerEvent|VideoScreenEvent|B(yteArray|oolean|r(Sub|ightPackage))|S(ystemTime|t(orageInfo|ring( )?)|erialPort( )?)|NetworkConfiguration|C(ontrol(Down( )?|Up|Port)|ecInterface|lockWidget|reateFile)|T(imer|ouchScreen( )?|ext(Field|Widget))|I(RRemote( )?|n(t|valid)|mage(Player|Widget))|D(eviceInfo( )?|at(eTime|agram(Receiver|Sender)))|Url(Transfer|Event)|Video(Mode|Input|Player|Event)|Keyboard(Press( )?| )?|Quadravox(Button( )?|SNS5( )?)|Float|List|A(ssociativeArray|udio(Player|Event)|ppendFile|rray))\\b)',
       name: 'support.class.brs'
     },
     comment: {
@@ -89,7 +128,7 @@ const grammar = {
     },
     end_function: {
       match: '(?i)[ \\t]*end\\s*(sub|function)',
-      name: 'keyword.declaration.function'
+      name: 'keyword.declaration.function.brs'
     },
     end_namespace: {
       captures: {1: {name: 'keyword.other.namespace.brs'}},
@@ -102,6 +141,7 @@ const grammar = {
     entire_language: {
       patterns: [
         {include: '#regex'},
+        {include: '#bsdoc'},
         {include: '#if_with_paren'},
         {include: '#component_statement'},
         {include: '#apostrophe_comment'},
@@ -122,6 +162,7 @@ const grammar = {
         {include: '#global_constants'},
         {include: '#keyword_logical_operator'},
         {include: '#function_call'},
+        {include: '#numeric_literal'},
         {include: '#object_properties'},
         {include: '#vscode_rale_tracker_entry_comment'},
         {include: '#identifiers_with_type_designators'},
@@ -185,7 +226,7 @@ const grammar = {
         4: {name: 'entity.name.function.brs'}
       },
       match:
-        '(?i:(?:(public|protected|private)\\s+)?(?:(override)\\s+)?((?:sub|function)[^\\w])(?:\\s+([a-z_][a-z0-9_]*))?)'
+        '(?i:(?:(public|protected|private)\\s+)?(?:(override)\\s+)?((?:sub|function))(?:\\s+(?:\\(|([a-z_][a-z0-9_]*))))'
     },
     global_constants: {
       match: '(?i:\\b(line_num)\\b)',
@@ -211,8 +252,8 @@ const grammar = {
     },
     inline_function_declaration: {
       captures: {
-        1: {name: 'keyword.declaration.function'},
-        2: {name: 'keyword.declaration.function'}
+        1: {name: 'keyword.declaration.function.brs'},
+        2: {name: 'keyword.declaration.function.brs'}
       },
       match: '(?i)[^a-z0-9_"](function|sub)\\s*\\('
     },
@@ -283,8 +324,11 @@ const grammar = {
       name: 'keyword.control.loop.brs'
     },
     m_and_global: {
-      captures: {1: {name: 'keyword.other.this.brs'}},
-      match: '(?i:(?<!\\.)\\b(m|global|super)\\b)'
+      captures: {
+        1: {name: 'keyword.other.this.brs'},
+        2: {name: 'keyword.other.this.brs'}
+      },
+      match: '(?i:(?<!\\.)\\b(m|super)\\b(?:\\s*\\.\\s*(top|global)\\b)?)'
     },
     method: {
       captures: {
@@ -294,7 +338,7 @@ const grammar = {
         4: {name: 'entity.name.function.brs'}
       },
       match:
-        '(?i:(?:(public|protected|private)\\s+)?(?:(override)\\s+)?((?:sub|function)[^\\w])(?:\\s+([a-z_][a-z0-9_]*))?)'
+        '(?i:(?:(public|protected|private)\\s+)?(?:(override)\\s+)?((?:sub|function))(?:\\s+(?:\\(|([a-z_][a-z0-9_]*))))'
     },
     namespace_declaration: {
       begin: '(?i:(namespace))\\s+',
@@ -309,6 +353,15 @@ const grammar = {
       captures: {1: {name: 'keyword.control.brs'}},
       match:
         '(?i:[^\\.\\w\\"](then|stop|run|end|each|next|throw)(?!(\\s*:)|[\\d\\w_]))'
+    },
+    numeric_literal: {
+      patterns: [
+        {
+          match:
+            '\\b((0(x|X)[0-9a-fA-F]*)|(([0-9]+\\.?[0-9]*)|(\\.[0-9]+))((e|E)(\\+|-)?[0-9]+)?)(L|l|UL|ul|u|U|F|f)?\\b',
+          name: 'constant.numeric.brs'
+        }
+      ]
     },
     object_properties: {
       captures: {1: {name: 'variable.other.object.property.brs'}},
@@ -345,11 +398,7 @@ const grammar = {
             {include: '#class_roku_builtin'}
           ]
         },
-        {
-          match:
-            '\\b((0(x|X)[0-9a-fA-F]*)|(([0-9]+\\.?[0-9]*)|(\\.[0-9]+))((e|E)(\\+|-)?[0-9]+)?)(L|l|UL|ul|u|U|F|f)?\\b',
-          name: 'constant.numeric.brs'
-        },
+        {include: '#numeric_literal'},
         {
           patterns: [
             {

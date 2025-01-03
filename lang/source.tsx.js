@@ -1259,11 +1259,11 @@ const grammar = {
             },
             {
               begin:
-                '(?<=\\))\\s*\\/(?![\\/*])(?=(?:[^\\/\\\\\\[]|\\\\.|\\[([^\\]\\\\]|\\\\.)*\\])+\\/([dgimsuy]+|(?![\\/\\*])|(?=\\/\\*))(?!\\s*[a-zA-Z0-9_$]))',
+                '(?<=\\))\\s*\\/(?![\\/*])(?=(?:[^\\/\\\\\\[]|\\\\.|\\[([^\\]\\\\]|\\\\.)*\\])+\\/([dgimsuvy]+|(?![\\/\\*])|(?=\\/\\*))(?!\\s*[a-zA-Z0-9_$]))',
               beginCaptures: {
                 0: {name: 'punctuation.definition.string.begin.tsx'}
               },
-              end: '(/)([dgimsuy]*)',
+              end: '(/)([dgimsuvy]*)',
               endCaptures: {
                 1: {name: 'punctuation.definition.string.end.tsx'},
                 2: {name: 'keyword.other.tsx'}
@@ -1388,15 +1388,17 @@ const grammar = {
         {
           captures: {
             1: {name: 'keyword.control.type.tsx'},
+            12: {name: 'keyword.control.as.tsx'},
+            13: {name: 'keyword.control.default.tsx'},
+            14: {name: 'variable.other.readwrite.alias.tsx'},
+            15: {name: 'string.quoted.alias.tsx'},
             2: {name: 'keyword.control.default.tsx'},
             3: {name: 'constant.language.import-export-all.tsx'},
             4: {name: 'variable.other.readwrite.tsx'},
-            5: {name: 'keyword.control.as.tsx'},
-            6: {name: 'keyword.control.default.tsx'},
-            7: {name: 'variable.other.readwrite.alias.tsx'}
+            5: {name: 'string.quoted.alias.tsx'}
           },
           match:
-            '(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(?:(?:(\\btype)\\s+)?(?:(\\bdefault)|(\\*)|(\\b[_$[:alpha:]][_$[:alnum:]]*)))\\s+(as)\\s+(?:(default(?![_$[:alnum:]])(?:(?=\\.\\.\\.)|(?!\\.)))|([_$[:alpha:]][_$[:alnum:]]*))'
+            '(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(?:(?:(\\btype)\\s+)?(?:(\\bdefault)|(\\*)|(\\b[_$[:alpha:]][_$[:alnum:]]*)|((\\\'([^\\\'\\\\]|\\\\.)*\\\')|(\\"([^\\"\\\\]|\\\\.)*\\")|(\\`([^\\`\\\\]|\\\\.)*\\`))))\\s+(as)\\s+(?:(default(?![_$[:alnum:]])(?:(?=\\.\\.\\.)|(?!\\.)))|([_$[:alpha:]][_$[:alnum:]]*)|((\\\'([^\\\'\\\\]|\\\\.)*\\\')|(\\"([^\\"\\\\]|\\\\.)*\\")|(\\`([^\\`\\\\]|\\\\.)*\\`)))'
         },
         {include: '#punctuation-comma'},
         {match: '\\*', name: 'constant.language.import-export-all.tsx'},
@@ -1404,9 +1406,11 @@ const grammar = {
         {
           captures: {
             1: {name: 'keyword.control.type.tsx'},
-            2: {name: 'variable.other.readwrite.alias.tsx'}
+            2: {name: 'variable.other.readwrite.alias.tsx'},
+            3: {name: 'string.quoted.alias.tsx'}
           },
-          match: '(?:(\\btype)\\s+)?([_$[:alpha:]][_$[:alnum:]]*)'
+          match:
+            '(?:(\\btype)\\s+)?(?:([_$[:alpha:]][_$[:alnum:]]*)|((\\\'([^\\\'\\\\]|\\\\.)*\\\')|(\\"([^\\"\\\\]|\\\\.)*\\")|(\\`([^\\`\\\\]|\\\\.)*\\`)))'
         }
       ]
     },
@@ -2385,9 +2389,9 @@ const grammar = {
       patterns: [
         {
           begin:
-            '(?<!\\+\\+|--|})(?<=[=(:,\\[?+!]|^return|[^\\._$[:alnum:]]return|^case|[^\\._$[:alnum:]]case|=>|&&|\\|\\||\\*\\/)\\s*(\\/)(?![\\/*])(?=(?:[^\\/\\\\\\[\\()]|\\\\.|\\[([^\\]\\\\]|\\\\.)+\\]|\\(([^\\)\\\\]|\\\\.)+\\))+\\/([dgimsuy]+|(?![\\/\\*])|(?=\\/\\*))(?!\\s*[a-zA-Z0-9_$]))',
+            '(?<!\\+\\+|--|})(?<=[=(:,\\[?+!]|^return|[^\\._$[:alnum:]]return|^case|[^\\._$[:alnum:]]case|=>|&&|\\|\\||\\*\\/)\\s*(\\/)(?![\\/*])(?=(?:[^\\/\\\\\\[\\()]|\\\\.|\\[([^\\]\\\\]|\\\\.)+\\]|\\(([^\\)\\\\]|\\\\.)+\\))+\\/([dgimsuvy]+|(?![\\/\\*])|(?=\\/\\*))(?!\\s*[a-zA-Z0-9_$]))',
           beginCaptures: {1: {name: 'punctuation.definition.string.begin.tsx'}},
-          end: '(/)([dgimsuy]*)',
+          end: '(/)([dgimsuvy]*)',
           endCaptures: {
             1: {name: 'punctuation.definition.string.end.tsx'},
             2: {name: 'keyword.other.tsx'}
@@ -2397,9 +2401,9 @@ const grammar = {
         },
         {
           begin:
-            '((?<![_$[:alnum:])\\]]|\\+\\+|--|}|\\*\\/)|((?<=^return|[^\\._$[:alnum:]]return|^case|[^\\._$[:alnum:]]case))\\s*)\\/(?![\\/*])(?=(?:[^\\/\\\\\\[]|\\\\.|\\[([^\\]\\\\]|\\\\.)*\\])+\\/([dgimsuy]+|(?![\\/\\*])|(?=\\/\\*))(?!\\s*[a-zA-Z0-9_$]))',
+            '((?<![_$[:alnum:])\\]]|\\+\\+|--|}|\\*\\/)|((?<=^return|[^\\._$[:alnum:]]return|^case|[^\\._$[:alnum:]]case))\\s*)\\/(?![\\/*])(?=(?:[^\\/\\\\\\[]|\\\\.|\\[([^\\]\\\\]|\\\\.)*\\])+\\/([dgimsuvy]+|(?![\\/\\*])|(?=\\/\\*))(?!\\s*[a-zA-Z0-9_$]))',
           beginCaptures: {0: {name: 'punctuation.definition.string.begin.tsx'}},
-          end: '(/)([dgimsuy]*)',
+          end: '(/)([dgimsuvy]*)',
           endCaptures: {
             1: {name: 'punctuation.definition.string.end.tsx'},
             2: {name: 'keyword.other.tsx'}

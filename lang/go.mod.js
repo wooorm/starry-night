@@ -31,6 +31,7 @@ const grammar = {
         {include: '#raw_quoted_string'},
         {include: '#operator'},
         {include: '#semver'},
+        {include: '#semver_range'},
         {include: '#unquoted_string'}
       ]
     },
@@ -87,6 +88,7 @@ const grammar = {
         'v(?:0|[1-9]\\d*)\\.(?:0|[1-9]\\d*)\\.(?:0|[1-9]\\d*)(?:-[\\da-z-]+(?:\\.[\\da-z-]+)*)?(?:\\+[\\da-z-]+(?:\\.[\\da-z-]+)*)?',
       name: 'constant.language.go.mod'
     },
+    semver_range: {begin: '\\[', end: '\\]', patterns: [{include: '#semver'}]},
     string_escaped_char: {
       patterns: [
         {

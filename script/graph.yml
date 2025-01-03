@@ -65,7 +65,7 @@ source.cfscript:
   text.html.javadoc: false
 source.cobol:
   source.java: false
-  source.sql: false
+  source.openesql: false
   text.html.basic: false
 source.coffee:
   source.js: true
@@ -260,7 +260,6 @@ source.julia.console:
   source.julia: true
   source.shell: true
 source.julia:
-  source.c++: false
   source.js: false
   source.python: false
   source.r: false
@@ -677,6 +676,23 @@ source.vim-snippet:
   source.viml: false
 source.viml:
   text.vim-help: false
+source.vue:
+  source.coffee: false
+  source.css: true
+  source.css.less: false
+  source.css.scss: false
+  source.graphql: false
+  source.js: false
+  source.json: false
+  source.postcss: false
+  source.sass: false
+  source.stylus: false
+  source.toml: false
+  source.ts: false
+  source.tsx: false
+  source.yaml: false
+  text.html.basic: true
+  text.jade: false
 source.wdl:
   source.shell: false
 source.wgetrc:

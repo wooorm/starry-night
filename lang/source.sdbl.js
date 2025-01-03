@@ -1,6 +1,6 @@
 // This is a TextMate grammar distributed by `starry-night`.
 // This grammar is developed at
-// <https://github.com/xDrivenDevelopment/atom-language-1c-bsl>
+// <https://github.com/1c-syntax/vsc-language-1c-bsl>
 // and licensed `mit`.
 // See <https://github.com/wooorm/starry-night> for more info.
 /**
@@ -47,7 +47,7 @@ const grammar = {
     {match: '(,|;)', name: 'keyword.operator.sdbl'},
     {
       match:
-        '(?i)(?<=[^\\wа-яё\\.]|^)(Выбрать|Select|Разрешенные|Allowed|Различные|Distinct|Первые|Top|Как|As|ПустаяТаблица|EpmtyTable|Поместить|Into|Уничтожить|Drop|Из|From|((Левое|Left|Правое|Right|Полное|Full)\\s+(Внешнее\\s+|Outer\\s+)?Соединение|Join)|((Внутреннее|Inner)\\s+Соединение|Join)|Где|Where|(Сгруппировать\\s+По)|(Group\\s+By)|Имеющие|Having|Объединить(\\s+Все)?|Union(\\s+All)?|(Упорядочить\\s+По)|(Order\\s+By)|Автоупорядочивание|Autoorder|Итоги|Totals|По(\\s+Общие)?|By(\\s+Overall)?|(Только\\s+)?Иерархия|(Only\\s+)?Hierarchy|Периодами|Periods|Индексировать|Index|Выразить|Cast|Возр|Asc|Убыв|Desc|Для\\s+Изменения|(For\\s+Update(\\s+Of)?)|Спецсимвол|Escape)(?=[^\\wа-яё\\.]|$)',
+        '(?i)(?<=[^\\wа-яё\\.]|^)(Выбрать|Select|Разрешенные|Allowed|Различные|Distinct|Первые|Top|Как|As|ПустаяТаблица|EmptyTable|Поместить|Into|Уничтожить|Drop|Из|From|((Левое|Left|Правое|Right|Полное|Full)\\s+(Внешнее\\s+|Outer\\s+)?Соединение|Join)|((Внутреннее|Inner)\\s+Соединение|Join)|Где|Where|(Сгруппировать\\s+По(\\s+Группирующим\\s+Наборам)?)|(Group\\s+By(\\s+Grouping\\s+Set)?)|Имеющие|Having|Объединить(\\s+Все)?|Union(\\s+All)?|(Упорядочить\\s+По)|(Order\\s+By)|Автоупорядочивание|Autoorder|Итоги|Totals|По(\\s+Общие)?|By(\\s+Overall)?|(Только\\s+)?Иерархия|(Only\\s+)?Hierarchy|Периодами|Periods|Индексировать|Index|Выразить|Cast|Возр|Asc|Убыв|Desc|Для\\s+Изменения|(For\\s+Update(\\s+Of)?)|Спецсимвол|Escape|СгруппированоПо|GroupedBy)(?=[^\\wа-яё\\.]|$)',
       name: 'keyword.control.sdbl'
     },
     {
@@ -56,12 +56,18 @@ const grammar = {
       name: 'support.function.sdbl'
     },
     {
-      match: '(?i)(?<=[^\\wа-яё\\.]|^)(Подстрока|Substring)(?=\\()',
+      match:
+        '(?i)(?<=[^\\wа-яё\\.]|^)(Подстрока|Substring|НРег|Lower|ВРег|Upper|Лев|Left|Прав|Right|ДлинаСтроки|StringLength|СтрНайти|StrFind|СтрЗаменить|StrReplace|СокрЛП|TrimAll|СокрЛ|TrimL|СокрП|TrimR)(?=\\()',
       name: 'support.function.sdbl'
     },
     {
       match:
-        '(?i)(?<=[^\\wа-яё\\.]|^)(Год|Year|Квартал|Quarter|Месяц|Month|ДеньГода|DayOfYear|День|Day|Неделя|Week|ДеньНедели|Weekday|Час|Hour|Минута|Minute|Секунда|Second|НачалоПериода|BeginOfPeriod|КонецПериода|EndOfPeriod|ДобавитьКДате|DateAdd|РазностьДат|DateDiff)(?=\\()',
+        '(?i)(?<=[^\\wа-яё\\.]|^)(Год|Year|Квартал|Quarter|Месяц|Month|ДеньГода|DayOfYear|День|Day|Неделя|Week|ДеньНедели|Weekday|Час|Hour|Минута|Minute|Секунда|Second|НачалоПериода|BeginOfPeriod|КонецПериода|EndOfPeriod|ДобавитьКДате|DateAdd|РазностьДат|DateDiff|Полугодие|HalfYear|Декада|TenDays)(?=\\()',
+      name: 'support.function.sdbl'
+    },
+    {
+      match:
+        '(?i)(?<=[^\\wа-яё\\.]|^)(ACOS|COS|ASIN|SIN|ATAN|TAN|EXP|POW|LOG|LOG10|Цел|Int|Окр|Round|SQRT)(?=\\()',
       name: 'support.function.sdbl'
     },
     {
@@ -71,12 +77,12 @@ const grammar = {
     },
     {
       match:
-        '(?i)(?<=[^\\wа-яё\\.]|^)(ЕстьNULL|IsNULL|Представление|Presentation|ПредставлениеСсылки|RefPresentation|ТипЗначения|ValueType)(?=\\()',
+        '(?i)(?<=[^\\wа-яё\\.]|^)(ЕстьNULL|IsNULL|Представление|Presentation|ПредставлениеСсылки|RefPresentation|ТипЗначения|ValueType|АвтономерЗаписи|RecordAutoNumber|РазмерХранимыхДанных|StoredDataSize|УникальныйИдентификатор|UUID)(?=\\()',
       name: 'support.function.sdbl'
     },
     {
       match:
-        '(?i)(?<=[^\\wа-яё\\.])(Число|Number|Строка|String|Дата|Date)(?=[^\\wа-яё\\.]|$)',
+        '(?i)(?<=[^\\wа-яё\\.])(Число|Number|Строка|String|Дата|Date|Булево|Boolean)(?=[^\\wа-яё\\.]|$)',
       name: 'support.type.sdbl'
     },
     {match: '(&[\\wа-яё]+)', name: 'variable.parameter.sdbl'}

@@ -22,7 +22,7 @@ const grammar = {
     {include: '#string'},
     {include: '#attribute'},
     {include: '#function'},
-    {include: '#list'},
+    {include: '#entity-literal'},
     {include: '#jsx'},
     {include: '#operator'},
     {include: '#number'},
@@ -124,6 +124,18 @@ const grammar = {
     defaultIdIsVariable: {
       patterns: [{match: '[A-Za-z_][A-Za-z0-9_]*', name: 'variable'}]
     },
+    'entity-literal': {
+      patterns: [
+        {
+          captures: {
+            1: {name: 'keyword'},
+            2: {name: 'punctuation.section.braces.begin'}
+          },
+          match: '\\b(list|dict)(\\{)'
+        },
+        {match: '\\}', name: 'punctuation.section.braces.end'}
+      ]
+    },
     ffi: {
       begin: '(%|%%)(raw|ffi)(\\()(`)',
       beginCaptures: {
@@ -189,18 +201,6 @@ const grammar = {
         {include: '#RE_TO_DOWNTO_AS_LABELS'},
         {include: '#RE_KEYWORD_CONTROL'},
         {include: '#RE_KEYWORD'}
-      ]
-    },
-    list: {
-      patterns: [
-        {
-          captures: {
-            1: {name: 'keyword'},
-            2: {name: 'punctuation.section.braces.begin'}
-          },
-          match: '\\b(list)(\\{)'
-        },
-        {match: '\\}', name: 'punctuation.section.braces.end'}
       ]
     },
     moduleAccess: {

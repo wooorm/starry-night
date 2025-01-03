@@ -52,7 +52,8 @@ const grammar = {
       endCaptures: {0: {name: 'keyword.operator.splat.hcl'}}
     },
     block: {
-      begin: '([\\w][\\-\\w]*)([^?\\r\\n]*)(\\{)',
+      begin:
+        '([\\w][\\-\\w]*)(([^\\S\\r\\n]*([\\w][\\-_\\w]*|\\"[^\\"\\r\\n]*\\"))*)[^\\S\\r\\n]*(\\{)',
       beginCaptures: {
         1: {
           patterns: [
@@ -74,7 +75,7 @@ const grammar = {
             }
           ]
         },
-        3: {name: 'punctuation.section.block.begin.hcl'}
+        5: {name: 'punctuation.section.block.begin.hcl'}
       },
       end: '\\}',
       endCaptures: {0: {name: 'punctuation.section.block.end.hcl'}},

@@ -59,7 +59,7 @@ const grammar = {
     {match: '(~|!|&&|\\|\\|)', name: 'keyword.operator.logical.angelscript'},
     {
       match:
-        '\\b(for|in|break|continue|while|do|return|if|else|case|switch|namespace|try|catch)\\b',
+        '\\b(for|foreach|in|break|continue|while|do|return|if|else|case|switch|namespace|try|catch)\\b',
       name: 'keyword.control.angelscript'
     },
     {
@@ -69,35 +69,56 @@ const grammar = {
         3: {name: 'storage.type.angelscript'},
         4: {name: 'punctuation.definition.generic.end.angelscript'}
       },
-      match: '\\b(cast)(<)([A-Za-z_][A-Za-z_0-9]+)(>)'
+      match: '\\b(cast)(<)([A-Za-z_][A-Za-z_0-9]*)(>)'
     },
     {
       captures: {
         1: {name: 'storage.type.angelscript'},
         2: {name: 'variable.other.angelscript'}
       },
-      match: '^\\s*([A-Za-z_][A-Za-z_0-9]+)\\s+([A-Za-z_][A-Za-z_0-9]+)\\s*[=;]'
+      match:
+        '(?x:\n  ^\\s*\n  ([A-Za-z_][A-Za-z_0-9]*)\n  \\s+\n  ([A-Za-z_][A-Za-z_0-9]*)\n  \\s*[=;]\n)'
+    },
+    {
+      captures: {
+        1: {name: 'storage.type.angelscript'},
+        2: {name: 'storage.type.angelscript'},
+        3: {name: 'storage.type.angelscript'},
+        4: {name: 'storage.type.angelscript'},
+        5: {name: 'storage.type.angelscript'},
+        6: {name: 'storage.type.angelscript'},
+        7: {name: 'variable.other.angelscript'}
+      },
+      match:
+        '(?x:\n  ^\\s*\n  ([A-Za-z_][A-Za-z_0-9]*)\n  <(?:\n    (.*?)\n    (?:,\\s*(.*?))?\n    (?:,\\s*(.*?))?\n    (?:,\\s*(.*?))?\n    (?:,\\s*(.*?))?\n  )>\n  \\s+\n  ([A-Za-z_][A-Za-z_0-9]*)\n  \\s*[=;]\n)'
     },
     {
       captures: {
         1: {name: 'storage.type.angelscript'},
         2: {name: 'meta.function entity.name.function.angelscript'}
       },
-      match: '^\\s*([A-Za-z_][A-Za-z_0-9]+)\\s+([A-Za-z_][A-Za-z_0-9]+)\\('
+      match: '^\\s*([A-Za-z_][A-Za-z_0-9]*)\\s+([A-Za-z_][A-Za-z_0-9]*)\\('
     },
     {
       captures: {
         1: {name: 'keyword.other.angelscript'},
         2: {name: 'variable.other.angelscript'}
       },
-      match: '(@)([A-Za-z_][A-Za-z_0-9]+)\\b'
+      match: '(@)([A-Za-z_][A-Za-z_0-9]*)\\b'
     },
     {
       captures: {
         1: {name: 'variable.other.angelscript'},
         2: {name: 'keyword.operator.assignment.angelscript'}
       },
-      match: '\\b([A-Za-z_][A-Za-z_0-9]+)\\s*([-+/*%]?=)'
+      match: '\\b([A-Za-z_][A-Za-z_0-9]*)\\s*([-+/*%]?=)'
+    },
+    {
+      captures: {
+        1: {name: 'entity.name.namespace'},
+        2: {name: 'keyword.operator.symbolic.angelscript'}
+      },
+      match: '\\b([a-zA-Z_][a-zA-Z_0-9]*)(::)'
     },
     {match: '[=]', name: 'keyword.operator.assignment.angelscript'},
     {match: '[%*+\\-/]', name: 'keyword.operator.arithmetic.angelscript'},
@@ -124,14 +145,14 @@ const grammar = {
         2: {name: 'keyword.other.angelscript'},
         3: {name: 'variable.other.angelscript'}
       },
-      match: '([A-Za-z_][A-Za-z_0-9]+)(@)\\s+([A-Za-z_][A-Za-z_0-9]+)'
+      match: '([A-Za-z_][A-Za-z_0-9]*)(@)\\s+([A-Za-z_][A-Za-z_0-9]*)'
     },
     {
       captures: {
         1: {name: 'storage.type.angelscript'},
         2: {name: 'keyword.other.angelscript'}
       },
-      match: '([A-Za-z_][A-Za-z_0-9]+)(@)'
+      match: '([A-Za-z_][A-Za-z_0-9]*)(@)'
     },
     {match: '\\b(null|true|false)\\b', name: 'constant.language.angelscript'},
     {match: '\\b(this|super)\\b', name: 'variable.language.angelscript'},
@@ -151,30 +172,45 @@ const grammar = {
       name: 'meta.metadata.angelscript'
     },
     {
-      match: '\\.[a-zA-Z_][a-zA-Z_0-9]*\\b(?!\\s*\\()',
+      match: '\\.[a-zA-Z_][a-zA-Z_0-9]*\\b(?!\\s*[<\\(])',
       name: 'variable.other.dot-access.angelscript'
     },
     {
       captures: {
         1: {name: 'storage.type.class.angelscript'},
-        11: {name: 'entity.other.inherited-class.angelscript'},
         2: {name: 'entity.name.type.class.angelscript'},
         3: {name: 'entity.other.inherited-class.angelscript'},
+        4: {name: 'entity.other.inherited-class.angelscript'},
         5: {name: 'entity.other.inherited-class.angelscript'},
-        7: {name: 'entity.other.inherited-class.angelscript'},
-        9: {name: 'entity.other.inherited-class.angelscript'}
+        6: {name: 'entity.other.inherited-class.angelscript'},
+        7: {name: 'entity.other.inherited-class.angelscript'}
       },
       match:
-        '\\b(class|interface)\\s+([a-zA-Z_0-9]*)(?:\\s*:\\s*([a-zA-Z_0-9]*)(\\s*,\\s*([a-zA-Z_0-9]*))?(\\s*,\\s*([a-zA-Z_0-9]*))?(\\s*,\\s*([a-zA-Z_0-9]*))?(\\s*,\\s*([a-zA-Z_0-9]*))?)?',
+        '(?x:\n  \\b(class|interface)\n  \\s+([a-zA-Z_0-9]*)\n  (?:\n    \\s*:\\s*([a-zA-Z_0-9]*)\n    (?:\\s*,\\s*([a-zA-Z_0-9]*))?\n    (?:\\s*,\\s*([a-zA-Z_0-9]*))?\n    (?:\\s*,\\s*([a-zA-Z_0-9]*))?\n    (?:\\s*,\\s*([a-zA-Z_0-9]*))?\n  )?\n)',
       name: 'meta.class.angelscript'
     },
     {
       captures: {
-        2: {
+        1: {
           name: 'meta.function-call.angelscript variable.function.angelscript'
         }
       },
-      match: '(\\b|\\.)([a-zA-Z_][a-zA-Z_0-9]*)\\b(\\s*\\()'
+      match:
+        '(?x:\n  (?:\\b|\\.)\n  ([a-zA-Z_][a-zA-Z_0-9]*)\n  \\b(?:\\s*\\()\n)'
+    },
+    {
+      captures: {
+        1: {
+          name: 'meta.function-call.angelscript variable.function.angelscript'
+        },
+        2: {name: 'storage.type.angelscript'},
+        3: {name: 'storage.type.angelscript'},
+        4: {name: 'storage.type.angelscript'},
+        5: {name: 'storage.type.angelscript'},
+        6: {name: 'storage.type.angelscript'}
+      },
+      match:
+        '(?x:\n  (?:\\b|\\.)\n  ([a-zA-Z_][a-zA-Z_0-9]*)\n  <(?:\n    (.*?)\n    (?:,\\s*(.*?))?\n    (?:,\\s*(.*?))?\n    (?:,\\s*(.*?))?\n    (?:,\\s*(.*?))?\n  )>\\(\n)'
     },
     {match: '\\b([A-Z][A-Z0-9_]+)\\b', name: 'constant.other.angelscript'}
   ],

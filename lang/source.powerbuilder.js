@@ -13,10 +13,9 @@ const grammar = {
   names: ['powerbuilder'],
   patterns: [
     {include: '#strings'},
-    {include: '#general_rules'},
     {include: '#comments'},
+    {include: '#general_rules'},
     {include: '#keywords'},
-    {include: '#sql_keywords'},
     {include: '#literals'},
     {include: '#special_rules'},
     {include: '#final'}
@@ -31,7 +30,7 @@ const grammar = {
           name: 'comment.block.documentation.powerbuilder'
         },
         {
-          begin: '\\A(HA)?',
+          begin: '\\A(HA)?(?=\\$)',
           captures: {
             1: {name: 'comment.block.documentation.headers.powerbuilder'}
           },
@@ -57,30 +56,35 @@ const grammar = {
     },
     final: {
       patterns: [
-        {match: '[\\w\\d$#%\\-]+', name: 'variable.other.local.powerbuilder'},
         {
-          match: '(\\+|\\-|\\*|\\/|\\^|=|>|<|&)',
-          name: 'keyword.operator.symbols.powerbuilder'
-        }
+          match: '([\\w$#%][\\w\\d$#%\\-]*)',
+          name: 'variable.other.local.powerbuilder'
+        },
+        {include: '#operators'}
       ]
     },
     general_rules: {
       patterns: [
         {
           begin:
-            '(?i)^\\s*(close|commit|connect|declare|delete|describe|disconnect|execute|fetch|insert|open|prepare|rollback|select|selectblob|update|updateblob)\\b(?!\\s*\\()',
-          captures: {1: {name: 'keyword.operator.sql.powerbuilder'}},
-          end: ';',
+            '(?i)^\\s*(close|commit|connect|declare|delete|describe|disconnect|execute|fetch|insert|open|prepare|rollback|select|selectblob|update|updateblob)(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))(?!\\s*\\()',
+          captures: {
+            1: {name: 'keyword.operator.sql.powerbuilder'},
+            2: {name: 'keyword.operator.sql.powerbuilder'}
+          },
+          end: '(;)',
           name: 'meta.sql.statement.powerbuilder',
           patterns: [
+            {include: '#strings'},
             {include: '#sql_keywords'},
             {include: '#literals'},
+            {include: '#operators'},
             {
-              match: '(?<=::|\\.)[\\w\\d$#%\\-]+',
+              match: '(?<=::|\\.)[\\w$#%][\\w\\d$#%\\-]*',
               name: 'variable.other.local.powerbuilder'
             },
             {
-              match: ':?([\\w\\d$#%\\-]+)',
+              match: ':?([\\w$#%][\\w\\d$#%\\-]*)',
               name: 'variable.other.local.powerbuilder'
             }
           ]
@@ -88,18 +92,11 @@ const grammar = {
         {
           captures: {
             1: {name: 'keyword.other.types.powerbuilder'},
-            2: {name: 'entity.type.name.complex.powerbuilder'}
+            2: {patterns: [{include: '#types'}]}
           },
-          match: '(?i)\\b(create)\\s+([\\w\\d$#%\\-`]+)',
+          match:
+            '(?i)(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))(create)\\s+(?!using(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`])))([\\w$#%][\\w\\d$#%\\-`]*)',
           name: 'meta.variable.create.powerbuilder'
-        },
-        {
-          captures: {
-            1: {name: 'keyword.other.types.powerbuilder'},
-            2: {name: 'variable.other.local.powerbuilder'}
-          },
-          match: '(?i)\\b(create\\s+using)(\\s+[\\w\\d$#%\\-]+)?',
-          name: 'meta.variable.create_using.powerbuilder'
         },
         {
           captures: {
@@ -111,7 +108,7 @@ const grammar = {
             7: {name: 'entity.other.inherited-class.powerbuilder'}
           },
           match:
-            '(?i)\\b(type)\\s+([\\w\\d$#%\\-]+)\\s+(from)\\s+([\\w\\d$#%\\-`]+)(\\s+(within)\\s+([\\w\\d$#%\\-`]+))?',
+            '(?i)(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))(type)\\s+([\\w$#%][\\w\\d$#%\\-]*)\\s+(from)\\s+([\\w$#%][\\w\\d$#%\\-`]*)(\\s+(within)\\s+([\\w$#%][\\w\\d$#%\\-`]*))?',
           name: 'meta.type.declaration.powerbuilder'
         },
         {
@@ -120,7 +117,7 @@ const grammar = {
             2: {patterns: [{include: '#types'}]}
           },
           match:
-            '(?i)\\b(throws)\\s+([\\w\\d$#%\\-`]+(,\\s*[\\w\\d$#%\\-`]+)*)',
+            '(?i)(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))(throws)\\s+([\\w$#%][\\w\\d$#%\\-`]*(,\\s*[\\w$#%][\\w\\d$#%\\-`]*)*)',
           name: 'meta.function.throws_clause.powerbuilder'
         },
         {
@@ -132,7 +129,7 @@ const grammar = {
             7: {name: 'entity.name.tag.event.powerbuilder'}
           },
           match:
-            '(?i)(event)(\\s+(type)\\s+([\\w\\d$#%\\-`]+))?\\s+([\\w\\d$#%\\-]+)\\s*(\\s([\\w\\d$#%\\-]+)\\s*($|;)|(?=\\())',
+            '(?i)(event)(\\s+(type)\\s+([\\w$#%][\\w\\d$#%\\-`]*))?\\s+([\\w$#%][\\w\\d$#%\\-]*)\\s*(\\s([\\w$#%][\\w\\d$#%\\-]*)\\s*($|;)|(?=\\())',
           name: 'meta.event.declaration_definition.powerbuilder'
         }
       ]
@@ -140,69 +137,86 @@ const grammar = {
     keywords: {
       patterns: [
         {
-          match: '(?i)\\b(or|and|not)\\b',
+          match:
+            '(?i)(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))(or|and|not)(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))',
           name: 'keyword.operator.boolean.powerbuilder'
         },
         {
-          match: '(?i)\\b(constant|readonly|ref)\\b',
+          match:
+            '(?i)(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))(constant|readonly|ref)(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))',
           name: 'keyword.other.variable.modifier.powerbuilder'
         },
         {
           match:
-            '(?i)\\b(public|private|protected|privatewrite|privateread|protectedread|protectedwrite|systemread|systemwrite)\\b',
+            '(?i)(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))(public|private|protected|privatewrite|privateread|protectedread|protectedwrite|systemread|systemwrite)(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))',
           name: 'keyword.other.access.powerbuilder'
         },
         {
-          match: '(?i)\\b(super|this|sqlca|parent)\\b',
+          match:
+            '(?i)(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))(super|this|sqlca|parent)(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))',
           name: 'variable.language.powerbuiler'
         },
         {
           match:
-            '(?i)\\b(indirect|variables|end\\s+variables|forward|end\\s+forward|destroy|create|type|end\\s+type|prototypes|within|autoinstantiate|system)\\b',
+            '(?i)(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))(indirect|variables|end\\s+variables|forward|end\\s+forward|destroy|create|using|type|end\\s+type|prototypes|within|autoinstantiate|system)(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))',
           name: 'keyword.other.types.powerbuilder'
         },
         {
-          match: '(?i)\\b(global|shared)\\b',
+          match:
+            '(?i)(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))(global|shared)(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))',
           name: 'keyword.other.scope.powerbuilder'
         },
         {
           match:
-            '(?i)\\b(return|function|end\\s+function|subroutine|end\\s+subroutine|throw|throws|event|end\\s+event|on|end\\s+on|call|dynamic|post|trigger|open|static|alias\\s+for|alias|library|rpcfunc)\\b',
+            '(?i)(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))(return|function|end\\s+function|subroutine|end\\s+subroutine|throw|throws|event|end\\s+event|on|end\\s+on|call|dynamic|post|trigger|open|static|alias\\s+for|alias|library|rpcfunc)(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))',
           name: 'keyword.other.functions.powerbuilder'
         },
         {
           match:
-            '(?i)\\b(if|then|else|elseif|case|choose|exit|continue|for|to|step|next|do|while|loop|until|try|catch|finally|release|end|goto|halt)\\b',
+            '(?i)(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))(if|then|else|elseif|case|choose|exit|continue|for|to|step|next|do|while|loop|until|try|catch|finally|release|end|goto|halt)(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))',
           name: 'keyword.control.powerbuilder'
         },
         {
           match:
-            '(?i)\\b(namespace|intrinsic|with|_debug|enumerated|external|native)\\b',
+            '(?i)(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))(namespace|intrinsic|with|_debug|enumerated|external|native)(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))',
           name: 'keyword.other.reserved.powerbuilder'
-        }
+        },
+        {include: '#sql_keywords'}
       ]
     },
     literals: {
       patterns: [
         {
-          match: '\\b\\d{4}-\\d{2}-\\d{2}\\b',
+          match:
+            '(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))\\d{4}-\\d{2}-\\d{2}(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))',
           name: 'constant.numeric.date.powerbuilder'
         },
         {
-          match: '\\b\\d{2}:\\d{2}:\\d{2}(.\\d+)?\\b',
+          match:
+            '(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))\\d{2}:\\d{2}:\\d{2}(.\\d+)?(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))',
           name: 'constant.numeric.time.powerbuilder'
         },
         {
-          match: '\\b(\\d+(\\.\\d+)?|(\\.\\d+))([eE][+\\-]\\d+)?\\b',
+          match:
+            '((?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))|\\+|-)(\\d+(\\.\\d+)?|(\\.\\d+))([eE][+\\-]?\\d+)?(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))',
           name: 'constant.numeric.number.powerbuilder'
         },
         {
-          match: '(?i)\\b(true|false)\\b',
+          match:
+            '(?i)(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))(true|false)(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))',
           name: 'constant.language.boolean.powerbuilder'
         },
         {
-          match: '[\\w\\d$#%\\-]+!',
+          match: '([\\w$#%][\\w\\d$#%\\-]*!)',
           name: 'constant.language.enumerated.powerbuilder'
+        }
+      ]
+    },
+    operators: {
+      patterns: [
+        {
+          match: '(\\+|\\-|\\*|\\/|\\^|=|>|<|&)',
+          name: 'keyword.operator.symbols.powerbuilder'
         }
       ]
     },
@@ -210,7 +224,7 @@ const grammar = {
       patterns: [
         {
           match:
-            '(?i)\\b(any|blob|boolean|byte|char|character|date|datetime|dec|decimal|double|int|integer|long|longlong|longptr|real|string|time|uint|ulong|unsignedinteger|unsignedlong)\\b',
+            '(?i)(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))(any|blob|boolean|byte|char|character|date|datetime|dec|decimal|double|int|integer|long|longlong|longptr|real|string|time|uint|ulong|unsignedinteger|unsignedlong)(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))',
           name: 'entity.name.type.primitives.powerbuilder'
         }
       ]
@@ -218,11 +232,11 @@ const grammar = {
     special_rules: {
       patterns: [
         {
-          match: '[\\w\\d$#%\\-]+(?=\\s*\\()',
+          match: '[\\w$#%][\\w\\d$#%\\-]*(?=\\s*\\()',
           name: 'entity.name.function.powerbuilder'
         },
         {
-          match: '(?<=::|\\.)[\\w\\d$#%\\-]+',
+          match: '(?<=::|\\.)[\\w$#%][\\w\\d$#%\\-]*',
           name: 'variable.other.member.powerbuilder'
         },
         {
@@ -230,17 +244,18 @@ const grammar = {
             1: {patterns: [{include: '#types'}]},
             2: {name: 'entity.name.function.powerbuilder'}
           },
-          match: '([\\w\\d$#%\\-]+)\\s+([\\w\\d$#%\\-]+)(?=\\s*\\()',
+          match:
+            '([\\w$#%][\\w\\d$#%\\-]*)\\s+([\\w$#%][\\w\\d$#%\\-]*)(?=\\s*\\()',
           name: 'meta.function.declaration.powerbuilder'
         },
         {
           captures: {
             1: {patterns: [{include: '#types'}]},
             3: {name: 'constant.numeric.number.powerbuilder'},
-            4: {name: 'variable.other.local.powerbuilder'}
+            5: {name: 'variable.other.local.powerbuilder'}
           },
           match:
-            '(?i)([\\w\\d$#%\\-`]+)\\s*(\\{(\\d+)\\}|\\s)\\s*(?!or|and|then)([\\w\\d$#%\\-]+)',
+            '(?i)([\\w$#%][\\w\\d$#%\\-`]*)\\s*(\\{(\\d+)\\}|\\s)\\s*(?!(or|and|then)(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`])))([\\w$#%][\\w\\d$#%\\-]*)',
           name: 'meta.variable.declaration.powerbuilder'
         }
       ]
@@ -248,17 +263,18 @@ const grammar = {
     sql_keywords: {
       patterns: [
         {
-          match: '(?i)\\b(or|and|xor|not)\\b',
+          match:
+            '(?i)(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))(or|and|xor|not)(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))',
           name: 'keyword.operator.sql.boolean.powerbuilder'
         },
         {
           match:
-            '(?i)\\b(close|commit|connect|declare|delete|describe|disconnect|execute|fetch|insert|open|prepare|rollback|select|selectblob|update|updateblob)\\b',
+            '(?i)(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))(close|commit|connect|declare|delete|describe|disconnect|execute|fetch|insert|open|prepare|rollback|select|selectblob|update|updateblob)(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))',
           name: 'keyword.operator.sql.powerbuilder'
         },
         {
           match:
-            '(?i)\\b(set|current|of|is|using|null|from|into|values|where|first|prior|last|rollback|immediate|descriptor|cursor|procedure|for|of)\\b',
+            '(?i)(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))(set|current|of|is|null|from|into|using|values|where|first|prior|last|rollback|immediate|descriptor|cursor|procedure|for|of)(?:^(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])$|(?<![\\w\\d$#%\\-`])(?=[\\w\\d$#%\\-`])|(?<=[\\w\\d$#%\\-`])(?![\\w\\d$#%\\-`]))',
           name: 'keyword.operator.sql.powerbuilder'
         }
       ]
@@ -293,7 +309,7 @@ const grammar = {
       patterns: [
         {include: '#primitives'},
         {
-          match: '([\\w\\d$#%\\-`]+)',
+          match: '([\\w$#%][\\w\\d$#%\\-`]*)',
           name: 'entity.name.type.complex.powerbuilder'
         }
       ]

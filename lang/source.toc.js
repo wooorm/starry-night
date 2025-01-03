@@ -26,12 +26,12 @@ const grammar = {
             },
             {
               match:
-                '(?i)(Interface|Title|Notes|RequiredDeps|\\bDep[^:]*|OptionalDeps|LoadOnDemand|LoadWith|LoadManagers|SavedVariablesPerCharacter|SavedVariables|DefaultState|Author|Version|AddonCompartmentFunc|AddonCompartmentFuncOnEnter|AddonCompartmentFuncOnLeave|IconAtlas|IconTexture)',
+                '(?i)(Interface|Title|Notes|RequiredDeps|\\bDep[^:]*|OptionalDeps|LoadOnDemand|LoadWith|LoadManagers|SavedVariablesPerCharacter|SavedVariables|DefaultState|Author|Version|AddonCompartmentFunc(OnEnter|OnLeave)?|IconAtlas|IconTexture)',
               name: 'entity.name.tag.toc'
             },
             {
               match:
-                '(?i)(AllowLoad|OnlyBetaAndPTR|SavedVariablesMachine|Secure|GuardedAddOn)',
+                '(?i)(AllowLoad(GameType)?|OnlyBetaAndPTR|SavedVariablesMachine|Secure|LoadFirst|UseSecureEnvironment)',
               name: 'entity.name.tag.restricted.toc'
             },
             {match: '\\S[^:]+', name: 'invalid.tag.toc'}

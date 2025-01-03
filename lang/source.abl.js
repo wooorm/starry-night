@@ -247,7 +247,7 @@ const grammar = {
         2: {name: 'punctuation.separator.colon.abl'}
       },
       match:
-        '(?i)\\s*(this-object|super|self|this-procedure|target-procedure|source-procedure|session|error-status|compiler|audit-control|audit-policy|clipboard|codebase-locator|color-table|debugger|dslog-manager|file-information|file-info|font-table|last-event|log-manager|profiler|rcode-information|rcode-info|security-policy|session|web-context)\\s*(?=:)'
+        '(?i)\\b(this-object|super|self|this-procedure|target-procedure|source-procedure|session|error-status|compiler|audit-control|audit-policy|clipboard|codebase-locator|color-table|debugger|dslog-manager|file-information|file-info|font-table|last-event|log-manager|profiler|rcode-information|rcode-info|security-policy|session|web-context)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'access-modifier': {
       captures: {1: {name: 'keyword.other.abl'}},
@@ -591,6 +591,7 @@ const grammar = {
         {include: '#define-enum-member'},
         {include: '#define-variable'},
         {include: '#define-parameter'},
+        {include: '#define-button'},
         {include: '#define-dataset'},
         {include: '#define-event'},
         {include: '#define-property'},
@@ -641,6 +642,22 @@ const grammar = {
         {include: '#keywords'},
         {include: '#comment'},
         {include: '#string'}
+      ]
+    },
+    'define-button': {
+      begin: '(?i)\\s*(button)\\s+([a-z][a-z0-9#$\\-_%&]*)',
+      beginCaptures: {
+        1: {name: 'keyword.other.abl'},
+        2: {name: 'variable.other.abl'}
+      },
+      end: '(?=\\.)',
+      patterns: [
+        {include: '#comment'},
+        {include: '#string'},
+        {include: '#from-x-and-y'},
+        {include: '#numeric'},
+        {include: '#keywords'},
+        {include: '#expression'}
       ]
     },
     'define-class': {
@@ -788,7 +805,8 @@ const grammar = {
         1: {name: 'keyword.other.abl'},
         2: {name: 'storage.data.table.abl'}
       },
-      match: '(?i)\\s*(like|like-sequential)\\s+([\\w\\-#$%]+)\\s*'
+      match:
+        '(?i)\\s*(like|like-sequential)\\s+(([\\w\\-#$%]+\\.)?([\\w\\-#$%]+\\.)?([\\w\\-#$%]+))'
     },
     'define-parameter': {
       begin: '(?i)\\b(parameter|paramete|paramet|parame|param)\\b',
@@ -860,7 +878,7 @@ const grammar = {
         1: {name: 'keyword.other.abl'},
         2: {name: 'storage.data.table.abl'}
       },
-      match: '(?i)(?<=\\b)(temp-table|like|before-table)\\s*([\\w\\-#$%]+)\\s*'
+      match: '(?i)(?<=\\b)(temp-table|before-table)\\s*([\\w\\-#$%]+)\\s*'
     },
     'define-type': {
       patterns: [
@@ -880,7 +898,9 @@ const grammar = {
           match: '(?i)\\b(class)\\b'
         },
         {include: '#variable-as'},
+        {include: '#variable-like'},
         {include: '#primitive-type'},
+        {include: '#define-like'},
         {include: '#type-names'},
         {include: '#type-name-generic-progress'},
         {include: '#type-name-progress'},
@@ -1058,7 +1078,7 @@ const grammar = {
     'for-join': {
       captures: {1: {name: 'storage.data.table.abl'}},
       match:
-        '(?i)(?<=,|^)\\s*([\\w\\-#$%]+(\\.[\\w\\-#$%]+)?)\\s+(?=where|no-lock|exclusive-lock|exclusive-loc|exclusive-lo|exclusive-l|share-lock|share-loc|share-lo|share-|share|tenant-where|use-index|table-scan|using|no-prefetch|left|outer-join|break|by|transaction)'
+        '(?i)(?<=,|^)\\s*([\\w\\-#$%]+(\\.[\\w\\-#$%]+)?)\\s+(?=where|no-lock|exclusive-lock|exclusive-loc|exclusive-lo|exclusive-l|share-lock|share-loc|share-lo|share-|share|tenant-where|use-index|table-scan|using|no-prefetch|left|outer-join|break|by|transaction)\\s*'
     },
     'for-record': {
       captures: {
@@ -1108,8 +1128,20 @@ const grammar = {
         {include: '#numeric'},
         {include: '#branch-options'},
         {include: '#abl-functions'},
+        {include: '#db-dot-table-dot-field'},
         {include: '#expression'}
       ]
+    },
+    'from-x-and-y': {
+      captures: {
+        1: {name: 'keyword.other.abl'},
+        12: {name: 'constant.numeric.source.abl'},
+        2: {name: 'keyword.other.abl'},
+        6: {name: 'constant.numeric.source.abl'},
+        8: {name: 'keyword.other.abl'}
+      },
+      match:
+        '(?i)\\b(from)\\s+(X)\\s+((0(x)[0-9a-fA-F]+)|(\\-?[0-9]+(\\.[0-9]+)?))\\s+(y)\\s+((0(x)[0-9a-fA-F]+)|(\\-?[0-9]+(\\.[0-9]+)?))\\s+ '
     },
     'function-arguments': {
       begin: '(?=\\()',
@@ -1122,7 +1154,7 @@ const grammar = {
         {
           captures: {1: {name: 'keyword.other.abl'}},
           match:
-            '(?i)\\s*(input-output|input-outpu|input-outp|input-out|input-ou|input-o|output|input|table-handle|dataset-handle|APPEND|BY-VALUE|BY-REFERENCE|BIND)\\s*'
+            '(?i)\\s*(input-output|input-outpu|input-outp|input-out|input-ou|input-o|output|input|table-handle|dataset-handle|APPEND|BY-VALUE|BY-REFERENCE|BIND)\\b(?![\\#\\$\\-\\_\\%\\&])'
         },
         {
           captures: {
@@ -1271,7 +1303,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(available-formats|available|availabl|availab|availa|avail|auto-zap|auto-za|auto-z|auto-validate|auto-validat|auto-valida|auto-valid|auto-vali|auto-val|auto-synchronize|auto-return|auto-retur|auto-retu|auto-ret|auto-resize|auto-indent|auto-inden|auto-inde|auto-ind|auto-go|auto-end-key|auto-delete-xml|auto-delete|auto-completion|auto-completio|auto-completi|auto-complet|auto-comple|auto-compl|auto-comp|audit-event-context|attribute-names|attr-space|attr-spac|attr-spa|attr-sp|attr-s|attr-|attr|attached-pairlist|asynchronous|async-request-handle|async-request-count|appserver-userid|appserver-password|appserver-info|appl-context-id|appl-alert-boxes|appl-alert-boxe|appl-alert-box|appl-alert-bo|appl-alert-b|appl-alert-|appl-alert|ambiguous|ambiguou|ambiguo|ambigu|ambig|always-on-top|allow-prev-deserialization|allow-column-searching|after-table|after-rowid|after-buffer|adm-data|actor|active|accelerator)\\s*'
+        '(?i)(:)(available-formats|available|availabl|availab|availa|avail|auto-zap|auto-za|auto-z|auto-validate|auto-validat|auto-valida|auto-valid|auto-vali|auto-val|auto-synchronize|auto-return|auto-retur|auto-retu|auto-ret|auto-resize|auto-indent|auto-inden|auto-inde|auto-ind|auto-go|auto-end-key|auto-delete-xml|auto-delete|auto-completion|auto-completio|auto-completi|auto-complet|auto-comple|auto-compl|auto-comp|audit-event-context|attribute-names|attr-space|attr-spac|attr-spa|attr-sp|attr-s|attr-|attr|attached-pairlist|asynchronous|async-request-handle|async-request-count|appserver-userid|appserver-password|appserver-info|appl-context-id|appl-alert-boxes|appl-alert-boxe|appl-alert-box|appl-alert-bo|appl-alert-b|appl-alert-|appl-alert|ambiguous|ambiguou|ambiguo|ambigu|ambig|always-on-top|allow-prev-deserialization|allow-column-searching|after-table|after-rowid|after-buffer|adm-data|actor|active|accelerator)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'handle-attributes-B': {
       captures: {
@@ -1279,7 +1311,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(bytes-written|bytes-read|buffer-tenant-name|buffer-tenant-id|buffer-partition-id|buffer-name|buffer-nam|buffer-na|buffer-n|buffer-lines|buffer-handle|buffer-group-name|buffer-group-id|buffer-field|buffer-chars|box-selectable|box-selectabl|box-selectab|box-selecta|box-select|box|border-top-pixels|border-top-pixel|border-top-pixe|border-top-pix|border-top-pi|border-top-p|border-top-chars|border-top-char|border-top-cha|border-top-ch|border-top-c|border-right-pixels|border-right-pixel|border-right-pixe|border-right-pix|border-right-pi|border-right-p|border-right-chars|border-right-char|border-right-cha|border-right-ch|border-right-c|border-left-pixels|border-left-pixel|border-left-pixe|border-left-pix|border-left-pi|border-left-p|border-left-chars|border-left-char|border-left-cha|border-left-ch|border-left-c|border-bottom-pixels|border-bottom-pixel|border-bottom-pixe|border-bottom-pix|border-bottom-pi|border-bottom-p|border-bottom-chars|border-bottom-char|border-bottom-cha|border-bottom-ch|border-bottom-c|block-iteration-display|blank|bgcolor|bgcolo|bgcol|bgco|bgc|before-table|before-rowid|before-buffer|batch-size|batch-mode|basic-logging|base-ade|background|backgroun|backgrou|backgro|backgr|backg|back)\\s*'
+        '(?i)(:)(bytes-written|bytes-read|buffer-tenant-name|buffer-tenant-id|buffer-partition-id|buffer-name|buffer-nam|buffer-na|buffer-n|buffer-lines|buffer-handle|buffer-group-name|buffer-group-id|buffer-field|buffer-chars|box-selectable|box-selectabl|box-selectab|box-selecta|box-select|box|border-top-pixels|border-top-pixel|border-top-pixe|border-top-pix|border-top-pi|border-top-p|border-top-chars|border-top-char|border-top-cha|border-top-ch|border-top-c|border-right-pixels|border-right-pixel|border-right-pixe|border-right-pix|border-right-pi|border-right-p|border-right-chars|border-right-char|border-right-cha|border-right-ch|border-right-c|border-left-pixels|border-left-pixel|border-left-pixe|border-left-pix|border-left-pi|border-left-p|border-left-chars|border-left-char|border-left-cha|border-left-ch|border-left-c|border-bottom-pixels|border-bottom-pixel|border-bottom-pixe|border-bottom-pix|border-bottom-pi|border-bottom-p|border-bottom-chars|border-bottom-char|border-bottom-cha|border-bottom-ch|border-bottom-c|block-iteration-display|blank|bgcolor|bgcolo|bgcol|bgco|bgc|before-table|before-rowid|before-buffer|batch-size|batch-mode|basic-logging|base-ade|background|backgroun|backgrou|backgro|backgr|backg|back)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'handle-attributes-C': {
       captures: {
@@ -1287,7 +1319,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(cursor-offset|cursor-line|cursor-char|current-window|current-row-modified|current-result-row|current-response-info|current-request-info|current-iteration|current-environment|current-environmen|current-environme|current-environm|current-environ|current-enviro|current-envir|current-envi|current-env|current-column|current-changed|crc-value|crc-valu|crc-val|cpterm|cpstream|cprcodeout|cprcodein|cpprint|cplog|cpinternal|cpinterna|cpintern|cpinter|cpinte|cpint|cpcoll|cpcase|coverage|convert-3d-colors|convert-3d-color|convert-3d-colo|convert-3d-col|convert-3d-co|convert-3d-c|convert-3d-|convert-3d|control-box|context-help-id|context-help-file|context-help|config-name|complete|com-handle|column-scrolling|column-scrollin|column-scrolli|column-scroll|column-scrol|column-scro|column-scr|column-sc|column-resizable|column-read-only|column-pfcolor|column-pfcolo|column-pfcol|column-pfco|column-pfc|column-movable|column-label|column-labe|column-lab|column-font|column-fgcolor|column-fgcolo|column-fgcol|column-fgco|column-fgc|column-dcolor|column-bgcolor|column-bgcolo|column-bgcol|column-bgco|column-bgc|column|codepage|code|client-workstation|client-type|client-tty|client-connection-id|class-type|child-num|child-buffer|checked|charset|centered|centere|center|case-sensitive|case-sensitiv|case-sensiti|case-sensit|case-sensi|case-sens|case-sen|careful-paint|cancelled|cancel-button|can-write|can-writ|can-read|can-do-domain-support|can-delete|can-delet|can-dele|can-create|can-creat|can-crea|call-type|call-name|cache)\\s*'
+        '(?i)(:)(cursor-offset|cursor-line|cursor-char|current-window|current-row-modified|current-result-row|current-response-info|current-request-info|current-iteration|current-environment|current-environmen|current-environme|current-environm|current-environ|current-enviro|current-envir|current-envi|current-env|current-column|current-changed|crc-value|crc-valu|crc-val|cpterm|cpstream|cprcodeout|cprcodein|cpprint|cplog|cpinternal|cpinterna|cpintern|cpinter|cpinte|cpint|cpcoll|cpcase|coverage|convert-3d-colors|convert-3d-color|convert-3d-colo|convert-3d-col|convert-3d-co|convert-3d-c|convert-3d-|convert-3d|control-box|context-help-id|context-help-file|context-help|config-name|complete|com-handle|column-scrolling|column-scrollin|column-scrolli|column-scroll|column-scrol|column-scro|column-scr|column-sc|column-resizable|column-read-only|column-pfcolor|column-pfcolo|column-pfcol|column-pfco|column-pfc|column-movable|column-label|column-labe|column-lab|column-font|column-fgcolor|column-fgcolo|column-fgcol|column-fgco|column-fgc|column-dcolor|column-bgcolor|column-bgcolo|column-bgcol|column-bgco|column-bgc|column|codepage|code|client-workstation|client-type|client-tty|client-connection-id|class-type|child-num|child-buffer|checked|charset|centered|centere|center|case-sensitive|case-sensitiv|case-sensiti|case-sensit|case-sensi|case-sens|case-sen|careful-paint|cancelled|cancel-button|can-write|can-writ|can-read|can-do-domain-support|can-delete|can-delet|can-dele|can-create|can-creat|can-crea|call-type|call-name|cache)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'handle-attributes-D': {
       captures: {
@@ -1295,7 +1327,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(dynamic|drop-target|drag-enabled|down|domain-type|domain-name|domain-description|display-type|display-typ|display-ty|display-timezone|display-t|disable-auto-zap|directory|description|descriptio|descripti|descript|delimiter|default-value|default-string|default-commit|default-button|default-butto|default-butt|default-but|default-buffer-handle|default|decimals|debug-alert|deblank|dde-topic|dde-name|dde-item|dde-id|dde-i|dde-error|dcolor|dbname|db-references|db-list|db-context|date-format|date-forma|date-form|date-for|date-fo|date-f|dataset|data-type|data-typ|data-ty|data-t|data-source-rowid|data-source-modified|data-source-complete-map|data-source|data-entry-return|data-entry-retur|data-entry-retu|data-entry-ret)\\s*'
+        '(?i)(:)(dynamic|drop-target|drag-enabled|down|domain-type|domain-name|domain-description|display-type|display-typ|display-ty|display-timezone|display-t|disable-auto-zap|directory|description|descriptio|descripti|descript|delimiter|default-value|default-string|default-commit|default-button|default-butto|default-butt|default-but|default-buffer-handle|default|decimals|debug-alert|deblank|dde-topic|dde-name|dde-item|dde-id|dde-i|dde-error|dcolor|dbname|db-references|db-list|db-context|date-format|date-forma|date-form|date-for|date-fo|date-f|dataset|data-type|data-typ|data-ty|data-t|data-source-rowid|data-source-modified|data-source-complete-map|data-source|data-entry-return|data-entry-retur|data-entry-retu|data-entry-ret)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'handle-attributes-E': {
       captures: {
@@ -1303,7 +1335,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(extent|expandable|expand|exit-code|execution-log|exclusive-id|event-type|event-typ|event-ty|event-t|event-procedure-context|event-procedure|event-handler-object|event-handler|event-group-id|error-string|error-stack-trace|error-row|error-object-detail|error-object|error-column|error-colum|error-colu|error-col|error|entry-types-list|entity-expansion-limit|end-user-prompt|encryption-salt|encoding|enabled|empty|edit-can-undo|edit-can-paste|edge-pixels|edge-pixel|edge-pixe|edge-pix|edge-pi|edge-p|edge-chars|edge-char|edge-cha|edge-ch|edge-c)\\s*'
+        '(?i)(:)(extent|expandable|expand|exit-code|execution-log|exclusive-id|event-type|event-typ|event-ty|event-t|event-procedure-context|event-procedure|event-handler-object|event-handler|event-group-id|error-string|error-stack-trace|error-row|error-object-detail|error-object|error-column|error-colum|error-colu|error-col|error|entry-types-list|entity-expansion-limit|end-user-prompt|encryption-salt|encoding|enabled|empty|edit-can-undo|edit-can-paste|edge-pixels|edge-pixel|edge-pixe|edge-pix|edge-pi|edge-p|edge-chars|edge-char|edge-cha|edge-ch|edge-c)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'handle-attributes-F': {
       captures: {
@@ -1311,7 +1343,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(function|full-width-pixels|full-width-pixel|full-width-pixe|full-width-pix|full-width-pi|full-width-p|full-width-chars|full-width-char|full-width-cha|full-width-ch|full-width-c|full-width-|full-width|full-pathname|full-pathnam|full-pathna|full-pathn|full-height-pixels|full-height-pixel|full-height-pixe|full-height-pix|full-height-pi|full-height-p|full-height-chars|full-height-char|full-height-cha|full-height-ch|full-height-c|frequency|frame-y|frame-x|frame-spacing|frame-spacin|frame-spaci|frame-spac|frame-spa|frame-row|frame-name|frame-col|frame|fram|fragment|fragmen|forward-only|formatted|formatte|format|forma|form-long-input|form-input|form|foreign-key-hidden|foreground|foregroun|foregrou|foregro|foregr|foreg|fore|font|focused-row-selected|focused-row|flat-button|fit-last-column|first-tab-item|first-tab-ite|first-tab-it|first-tab-i|first-socket|first-server-socket|first-server|first-serve|first-serv|first-query|first-procedure|first-procedur|first-procedu|first-proced|first-proce|first-proc|first-object|first-form|first-dataset|first-data-source|first-column|first-child|first-buffer|first-async-request|first-async-reques|first-async-reque|first-async-requ|first-async-req|first-async-re|first-async-r|first-async-|first-async|filled|fill-where-string|fill-mode|file-type|file-size|file-offset|file-offse|file-offs|file-off|file-name|file-mod-time|file-mod-tim|file-mod-ti|file-mod-t|file-mod-date|file-mod-dat|file-mod-da|file-mod-d|file-create-time|file-create-tim|file-create-ti|file-create-t|file-create-date|file-create-dat|file-create-da|file-create-d|fgcolor|fgcolo|fgcol|fgco|fgc)\\s*'
+        '(?i)(:)(function|full-width-pixels|full-width-pixel|full-width-pixe|full-width-pix|full-width-pi|full-width-p|full-width-chars|full-width-char|full-width-cha|full-width-ch|full-width-c|full-width-|full-width|full-pathname|full-pathnam|full-pathna|full-pathn|full-height-pixels|full-height-pixel|full-height-pixe|full-height-pix|full-height-pi|full-height-p|full-height-chars|full-height-char|full-height-cha|full-height-ch|full-height-c|frequency|frame-y|frame-x|frame-spacing|frame-spacin|frame-spaci|frame-spac|frame-spa|frame-row|frame-name|frame-col|frame|fram|fragment|fragmen|forward-only|formatted|formatte|format|forma|form-long-input|form-input|form|foreign-key-hidden|foreground|foregroun|foregrou|foregro|foregr|foreg|fore|font|focused-row-selected|focused-row|flat-button|fit-last-column|first-tab-item|first-tab-ite|first-tab-it|first-tab-i|first-socket|first-server-socket|first-server|first-serve|first-serv|first-query|first-procedure|first-procedur|first-procedu|first-proced|first-proce|first-proc|first-object|first-form|first-dataset|first-data-source|first-column|first-child|first-buffer|first-async-request|first-async-reques|first-async-reque|first-async-requ|first-async-req|first-async-re|first-async-r|first-async-|first-async|filled|fill-where-string|fill-mode|file-type|file-size|file-offset|file-offse|file-offs|file-off|file-name|file-mod-time|file-mod-tim|file-mod-ti|file-mod-t|file-mod-date|file-mod-dat|file-mod-da|file-mod-d|file-create-time|file-create-tim|file-create-ti|file-create-t|file-create-date|file-create-dat|file-create-da|file-create-d|fgcolor|fgcolo|fgcol|fgco|fgc)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'handle-attributes-G': {
       captures: {
@@ -1319,7 +1351,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(group-box|grid-visible|grid-unit-width-pixels|grid-unit-width-pixel|grid-unit-width-pixe|grid-unit-width-pix|grid-unit-width-pi|grid-unit-width-p|grid-unit-width-chars|grid-unit-width-char|grid-unit-width-cha|grid-unit-width-ch|grid-unit-width-c|grid-unit-height-pixels|grid-unit-height-pixel|grid-unit-height-pixe|grid-unit-height-pix|grid-unit-height-pi|grid-unit-height-p|grid-unit-height-chars|grid-unit-height-char|grid-unit-height-cha|grid-unit-height-ch|grid-unit-height-c|grid-snap|grid-factor-vertical|grid-factor-vertica|grid-factor-vertic|grid-factor-verti|grid-factor-vert|grid-factor-ver|grid-factor-ve|grid-factor-v|grid-factor-horizontal|grid-factor-horizonta|grid-factor-horizont|grid-factor-horizon|grid-factor-horizo|grid-factor-horiz|grid-factor-hori|grid-factor-hor|grid-factor-ho|grid-factor-h|graphic-edge|graphic-edg|graphic-ed|graphic-e)\\s*'
+        '(?i)(:)(group-box|grid-visible|grid-unit-width-pixels|grid-unit-width-pixel|grid-unit-width-pixe|grid-unit-width-pix|grid-unit-width-pi|grid-unit-width-p|grid-unit-width-chars|grid-unit-width-char|grid-unit-width-cha|grid-unit-width-ch|grid-unit-width-c|grid-unit-height-pixels|grid-unit-height-pixel|grid-unit-height-pixe|grid-unit-height-pix|grid-unit-height-pi|grid-unit-height-p|grid-unit-height-chars|grid-unit-height-char|grid-unit-height-cha|grid-unit-height-ch|grid-unit-height-c|grid-snap|grid-factor-vertical|grid-factor-vertica|grid-factor-vertic|grid-factor-verti|grid-factor-vert|grid-factor-ver|grid-factor-ve|grid-factor-v|grid-factor-horizontal|grid-factor-horizonta|grid-factor-horizont|grid-factor-horizon|grid-factor-horizo|grid-factor-horiz|grid-factor-hori|grid-factor-hor|grid-factor-ho|grid-factor-h|graphic-edge|graphic-edg|graphic-ed|graphic-e)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'handle-attributes-H': {
       captures: {
@@ -1327,7 +1359,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(hwnd|html-title-end|html-title-begin|html-header-end|html-header-begin|html-frame-end|html-frame-begin|html-end-of-page|html-end-of-line|html-charset|horizontal|horizonta|horizont|horizon|horizo|horiz|hori|hidden|help|height-pixels|height-pixel|height-pixe|height-pix|height-pi|height-p|height-chars|height-char|height-cha|height-ch|height-c|has-records|has-lobs|handler|handle)\\s*'
+        '(?i)(:)(hwnd|html-title-end|html-title-begin|html-header-end|html-header-begin|html-frame-end|html-frame-begin|html-end-of-page|html-end-of-line|html-charset|horizontal|horizonta|horizont|horizon|horizo|horiz|hori|hidden|help|height-pixels|height-pixel|height-pixe|height-pix|height-pi|height-p|height-chars|height-char|height-cha|height-ch|height-c|has-records|has-lobs|handler|handle)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'handle-attributes-I': {
       captures: {
@@ -1335,7 +1367,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(items-per-row|is-xml|is-partitioned|is-partitione|is-parameter-set|is-open|is-multi-tenant|is-json|is-class|is-clas|internal-entries|instantiating-procedure|input-value|inner-lines|inner-chars|initial|inherit-fgcolor|inherit-fgcolo|inherit-fgcol|inherit-fgco|inherit-fgc|inherit-bgcolor|inherit-bgcolo|inherit-bgcol|inherit-bgco|inherit-bgc|index-information|index-informatio|index-informati|index-informat|index-informa|index-inform|index-infor|index-info|index|in-handle|immediate-display|image-up|image-insensitive|image-down|image|ignore-current-modified|ignore-current-modifie|ignore-current-modifi|ignore-current-modif|ignore-current-modi|ignore-current-mod|icon|icfparameter|icfparamete|icfparamet|icfparame|icfparam)\\s*'
+        '(?i)(:)(items-per-row|is-xml|is-partitioned|is-partitione|is-parameter-set|is-open|is-multi-tenant|is-json|is-class|is-clas|internal-entries|instantiating-procedure|input-value|inner-lines|inner-chars|initial|inherit-fgcolor|inherit-fgcolo|inherit-fgcol|inherit-fgco|inherit-fgc|inherit-bgcolor|inherit-bgcolo|inherit-bgcol|inherit-bgco|inherit-bgc|index-information|index-informatio|index-informati|index-informat|index-informa|index-inform|index-infor|index-info|index|in-handle|immediate-display|image-up|image-insensitive|image-down|image|ignore-current-modified|ignore-current-modifie|ignore-current-modifi|ignore-current-modif|ignore-current-modi|ignore-current-mod|icon|icfparameter|icfparamete|icfparamet|icfparame|icfparam)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'handle-attributes-K': {
       captures: {
@@ -1343,7 +1375,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(keys|key|keep-security-cache|keep-frame-z-order|keep-frame-z-orde|keep-frame-z-ord|keep-frame-z-or|keep-frame-z-o|keep-frame-z-|keep-frame-z|keep-connection-open)\\s*'
+        '(?i)(:)(keys|key|keep-security-cache|keep-frame-z-order|keep-frame-z-orde|keep-frame-z-ord|keep-frame-z-or|keep-frame-z-o|keep-frame-z-|keep-frame-z|keep-connection-open)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'handle-attributes-L': {
       captures: {
@@ -1351,7 +1383,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(login-state|login-host|login-expiration-timestamp|logging-level|logfile-name|log-threshold|log-entry-types|locked|locator-type|locator-system-id|locator-public-id|locator-line-number|locator-column-number|local-version-info|local-port|local-name|local-host|literal-question|listings|list-items|list-item-pairs|line|library-calling-convention|library|length|last-tab-item|last-tab-ite|last-tab-it|last-tab-i|last-socket|last-server-socket|last-server|last-serve|last-serv|last-procedure|last-procedur|last-procedu|last-proced|last-proce|last-object|last-form|last-child|last-batch|last-async-request|last-async-reques|last-async-reque|last-async-requ|last-async-req|last-async-re|last-async-r|last-async-|last-async|large-to-small|large|languages|language|labels-have-colons|labels|label-font|label-fgcolor|label-fgcolo|label-fgcol|label-fgco|label-fgc|label-dcolor|label-dcolo|label-dcol|label-dco|label-dc|label-bgcolor|label-bgcolo|label-bgcol|label-bgco|label-bgc|label)\\s*'
+        '(?i)(:)(login-state|login-host|login-expiration-timestamp|logging-level|logfile-name|log-threshold|log-entry-types|locked|locator-type|locator-system-id|locator-public-id|locator-line-number|locator-column-number|local-version-info|local-port|local-name|local-host|literal-question|listings|list-items|list-item-pairs|line|library-calling-convention|library|length|last-tab-item|last-tab-ite|last-tab-it|last-tab-i|last-socket|last-server-socket|last-server|last-serve|last-serv|last-procedure|last-procedur|last-procedu|last-proced|last-proce|last-object|last-form|last-child|last-batch|last-async-request|last-async-reques|last-async-reque|last-async-requ|last-async-req|last-async-re|last-async-r|last-async-|last-async|large-to-small|large|languages|language|labels-have-colons|labels|label-font|label-fgcolor|label-fgcolo|label-fgcol|label-fgco|label-fgc|label-dcolor|label-dcolo|label-dcol|label-dco|label-dc|label-bgcolor|label-bgcolo|label-bgcol|label-bgco|label-bgc|label)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'handle-attributes-M': {
       captures: {
@@ -1359,7 +1391,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(must-understand|multitasking-interval|multiple|multi-compile|movable|mouse-pointer|mouse-pointe|mouse-point|mouse-poin|mouse-poi|mouse-po|mouse-p|modified|min-width-pixels|min-width-pixel|min-width-pixe|min-width-pix|min-width-pi|min-width-p|min-width-chars|min-width-char|min-width-cha|min-width-ch|min-width-c|min-value|min-valu|min-val|min-schema-marshal|min-height-pixels|min-height-pixel|min-height-pixe|min-height-pix|min-height-pi|min-height-p|min-height-chars|min-height-char|min-height-cha|min-height-ch|min-height-c|min-column-width-pixels|min-column-width-pixel|min-column-width-pixe|min-column-width-pix|min-column-width-pi|min-column-width-p|min-column-width-chars|min-column-width-char|min-column-width-cha|min-column-width-ch|min-column-width-c|min-button|message-area-font|message-area|merge-by-field|menu-mouse|menu-mous|menu-mou|menu-mo|menu-m|menu-key|menu-ke|menu-k|menu-bar|maximum-level|max-width-pixels|max-width-pixel|max-width-pixe|max-width-pix|max-width-pi|max-width-p|max-width-chars|max-width-char|max-width-cha|max-width-ch|max-width-c|max-value|max-valu|max-val|max-height-pixels|max-height-pixel|max-height-pixe|max-height-pix|max-height-pi|max-height-p|max-height-chars|max-height-char|max-height-cha|max-height-ch|max-height-c|max-data-guess|max-chars|max-button|manual-highlight|mandatory)\\s*'
+        '(?i)(:)(must-understand|multitasking-interval|multiple|multi-compile|movable|mouse-pointer|mouse-pointe|mouse-point|mouse-poin|mouse-poi|mouse-po|mouse-p|modified|min-width-pixels|min-width-pixel|min-width-pixe|min-width-pix|min-width-pi|min-width-p|min-width-chars|min-width-char|min-width-cha|min-width-ch|min-width-c|min-value|min-valu|min-val|min-schema-marshal|min-height-pixels|min-height-pixel|min-height-pixe|min-height-pix|min-height-pi|min-height-p|min-height-chars|min-height-char|min-height-cha|min-height-ch|min-height-c|min-column-width-pixels|min-column-width-pixel|min-column-width-pixe|min-column-width-pix|min-column-width-pi|min-column-width-p|min-column-width-chars|min-column-width-char|min-column-width-cha|min-column-width-ch|min-column-width-c|min-button|message-area-font|message-area|merge-by-field|menu-mouse|menu-mous|menu-mou|menu-mo|menu-m|menu-key|menu-ke|menu-k|menu-bar|maximum-level|max-width-pixels|max-width-pixel|max-width-pixe|max-width-pix|max-width-pi|max-width-p|max-width-chars|max-width-char|max-width-cha|max-width-ch|max-width-c|max-value|max-valu|max-val|max-height-pixels|max-height-pixel|max-height-pixe|max-height-pix|max-height-pi|max-height-p|max-height-chars|max-height-char|max-height-cha|max-height-ch|max-height-c|max-data-guess|max-chars|max-button|manual-highlight|mandatory)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'handle-attributes-N': {
       captures: {
@@ -1367,7 +1399,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(numeric-separator|numeric-separato|numeric-separat|numeric-separa|numeric-separ|numeric-sepa|numeric-sep|numeric-format|numeric-forma|numeric-form|numeric-for|numeric-fo|numeric-f|numeric-decimal-point|numeric-decimal-poin|numeric-decimal-poi|numeric-decimal-po|numeric-decimal-p|numeric-decimal-|numeric-decimal|numeric-decima|numeric-decim|numeric-deci|numeric-dec|num-visible-columns|num-visible-column|num-visible-colum|num-visible-colu|num-visible-col|num-top-buffers|num-to-retain|num-tabs|num-source-buffers|num-selected-widgets|num-selected-rows|num-results|num-replaced|num-replace|num-replac|num-repla|num-repl|num-relations|num-references|num-parameters|num-messages|num-log-files|num-locked-columns|num-locked-column|num-locked-colum|num-locked-colu|num-locked-col|num-lines|num-iterations|num-items|num-header-entries|num-formats|num-fields|num-entries|num-dropped-files|num-columns|num-column|num-colum|num-colu|num-col|num-children|num-child-relations|num-buttons|num-button|num-butto|num-butt|num-but|num-buffers|nonamespace-schema-location|node-value|no-validate|no-validat|no-valida|no-valid|no-vali|no-val|no-schema-marshal|no-focus|no-empty-space|no-current-value|next-tab-item|next-tab-ite|next-sibling|next-rowid|next-column|next-colum|next-colu|next-col|new-row|new|nested|needs-prompt|needs-appserver-prompt|namespace-uri|namespace-prefix|name)\\s*'
+        '(?i)(:)(numeric-separator|numeric-separato|numeric-separat|numeric-separa|numeric-separ|numeric-sepa|numeric-sep|numeric-format|numeric-forma|numeric-form|numeric-for|numeric-fo|numeric-f|numeric-decimal-point|numeric-decimal-poin|numeric-decimal-poi|numeric-decimal-po|numeric-decimal-p|numeric-decimal-|numeric-decimal|numeric-decima|numeric-decim|numeric-deci|numeric-dec|num-visible-columns|num-visible-column|num-visible-colum|num-visible-colu|num-visible-col|num-top-buffers|num-to-retain|num-tabs|num-source-buffers|num-selected-widgets|num-selected-rows|num-results|num-replaced|num-replace|num-replac|num-repla|num-repl|num-relations|num-references|num-parameters|num-messages|num-log-files|num-locked-columns|num-locked-column|num-locked-colum|num-locked-colu|num-locked-col|num-lines|num-iterations|num-items|num-header-entries|num-formats|num-fields|num-entries|num-dropped-files|num-columns|num-column|num-colum|num-colu|num-col|num-children|num-child-relations|num-buttons|num-button|num-butto|num-butt|num-but|num-buffers|nonamespace-schema-location|node-value|no-validate|no-validat|no-valida|no-valid|no-vali|no-val|no-schema-marshal|no-focus|no-empty-space|no-current-value|next-tab-item|next-tab-ite|next-sibling|next-rowid|next-column|next-colum|next-colu|next-col|new-row|new|nested|needs-prompt|needs-appserver-prompt|namespace-uri|namespace-prefix|name)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'handle-attributes-O': {
       captures: {
@@ -1375,7 +1407,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(owner-document|owner|overlay|origin-rowid|origin-handle|ordinal|options|on-frame-border|on-frame-borde|on-frame-bord|on-frame-bor|on-frame-bo|on-frame-b|on-frame-|on-frame)\\s*'
+        '(?i)(:)(owner-document|owner|overlay|origin-rowid|origin-handle|ordinal|options|on-frame-border|on-frame-borde|on-frame-bord|on-frame-bor|on-frame-bo|on-frame-b|on-frame-|on-frame)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'handle-attributes-P': {
       captures: {
@@ -1383,14 +1415,15 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(published-events|public-id|proxy-userid|proxy-password|proxy|progress-source|progress-sourc|progress-sour|progress-sou|progress-so|progress-s|profiling|procedure-type|procedure-name|private-data|private-dat|private-da|private-d|printer-port|printer-name|printer-hdc|printer-control-handle|primary-passphrase|primary|prev-tab-item|prev-tab-ite|prev-tab-it|prev-tab-i|prev-sibling|prev-column|prev-colum|prev-colu|prev-col|prepared|prepare-string|prefer-dataset|position|popup-only|popup-onl|popup-on|popup-o|popup-menu|popup-men|popup-me|popup-m|pixels-per-row|pixels-per-column|pixels-per-colum|pixels-per-colu|pixels-per-col|pfcolor|pfcolo|pfcol|pfco|pfc|persistent-procedure|persistent-cache-disabled|persistent|persisten|persiste|persist|pbe-key-rounds|pbe-hash-algorithm|pbe-hash-algorith|pbe-hash-algorit|pbe-hash-algori|pbe-hash-algor|pbe-hash-algo|pbe-hash-alg|pathname|password-field|parse-status|parent-relation|parent-relatio|parent-relati|parent-relat|parent-rela|parent-rel|parent-id-relation|parent-fields-before|parent-fields-after|parent-buffer|parent|parameter|paramete|paramet|parame|param|page-top|page-bottom|page-botto|page-bott|page-bot)\\s*'
+        '(?i)(:)(published-events|public-id|proxy-userid|proxy-password|proxy|progress-source|progress-sourc|progress-sour|progress-sou|progress-so|progress-s|profiling|procedure-type|procedure-name|private-data|private-dat|private-da|private-d|printer-port|printer-name|printer-hdc|printer-control-handle|primary-passphrase|primary|prev-tab-item|prev-tab-ite|prev-tab-it|prev-tab-i|prev-sibling|prev-column|prev-colum|prev-colu|prev-col|prepared|prepare-string|prefer-dataset|position|popup-only|popup-onl|popup-on|popup-o|popup-menu|popup-men|popup-me|popup-m|pixels-per-row|pixels-per-column|pixels-per-colum|pixels-per-colu|pixels-per-col|pfcolor|pfcolo|pfcol|pfco|pfc|persistent-procedure|persistent-cache-disabled|persistent|persisten|persiste|persist|pbe-key-rounds|pbe-hash-algorithm|pbe-hash-algorith|pbe-hash-algorit|pbe-hash-algori|pbe-hash-algor|pbe-hash-algo|pbe-hash-alg|pathname|password-field|parse-status|parent-relation|parent-relatio|parent-relati|parent-relat|parent-rela|parent-rel|parent-id-relation|parent-fields-before|parent-fields-after|parent-buffer|parent|parameter|paramete|paramet|parame|param|page-top|page-bottom|page-botto|page-bott|page-bot)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'handle-attributes-Q': {
       captures: {
         1: {name: 'punctuation.separator.colon.abl'},
         2: {name: 'entity.name.function.abl'}
       },
-      match: '(?i)(:)(quit|query-off-end|query|qualified-user-id)\\s*'
+      match:
+        '(?i)(:)(quit|query-off-end|query|qualified-user-id)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'handle-attributes-R': {
       captures: {
@@ -1398,7 +1431,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(rowid|row-state|row-resizable|row-markers|row-marker|row-marke|row-mark|row-mar|row-ma|row-height-pixels|row-height-pixel|row-height-pixe|row-height-pix|row-height-pi|row-height-p|row-height-chars|row-height-char|row-height-cha|row-height-ch|row-height-c|row|rounded|roles|role|return-value-dll-type|return-value-data-type|return-value|return-valu|return-val|return-inserted|return-inserte|return-insert|return-inser|return-inse|return-ins|retain-shape|retain-shap|retain-sha|retain-sh|retain-s|restart-rowid|restart-row|response-info|resize|resizable|resizabl|resizab|resiza|request-info|reposition|remote-port|remote-host|remote|relations-active|relation-fields|relation-field|relation-fiel|relation-fie|relation-fi|rejected|refreshable|recursive|record-length|record-lengt|record-leng|record-len|recid|read-only|radio-buttons)\\s*'
+        '(?i)(:)(rowid|row-state|row-resizable|row-markers|row-marker|row-marke|row-mark|row-mar|row-ma|row-height-pixels|row-height-pixel|row-height-pixe|row-height-pix|row-height-pi|row-height-p|row-height-chars|row-height-char|row-height-cha|row-height-ch|row-height-c|row|rounded|roles|role|return-value-dll-type|return-value-data-type|return-value|return-valu|return-val|return-inserted|return-inserte|return-insert|return-inser|return-inse|return-ins|retain-shape|retain-shap|retain-sha|retain-sh|retain-s|restart-rowid|restart-row|response-info|resize|resizable|resizabl|resizab|resiza|request-info|reposition|remote-port|remote-host|remote|relations-active|relation-fields|relation-field|relation-fiel|relation-fie|relation-fi|rejected|refreshable|recursive|record-length|record-lengt|record-leng|record-len|recid|read-only|radio-buttons)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'handle-attributes-S': {
       captures: {
@@ -1406,7 +1439,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(system-id|system-alert-boxes|system-alert-boxe|system-alert-box|system-alert-bo|system-alert-b|system-alert-|system-alert|symmetric-support|symmetric-encryption-key|symmetric-encryption-iv|symmetric-encryption-algorithm|symmetric-encryption-aad|suppress-warnings-list|suppress-warnings|suppress-warning|suppress-warnin|suppress-warni|suppress-warn|suppress-war|suppress-wa|suppress-w|suppress-namespace-processing|super-procedures|super-procedure|super-procedur|super-procedu|super-proced|super-proce|super-proc|subtype|strict-entity-resolution|strict|stretch-to-fit|stream|stopped|stoppe|stop-object|stop|status-area-font|status-area|statistics|state-detail|startup-parameters|standalone|ssl-server-name|sort-number|sort-ascending|sort|soap-version|soap-fault-subcode|soap-fault-string|soap-fault-role|soap-fault-node|soap-fault-misunderstood-header|soap-fault-detail|soap-fault-code|soap-fault-actor|small-title|small-icon|skip-deleted-record|skip-deleted-recor|skip-deleted-reco|skip-deleted-rec|singleton|single-run|signature-value|side-labels|side-label-handle|side-label-handl|side-label-hand|side-label-han|side-label-ha|side-label-h|show-in-taskbar|show-in-taskba|show-in-taskb|show-in-task|session-id|session-end|server-operating-mode|server-connection-id|server-connection-context|server-connection-contex|server-connection-conte|server-connection-cont|server-connection-con|server-connection-co|server-connection-bound-request|server-connection-bound-reques|server-connection-bound-reque|server-connection-bound-requ|server-connection-bound-req|server-connection-bound-re|server-connection-bound|server-connection-boun|server-connection-bou|server-connection-bo|server|serialize-name|serialize-hidden|separators|separator-fgcolor|separator-fgcolo|separator-fgcol|separator-fgco|separator-fgc|sensitive|selection-text|selection-start|selection-end|selected|selectable|seal-timestamp|scrollbar-vertical|scrollbar-vertica|scrollbar-vertic|scrollbar-verti|scrollbar-vert|scrollbar-ver|scrollbar-ve|scrollbar-v|scrollbar-horizontal|scrollbar-horizonta|scrollbar-horizont|scrollbar-horizon|scrollbar-horizo|scrollbar-horiz|scrollbar-hori|scrollbar-hor|scrollbar-ho|scrollbar-h|scrollable|scroll-bars|screen-value|screen-valu|screen-val|screen-lines|schema-path|schema-marshal|schema-location|schema-change|save-where-string)\\s*'
+        '(?i)(:)(system-id|system-alert-boxes|system-alert-boxe|system-alert-box|system-alert-bo|system-alert-b|system-alert-|system-alert|symmetric-support|symmetric-encryption-key|symmetric-encryption-iv|symmetric-encryption-algorithm|symmetric-encryption-aad|suppress-warnings-list|suppress-warnings|suppress-warning|suppress-warnin|suppress-warni|suppress-warn|suppress-war|suppress-wa|suppress-w|suppress-namespace-processing|super-procedures|super-procedure|super-procedur|super-procedu|super-proced|super-proce|super-proc|subtype|strict-entity-resolution|strict|stretch-to-fit|stream|stopped|stoppe|stop-object|stop|status-area-font|status-area|statistics|state-detail|startup-parameters|standalone|ssl-server-name|sort-number|sort-ascending|sort|soap-version|soap-fault-subcode|soap-fault-string|soap-fault-role|soap-fault-node|soap-fault-misunderstood-header|soap-fault-detail|soap-fault-code|soap-fault-actor|small-title|small-icon|skip-deleted-record|skip-deleted-recor|skip-deleted-reco|skip-deleted-rec|singleton|single-run|signature-value|side-labels|side-label-handle|side-label-handl|side-label-hand|side-label-han|side-label-ha|side-label-h|show-in-taskbar|show-in-taskba|show-in-taskb|show-in-task|session-id|session-end|server-operating-mode|server-connection-id|server-connection-context|server-connection-contex|server-connection-conte|server-connection-cont|server-connection-con|server-connection-co|server-connection-bound-request|server-connection-bound-reques|server-connection-bound-reque|server-connection-bound-requ|server-connection-bound-req|server-connection-bound-re|server-connection-bound|server-connection-boun|server-connection-bou|server-connection-bo|server|serialize-name|serialize-hidden|separators|separator-fgcolor|separator-fgcolo|separator-fgcol|separator-fgco|separator-fgc|sensitive|selection-text|selection-start|selection-end|selected|selectable|seal-timestamp|scrollbar-vertical|scrollbar-vertica|scrollbar-vertic|scrollbar-verti|scrollbar-vert|scrollbar-ver|scrollbar-ve|scrollbar-v|scrollbar-horizontal|scrollbar-horizonta|scrollbar-horizont|scrollbar-horizon|scrollbar-horizo|scrollbar-horiz|scrollbar-hori|scrollbar-hor|scrollbar-ho|scrollbar-h|scrollable|scroll-bars|screen-value|screen-valu|screen-val|screen-lines|schema-path|schema-marshal|schema-location|schema-change|save-where-string)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'handle-attributes-T': {
       captures: {
@@ -1414,7 +1447,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(type|transparent|transparen|transpare|transpar|transaction|transactio|transacti|transact|trans-init-procedure|trans-init-procedur|trans-init-procedu|trans-init-proced|trans-init-proce|trans-init-proc|tracking-changes|tracing|trace-filter|top-only|top-nav-query|tooltips|tooltip|toggle-box|title-font|title-fon|title-fo|title-fgcolor|title-fgcolo|title-fgcol|title-fgco|title-fgc|title-dcolor|title-dcolo|title-dcol|title-dco|title-dc|title-bgcolor|title-bgcolo|title-bgcol|title-bgco|title-bgc|title|timezone|time-source|tic-marks|three-d|thread-safe|text-selected|temp-directory|temp-director|temp-directo|temp-direct|temp-direc|temp-dire|temp-dir|table-number|table-numbe|table-numb|table-num|table-list|table-handle|table-crc-list|table|tab-stop|tab-position)\\s*'
+        '(?i)(:)(type|transparent|transparen|transpare|transpar|transaction|transactio|transacti|transact|trans-init-procedure|trans-init-procedur|trans-init-procedu|trans-init-proced|trans-init-proce|trans-init-proc|tracking-changes|tracing|trace-filter|top-only|top-nav-query|tooltips|tooltip|toggle-box|title-font|title-fon|title-fo|title-fgcolor|title-fgcolo|title-fgcol|title-fgco|title-fgc|title-dcolor|title-dcolo|title-dcol|title-dco|title-dc|title-bgcolor|title-bgcolo|title-bgcol|title-bgco|title-bgc|title|timezone|time-source|tic-marks|three-d|thread-safe|text-selected|temp-directory|temp-director|temp-directo|temp-direct|temp-direc|temp-dire|temp-dir|table-number|table-numbe|table-numb|table-num|table-list|table-handle|table-crc-list|table|tab-stop|tab-position)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'handle-attributes-U': {
       captures: {
@@ -1422,7 +1455,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(user-id|url-userid|url-password|url|unique-match|unique-id|undo-throw-scope|undo)\\s*'
+        '(?i)(:)(user-id|url-userid|url-password|url|unique-match|unique-id|undo-throw-scope|undo)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'handle-attributes-V': {
       captures: {
@@ -1430,7 +1463,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(visible|virtual-width-pixels|virtual-width-pixel|virtual-width-pixe|virtual-width-pix|virtual-width-pi|virtual-width-p|virtual-width-chars|virtual-width-char|virtual-width-cha|virtual-width-ch|virtual-width-c|virtual-height-pixels|virtual-height-pixel|virtual-height-pixe|virtual-height-pix|virtual-height-pi|virtual-height-p|virtual-height-chars|virtual-height-char|virtual-height-cha|virtual-height-ch|virtual-height-c|view-first-column-on-reopen|view-as|version|value|validation-enabled|validate-xml|validate-message|validate-expression|validate-expressio|v6display)\\s*'
+        '(?i)(:)(visible|virtual-width-pixels|virtual-width-pixel|virtual-width-pixe|virtual-width-pix|virtual-width-pi|virtual-width-p|virtual-width-chars|virtual-width-char|virtual-width-cha|virtual-width-ch|virtual-width-c|virtual-height-pixels|virtual-height-pixel|virtual-height-pixe|virtual-height-pix|virtual-height-pi|virtual-height-p|virtual-height-chars|virtual-height-char|virtual-height-cha|virtual-height-ch|virtual-height-c|view-first-column-on-reopen|view-as|version|value|validation-enabled|validate-xml|validate-message|validate-expression|validate-expressio|v6display)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'handle-attributes-W': {
       captures: {
@@ -1438,7 +1471,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(write-status|work-area-y|work-area-x|work-area-width-pixels|work-area-width-pixel|work-area-width-pixe|work-area-width-pix|work-area-width-pi|work-area-width-p|work-area-height-pixels|work-area-height-pixel|work-area-height-pixe|work-area-height-pix|work-area-height-pi|work-area-height-p|word-wrap|window-system|window-syste|window-syst|window-sys|window-state|window-stat|window-sta|window|width-pixels|width-pixel|width-pixe|width-pix|width-pi|width-p|width-chars|width-char|width-cha|width-ch|width-c|widget-leave|widget-leav|widget-lea|widget-le|widget-l|widget-id|widget-enter|widget-ente|widget-ent|widget-en|widget-e|where-string|wc-admin-app|warning)\\s*'
+        '(?i)(:)(write-status|work-area-y|work-area-x|work-area-width-pixels|work-area-width-pixel|work-area-width-pixe|work-area-width-pix|work-area-width-pi|work-area-width-p|work-area-height-pixels|work-area-height-pixel|work-area-height-pixe|work-area-height-pix|work-area-height-pi|work-area-height-p|word-wrap|window-system|window-syste|window-syst|window-sys|window-state|window-stat|window-sta|window|width-pixels|width-pixel|width-pixe|width-pix|width-pi|width-p|width-chars|width-char|width-cha|width-ch|width-c|widget-leave|widget-leav|widget-lea|widget-le|widget-l|widget-id|widget-enter|widget-ente|widget-ent|widget-en|widget-e|where-string|wc-admin-app|warning)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'handle-attributes-X': {
       captures: {
@@ -1446,14 +1479,14 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(xml-suppress-namespace-processing|xml-strict-entity-resolution|xml-schema-path|xml-schema-pat|xml-node-type|xml-node-name|xml-entity-expansion-limit|xml-data-type|xcode-session-key|x-document|x)\\s*'
+        '(?i)(:)(xml-suppress-namespace-processing|xml-strict-entity-resolution|xml-schema-path|xml-schema-pat|xml-node-type|xml-node-name|xml-entity-expansion-limit|xml-data-type|xcode-session-key|x-document|x)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'handle-attributes-Y': {
       captures: {
         1: {name: 'punctuation.separator.colon.abl'},
         2: {name: 'entity.name.function.abl'}
       },
-      match: '(?i)(:)(year-offset|y)\\s*'
+      match: '(?i)(:)(year-offset|y)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'handle-methods': {
       patterns: [
@@ -1782,22 +1815,22 @@ const grammar = {
     'keywords-A': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(avg|average|averag|avera|aver|ave|available|automatic|auto-endkey|authorization|audit-policy|audit-control|attribute-type|attachment|attach|at|assign|assembly|ask-overwrite|ascending|ascendin|ascendi|ascend|ascen|asce|asc|as-cursor|as|array-message|array-messag|array-messa|array-mess|array-mes|array-me|array-m|apply|application|append-line|append|anywhere|any-printable|any-key|any|ansi-only|and|ambiguous|alternate-key|alter|allow-replication|all|alert-box|aggregate|advise|add|active-window|active-form|across|accumulate|accumulat|accumula|accumul|accumu|accum|abstract|abort)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b(avg|average|averag|avera|aver|ave|available|automatic|auto-go|auto-endkey|authorization|audit-policy|audit-control|attribute-type|attachment|attach|at|assign|assembly|ask-overwrite|ascending|ascendin|ascendi|ascend|ascen|asce|asc|as-cursor|as|array-message|array-messag|array-messa|array-mess|array-mes|array-me|array-m|apply|application|append-line|append|anywhere|any-printable|any-key|any|ansi-only|and|ambiguous|alternate-key|alter|allow-replication|all|alert-box|aggregate|advise|add|active-window|active-form|across|accumulate|accumulat|accumula|accumul|accumu|accum|abstract|abort)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'keywords-B': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(byte|by-variant-pointer|by-variant-pointe|by-variant-point|by-value|by-reference|by-pointer|by|buttons|button|buffer-copy|buffer-compare|buffer|btos|browse-header|browse-column-labels|browse-column-formats|browse-column-data-types|browse|break-line|break|bottom-column|bottom|both|border-top|border-to|border-t|border-right|border-righ|border-rig|border-ri|border-r|border-left|border-lef|border-le|border-l|border-bottom|border-botto|border-bott|border-bot|border-bo|border-b|block-level|block-leve|block-lev|block|blob|bind-where|bind|binary|big-endian|between|bell|begins|before-hide|before-hid|before-hi|before-h|batch|base64|base-key|backwards|backward|backspace|back-tab)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b(byte|by-variant-pointer|by-variant-pointe|by-variant-point|by-value|by-reference|by-pointer|by|buttons|button|buffer-copy|buffer-compare|buffer|btos|browse-header|browse-column-labels|browse-column-formats|browse-column-data-types|browse|break-line|break|bottom-column|bottom|both|border-top|border-to|border-t|border-right|border-righ|border-rig|border-ri|border-r|border-left|border-lef|border-le|border-l|border-bottom|border-botto|border-bott|border-bot|border-bo|border-b|block-level|block-leve|block-lev|block|blob|bind-where|bind|binary|big-endian|bgcolor|between|bell|begins|before-hide|before-hid|before-hi|before-h|batch|base64|base-key|backwards|backward|backspace|back-tab)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'keywords-C': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(cut|cursor-up|cursor-right|cursor-left|cursor-down|cursor|curso|curs|current_date|current-value|current-language|current|ctos|create-test-file|create-on-add|create|count|copy-lob|copy|convert|control-frame|control-fram|control-container|control-containe|control-contain|control-contai|control-conta|control-cont|control|context-popup|context-popu|context-pop|context|contents|contains|container-event|constructor|constrained|connect|component-self|component-handle|compiler|compile|compares|compare|command|combo-box|com-self|columns|column-of|column-label-height-pixels|column-label-height-pixel|column-label-height-pixe|column-label-height-pix|column-label-height-pi|column-label-height-p|column-label-height-chars|column-label-height-char|column-label-height-cha|column-label-height-ch|column-label-height-c|column-label-font|column-label-fgcolor|column-label-fgcolo|column-label-fgcol|column-label-fgco|column-label-fgc|column-label-dcolor|column-label-bgcolor|column-label-bgcolo|column-label-bgcol|column-label-bgco|column-label-bgc|column-codepage|column|color-table|color|colon-aligned|colon-aligne|colon-align|colon|collate|col-of|col|codebase-locator|close|clob|clipboard|client-principal|clear|class|choose|choices|check-mem-stomp|check|character_length|character|characte|charact|charac|chara|char|chained|centered|cdecl|catch|case|cancel-pick|call|cache-size|cache)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b(cut|cursor-up|cursor-right|cursor-left|cursor-down|cursor|curso|curs|current_date|current-value|current-language|current|ctos|create-test-file|create-on-add|create|count|copy-lob|copy|convert|control-frame|control-fram|control-container|control-containe|control-contain|control-contai|control-conta|control-cont|control|context-popup|context-popu|context-pop|context-help-id|context|contents|contains|container-event|constructor|constrained|connect|component-self|component-handle|compiler|compile|compares|compare|command|combo-box|com-self|columns|column-of|column-label-height-pixels|column-label-height-pixel|column-label-height-pixe|column-label-height-pix|column-label-height-pi|column-label-height-p|column-label-height-chars|column-label-height-char|column-label-height-cha|column-label-height-ch|column-label-height-c|column-label-font|column-label-fgcolor|column-label-fgcolo|column-label-fgcol|column-label-fgco|column-label-fgc|column-label-dcolor|column-label-bgcolor|column-label-bgcolo|column-label-bgcol|column-label-bgco|column-label-bgc|column-codepage|column|color-table|color|colon-aligned|colon-aligne|colon-align|colon|collate|col-of|col|codebase-locator|close|clob|clipboard|client-principal|clear|class|choose|choices|check-mem-stomp|check|character_length|character|characte|charact|charac|chara|char|chained|centered|cdecl|catch|case|cancel-pick|call|cache-size|cache)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'keywords-D': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(dynamic-property|dynamic-new|dynamic-current-value|dump|dslog-manager|drop-file-notify|drop-down-list|drop-down|drop|down|double|dotnet-clr-loaded|dos-end|dos|do|dll-call-type|distinct|display|displa|displ|disp|dismiss-menu|disconnect|disabled|disable|dir|dictionary|dictionar|dictiona|diction|dictio|dicti|dict|dialog-help|dialog-box|detach|destructor|deselection-extend|deselection|deselect-extend|deselect|descending|descendin|descendi|descend|descen|desce|desc|delimiter|delete-word|delete-field|delete-end-line|delete-column|delete-character|delete|delegate|del|define-user-event-manager|define|defin|defi|defer-lob-fetch|default-window|default-untranslatable|default-pop-up|default-extension|default-extensio|default-extensi|default-extens|default-exten|default-exte|default-ext|default-ex|default-action|def|declare|debugger|debug-set-tenant|debug-list|dde-notify|dde|dataset-handle|dataset|database|data-source|data-relation|data-relatio|data-relati|data-relat|data-rela|data-rel|data-refresh-page|data-refresh-line|data-bind|data-bin|data-bi|data-b)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b(dynamic-property|dynamic-new|dynamic-current-value|dump|dslog-manager|drop-target|drop-file-notify|drop-down-list|drop-down|drop|down|double|dotnet-clr-loaded|dos-end|dos|do|dll-call-type|distinct|display|displa|displ|disp|dismiss-menu|disconnect|disabled|disable|dir|dictionary|dictionar|dictiona|diction|dictio|dicti|dict|dialog-help|dialog-box|detach|destructor|deselection-extend|deselection|deselect-extend|deselect|descending|descendin|descendi|descend|descen|desce|desc|delimiter|delete-word|delete-field|delete-end-line|delete-column|delete-character|delete|delegate|del|define-user-event-manager|define|defin|defi|defer-lob-fetch|default-window|default-untranslatable|default-pop-up|default-extension|default-extensio|default-extensi|default-extens|default-exten|default-exte|default-ext|default-ex|default-action|default|def|declare|debugger|debug-set-tenant|debug-list|dde-notify|dde|dcolor|dataset-handle|dataset|database|data-source|data-relation|data-relatio|data-relati|data-relat|data-rela|data-rel|data-refresh-page|data-refresh-line|data-bind|data-bin|data-bi|data-b)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'keywords-E': {
       captures: {1: {name: 'keyword.other.abl'}},
@@ -1807,7 +1840,7 @@ const grammar = {
     'keywords-F': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(function-call-type|function|full-height|fromnoreorder|from-pixels|from-pixel|from-pixe|from-pix|from-pi|from-p|from-current|from-curren|from-curre|from-curr|from-cur|from-chars|from-char|from-cha|from-ch|from-c|from|frame-value|frame|forwards|forward|format|form|force-file|for|font-table|font|focus-in|focus|float|flags|fixed-only|fix-codepage|first|firehose-cursor|finder|find-wrap-around|find-select|find-previous|find-prev-occurrence|find-next-occurrence|find-next|find-global|find-case-sensitive|find|finally|final|filters|fill-in|filename|file-information|file-informatio|file-informati|file-informat|file-informa|file-inform|file-infor|file-info|file-access-time|file-access-tim|file-access-ti|file-access-t|file-access-date|file-access-dat|file-access-da|file-access-d|file|fields|field|fetch|false-leaks|false)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b(function-call-type|function|full-height|fromnoreorder|from-pixels|from-pixel|from-pixe|from-pix|from-pi|from-p|from-current|from-curren|from-curre|from-curr|from-cur|from-chars|from-char|from-cha|from-ch|from-c|from|frame-value|frame|forwards|forward|format|form|foreign-key-hidden|force-file|for|font-table|font|focus-in|focus|float|flat-button|flags|fixed-only|fix-codepage|first|firehose-cursor|finder|find-wrap-around|find-select|find-previous|find-prev-occurrence|find-next-occurrence|find-next|find-global|find-case-sensitive|find|finally|final|filters|fill-in|filename|file-information|file-informatio|file-informati|file-informat|file-informa|file-inform|file-infor|file-info|file-access-time|file-access-tim|file-access-ti|file-access-t|file-access-date|file-access-dat|file-access-da|file-access-d|file|fields|field|fgcolor|fetch|false-leaks|false)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'keywords-G': {
       captures: {1: {name: 'keyword.other.abl'}},
@@ -1822,7 +1855,7 @@ const grammar = {
     'keywords-I': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(iteration-changed|item|is|into|interface|insert-mode|insert-field-label|insert-field-data|insert-field|insert-column|insert|input-output|input-outpu|input-outp|input-out|input-ou|input-o|input|inner|initiate|initial-filter|initial-dir|initial|init|inherits|inherit-color-mode|information|informatio|informati|informat|informa|inform|infor|info|indicator|indexed-reposition|index-hint|in|import|implements|image-size-pixels|image-size-pixel|image-size-pixe|image-size-pix|image-size-pi|image-size-p|image-size-chars|image-size-char|image-size-cha|image-size-ch|image-size-c|image-size|image|if)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b(iteration-changed|item|is|into|interface|insert-mode|insert-field-label|insert-field-data|insert-field|insert-column|insert|input-output|input-outpu|input-outp|input-out|input-ou|input-o|input|inner|initiate|initial-filter|initial-dir|initial|init|inherits|inherit-color-mode|information|informatio|informati|informat|informa|inform|infor|info|indicator|indexed-reposition|index-hint|in|import|implements|image-up|image-size-pixels|image-size-pixel|image-size-pixe|image-size-pix|image-size-pi|image-size-p|image-size-chars|image-size-char|image-size-cha|image-size-ch|image-size-c|image-size|image-insensitive|image-down|image|if)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'keywords-J': {
       captures: {1: {name: 'keyword.other.abl'}},
@@ -1842,12 +1875,12 @@ const grammar = {
     'keywords-M': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(must-exist|multiple-key|mpe|move|mouse|modulo|mod|min-width|min-size|min-schema-marshall|min-schema-marshal|min-height|method|message-line|message-area-msg|message|menubar|menu-item|menu-drop|menu|memptr|md5-value|maximize|max-width|max-size|max-rows|max-height|max|matches|margin-width-pixels|margin-width-pixel|margin-width-pixe|margin-width-pix|margin-width-pi|margin-width-p|margin-width-chars|margin-width-char|margin-width-cha|margin-width-ch|margin-width-c|margin-width|margin-height-pixels|margin-height-pixel|margin-height-pixe|margin-height-pix|margin-height-pi|margin-height-p|margin-height-chars|margin-height-char|margin-height-cha|margin-height-ch|margin-height-c|margin-height|margin-extra|map|main-menu|machine-class)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b(must-exist|multiple-key|mpe|move|mouse-pointer|mouse|modulo|mod|min-width|min-size|min-schema-marshall|min-schema-marshal|min-height|method|message-line|message-area-msg|message|menubar|menu-item|menu-drop|menu|memptr|md5-value|maximize|max-width|max-size|max-rows|max-height|max|matches|margin-width-pixels|margin-width-pixel|margin-width-pixe|margin-width-pix|margin-width-pi|margin-width-p|margin-width-chars|margin-width-char|margin-width-cha|margin-width-ch|margin-width-c|margin-width|margin-height-pixels|margin-height-pixel|margin-height-pixe|margin-height-pix|margin-height-pi|margin-height-p|margin-height-chars|margin-height-char|margin-height-cha|margin-height-ch|margin-height-c|margin-height|margin-extra|map|main-menu|machine-class)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'keywords-N': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(numeric|num-selected|num-copies|null|not-active|not|none|non-serializable|node-type|no-word-wrap|no-wait|no-undo|no-underline|no-underlin|no-underli|no-underl|no-under|no-unde|no-und|no-tab-stop|no-tab-sto|no-tab-st|no-tab-s|no-tab-|no-tab|no-separators|no-separate-connection|no-scrolling|no-scrollbar-vertical|no-scrollbar-vertica|no-scrollbar-vertic|no-scrollbar-verti|no-scrollbar-vert|no-scrollbar-ver|no-scrollbar-ve|no-scrollbar-v|no-schema-marshall|no-schema-marshal|no-row-markers|no-return-value|no-return-valu|no-return-val|no-query-unique-added|no-query-unique-adde|no-query-unique-add|no-query-unique-ad|no-query-unique-a|no-query-unique-|no-query-unique|no-query-uniqu|no-query-uniq|no-query-uni|no-query-un|no-query-u|no-query-order-added|no-query-order-adde|no-query-order-add|no-query-order-ad|no-query-order-a|no-query-order-|no-query-order|no-query-orde|no-query-ord|no-query-or|no-query-o|no-prefetch|no-prefetc|no-prefet|no-prefe|no-pause|no-message|no-messag|no-messa|no-mess|no-mes|no-map|no-lookahead|no-lock|no-lobs|no-labels|no-label|no-keycache-join|no-join-by-sqldb|no-inherit-fgcolor|no-inherit-fgcolo|no-inherit-fgcol|no-inherit-fgco|no-inherit-fgc|no-inherit-bgcolor|no-inherit-bgcolo|no-inherit-bgcol|no-inherit-bgco|no-inherit-bgc|no-index-hint|no-hide|no-help|no-firehose-cursor|no-fill|no-fil|no-fi|no-f|no-error|no-echo|no-drag|no-debug|no-convert-3d-colors|no-convert-3d-color|no-convert-3d-colo|no-convert-3d-col|no-convert-3d-co|no-convert-3d-c|no-convert-3d-|no-convert-3d|no-convert|no-console|no-column-scrolling|no-column-scrollin|no-column-scrolli|no-column-scroll|no-column-scrol|no-column-scro|no-column-scr|no-column-sc|no-box|no-bind-where|no-auto-validate|no-auto-trim|no-auto-tri|no-attr-space|no-attr-spac|no-attr-spa|no-attr-sp|no-attr-s|no-attr-list|no-attr-lis|no-attr-li|no-attr-l|no-attr|no-assign|no-array-message|no-array-messag|no-array-messa|no-array-mess|no-array-mes|no-array-me|no-array-m|no-apply|no|next-word|next-prompt|next-frame|next-error|next|new-line|new-instance|new|nested|ne|native|namespace-uri|namespace-prefix)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b(numeric|num-selected|num-copies|null|not-active|not|none|non-serializable|node-type|no-word-wrap|no-wait|no-undo|no-underline|no-underlin|no-underli|no-underl|no-under|no-unde|no-und|no-tab-stop|no-tab-sto|no-tab-st|no-tab-s|no-tab-|no-tab|no-separators|no-separate-connection|no-scrolling|no-scrollbar-vertical|no-scrollbar-vertica|no-scrollbar-vertic|no-scrollbar-verti|no-scrollbar-vert|no-scrollbar-ver|no-scrollbar-ve|no-scrollbar-v|no-schema-marshall|no-schema-marshal|no-row-markers|no-return-value|no-return-valu|no-return-val|no-query-unique-added|no-query-unique-adde|no-query-unique-add|no-query-unique-ad|no-query-unique-a|no-query-unique-|no-query-unique|no-query-uniqu|no-query-uniq|no-query-uni|no-query-un|no-query-u|no-query-order-added|no-query-order-adde|no-query-order-add|no-query-order-ad|no-query-order-a|no-query-order-|no-query-order|no-query-orde|no-query-ord|no-query-or|no-query-o|no-prefetch|no-prefetc|no-prefet|no-prefe|no-pause|no-message|no-messag|no-messa|no-mess|no-mes|no-map|no-lookahead|no-lock|no-lobs|no-labels|no-label|no-keycache-join|no-join-by-sqldb|no-inherit-fgcolor|no-inherit-fgcolo|no-inherit-fgcol|no-inherit-fgco|no-inherit-fgc|no-inherit-bgcolor|no-inherit-bgcolo|no-inherit-bgcol|no-inherit-bgco|no-inherit-bgc|no-index-hint|no-hide|no-help|no-focus|no-firehose-cursor|no-fill|no-fil|no-fi|no-f|no-error|no-echo|no-drag|no-debug|no-convert-3d-colors|no-convert-3d-color|no-convert-3d-colo|no-convert-3d-col|no-convert-3d-co|no-convert-3d-c|no-convert-3d-|no-convert-3d|no-convert|no-console|no-column-scrolling|no-column-scrollin|no-column-scrolli|no-column-scroll|no-column-scrol|no-column-scro|no-column-scr|no-column-sc|no-box|no-bind-where|no-auto-validate|no-auto-trim|no-auto-tri|no-attr-space|no-attr-spac|no-attr-spa|no-attr-sp|no-attr-s|no-attr-list|no-attr-lis|no-attr-li|no-attr-l|no-attr|no-assign|no-array-message|no-array-messag|no-array-messa|no-array-mess|no-array-mes|no-array-me|no-array-m|no-apply|no|next-word|next-prompt|next-frame|next-error|next|new-line|new-instance|new|nested|ne|native|namespace-uri|namespace-prefix)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'keywords-O': {
       captures: {1: {name: 'keyword.other.abl'}},
@@ -1857,7 +1890,7 @@ const grammar = {
     'keywords-P': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(putbyte|put-unsigned-short|put-unsigned-long|put-string|put-short|put-long|put-key-value|put-key-valu|put-key-val|put-int64|put-float|put-double|put-bytes|put-byte|put-bits|put|publish|public|protected|property|propath|promsgs|prompt-for|prompt-fo|prompt-f|prompt|profiler|profile-file|process|procedure-complete|procedure-call-type|procedure|procedur|procedu|proced|proce|privileges|private|printer-setup|printer|prev-word|prev-frame|prev|preselect|preselec|presele|presel|preprocess|preproces|preproce|preproc|precision|portrait|pixels|pick-both|pick-area|pick|performance|performanc|performan|performa|perform|perfor|perfo|perf|pause|paste|pascal|partial-key|parent-window-close|parent-id-field|parameter|paged|page-width|page-widt|page-wid|page-up|page-right-text|page-right|page-left|page-down|page|package-protected|package-private)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b(putbyte|put-unsigned-short|put-unsigned-long|put-string|put-short|put-long|put-key-value|put-key-valu|put-key-val|put-int64|put-float|put-double|put-bytes|put-byte|put-bits|put|publish|public|protected|property|propath|promsgs|prompt-for|prompt-fo|prompt-f|prompt|profiler|profile-file|process|procedure-complete|procedure-call-type|procedure|procedur|procedu|proced|proce|privileges|private|printer-setup|printer|prev-word|prev-frame|prev|preselect|preselec|presele|presel|preprocess|preproces|preproce|preproc|precision|portrait|pixels|pick-both|pick-area|pick|pfcolor|performance|performanc|performan|performa|perform|perfor|perfo|perf|pause|paste|pascal|partial-key|parent-window-close|parent-id-field|parameter|paged|page-width|page-widt|page-wid|page-up|page-right-text|page-right|page-left|page-down|page|package-protected|package-private)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'keywords-Q': {
       captures: {1: {name: 'keyword.other.abl'}},
@@ -1867,17 +1900,17 @@ const grammar = {
     'keywords-R': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(run-procedure|run-procedur|run-procedu|run-proced|run-proce|run-proc|run|rule-y|rule-row|rule|row-unmodified|row-of|row-modified|row-leave|row-height|row-entry|row-display|row-deleted|row-created|row|routine-level|right-end|right-aligned|right-aligne|right-align|right|revoke|revert|reverse-from|returns|return-value|return-to-start-dir|return-to-start-di|return|retry-cancel|retain|resume-display|result|request|reposition-parent-relation|reposition-parent-relatio|reposition-parent-relati|reposition-parent-relat|reposition-parent-rela|reposition-parent-rel|reposition-forwards|reposition-forward|reposition-forwar|reposition-forwa|reposition-forw|reposition-backwards|reposition-backward|reposition-backwar|reposition-backwa|reposition-backw|reposition-back|reposition|reports|replication-write|replication-delete|replication-create|repeat|release|reinstate|reference-only|rectangle|rectangl|rectang|rectan|recta|rect|recall|real|readkey|read-response|read-exact-num|read-available|rcode-information|rcode-informatio|rcode-informati|rcode-informat|rcode-informa|rcode-inform|rcode-infor|rcode-info|raw-transfer|raw|radio-set)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b(run-procedure|run-procedur|run-procedu|run-proced|run-proce|run-proc|run|rule-y|rule-row|rule|row-unmodified|row-of|row-modified|row-leave|row-height|row-entry|row-display|row-deleted|row-created|row|routine-level|right-end|right-aligned|right-aligne|right-align|right|revoke|revert|reverse-from|returns|return-value|return-to-start-dir|return-to-start-di|return|retry-cancel|retain|resume-display|result|request|reposition-parent-relation|reposition-parent-relatio|reposition-parent-relati|reposition-parent-relat|reposition-parent-rela|reposition-parent-rel|reposition-forwards|reposition-forward|reposition-forwar|reposition-forwa|reposition-forw|reposition-backwards|reposition-backward|reposition-backwar|reposition-backwa|reposition-backw|reposition-back|reposition|reports|replication-write|replication-delete|replication-create|repeat|release|relation-fields|reinstate|reference-only|recursive|rectangle|rectangl|rectang|rectan|recta|rect|recall|real|readkey|read-response|read-exact-num|read-available|rcode-information|rcode-informatio|rcode-informati|rcode-informat|rcode-informa|rcode-inform|rcode-infor|rcode-info|raw-transfer|raw|radio-set)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'keywords-S': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(system-help|system-dialog|suspend|super|summary|sum|substring|subscribe|sub-total|sub-minimum|sub-minimu|sub-minim|sub-mini|sub-min|sub-menu-help|sub-menu|sub-maximum|sub-maximu|sub-maxim|sub-maxi|sub-max|sub-count|sub-average|sub-averag|sub-avera|sub-aver|sub-ave|string-xref|stream-io|stream-handle|stream|stored-procedure|stored-procedur|stored-procedu|stored-proced|stored-proce|stored-proc|stop-mem-check|stop-display|stop-after|stop|stomp-frequency|stomp-detection|stdcall|status-area-msg|status|static|starting|start-search|start-row-resize|start-resize|start-move|start-mem-check|start-extend-box-selection|start-box-selection|start|sql|space|source-procedure|source|some|socket|soap-header-entryref|soap-header|soap-fault|smallint|slider|skip-schema-check|skip-group-duplicates|skip|size-pixels|size-pixel|size-pixe|size-pix|size-pi|size-p|size-chars|size-char|size-cha|size-ch|size-c|size|single-run|single-character|single|simple|silent|signature|side-label|side-labe|side-lab|show-stats|show-stat|short|shared|share-lock|share-loc|share-lo|share-l|share-|share|settings|set-state|set-pointer-value|set-pointer-valu|set-pointer-val|set-option|set-event-manager-option|set-db-logging|set-contents|set-cell-focus|set-byte-order|set-attr-call-type|set|session|server-socket|server|serialize-name|serializable|separate-connection|send|self|selection-list|selection-extend|selection|selected-items|select-repositioned-row|select-on-join|select-extend|select|seek|security-policy|section|search-target|search-self|scrolling|scrolled-row-position|scrolled-row-positio|scrolled-row-positi|scrolled-row-posit|scrolled-row-posi|scrolled-row-pos|scrollbar-drag|scroll-vertical|scroll-right|scroll-notify|scroll-mode|scroll-left|scroll-horizontal|scroll|screen-io|screen|schema|sax-xml|sax-writer|sax-write-tag|sax-write-idle|sax-write-error|sax-write-element|sax-write-content|sax-write-complete|sax-write-begin|sax-uninitialized|sax-running|sax-reader|sax-parser-error|sax-complete|sax-complet|sax-comple|sax-attributes|save-as|save)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b(system-help|system-dialog|suspend|super|summary|sum|substring|subscribe|sub-total|sub-minimum|sub-minimu|sub-minim|sub-mini|sub-min|sub-menu-help|sub-menu|sub-maximum|sub-maximu|sub-maxim|sub-maxi|sub-max|sub-count|sub-average|sub-averag|sub-avera|sub-aver|sub-ave|string-xref|stream-io|stream-handle|stream|stored-procedure|stored-procedur|stored-procedu|stored-proced|stored-proce|stored-proc|stop-mem-check|stop-display|stop-after|stop|stomp-frequency|stomp-detection|stdcall|status-area-msg|status|static|starting|start-search|start-row-resize|start-resize|start-move|start-mem-check|start-extend-box-selection|start-box-selection|start|sql|space|source-procedure|source|some|socket|soap-header-entryref|soap-header|soap-fault|smallint|slider|skip-schema-check|skip-group-duplicates|skip|size-pixels|size-pixel|size-pixe|size-pix|size-pi|size-p|size-chars|size-char|size-cha|size-ch|size-c|size|single-run|single-character|single|simple|silent|signature|side-label|side-labe|side-lab|show-stats|show-stat|short|shared|share-lock|share-loc|share-lo|share-l|share-|share|settings|set-state|set-pointer-value|set-pointer-valu|set-pointer-val|set-option|set-event-manager-option|set-db-logging|set-contents|set-cell-focus|set-byte-order|set-attr-call-type|set|session|server-socket|server|serialize-name|serialize-hidden|serializable|separate-connection|send|self|selection-list|selection-extend|selection|selected-items|select-repositioned-row|select-on-join|select-extend|select|seek|security-policy|section|search-target|search-self|scrolling|scrolled-row-position|scrolled-row-positio|scrolled-row-positi|scrolled-row-posit|scrolled-row-posi|scrolled-row-pos|scrollbar-drag|scroll-vertical|scroll-right|scroll-notify|scroll-mode|scroll-left|scroll-horizontal|scroll|screen-io|screen|schema|sax-xml|sax-writer|sax-write-tag|sax-write-idle|sax-write-error|sax-write-element|sax-write-content|sax-write-complete|sax-write-begin|sax-uninitialized|sax-running|sax-reader|sax-parser-error|sax-complete|sax-complet|sax-comple|sax-attributes|save-as|save)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'keywords-T': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(ttcodepage|true|triggers|trigger|transaction-mode|transaction|trans|trailing|total|topic|top-column|top|to|thru|throw|through|this-procedure|this-object|then|text-seg-growth|text-seg-growt|text-seg-grow|text-seg-gro|text-seg-gr|text-seg-g|text-seg-|text-seg|text-cursor|text|terminate|terminal|term|tenant-where|tenant|temp-table|target-procedure|target|table-scan|tab)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b(ttcodepage|true|triggers|trigger|transaction-mode|transaction|trans|trailing|total|topic|top-column|top|tooltip|to|thru|throw|through|this-procedure|this-object|then|text-seg-growth|text-seg-growt|text-seg-grow|text-seg-gro|text-seg-gr|text-seg-g|text-seg-|text-seg|text-cursor|text|terminate|terminal|term|tenant-where|tenant|temp-table|target-procedure|target|table-scan|tab)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'keywords-U': {
       captures: {1: {name: 'keyword.other.abl'}},
@@ -1892,12 +1925,12 @@ const grammar = {
     'keywords-W': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(workfile|work-table|work-tabl|work-tab|word-index|with|window-restored|window-resized|window-normal|window-name|window-minimized|window-minimize|window-minimiz|window-minimi|window-minim|window-maximized|window-maximize|window-maximiz|window-maximi|window-maxim|window-delayed-minimize|window-delayed-minimiz|window-delayed-minimi|window-delayed-minim|window-delayed-mini|window-delayed-min|window-close|width|widget-pool|widget|while|where|when|web-notify|web-context|web-contex|web-conte|web-cont|web-con|wait-for|wait)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b(workfile|work-table|work-tabl|work-tab|word-index|with|window-restored|window-resized|window-normal|window-name|window-minimized|window-minimize|window-minimiz|window-minimi|window-minim|window-maximized|window-maximize|window-maximiz|window-maximi|window-maxim|window-delayed-minimize|window-delayed-minimiz|window-delayed-minimi|window-delayed-minim|window-delayed-mini|window-delayed-min|window-close|width|widget-pool|widget|while|where|when|web-notify|web-context|web-contex|web-conte|web-cont|web-con|warning|wait-for|wait)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'keywords-X': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(xref-xml|xref|xor|xml-node-name|xcode|x-of|x-noderef|x-document)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b(xref-xml|xref|xor|xml-node-type|xml-node-name|xml-data-type|xcode|x-of|x-noderef|x-document)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'keywords-Y': {
       captures: {1: {name: 'keyword.other.abl'}},
@@ -2327,6 +2360,7 @@ const grammar = {
         {include: '#constant'},
         {include: '#timestamp-constant'},
         {include: '#break-by'},
+        {include: '#type-reference'},
         {include: '#for-join'},
         {include: '#operator'},
         {include: '#analyze-suspend-resume'},
@@ -2342,7 +2376,6 @@ const grammar = {
         {include: '#buffer-for-table'},
         {include: '#primitive-type'},
         {include: '#property-accessor'},
-        {include: '#type-reference'},
         {include: '#for-each-table'},
         {include: '#for-each-join'},
         {include: '#of-phrase'},
@@ -2548,7 +2581,7 @@ const grammar = {
       name: 'meta.using.abl',
       patterns: [
         {
-          captures: {1: {name: 'entity.name.package.abl'}},
+          captures: {2: {name: 'entity.name.package.abl'}},
           match:
             '(?i)\\s*((([\\w\\#\\$\\%]+|progress)(\\.[\\w\\#\\$\\%]+)*)\\.\\*)\\s*'
         },
@@ -2565,6 +2598,10 @@ const grammar = {
         2: {name: 'keyword.other.abl'}
       },
       match: '(?i)\\s*([\\w\\-]+)\\s+(as)\\s*'
+    },
+    'variable-like': {
+      captures: {1: {name: 'variable.other.abl'}},
+      match: '(?i)\\s*([\\w\\-]+)\\s+(?=like)\\s*'
     },
     'variable-name': {
       match:

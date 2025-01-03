@@ -222,8 +222,7 @@ const grammar = {
         {
           match: '(^[0-9 ][0-9 ][0-9 ][0-9 ][0-9 ][0-9 ])',
           name: 'constant.numeric.cobol'
-        },
-        {match: '(?i:with|debugging|mode)', name: 'keyword.identifiers.cobol'}
+        }
       ]
     },
     {
@@ -249,7 +248,7 @@ const grammar = {
     },
     {
       begin: '(?i:exec\\s+sqlims|exec\\s+sql)',
-      contentName: 'meta.embedded.block.sql',
+      contentName: 'meta.embedded.block.openesql',
       end: '(?i:end\\-exec)',
       name: 'keyword.verb.cobol',
       patterns: [
@@ -257,7 +256,7 @@ const grammar = {
         {match: '(--.*$)', name: 'comment.line.sql'},
         {match: '(\\*>.*$)', name: 'comment.line.modern'},
         {match: '(\\:([0-9a-zA-Z\\-_])*)', name: 'variable.cobol'},
-        {include: 'source.sql'}
+        {include: 'source.openesql'}
       ]
     },
     {
@@ -301,25 +300,25 @@ const grammar = {
     },
     {
       begin: '(?i:exec\\s+sqlims)',
-      contentName: 'meta.embedded.block.sql',
+      contentName: 'meta.embedded.block.openesql',
       end: '(?i:end\\-exec)',
       name: 'keyword.verb.cobol',
       patterns: [
         {match: '(\\*>.*$)', name: 'comment.line.modern'},
         {match: '(\\:([a-zA-Z\\-])*)', name: 'variable.cobol'},
-        {include: 'source.sql'}
+        {include: 'source.openesql'}
       ]
     },
     {
       begin: '(?i:exec\\s+ado)',
-      contentName: 'meta.embedded.block.sql',
+      contentName: 'meta.embedded.block.openesql',
       end: '(?i:end\\-exec)',
       name: 'keyword.verb.cobol',
       patterns: [
         {match: '(--.*$)', name: 'comment.line.sql'},
         {match: '(\\*>.*$)', name: 'comment.line.modern'},
         {match: '(\\:([a-zA-Z\\-])*)', name: 'variable.cobol'},
-        {include: 'source.sql'}
+        {include: 'source.openesql'}
       ]
     },
     {

@@ -121,6 +121,10 @@ const grammar = {
           name: 'keyword.tag.odin'
         },
         {
+          match: '(#[+]\\s*[[:alpha:]-][[:alnum:]-]*)',
+          name: 'keyword.tag.odin'
+        },
+        {
           match: '(\\x40\\s*\\b([[:alpha:]_]+[[:alnum:]_]*)\\b)',
           name: 'keyword.tag.odin'
         },
@@ -139,7 +143,7 @@ const grammar = {
         {
           begin: '//',
           beginCaptures: {0: {name: 'punctuation.definition.comment.odin'}},
-          end: '\\n',
+          end: '(?=\\n)',
           name: 'comment.line.double-slash.odin',
           patterns: [
             {
@@ -151,7 +155,7 @@ const grammar = {
         {
           begin: '#!',
           beginCaptures: {0: {name: 'punctuation.definition.comment.odin'}},
-          end: '\\n',
+          end: '(?=\\n)',
           name: 'comment.line.double-slash.odin',
           patterns: [
             {

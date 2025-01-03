@@ -1,7 +1,7 @@
 // This is a TextMate grammar distributed by `starry-night`.
 // This grammar is developed at
 // <https://github.com/scala/vscode-scala-syntax>
-// and licensed permissive.
+// and licensed `mit`.
 // See <https://github.com/wooorm/starry-night> for more info.
 /**
  * @import {Grammar} from '@wooorm/starry-night'
@@ -44,7 +44,7 @@ const grammar = {
             },
             {
               match:
-                '@(return|see|note|example|constructor|usecase|author|version|since|todo|deprecated|migration|define|inheritdoc)\\b',
+                '@(return|see|note|example|constructor|usecase|author|version|since|todo|deprecated|migration|define|inheritdoc|groupname|groupprio|groupdesc|group|contentDiagram|documentable|syntax)\\b',
               name: 'keyword.other.documentation.scaladoc.scala'
             },
             {
@@ -485,21 +485,39 @@ const grammar = {
             '^\\s*(end)\\s+(`[^`]+`|(?:[A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}][A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}0-9]*(?:(?<=_)[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)?|[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+))?(?=\\s*(//.*|/\\*(?!.*\\*/\\s*\\S.*).*)?$)'
         },
         {
-          match: '(==?|!=|<=|>=|<>|<|>)',
-          name: 'keyword.operator.comparison.scala'
-        },
-        {
-          match: '(\\-|\\+|\\*|/(?![/*])|%|~)',
-          name: 'keyword.operator.arithmetic.scala'
-        },
-        {
-          match:
-            '(?<![!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]|_)(!|&&|\\|\\|)(?![!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}])',
-          name: 'keyword.operator.logical.scala'
-        },
-        {
-          match: '(<-|←|->|→|=>|⇒|\\?|\\:+|@|\\|)+',
+          match: '([!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]|[\\\\]){3,}',
           name: 'keyword.operator.scala'
+        },
+        {
+          captures: {
+            1: {
+              patterns: [
+                {match: '(\\|\\||&&)', name: 'keyword.operator.logical.scala'},
+                {
+                  match: '(\\!=|==|\\<=|>=)',
+                  name: 'keyword.operator.comparison.scala'
+                },
+                {match: '..', name: 'keyword.operator.scala'}
+              ]
+            }
+          },
+          match: '((?:[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]|[\\\\]){2,}|_\\*)'
+        },
+        {
+          captures: {
+            1: {
+              patterns: [
+                {match: '(\\!)', name: 'keyword.operator.logical.scala'},
+                {
+                  match: '(\\*|-|\\+|/|%|~)',
+                  name: 'keyword.operator.arithmetic.scala'
+                },
+                {match: '(=|\\<|>)', name: 'keyword.operator.comparison.scala'},
+                {match: '.', name: 'keyword.operator.scala'}
+              ]
+            }
+          },
+          match: '(?<!_)([!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]|\\\\)'
         }
       ]
     },

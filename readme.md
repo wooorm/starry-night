@@ -1038,7 +1038,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 * [ ] [`source.bp`](lang/source.bp.js) (mit) — [upstream](https://github.com/flimberger/android-system-tools)
 * [ ] [`source.bqn`](lang/source.bqn.js) (mit) — [upstream](https://github.com/razetime/bqn-vscode)
 * [ ] [`source.brs`](lang/source.brs.js) (mit) — [upstream](https://github.com/rokucommunity/vscode-brightscript-language)
-* [ ] [`source.bsl`](lang/source.bsl.js) (mit) — [upstream](https://github.com/xDrivenDevelopment/atom-language-1c-bsl) — needs: `source.sdbl`
+* [ ] [`source.bsl`](lang/source.bsl.js) (mit) — [upstream](https://github.com/1c-syntax/vsc-language-1c-bsl) — needs: `source.sdbl`
 * [ ] [`source.bsv`](lang/source.bsv.js) (mit)
 * [ ] [`source.c.ec`](lang/source.c.ec.js) (unlicense) — [upstream](https://github.com/ecere/ec.tmbundle) — needs: `source.c`
 * [ ] [`source.c.nwscript`](lang/source.c.nwscript.js) (isc) — [upstream](https://github.com/Alhadis/language-etc) — needs: `source.c`
@@ -1063,7 +1063,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 * [ ] [`source.click`](lang/source.click.js) (mit)
 * [ ] [`source.clips`](lang/source.clips.js) (mit)
 * [ ] [`source.clojure`](lang/source.clojure.js) (mit) — [upstream](https://github.com/atom/language-clojure)
-* [ ] [`source.cmake`](lang/source.cmake.js)
+* [ ] [`source.cmake`](lang/source.cmake.js) (mit) — [upstream](https://github.com/microsoft/vscode-cmake-tools)
 * [ ] [`source.cobol`](lang/source.cobol.js) (mit) — [upstream](https://github.com/spgennard/vscode_cobol)
 * [ ] [`source.coffee`](lang/source.coffee.js) (mit) — [upstream](https://github.com/atom/language-coffee-script) — needs: `source.js`
 * [ ] [`source.commonlisp`](lang/source.commonlisp.js) (mit) — [upstream](https://github.com/qingpeng9802/common-lisp-tmlanguage)
@@ -1271,9 +1271,11 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 * [ ] [`source.modula2`](lang/source.modula2.js) (mit) — [upstream](https://github.com/harogaston/Sublime-Modula-2)
 * [ ] [`source.mojo`](lang/source.mojo.js) (mit) — [upstream](https://github.com/modularml/mojo-syntax)
 * [ ] [`source.monkey`](lang/source.monkey.js) (mit)
+* [ ] [`source.moonbit`](lang/source.moonbit.js) (apache-2.0) — [upstream](https://github.com/moonbitlang/moonbit-tmLanguage)
 * [ ] [`source.moonscript`](lang/source.moonscript.js) (mit)
 * [ ] [`source.move`](lang/source.move.js) (mit) — [upstream](https://github.com/damirka/vscode-move-syntax)
 * [ ] [`source.mql5`](lang/source.mql5.js) (mit)
+* [ ] [`source.msg`](lang/source.msg.js) (mit) — [upstream](https://github.com/omnetpp/omnetpp-textmate-msg)
 * [ ] [`source.msl`](lang/source.msl.js) (mit) — [upstream](https://github.com/gen-angry/language-msl)
 * [ ] [`source.mupad`](lang/source.mupad.js) (mit) — [upstream](https://github.com/ccreutzig/sublime-MuPAD)
 * [ ] [`source.nanorc`](lang/source.nanorc.js) (isc) — [upstream](https://github.com/Alhadis/language-etc) — needs: `etc`, `injections.etc`
@@ -1281,6 +1283,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 * [ ] [`source.nasl`](lang/source.nasl.js) (mit) — [upstream](https://github.com/tenable/sublimetext-nasl)
 * [ ] [`source.ncl`](lang/source.ncl.js) (mit)
 * [ ] [`source.ne`](lang/source.ne.js) (unlicense) — [upstream](https://github.com/Hardmath123/sublime-nearley)
+* [ ] [`source.ned`](lang/source.ned.js) (mit) — [upstream](https://github.com/omnetpp/omnetpp-textmate-ned)
 * [ ] [`source.nemerle`](lang/source.nemerle.js)
 * [ ] [`source.neon`](lang/source.neon.js) (isc) — [upstream](https://github.com/Alhadis/language-etc)
 * [ ] [`source.nesc`](lang/source.nesc.js) (mit) — needs: `source.c`
@@ -1355,6 +1358,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 * [ ] [`source.python.kivy`](lang/source.python.kivy.js) (mit) — [upstream](https://github.com/p0lygun/kivy-language-grammer) — needs: `source.python`
 * [ ] [`source.q`](lang/source.q.js) (mit) — [upstream](https://github.com/komsit37/sublime-q)
 * [ ] [`source.qasm`](lang/source.qasm.js) (mit)
+* [ ] [`source.QB64`](lang/source.QB64.js) (mit) — [upstream](https://github.com/QB64Official/vscode)
 * [ ] [`source.ql`](lang/source.ql.js) (mit) — [upstream](https://github.com/github/vscode-codeql)
 * [ ] [`source.qmake`](lang/source.qmake.js)
 * [ ] [`source.qml`](lang/source.qml.js) (mit) — needs: `source.js`
@@ -1389,12 +1393,12 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 * [ ] [`source.sas`](lang/source.sas.js) (mit) — [upstream](https://github.com/rpardee/sas.tmbundle)
 * [ ] [`source.sass`](lang/source.sass.js) (mit) — [upstream](https://github.com/atom/language-sass) — needs: `source.css`
 * [ ] [`source.scad`](lang/source.scad.js) (mit) — [upstream](https://github.com/tbuser/openscad.tmbundle)
-* [ ] [`source.scala`](lang/source.scala.js) — [upstream](https://github.com/scala/vscode-scala-syntax)
+* [ ] [`source.scala`](lang/source.scala.js) (mit) — [upstream](https://github.com/scala/vscode-scala-syntax)
 * [ ] [`source.scaml`](lang/source.scaml.js) (apache-2.0) — [upstream](https://github.com/scalate/Scalate.tmbundle) — needs: `source.scala`
 * [ ] [`source.scenic`](lang/source.scenic.js) (mit) — [upstream](https://github.com/UCSCFormalMethods/Scenic-tmLanguage)
 * [ ] [`source.scheme`](lang/source.scheme.js)
 * [ ] [`source.scilab`](lang/source.scilab.js)
-* [ ] [`source.sdbl`](lang/source.sdbl.js) (mit) — [upstream](https://github.com/xDrivenDevelopment/atom-language-1c-bsl)
+* [ ] [`source.sdbl`](lang/source.sdbl.js) (mit) — [upstream](https://github.com/1c-syntax/vsc-language-1c-bsl)
 * [ ] [`source.sed`](lang/source.sed.js) (isc) — [upstream](https://github.com/Alhadis/language-sed)
 * [ ] [`source.sepolicy`](lang/source.sepolicy.js) (apache-2.0) — [upstream](https://github.com/google/selinux-policy-languages)
 * [ ] [`source.sfv`](lang/source.sfv.js) (isc) — [upstream](https://github.com/Alhadis/language-etc)
@@ -1427,6 +1431,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 * [ ] [`source.sway`](lang/source.sway.js) (apache-2.0) — [upstream](https://github.com/FuelLabs/sway-vscode-plugin)
 * [ ] [`source.sy`](lang/source.sy.js) (isc) — [upstream](https://github.com/Alhadis/language-regexp) — needs: `source.regexp`
 * [ ] [`source.systemverilog`](lang/source.systemverilog.js) (apache-2.0) — [upstream](https://github.com/TheClams/SystemVerilog)
+* [ ] [`source.tact`](lang/source.tact.js) (mit) — [upstream](https://github.com/tact-lang/tact-sublime)
 * [ ] [`source.talon`](lang/source.talon.js) (mit) — [upstream](https://github.com/mrob95/vscode-TalonScript)
 * [ ] [`source.tcl`](lang/source.tcl.js)
 * [ ] [`source.tea`](lang/source.tea.js) (apache-2.0) — needs: `source.js`, `text.html.basic`, `text.xml`
@@ -1442,6 +1447,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 * [ ] [`source.toc`](lang/source.toc.js) (unlicense) — [upstream](https://github.com/nebularg/language-toc-wow)
 * [ ] [`source.toit`](lang/source.toit.js) (mit) — [upstream](https://github.com/toitware/ide-tools)
 * [ ] [`source.toml`](lang/source.toml.js) — [upstream](https://github.com/textmate/toml.tmbundle)
+* [ ] [`source.tsp`](lang/source.tsp.js) (mit) — [upstream](https://github.com/microsoft/typespec)
 * [ ] [`source.tsql`](lang/source.tsql.js) (mit) — [upstream](https://github.com/beau-witter/language-tsql)
 * [ ] [`source.tsx`](lang/source.tsx.js) (mit) — [upstream](https://github.com/Microsoft/TypeScript-TmLanguage)
 * [ ] [`source.turing`](lang/source.turing.js) (isc) — [upstream](https://github.com/Alhadis/language-turing)
@@ -1459,6 +1465,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 * [ ] [`source.vhdl`](lang/source.vhdl.js)
 * [ ] [`source.vim-snippet`](lang/source.vim-snippet.js) (mit) — [upstream](https://github.com/Alhadis/language-viml)
 * [ ] [`source.viml`](lang/source.viml.js) (mit) — [upstream](https://github.com/Alhadis/language-viml)
+* [ ] [`source.vue`](lang/source.vue.js) (mit) — [upstream](https://github.com/vuejs/language-tools) — needs: `source.css`, `text.html.basic`
 * [ ] [`source.vyper`](lang/source.vyper.js) (mit) — [upstream](https://github.com/davidhq/SublimeEthereum)
 * [ ] [`source.wavefront.mtl`](lang/source.wavefront.mtl.js) (isc) — [upstream](https://github.com/Alhadis/language-wavefront)
 * [ ] [`source.wavefront.obj`](lang/source.wavefront.obj.js) (isc) — [upstream](https://github.com/Alhadis/language-wavefront)
@@ -1466,7 +1473,7 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 * [ ] [`source.webassembly`](lang/source.webassembly.js) (isc) — [upstream](https://github.com/Alhadis/language-webassembly)
 * [ ] [`source.webidl`](lang/source.webidl.js) (mit) — [upstream](https://github.com/andik/IDL-Syntax)
 * [ ] [`source.wgetrc`](lang/source.wgetrc.js) (isc) — [upstream](https://github.com/Alhadis/language-etc) — needs: `etc`
-* [ ] [`source.wgsl`](lang/source.wgsl.js) — [upstream](https://github.com/wgsl-analyzer/wgsl-analyzer)
+* [ ] [`source.wgsl`](lang/source.wgsl.js) (mit) — [upstream](https://github.com/wgsl-analyzer/wgsl-analyzer)
 * [ ] [`source.whiley`](lang/source.whiley.js) (apache-2.0) — [upstream](https://github.com/Whiley/WhileySyntaxBundle)
 * [ ] [`source.win32-messages`](lang/source.win32-messages.js) (isc) — [upstream](https://github.com/Nixinova/NovaGrammars)
 * [ ] [`source.wit`](lang/source.wit.js) (apache-2.0) — [upstream](https://github.com/bytecodealliance/vscode-wit)
@@ -1537,7 +1544,6 @@ Changes should go to upstream repos and [`languages.yml`][languages-yml] in
 * [ ] [`text.html.soy`](lang/text.html.soy.js) (mit) — needs: `text.html.basic`
 * [ ] [`text.html.statamic`](lang/text.html.statamic.js) (mit) — [upstream](https://github.com/Stillat/vscode-antlers-language-server) — needs: `text.html.basic`
 * [ ] [`text.html.twig`](lang/text.html.twig.js) (bsd-3-clause) — [upstream](https://github.com/Anomareh/PHP-Twig.tmbundle)
-* [ ] [`text.html.vue`](lang/text.html.vue.js) (mit) — [upstream](https://github.com/vuejs/vue-syntax-highlight)
 * [ ] [`text.jade`](lang/text.jade.js) (mit) — needs: `source.js`, `text.html.basic`
 * [ ] [`text.marko`](lang/text.marko.js) (mit) — [upstream](https://github.com/marko-js/marko-tmbundle) — needs: `source.js`
 * [ ] [`text.muse`](lang/text.muse.js) (isc) — [upstream](https://github.com/Alhadis/language-emacs-lisp)

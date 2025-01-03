@@ -451,15 +451,6 @@ export const info = {
     homepage: 'https://github.com/FStarLang/atom-fstar',
     license: 'apache-2.0'
   },
-  'source.bsl': {
-    dependencies: ['source.sdbl'],
-    homepage: 'https://github.com/xDrivenDevelopment/atom-language-1c-bsl',
-    license: 'mit'
-  },
-  'source.sdbl': {
-    homepage: 'https://github.com/xDrivenDevelopment/atom-language-1c-bsl',
-    license: 'mit'
-  },
   'source.clean': {
     license: 'mit'
   },
@@ -597,7 +588,6 @@ export const info = {
     homepage: 'https://github.com/hirosystems/clarity.tmbundle',
     license: 'mit'
   },
-  'source.cmake': {},
   'source.peggy': {
     dependencies: ['source.js'],
     homepage: 'https://github.com/peggyjs/code-peggy-language',
@@ -1604,6 +1594,11 @@ export const info = {
     homepage: 'https://github.com/nebularg/language-toc-wow',
     license: 'unlicense'
   },
+  'source.vue': {
+    dependencies: ['source.css', 'text.html.basic'],
+    homepage: 'https://github.com/vuejs/language-tools',
+    license: 'mit'
+  },
   'source.tsql': {
     homepage: 'https://github.com/beau-witter/language-tsql',
     license: 'mit'
@@ -1742,6 +1737,10 @@ export const info = {
   'source.monkey': {
     license: 'mit'
   },
+  'source.moonbit': {
+    homepage: 'https://github.com/moonbitlang/moonbit-tmLanguage',
+    license: 'apache-2.0'
+  },
   'source.moonscript': {
     license: 'mit'
   },
@@ -1773,6 +1772,14 @@ export const info = {
   },
   'source.ocaml': {
     dependencies: ['source.camlp4.ocaml']
+  },
+  'source.msg': {
+    homepage: 'https://github.com/omnetpp/omnetpp-textmate-msg',
+    license: 'mit'
+  },
+  'source.ned': {
+    homepage: 'https://github.com/omnetpp/omnetpp-textmate-ned',
+    license: 'mit'
   },
   'source.ooc': {
     license: 'bsd-2-clause'
@@ -2101,6 +2108,10 @@ export const info = {
     homepage: 'https://github.com/MinecraftCommands/syntax-mcfunction',
     license: 'mit'
   },
+  'source.tact': {
+    homepage: 'https://github.com/tact-lang/tact-sublime',
+    license: 'mit'
+  },
   'source.tcl': {},
   'source.templ': {
     dependencies: ['source.go'],
@@ -2131,6 +2142,10 @@ export const info = {
     homepage: 'https://github.com/peta/turtle.tmbundle',
     license: 'mit'
   },
+  'source.tsp': {
+    homepage: 'https://github.com/microsoft/typespec',
+    license: 'mit'
+  },
   'source.typst': {
     homepage: 'https://github.com/michidk/typst-grammar',
     license: 'mit'
@@ -2149,6 +2164,19 @@ export const info = {
   },
   'source.fnl': {
     homepage: 'https://github.com/kongeor/vsc-fennel',
+    license: 'mit'
+  },
+  'source.bsl': {
+    dependencies: ['source.sdbl'],
+    homepage: 'https://github.com/1c-syntax/vsc-language-1c-bsl',
+    license: 'mit'
+  },
+  'source.sdbl': {
+    homepage: 'https://github.com/1c-syntax/vsc-language-1c-bsl',
+    license: 'mit'
+  },
+  'source.QB64': {
+    homepage: 'https://github.com/QB64Official/vscode',
     license: 'mit'
   },
   'source.talon': {
@@ -2175,6 +2203,10 @@ export const info = {
   'source.cadence': {
     homepage: 'https://github.com/onflow/vscode-cadence',
     license: 'apache-2.0'
+  },
+  'source.cmake': {
+    homepage: 'https://github.com/microsoft/vscode-cmake-tools',
+    license: 'mit'
   },
   'source.ql': {
     homepage: 'https://github.com/github/vscode-codeql',
@@ -2311,7 +2343,8 @@ export const info = {
     license: 'mit'
   },
   'source.scala': {
-    homepage: 'https://github.com/scala/vscode-scala-syntax'
+    homepage: 'https://github.com/scala/vscode-scala-syntax',
+    license: 'mit'
   },
   'source.singularity': {
     homepage: 'https://github.com/onnovalkering/vscode-singularity',
@@ -2355,12 +2388,9 @@ export const info = {
     homepage: 'https://github.com/spgennard/vscode_cobol',
     license: 'mit'
   },
-  'text.html.vue': {
-    homepage: 'https://github.com/vuejs/vue-syntax-highlight',
-    license: 'mit'
-  },
   'source.wgsl': {
-    homepage: 'https://github.com/wgsl-analyzer/wgsl-analyzer'
+    homepage: 'https://github.com/wgsl-analyzer/wgsl-analyzer',
+    license: 'mit'
   },
   'source.witcherscript': {
     homepage: 'https://github.com/ADawesomeguy/witcherscript-grammar',

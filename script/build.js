@@ -171,6 +171,7 @@ for (name in languages) {
         // https://github.com/github-linguist/linguist/pull/6862#issuecomment-2157822516
         scope === 'source.Caddyfile' ||
         scope === 'source.iCalendar' ||
+        scope === 'source.QB64' ||
         /^[-a-z\d+_.]+$/.test(scope),
       scope
     )
@@ -491,7 +492,7 @@ ${[...missing]
 
       if (superfluous.size > 0) {
         console.warn(
-          `Superfluous entries in \`graph.yml\` for ${scope}, here’s the fields to remove:
+          `Superfluous entries in \`graph.yml\` for \`${scope}\`, here’s the fields to remove:
 \`${[...superfluous].sort().join('`, `')}\`
 `
         )
@@ -570,14 +571,7 @@ await Promise.all(
           '/** @type {ReadonlyArray<Grammar>} */',
           'export const grammars = [',
           ...list.flatMap(function (d) {
-            const useLine = '  ' + scopeToId(d) + ','
-
-            return d === 'source.json'
-              ? [
-                  '  // @ts-expect-error: TS is wrong, `.json` does not mean JSON.',
-                  useLine
-                ]
-              : useLine
+            return '  ' + scopeToId(d) + ','
           }),
           ']',
           ''
@@ -914,7 +908,7 @@ function normalizeLinguistName(d) {
   // For example `DNS zone` can be used as `dns-zone`, not as `dns`, `dns_zone`,
   // or `dnszone`.
   const normal = d.toLowerCase().replace(/ /g, '-')
-  assert(/^[-a-z\d.#+'*()/]+$/.test(normal), normal)
+  assert(/^[-_a-z\d.#+'*()/]+$/.test(normal), normal)
   return normal
 }
 

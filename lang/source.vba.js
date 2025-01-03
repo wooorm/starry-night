@@ -45,7 +45,17 @@ const grammar = {
         {match: '^.*', name: 'comment.line.continuation'}
       ]
     },
-    functions: {name: 'entity.name.function.vba'},
+    functions: {
+      begin: '(?i:\\b(Call|Function|Sub) )',
+      beginCaptures: {1: {name: 'keyword.other.vba'}},
+      end: '\\(|(?=\\n)',
+      patterns: [
+        {
+          match: '(?i:\\b([a-zA-Z][a-zA-Z0-9_]*)\\b)',
+          name: 'entity.name.function.vba'
+        }
+      ]
+    },
     keywords: {
       patterns: [
         {

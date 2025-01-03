@@ -17,11 +17,23 @@ const grammar = {
     {include: '#rule-type'},
     {include: '#inline-query'},
     {include: '#resource-block'},
-    {include: '#test-block'}
+    {include: '#test-block'},
+    {include: '#fixture'}
   ],
   repository: {
     boolean: {match: '\\b(true|false)\\b', name: 'constant.language.boolean'},
     comment: {match: '#.*', name: 'comment.line.number-sign'},
+    fixture: {
+      patterns: [
+        {match: '\\bfixture\\b', name: 'keyword.control'},
+        {
+          begin: '\\btest\\b',
+          beginCaptures: {0: {name: 'keyword.control'}},
+          end: '\\bfixture\\b',
+          endCaptures: {0: {name: 'keyword.control'}}
+        }
+      ]
+    },
     'inline-query': {
       begin: '\\?=',
       beginCaptures: {0: {name: 'keyword.control'}},
@@ -187,7 +199,11 @@ const grammar = {
           beginCaptures: {1: {name: 'keyword.control'}},
           end: '\\}',
           name: 'meta.test-setup',
-          patterns: [{include: '#rule'}, {include: '#comment'}]
+          patterns: [
+            {include: '#rule'},
+            {include: '#comment'},
+            {include: '#fixture'}
+          ]
         },
         {include: '#rule'},
         {match: '\\b(assert|assert_not)\\b', name: 'keyword.other'},

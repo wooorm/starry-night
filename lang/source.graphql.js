@@ -131,18 +131,20 @@ const grammar = {
       beginCaptures: {
         1: {name: 'keyword.directive.graphql'},
         2: {name: 'entity.name.function.directive.graphql'},
-        3: {name: 'keyword.on.graphql'},
-        4: {name: 'support.type.graphql'}
+        3: {name: 'keyword.repeatable.graphql'},
+        4: {name: 'keyword.on.graphql'},
+        5: {name: 'support.type.graphql'}
       },
       end: '(?=.)',
       patterns: [
         {include: '#graphql-variable-definitions'},
         {
           applyEndPatternLast: true,
-          begin: '\\s*(\\bon\\b)\\s*([_A-Za-z]*)',
+          begin: '\\s*(\\brepeatable\\b)?\\s*(\\bon\\b)\\s*([_A-Za-z]*)',
           beginCaptures: {
-            1: {name: 'keyword.on.graphql'},
-            2: {name: 'support.type.location.graphql'}
+            1: {name: 'keyword.repeatable.graphql'},
+            2: {name: 'keyword.on.graphql'},
+            3: {name: 'support.type.location.graphql'}
           },
           end: '(?=.)',
           patterns: [

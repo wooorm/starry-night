@@ -222,7 +222,6 @@ test('.flagToScope(flag)', async function (t) {
     'should support language names with slashes (`/`)',
     async function () {
       const {default: json} = await import('@wooorm/starry-night/source.json')
-      // @ts-expect-error: TS is wrong, it doesn’t understand that `.json` is not an extension.
       const grammar = /** @type {Grammar} */ (json)
       const starryJson = await createStarryNight([grammar])
 

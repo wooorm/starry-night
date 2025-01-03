@@ -301,7 +301,7 @@ const grammar = {
       patterns: [
         {
           captures: {1: {name: 'keyword.other.reserved.just'}},
-          match: '^(alias|export|import|mod|set)\\s+'
+          match: '^(alias|export|unexport|import|mod|set)\\s+'
         }
       ]
     },
@@ -335,7 +335,10 @@ const grammar = {
           end: '"""',
           name: 'string.quoted.double.indented.just',
           patterns: [
-            {match: '\\\\.', name: 'constant.character.escape.just'},
+            {
+              match: '\\\\.(?:(?<=u)\\{.+?\\})?',
+              name: 'constant.character.escape.just'
+            },
             {include: '#escaping'}
           ]
         },
@@ -348,7 +351,10 @@ const grammar = {
           end: '"',
           name: 'string.quoted.double.just',
           patterns: [
-            {match: '\\\\.', name: 'constant.character.escape.just'},
+            {
+              match: '\\\\.(?:(?<=u)\\{.+?\\})?',
+              name: 'constant.character.escape.just'
+            },
             {include: '#escaping'}
           ]
         },
@@ -376,6 +382,13 @@ const grammar = {
     },
     'variable-assignment': {
       patterns: [
+        {
+          captures: {
+            1: {name: 'keyword.other.reserved.just'},
+            2: {name: 'variable.other.just'}
+          },
+          match: '^(unexport)\\s+([a-zA-Z_][a-zA-Z0-9_-]*)'
+        },
         {
           begin:
             '(?x) \n  ^\n  (?: (export) \\s+)?\n  ([a-zA-Z_][a-zA-Z0-9_-]*) \\s*\n  (:=)\n',

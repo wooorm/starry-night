@@ -33,7 +33,7 @@ const grammar = {
         2: {name: 'entity.name.function.decorator.gdscript'}
       },
       match:
-        '(@)(export|export_color_no_alpha|export_dir|export_enum|export_exp_easing|export_file|export_flags|export_flags_2d_navigation|export_flags_2d_physics|export_flags_2d_render|export_flags_3d_navigation|export_flags_3d_physics|export_flags_3d_render|export_global_dir|export_global_file|export_multiline|export_node_path|export_placeholder|export_range|icon|onready|rpc|tool|warning_ignore|abstract)\\b'
+        '(@)(export|export_color_no_alpha|export_custom|export_dir|export_enum|export_exp_easing|export_file|export_flags|export_flags_2d_navigation|export_flags_2d_physics|export_flags_2d_render|export_flags_3d_navigation|export_flags_3d_physics|export_flags_3d_render|export_global_dir|export_global_file|export_multiline|export_node_path|export_placeholder|export_range|export_storage|icon|onready|rpc|tool|warning_ignore|abstract|static_unload)\\b'
     },
     any_method: {
       match: '\\b([A-Za-z_]\\w*)\\b(?=\\s*(?:[(]))',
@@ -104,7 +104,7 @@ const grammar = {
     },
     builtin_classes: {
       match:
-        '(?<![^.]\\.|:)\\b(OS|GDScript|Vector2|Vector2i|Vector3|Vector3i|Color|Rect2|Rect2i|Array|Basis|Dictionary|Plane|Quat|RID|Rect3|Transform|Transform2D|Transform3D|AABB|String|Color|NodePath|Object|PoolByteArray|PoolIntArray|PoolRealArray|PoolStringArray|PoolVector2Array|PoolVector3Array|PoolColorArray|bool|int|float|StringName|Quaternion|PackedByteArray|PackedInt32Array|PackedInt64Array|PackedFloat32Array|PackedFloat64Array|PackedStringArray|PackedVector2Array|PackedVector2iArray|PackedVector3Array|PackedVector3iArray|PackedColorArray|super)\\b',
+        '(?<![^.]\\.|:)\\b(Vector2|Vector2i|Vector3|Vector3i|Vector4|Vector4i|Color|Rect2|Rect2i|Array|Basis|Dictionary|Plane|Quat|RID|Rect3|Transform|Transform2D|Transform3D|AABB|String|Color|NodePath|PoolByteArray|PoolIntArray|PoolRealArray|PoolStringArray|PoolVector2Array|PoolVector3Array|PoolColorArray|bool|int|float|Signal|Callable|StringName|Quaternion|Projection|PackedByteArray|PackedInt32Array|PackedInt64Array|PackedFloat32Array|PackedFloat64Array|PackedStringArray|PackedVector2Array|PackedVector2iArray|PackedVector3Array|PackedVector3iArray|PackedVector4Array|PackedColorArray|super)\\b',
       name: 'entity.name.type.class.builtin.gdscript'
     },
     builtin_get_node_shorthand: {
@@ -118,18 +118,20 @@ const grammar = {
       captures: {
         1: {name: 'keyword.control.flow.gdscript'},
         2: {name: 'constant.character.escape.gdscript'},
-        3: {name: 'constant.character.escape.gdscript'}
+        3: {name: 'constant.character.escape.gdscript'},
+        4: {name: 'constant.character.escape.gdscript'}
       },
-      name: 'meta.literal.nodepath.gdscript'
+      name: 'meta.literal.nodepath.bare.gdscript'
     },
     builtin_get_node_shorthand_bare_multi: {
-      begin: '(\\$|%|\\$%)([a-zA-Z_]\\w*)',
+      begin: '(\\$\\s*|%|\\$%\\s*)(/\\s*)?([a-zA-Z_]\\w*)',
       beginCaptures: {
         1: {name: 'keyword.control.flow.gdscript'},
-        2: {name: 'constant.character.escape.gdscript'}
+        2: {name: 'constant.character.escape.gdscript'},
+        3: {name: 'constant.character.escape.gdscript'}
       },
       end: '(?!\\s*/\\s*%?\\s*[a-zA-Z_]\\w*)',
-      name: 'meta.literal.nodepath.gdscript',
+      name: 'meta.literal.nodepath.bare.gdscript',
       patterns: [
         {
           captures: {
@@ -142,7 +144,7 @@ const grammar = {
       ]
     },
     builtin_get_node_shorthand_quoted: {
-      begin: '(?:(\\$)|(&|\\^|@))("|\')',
+      begin: '(?:(\\$|%)|(&|\\^|@))("|\')',
       beginCaptures: {
         1: {name: 'keyword.control.flow.gdscript'},
         2: {name: 'variable.other.enummember.gdscript'}
@@ -161,7 +163,7 @@ const grammar = {
     class_enum: {
       captures: {
         1: {name: 'entity.name.type.class.gdscript'},
-        2: {name: 'constant.language.gdscript'}
+        2: {name: 'variable.other.enummember.gdscript'}
       },
       match: '\\b([A-Z][a-zA-Z_0-9]*)\\.([A-Z_0-9]+)'
     },
@@ -200,7 +202,7 @@ const grammar = {
     },
     const_vars: {
       match: '\\b([A-Z_][A-Z_0-9]*)\\b',
-      name: 'constant.language.gdscript'
+      name: 'variable.other.constant.gdscript'
     },
     control_flow: {
       match:
@@ -282,7 +284,8 @@ const grammar = {
         1: {name: 'keyword.language.gdscript storage.type.function.gdscript'},
         2: {name: 'entity.name.function.gdscript'}
       },
-      end: '(:|(?=[#\'"\\n]))',
+      end: '(:)',
+      endCaptures: {1: {name: 'punctuation.section.function.begin.gdscript'}},
       name: 'meta.function.gdscript',
       patterns: [
         {include: '#parameters'},
@@ -437,6 +440,12 @@ const grammar = {
         },
         {
           match: '[-]?([0-9][0-9_]*e[\\-\\+]?\\[0-9_])',
+          name: 'constant.numeric.float.gdscript'
+        },
+        {
+          captures: {1: {name: 'storage.type.imaginary.number.gdscript'}},
+          match:
+            '(?x)\n  (?<! \\w)(?:\n    (?:\n      \\.[0-9](?: _?[0-9] )*\n      |\n      [0-9](?: _?[0-9] )* \\. [0-9](?: _?[0-9] )*\n      |\n      [0-9](?: _?[0-9] )* \\.\n    ) (?: [eE][+-]?[0-9](?: _?[0-9] )* )?\n    |\n    [0-9](?: _?[0-9] )* (?: [eE][+-]?[0-9](?: _?[0-9] )* )\n  )([jJ])?\\b\n',
           name: 'constant.numeric.float.gdscript'
         },
         {match: '[-]?[0-9][0-9_]*', name: 'constant.numeric.integer.gdscript'}

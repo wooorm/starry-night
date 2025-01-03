@@ -83,9 +83,9 @@ const grammar = {
       patterns: [
         {
           begin: '///',
+          end: '^(?!\\s*///)',
           name: 'comment.block.documentation.dart',
-          patterns: [{include: '#dartdoc'}],
-          while: '^\\s*///'
+          patterns: [{include: '#dartdoc'}]
         }
       ]
     },
@@ -138,23 +138,31 @@ const grammar = {
           match: '(\\[.*?\\])'
         },
         {
-          captures: {0: {name: 'variable.name.source.dart'}},
-          match: '^ {4,}(?![ \\*]).*'
+          begin: '^\\s*///\\s*(```)',
+          end: '^\\s*///\\s*(```)|^(?!\\s*///)',
+          patterns: [{include: '#dartdoc-codeblock-triple'}]
         },
         {
-          begin: '```.*?$',
-          contentName: 'variable.other.source.dart',
-          end: '```'
+          begin: '^\\s*\\*\\s*(```)',
+          end: '^\\s*\\*\\s*(```)|^(?=\\s*\\*/)',
+          patterns: [{include: '#dartdoc-codeblock-block'}]
         },
+        {match: '`[^`\n]+`', name: 'variable.other.source.dart'},
         {
-          captures: {0: {name: 'variable.other.source.dart'}},
-          match: '(`[^`]+?`)'
-        },
-        {
-          captures: {2: {name: 'variable.other.source.dart'}},
-          match: '(\\* ((    ).*))$'
+          captures: {1: {name: 'variable.other.source.dart'}},
+          match: '(?:\\*|\\/\\/)\\s{4,}(.*?)(?=($|\\*\\/))'
         }
       ]
+    },
+    'dartdoc-codeblock-block': {
+      begin: '^\\s*\\*\\s*(?!(\\s*```|/))',
+      contentName: 'variable.other.source.dart',
+      end: '\n'
+    },
+    'dartdoc-codeblock-triple': {
+      begin: '^\\s*///\\s*(?!\\s*```)',
+      contentName: 'variable.other.source.dart',
+      end: '\n'
     },
     expression: {
       patterns: [

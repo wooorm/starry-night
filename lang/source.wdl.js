@@ -154,7 +154,7 @@ const grammar = {
         {match: '\\b(call|else|if|then)\\b', name: 'keyword.control.wdl'},
         {
           match:
-            '\\b(command|hints|inputs|meta|object|outputs|parameter_meta|requirements|runtime|struct|task|workflow)\\b\\s*(?!:)',
+            '\\b(command|hints|inputs|meta|object|outputs|parameter_meta|requirements|runtime)\\b\\s*(?!:)',
           name: 'storage.type'
         },
         {
@@ -163,7 +163,7 @@ const grammar = {
         },
         {
           match:
-            '\\b(alias|as|call|command|else|false|hints|if|in|import|input|left|meta|object|output|parameter_meta|right|hint|runtime|scatter|struct|task|then|true|version|workflow)\\b\\s*(?!:)',
+            '\\b(after|alias|as|call|command|else|false|hints|if|in|import|input|meta|null|object|output|parameter_meta|requirements|runtime|scatter|then|true|version)\\b\\s*(?!:)',
           name: 'keyword.wdl'
         },
         {

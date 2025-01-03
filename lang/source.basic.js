@@ -25,7 +25,7 @@ const grammar = {
       name: 'constant.numeric.basic'
     },
     {match: '"[^"]*"', name: 'string.quoted.double.basic'},
-    {match: "(?i:\bREM\b.*|^'.*| '.*)", name: 'comment.line.basic'},
+    {match: "(?i:\\bREM\\b.*|^'.*| '.*)", name: 'comment.line.basic'},
     {
       match: '\\b(?i:FOR|TO|NEXT|IF|THEN|ELSE|GO\\s*TO|GOSUB|RETURN)\\b',
       name: 'keyword.control.basic'

@@ -1,6 +1,6 @@
 // This is a TextMate grammar distributed by `starry-night`.
 // This grammar is developed at
-// <https://github.com/xDrivenDevelopment/atom-language-1c-bsl>
+// <https://github.com/1c-syntax/vsc-language-1c-bsl>
 // and licensed `mit`.
 // See <https://github.com/wooorm/starry-night> for more info.
 /**
@@ -133,7 +133,14 @@ const grammar = {
       },
       end: '$'
     },
-    {match: '(?i)#(КонецОбласти|EndRegion)', name: 'keyword.other.section.bsl'}
+    {match: '(?i)#(КонецОбласти|EndRegion)', name: 'keyword.other.section.bsl'},
+    {match: '(?i)#(Удаление|Delete)', name: 'keyword.other.section.bsl'},
+    {
+      match: '(?i)#(КонецУдаления|EndDelete)',
+      name: 'keyword.other.section.bsl'
+    },
+    {match: '(?i)#(Вставка|Insert)', name: 'keyword.other.section.bsl'},
+    {match: '(?i)#(КонецВставки|EndInsert)', name: 'keyword.other.section.bsl'}
   ],
   repository: {
     annotations: {

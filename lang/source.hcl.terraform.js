@@ -72,7 +72,8 @@ const grammar = {
             {match: '[\\"\\-\\w]+', name: 'variable.other.enummember.hcl'}
           ]
         },
-        3: {name: 'punctuation.section.block.begin.hcl'}
+        3: {name: 'punctuation.section.block.begin.hcl'},
+        5: {name: 'punctuation.section.block.begin.hcl'}
       },
       end: '\\}',
       endCaptures: {0: {name: 'punctuation.section.block.end.hcl'}},

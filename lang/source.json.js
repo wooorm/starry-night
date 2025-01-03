@@ -23,6 +23,7 @@ const grammar = {
     '.json',
     '.json',
     '.json-tmlanguage',
+    '.json.example',
     '.jsonl',
     '.maxhelp',
     '.maxpat',
@@ -39,6 +40,7 @@ const grammar = {
     '.yy',
     '.yyp'
   ],
+  extensionsWithDot: ['.tact'],
   names: [
     'ecere-projects',
     'geojson',

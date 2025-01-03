@@ -202,7 +202,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.apib.md',
           patterns: [
@@ -225,7 +225,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.apib.md',
           patterns: [
@@ -252,7 +252,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.asciidoc.md',
           patterns: [
@@ -275,7 +275,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.asciidoc.md',
           patterns: [
@@ -302,7 +302,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.c.md',
           patterns: [
@@ -325,7 +325,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.c.md',
           patterns: [
@@ -352,7 +352,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.clojure.md',
           patterns: [
@@ -375,7 +375,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.clojure.md',
           patterns: [
@@ -402,7 +402,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.coffee.md',
           patterns: [
@@ -425,7 +425,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.coffee.md',
           patterns: [
@@ -452,7 +452,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.console.md',
           patterns: [
@@ -475,7 +475,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.console.md',
           patterns: [
@@ -502,7 +502,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.cpp.md',
           patterns: [
@@ -525,7 +525,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.cpp.md',
           patterns: [
@@ -552,7 +552,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.cs.md',
           patterns: [
@@ -575,7 +575,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.cs.md',
           patterns: [
@@ -602,7 +602,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.css.md',
           patterns: [
@@ -625,7 +625,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.css.md',
           patterns: [
@@ -652,7 +652,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.diff.md',
           patterns: [
@@ -675,7 +675,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.diff.md',
           patterns: [
@@ -702,7 +702,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.dockerfile.md',
           patterns: [
@@ -725,7 +725,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.dockerfile.md',
           patterns: [
@@ -752,7 +752,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.elixir.md',
           patterns: [
@@ -775,7 +775,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.elixir.md',
           patterns: [
@@ -802,7 +802,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.elm.md',
           patterns: [
@@ -825,7 +825,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.elm.md',
           patterns: [
@@ -852,7 +852,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.erlang.md',
           patterns: [
@@ -875,7 +875,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.erlang.md',
           patterns: [
@@ -902,7 +902,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.gitconfig.md',
           patterns: [
@@ -925,7 +925,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.gitconfig.md',
           patterns: [
@@ -952,7 +952,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.go.md',
           patterns: [
@@ -975,7 +975,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.go.md',
           patterns: [
@@ -1002,7 +1002,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.graphql.md',
           patterns: [
@@ -1025,7 +1025,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.graphql.md',
           patterns: [
@@ -1052,7 +1052,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.haskell.md',
           patterns: [
@@ -1075,7 +1075,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.haskell.md',
           patterns: [
@@ -1102,7 +1102,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.html.md',
           patterns: [
@@ -1125,7 +1125,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.html.md',
           patterns: [
@@ -1152,7 +1152,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.ini.md',
           patterns: [
@@ -1175,7 +1175,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.ini.md',
           patterns: [
@@ -1202,7 +1202,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.java.md',
           patterns: [
@@ -1225,7 +1225,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.java.md',
           patterns: [
@@ -1252,7 +1252,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.js.md',
           patterns: [
@@ -1275,7 +1275,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.js.md',
           patterns: [
@@ -1302,7 +1302,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.json.md',
           patterns: [
@@ -1325,7 +1325,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.json.md',
           patterns: [
@@ -1352,7 +1352,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.julia.md',
           patterns: [
@@ -1375,7 +1375,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.julia.md',
           patterns: [
@@ -1402,7 +1402,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.kotlin.md',
           patterns: [
@@ -1425,7 +1425,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.kotlin.md',
           patterns: [
@@ -1452,7 +1452,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.less.md',
           patterns: [
@@ -1475,7 +1475,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.less.md',
           patterns: [
@@ -1502,7 +1502,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.lua.md',
           patterns: [
@@ -1525,7 +1525,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.lua.md',
           patterns: [
@@ -1552,7 +1552,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.makefile.md',
           patterns: [
@@ -1575,7 +1575,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.makefile.md',
           patterns: [
@@ -1602,7 +1602,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.md.md',
           patterns: [
@@ -1625,7 +1625,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.md.md',
           patterns: [
@@ -1652,7 +1652,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.mdx.md',
           patterns: [
@@ -1675,7 +1675,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.mdx.md',
           patterns: [
@@ -1702,7 +1702,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.objc.md',
           patterns: [
@@ -1725,7 +1725,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.objc.md',
           patterns: [
@@ -1752,7 +1752,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.perl.md',
           patterns: [
@@ -1775,7 +1775,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.perl.md',
           patterns: [
@@ -1802,7 +1802,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.php.md',
           patterns: [
@@ -1825,7 +1825,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.php.md',
           patterns: [
@@ -1852,7 +1852,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.python.md',
           patterns: [
@@ -1875,7 +1875,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.python.md',
           patterns: [
@@ -1902,7 +1902,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.r.md',
           patterns: [
@@ -1925,7 +1925,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.r.md',
           patterns: [
@@ -1952,7 +1952,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.raku.md',
           patterns: [
@@ -1975,7 +1975,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.raku.md',
           patterns: [
@@ -2002,7 +2002,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.ruby.md',
           patterns: [
@@ -2025,7 +2025,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.ruby.md',
           patterns: [
@@ -2052,7 +2052,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.rust.md',
           patterns: [
@@ -2075,7 +2075,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.rust.md',
           patterns: [
@@ -2102,7 +2102,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.scala.md',
           patterns: [
@@ -2125,7 +2125,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.scala.md',
           patterns: [
@@ -2152,7 +2152,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.scss.md',
           patterns: [
@@ -2175,7 +2175,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.scss.md',
           patterns: [
@@ -2202,7 +2202,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.shell.md',
           patterns: [
@@ -2225,7 +2225,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.shell.md',
           patterns: [
@@ -2252,7 +2252,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.shell-session.md',
           patterns: [
@@ -2275,7 +2275,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.shell-session.md',
           patterns: [
@@ -2302,7 +2302,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.sql.md',
           patterns: [
@@ -2325,7 +2325,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.sql.md',
           patterns: [
@@ -2352,7 +2352,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.svg.md',
           patterns: [
@@ -2375,7 +2375,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.svg.md',
           patterns: [
@@ -2402,7 +2402,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.swift.md',
           patterns: [
@@ -2425,7 +2425,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.swift.md',
           patterns: [
@@ -2452,7 +2452,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.toml.md',
           patterns: [
@@ -2475,7 +2475,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.toml.md',
           patterns: [
@@ -2502,7 +2502,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.ts.md',
           patterns: [
@@ -2525,7 +2525,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.ts.md',
           patterns: [
@@ -2552,7 +2552,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.tsx.md',
           patterns: [
@@ -2575,7 +2575,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.tsx.md',
           patterns: [
@@ -2603,7 +2603,7 @@ const grammar = {
             3: {patterns: [{include: '#markdown-string'}]}
           },
           contentName: 'markup.raw.code.fenced.md',
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.other.md'
         },
@@ -2619,7 +2619,7 @@ const grammar = {
             3: {patterns: [{include: '#markdown-string'}]}
           },
           contentName: 'markup.raw.code.fenced.md',
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.other.md'
         }
@@ -2629,7 +2629,7 @@ const grammar = {
       patterns: [
         {
           begin:
-            '(?:^|\\G)[ ]{0,3}(`{3,})(?:[\\t ]*((?i:classic\\x2dvisual\\x2dbasic|fb|freebasic|realbasic|vb\\x2d\\.net|vb\\x2d6|vb\\.net|vb6|vbnet|vbscript|visual\\x2dbasic|visual\\x2dbasic\\x2d\\.net|visual\\x2dbasic\\x2d6|visual\\x2dbasic\\x2d6\\.0|visual\\x2dbasic\\x2dclassic|(?:.*\\.)?(?:bi|ctl|dsr|rbbas|rbfrm|rbmnu|rbres|rbtbar|rbuistate|vb|vbhtml|vbs)))(?:[\\t ]+((?:[^\\n\\r`])+))?)(?:[\\t ]*$)',
+            '(?:^|\\G)[ ]{0,3}(`{3,})(?:[\\t ]*((?i:fb|freebasic|realbasic|vb\\x2d\\.net|vb\\.net|vbnet|vbscript|visual\\x2dbasic|visual\\x2dbasic\\x2d\\.net|(?:.*\\.)?(?:bi|rbbas|rbfrm|rbmnu|rbres|rbtbar|rbuistate|vb|vbhtml|vbs)))(?:[\\t ]+((?:[^\\n\\r`])+))?)(?:[\\t ]*$)',
           beginCaptures: {
             1: {name: 'string.other.begin.code.fenced.md'},
             2: {
@@ -2638,7 +2638,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.vbnet.md',
           patterns: [
@@ -2652,7 +2652,7 @@ const grammar = {
         },
         {
           begin:
-            '(?:^|\\G)[ ]{0,3}(~{3,})(?:[\\t ]*((?i:classic\\x2dvisual\\x2dbasic|fb|freebasic|realbasic|vb\\x2d\\.net|vb\\x2d6|vb\\.net|vb6|vbnet|vbscript|visual\\x2dbasic|visual\\x2dbasic\\x2d\\.net|visual\\x2dbasic\\x2d6|visual\\x2dbasic\\x2d6\\.0|visual\\x2dbasic\\x2dclassic|(?:.*\\.)?(?:bi|ctl|dsr|rbbas|rbfrm|rbmnu|rbres|rbtbar|rbuistate|vb|vbhtml|vbs)))(?:[\\t ]+((?:[^\\n\\r])+))?)(?:[\\t ]*$)',
+            '(?:^|\\G)[ ]{0,3}(~{3,})(?:[\\t ]*((?i:fb|freebasic|realbasic|vb\\x2d\\.net|vb\\.net|vbnet|vbscript|visual\\x2dbasic|visual\\x2dbasic\\x2d\\.net|(?:.*\\.)?(?:bi|rbbas|rbfrm|rbmnu|rbres|rbtbar|rbuistate|vb|vbhtml|vbs)))(?:[\\t ]+((?:[^\\n\\r])+))?)(?:[\\t ]*$)',
           beginCaptures: {
             1: {name: 'string.other.begin.code.fenced.md'},
             2: {
@@ -2661,7 +2661,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.vbnet.md',
           patterns: [
@@ -2688,7 +2688,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.xml.md',
           patterns: [
@@ -2711,7 +2711,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.xml.md',
           patterns: [
@@ -2738,7 +2738,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.yaml.md',
           patterns: [
@@ -2761,7 +2761,7 @@ const grammar = {
             },
             3: {patterns: [{include: '#markdown-string'}]}
           },
-          end: '(\\1)(?:[\\t ]*$)',
+          end: '(?:^|\\G)[ ]{0,3}(\\1)(?:[\\t ]*$)',
           endCaptures: {1: {name: 'string.other.end.code.fenced.md'}},
           name: 'markup.code.yaml.md',
           patterns: [
@@ -2878,7 +2878,7 @@ const grammar = {
           },
           match:
             '(?:^|\\G)[ ]{0,3}(#{3}(?!#))(?:[ \\t]+([^\\r\\n]+?)(?:[ \\t]+(#+?))?)?[ \\t]*$',
-          name: 'markup.heading.atx.2.md'
+          name: 'markup.heading.atx.3.md'
         },
         {
           captures: {
@@ -2891,7 +2891,7 @@ const grammar = {
           },
           match:
             '(?:^|\\G)[ ]{0,3}(#{4}(?!#))(?:[ \\t]+([^\\r\\n]+?)(?:[ \\t]+(#+?))?)?[ \\t]*$',
-          name: 'markup.heading.atx.2.md'
+          name: 'markup.heading.atx.4.md'
         },
         {
           captures: {
@@ -2904,7 +2904,7 @@ const grammar = {
           },
           match:
             '(?:^|\\G)[ ]{0,3}(#{5}(?!#))(?:[ \\t]+([^\\r\\n]+?)(?:[ \\t]+(#+?))?)?[ \\t]*$',
-          name: 'markup.heading.atx.2.md'
+          name: 'markup.heading.atx.5.md'
         },
         {
           captures: {
@@ -2917,7 +2917,7 @@ const grammar = {
           },
           match:
             '(?:^|\\G)[ ]{0,3}(#{6}(?!#))(?:[ \\t]+([^\\r\\n]+?)(?:[ \\t]+(#+?))?)?[ \\t]*$',
-          name: 'markup.heading.atx.2.md'
+          name: 'markup.heading.atx.6.md'
         }
       ]
     },

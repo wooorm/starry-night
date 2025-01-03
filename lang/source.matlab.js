@@ -252,7 +252,7 @@ const grammar = {
               patterns: [
                 {
                   begin: '\\G\\(',
-                  end: '\\)(?=\\s*\\w+)',
+                  end: '\\)',
                   name: 'storage.modifier.section.class.matlab',
                   patterns: [
                     {
@@ -330,7 +330,8 @@ const grammar = {
                     {include: '#line_continuation'}
                   ]
                 },
-                {include: '#comments'}
+                {include: '#comments'},
+                {include: '#line_continuation'}
               ]
             },
             {

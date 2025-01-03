@@ -9,7 +9,7 @@
 
 /** @type {Grammar} */
 const grammar = {
-  extensions: ['.dockerfile'],
+  extensions: ['.dockerfile', '.containerfile'],
   names: ['dockerfile', 'containerfile'],
   patterns: [
     {match: '\\\\.', name: 'constant.character.escaped.dockerfile'},

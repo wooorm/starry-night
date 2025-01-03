@@ -86,10 +86,7 @@ const grammar = {
             '(?<![[:punct:]])\\b(include|require|inherit|inherit_defer|addtask|deltask|after|before|export|echo|if|fi|unset|print|fakeroot|EXPORT_FUNCTIONS|INHERIT)\\b(?![[:punct:]])'
         },
         {include: '#python-keywords'},
-        {
-          captures: {1: {name: 'storage.type.function.python.bb'}},
-          match: '\\b(python|def)\\b(\\(?)'
-        }
+        {captures: {1: {name: 'storage.type.function.python.bb'}}}
       ]
     },
     numeric: {match: '(-|\\.)?[0-9]+(\\.[0-9]+)?', name: 'constant.numeric.bb'},

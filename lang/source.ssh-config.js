@@ -58,7 +58,7 @@ const grammar = {
         ]
       }
   },
-  names: ['ssh-config'],
+  names: ['ssh-config', 'sshconfig', 'sshdconfig', 'ssh_config', 'sshd_config'],
   patterns: [{include: '#main'}],
   repository: {
     addr: {

@@ -1,5 +1,7 @@
 // This is a TextMate grammar distributed by `starry-night`.
-// This grammar is licensed permissive.
+// This grammar is developed at
+// <https://github.com/microsoft/vscode-cmake-tools>
+// and licensed `mit`.
 // See <https://github.com/wooorm/starry-night> for more info.
 /**
  * @import {Grammar} from '@wooorm/starry-night'
@@ -11,102 +13,102 @@ const grammar = {
   names: ['cmake'],
   patterns: [
     {
-      begin: '(?i)^\\s*(function|macro)\\s*(\\()',
-      beginCaptures: {
-        1: {name: 'support.function.cmake'},
-        2: {name: 'punctuation.definition.parameters.begin.command.cmake'}
-      },
-      contentName: 'meta.function-call.function.cmake',
-      end: '(\\))',
-      endCaptures: {
-        1: {name: 'punctuation.definition.parameters.end.command.cmake'}
-      },
-      name: 'meta.function-call.command.cmake',
-      patterns: [{include: '#argument-constants'}, {include: '#items'}]
+      match:
+        '\\b(?i:APPLE|BORLAND|(CMAKE_)?(CL_64|COMPILER_2005|HOST_APPLE|HOST_SYSTEM|HOST_SYSTEM_NAME|HOST_SYSTEM_PROCESSOR|HOST_SYSTEM_VERSION|HOST_UNIX|HOST_WIN32|LIBRARY_ARCHITECTURE|LIBRARY_ARCHITECTURE_REGEX|OBJECT_PATH_MAX|SYSTEM|SYSTEM_NAME|SYSTEM_PROCESSOR|SYSTEM_VERSION)|CYGWIN|MSVC|MSVC80|MSVC_IDE|MSVC_VERSION|UNIX|WIN32|XCODE_VERSION|MSVC60|MSVC70|MSVC90|MSVC71)\\b',
+      name: 'constant.source.cmake'
     },
     {
-      begin:
-        '(?ix)\n\t\t\t^\\s*\t# Start of the line with optional preceding space\n\t\t\t(?:\t# Either a control flow keyword\n\t\t\t\t((?:end)?(?:(?:else)?if|while|foreach)|return|else)\n\t\t\t\t|\t# Or a function\n\t\t\t\t(s(tring|ite_name|ource_group|ubdir(s|_depends)|e(t(_(source_files_properties|t(ests_properties|arget_properties)|directory_properties|property))?|parate_arguments))|c(test_(s(tart|ubmit|leep)|co(nfigure|verage)|test|up(date|load)|empty_binary_directory|r(un_script|ead_custom_files)|memcheck|build)|on(tinue|figure_file)|reate_test_sourcelist|make_(host_system_information|policy|minimum_required))|t(arget_(sources|compile_(options|definitions|features)|include_directories|link_libraries)|ry_(compile|run))|i(n(stall(_(targets|programs|files))?|clude(_(directories|external_msproject|regular_expression))?)|f)|o(utput_required_files|ption)|define_property|u(se_mangled_mesa|nset|tility_source)|project|e(n(d(if|f(oreach|unction)|while|macro)|able_(testing|language))|lse(if)?|x(port(_library_dependencies)?|ec(ute_process|_program)))|variable_(watch|requires)|qt_wrap_(cpp|ui)|f(i(nd_(p(a(ckage|th)|rogram)|file|library)|le)|oreach|unction|ltk_wrap_ui)|w(hile|rite_file)|l(i(st|nk_(directories|libraries))|oad_c(ommand|ache))|a(dd_(subdirectory|c(ompile_options|ustom_(command|target))|test|de(pendencies|finitions)|executable|library)|ux_source_directory)|re(turn|move(_definitions)?)|get_(source_file_property|cmake_property|t(est_property|arget_property)|directory_property|property|filename_component)|m(essage|a(cro|th|ke_directory|rk_as_advanced))|b(uild_(name|command)|reak))\n\t\t\t\t|\t# Or some function we don’t know about\n\t\t\t\t(\\w+)\n\t\t\t)\n\t\t\t\\s*(\\()\t# Finally, the opening parenthesis for the argument list\n\t\t\t',
-      beginCaptures: {
-        1: {name: 'keyword.control.cmake'},
-        2: {name: 'support.function.cmake'},
-        3: {name: 'punctuation.definition.parameters.begin.command.cmake'}
-      },
-      end: '(\\))',
-      endCaptures: {
-        1: {name: 'punctuation.definition.parameters.end.command.cmake'}
-      },
-      name: 'meta.function-call.command.cmake',
-      patterns: [{include: '#argument-constants'}, {include: '#items'}]
-    },
-    {include: '#items'}
-  ],
-  repository: {
-    'argument-constants': {
       match:
-        '\\b(R(UN(_(RESULT_VAR|OUTPUT_VARIABLE)|TIME(_DIRECTORY)?)|E(G(ULAR_EXPRESSION|EX)|MOVE(_(RECURSE|ITEM|DUPLICATES|AT))?|S(OURCE|ULT(_VAR(IABLE)?)?)|NAME|T(RY_(COUNT|DELAY)|URN_VALUE)|PLACE|VERSE|QUIRED(_VARIABLE(1|2))?|L(EASE|ATIVE(_PATH)?)|AD(_WITH_PREFIX)?)|AN(GE|DOM(_SEED)?))|G(R(OUP_(READ|EXECUTE)|EATER)|U(ID|ARD)|E(NE(RATE|X_STRIP)|T)|LOB(_RECURSE|AL)?)|M(ODULE|D5|ESSAGE(_NEVER)?|A(COSX_BUNDLE|TCH(ES|ALL)?|IN_DEPENDENCY|KE_(C_IDENTIFIER|DIRECTORY)))|B(RIEF_DOCS|YPRODUCTS|U(NDLE|ILD(_(TESTING|INTERFACE))?)|EFORE)|S(HA(RED|1|2(24|56)|384|512)|YSTEM|C(RIPT|HEDULE_RANDOM)|T(R(GREATER|I(NGS|DE|P)|EQUAL|LESS)|OP_TIME|A(RT|TIC))|O(RT|URCE(S)?)|UBSTRING|ET)|H(INTS|EX)|N(NNN|O(_(MODULE|S(YSTEM_ENVIRONMENT_PATH|OURCE_PERMISSIONS)|CMAKE_(BUILDS_PATH|SYSTEM_PA(CKAGE_REGISTRY|TH)|PA(CKAGE_REGISTRY|TH)|ENVIRONMENT_PATH|FIND_ROOT_PATH)|DEFAULT_PATH|POLICY_SCOPE)|T(E(QUAL)?)?)|UMBER_(ERRORS|WARNINGS)|EW(_PROCESS|LINE_STYLE)?|AME(S(PACE)?|LINK_(SKIP|ONLY))?)|C(RLF|M(P(00(17|48))?|AKE_(MODULE_PATH|CURRENT_(BINARY_DIR|SOURCE_DIR)|F(IND_ROOT_PATH_BOTH|LAGS)))?|T(EST_(B(INARY_DIRECTORY|UILD_(COMMAND|TARGET))|SOURCE_DIRECTORY|PROJECT_NAME))?|O(M(M(ENT|AND(_NAME)?)|P(ILE_(RESULT_VAR|OUTPUT_VARIABLE|DEFINITIONS)|ONENT(S)?|ARE)?)|N(CAT|TENT|DITION|FIG(S|UR(E(_FILE)?|ATION(S)?))?)|DE|PY(_FILE(_ERROR)?|ONLY)?)|DASH_UPLOAD(_TYPE)?|VS|LEAR|ACHE(D_VARIABLE)?)|_(BAR|COMMAND|VERSION(_(M(INOR|AJOR)|TWEAK|PATCH))?|FOO)|T(RACK|YPE|IME(STAMP|OUT)|O(_(NATIVE_PATH|CMAKE_PATH)|UPPER|LOWER)|EST(_VARIABLE)?|ARGET(S|_(OBJECTS|FILE))?)|I(MP(ORTED(_(NO_SONAME|LOCATION(_)?)?)?|LICIT_DEPENDS)|S_(SYMLINK|NEWER_THAN|DIRECTORY|ABSOLUTE)|N(S(TALL(_INTERFACE)?|ERT)|HERITED|CLUDE(S|_(INTERNALS|DIRECTORIES|LABEL))?|_LIST|TERFACE(_)?|PUT(_FILE)?)?|TEMS|DE)|O(R|BJECT|N(LY(_CMAKE_FIND_ROOT_PATH)?)?|UTPUT(_(STRIP_TRAILING_WHITESPACE|DIRECTORY|VARIABLE|QUIET|FILE))?|PTION(S|AL(_COMPONENTS)?)|FF(SET)?|WNER_(READ|EXECUTE|WRITE)|LD)|D(BAR|IRECTORY(_PERMISSIONS)?|O(S|WNLOAD)|E(STINATION|PENDS|FIN(ITION|ED))|VAR|FOO)|U(SE(S_TERMINAL|_SOURCE_PERMISSIONS)|N(IX|KNOWN)|TC|UID|P(PER|LOAD))|P(R(IVATE(_HEADER)?|O(GRAM(S|_ARGS)?|CESS|JECT(_(NAME|VERSION(_(M(INOR|AJOR)|TWEAK|PATCH))?))?|PERT(Y|IES))|E(_(BUILD|INSTALL_SCRIPT|LINK)|ORDER))|O(ST_(BUILD|INSTALL_SCRIPT)|P|LICY)|U(BLIC(_HEADER)?|SH)|ERMISSIONS|LATFORM|A(R(TS|ENT_SCOPE|ALLEL_LEVEL)|CKAGE|T(H(S|_(SUFFIXES|TO_MESA))|TERN)))|E(RROR_(STRIP_TRAILING_WHITESPACE|VARIABLE|QUIET|FILE)|X(CLUDE(_(FROM_ALL|LABEL))?|TRA_INCLUDE|ISTS|P(R|ORT(_LINK_INTERFACE_LIBRARIES)?)|ACT)|SCAPE_QUOTES|N(D|V)|QUAL)|V(S|ER(BATIM|SION(_(GREATER|EQUAL|LESS))?)|A(R(2|IABLE)?|LUE))|QU(IET|ERY)|F(RAMEWORK|I(ND|LE(S(_MATCHING)?|_PERMISSIONS)?)|O(RCE|O_(STRING|ENABLE)|LLOW_SYMLINKS)|U(NCTION|LL_DOCS)|LAGS|ATAL_ERROR)|01|W(RITE|IN(32|DOWS)|ORKING_DIRECTORY)|L(I(MIT|BRARY|ST(S|_DIRECTORIES)|NK_(INTERFACE_LIBRARIES|DIRECTORIES|P(RIVATE|UBLIC)|LIBRARIES))|OCK|D_LIBRARY_PATH|E(SS|NGTH)|F|A(BELS|NGUAGES))|A(R(G(S|N|C|_VAR|V(1|2))|CHIVE)|SCII|ND|PPEND(_STRING)?|FTER|L(IAS|PHABET|L(_BUILD)?)))\\b',
-      name: 'keyword.other.argument-separator.cmake'
+        '\\b(?i:ABSOLUTE|AND|BOOL|CACHE|COMMAND|COMMENT|DEFINED|DOC|EQUAL|EXISTS|EXT|FALSE|GREATER|GREATER_EQUAL|IGNORE|INTERNAL|IN_LIST|IS_ABSOLUTE|IS_DIRECTORY|IS_NEWER_THAN|IS_SYMLINK|LESS|LESS_EQUAL|MATCHES|NAME|NAMES|NAME_WE|NO|NOT|NOTFOUND|OFF|ON|OR|PATH|PATHS|POLICY|PROGRAM|STREQUAL|STRGREATER|STRGREATER_EQUAL|STRING|STRLESS|STRLESS_EQUAL|TARGET|TEST|TRUE|VERSION_EQUAL|VERSION_GREATER|VERSION_GREATER_EQUAL|VERSION_LESS|YES)\\b',
+      name: 'keyword.cmake'
     },
-    comments: {
-      begin: '(^[ \\t]+)?(?=#)',
-      beginCaptures: {
-        1: {name: 'punctuation.whitespace.comment.leading.cmake'}
-      },
-      end: '(?!\\G)',
+    {
+      match:
+        '^\\s*\\b(?i:add_compile_definitions|add_compile_options|add_custom_command|add_custom_target|add_definitions|add_dependencies|add_executable|add_library|add_link_options|add_subdirectory|add_test|aux_source_directory|build_command|build_name|cmake_host_system_information|cmake_minimum_required|cmake_parse_arguments|cmake_policy|configure_file|create_test_sourcelist|ctest_build|ctest_configure|ctest_coverage|ctest_empty_binary_directory|ctest_memcheck|ctest_read_custom_files|ctest_run_script|ctest_sleep|ctest_start|ctest_submit|ctest_test|ctest_update|ctest_upload|define_property|enable_language|enable_testing|exec_program|execute_process|export|export_library_dependencies|file|find_file|find_library|find_package|find_path|find_program|fltk_wrap_ui|get_cmake_property|get_directory_property|get_filename_component|get_property|get_source_file_property|get_target_property|get_test_property|include|include_directories|include_external_msproject|include_guard|include_regular_expression|install|install_files|install_programs|install_targets|link_directories|link_libraries|list|load_cache|load_command|make_directory|mark_as_advanced|math|message|option|output_required_files|project|qt_wrap_cpp|qt_wrap_ui|remove|remove_definitions|return|separate_arguments|set|set_directory_properties|set_property|set_source_files_properties|set_target_properties|set_tests_properties|site_name|source_group|string|subdir_depends|subdirs|target_compile_definitions|target_compile_features|target_compile_options|target_include_directories|target_link_directories|target_link_libraries|target_link_options|target_sources|try_compile|try_run|unset|use_mangled_mesa|utility_source|variable_requires|variable_watch|write_file)\\b',
+      name: 'keyword.cmake'
+    },
+    {
+      match:
+        '^\\s*\\b(?i:break|continue|else|elseif|endforeach|endfunction|endif|endmacro|endwhile|foreach|function|if|macro|while)\\b',
+      name: 'keyword.cmake.control_flow'
+    },
+    {
+      match:
+        '\\b(?i:BUILD_SHARED_LIBS|(CMAKE_)?(ABSOLUTE_DESTINATION_FILES|AUTOMOC_RELAXED_MODE|BACKWARDS_COMPATIBILITY|BUILD_TYPE|COLOR_MAKEFILE|CONFIGURATION_TYPES|DEBUG_TARGET_PROPERTIES|DISABLE_FIND_PACKAGE_\\w+|FIND_LIBRARY_PREFIXES|FIND_LIBRARY_SUFFIXES|IGNORE_PATH|INCLUDE_PATH|INSTALL_DEFAULT_COMPONENT_NAME|INSTALL_PREFIX|LIBRARY_PATH|MFC_FLAG|MODULE_PATH|NOT_USING_CONFIG_FLAGS|POLICY_DEFAULT_CMP\\w+|PREFIX_PATH|PROGRAM_PATH|SKIP_INSTALL_ALL_DEPENDENCY|SYSTEM_IGNORE_PATH|SYSTEM_INCLUDE_PATH|SYSTEM_LIBRARY_PATH|SYSTEM_PREFIX_PATH|SYSTEM_PROGRAM_PATH|USER_MAKE_RULES_OVERRIDE|WARN_ON_ABSOLUTE_INSTALL_DESTINATION))\\b',
+      name: 'variable.source.cmake'
+    },
+    {match: '\\$\\{\\w+\\}', name: 'storage.source.cmake'},
+    {match: '\\$ENV\\{\\w+\\}', name: 'storage.source.cmake'},
+    {match: '\\$CACHE\\{\\w+\\}', name: 'storage.source.cmake'},
+    {
+      match:
+        '\\b(?i:(CMAKE_)?(\\w+_POSTFIX|ARCHIVE_OUTPUT_DIRECTORY|AUTOMOC|AUTOMOC_MOC_OPTIONS|BUILD_WITH_INSTALL_RPATH|DEBUG_POSTFIX|EXE_LINKER_FLAGS|EXE_LINKER_FLAGS_\\w+|Fortran_FORMAT|Fortran_MODULE_DIRECTORY|GNUtoMS|INCLUDE_CURRENT_DIR|INCLUDE_CURRENT_DIR_IN_INTERFACE|INSTALL_NAME_DIR|INSTALL_RPATH|INSTALL_RPATH_USE_LINK_PATH|LIBRARY_OUTPUT_DIRECTORY|LIBRARY_PATH_FLAG|LINK_DEF_FILE_FLAG|LINK_DEPENDS_NO_SHARED|LINK_INTERFACE_LIBRARIES|LINK_LIBRARY_FILE_FLAG|LINK_LIBRARY_FLAG|MACOSX_BUNDLE|NO_BUILTIN_CHRPATH|PDB_OUTPUT_DIRECTORY|POSITION_INDEPENDENT_CODE|RUNTIME_OUTPUT_DIRECTORY|SKIP_BUILD_RPATH|SKIP_INSTALL_RPATH|TRY_COMPILE_CONFIGURATION|USE_RELATIVE_PATHS|WIN32_EXECUTABLE)|EXECUTABLE_OUTPUT_PATH|LIBRARY_OUTPUT_PATH)\\b',
+      name: 'variable.source.cmake'
+    },
+    {
+      match:
+        '\\b(?i:CMAKE_(AR|ARGC|ARGV0|BINARY_DIR|BUILD_TOOL|CACHEFILE_DIR|CACHE_MAJOR_VERSION|CACHE_MINOR_VERSION|CACHE_PATCH_VERSION|CFG_INTDIR|COMMAND|CROSSCOMPILING|CTEST_COMMAND|CURRENT_BINARY_DIR|CURRENT_LIST_DIR|CURRENT_LIST_FILE|CURRENT_LIST_LINE|CURRENT_SOURCE_DIR|DL_LIBS|EDIT_COMMAND|EXECUTABLE_SUFFIX|EXTRA_GENERATOR|EXTRA_SHARED_LIBRARY_SUFFIXES|GENERATOR|HOME_DIRECTORY|IMPORT_LIBRARY_PREFIX|IMPORT_LIBRARY_SUFFIX|LINK_LIBRARY_SUFFIX|MAJOR_VERSION|MAKE_PROGRAM|MINOR_VERSION|PARENT_LIST_FILE|PATCH_VERSION|PROJECT_NAME|RANLIB|ROOT|SCRIPT_MODE_FILE|SHARED_LIBRARY_PREFIX|SHARED_LIBRARY_SUFFIX|SHARED_MODULE_PREFIX|SHARED_MODULE_SUFFIX|SIZEOF_VOID_P|SKIP_RPATH|SOURCE_DIR|STANDARD_LIBRARIES|STATIC_LIBRARY_PREFIX|STATIC_LIBRARY_SUFFIX|TWEAK_VERSION|USING_VC_FREE_TOOLS|VERBOSE_MAKEFILE|VERSION)|PROJECT_BINARY_DIR|PROJECT_NAME|PROJECT_SOURCE_DIR|\\w+_BINARY_DIR|\\w+__SOURCE_DIR)\\b',
+      name: 'variable.source.cmake'
+    },
+    {begin: '#\\[(=*)\\[', end: '\\]\\1\\]', name: 'comment.source.cmake'},
+    {begin: '\\[(=*)\\[', end: '\\]\\1\\]', name: 'argument.source.cmake'},
+    {match: '#+.*$', name: 'comment.source.cmake'},
+    {
+      match: '\\b(?i:ADVANCED|HELPSTRING|MODIFIED|STRINGS|TYPE|VALUE)\\b',
+      name: 'entity.source.cmake'
+    },
+    {
+      match:
+        '\\b(?i:ABSTRACT|COMPILE_DEFINITIONS|COMPILE_DEFINITIONS_<CONFIG>|COMPILE_FLAGS|EXTERNAL_OBJECT|Fortran_FORMAT|GENERATED|HEADER_FILE_ONLY|KEEP_EXTENSION|LABELS|LANGUAGE|LOCATION|MACOSX_PACKAGE_LOCATION|OBJECT_DEPENDS|OBJECT_OUTPUTS|SYMBOLIC|WRAP_EXCLUDE)\\b',
+      name: 'entity.source.cmake'
+    },
+    {
+      match:
+        '\\b(?i:ATTACHED_FILES|ATTACHED_FILES_ON_FAIL|COST|DEPENDS|ENVIRONMENT|FAIL_REGULAR_EXPRESSION|LABELS|MEASUREMENT|PASS_REGULAR_EXPRESSION|PROCESSORS|REQUIRED_FILES|RESOURCE_LOCK|RUN_SERIAL|TIMEOUT|WILL_FAIL|WORKING_DIRECTORY)\\b',
+      name: 'entity.source.cmake'
+    },
+    {
+      match:
+        '\\b(?i:ADDITIONAL_MAKE_CLEAN_FILES|CACHE_VARIABLES|CLEAN_NO_CUSTOM|COMPILE_DEFINITIONS|COMPILE_DEFINITIONS_\\w+|DEFINITIONS|EXCLUDE_FROM_ALL|IMPLICIT_DEPENDS_INCLUDE_TRANSFORM|INCLUDE_DIRECTORIES|INCLUDE_REGULAR_EXPRESSION|INTERPROCEDURAL_OPTIMIZATION|INTERPROCEDURAL_OPTIMIZATION_\\w+|LINK_DIRECTORIES|LISTFILE_STACK|MACROS|PARENT_DIRECTORY|RULE_LAUNCH_COMPILE|RULE_LAUNCH_CUSTOM|RULE_LAUNCH_LINK|TEST_INCLUDE_FILE|VARIABLES|VS_GLOBAL_SECTION_POST_\\w+|VS_GLOBAL_SECTION_PRE_\\w+)\\b',
+      name: 'entity.source.cmake'
+    },
+    {
+      match:
+        '\\b(?i:ALLOW_DUPLICATE_CUSTOM_TARGETS|DEBUG_CONFIGURATIONS|DISABLED_FEATURES|ENABLED_FEATURES|ENABLED_LANGUAGES|FIND_LIBRARY_USE_LIB64_PATHS|FIND_LIBRARY_USE_OPENBSD_VERSIONING|GLOBAL_DEPENDS_DEBUG_MODE|GLOBAL_DEPENDS_NO_CYCLES|IN_TRY_COMPILE|PACKAGES_FOUND|PACKAGES_NOT_FOUND|PREDEFINED_TARGETS_FOLDER|REPORT_UNDEFINED_PROPERTIES|RULE_LAUNCH_COMPILE|RULE_LAUNCH_CUSTOM|RULE_LAUNCH_LINK|RULE_MESSAGES|TARGET_ARCHIVES_MAY_BE_SHARED_LIBS|TARGET_SUPPORTS_SHARED_LIBS|USE_FOLDERS|__CMAKE_DELETE_CACHE_CHANGE_VARS_)\\b',
+      name: 'entity.source.cmake'
+    },
+    {
+      match:
+        '\\b(?i:\\w+_(OUTPUT_NAME|POSTFIX)|ARCHIVE_OUTPUT_(DIRECTORY(_\\w+)?|NAME(_\\w+)?)|AUTOMOC(_MOC_OPTIONS)?|BUILD_WITH_INSTALL_RPATH|BUNDLE|BUNDLE(_EXTENSION)?|COMPATIBLE_INTERFACE_BOOL|COMPATIBLE_INTERFACE_STRING|COMPILE_(DEFINITIONS(_\\w+)?|FLAGS)|DEBUG_POSTFIX|DEFINE_SYMBOL|ENABLE_EXPORTS|EXCLUDE_FROM_ALL|EchoString|FOLDER|FRAMEWORK|Fortran_(FORMAT|MODULE_DIRECTORY)|GENERATOR_FILE_NAME|GNUtoMS|HAS_CXX|IMPLICIT_DEPENDS_INCLUDE_TRANSFORM|IMPORTED|IMPORTED_(CONFIGURATIONS|IMPLIB(_\\w+)?|LINK_DEPENDENT_LIBRARIES(_\\w+)?|LINK_INTERFACE_LANGUAGES(_\\w+)?|LINK_INTERFACE_LIBRARIES(_\\w+)?|LINK_INTERFACE_MULTIPLICITY(_\\w+)?|LOCATION(_\\w+)?|NO_SONAME(_\\w+)?|SONAME(_\\w+)?)|IMPORT_PREFIX|IMPORT_SUFFIX|INSTALL_NAME_DIR|INSTALL_RPATH|INSTALL_RPATH_USE_LINK_PATH|INTERFACE|INTERFACE_COMPILE_DEFINITIONS|INTERFACE_INCLUDE_DIRECTORIES|INTERPROCEDURAL_OPTIMIZATION|INTERPROCEDURAL_OPTIMIZATION_\\w+|LABELS|LIBRARY_OUTPUT_DIRECTORY(_\\w+)?|LIBRARY_OUTPUT_NAME(_\\w+)?|LINKER_LANGUAGE|LINK_DEPENDS|LINK_FLAGS(_\\w+)?|LINK_INTERFACE_LIBRARIES(_\\w+)?|LINK_INTERFACE_MULTIPLICITY(_\\w+)?|LINK_LIBRARIES|LINK_SEARCH_END_STATIC|LINK_SEARCH_START_STATIC|LOCATION(_\\w+)?|MACOSX_BUNDLE|MACOSX_BUNDLE_INFO_PLIST|MACOSX_FRAMEWORK_INFO_PLIST|MAP_IMPORTED_CONFIG_\\w+|NO_SONAME|OSX_ARCHITECTURES(_\\w+)?|OUTPUT_NAME(_\\w+)?|PDB_NAME(_\\w+)?|POST_INSTALL_SCRIPT|PREFIX|PRE_INSTALL_SCRIPT|PRIVATE|PRIVATE_HEADER|PROJECT_LABEL|PUBLIC|PUBLIC_HEADER|RESOURCE|RULE_LAUNCH_(COMPILE|CUSTOM|LINK)|RUNTIME_OUTPUT_(DIRECTORY(_\\w+)?|NAME(_\\w+)?)|SKIP_BUILD_RPATH|SOURCES|SOVERSION|STATIC_LIBRARY_FLAGS(_\\w+)?|SUFFIX|TYPE|VERSION|VS_DOTNET_REFERENCES|VS_GLOBAL_(\\w+|KEYWORD|PROJECT_TYPES)|VS_KEYWORD|VS_SCC_(AUXPATH|LOCALPATH|PROJECTNAME|PROVIDER)|VS_WINRT_EXTENSIONS|VS_WINRT_REFERENCES|WIN32_EXECUTABLE|XCODE_ATTRIBUTE_\\w+)\\b',
+      name: 'entity.source.cmake'
+    },
+    {
+      match:
+        '\\b(?i:ALL|APPEND|BOOL|BUILD|BYPRODUCTS|CACHE|CAPTURE_CMAKE_ERROR|CMAKE_FIND_PACKAGE_NAME|CMAKE_FIND_ROOT_PATH_BOTH|CMAKE_FLAGS|COMMAND|COMMAND_EXPAND_LISTS|COMMENT|COMPILE_DEFINITIONS|COMPILE_OUTPUT_VARIABLE|COMPONENT|CONDITION|CONFIGURATION|CONFIGURATIONS|CONTENT|COPY_FILE|COPY_FILE_ERROR|COPYONLY|DEFECT_COUNT|DEPENDS|DEPFILE|DESTINATION|DIRECTORY|DOC|ENCODING|END|ESCAPE_QUOTES|EXCLUDE|EXCLUDE_FIXTURE|EXCLUDE_FIXTURE_CLEANUP|EXCLUDE_FIXTURE_SETUP|EXCLUDE_FROM_ALL|EXCLUDE_LABEL|EXPECTED_HASH|EXPECTED_MD|EXPR|FILEPATH|FILES|FILTER|FIND|FLAGS|GET|GLOBAL|HINTS|HTTPHEADER|IMPLICIT_DEPENDS|INACTIVITY_TIMEOUT|INCLUDE|INCLUDE_LABEL|INPUT|INPUT_FILE|INSERT|INSTALL|INTERNAL|LABELS|LENGTH|LENGTH_MAXIMUM|LENGTH_MINIMUM|LIMIT_COUNT|LIMIT_INPUT|LIMIT_OUTPUT|LINK_LIBRARIES|LOG|MAIN_DEPENDENCY|MD|NAMES|NETRC|NETRC_FILE|NEWLINE_CONSUME|NEWLINE_STYLE|NO_CMAKE_FIND_ROOT_PATH|NO_HEX_CONVERSION|NUMBER_ERRORS|NUMBER_WARNINGS|ONLY_CMAKE_FIND_ROOT_PATH|OPTIONAL|OPTIONS|OUTPUT|OUTPUT_QUIET|OUTPUT_VARIABLE|PACKAGE_FIND_NAME|PACKAGE_VERSION|PARALLEL_LEVEL|PARTS|PATH|PATH_SUFFIXES|PERMISSIONS|PRE_BUILD|PREFIX|PROJECT_NAME|QUIET|REGEX|REGULAR_EXPRESSION|REMOVE_AT|REMOVE_DUPLICATES|RENAME|RESULT_VARIABLE|RESULTS_VARIABLE|RETRY_COUNT|RETRY_DELAY|RETURN_VALUE|REVERSE|RUN_OUTPUT_VARIABLE|SCHEDULE_RANDOM|SHOW_PROGRESS|SORT|SOURCE|SOURCES|START|STATIC|STATUS|STOP_TIME|STRIDE|STRING|TARGET|TEST|TEST_LOAD|TIMEOUT|TLS_CAINFO|TLS_VERIFY|TREE|TYPE|USERPWD|USES_TERMINAL|VARIABLE|VERBATIM|WORKING_DIRECTORY)\\b',
+      name: 'entity.source.cmake'
+    },
+    {
+      begin: '(?<!\\\\)"',
+      end: '"',
+      name: 'string.source.cmake',
       patterns: [
-        {
-          begin: '#',
-          beginCaptures: {0: {name: 'punctuation.definition.comment.cmake'}},
-          end: '\\n',
-          name: 'comment.line.number-sign.cmake'
-        }
+        {match: '\\\\(.|$)', name: 'constant.character.escape'},
+        {match: '\\$\\{\\w+\\}', name: 'storage.source.cmake'},
+        {match: '\\$ENV\\{\\w+\\}', name: 'storage.source.cmake'},
+        {match: '\\$CACHE\\{\\w+\\}', name: 'storage.source.cmake'}
       ]
     },
-    constants: {
-      match: '(?i)\\b(FALSE|OFF|NO|(\\w+-)?NOTFOUND)\\b',
-      name: 'constant.language.boolean.cmake'
+    {
+      match:
+        '\\b(?i:ABSTRACT_FILES|BUILD_NAME|SOURCE_FILES|SOURCE_FILES_REMOVE|VTK_MAKE_INSTANTIATOR|VTK_WRAP_JAVA|VTK_WRAP_PYTHON|VTK_WRAP_TCL|WRAP_EXCLUDE_FILES)\\b',
+      name: 'invalid.deprecated.source.cmake'
     },
-    escapes: {
-      patterns: [
-        {match: '\\\\["()#$^ \\\\]', name: 'constant.character.escape.cmake'}
-      ]
-    },
-    items: {
-      patterns: [
-        {include: '#comments'},
-        {include: '#constants'},
-        {include: '#strings'},
-        {include: '#variables'},
-        {include: '#escapes'}
-      ]
-    },
-    strings: {
-      patterns: [
-        {
-          captures: {1: {name: 'constant.language.boolean.cmake'}},
-          match: '(?i)"(FALSE|OFF|NO|(.+-)?NOTFOUND)"',
-          name: 'string.quoted.double.cmake'
-        },
-        {
-          begin: '"',
-          end: '"',
-          name: 'string.quoted.double.cmake',
-          patterns: [
-            {match: '\\\\.', name: 'constant.character.escape.cmake'},
-            {include: '#variables'}
-          ]
-        }
-      ]
-    },
-    variables: {
-      begin: '\\$(ENV)?\\{',
-      beginCaptures: {0: {name: 'punctuation.definition.variable.begin.cmake'}},
-      end: '\\}',
-      endCaptures: {0: {name: 'punctuation.definition.variable.end.cmake'}},
-      name: 'variable.other.cmake',
-      patterns: [{include: '#variables'}, {match: '\\w+'}]
+    {
+      match:
+        '\\b(?i:(CMAKE_)?(CXX_FLAGS|CMAKE_CXX_FLAGS_DEBUG|CMAKE_CXX_FLAGS_MINSIZEREL|CMAKE_CXX_FLAGS_RELEASE|CMAKE_CXX_FLAGS_RELWITHDEBINFO))\\b',
+      name: 'variable.source.cmake'
     }
-  },
+  ],
   scopeName: 'source.cmake'
 }
 
