@@ -1,55 +1,8 @@
 {
-  "name": "@wooorm/starry-night",
-  "version": "3.5.0",
-  "description": "Syntax highlighting, like GitHub",
-  "license": "MIT",
-  "keywords": [
-    "ast",
-    "code",
-    "dom",
-    "github",
-    "gogh",
-    "highlight",
-    "highlighting",
-    "linguist",
-    "prettylights",
-    "syntax",
-    "treelights",
-    "virtual"
-  ],
-  "repository": "wooorm/starry-night",
-  "bugs": "https://github.com/wooorm/starry-night/issues",
-  "funding": {
-    "type": "github",
-    "url": "https://github.com/sponsors/wooorm"
-  },
   "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+  "bugs": "https://github.com/wooorm/starry-night/issues",
   "contributors": [
     "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
-  ],
-  "sideEffects": [
-    "style/*.css"
-  ],
-  "type": "module",
-  "main": "index.js",
-  "exports": {
-    ".": "./index.js",
-    "./*": "./lang/*.js",
-    "./style/*": "./style/*.css"
-  },
-  "imports": {
-    "#get-oniguruma": {
-      "node": "./lib/get-oniguruma.fs.js",
-      "default": "./lib/get-oniguruma.default.js"
-    }
-  },
-  "files": [
-    "lang/",
-    "lib/",
-    "style/",
-    "index.d.ts",
-    "index.js",
-    "notice"
   ],
   "dependencies": {
     "@types/hast": "^3.0.0",
@@ -57,6 +10,7 @@
     "vscode-oniguruma": "^2.0.0",
     "vscode-textmate": "^9.0.0"
   },
+  "description": "Syntax highlighting, like GitHub",
   "devDependencies": {
     "@types/css": "^0.0.37",
     "@types/json-stable-stringify": "^1.0.0",
@@ -77,20 +31,47 @@
     "xo": "^0.59.0",
     "yaml": "^2.0.0"
   },
-  "scripts": {
-    "build": "tsc --build --clean && tsc --build && type-coverage",
-    "generate-build": "node --conditions development script/build.js",
-    "generate-css": "node --conditions development script/css.js",
-    "generate-crawl": "gem install github-linguist -i gems",
-    "generate-list": "node --conditions development script/list.js",
-    "generate#": "&& npm run generate-css",
-    "generate": "npm run generate-build && npm run generate-list",
-    "prepack": "npm run build && npm run format",
-    "format": "remark . --frail --output --quiet && prettier . --log-level warn --write && xo --fix",
-    "test": "npm run generate && npm run build && npm run format && npm run test-coverage",
-    "test-api": "node --conditions development test.js",
-    "test-coverage": "c8 --100 --reporter lcov npm run test-api"
+  "exports": {
+    ".": "./index.js",
+    "./*": "./lang/*.js",
+    "./style/*": "./style/*.css"
   },
+  "files": [
+    "index.d.ts",
+    "index.js",
+    "lang/",
+    "lib/",
+    "notice",
+    "style/"
+  ],
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/wooorm"
+  },
+  "imports": {
+    "#get-oniguruma": {
+      "node": "./lib/get-oniguruma.fs.js",
+      "default": "./lib/get-oniguruma.default.js"
+    }
+  },
+  "keywords": [
+    "ast",
+    "code",
+    "dom",
+    "github",
+    "gogh",
+    "highlight",
+    "highlighting",
+    "linguist",
+    "prettylights",
+    "syntax",
+    "treelights",
+    "virtual"
+  ],
+  "license": "MIT",
+  "main#": "to do: next major: remove `main`?",
+  "main": "index.js",
+  "name": "@wooorm/starry-night",
   "prettier": {
     "bracketSpacing": false,
     "semi": false,
@@ -123,15 +104,33 @@
       "./script/support.js"
     ]
   },
+  "repository": "wooorm/starry-night",
+  "scripts": {
+    "build": "tsc --build --clean && tsc --build && type-coverage",
+    "generate-build": "node --conditions development script/build.js",
+    "generate-css": "node --conditions development script/css.js",
+    "generate-crawl": "gem install github-linguist --install-dir gems",
+    "generate-list": "node --conditions development script/list.js",
+    "generate#": "to do: add ` && npm run generate-css` back",
+    "generate": "npm run generate-build && npm run generate-list",
+    "prepack": "npm run build && npm run format",
+    "format": "remark --frail --output --quiet -- . && prettier --log-level warn --write -- . && xo --fix",
+    "test": "npm run generate && npm run build && npm run format && npm run test-coverage",
+    "test-api": "node --conditions development test.js",
+    "test-coverage": "c8 --100 --reporter lcov -- npm run test-api"
+  },
+  "sideEffects": [
+    "style/*.css"
+  ],
   "typeCoverage": {
     "atLeast": 100,
-    "detail": true,
-    "ignoreCatch": true,
     "ignoreFiles": [
       "lang/*.js"
     ],
     "strict": true
   },
+  "type": "module",
+  "version": "3.5.0",
   "xo": {
     "ignores": [
       "gems/",
