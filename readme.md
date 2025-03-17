@@ -12,8 +12,9 @@
 [![Downloads][badge-downloads-image]][badge-downloads-url]
 [![Size][badge-size-image]][badge-size-url]
 
-Syntax highlighting, like what GitHub uses to highlight code, but free and open
-source and JavaScript!
+Syntax highlighting,
+like what GitHub uses to highlight code,
+but free and open source and JavaScript!
 
 ## Contents
 
@@ -44,7 +45,6 @@ source and JavaScript!
 * [Syntax tree](#syntax-tree)
 * [CSS](#css)
 * [Languages](#languages)
-* [Types](#types)
 * [Compatibility](#compatibility)
 * [Security](#security)
 * [Related](#related)
@@ -56,21 +56,23 @@ source and JavaScript!
 This package is an open source version of GitHub’s closed-source `PrettyLights`
 project (more on that later).
 It supports **600+ grammars** and its **extremely high quality**.
-It uses TextMate grammars which are also used in popular editors (SublimeText,
-Atom, VS Code, \&c).
+It uses TextMate grammars which are also used in popular editors
+(SublimeText, Atom, VS Code, \&c).
 They’re heavy but high quality.
 
 ## When should I use this?
 
 `starry-night` is a **high quality** highlighter
-(when your readers or authors are programmers, you want this!)
+(when your readers or authors are programmers,
+you want this!)
 that can support **tons of grammars**
 (from new things like MDX to much more!)
 which approaches how GitHub renders code.
 
-It has a WASM dependency, and rather big grammars, which means that
-`starry-night` might be too heavy particularly in browsers, in which case
-[`lowlight`][github-lowlight] or [`refractor`][github-refractor]
+It has a WASM dependency,
+and rather big grammars,
+which means that `starry-night` might be too heavy particularly in browsers,
+in which case [`lowlight`][github-lowlight] or [`refractor`][github-refractor]
 might be more suitable.
 
 This project is similar to the excellent [`shiki`][github-shiki],
@@ -80,21 +82,31 @@ works with the CSS it ships,
 making it easier to add dark mode and other themes with CSS compared to inline
 styles.
 
-Finally, this package produces objects (an AST), which makes it useful when you
-want to perform syntax highlighting in a place where serialized HTML wouldn’t
-work or wouldn’t work well.
-For example, when you want to show code in a CLI by rendering to ANSI sequences,
+Finally,
+this package produces objects (an AST),
+which makes it useful when you want to perform syntax highlighting in a place
+where serialized HTML wouldn’t work or wouldn’t work well.
+For example,
+when you want to show code in a CLI by rendering to ANSI sequences,
 when you’re using virtual DOM frameworks (such as React or Preact) so that
-diffing can be performant, or when you’re working with [`hast`][github-hast] or
-[`rehype`][github-rehype].
+diffing can be performant,
+or when you’re working with [`hast`][github-hast] or [`rehype`][github-rehype].
 
-Bundled, minified, and gzipped, `starry-night` and the WASM binary are 185 kB.
-There are two lists of grammars you can use: [`common`][api-common] (±35
-languages, good for your own site) adds 250 kB and [`all`][api-all] (\~600
-languages, useful if you are making a site like GitHub) is 1.6 MB.
-You can also manually choose which grammars to include (or add to `common`): a
-language is typically between 3 and 5 kB.
-To illustrate, Astro costs 2.1 kB and TSX costs 25.4 kB.
+Bundled,
+minified,
+and gzipped,
+`starry-night` and the WASM binary are 185 kB.
+There are two lists of grammars you can use:
+[`common`][api-common]
+(±35 languages, good for your own site)
+adds 250 kB and [`all`][api-all]
+(\~600 languages, useful if you are making a site like GitHub)
+is 1.6 MB.
+You can also manually choose which grammars to include
+(or add to `common`):
+a language is typically between 3 and 5 kB.
+To illustrate,
+Astro costs 2.1 kB and TSX costs 25.4 kB.
 
 ## What is `PrettyLights`?
 
@@ -112,29 +124,36 @@ To illustrate, Astro costs 2.1 kB and TSX costs 25.4 kB.
 <span class="pl-mh"><span class="pl-mh">#</span><span class="pl-mh"> </span>Hello, world!</span>
 ```
 
-…which is what `starry-night` does too (some small differences in markup, but
-essentially the same)!
+…which is what `starry-night` does too
+(some small differences in markup,
+but essentially the same)!
 
-`PrettyLights` is responsible for taking the flag `markdown`, looking it up in
+`PrettyLights` is responsible for taking the flag `markdown`,
+looking it up in
 [`languages.yml` from `github-linguist`][github-linguist-languages-yml]
-to figure out that that
-means markdown, taking a corresponding grammar (in this case
+to figure out that that means markdown,
+taking a corresponding grammar
+(in this case
 [`wooorm/markdown-tm-language`][github-markdown-tm-language]),
 doing some GPL magic in C,
 and turning it into spans with classes.
 
-GitHub is using `PrettyLights` since December 2014, when it
-[replaced `Pygments`][github-pages-pygments].
-They wanted to open source it, but [were unable][github-pages-license]
-due to licensing issues.
+GitHub is using `PrettyLights` since December 2014,
+when it [replaced `Pygments`][github-pages-pygments].
+They wanted to open source it,
+but [were unable][github-pages-license] due to licensing issues.
 Recently ([Feb 2019][github-tree-sitter-tree-lights]?),
-GitHub has slowly started to move towards
-`TreeLights`, which is based on TreeSitter, and also closed source.
-If `TreeLights` includes a language (currently: C, C#, CSS, CodeQL, EJS, Elixir,
-ERB, Gleam, Go, HTML, Java, JS, Nix, PHP, Python, RegEx, Ruby, Rust, TLA, TS),
-that’ll be used, for everything else `PrettyLights` is used.
+GitHub has slowly started to move towards `TreeLights`,
+which is based on TreeSitter,
+and also closed source.
+If `TreeLights` includes a language
+(currently: C, C#, CSS, CodeQL, EJS, Elixir, ERB, Gleam, Go, HTML, Java, JS,
+Nix, PHP, Python, RegEx, Ruby, Rust, TLA, TS),
+that’ll be used,
+for everything else `PrettyLights` is used.
 
-`starry-night` does what `PrettyLights` does, not what `TreeLights` does.
+`starry-night` does what `PrettyLights` does,
+not what `TreeLights` does.
 I’m hopeful that that will be open sourced in the future and we can mimic both.
 
 <br>
@@ -144,7 +163,8 @@ I’m hopeful that that will be open sourced in the future and we can mimic both
 ## Install
 
 This package is [ESM only][github-gist-esm].
-In Node.js (version 16+), install with [npm][npmjs-install]:
+In Node.js (version 16+),
+install with [npm][npmjs-install]:
 
 ```sh
 npm install @wooorm/starry-night
@@ -164,7 +184,9 @@ In browsers with [`esm.sh`][esmsh]:
 </script>
 ```
 
-To get the CSS in browsers, do (see [CSS][section-css] for more info):
+To get the CSS in browsers,
+do
+(see [CSS][section-css] for more info):
 
 ```html
 <!-- This supports light and dark mode automatically. -->
@@ -210,18 +232,28 @@ Yields:
 
 ## API
 
-This package exports the identifiers [`all`][api-all],
-[`common`][api-common], and [`createStarryNight`][api-create-starry-night] from
-the main module.
+This package exports the identifiers
+[`all`][api-all],
+[`common`][api-common],
+and
+[`createStarryNight`][api-create-starry-night]
+from the main module.
+It exports the additional [TypeScript][] types
+[`GetOnigurumaUrl`][api-get-oniguruma-url],
+[`Grammar`][api-grammar],
+and [`Options`][api-options].
 There is no default export.
 
-It also includes grammars directly in its export map.
+It also includes grammars directly in its export map,
+which each expose a [`Grammar`][api-grammar] as the default export.
 **Do not** use the `lang/` folder or the `.js` extension.
-For CSS files, do use `style/` but don’t use `.css`:
+
+For CSS files,
+do use `style/` and don’t use `.css`:
 
 ```js
-import mdx from '@wooorm/starry-night/source.mdx' // Grammar.
-import tritanopiaDark from '@wooorm/starry-night/style/tritanopia-dark' // CSS.
+import sourceMdx from '@wooorm/starry-night/source.mdx' // Grammar.
+import styleTritanopiaDark from '@wooorm/starry-night/style/tritanopia-dark' // CSS.
 ```
 
 ### `all`
@@ -235,14 +267,16 @@ List of ±35 common grammars ([`Array<Grammar>`][api-grammar])
 ### `createStarryNight(grammars[, options])`
 
 Create a `StarryNight` that can highlight things with the given `grammars`.
-This is async to allow async loading and registering, which is currently
-only used for WASM.
+This is async to allow async loading and registering,
+which is currently only used for WASM.
 
 ###### Parameters
 
-* `grammars` ([`Array<Grammar>`][api-grammar])
+* `grammars`
+  ([`Array<Grammar>`][api-grammar])
   — grammars to support
-* `options` ([`Options`][api-options], optional)
+* `options`
+  ([`Options`][api-options], optional)
   — configuration
 
 ###### Returns
@@ -264,7 +298,8 @@ console.log(1)
 ```
 ````
 
-To match GitHub, this also accepts entire paths:
+To match GitHub,
+this also accepts entire paths:
 
 ````markdown
 ```path/to/example.js
@@ -272,20 +307,29 @@ console.log(1)
 ```
 ````
 
-> 👉 **Note**: languages can use the same extensions.
-> For example, `.h` is reused by many languages.
-> In those cases, you will get one scope back, but it might not be the
-> most popular language associated with an extension.
+> 👉 **Note**:
+> languages can use the same extensions.
+> For example,
+> `.h` is reused by many languages.
+> In those cases,
+> you will get one scope back,
+> but it might not be the most popular language associated with an extension.
 
 ###### Parameters
 
-* `flag` (`string`)
-  — grammar name (such as `'markdown'`), grammar extension (such as
-  `'.mdwn'`), or entire file path ending in extension
+* `flag`
+  (`string`)
+  — grammar name
+  (such as `'markdown'`),
+  grammar extension
+  (such as `'.mdwn'`),
+  or entire file path ending in extension
 
 ###### Returns
 
-Grammar scope, such as `'text.md'` (`string` or `undefined`).
+Grammar scope,
+such as `'text.md'`
+(`string` or `undefined`).
 
 ###### Example
 
@@ -319,8 +363,8 @@ Node representing highlighted code ([`Root`][github-hast-root]).
 ###### Example
 
 ```js
-import {createStarryNight} from '@wooorm/starry-night'
 import sourceCss from '@wooorm/starry-night/source.css'
+import {createStarryNight} from '@wooorm/starry-night'
 
 const starryNight = await createStarryNight([sourceCss])
 
@@ -348,19 +392,23 @@ Yields:
 List scopes that are needed by the registered grammars but that are
 missing.
 
-To illustrate, the `text.xml.svg` grammar needs the `text.xml` grammar.
-When you register `text.xml.svg` without `text.xml`, it will be listed here.
+To illustrate,
+the `text.xml.svg` grammar needs the `text.xml` grammar.
+When you register `text.xml.svg` without `text.xml`,
+it will be listed here.
 
 ###### Returns
 
-List of grammar scopes, such as `'text.md'` (`Array<string>`).
+List of grammar scopes,
+such as `'text.md'`
+(`Array<string>`).
 
 ###### Example
 
 ```js
-import {createStarryNight} from '@wooorm/starry-night'
-import textXml from '@wooorm/starry-night/text.xml'
 import textXmlSvg from '@wooorm/starry-night/text.xml.svg'
+import textXml from '@wooorm/starry-night/text.xml'
+import {createStarryNight} from '@wooorm/starry-night'
 
 const svg = await createStarryNight([textXmlSvg])
 console.log(svg.missingScopes()) //=> ['text.xml']
@@ -385,9 +433,9 @@ Promise resolving to nothing (`Promise<undefined>`).
 ###### Example
 
 ````js
-import {createStarryNight} from '@wooorm/starry-night'
 import sourceCss from '@wooorm/starry-night/source.css'
 import textMd from '@wooorm/starry-night/text.md'
+import {createStarryNight} from '@wooorm/starry-night'
 import {toHtml} from 'hast-util-to-html'
 
 const markdown = '```css\nem { color: red }\n```'
@@ -421,7 +469,9 @@ List all registered scopes.
 
 ###### Returns
 
-List of grammar scopes, such as `'text.md'` (`Array<string>`).
+List of grammar scopes,
+such as `'text.md'`
+(`Array<string>`).
 
 ###### Example
 
@@ -449,17 +499,21 @@ Yields:
 
 Function to get a URL to the oniguruma WASM (TypeScript type).
 
-> 👉 **Note**: this must currently result in a version 2 URL of
-> `onig.wasm` from [`vscode-oniguruma`][github-vscode-oniguruma].
+> 👉 **Note**:
+> this must currently result in a version 2 URL of `onig.wasm` from
+> [`vscode-oniguruma`][github-vscode-oniguruma].
 
-> ⚠️ **Danger**: when you use this functionality, your project might break at
-> any time (when reinstalling dependencies), except when you make sure that
-> the WASM binary you load manually is what our internally used
-> `vscode-oniguruma` dependency expects.
+> ⚠️ **Danger**:
+> when you use this functionality,
+> your project might break at any time
+> (when reinstalling dependencies),
+> except when you make sure that the WASM binary you load manually is what our
+> internally used `vscode-oniguruma` dependency expects.
 > To solve this, you could for example use an npm script called
-> [`dependencies`][npmjs-using-npm-script-dependencies] (which runs everytime
-> `node_modules` is changed) which copies
-> `vscode-oniguruma/release/onig.wasm` to the place you want to host it.
+> [`dependencies`][npmjs-using-npm-script-dependencies]
+> (which runs everytime `node_modules` is changed)
+> which copies `vscode-oniguruma/release/onig.wasm` to the place you want to
+> host it.
 
 ###### Returns
 
@@ -483,21 +537,29 @@ TextMate grammar with some extra info (TypeScript type).
 
 ###### Fields
 
-* `dependencies` (`Array<string>`, optional, example: `['source.tsx']`)
+* `dependencies`
+  (`Array<string>`, optional, example: `['source.tsx']`)
   — list of scopes that are needed for this grammar to work
-* `extensions` (`Array<string>`, example: `['.mdx']`)
+* `extensions`
+  (`Array<string>`, example: `['.mdx']`)
   — list of extensions
-* `extensionsWithDot` (`Array<string>`, optional, example: `['.php']`)
+* `extensionsWithDot`
+  (`Array<string>`, optional, example: `['.php']`)
   — list of extensions that only match if used w/ a dot
-* `injections` (`Record<string, Rule>`, optional)
+* `injections`
+  (`Record<string, Rule>`, optional)
   — TextMate injections
-* `names` (`Array<string>`, example: `['mdx']`)
+* `names`
+  (`Array<string>`, example: `['mdx']`)
   — list of names
-* `patterns` (`Array<Rule>`)
+* `patterns`
+  (`Array<Rule>`)
   — TextMate patterns
-* `repository` (`Record<string, Rule>`, optional)
+* `repository`
+  (`Record<string, Rule>`, optional)
   — TextMate repository
-* `scopeName` (`string`, example: `'source.mdx'`)
+* `scopeName`
+  (`string`, example: `'source.mdx'`)
   — scope
 
 ### `Options`
@@ -506,12 +568,14 @@ Configuration (TypeScript type).
 
 ###### Fields
 
-* `getOnigurumaUrlFetch` ([`GetOnigurumaUrl`][api-get-oniguruma-url],
-  optional)
-  — get a URL to the oniguruma WASM, typically used in browsers
-* `getOnigurumaUrlFs` ([`GetOnigurumaUrl`][api-get-oniguruma-url],
-  optional)
-  — get a URL to the oniguruma WASM, typically used in Node.js
+* `getOnigurumaUrlFetch`
+  ([`GetOnigurumaUrl`][api-get-oniguruma-url], optional)
+  — get a URL to the oniguruma WASM,
+  typically used in browsers
+* `getOnigurumaUrlFs`
+  ([`GetOnigurumaUrl`][api-get-oniguruma-url], optional)
+  — get a URL to the oniguruma WASM,
+  typically used in Node.js
 
 ## Examples
 
@@ -540,14 +604,18 @@ Yields:
 ### Example: using `starry-night` on the client
 
 You don’t *have* to do preprocess things on a server.
-Particularly, when you are not using Node.js or so.
-Or, when you have a lot of often changing content (likely markdown), such as
-on a page of comments.
+Particularly,
+when you are not using Node.js or so.
+Or,
+when you have a lot of often changing content
+(likely markdown),
+such as on a page of comments.
 
-In those cases, you can run `starry-night` in the browser.
+In those cases,
+you can run `starry-night` in the browser.
 Here is an example.
-It also uses [`hast-util-to-dom`][github-hast-util-to-dom], which is a light
-way to turn the AST into DOM nodes.
+It also uses [`hast-util-to-dom`][github-hast-util-to-dom],
+which is a light way to turn the AST into DOM nodes.
 
 Say we have this `example.js` on our browser (no bundling needed!):
 
@@ -575,7 +643,8 @@ for (const node of nodes) {
 }
 ```
 
-…and then, if we would have an `index.html` for our document:
+…and then,
+if we would have an `index.html` for our document:
 
 ```html
 <!doctype html>
@@ -591,7 +660,8 @@ for (const node of nodes) {
 </body>
 ```
 
-Opening that page in a browser, we’d see the `<code>` being swapped with:
+Opening that page in a browser,
+we’d see the `<code>` being swapped with:
 
 ```html
 <code class="language-js"><span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>it works!<span class="pl-pds">'</span></span>)
@@ -600,8 +670,9 @@ Opening that page in a browser, we’d see the `<code>` being swapped with:
 
 ### Example: turning hast into react nodes
 
-hast trees as returned by `starry-night` can be turned into preact, react,
-solid, svelte, vue, etc., with
+hast trees as returned by `starry-night` can be turned into
+preact, react, solid, svelte, vue, etc.,
+with
 [`hast-util-to-jsx-runtime`][github-hast-util-to-jsx-runtime]:
 
 ```js
@@ -634,11 +705,14 @@ Yields:
 ### Example: adding line numbers
 
 GitHub itself does not add line numbers to the code they highlight.
-You can do that, by transforming the AST.
+You can do that,
+by transforming the AST.
 Here’s an example of a utility that wraps each line into a span with a class and
 a data attribute with its line number.
-That way, you can style the lines as you please.
-Or you can generate different elements for each line, of course.
+That way,
+you can style the lines as you please.
+Or you can generate different elements for each line,
+of course.
 
 Say we have our utility as `hast-util-starry-night-gutter.js`:
 
@@ -891,26 +965,34 @@ Now running `node example.js` yields:
 
 The generated [`hast`][github-hast] starts with a `root` node,
 that represents the fragment.
-It contains up to three levels of `<span>` `element`s, each with a single class.
+It contains up to three levels of `<span>` `element`s,
+each with a single class.
 All these levels can contain text nodes with the actual code.
-Interestingly, TextMate grammars work per line, so all line endings are in the
-root directly, meaning that creating a gutter to display line numbers can be
-generated rather naïvely by only looking through the root node.
+Interestingly,
+TextMate grammars work per line,
+so all line endings are in the root directly,
+meaning that creating a gutter to display line numbers can be generated rather
+naïvely by only looking through the root node.
 
 ## CSS
 
-`starry-night` does not inject CSS for the syntax highlighted code (because
-well, `starry-night` doesn’t have to be turned into HTML and might not run in a
+`starry-night` does not inject CSS for the syntax highlighted code
+(because well,
+`starry-night` doesn’t have to be turned into HTML and might not run in a
 browser!).
-If you are in a browser, you can use the packaged themes, or get creative with
-CSS!
+If you are in a browser,
+you can use the packaged themes,
+or get creative with CSS!
 💅
 
 All themes accept CSS variables (custom properties).
-With the theme `core.css`, you have to define your own properties.
+With the theme `core.css`,
+you have to define your own properties.
 All other themes define the colors on `:root`.
-Themes either have a `dark` or `light` suffix, or none, in which case they
-automatically switch colors based on a `@media (prefers-color-scheme: dark)`.
+Themes either have a `dark` or `light` suffix,
+or none,
+in which case they automatically switch colors based on a
+`@media (prefers-color-scheme: dark)`.
 All themes are tiny (under 1 kB).
 The shipped themes are as follows:
 
@@ -944,8 +1026,8 @@ See source files for which are known and use `flagToScope` to turn them into
 scopes.
 
 Some grammars need other grammars to work.
-You are responsible for loading those, use `missingScopes` to find which
-dependencies are needed.
+You are responsible for loading those,
+use `missingScopes` to find which dependencies are needed.
 
 All licenses are permissive and made available in [`notice`][file-notice].
 Changes should go to upstream repos and
@@ -1594,25 +1676,23 @@ Changes should go to upstream repos and
 
 <!--support end-->
 
-## Types
-
-This package is fully typed with [TypeScript][].
-It exports the additional types [`GetOnigurumaUrl`][api-get-oniguruma-url],
-[`Grammar`][api-grammar], and [`Options`][api-options].
-
 ## Compatibility
 
 This project is compatible with maintained versions of Node.js.
 
-When we cut a new major release, we drop support for unmaintained versions of
-Node.
-This means we try to keep the current release line, `wooorm@starry-night@^3`,
+When we cut a new major release,
+we drop support for unmaintained versions of Node.
+This means we try to keep the current release line,
+`wooorm@starry-night@3`,
 compatible with Node.js 16.
 
-You can pass your own TextMate grammars, provided that they work with
-[`vscode-textmate`][github-vscode-textmate], and that they have the added fields
-`extensions`, `names`, and `scopeName` (see types for the definitions and the
-grammars in `lang/` for examples).
+You can pass your own TextMate grammars,
+provided that they work with
+[`vscode-textmate`][github-vscode-textmate],
+and that they have the added fields `extensions`,
+`names`,
+and `scopeName`
+(see types for the definitions and the grammars in `lang/` for examples).
 
 ## Security
 
@@ -1633,8 +1713,10 @@ See [How to Contribute to Open Source][opensource-guide-contribute].
 ## License
 
 The grammars included in this package are covered by their repositories’
-respective licenses, which are permissive (`apache-2.0`, `mit`, etc), and made
-available in [`notice`][file-notice].
+respective licenses,
+which are permissive
+(`apache-2.0`, `mit`, etc),
+and made available in [`notice`][file-notice].
 
 All other files [MIT][file-license] © [Titus Wormer][wooorm]
 
