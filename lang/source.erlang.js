@@ -1,7 +1,7 @@
 // This is a TextMate grammar distributed by `starry-night`.
 // This grammar is developed at
-// <https://github.com/textmate/erlang.tmbundle>
-// and licensed permissive.
+// <https://github.com/erlang-ls/grammar>
+// and licensed `apache-2.0`.
 // See <https://github.com/wooorm/starry-night> for more info.
 /**
  * @import {Grammar} from '@wooorm/starry-night'
@@ -48,7 +48,8 @@ const grammar = {
                 1: {name: 'punctuation.definition.escape.erlang'},
                 3: {name: 'punctuation.definition.escape.erlang'}
               },
-              match: '(\\\\)([bdefnrstv\\\\\'"]|(\\^)[@-_]|[0-7]{1,3})',
+              match:
+                '(\\\\)([bdefnrstv\\\\\'"]|(\\^)[@-_a-z]|[0-7]{1,3}|x[\\da-fA-F]{2})',
               name: 'constant.other.symbol.escape.erlang'
             },
             {match: '\\\\\\^?.?', name: 'invalid.illegal.atom.erlang'}
@@ -100,13 +101,14 @@ const grammar = {
             3: {name: 'punctuation.definition.escape.erlang'},
             5: {name: 'punctuation.definition.escape.erlang'}
           },
-          match: '(\\$)((\\\\)([bdefnrstv\\\\\'"]|(\\^)[@-_]|[0-7]{1,3}))',
+          match:
+            '(\\$)((\\\\)([bdefnrstv\\\\\'"]|(\\^)[@-_a-z]|[0-7]{1,3}|x[\\da-fA-F]{2}))',
           name: 'constant.character.erlang'
         },
         {match: '\\$\\\\\\^?.?', name: 'invalid.illegal.character.erlang'},
         {
           captures: {1: {name: 'punctuation.definition.character.erlang'}},
-          match: '(\\$)\\S',
+          match: '(\\$)[ \\S]',
           name: 'constant.character.erlang'
         },
         {match: '\\$.?', name: 'invalid.illegal.character.erlang'}
@@ -130,14 +132,12 @@ const grammar = {
     'define-directive': {
       patterns: [
         {
-          begin:
-            '^\\s*+(-)\\s*+(define)\\s*+(\\()\\s*+([a-zA-Z\\d@_]++)\\s*+(,)',
+          begin: '^\\s*+(-)\\s*+(define)\\s*+(\\()\\s*+([a-zA-Z\\d@_]++)\\s*+',
           beginCaptures: {
             1: {name: 'punctuation.section.directive.begin.erlang'},
             2: {name: 'keyword.control.directive.define.erlang'},
             3: {name: 'punctuation.definition.parameters.begin.erlang'},
-            4: {name: 'entity.name.function.macro.definition.erlang'},
-            5: {name: 'punctuation.separator.parameters.erlang'}
+            4: {name: 'entity.name.function.macro.definition.erlang'}
           },
           end: '(\\))\\s*+(\\.)',
           endCaptures: {
@@ -213,6 +213,20 @@ const grammar = {
         }
       ]
     },
+    docstring: {
+      begin: '(?<!")((["]{3,})\\s*)(\\S.*)?$',
+      beginCaptures: {
+        1: {name: 'meta.string.quoted.triple.begin.erlang'},
+        2: {name: 'punctuation.definition.string.begin.erlang'},
+        3: {name: 'invalid.illegal.string.erlang'}
+      },
+      end: '^(\\s*(\\2))(?!")',
+      endCaptures: {
+        1: {name: 'meta.string.quoted.triple.end.erlang'},
+        2: {name: 'punctuation.definition.string.end.erlang'}
+      },
+      name: 'string.quoted.triple.erlang'
+    },
     'everything-else': {
       patterns: [
         {include: '#comment'},
@@ -221,6 +235,7 @@ const grammar = {
         {include: '#expression'},
         {include: '#keyword'},
         {include: '#textual-operator'},
+        {include: '#language-constant'},
         {include: '#function-call'},
         {include: '#tuple'},
         {include: '#list'},
@@ -229,6 +244,9 @@ const grammar = {
         {include: '#character'},
         {include: '#number'},
         {include: '#atom'},
+        {include: '#sigil-docstring'},
+        {include: '#sigil-string'},
+        {include: '#docstring'},
         {include: '#string'},
         {include: '#symbolic-operator'},
         {include: '#variable'}
@@ -272,13 +290,54 @@ const grammar = {
         {
           captures: {
             1: {name: 'keyword.control.fun.erlang'},
-            3: {name: 'entity.name.type.class.module.erlang'},
-            4: {name: 'punctuation.separator.module-function.erlang'},
-            5: {name: 'entity.name.function.erlang'},
-            6: {name: 'punctuation.separator.function-arity.erlang'}
+            10: {name: 'punctuation.separator.function-arity.erlang'},
+            4: {name: 'entity.name.type.class.module.erlang'},
+            5: {name: 'variable.other.erlang'},
+            6: {name: 'punctuation.separator.module-function.erlang'},
+            8: {name: 'entity.name.function.erlang'},
+            9: {name: 'variable.other.erlang'}
           },
           match:
-            '\\b(fun)\\s+(([a-z][a-zA-Z\\d@_]*+)\\s*+(:)\\s*+)?([a-z][a-zA-Z\\d@_]*+)\\s*(/)'
+            "\\b(fun)\\s+((([a-z][a-zA-Z\\d@_]*+)|(_[a-zA-Z\\d@_]++|[A-Z][a-zA-Z\\d@_]*+))\\s*+(:)\\s*+)?(([a-z][a-zA-Z\\d@_]*+|'[^']*+')|(_[a-zA-Z\\d@_]++|[A-Z][a-zA-Z\\d@_]*+))\\s*(/)",
+          name: 'meta.expression.fun.implicit.erlang'
+        },
+        {
+          begin:
+            '\\b(fun)\\s+(([a-z][a-zA-Z\\d@_]*+)|(_[a-zA-Z\\d@_]++|[A-Z][a-zA-Z\\d@_]*+))\\s*+(:)',
+          beginCaptures: {
+            1: {name: 'keyword.control.fun.erlang'},
+            3: {name: 'entity.name.type.class.module.erlang'},
+            4: {name: 'variable.other.erlang'},
+            5: {name: 'punctuation.separator.module-function.erlang'}
+          },
+          end: '(/)',
+          endCaptures: {
+            1: {name: 'punctuation.separator.function-arity.erlang'}
+          },
+          name: 'meta.expression.fun.implicit.erlang',
+          patterns: [{include: '#everything-else'}]
+        },
+        {
+          begin: '\\b(fun)\\s+(?!\\()',
+          beginCaptures: {1: {name: 'keyword.control.fun.erlang'}},
+          end: '(/)',
+          endCaptures: {
+            1: {name: 'punctuation.separator.function-arity.erlang'}
+          },
+          name: 'meta.expression.fun.implicit.erlang',
+          patterns: [{include: '#everything-else'}]
+        },
+        {
+          begin: '\\b(fun)\\s*+(\\()(?=(\\s*+\\()|(\\)))',
+          beginCaptures: {
+            1: {name: 'entity.name.function.erlang'},
+            2: {name: 'punctuation.definition.parameters.begin.erlang'}
+          },
+          end: '(\\))',
+          endCaptures: {
+            1: {name: 'punctuation.definition.parameters.end.erlang'}
+          },
+          patterns: [{include: '#everything-else'}]
         },
         {
           begin: '\\b(fun)\\b',
@@ -317,6 +376,17 @@ const grammar = {
             {include: '#internal-expression-punctuation'},
             {include: '#everything-else'}
           ]
+        },
+        {
+          begin: '\\b(maybe)\\b',
+          beginCaptures: {1: {name: 'keyword.control.maybe.erlang'}},
+          end: '\\b(end)\\b',
+          endCaptures: {1: {name: 'keyword.control.end.erlang'}},
+          name: 'meta.expression.maybe.erlang',
+          patterns: [
+            {include: '#internal-expression-punctuation'},
+            {include: '#everything-else'}
+          ]
         }
       ]
     },
@@ -345,7 +415,7 @@ const grammar = {
     },
     'function-call': {
       begin:
-        "(?=([a-z][a-zA-Z\\d@_]*+|'[^']*+')\\s*+(\\(|:\\s*+([a-z][a-zA-Z\\d@_]*+|'[^']*+')\\s*+\\())",
+        "(?=([a-z][a-zA-Z\\d@_]*+|'[^']*+'|_[a-zA-Z\\d@_]++|[A-Z][a-zA-Z\\d@_]*+)\\s*+(\\(|:\\s*+([a-z][a-zA-Z\\d@_]*+|'[^']*+'|_[a-zA-Z\\d@_]++|[A-Z][a-zA-Z\\d@_]*+)\\s*+\\())",
       end: '(\\))',
       endCaptures: {1: {name: 'punctuation.definition.parameters.end.erlang'}},
       name: 'meta.function-call.erlang',
@@ -367,12 +437,14 @@ const grammar = {
         },
         {
           begin:
-            "(([a-z][a-zA-Z\\d@_]*+|'[^']*+')\\s*+(:)\\s*+)?([a-z][a-zA-Z\\d@_]*+|'[^']*+')\\s*+(\\()",
+            "((([a-z][a-zA-Z\\d@_]*+|'[^']*+')|(_[a-zA-Z\\d@_]++|[A-Z][a-zA-Z\\d@_]*+))\\s*+(:)\\s*+)?(([a-z][a-zA-Z\\d@_]*+|'[^']*+')|(_[a-zA-Z\\d@_]++|[A-Z][a-zA-Z\\d@_]*+))\\s*+(\\()",
           beginCaptures: {
-            2: {name: 'entity.name.type.class.module.erlang'},
-            3: {name: 'punctuation.separator.module-function.erlang'},
-            4: {name: 'entity.name.function.erlang'},
-            5: {name: 'punctuation.definition.parameters.begin.erlang'}
+            3: {name: 'entity.name.type.class.module.erlang'},
+            4: {name: 'variable.other.erlang'},
+            5: {name: 'punctuation.separator.module-function.erlang'},
+            7: {name: 'entity.name.function.erlang'},
+            8: {name: 'variable.other.erlang'},
+            9: {name: 'punctuation.definition.parameters.begin.erlang'}
           },
           end: '(?=\\))',
           patterns: [
@@ -483,28 +555,53 @@ const grammar = {
       beginCaptures: {
         1: {name: 'punctuation.definition.class.record.begin.erlang'}
       },
-      end: '(?=\\})',
+      end: '(\\})',
+      endCaptures: {
+        1: {name: 'punctuation.definition.class.record.end.erlang'}
+      },
       name: 'meta.structure.record.erlang',
       patterns: [
         {
-          begin: "(([a-z][a-zA-Z\\d@_]*+|'[^']*+')|(_))\\s*+(=|::)",
+          begin: "(([a-z][a-zA-Z\\d@_]*+|'[^']*+')|(_))",
           beginCaptures: {
             2: {name: 'variable.other.field.erlang'},
-            3: {name: 'variable.language.omitted.field.erlang'},
-            4: {name: 'keyword.operator.assignment.erlang'}
+            3: {name: 'variable.language.omitted.field.erlang'}
           },
           end: '(,)|(?=\\})',
           endCaptures: {1: {name: 'punctuation.separator.class.record.erlang'}},
           patterns: [{include: '#everything-else'}]
         },
+        {include: '#everything-else'}
+      ]
+    },
+    'internal-string-body': {
+      patterns: [
         {
           captures: {
-            1: {name: 'variable.other.field.erlang'},
-            2: {name: 'punctuation.separator.class.record.erlang'}
+            1: {name: 'punctuation.definition.escape.erlang'},
+            3: {name: 'punctuation.definition.escape.erlang'}
           },
-          match: "([a-z][a-zA-Z\\d@_]*+|'[^']*+')\\s*+(,)?"
+          match:
+            '(\\\\)([bdefnrstv\\\\\'"]|(\\^)[@-_a-z]|[0-7]{1,3}|x[\\da-fA-F]{2})',
+          name: 'constant.character.escape.erlang'
         },
-        {include: '#everything-else'}
+        {match: '\\\\\\^?.?', name: 'invalid.illegal.string.erlang'},
+        {
+          captures: {
+            1: {name: 'punctuation.definition.placeholder.erlang'},
+            10: {name: 'punctuation.separator.placeholder-parts.erlang'},
+            6: {name: 'punctuation.separator.placeholder-parts.erlang'}
+          },
+          match:
+            '(~)((\\-)?\\d++|(\\*))?((\\.)(\\d++|(\\*))?((\\.)((\\*)|.))?)?[tlkK]*[~cfegswpWPBX#bx\\+ni]',
+          name: 'constant.character.format.placeholder.other.erlang'
+        },
+        {
+          captures: {1: {name: 'punctuation.definition.placeholder.erlang'}},
+          match: '(~)(\\*)?(\\d++)?(t)?[~du\\-#fsacl]',
+          name: 'constant.character.format.placeholder.other.erlang'
+        },
+        {match: '~[^"]?', name: 'invalid.illegal.string.erlang'}
       ]
     },
     'internal-type-specifiers': {
@@ -518,17 +615,23 @@ const grammar = {
             2: {name: 'storage.modifier.signedness.erlang'},
             3: {name: 'storage.modifier.endianness.erlang'},
             4: {name: 'storage.modifier.unit.erlang'},
-            5: {name: 'punctuation.separator.type-specifiers.erlang'}
+            5: {name: 'punctuation.separator.unit-specifiers.erlang'},
+            6: {name: 'constant.numeric.integer.decimal.erlang'},
+            7: {name: 'punctuation.separator.type-specifiers.erlang'}
           },
           match:
-            '(integer|float|binary|bytes|bitstring|bits)|(signed|unsigned)|(big|little|native)|(unit)|(-)'
+            '(integer|float|binary|bytes|bitstring|bits|utf8|utf16|utf32)|(signed|unsigned)|(big|little|native)|(unit)(:)(\\d++)|(-)'
         }
       ]
     },
     keyword: {
       match:
-        '\\b(after|begin|case|catch|cond|end|fun|if|let|of|try|receive|when)\\b',
+        '\\b(after|begin|case|catch|cond|end|fun|if|let|of|try|receive|when|maybe|else)\\b',
       name: 'keyword.control.erlang'
+    },
+    'language-constant': {
+      match: '\\b(false|true|undefined)\\b',
+      name: 'constant.language'
     },
     list: {
       begin: '(\\[)',
@@ -619,181 +722,187 @@ const grammar = {
         },
         {
           captures: {1: {name: 'punctuation.separator.base-integer.erlang'}},
-          match: '2(#)[0-1]++',
+          match: '2(#)([0-1]++_)*[0-1]++',
           name: 'constant.numeric.integer.binary.erlang'
         },
         {
           captures: {1: {name: 'punctuation.separator.base-integer.erlang'}},
-          match: '3(#)[0-2]++',
+          match: '3(#)([0-2]++_)*[0-2]++',
           name: 'constant.numeric.integer.base-3.erlang'
         },
         {
           captures: {1: {name: 'punctuation.separator.base-integer.erlang'}},
-          match: '4(#)[0-3]++',
+          match: '4(#)([0-3]++_)*[0-3]++',
           name: 'constant.numeric.integer.base-4.erlang'
         },
         {
           captures: {1: {name: 'punctuation.separator.base-integer.erlang'}},
-          match: '5(#)[0-4]++',
+          match: '5(#)([0-4]++_)*[0-4]++',
           name: 'constant.numeric.integer.base-5.erlang'
         },
         {
           captures: {1: {name: 'punctuation.separator.base-integer.erlang'}},
-          match: '6(#)[0-5]++',
+          match: '6(#)([0-5]++_)*[0-5]++',
           name: 'constant.numeric.integer.base-6.erlang'
         },
         {
           captures: {1: {name: 'punctuation.separator.base-integer.erlang'}},
-          match: '7(#)[0-6]++',
+          match: '7(#)([0-6]++_)*[0-6]++',
           name: 'constant.numeric.integer.base-7.erlang'
         },
         {
           captures: {1: {name: 'punctuation.separator.base-integer.erlang'}},
-          match: '8(#)[0-7]++',
+          match: '8(#)([0-7]++_)*[0-7]++',
           name: 'constant.numeric.integer.octal.erlang'
         },
         {
           captures: {1: {name: 'punctuation.separator.base-integer.erlang'}},
-          match: '9(#)[0-8]++',
+          match: '9(#)([0-8]++_)*[0-8]++',
           name: 'constant.numeric.integer.base-9.erlang'
         },
         {
           captures: {1: {name: 'punctuation.separator.base-integer.erlang'}},
-          match: '10(#)\\d++',
+          match: '10(#)(\\d++_)*\\d++',
           name: 'constant.numeric.integer.decimal.erlang'
         },
         {
           captures: {1: {name: 'punctuation.separator.base-integer.erlang'}},
-          match: '11(#)[\\daA]++',
+          match: '11(#)([\\daA]++_)*[\\daA]++',
           name: 'constant.numeric.integer.base-11.erlang'
         },
         {
           captures: {1: {name: 'punctuation.separator.base-integer.erlang'}},
-          match: '12(#)[\\da-bA-B]++',
+          match: '12(#)([\\da-bA-B]++_)*[\\da-bA-B]++',
           name: 'constant.numeric.integer.base-12.erlang'
         },
         {
           captures: {1: {name: 'punctuation.separator.base-integer.erlang'}},
-          match: '13(#)[\\da-cA-C]++',
+          match: '13(#)([\\da-cA-C]++_)*[\\da-cA-C]++',
           name: 'constant.numeric.integer.base-13.erlang'
         },
         {
           captures: {1: {name: 'punctuation.separator.base-integer.erlang'}},
-          match: '14(#)[\\da-dA-D]++',
+          match: '14(#)([\\da-dA-D]++_)*[\\da-dA-D]++',
           name: 'constant.numeric.integer.base-14.erlang'
         },
         {
           captures: {1: {name: 'punctuation.separator.base-integer.erlang'}},
-          match: '15(#)[\\da-eA-E]++',
+          match: '15(#)([\\da-eA-E]++_)*[\\da-eA-E]++',
           name: 'constant.numeric.integer.base-15.erlang'
         },
         {
           captures: {1: {name: 'punctuation.separator.base-integer.erlang'}},
-          match: '16(#)[0-9A-Fa-f]++',
+          match: '16(#)([\\da-fA-F]++_)*[\\da-fA-F]++',
           name: 'constant.numeric.integer.hexadecimal.erlang'
         },
         {
           captures: {1: {name: 'punctuation.separator.base-integer.erlang'}},
-          match: '17(#)[\\da-gA-G]++',
+          match: '17(#)([\\da-gA-G]++_)*[\\da-gA-G]++',
           name: 'constant.numeric.integer.base-17.erlang'
         },
         {
           captures: {1: {name: 'punctuation.separator.base-integer.erlang'}},
-          match: '18(#)[\\da-hA-H]++',
+          match: '18(#)([\\da-hA-H]++_)*[\\da-hA-H]++',
           name: 'constant.numeric.integer.base-18.erlang'
         },
         {
           captures: {1: {name: 'punctuation.separator.base-integer.erlang'}},
-          match: '19(#)[\\da-iA-I]++',
+          match: '19(#)([\\da-iA-I]++_)*[\\da-iA-I]++',
           name: 'constant.numeric.integer.base-19.erlang'
         },
         {
           captures: {1: {name: 'punctuation.separator.base-integer.erlang'}},
-          match: '20(#)[\\da-jA-J]++',
+          match: '20(#)([\\da-jA-J]++_)*[\\da-jA-J]++',
           name: 'constant.numeric.integer.base-20.erlang'
         },
         {
           captures: {1: {name: 'punctuation.separator.base-integer.erlang'}},
-          match: '21(#)[\\da-kA-K]++',
+          match: '21(#)([\\da-kA-K]++_)*[\\da-kA-K]++',
           name: 'constant.numeric.integer.base-21.erlang'
         },
         {
           captures: {1: {name: 'punctuation.separator.base-integer.erlang'}},
-          match: '22(#)[\\da-lA-L]++',
+          match: '22(#)([\\da-lA-L]++_)*[\\da-lA-L]++',
           name: 'constant.numeric.integer.base-22.erlang'
         },
         {
           captures: {1: {name: 'punctuation.separator.base-integer.erlang'}},
-          match: '23(#)[\\da-mA-M]++',
+          match: '23(#)([\\da-mA-M]++_)*[\\da-mA-M]++',
           name: 'constant.numeric.integer.base-23.erlang'
         },
         {
           captures: {1: {name: 'punctuation.separator.base-integer.erlang'}},
-          match: '24(#)[\\da-nA-N]++',
+          match: '24(#)([\\da-nA-N]++_)*[\\da-nA-N]++',
           name: 'constant.numeric.integer.base-24.erlang'
         },
         {
           captures: {1: {name: 'punctuation.separator.base-integer.erlang'}},
-          match: '25(#)[\\da-oA-O]++',
+          match: '25(#)([\\da-oA-O]++_)*[\\da-oA-O]++',
           name: 'constant.numeric.integer.base-25.erlang'
         },
         {
           captures: {1: {name: 'punctuation.separator.base-integer.erlang'}},
-          match: '26(#)[\\da-pA-P]++',
+          match: '26(#)([\\da-pA-P]++_)*[\\da-pA-P]++',
           name: 'constant.numeric.integer.base-26.erlang'
         },
         {
           captures: {1: {name: 'punctuation.separator.base-integer.erlang'}},
-          match: '27(#)[\\da-qA-Q]++',
+          match: '27(#)([\\da-qA-Q]++_)*[\\da-qA-Q]++',
           name: 'constant.numeric.integer.base-27.erlang'
         },
         {
           captures: {1: {name: 'punctuation.separator.base-integer.erlang'}},
-          match: '28(#)[\\da-rA-R]++',
+          match: '28(#)([\\da-rA-R]++_)*[\\da-rA-R]++',
           name: 'constant.numeric.integer.base-28.erlang'
         },
         {
           captures: {1: {name: 'punctuation.separator.base-integer.erlang'}},
-          match: '29(#)[\\da-sA-S]++',
+          match: '29(#)([\\da-sA-S]++_)*[\\da-sA-S]++',
           name: 'constant.numeric.integer.base-29.erlang'
         },
         {
           captures: {1: {name: 'punctuation.separator.base-integer.erlang'}},
-          match: '30(#)[\\da-tA-T]++',
+          match: '30(#)([\\da-tA-T]++_)*[\\da-tA-T]++',
           name: 'constant.numeric.integer.base-30.erlang'
         },
         {
           captures: {1: {name: 'punctuation.separator.base-integer.erlang'}},
-          match: '31(#)[\\da-uA-U]++',
+          match: '31(#)([\\da-uA-U]++_)*[\\da-uA-U]++',
           name: 'constant.numeric.integer.base-31.erlang'
         },
         {
           captures: {1: {name: 'punctuation.separator.base-integer.erlang'}},
-          match: '32(#)[\\da-vA-V]++',
+          match: '32(#)([\\da-vA-V]++_)*[\\da-vA-V]++',
           name: 'constant.numeric.integer.base-32.erlang'
         },
         {
           captures: {1: {name: 'punctuation.separator.base-integer.erlang'}},
-          match: '33(#)[\\da-wA-W]++',
+          match: '33(#)([\\da-wA-W]++_)*[\\da-wA-W]++',
           name: 'constant.numeric.integer.base-33.erlang'
         },
         {
           captures: {1: {name: 'punctuation.separator.base-integer.erlang'}},
-          match: '34(#)[\\da-xA-X]++',
+          match: '34(#)([\\da-xA-X]++_)*[\\da-xA-X]++',
           name: 'constant.numeric.integer.base-34.erlang'
         },
         {
           captures: {1: {name: 'punctuation.separator.base-integer.erlang'}},
-          match: '35(#)[\\da-yA-Y]++',
+          match: '35(#)([\\da-yA-Y]++_)*[\\da-yA-Y]++',
           name: 'constant.numeric.integer.base-35.erlang'
         },
         {
           captures: {1: {name: 'punctuation.separator.base-integer.erlang'}},
-          match: '36(#)[\\da-zA-Z]++',
+          match: '36(#)([\\da-zA-Z]++_)*[\\da-zA-Z]++',
           name: 'constant.numeric.integer.base-36.erlang'
         },
-        {match: '\\d++#[\\da-zA-Z]++', name: 'invalid.illegal.integer.erlang'},
-        {match: '\\d++', name: 'constant.numeric.integer.decimal.erlang'}
+        {
+          match: '\\d++#([\\da-zA-Z]++_)*[\\da-zA-Z]++',
+          name: 'invalid.illegal.integer.erlang'
+        },
+        {
+          match: '(\\d++_)*\\d++',
+          name: 'constant.numeric.integer.decimal.erlang'
+        }
       ]
     },
     'parenthesized-expression': {
@@ -814,15 +923,13 @@ const grammar = {
         4: {name: 'entity.name.type.class.record.definition.erlang'},
         5: {name: 'punctuation.separator.parameters.erlang'}
       },
-      end: '((\\}))\\s*+(\\))\\s*+(\\.)',
+      end: '(\\))\\s*+(\\.)',
       endCaptures: {
-        1: {name: 'meta.structure.record.erlang'},
-        2: {name: 'punctuation.definition.class.record.end.erlang'},
-        3: {name: 'punctuation.definition.parameters.end.erlang'},
-        4: {name: 'punctuation.section.directive.end.erlang'}
+        1: {name: 'punctuation.definition.parameters.end.erlang'},
+        2: {name: 'punctuation.section.directive.end.erlang'}
       },
       name: 'meta.directive.record.erlang',
-      patterns: [{include: '#internal-record-body'}]
+      patterns: [{include: '#internal-record-body'}, {include: '#comment'}]
     },
     'record-usage': {
       patterns: [
@@ -843,15 +950,191 @@ const grammar = {
             1: {name: 'keyword.operator.record.erlang'},
             2: {name: 'entity.name.type.class.record.erlang'}
           },
-          end: '((\\}))',
-          endCaptures: {
-            1: {name: 'meta.structure.record.erlang'},
-            2: {name: 'punctuation.definition.class.record.end.erlang'}
-          },
+          end: '(?<=\\})',
           name: 'meta.record-usage.erlang',
           patterns: [{include: '#internal-record-body'}]
         }
       ]
+    },
+    'sigil-docstring': {
+      begin: '(~[bBsS]?)((["]{3,})\\s*)(\\S.*)?$',
+      beginCaptures: {
+        1: {name: 'storage.type.string.erlang'},
+        2: {name: 'meta.string.quoted.triple.begin.erlang'},
+        3: {name: 'punctuation.definition.string.begin.erlang'},
+        4: {name: 'invalid.illegal.string.erlang'}
+      },
+      end: '^(\\s*(\\3))(?!")',
+      endCaptures: {
+        1: {name: 'meta.string.quoted.triple.end.erlang'},
+        2: {name: 'punctuation.definition.string.end.erlang'}
+      },
+      name: 'string.quoted.tripple.sigil.erlang'
+    },
+    'sigil-string': {
+      patterns: [
+        {include: '#sigil-string-parenthesis'},
+        {include: '#sigil-string-parenthesis-verbatim'},
+        {include: '#sigil-string-curly-brackets'},
+        {include: '#sigil-string-curly-brackets-verbatim'},
+        {include: '#sigil-string-square-brackets'},
+        {include: '#sigil-string-square-brackets-verbatim'},
+        {include: '#sigil-string-less-greater'},
+        {include: '#sigil-string-less-greater-verbatim'},
+        {include: '#sigil-string-single-character'},
+        {include: '#sigil-string-single-character-verbatim'},
+        {include: '#sigil-string-single-quote'},
+        {include: '#sigil-string-single-quote-verbatim'},
+        {include: '#sigil-string-double-quote'},
+        {include: '#sigil-string-double-quote-verbatim'}
+      ]
+    },
+    'sigil-string-curly-brackets': {
+      begin: '(~[bs]?)([{])',
+      beginCaptures: {
+        1: {name: 'storage.type.string.erlang'},
+        2: {name: 'punctuation.definition.string.begin.erlang'}
+      },
+      end: '([}])',
+      endCaptures: {1: {name: 'punctuation.definition.string.end.erlang'}},
+      name: 'string.quoted.curly-brackets.sigil.erlang',
+      patterns: [{include: '#internal-string-body'}]
+    },
+    'sigil-string-curly-brackets-verbatim': {
+      begin: '(~[BS])([{])',
+      beginCaptures: {
+        1: {name: 'storage.type.string.erlang'},
+        2: {name: 'punctuation.definition.string.begin.erlang'}
+      },
+      end: '([}])',
+      endCaptures: {1: {name: 'punctuation.definition.string.end.erlang'}},
+      name: 'string.quoted.curly-brackets.sigil.erlang'
+    },
+    'sigil-string-double-quote': {
+      begin: '(~[bs]?)(")',
+      beginCaptures: {
+        1: {name: 'storage.type.string.erlang'},
+        2: {name: 'punctuation.definition.string.begin.erlang'}
+      },
+      end: '(\\2)',
+      endCaptures: {1: {name: 'punctuation.definition.string.end.erlang'}},
+      name: 'string.quoted.double.sigil.erlang',
+      patterns: [{include: '#internal-string-body'}]
+    },
+    'sigil-string-double-quote-verbatim': {
+      begin: '(~[BS])(")',
+      beginCaptures: {
+        1: {name: 'storage.type.string.erlang'},
+        2: {name: 'punctuation.definition.string.begin.erlang'}
+      },
+      end: '(\\2)',
+      endCaptures: {1: {name: 'punctuation.definition.string.end.erlang'}},
+      name: 'string.quoted.double.sigil.erlang'
+    },
+    'sigil-string-less-greater': {
+      begin: '(~[bs]?)(<)',
+      beginCaptures: {
+        1: {name: 'storage.type.string.erlang'},
+        2: {name: 'punctuation.definition.string.begin.erlang'}
+      },
+      end: '(>)',
+      endCaptures: {1: {name: 'punctuation.definition.string.end.erlang'}},
+      name: 'string.quoted.less-greater.sigil.erlang',
+      patterns: [{include: '#internal-string-body'}]
+    },
+    'sigil-string-less-greater-verbatim': {
+      begin: '(~[BS])(<)',
+      beginCaptures: {
+        1: {name: 'storage.type.string.erlang'},
+        2: {name: 'punctuation.definition.string.begin.erlang'}
+      },
+      end: '(>)',
+      endCaptures: {1: {name: 'punctuation.definition.string.end.erlang'}},
+      name: 'string.quoted.less-greater.sigil.erlang'
+    },
+    'sigil-string-parenthesis': {
+      begin: '(~[bs]?)([(])',
+      beginCaptures: {
+        1: {name: 'storage.type.string.erlang'},
+        2: {name: 'punctuation.definition.string.begin.erlang'}
+      },
+      end: '([)])',
+      endCaptures: {1: {name: 'punctuation.definition.string.end.erlang'}},
+      name: 'string.quoted.parenthesis.sigil.erlang',
+      patterns: [{include: '#internal-string-body'}]
+    },
+    'sigil-string-parenthesis-verbatim': {
+      begin: '(~[BS])([(])',
+      beginCaptures: {
+        1: {name: 'storage.type.string.erlang'},
+        2: {name: 'punctuation.definition.string.begin.erlang'}
+      },
+      end: '([)])',
+      endCaptures: {1: {name: 'punctuation.definition.string.end.erlang'}},
+      name: 'string.quoted.parenthesis.sigil.erlang'
+    },
+    'sigil-string-single-character': {
+      begin: '(~[bs]?)([/\\|`#])',
+      beginCaptures: {
+        1: {name: 'storage.type.string.erlang'},
+        2: {name: 'punctuation.definition.string.begin.erlang'}
+      },
+      end: '(\\2)',
+      endCaptures: {1: {name: 'punctuation.definition.string.end.erlang'}},
+      name: 'string.quoted.other.sigil.erlang',
+      patterns: [{include: '#internal-string-body'}]
+    },
+    'sigil-string-single-character-verbatim': {
+      begin: '(~[BS])([/\\|`#])',
+      beginCaptures: {
+        1: {name: 'storage.type.string.erlang'},
+        2: {name: 'punctuation.definition.string.begin.erlang'}
+      },
+      end: '(\\2)',
+      endCaptures: {1: {name: 'punctuation.definition.string.end.erlang'}},
+      name: 'string.quoted.other.sigil.erlang'
+    },
+    'sigil-string-single-quote': {
+      begin: "(~[bs]?)(')",
+      beginCaptures: {
+        1: {name: 'storage.type.string.erlang'},
+        2: {name: 'punctuation.definition.string.begin.erlang'}
+      },
+      end: '(\\2)',
+      endCaptures: {1: {name: 'punctuation.definition.string.end.erlang'}},
+      name: 'string.quoted.single.sigil.erlang',
+      patterns: [{include: '#internal-string-body'}]
+    },
+    'sigil-string-single-quote-verbatim': {
+      begin: "(~[BS])(')",
+      beginCaptures: {
+        1: {name: 'storage.type.string.erlang'},
+        2: {name: 'punctuation.definition.string.begin.erlang'}
+      },
+      end: '(\\2)',
+      endCaptures: {1: {name: 'punctuation.definition.string.end.erlang'}},
+      name: 'string.quoted.single.sigil.erlang'
+    },
+    'sigil-string-square-brackets': {
+      begin: '(~[bs]?)([\\[])',
+      beginCaptures: {
+        1: {name: 'storage.type.string.erlang'},
+        2: {name: 'punctuation.definition.string.begin.erlang'}
+      },
+      end: '([\\]])',
+      endCaptures: {1: {name: 'punctuation.definition.string.end.erlang'}},
+      name: 'string.quoted.square-brackets.sigil.erlang',
+      patterns: [{include: '#internal-string-body'}]
+    },
+    'sigil-string-square-brackets-verbatim': {
+      begin: '(~[BS])([\\[])',
+      beginCaptures: {
+        1: {name: 'storage.type.string.erlang'},
+        2: {name: 'punctuation.definition.string.begin.erlang'}
+      },
+      end: '([\\]])',
+      endCaptures: {1: {name: 'punctuation.definition.string.end.erlang'}},
+      name: 'string.quoted.square-brackets.sigil.erlang'
     },
     string: {
       begin: '(")',
@@ -859,43 +1142,10 @@ const grammar = {
       end: '(")',
       endCaptures: {1: {name: 'punctuation.definition.string.end.erlang'}},
       name: 'string.quoted.double.erlang',
-      patterns: [
-        {
-          captures: {
-            1: {name: 'punctuation.definition.escape.erlang'},
-            3: {name: 'punctuation.definition.escape.erlang'}
-          },
-          match: '(\\\\)([bdefnrstv\\\\\'"]|(\\^)[@-_]|[0-7]{1,3})',
-          name: 'constant.character.escape.erlang'
-        },
-        {match: '\\\\\\^?.?', name: 'invalid.illegal.string.erlang'},
-        {
-          captures: {
-            1: {name: 'punctuation.definition.placeholder.erlang'},
-            10: {name: 'punctuation.separator.placeholder-parts.erlang'},
-            12: {name: 'punctuation.separator.placeholder-parts.erlang'},
-            3: {name: 'punctuation.separator.placeholder-parts.erlang'},
-            4: {name: 'punctuation.separator.placeholder-parts.erlang'},
-            6: {name: 'punctuation.separator.placeholder-parts.erlang'},
-            8: {name: 'punctuation.separator.placeholder-parts.erlang'}
-          },
-          match:
-            '(~)((\\-)?\\d++|(\\*))?((\\.)(\\d++|(\\*)))?((\\.)((\\*)|.))?[~cfegswpWPBX#bx\\+ni]',
-          name: 'constant.other.placeholder.erlang'
-        },
-        {
-          captures: {
-            1: {name: 'punctuation.definition.placeholder.erlang'},
-            2: {name: 'punctuation.separator.placeholder-parts.erlang'}
-          },
-          match: '(~)(\\*)?(\\d++)?[~du\\-#fsacl]',
-          name: 'constant.other.placeholder.erlang'
-        },
-        {match: '~.?', name: 'invalid.illegal.string.erlang'}
-      ]
+      patterns: [{include: '#internal-string-body'}]
     },
     'symbolic-operator': {
-      match: '\\+\\+|\\+|--|-|\\*|/=|/|=/=|=:=|==|=<|=|<-|<|>=|>|!|::',
+      match: '\\+\\+|\\+|--|-|\\*|/=|/|=/=|=:=|==|=<|=|<-|<|>=|>|!|::|\\?=',
       name: 'keyword.operator.symbolic.erlang'
     },
     'textual-operator': {

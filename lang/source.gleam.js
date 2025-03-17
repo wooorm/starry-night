@@ -67,7 +67,7 @@ const grammar = {
       patterns: [
         {
           match:
-            '\\b(as|use|case|if|fn|import|let|assert|pub|type|opaque|const|todo|panic|else|try)\\b',
+            '\\b(as|use|case|if|fn|import|let|assert|pub|type|opaque|const|todo|panic|else|try|echo)\\b',
           name: 'keyword.control.gleam'
         },
         {match: '(<\\-|\\->)', name: 'keyword.operator.arrow.gleam'},

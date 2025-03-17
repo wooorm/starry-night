@@ -13,11 +13,13 @@ const grammar = {
   names: ['q#', 'qsharp'],
   patterns: [
     {include: '#comments'},
+    {include: '#functions'},
     {include: '#keywords'},
     {include: '#operators'},
     {include: '#types'},
     {include: '#constants'},
-    {include: '#strings'}
+    {include: '#strings'},
+    {include: '#variables'}
   ],
   repository: {
     comments: {
@@ -32,7 +34,53 @@ const grammar = {
           match: '\\b(true|false|Pauli(I|X|Y|Z))\\b',
           name: 'constant.language.qsharp'
         },
-        {match: '\\b(One|Zero)\\b', name: 'constant.other.result.qsharp'}
+        {match: '\\b(One|Zero)\\b', name: 'constant.other.result.qsharp'},
+        {match: '\\b[\\d_]*\\.?[\\d_]\\b', name: 'constant.numeric.qsharp'}
+      ]
+    },
+    functions: {
+      patterns: [
+        {
+          begin: '\\b(function)\\s+([A-Za-z0-9_]+)(\\()',
+          beginCaptures: {
+            1: {name: 'keyword.other.qsharp'},
+            2: {name: 'entity.name.function.qsharp'},
+            3: {name: 'punctuation.brackets.round.qsharp'}
+          },
+          end: '\\)',
+          endCaptures: {0: {name: 'punctuation.brackets.round.qsharp'}},
+          name: 'meta.function.definition.qsharp',
+          patterns: [
+            {include: '#comments'},
+            {include: '#functions'},
+            {include: '#keywords'},
+            {include: '#operators'},
+            {include: '#types'},
+            {include: '#constants'},
+            {include: '#strings'},
+            {include: '#variables'}
+          ]
+        },
+        {
+          begin: '\\b(?<!@)([A-Za-z0-9_]+)(\\()',
+          beginCaptures: {
+            1: {name: 'entity.name.function.qsharp'},
+            2: {name: 'punctuation.brackets.round.qsharp'}
+          },
+          end: '\\)',
+          endCaptures: {0: {name: 'punctuation.brackets.round.qsharp'}},
+          name: 'meta.function.call.qsharp',
+          patterns: [
+            {include: '#comments'},
+            {include: '#functions'},
+            {include: '#keywords'},
+            {include: '#operators'},
+            {include: '#types'},
+            {include: '#constants'},
+            {include: '#strings'},
+            {include: '#variables'}
+          ]
+        }
       ]
     },
     keywords: {
@@ -75,6 +123,11 @@ const grammar = {
             '\\b(Int|BigInt|Double|Bool|Qubit|Pauli|Result|Range|String|Unit|Ctl|Adj|is)\\b',
           name: 'storage.type.qsharp'
         }
+      ]
+    },
+    variables: {
+      patterns: [
+        {match: '\\b(?<!@)[A-Za-z0-9_]+\\b', name: 'variable.other.qsharp'}
       ]
     }
   },

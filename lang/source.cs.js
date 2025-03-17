@@ -732,11 +732,11 @@ const grammar = {
     },
     'enum-declaration': {
       begin: '(?=\\benum\\b)',
-      end: '(?<=\\})',
+      end: '(?<=\\})|(?=;)',
       patterns: [
         {
           begin: '(?=enum)',
-          end: '(?=\\{)',
+          end: '(?=\\{)|(?=;)',
           patterns: [
             {include: '#comment'},
             {
@@ -1148,7 +1148,7 @@ const grammar = {
     },
     'interface-declaration': {
       begin: '(?=\\binterface\\b)',
-      end: '(?<=\\})',
+      end: '(?<=\\})|(?=;)',
       patterns: [
         {
           begin: '(?x)\n(interface)\\b\\s+\n(@?[_[:alpha:]][_[:alnum:]]*)',
@@ -1156,7 +1156,7 @@ const grammar = {
             1: {name: 'storage.type.interface.cs'},
             2: {name: 'entity.name.type.interface.cs'}
           },
-          end: '(?=\\{)',
+          end: '(?=\\{)|(?=;)',
           patterns: [
             {include: '#comment'},
             {include: '#type-parameter-list'},
@@ -1217,7 +1217,7 @@ const grammar = {
     intrusive: {patterns: [{include: '#preprocessor'}, {include: '#comment'}]},
     'invocation-expression': {
       begin:
-        '(?x)\n(?:\n  (?:(\\?)\\s*)?                                    # preceding null-conditional operator?\n  (\\.)\\s*|                                        # preceding dot?\n  (->)\\s*                                         # preceding pointer arrow?\n)?\n(@?[_[:alpha:]][_[:alnum:]]*)\\s*                  # method name\n(\n  <\n  (?<type_args>\n    [^<>()]++|\n    <\\g<type_args>*+>|\n    \\(\\g<type_args>*+\\)\n  )*+\n  >\\s*\n)?                                                # type arguments\n(?=\\()                                            # open paren of argument list',
+        '(?x)\n(?:\n  (?:(\\?)\\s*)?                                    # preceding null-conditional operator?\n  (\\.)\\s*|                                        # preceding dot?\n  (->)\\s*                                         # preceding pointer arrow?\n)?\n(@?[_[:alpha:]][_[:alnum:]]*)\\s*                  # method name\n(\n  <\n  (?<type_args>\n    [^<>()]|\n    \\((?:[^<>()]|<[^<>()]*>|\\([^<>()]*\\))*\\)|\n    <\\g<type_args>*>\n  )*\n  >\\s*\n)?                                                # type arguments\n(?=\\()                                            # open paren of argument list',
       beginCaptures: {
         1: {name: 'keyword.operator.null-conditional.cs'},
         2: {name: 'punctuation.accessor.cs'},

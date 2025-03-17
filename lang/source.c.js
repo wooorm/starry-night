@@ -14,6 +14,7 @@ const grammar = {
     '.c',
     '.cats',
     '.h',
+    '.h.in',
     '.idc',
     '.opencl',
     '.upc',

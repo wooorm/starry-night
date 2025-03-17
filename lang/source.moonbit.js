@@ -18,12 +18,50 @@ const grammar = {
     {include: '#keywords'},
     {include: '#functions'},
     {include: '#support'},
+    {include: '#attribute'},
     {include: '#types'},
     {include: '#modules'},
     {include: '#variables'}
   ],
   repository: {
-    comments: {patterns: [{match: '//.*', name: 'comment.line'}]},
+    attribute: {
+      patterns: [
+        {
+          captures: {
+            1: {name: 'keyword.control.directive'},
+            2: {
+              patterns: [
+                {include: '#strings'},
+                {match: '[a-zA-Z0-9_. ]+', name: 'entity.name.tag'},
+                {match: '=', name: 'keyword.operator.attribute.moonbit'}
+              ]
+            }
+          },
+          match: '(#[a-z][A-Za-z0-9_. ]*)(.*)'
+        }
+      ]
+    },
+    comments: {
+      patterns: [
+        {match: '//[^/].*', name: 'comment.line'},
+        {
+          begin: '///',
+          name: 'comment.block.documentation.moonbit',
+          patterns: [
+            {
+              begin: '\\s*```',
+              beginCaptures: {0: {name: 'markup.fenced_code.block.markdown'}},
+              end: '\\s*```',
+              endCaptures: {0: {name: 'markup.fenced_code.block.markdown'}},
+              name: 'meta.embedded.line.moonbit',
+              patterns: [{include: '$self'}]
+            },
+            {match: '.*', name: 'comment.block.documentation.moonbit'}
+          ],
+          while: '///'
+        }
+      ]
+    },
     constants: {
       patterns: [
         {
@@ -33,7 +71,16 @@ const grammar = {
         {match: '(?<=\\.)\\d((?=\\.)|\\b)', name: 'constant.numeric.moonbit'},
         {match: '\\b\\d+(\\.)\\d+\\b', name: 'constant.numeric.moonbit'},
         {
-          match: '\\b0[XxOoBb][\\dAaBbCcDdEeFf]+(U)?(L)?\\b',
+          match: '\\b\\d[\\d_]*(\\.)[\\d_]+[Ee][+-]?\\d[\\d_]+\\b',
+          name: 'constant.numeric.moonbit'
+        },
+        {
+          match: '\\b0[XxOoBb][\\dAaBbCcDdEeFf_]+(U)?(L)?(?!\\.)\\b',
+          name: 'constant.numeric.moonbit'
+        },
+        {
+          match:
+            '\\b0[Xx][\\dAaBbCcDdEeFf_]+(\\.)[\\dAaBbCcDdEeFf_]+[Pp][+-]?[\\dAaBbCcDdEeFf_]+\\b',
           name: 'constant.numeric.moonbit'
         },
         {match: '\\b(true|false|\\(\\))\\b', name: 'constant.language.moonbit'}
@@ -72,11 +119,11 @@ const grammar = {
             3: {name: 'entity.name.function.moonbit'}
           },
           match:
-            '\\b(fn)\\s*(?:([A-Z][A-Za-z0-9_]*)::)?([a-z0-9_][A-Za-z0-9_]*)?\\b'
+            '\\b(fn)\\b\\s*(?:([A-Z][A-Za-z0-9_]*)::)?([a-z0-9_][A-Za-z0-9_]*)?\\b'
         },
         {
           begin:
-            '(?!\\bfn\\s+)(?:\\.|::)?([a-z0-9_][A-Za-z0-9_]*(\\!|\\?)?)(\\()',
+            '(?!\\bfn\\s+)(?:\\.|::)?([a-z0-9_][A-Za-z0-9_]*(\\!|\\?|\\!\\!)?)\\s*(\\()',
           beginCaptures: {
             1: {name: 'entity.name.function.moonbit'},
             2: {name: 'punctuation.brackets.round.moonbit'}
@@ -117,12 +164,12 @@ const grammar = {
       patterns: [
         {
           match:
-            '\\b(guard|if|while|break|continue|return|try|catch|except|raise|match|else|as|in|loop|for)\\b',
+            '\\b(guard|if|while|break|continue|return|try|catch|except|raise|match|else|as|in|is|loop|for|async)\\b',
           name: 'keyword.control.moonbit'
         },
         {
           match:
-            '\\b(type!|(type|typealias|let|enum|struct|import|trait|derive|test|impl|with)\\b)',
+            '\\b(type!|(type|typealias|let|const|enum|struct|import|trait|traitalias|derive|test|impl|with)\\b)',
           name: 'keyword.moonbit'
         },
         {match: '\\b(self)\\b', name: 'variable.language.moonbit'},
@@ -135,12 +182,16 @@ const grammar = {
         {match: '=', name: 'keyword.operator.assignment.moonbit'},
         {match: '\\|>', name: 'keyword.operator.other.moonbit'},
         {
-          match: '(===|==|!=|>=|<=|(?<!-)>|<)',
+          match: '(===|==|!=|>=|<=|(?<!-)(?<!\\|)>(?!>)|<(?!<))',
           name: 'keyword.operator.comparison.moonbit'
         },
         {
           match: '(\\bnot\\b|&&|\\|\\|)',
           name: 'keyword.operator.logical.moonbit'
+        },
+        {
+          match: '(\\|(?!\\|)(?!>)|&(?!&)|\\^|<<|>>)',
+          name: 'keyword.operator.bitwise.moonbit'
         },
         {match: '(\\+|-(?!>)|\\*|%|/)', name: 'keyword.operator.math.moonbit'}
       ]

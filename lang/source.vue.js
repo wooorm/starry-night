@@ -13,6 +13,7 @@ const grammar = {
   extensions: ['.vue'],
   names: ['vue'],
   patterns: [
+    {include: '#vue-comments'},
     {include: 'text.html.basic#comment'},
     {include: '#self-closing-tag'},
     {
@@ -318,7 +319,7 @@ const grammar = {
               begin: '(?<=>)',
               end: '(?=<\\/)',
               name: 'source.json.comments',
-              patterns: []
+              patterns: [{include: 'source.json.comments'}]
             }
           ]
         },
@@ -559,6 +560,19 @@ const grammar = {
           patterns: [{include: '#tag-stuff'}, {include: '#html-stuff'}]
         }
       ]
+    },
+    'vue-comments': {patterns: [{include: '#vue-comments-key-value'}]},
+    'vue-comments-key-value': {
+      begin: '(<!--)\\s*(@)([\\w$]+)(?=\\s)',
+      beginCaptures: {
+        1: {name: 'punctuation.definition.comment.vue'},
+        2: {name: 'punctuation.definition.block.tag.comment.vue'},
+        3: {name: 'storage.type.class.comment.vue'}
+      },
+      end: '(-->)',
+      endCaptures: {1: {name: 'punctuation.definition.comment.vue'}},
+      name: 'comment.block.vue',
+      patterns: [{include: 'source.json#value'}]
     },
     'vue-directives': {
       patterns: [

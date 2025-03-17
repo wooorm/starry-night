@@ -9,7 +9,7 @@
 
 /** @type {Grammar} */
 const grammar = {
-  extensions: ['.cls', '.trigger'],
+  extensions: ['.cls', '.apex', '.trigger'],
   names: ['apex'],
   patterns: [
     {include: '#javadoc-comment'},

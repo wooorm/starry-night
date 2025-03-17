@@ -9,7 +9,6 @@
 
 /** @type {Grammar} */
 const grammar = {
-  dependencies: ['source.cairo'],
   extensions: [],
   names: ['cairo-zero'],
   patterns: [
@@ -19,11 +18,11 @@ const grammar = {
         1: {name: 'keyword.control.if'},
         2: {name: 'entity.name.condition'}
       },
-      contentName: 'source.cairo',
+      contentName: 'source.cairo0',
       end: '\\}',
       endCaptures: {0: {name: 'keyword.control.end'}},
       name: 'meta.control.if',
-      patterns: [{include: 'source.cairo'}]
+      patterns: [{include: 'source.cairo0'}]
     },
     {
       begin: '\\b(with)\\s+(.+)\\s*\\{',
@@ -31,11 +30,11 @@ const grammar = {
         1: {name: 'keyword.control.with'},
         2: {name: 'entity.name.identifiers'}
       },
-      contentName: 'source.cairo',
+      contentName: 'source.cairo0',
       end: '\\}',
       endCaptures: {0: {name: 'keyword.control.end'}},
       name: 'meta.control.with',
-      patterns: [{include: 'source.cairo'}]
+      patterns: [{include: 'source.cairo0'}]
     },
     {
       begin: '\\b(with_attr)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s*[({]',
@@ -43,11 +42,11 @@ const grammar = {
         1: {name: 'keyword.control.with_attr'},
         2: {name: 'entity.name.function'}
       },
-      contentName: 'source.cairo',
+      contentName: 'source.cairo0',
       end: '\\}',
       endCaptures: {0: {name: 'keyword.control.end'}},
       name: 'meta.control.with_attr',
-      patterns: [{include: 'source.cairo'}]
+      patterns: [{include: 'source.cairo0'}]
     },
     {match: '\\belse\\b', name: 'keyword.control.else'},
     {match: '\\b(call|jmp|ret|abs|rel|if)\\b', name: 'keyword.other.opcode'},
@@ -66,11 +65,11 @@ const grammar = {
         1: {name: 'storage.type.function.cairo'},
         2: {name: 'entity.name.function'}
       },
-      contentName: 'source.cairo',
+      contentName: 'source.cairo0',
       end: '\\}',
       endCaptures: {0: {name: 'storage.type.function.cairo'}},
       name: 'meta.function.cairo',
-      patterns: [{include: 'source.cairo'}]
+      patterns: [{include: 'source.cairo0'}]
     },
     {
       begin: '\\b(struct|namespace)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s*\\{',
@@ -78,11 +77,11 @@ const grammar = {
         1: {name: 'storage.type.function.cairo'},
         2: {name: 'entity.name.function'}
       },
-      contentName: 'source.cairo',
+      contentName: 'source.cairo0',
       end: '\\}',
       endCaptures: {0: {name: 'storage.type.function.cairo'}},
       name: 'meta.function.cairo',
-      patterns: [{include: 'source.cairo'}]
+      patterns: [{include: 'source.cairo0'}]
     },
     {match: '\\b[+-]?[0-9]+\\b', name: 'constant.numeric.decimal'},
     {match: '\\b[+-]?0x[0-9a-fA-F]+\\b', name: 'constant.numeric.hexadecimal'},

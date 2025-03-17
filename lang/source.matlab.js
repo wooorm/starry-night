@@ -342,6 +342,10 @@ const grammar = {
                 3: {
                   patterns: [
                     {
+                      match: ',',
+                      name: 'punctuation.separator.modifier.comma.matlab'
+                    },
+                    {
                       match: '[a-zA-Z][a-zA-Z0-9_]*',
                       name: 'storage.modifier.properties.matlab'
                     },
@@ -350,16 +354,20 @@ const grammar = {
                       beginCaptures: {
                         1: {name: 'keyword.operator.assignment.matlab'}
                       },
-                      end: ',|(?=\\))',
+                      end: '(?=\\)|,)',
                       patterns: [
+                        {include: '#string'},
                         {
                           match: 'true|false',
                           name: 'constant.language.boolean.matlab'
                         },
                         {
-                          match: 'public|protected|private',
+                          match: 'public|protected|private|immutable',
                           name: 'storage.modifier.access.matlab'
-                        }
+                        },
+                        {include: '#curly_brackets'},
+                        {include: '#metaclass_literal'},
+                        {match: '[0-9]+', name: 'constant.integer.matlab'}
                       ]
                     }
                   ]
@@ -378,21 +386,32 @@ const grammar = {
                 3: {
                   patterns: [
                     {
+                      match: ',',
+                      name: 'punctuation.separator.modifier.comma.matlab'
+                    },
+                    {
                       match: '[a-zA-Z][a-zA-Z0-9_]*',
                       name: 'storage.modifier.methods.matlab'
                     },
                     {
-                      begin: '=\\s*',
-                      end: ',|(?=\\))',
+                      begin: '(=)\\s*',
+                      beginCaptures: {
+                        1: {name: 'keyword.operator.assignment.matlab'}
+                      },
+                      end: '(?=\\)|,)',
                       patterns: [
+                        {include: '#string'},
                         {
                           match: 'true|false',
                           name: 'constant.language.boolean.matlab'
                         },
                         {
-                          match: 'public|protected|private',
+                          match: 'public|protected|private|immutable',
                           name: 'storage.modifier.access.matlab'
-                        }
+                        },
+                        {include: '#curly_brackets'},
+                        {include: '#metaclass_literal'},
+                        {match: '[0-9]+', name: 'constant.integer.matlab'}
                       ]
                     }
                   ]
@@ -411,21 +430,32 @@ const grammar = {
                 3: {
                   patterns: [
                     {
-                      match: '[a-zA-Z][a-zA-Z0-9_]*',
-                      name: 'variable.parameter.events.matlab'
+                      match: ',',
+                      name: 'punctuation.separator.modifier.comma.matlab'
                     },
                     {
-                      begin: '=\\s*',
-                      end: ',|(?=\\))',
+                      match: '[a-zA-Z][a-zA-Z0-9_]*',
+                      name: 'storage.modifier.events.matlab'
+                    },
+                    {
+                      begin: '(=)\\s*',
+                      beginCaptures: {
+                        1: {name: 'keyword.operator.assignment.matlab'}
+                      },
+                      end: '(?=\\)|,)',
                       patterns: [
+                        {include: '#string'},
                         {
                           match: 'true|false',
                           name: 'constant.language.boolean.matlab'
                         },
                         {
-                          match: 'public|protected|private',
+                          match: 'public|protected|private|immutable',
                           name: 'storage.modifier.access.matlab'
-                        }
+                        },
+                        {include: '#curly_brackets'},
+                        {include: '#metaclass_literal'},
+                        {match: '[0-9]+', name: 'constant.integer.matlab'}
                       ]
                     }
                   ]

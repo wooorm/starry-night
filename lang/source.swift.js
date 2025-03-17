@@ -1952,11 +1952,11 @@ const grammar = {
               ]
             },
             1: {name: 'punctuation.definition.string.begin.regexp.swift'},
-            12: {name: 'punctuation.definition.string.end.regexp.swift'},
-            13: {name: 'invalid.illegal.returns-not-allowed.regexp'}
+            8: {name: 'punctuation.definition.string.end.regexp.swift'},
+            9: {name: 'invalid.illegal.returns-not-allowed.regexp'}
           },
           match:
-            "(?x)\n(((\\#+)?)/)     # (1) for captures, (2) for matching end, (3) for conditionals\n(?(3)|(?!/))   # is not a comment\n(?(3)|(?!\\s))  # does not start with a space or tab\n(\\\\\\s)? # (4) may start with an escaped space or tab\n(?<guts>\n  (?>   # no backtracking, avoids issues with negative lookbehind at end\n    (?:\n      \\\\Q\n        (?:(?!\\\\E)(?!/\\2).)*+\n        (?:\\\\E\n          # A quoted sequence may not have a closing E, in which case it extends to the end of the regex\n          | (?(3)|(?<!\\s))(?=/\\2)\n        )\n      | \\\\.\n      | \\(\\?\\#[^)]*\\)\n      | \\(\\?\n          # we only support a fixed maximum number of braces because otherwise we can't balance the number of open and close braces\n          \\{(?<g1>\\{)?+(?<g2>\\{)?+(?<g3>\\{)?+(?<g4>\\{)?+(?<g5>\\{)?+\n          .+?\n          \\}(?(<g1>)\\})(?(<g2>)\\})(?(<g3>)\\})(?(<g4>)\\})(?(<g5>)\\})\n          (?:\\[(?!\\d)\\w+\\])?\n          [X<>]?\n        \\)\n      | (?<class>\\[ (?:\\\\. | [^\\[\\]] | \\g<class>)+ \\])\n      | \\(\\g<guts>?+\\)\n      | (?:(?!/\\2)[^()\\[\\\\])+  # any character (until end)\n    )+\n  )\n)?+\n# may end with a space only if it is an extended literal or contains only a single escaped space\n(?(3)|(?(5)(?<!\\s)))\n(/\\2)     # (12)\n| \\#+/.+(\\n)",
+            '(?x)\n(?!/\\s)         # non-extended regex literals may not start with a space or tab\n(?!//)          # disambiguation with line comments (redundant since comment rules occur earlier)\n(((\\#+)?)/)     # (1) for captures, (2) for matching end, (3) for conditionals\n(\\\\\\s)? # (4) may start with an escaped space or tab\n(?<guts>\n  (?>   # no backtracking, avoids issues with negative lookbehind at end\n    (?:\n      \\\\Q\n        (?:(?!\\\\E)(?!/\\2).)*+\n        (?:\\\\E\n          # A quoted sequence may not have a closing E, in which case it extends to the end of the regex\n          | (?(3)|(?<!\\s))(?=/\\2)\n        )\n      | \\\\.\n      | \\(\\?\\#[^)]*\\)\n      | \\(\\?\n          # InterpolatedCallout\n          (?>(\\{(?:\\g<-1>|(?!{).*?)\\}))\n          (?:\\[(?!\\d)\\w+\\])?\n          [X<>]?\n        \\)\n      | (?<class>\\[ (?:\\\\. | [^\\[\\]] | \\g<class>)+ \\])\n      | \\(\\g<guts>?+\\)\n      | (?:(?!/\\2)[^()\\[\\\\])+  # any character (until end)\n    )+\n  )\n)?+\n# may end with a space only if it is an extended literal or contains only a single escaped space\n(?(3)|(?(5)(?<!\\s)))\n(/\\2)     # (12)\n| \\#+/.+(\\n)',
           name: 'string.regexp.line.swift'
         }
       ]
@@ -1989,16 +1989,30 @@ const grammar = {
         {
           captures: {
             1: {name: 'constant.character.escape.backslash.regexp'},
-            3: {name: 'variable.other.group-name.regexp'},
-            4: {name: 'keyword.operator.recursion-level.regexp'},
+            2: {name: 'variable.other.group-name.regexp'},
+            3: {name: 'keyword.operator.recursion-level.regexp'},
+            4: {name: 'constant.numeric.integer.decimal.regexp'},
             5: {name: 'constant.numeric.integer.decimal.regexp'},
-            6: {name: 'constant.numeric.integer.decimal.regexp'},
-            7: {name: 'keyword.operator.recursion-level.regexp'},
-            8: {name: 'constant.numeric.integer.decimal.regexp'},
-            9: {name: 'constant.character.escape.backslash.regexp'}
+            6: {name: 'keyword.operator.recursion-level.regexp'},
+            7: {name: 'constant.numeric.integer.decimal.regexp'},
+            8: {name: 'constant.character.escape.backslash.regexp'}
           },
           match:
-            "(?x)(\\\\[gk](<)|\\\\[gk]') (?: ((?!\\d)\\w+) (?:([+-])(\\d+))? | ([+-]?\\d+) (?:([+-])(\\d+))? ) ((?(2)>|'))"
+            '(?x)(\\\\[gk]<) (?: ((?!\\d)\\w+) (?:([+-])(\\d+))? | ([+-]?\\d+) (?:([+-])(\\d+))? ) (>)'
+        },
+        {
+          captures: {
+            1: {name: 'constant.character.escape.backslash.regexp'},
+            2: {name: 'variable.other.group-name.regexp'},
+            3: {name: 'keyword.operator.recursion-level.regexp'},
+            4: {name: 'constant.numeric.integer.decimal.regexp'},
+            5: {name: 'constant.numeric.integer.decimal.regexp'},
+            6: {name: 'keyword.operator.recursion-level.regexp'},
+            7: {name: 'constant.numeric.integer.decimal.regexp'},
+            8: {name: 'constant.character.escape.backslash.regexp'}
+          },
+          match:
+            "(?x)(\\\\[gk]') (?: ((?!\\d)\\w+) (?:([+-])(\\d+))? | ([+-]?\\d+) (?:([+-])(\\d+))? ) (')"
         },
         {
           captures: {
@@ -2064,9 +2078,9 @@ const grammar = {
         18: {name: 'punctuation.definition.group.regexp'},
         19: {name: 'keyword.control.callout.regexp'},
         2: {name: 'keyword.control.callout.regexp'},
-        26: {name: 'variable.language.tag-name.regexp'},
-        27: {name: 'keyword.control.callout.regexp'},
-        28: {name: 'punctuation.definition.group.regexp'},
+        21: {name: 'variable.language.tag-name.regexp'},
+        22: {name: 'keyword.control.callout.regexp'},
+        23: {name: 'punctuation.definition.group.regexp'},
         3: {name: 'constant.numeric.integer.decimal.regexp'},
         4: {name: 'entity.name.function.callout.regexp'},
         5: {name: 'entity.name.function.callout.regexp'},
@@ -2076,7 +2090,7 @@ const grammar = {
         9: {name: 'entity.name.function.callout.regexp'}
       },
       match:
-        "(?x)\n# PCRECallout\n(\\()(?<keyw>\\?C)\n  (?:\n    (?<num>\\d+)\n    | `(?<name>(?:[^`]|``)*)`\n    | '(?<name>(?:[^']|'')*)'\n    | \"(?<name>(?:[^\"]|\"\")*)\"\n    | \\^(?<name>(?:[^\\^]|\\^\\^)*)\\^\n    | %(?<name>(?:[^%]|%%)*)%\n    | \\#(?<name>(?:[^#]|\\#\\#)*)\\#\n    | \\$(?<name>(?:[^$]|\\$\\$)*)\\$\n    | \\{(?<name>(?:[^}]|\\}\\})*)\\}\n  )?\n(\\))\n# NamedCallout\n| (\\()(?<keyw>\\*)\n    (?<name>(?!\\d)\\w+)\n    (?:\\[(?<tag>(?!\\d)\\w+)\\])?\n    (?:\\{ [^,}]+ (?:,[^,}]+)* \\})?\n  (\\))\n# InterpolatedCallout\n| (\\()(?<keyw>\\?)\n    # we only support a fixed maximum number of braces because otherwise we can't balance the number of open and close braces\n    (\\{(?<g1>\\{)?+(?<g2>\\{)?+(?<g3>\\{)?+(?<g4>\\{)?+(?<g5>\\{)?+) .+? \\}(?(<g1>)\\})(?(<g2>)\\})(?(<g3>)\\})(?(<g4>)\\})(?(<g5>)\\})\n    (?:\\[(?<tag>(?!\\d)\\w+)\\])?\n    (?<keyw>[X<>]?)\n  (\\))",
+        '(?x)\n# PCRECallout\n(\\()(?<keyw>\\?C)\n  (?:\n    (?<num>\\d+)\n    | `(?<name>(?:[^`]|``)*)`\n    | \'(?<name>(?:[^\']|\'\')*)\'\n    | "(?<name>(?:[^"]|"")*)"\n    | \\^(?<name>(?:[^\\^]|\\^\\^)*)\\^\n    | %(?<name>(?:[^%]|%%)*)%\n    | \\#(?<name>(?:[^#]|\\#\\#)*)\\#\n    | \\$(?<name>(?:[^$]|\\$\\$)*)\\$\n    | \\{(?<name>(?:[^}]|\\}\\})*)\\}\n  )?\n(\\))\n# NamedCallout\n| (\\()(?<keyw>\\*)\n    (?<name>(?!\\d)\\w+)\n    (?:\\[(?<tag>(?!\\d)\\w+)\\])?\n    (?:\\{ [^,}]+ (?:,[^,}]+)* \\})?\n  (\\))\n# InterpolatedCallout\n| (\\()(?<keyw>\\?)\n    (?>(\\{(?:\\g<-1>|(?!{).*?)\\}))\n    (?:\\[(?<tag>(?!\\d)\\w+)\\])?\n    (?<keyw>[X<>]?)\n  (\\))',
       name: 'meta.callout.regexp'
     },
     'literals-regular-expression-literal-character-properties': {

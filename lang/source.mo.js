@@ -325,7 +325,7 @@ const grammar = {
           name: 'keyword.statement.motoko'
         },
         {
-          match: '\\b(flexible|query|stable|composite)\\b',
+          match: '\\b(query|composite|stable|flexible|persistent|transient)\\b',
           name: 'keyword.other.motoko'
         }
       ]
@@ -344,7 +344,7 @@ const grammar = {
       name: 'keyword.operator.logical.motoko'
     },
     'loop-statement-keyword': {
-      match: '\\b(while|repeat|for|in|loop)\\b',
+      match: '\\b(while|for|in|loop)\\b',
       name: 'keyword.control.loop.motoko'
     },
     'null-literal': {match: '\\bnull\\b', name: 'constant.null.motoko'},

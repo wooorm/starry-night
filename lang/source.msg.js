@@ -10,7 +10,7 @@
 /** @type {Grammar} */
 const grammar = {
   extensions: ['.msg'],
-  names: ['omnetpp-msg'],
+  names: ['omnet++-msg', 'omnetpp-msg'],
   patterns: [
     {include: '#keyword'},
     {include: '#comment'},

@@ -35,6 +35,7 @@ const grammar = {
     '.fxml',
     '.glade',
     '.gmx',
+    '.gpx',
     '.grxml',
     '.hzp',
     '.iml',

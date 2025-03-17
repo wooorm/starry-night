@@ -50,11 +50,11 @@ const grammar = {
     },
     {
       captures: {
-        1: {name: 'constant.cobol'},
+        1: {name: 'constant.numeric.cobol'},
         2: {name: 'comment.line.cobol.fixed'}
       },
       match:
-        '(^[0-9a-zA-Z\\s\\$#%\\.@\\- ][0-9a-zA-Z\\s\\$#%\\.@\\- ][0-9a-zA-Z\\s\\$#%\\.@\\- ][0-9a-zA-Z\\s\\$#%\\.@\\- ][0-9a-zA-Z\\s\\$#%\\.@\\- ][0-9a-zA-Z\\s\\$#%\\.@\\- ])(\\*.*$)'
+        '(^[0-9a-zA-Z\\s\\$#%\\.@\\- +][0-9a-zA-Z\\s\\$#%\\.@\\- +][0-9a-zA-Z\\s\\$#%\\.@\\- +][0-9a-zA-Z\\s\\$#%\\.@\\- +][0-9a-zA-Z\\s\\$#%\\.@\\- +][0-9a-zA-Z\\s\\$#%\\.@\\- +])(\\*.*$)'
     },
     {
       captures: {
@@ -210,7 +210,7 @@ const grammar = {
     {match: '[oO]".*"', name: 'invalid.illegal.octal.cobol'},
     {
       match: '(#)([0-9a-zA-Z][a-zA-Z\\-0-9]+)',
-      name: 'meta.symbol.cobol.forced'
+      name: 'meta.symbol.forced.cobol'
     },
     {
       begin:
@@ -636,7 +636,7 @@ const grammar = {
     },
     {
       match:
-        '(?<![-_])(?i:computational-1|comp-1|computational-2|comp-2|computational-3|comp-3|computational-4|comp-4|computational-x|comp-x|computational-5|comp-5|computational-6|comp-6|computational-n|comp-n|packed-decimal|index|float|double|signed-short|unsigned-short|signed-int|unsigned-int|signed-long|unsigned-long|comp|computational|group-usage|usage\\sis\\sdisplay|usage\\sis\\sfont|usage\\s+display|binary|mutex-pointer|data-pointer|thread-pointer|sempahore-pointer|event-pointer|program-pointer|procedure-pointer|pointer|window|subwindow|control-type|thread|menu|variant|layout-manager|occurs|typedef|any|times|display\\s+blank\\s+when|blank\\s+when|blank\\s+screen|blank|usage\\sis|is\\spartial|usage|justified|just|right|signed|trailing\\s+separate|sign|seperate|sql)(?=\\s|\\.|\\))',
+        '(?<![-_])(?i:computational-1|comp-1|computational-2|comp-2|computational-3|comp-3|computational-4|comp-4|computational-x|comp-x|computational-5|comp-5|computational-6|comp-6|computational-n|comp-n|packed-decimal|index|float|double|signed-short|unsigned-short|signed-int|unsigned-int|signed-long|unsigned-long|comp|computational|group-usage|usage\\sis\\sdisplay|usage\\sis\\sfont|usage\\s+display|binary|mutex-pointer|data-pointer|thread-pointer|sempahore-pointer|event-pointer|program-pointer|procedure-pointer|pointer-32|pointer|window|subwindow|control-type|thread|menu|variant|layout-manager|occurs|typedef|any|times|display\\s+blank\\s+when|blank\\s+when|blank\\s+screen|blank|usage\\sis|is\\spartial|usage|justified|just|right|signed|trailing\\s+separate|sign|seperate|sql)(?=\\s|\\.|\\))',
       name: 'storage.type.picture.cobol'
     },
     {match: '(?i:byte-length)\\s+[0-9]+', name: 'storage.type.length.cobol'},
@@ -746,7 +746,7 @@ const grammar = {
     },
     {
       match:
-        '([a-zA-Z-0-9_]*[a-zA-Z0-9]|([#]?[0-9a-zA-Z]+[a-zA-Z-0-9_]*[a-zA-Z0-9]))',
+        '([a-zA-Z-0-9-_]*[a-zA-Z0-9]|([#]?[0-9a-zA-Z]+[a-zA-Z-0-9_-]*[a-zA-Z0-9]))',
       name: 'meta.symbol.cobol'
     }
   ],

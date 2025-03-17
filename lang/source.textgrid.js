@@ -28,12 +28,15 @@ const grammar = {
       name: 'string.quoted.double.textgrid'
     },
     {
-      match: '(x(min|max)|class|name|text|size)',
+      match: '(x(min|max)|class|name|text|size|number|mark)',
       name: 'constant.language.textgrid'
     },
-    {match: '(intervals|item)', name: 'entity.name.type.module.textgrid'},
     {
-      match: '(File type|Object class|\\<exists\\>)',
+      match: '(intervals|points|item)',
+      name: 'entity.name.type.module.textgrid'
+    },
+    {
+      match: '(File type|Object class|\\<exists\\>|\\<absent\\>)',
       name: 'keyword.control.language.textgrid'
     },
     {match: '=', name: 'keyword.operator.key.textgrid'},

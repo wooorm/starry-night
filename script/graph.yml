@@ -17,6 +17,9 @@ objdump.x86asm:
 source.actionscript.3:
   text.html.asdoc: true
   text.xml: true
+source.answersetprogramming:
+  source.lua: false
+  source.python: false
 source.apl:
   source.css: false
   source.js: false
@@ -56,7 +59,6 @@ source.c.ec:
 source.c.nwscript:
   source.c: true
 source.cairo0:
-  source.cairo: true
   source.python: false
 source.camlp4.ocaml:
   source.ocaml: true
@@ -234,6 +236,30 @@ source.inno:
   source.pascal: true
 source.inputrc:
   etc: true
+source.jai:
+  source.batchfile: false
+  source.c: false
+  source.c++: false
+  source.cs: false
+  source.css: false
+  source.glsl: false
+  source.hlsl: false
+  source.java: false
+  source.js: false
+  source.json: false
+  source.json.comments: false
+  source.lua: false
+  source.makefile: false
+  source.powershell: false
+  source.python: false
+  source.shaderlab: false
+  source.shell: false
+  source.sql: false
+  source.toml: false
+  source.ts: false
+  source.yaml: false
+  text.xml: false
+  text.xml.xsl: false
 source.java:
   text.html.javadoc: false
 source.jflex:
@@ -301,6 +327,7 @@ source.lean.markdown:
   source.js: false
   source.js.regexp: false
   source.json: false
+  source.json.comments: false
   source.lua: false
   source.makefile: false
   source.objc: false
@@ -348,6 +375,7 @@ source.lean4.markdown:
   source.js: false
   source.js.regexp: false
   source.json: false
+  source.json.comments: false
   source.lua: false
   source.makefile: false
   source.objc: false
@@ -684,6 +712,7 @@ source.vue:
   source.graphql: false
   source.js: false
   source.json: false
+  source.json.comments: false
   source.postcss: false
   source.sass: false
   source.stylus: false
@@ -701,6 +730,8 @@ source.win32-messages:
   source.c: false
 source.xc:
   source.c: true
+source.xmake:
+  source.c: false
 source.xq:
   source.jsoniq: false
 source.xtend:
@@ -831,6 +862,7 @@ text.html.markdown.d2:
   source.js: false
   source.js.regexp: false
   source.json: false
+  source.json.comments: false
   source.lua: false
   source.makefile: false
   source.objc: false

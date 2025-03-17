@@ -19,9 +19,9 @@ const grammar = {
       endCaptures: {1: {name: 'keyword.module.curry'}},
       name: 'meta.declaration.module.curry',
       patterns: [
+        {include: '#comments'},
         {include: '#module_name'},
         {include: '#module_exports'},
-        {include: '#comments'},
         {match: '[a-z]+', name: 'invalid'}
       ]
     },
@@ -31,13 +31,13 @@ const grammar = {
       end: '(^(?!\\s))',
       name: 'meta.import.curry',
       patterns: [
+        {include: '#comments'},
         {
           match: '\\b(qualified|as|hiding)\\b',
           name: 'keyword.other.curry keyword.import.curry'
         },
         {include: '#module_name'},
-        {include: '#module_exports'},
-        {include: '#comments'}
+        {include: '#module_exports'}
       ]
     },
     {
@@ -132,6 +132,7 @@ const grammar = {
       end: '^(?!\\1\\s)',
       name: 'meta.declaration.data.curry',
       patterns: [
+        {include: '#comments'},
         {match: 'where', name: 'keyword.declaration.data.curry'},
         {
           begin: '([=\\|])',
@@ -145,7 +146,6 @@ const grammar = {
         {include: '#deriving'},
         {include: '#constructor_signature'},
         {include: '#record_declaration'},
-        {include: '#comments'},
         {include: '#type'}
       ]
     },
@@ -155,6 +155,7 @@ const grammar = {
     },
     expression_stuff: {
       patterns: [
+        {include: '#comments'},
         {
           match: "([A-Z][\\w']*\\.)+",
           name: 'storage.module.curry entity.name.module.curry'
@@ -208,7 +209,6 @@ const grammar = {
           match: '\\[\\]',
           name: 'constant.other.curry entity.name.constructor.curry'
         },
-        {include: '#comments'},
         {
           match: '[@|!%$?~+:.\\-*=</>\\\\∘→⇒⇔←⇐≤≥≡⋮\\[\\]]+',
           name: 'keyword.operator.curry'
@@ -234,7 +234,7 @@ const grammar = {
         2: {name: 'keyword.other.double-colon.curry'},
         3: {patterns: [{include: '#type'}]}
       },
-      match: '\\b(\\w+)\\s*(::|∷)\\s*([^,}]+)',
+      match: '\\b(\\w+)\\s*(::|∷)\\s*(.*--.*|[^,}]+)',
       name: 'meta.declaration.field.signature.curry'
     },
     fixity_declaration: {
@@ -275,7 +275,7 @@ const grammar = {
     },
     function_signature: {
       begin:
-        "^(\\s*)(?!--|where|case|fcase|of|let|in|default|do|mdo|if|then|else|free)(?:(\\(\\W\\)|[\\w']+)|[\\(\\[])(?=[\\w',\\s\\[\\]\\(\\)]*((?:::)|∷))",
+        "^(\\s*)(?!--|(?:where|case|fcase|of|let|in|default|do|mdo|if|then|else|free)\\s+)(?:(\\(\\W\\)|[\\w']+)|[\\(\\[])(?=[\\w',\\s\\[\\]\\(\\)]*((?:::)|∷))",
       beginCaptures: {2: {name: 'entity.name.function.curry'}},
       end: '^(?!\\1\\s)|(?=})',
       name: 'meta.declaration.function.curry',
@@ -313,7 +313,7 @@ const grammar = {
       end: '\\b(where)\\b|(^(?!\\1\\s))',
       endCaptures: {1: {name: 'keyword.declaration.instance.curry'}},
       name: 'meta.declaration.instance.curry',
-      patterns: [{include: '#type'}, {include: '#comments'}]
+      patterns: [{include: '#comments'}, {include: '#type'}]
     },
     literals: {
       patterns: [
@@ -366,6 +366,7 @@ const grammar = {
       endCaptures: {1: {name: 'storage.module.curry'}},
       name: 'meta.declaration.exports.curry',
       patterns: [
+        {include: '#comments'},
         {
           begin: '\\\\\\s*$',
           end: '\\\\',
@@ -390,8 +391,7 @@ const grammar = {
         {match: ',', name: 'punctuation.separator.comma.curry'},
         {include: '#infix_op'},
         {match: '\\(.*?\\)', name: 'meta.other.unknown.curry'},
-        {include: '#module_exports'},
-        {include: '#comments'}
+        {include: '#module_exports'}
       ]
     },
     module_name: {
@@ -454,10 +454,11 @@ const grammar = {
         1: {name: 'keyword.operator.curry punctuation.record.curry'}
       },
       name: 'meta.declaration.record.curry',
-      patterns: [{include: '#field_signature'}, {include: '#comments'}]
+      patterns: [{include: '#comments'}, {include: '#field_signature'}]
     },
     type: {
       patterns: [
+        {include: '#comments'},
         {match: '->|→', name: 'keyword.operator.arrow.curry'},
         {match: '=>|⇒', name: 'keyword.operator.big-arrow.curry'},
         {
@@ -483,8 +484,7 @@ const grammar = {
           endCaptures: {1: {name: 'keyword.operator.curry'}},
           name: 'meta.type_signature.list.curry',
           patterns: [{include: '#type'}]
-        },
-        {include: '#comments'}
+        }
       ]
     },
     type_declaration: {

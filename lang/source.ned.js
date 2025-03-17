@@ -10,7 +10,7 @@
 /** @type {Grammar} */
 const grammar = {
   extensions: ['.ned'],
-  names: ['omnetpp-ned'],
+  names: ['omnet++-ned', 'omnetpp-ned'],
   patterns: [
     {include: '#comment'},
     {include: '#property'},

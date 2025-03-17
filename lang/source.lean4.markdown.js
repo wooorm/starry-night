@@ -573,7 +573,7 @@ const grammar = {
         {
           begin: '(^|\\G)(\\s*)(.*)',
           contentName: 'meta.embedded.block.jsonc',
-          patterns: [],
+          patterns: [{include: 'source.json.comments'}],
           while: '(^|\\G)(?!\\s*([`~]{3,})\\s*(-/|$))'
         }
       ]

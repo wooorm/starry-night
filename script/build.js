@@ -36,8 +36,11 @@ import {common} from './common.js'
 const aliases = {
   // Old names to new names.
   // Example: 'source.brightscript': 'source.brs',
+  'source.apache-config': 'source.apacheconf',
   'source.pegjs': 'source.peggy',
-  'source.slice': 'source.ice'
+  'source.slice': 'source.ice',
+  'source.terraform': 'source.hcl',
+  'text.html.vue': 'source.vue'
 }
 
 const gemsBase = new URL('../gems/gems/', import.meta.url)
@@ -479,7 +482,7 @@ for (const scope of usedScopes) {
 
       if (missing.size > 0) {
         console.warn(
-          `Missing entries in \`graph.yml\` for \`${scope}\`, here’s the fields to add:
+          `Missing entrie${missing.size > 1 ? 's' : ''} in \`graph.yml\` for \`${scope}\`, here’s the fields to add:
 ${[...missing]
   .sort()
   .map(function (d) {

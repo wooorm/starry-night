@@ -776,7 +776,7 @@ const grammar = {
     'select-as-clause': {
       begin: '(?x)((?:\\b(?:as)(?:(?!(?:[0-9A-Za-z_])))))',
       beginCaptures: {1: {patterns: [{include: '#as'}]}},
-      end: '(?x)(?<=(?:[0-9A-Za-z_])(?:(?!(?:[0-9A-Za-z_]))))',
+      end: '(?x)(?<=(?:[0-9A-Za-z_]))(?:(?!(?:[0-9A-Za-z_])))',
       match: '(?x)meta.block.select-as-clause.ql',
       patterns: [
         {include: '#non-context-sensitive'},

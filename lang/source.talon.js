@@ -71,15 +71,13 @@ const grammar = {
     },
     argsep: {match: ',', name: 'punctuation.separator.talon'},
     assignment: {
-      captures: {
+      begin: '(\\S*)(\\s?=\\s?)',
+      beginCaptures: {
         1: {name: 'variable.other.talon'},
-        2: {name: 'keyword.operator.talon'},
-        3: {
-          name: 'variable.other.talon',
-          patterns: [{include: '#comment'}, {include: '#expression'}]
-        }
+        2: {name: 'keyword.operator.talon'}
       },
-      match: '(\\S*)(\\s?=\\s?)(.*)'
+      end: '\n',
+      patterns: [{include: '#comment'}, {include: '#expression'}]
     },
     'body-header': {
       begin: '^-$',
@@ -201,7 +199,7 @@ const grammar = {
       beginCaptures: {1: {name: 'punctuation.definition.string.begin.talon'}},
       end: '(\\1)',
       endCaptures: {1: {name: 'punctuation.definition.string.end.talon'}},
-      name: 'string.quoted.double.talon',
+      name: 'string.quoted.triple.talon',
       patterns: [{include: '#string-body'}]
     },
     regexp: {

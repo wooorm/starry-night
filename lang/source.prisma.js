@@ -14,6 +14,7 @@ const grammar = {
   patterns: [
     {include: '#triple_comment'},
     {include: '#double_comment'},
+    {include: '#multi_line_comment'},
     {include: '#model_block_definition'},
     {include: '#config_block_definition'},
     {include: '#enum_block_definition'},
@@ -74,6 +75,7 @@ const grammar = {
       patterns: [
         {include: '#triple_comment'},
         {include: '#double_comment'},
+        {include: '#multi_line_comment'},
         {include: '#assignment'}
       ]
     },
@@ -106,6 +108,7 @@ const grammar = {
       patterns: [
         {include: '#triple_comment'},
         {include: '#double_comment'},
+        {include: '#multi_line_comment'},
         {include: '#enum_value_definition'}
       ]
     },
@@ -189,9 +192,11 @@ const grammar = {
       patterns: [
         {include: '#triple_comment'},
         {include: '#double_comment'},
+        {include: '#multi_line_comment'},
         {include: '#field_definition'}
       ]
     },
+    multi_line_comment: {begin: '/\\*', end: '\\*/', name: 'comment.prisma'},
     named_argument: {
       name: 'source.prisma.named_argument',
       patterns: [{include: '#map_key'}, {include: '#value'}]

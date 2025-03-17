@@ -50,7 +50,7 @@ const grammar = {
         {
           begin: '(?<!\\.)(asm)\\s*(\\()',
           beginCaptures: {
-            1: {name: 'entity.other.attribute-name.tact'},
+            1: {name: 'keyword.other.asm.tact'},
             2: {name: 'punctuation.brackets.round.tact'}
           },
           end: '\\)',
@@ -66,9 +66,10 @@ const grammar = {
           ]
         },
         {
-          match: '(?<!\\.)\\b(@name|@interface|asm)\\b',
+          match: '(?<!\\.)\\b(@name|@interface)\\b',
           name: 'entity.other.attribute-name.tact'
-        }
+        },
+        {match: '(?<!\\.)\\b(asm)\\b', name: 'keyword.other.asm.tact'}
       ]
     },
     'as-tlb': {
@@ -79,7 +80,7 @@ const grammar = {
             2: {name: 'entity.name.type.tact'}
           },
           match:
-            '(?<!\\.)\\b(as)\\s+(coins|remaining|bytes32|bytes64|int257|u?int(?:2[0-5][0-6]|1[0-9][0-9]|[1-9][0-9]?))\\b'
+            '(?<!\\.)\\b(as)\\s+(coins|varu?int(?:32|16)|remaining|bytes(?:32|64)|int257|u?int(?:25[0-6]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]?))\\b'
         }
       ]
     },
@@ -120,7 +121,7 @@ const grammar = {
         },
         {
           match:
-            '(?<!\\.)\\b(SendRemainingValue|SendRemainingBalance|SendPayGasSeparately|SendIgnoreErrors|SendBounceIfActionFail|SendDestroyIfZero|SendOnlyEstimateFee|ReserveExact|ReserveAllExcept|ReserveAtMost|ReserveAddOriginalBalance|ReserveInvertSign|ReserveBounceIfActionFail)\\b',
+            '(?<!\\.)\\b(SendDefaultMode|SendRemainingValue|SendRemainingBalance|SendPayGasSeparately|SendIgnoreErrors|SendBounceIfActionFail|SendDestroyIfZero|SendOnlyEstimateFee|ReserveExact|ReserveAllExcept|ReserveAtMost|ReserveAddOriginalBalance|ReserveInvertSign|ReserveBounceIfActionFail)\\b',
           name: 'constant.other.builtin.tact'
         },
         {match: '\\b([A-Z]{2}[A-Z0-9_]*)\\b', name: 'constant.other.caps.tact'},
@@ -155,7 +156,7 @@ const grammar = {
           name: 'keyword.operator.bitwise.tact'
         },
         {
-          match: '(\\+=|-=|\\*=|/=|%=|\\^=|&=|\\|=|<<=|>>=)',
+          match: '(\\+=|-=|\\*=|/=|%=|\\^=|&=|\\|=|\\|\\|=|&&=|<<=|>>=)',
           name: 'keyword.operator.assignment.tact'
         },
         {
@@ -168,6 +169,7 @@ const grammar = {
           name: 'keyword.operator.arithmetic.tact'
         },
         {match: '\\b(initOf)\\b', name: 'keyword.operator.new.tact'},
+        {match: '\\b(codeOf)\\b', name: 'keyword.operator.new.tact'},
         {
           begin: '(?!\\?\\.\\s*[^[:digit:]])(\\?)(?!\\?)',
           beginCaptures: {1: {name: 'keyword.operator.ternary.tact'}},
@@ -292,8 +294,7 @@ const grammar = {
       patterns: [{include: '#escape-sequence'}]
     },
     todo: {
-      match:
-        '(?i)\\b(FIXME|TODO|CHANGED|XXX|IDEA|HACK|NOTE|REVIEW|NB|BUG)\\b(?-i)',
+      match: '\\b(FIXME|TODO|CHANGED|XXX|IDEA|HACK|NOTE|REVIEW|NB|BUG)\\b',
       name: 'keyword.comment.todo.tact'
     },
     type: {

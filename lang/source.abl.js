@@ -266,7 +266,7 @@ const grammar = {
       ]
     },
     'annotation-attributes': {
-      begin: '(?i)(^|\\s+)(\\@[a-z][a-z0-9#\\$-_%&]*)\\s*(?=\\()',
+      begin: '(^|\\s+)(\\@[[:alpha:]][\\w#\\$-%&]*)\\s*(?=\\()',
       beginCaptures: {2: {name: 'entity.name.tag.abl'}},
       end: '(?=\\.)',
       name: 'meta.declaration.annotation.abl',
@@ -274,7 +274,7 @@ const grammar = {
         {include: '#parens'},
         {
           captures: {1: {name: 'entity.other.attribute-name.abl'}},
-          match: '(?i)\\s*([a-z][a-z0-9#\\$-_%&]+)(?=[\\=\\s$])'
+          match: '\\s*([[:alpha:]][\\w#\\$-%&]+)(?=[\\=\\s$])'
         },
         {include: '#string'},
         {include: '#operator-no-space'},
@@ -283,7 +283,7 @@ const grammar = {
     },
     'annotation-simple': {
       captures: {2: {name: 'entity.name.tag.abl'}},
-      match: '(?i)(^|\\s*)(\\@[a-z][a-z0-9#\\$-_%&]*)\\s*(?=\\.)',
+      match: '(^|\\s*)(\\@[[:alpha:]][\\w#\\$-%&]*)\\s*(?=\\.)',
       name: 'meta.declaration.annotation.abl'
     },
     'argument-reference': {
@@ -297,7 +297,14 @@ const grammar = {
       end: '\\]',
       endCaptures: {0: {name: 'meta.brace.square.abl'}},
       name: 'meta.array.literal.abl',
-      patterns: [{include: '#expression'}, {include: '#punctuation-comma'}]
+      patterns: [
+        {
+          captures: {1: {name: 'keyword.other.abl'}},
+          match: '(?i)\\s+(for)\\s+'
+        },
+        {include: '#expression'},
+        {include: '#punctuation-comma'}
+      ]
     },
     'array-use': {
       begin: '\\[',
@@ -314,22 +321,16 @@ const grammar = {
         2: {name: 'keyword.other.abl'}
       },
       end: '\\s*(\\.|\\,|\\s*)',
-      patterns: [
-        {include: '#primitive-type'},
-        {include: '#type-name-generic-progress'},
-        {include: '#type-name-progress'},
-        {include: '#type-name-generic'},
-        {include: '#type-name'}
-      ]
+      patterns: [{include: '#primitive-type'}, {include: '#type-names'}]
     },
     'attribute-access': {begin: ':', end: '(?=:)|(?=\\s*)'},
     'block-label': {
       captures: {
-        2: {name: 'meta.block.label.abl'},
+        2: {name: 'entity.name.label.abl'},
         3: {name: 'punctuation.terminator.abl'}
       },
       match:
-        '(?i)^\\s*(?!(transaction|no-lock|exclusive-lock|exclusive-loc|exclusive-lo|exclusive-l|share-lock|share-loc|share-lo|share-|share):)([a-z][a-z0-9\\-\\$\\#]*)(:)\\s'
+        '(?i)^\\s*(?!(transaction|no-lock|exclusive-lock|exclusive-loc|exclusive-lo|exclusive-l|share-lock|share-loc|share-lo|share-|share):)([\\w\\-\\$\\#]+)(:)\\s'
     },
     'block-statement': {
       begin: '(?i)(?<!end)\\s*(do|repeat|finally)\\b',
@@ -348,10 +349,12 @@ const grammar = {
         },
         {include: '#numeric'},
         {include: '#type-member-call'},
+        {include: '#language-functions'},
         {include: '#abl-functions'},
         {include: '#punctuation-comma'},
         {include: '#punctuation-colon'},
         {include: '#branch-options'},
+        {include: '#keywords'},
         {include: '#expression'},
         {include: '#preprocessors'}
       ]
@@ -359,18 +362,18 @@ const grammar = {
     'block-undo-leave-next-retry': {
       captures: {
         1: {name: 'keyword.other.abl'},
-        2: {name: 'meta.block.label.abl'}
+        2: {name: 'entity.name.label.abl'}
       },
       match:
-        '(?i)\\s*(?<!,)\\s*(leave|next|retry|undo)\\s*(?!on)([a-z0-9\\-\\_\\$]*)?\\s*'
+        '(?i)\\s*(?<!,)\\s*(leave|next|retry|undo)\\s*(?!on)([\\w\\-\\$]*)?\\s*'
     },
     'branch-leave-next-retry-throw': {
       captures: {
         1: {name: 'keyword.other.abl'},
-        2: {name: 'meta.block.label.abl'}
+        2: {name: 'entity.name.label.abl'}
       },
       match:
-        '(?i)\\s*(?<=,)\\s*(leave|next|retry|throw)\\s*(?!on)([a-z0-9\\-\\_\\$]*)?\\s*'
+        '(?i)\\s*(?<=,)\\s*(leave|next|retry|throw)\\s*(?!on)([\\w\\-\\$]*)?\\s*'
     },
     'branch-options': {
       patterns: [
@@ -506,6 +509,7 @@ const grammar = {
         {include: '#block-statement'},
         {include: '#end-block'},
         {include: '#property-call'},
+        {include: '#new-record'},
         {include: '#type-reference'},
         {include: '#abl-functions'},
         {include: '#abl-system-handles'},
@@ -572,7 +576,7 @@ const grammar = {
         1: {name: 'keyword.other.abl'},
         2: {name: 'constant.numeric.source.abl'}
       },
-      match: '(?i)\\s*(decimals)\\s((0x[0-9a-f]+)|([0-9]+)?)'
+      match: '(?i)\\s*(decimals)\\s((0x)?[[:xdigit:]]+)?'
     },
     declarations: {patterns: [{include: '#define'}]},
     define: {
@@ -593,6 +597,9 @@ const grammar = {
         {include: '#define-parameter'},
         {include: '#define-button'},
         {include: '#define-dataset'},
+        {include: '#define-query'},
+        {include: '#define-browse'},
+        {include: '#fields-except-list'},
         {include: '#define-event'},
         {include: '#define-property'},
         {include: '#property-accessor'},
@@ -618,7 +625,6 @@ const grammar = {
         {include: '#string'},
         {include: '#primitive-type'},
         {include: '#dll-type'},
-        {include: '#type-name-progress'},
         {include: '#abl-system-handles'},
         {include: '#property-call'},
         {include: '#handle-attributes'},
@@ -628,12 +634,19 @@ const grammar = {
         {include: '#keywords'},
         {include: '#comment'},
         {include: '#label-variable'},
-        {include: '#type-name-generic'},
-        {include: '#type-name'}
+        {include: '#type-names'}
       ]
     },
+    'define-browse': {
+      begin: '(?i)\\b(browse)\\s+([[:alpha:]][\\w\\#\\$\\-\\%\\&]*)\\s*',
+      beginCaptures: {
+        1: {name: 'keyword.other.abl'},
+        2: {name: 'variable.other.abl'}
+      },
+      end: '(?i)\\b(?=query)\\b'
+    },
     'define-buffer': {
-      begin: '(?i)\\s*(buffer)\\s*',
+      begin: '(?i)\\s*(buffer)\\b(?![\\#\\$\\-\\_\\%\\&])',
       beginCaptures: {1: {name: 'keyword.other.abl'}},
       end: '(?=\\.)',
       patterns: [
@@ -645,7 +658,7 @@ const grammar = {
       ]
     },
     'define-button': {
-      begin: '(?i)\\s*(button)\\s+([a-z][a-z0-9#$\\-_%&]*)',
+      begin: '(?i)\\s*(button)\\s+([[:alpha:]][\\w#$\\-%&]*)',
       beginCaptures: {
         1: {name: 'keyword.other.abl'},
         2: {name: 'variable.other.abl'}
@@ -673,18 +686,13 @@ const grammar = {
           match:
             '(?i)\\s*(serializable|abstract|final|use-widget-pool|inherits|implements)\\s*'
         },
-        {include: '#type-name-generic-progress'},
-        {include: '#type-name-generic'},
-        {include: '#type-name-comma-progress'},
-        {include: '#type-name-progress'},
-        {include: '#type-name-comma'},
-        {include: '#type-name'},
+        {include: '#type-names'},
         {include: '#punctuation-comma'},
         {include: '#comment'}
       ]
     },
     'define-dataset': {
-      begin: '(?i)\\b(dataset)\\s+([a-zA-Z][a-zA-Z0-9\\#\\$\\-\\_\\%\\&]*)\\b',
+      begin: '(?i)\\b(dataset)\\s+([[:alpha:]][\\w\\#\\$\\-\\%\\&]*)\\b',
       beginCaptures: {
         1: {name: 'keyword.other.abl'},
         2: {name: 'storage.data.dataset.abl'}
@@ -699,7 +707,7 @@ const grammar = {
             2: {name: 'storage.data.dataset.abl'}
           },
           match:
-            '(?i)\\b(data-relation|parent-id-relation)\\s*([a-z][a-z0-9#$\\-\\_\\%\\&]+)'
+            '(?i)\\b(data-relation|parent-id-relation)\\s*([[:alpha:]][\\w#$\\-\\%\\&]+)'
         },
         {
           captures: {1: {name: 'support.function.abl'}},
@@ -745,7 +753,7 @@ const grammar = {
         1: {name: 'keyword.other.abl'},
         2: {name: 'entity.name.function.abl'}
       },
-      match: '(?i)\\b(event)\\s+([a-zA-Z][a-zA-Z0-9\\#\\$\\-\\_\\%\\&]*)\\b'
+      match: '(?i)\\b(event)\\s+([[:alpha:]][\\w\\#\\$\\-\\%\\&]*)\\b'
     },
     'define-field': {
       captures: {
@@ -759,10 +767,10 @@ const grammar = {
         1: {name: 'keyword.other.abl'},
         2: {name: 'variable.other.abl'}
       },
-      match: '(?i)\\s*(frame)\\s*([a-z][a-z0-9#$\\-_%&]*)'
+      match: '(?i)\\s*(frame)\\s*([[:alpha:]][\\w#$\\-%&]*)'
     },
     'define-index': {
-      begin: '(?i)\\s*(index)\\s+([a-zA-Z][a-zA-Z0-9\\#\\$\\-\\_\\%\\&]*)',
+      begin: '(?i)\\s*(index)\\s+([[:alpha:]][\\w\\#\\$\\-\\%\\&]*)',
       beginCaptures: {
         1: {name: 'keyword.other.abl'},
         2: {name: 'storage.data.table.abl'}
@@ -776,7 +784,7 @@ const grammar = {
         },
         {
           captures: {1: {name: 'storage.data.table.abl'}},
-          match: '\\b([a-zA-Z][a-zA-Z0-9\\#\\$\\-\\_\\%\\&]*)\\b'
+          match: '\\b([[:alpha:]][\\w\\#\\$\\-\\%\\&]*)\\b'
         }
       ]
     },
@@ -796,7 +804,6 @@ const grammar = {
           match: '(?i)\\s*(inherits|implements)\\s*'
         },
         {include: '#type-names'},
-        {include: '#type-name-comma'},
         {include: '#punctuation-comma'}
       ]
     },
@@ -828,7 +835,7 @@ const grammar = {
             2: {name: 'variable.other.abl'}
           },
           match:
-            '(?i)\\b(table-handle|dataset-handle)\\s+([a-zA-Z][a-zA-Z0-9\\#\\$\\-\\_\\%\\&]*)\\b'
+            '(?i)\\b(table-handle|dataset-handle)\\s+([[:alpha:]][\\w\\#\\$\\-\\%\\&]*)\\b'
         },
         {
           captures: {
@@ -857,13 +864,18 @@ const grammar = {
         {include: '#array-literal'},
         {include: '#timestamp-constant'},
         {include: '#numeric'},
-        {include: '#type-name-generic-progress'},
-        {include: '#type-name-progress'},
         {include: '#keywords'},
         {include: '#string'},
-        {include: '#type-name-generic'},
-        {include: '#type-name'}
+        {include: '#type-names'}
       ]
+    },
+    'define-query': {
+      begin: '(?i)\\b(query)\\s+([[:alpha:]][\\w\\#\\$\\-\\%\\&]*)\\s*',
+      beginCaptures: {
+        1: {name: 'keyword.other.abl'},
+        2: {name: 'variable.other.abl'}
+      },
+      end: '(?i)\\b(?=for|display|share-lock|no-lock|exclusive-lock)\\b'
     },
     'define-stream': {
       captures: {
@@ -902,11 +914,7 @@ const grammar = {
         {include: '#primitive-type'},
         {include: '#define-like'},
         {include: '#type-names'},
-        {include: '#type-name-generic-progress'},
-        {include: '#type-name-progress'},
-        {include: '#string'},
-        {include: '#type-name-generic'},
-        {include: '#type-name'}
+        {include: '#string'}
       ]
     },
     'define-variable-name': {
@@ -915,7 +923,7 @@ const grammar = {
         2: {name: 'variable.other.abl'}
       },
       match:
-        '(?i)(var|vari|varia|variab|variabl|variable)\\s+([a-z][a-z0-9#$-_%&])+\\s*'
+        '(?i)(variable|variabl|variab|varia|vari|var)\\s+([[:alpha:]][\\w#$-%&])+\\s*'
     },
     'dll-type': {
       captures: {1: {name: 'storage.type.abl'}},
@@ -976,11 +984,11 @@ const grammar = {
             3: {name: 'punctuation.separator.comma.abl'},
             4: {name: 'punctuation.separator.colon.abl'}
           },
-          match: '\\s*([a-zA-Z][a-zA-Z0-9\\#\\$\\-\\_\\%\\&]*)\\s*((,)|(:))\\s*'
+          match: '\\s*([[:alpha:]][\\w\\#\\$\\-\\%\\&]*)\\s*((,)|(:))\\s*'
         },
         {
           captures: {1: {name: 'entity.name.function.abl'}},
-          match: '\\s*([a-zA-Z][a-zA-Z0-9\\#\\$\\-\\_\\%\\&]*)\\s*'
+          match: '\\s*([[:alpha:]][\\w\\#\\$\\-\\%\\&]*)\\s*'
         },
         {include: '#string'}
       ]
@@ -1000,7 +1008,7 @@ const grammar = {
         1: {name: 'keyword.other.abl'},
         2: {name: 'constant.numeric.source.abl'}
       },
-      match: '(?i)\\s*(extent)\\s*((0x[0-9a-f]+)|([0-9]+)?)'
+      match: '(?i)\\s*(extent)\\s*((0x)?[[:xdigit:]]+)?'
     },
     'field-as-object': {
       captures: {1: {name: 'entity.name.type.abl'}},
@@ -1141,7 +1149,7 @@ const grammar = {
         8: {name: 'keyword.other.abl'}
       },
       match:
-        '(?i)\\b(from)\\s+(X)\\s+((0(x)[0-9a-fA-F]+)|(\\-?[0-9]+(\\.[0-9]+)?))\\s+(y)\\s+((0(x)[0-9a-fA-F]+)|(\\-?[0-9]+(\\.[0-9]+)?))\\s+ '
+        '(?i)\\b(from)\\s+(X)\\s+((0(x)[[[:xdigit:]]]+)|(\\-?[[[:digit:]]]+(\\.[[[:digit:]]]+)?))\\s+(y)\\s+((0(x)[[[:xdigit:]]]+)|(\\-?[[[:digit:]]]+(\\.[[[:digit:]]]+)?))\\s+ '
     },
     'function-arguments': {
       begin: '(?=\\()',
@@ -1151,6 +1159,12 @@ const grammar = {
       name: 'meta.function.arguments.abl',
       patterns: [
         {include: '#parens'},
+        {include: '#function-arguments-no-parens'}
+      ]
+    },
+    'function-arguments-no-parens': {
+      name: 'meta.function.arguments.abl',
+      patterns: [
         {
           captures: {1: {name: 'keyword.other.abl'}},
           match:
@@ -1176,20 +1190,19 @@ const grammar = {
         {include: '#db-dot-table-dot-field'},
         {include: '#abl-system-handles'},
         {include: '#can-find'},
+        {include: '#language-functions'},
         {include: '#abl-functions'},
         {include: '#handle-attributes'},
         {include: '#handle-methods'},
-        {include: '#unqualified-method-call'},
+        {include: '#type-member-call'},
         {include: '#expression'},
         {include: '#comment'},
-        {include: '#property-call'},
         {include: '#punctuation-comma'},
-        {include: '#static-object-property-call'},
         {include: '#preprocessors'}
       ]
     },
     'function-definition': {
-      begin: '(?i)\\b(function)\\s+([a-z0-9][a-z0-9#$\\-_%&]+)\\b',
+      begin: '(?i)\\b(function)\\s+([[:alnum:]][\\w#$\\-%&]+)\\b',
       beginCaptures: {
         1: {name: 'keyword.other.abl'},
         2: {name: 'entity.name.function.abl'}
@@ -1203,7 +1216,7 @@ const grammar = {
             1: {name: 'keyword.other.abl'},
             2: {name: 'entity.name.function.abl'}
           },
-          match: '(?i)\\b(map|to)\\s+(?!to\\s+)([a-z0-9][a-z0-9#$\\-_%&]+)\\b'
+          match: '(?i)\\b(map|to)\\s+(?!to\\s+)([[:alpha:]][\\w#$\\-%&]+)\\b'
         },
         {
           captures: {1: {name: 'keyword.other.abl'}},
@@ -1237,16 +1250,6 @@ const grammar = {
       endCaptures: {1: {name: 'meta.brace.round.js'}},
       name: 'meta.function.parameters',
       patterns: [{include: '#parameter-definition'}]
-    },
-    'generic-types': {
-      patterns: [
-        {include: '#type-name-comma-progress'},
-        {include: '#type-name-comma'},
-        {include: '#type-name-generic-progress'},
-        {include: '#type-name-progress'},
-        {include: '#type-name-generic'},
-        {include: '#type-name'}
-      ]
     },
     'get-class': {
       begin: '(?i)\\s*(get-class)\\s*(\\()',
@@ -1718,18 +1721,19 @@ const grammar = {
         },
         {include: '#parens'},
         {include: '#function-arguments'},
+        {include: '#property-call'},
+        {include: '#static-object-property-call'},
         {include: '#db-dot-table-dot-field'},
         {include: '#comment'},
         {include: '#operator'},
         {include: '#code-block'},
-        {include: '#property-call'},
         {include: '#handle-attributes'},
         {include: '#preprocessors'},
         {include: '#keywords'}
       ]
     },
     'include-file': {
-      begin: '(?i)({)\\s*(([a-z][a-z0-9\\/\\-\\_\\\\]+)(\\.[a-z]+)?)',
+      begin: '({)\\s*(([[:alpha:]][\\w\\/\\-\\\\]+)(\\.[[:alpha:]]+)?)',
       beginCaptures: {
         1: {name: 'punctuation.section.abl'},
         2: {name: 'entity.name.include.abl'}
@@ -1744,7 +1748,7 @@ const grammar = {
             1: {name: 'support.other.argument.abl'},
             2: {name: 'keyword.operator.source.abl'}
           },
-          match: '(?<=\\s)(&[a-zA-Z][a-zA-Z0-9\\#\\$\\-\\_\\%\\.]+)\\s*(=?)',
+          match: '(?<=\\s)(&[[:alpha:]][\\w\\#\\$\\-\\%\\.]+)\\s*(=?)',
           name: 'meta.include.argument.abl'
         },
         {include: '#string'},
@@ -1753,8 +1757,8 @@ const grammar = {
             1: {name: 'support.other.argument.abl'},
             2: {name: 'keyword.operator.source.abl'}
           },
-          match: '(?<=\\s)(&[a-zA-Z][a-zA-Z0-9\\#\\$\\-\\_\\%\\.]+)\\s*(=?)',
-          name: 'meta.include-named-argument'
+          match: '(?<=\\s)(&[[:alpha:]][\\w\\#\\$\\-\\%\\.]+)\\s*(=?)',
+          name: 'meta.include.argument.abl'
         },
         {include: '#string'},
         {
@@ -1762,12 +1766,12 @@ const grammar = {
             1: {name: 'support.other.argument.abl'},
             2: {name: 'keyword.operator.source.abl'}
           },
-          match: '(?<=\\s)(&[a-zA-Z][a-zA-Z0-9\\#\\$\\-\\_\\%\\.]+)\\s*(=?)',
-          name: 'meta.include-named-argument'
+          match: '(?<=\\s)(&[[:alpha:]][\\w\\#\\$\\-\\%\\.]+)\\s*(=?)',
+          name: 'meta.include.argument.abl'
         },
         {
           captures: {1: {name: 'support.other.argument.abl'}},
-          match: '(?<=\\s)([a-zA-Z][a-zA-Z0-9\\#\\$\\-\\_\\%\\.\\:]+)\\b'
+          match: '(?<=\\s)([[:alpha:]][\\w\\#\\$\\-\\%\\.\\:]+)\\b'
         }
       ]
     },
@@ -1781,7 +1785,7 @@ const grammar = {
       end: '(?i)\\s*(serializable|abstract|final|use-widget-pool|inherits|implements+?)',
       endCaptures: {1: {name: 'keyword.other.abl'}},
       name: 'meta.define-type.implements.abl',
-      patterns: [{include: '#type-name-comma'}]
+      patterns: [{include: '#type-names'}]
     },
     keywords: {
       patterns: [
@@ -1900,12 +1904,12 @@ const grammar = {
     'keywords-R': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(run-procedure|run-procedur|run-procedu|run-proced|run-proce|run-proc|run|rule-y|rule-row|rule|row-unmodified|row-of|row-modified|row-leave|row-height|row-entry|row-display|row-deleted|row-created|row|routine-level|right-end|right-aligned|right-aligne|right-align|right|revoke|revert|reverse-from|returns|return-value|return-to-start-dir|return-to-start-di|return|retry-cancel|retain|resume-display|result|request|reposition-parent-relation|reposition-parent-relatio|reposition-parent-relati|reposition-parent-relat|reposition-parent-rela|reposition-parent-rel|reposition-forwards|reposition-forward|reposition-forwar|reposition-forwa|reposition-forw|reposition-backwards|reposition-backward|reposition-backwar|reposition-backwa|reposition-backw|reposition-back|reposition|reports|replication-write|replication-delete|replication-create|repeat|release|relation-fields|reinstate|reference-only|recursive|rectangle|rectangl|rectang|rectan|recta|rect|recall|real|readkey|read-response|read-exact-num|read-available|rcode-information|rcode-informatio|rcode-informati|rcode-informat|rcode-informa|rcode-inform|rcode-infor|rcode-info|raw-transfer|raw|radio-set)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b(run-procedure|run-procedur|run-procedu|run-proced|run-proce|run-proc|run|rule-y|rule-row|rule|row-unmodified|row-of|row-modified|row-leave|row-height|row-entry|row-display|row-deleted|row-created|row|routine-level|right-end|right-aligned|right-aligne|right-align|right|revoke|revert|reverse-from|returns|return-value|return-to-start-dir|return-to-start-di|return|retry-cancel|retain|resume-display|result|request|reposition-parent-relation|reposition-parent-relatio|reposition-parent-relati|reposition-parent-relat|reposition-parent-rela|reposition-parent-rel|reposition-forwards|reposition-forward|reposition-forwar|reposition-forwa|reposition-forw|reposition-backwards|reposition-backward|reposition-backwar|reposition-backwa|reposition-backw|reposition-back|reposition|reports|replication-write|replication-delete|replication-create|repeat|release|reinstate|reference-only|recursive|rectangle|rectangl|rectang|rectan|recta|rect|recall|real|readkey|read-response|read-exact-num|read-available|rcode-information|rcode-informatio|rcode-informati|rcode-informat|rcode-informa|rcode-inform|rcode-infor|rcode-info|raw-transfer|raw|radio-set)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'keywords-S': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(system-help|system-dialog|suspend|super|summary|sum|substring|subscribe|sub-total|sub-minimum|sub-minimu|sub-minim|sub-mini|sub-min|sub-menu-help|sub-menu|sub-maximum|sub-maximu|sub-maxim|sub-maxi|sub-max|sub-count|sub-average|sub-averag|sub-avera|sub-aver|sub-ave|string-xref|stream-io|stream-handle|stream|stored-procedure|stored-procedur|stored-procedu|stored-proced|stored-proce|stored-proc|stop-mem-check|stop-display|stop-after|stop|stomp-frequency|stomp-detection|stdcall|status-area-msg|status|static|starting|start-search|start-row-resize|start-resize|start-move|start-mem-check|start-extend-box-selection|start-box-selection|start|sql|space|source-procedure|source|some|socket|soap-header-entryref|soap-header|soap-fault|smallint|slider|skip-schema-check|skip-group-duplicates|skip|size-pixels|size-pixel|size-pixe|size-pix|size-pi|size-p|size-chars|size-char|size-cha|size-ch|size-c|size|single-run|single-character|single|simple|silent|signature|side-label|side-labe|side-lab|show-stats|show-stat|short|shared|share-lock|share-loc|share-lo|share-l|share-|share|settings|set-state|set-pointer-value|set-pointer-valu|set-pointer-val|set-option|set-event-manager-option|set-db-logging|set-contents|set-cell-focus|set-byte-order|set-attr-call-type|set|session|server-socket|server|serialize-name|serialize-hidden|serializable|separate-connection|send|self|selection-list|selection-extend|selection|selected-items|select-repositioned-row|select-on-join|select-extend|select|seek|security-policy|section|search-target|search-self|scrolling|scrolled-row-position|scrolled-row-positio|scrolled-row-positi|scrolled-row-posit|scrolled-row-posi|scrolled-row-pos|scrollbar-drag|scroll-vertical|scroll-right|scroll-notify|scroll-mode|scroll-left|scroll-horizontal|scroll|screen-io|screen|schema|sax-xml|sax-writer|sax-write-tag|sax-write-idle|sax-write-error|sax-write-element|sax-write-content|sax-write-complete|sax-write-begin|sax-uninitialized|sax-running|sax-reader|sax-parser-error|sax-complete|sax-complet|sax-comple|sax-attributes|save-as|save)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b(system-help|system-dialog|suspend|super|summary|sum|substring|subscribe|sub-total|sub-minimum|sub-minimu|sub-minim|sub-mini|sub-min|sub-menu-help|sub-menu|sub-maximum|sub-maximu|sub-maxim|sub-maxi|sub-max|sub-count|sub-average|sub-averag|sub-avera|sub-aver|sub-ave|string-xref|stream-io|stream-handle|stream|stored-procedure|stored-procedur|stored-procedu|stored-proced|stored-proce|stored-proc|stop-mem-check|stop-display|stop-after|stop|stomp-frequency|stomp-detection|stdcall|status-area-msg|status|static|starting|start-search|start-row-resize|start-resize|start-move|start-mem-check|start-extend-box-selection|start-box-selection|start|sql|space|source-procedure|source|some|socket|soap-header-entryref|soap-header|soap-fault|smallint|slider|skip-schema-check|skip-group-duplicates|skip|size-pixels|size-pixel|size-pixe|size-pix|size-pi|size-p|size-chars|size-char|size-cha|size-ch|size-c|size|single-run|single-character|single|simple|silent|signature|side-label|side-labe|side-lab|show-stats|show-stat|short|shared|share-lock|share-loc|share-lo|share-l|share-|share|settings|set-state|set-pointer-value|set-pointer-valu|set-pointer-val|set-option|set-event-manager-option|set-db-logging|set-contents|set-cell-focus|set-byte-order|set-attr-call-type|set|session|server-socket|server|serialize-name|serialize-hidden|serializable|separators|separate-connection|send|self|selection-list|selection-extend|selection|selected-items|select-repositioned-row|select-on-join|select-extend|select|seek|security-policy|section|search-target|search-self|scrolling|scrolled-row-position|scrolled-row-positio|scrolled-row-positi|scrolled-row-posit|scrolled-row-posi|scrolled-row-pos|scrollbar-drag|scroll-vertical|scroll-right|scroll-notify|scroll-mode|scroll-left|scroll-horizontal|scroll|screen-io|screen|schema|sax-xml|sax-writer|sax-write-tag|sax-write-idle|sax-write-error|sax-write-element|sax-write-content|sax-write-complete|sax-write-begin|sax-uninitialized|sax-running|sax-reader|sax-parser-error|sax-complete|sax-complet|sax-comple|sax-attributes|save-as|save)\\b(?![\\#\\$\\-\\_\\%\\&])'
     },
     'keywords-T': {
       captures: {1: {name: 'keyword.other.abl'}},
@@ -1946,7 +1950,7 @@ const grammar = {
     },
     'language-functions': {
       captures: {1: {name: 'support.function.abl'}},
-      match: '(?i)\\b(opsys|proversion)\\b'
+      match: '(?i)\\b(opsys|proversion|guid|generate-uuid)\\b'
     },
     'method-definition': {
       begin: '(?i)^\\s*(method|constructor|destructor)\\s*',
@@ -1960,7 +1964,11 @@ const grammar = {
           match: '(?i)\\s*(void)\\s*'
         },
         {
-          begin: '(?i)\\s*([a-z_]+[\\w\\-{}#$%&]*)\\s*(\\()\\s*',
+          captures: {1: {name: 'entity.name.function.abl'}},
+          match: '(?i)\\b([[:alpha:]_]+[\\w\\-{}#$%&]*)\\b\\R'
+        },
+        {
+          begin: '(?i)\\s*([[:alpha:]_]+[\\w\\-{}#$%&]*)?\\s*(\\()\\s*',
           beginCaptures: {
             1: {name: 'entity.name.function.abl'},
             2: {name: 'meta.brace.round.js'}
@@ -1969,14 +1977,12 @@ const grammar = {
           endCaptures: {1: {name: 'meta.brace.round.js'}},
           patterns: [{include: '#parameter-definition'}]
         },
+        {include: '#parameter-as'},
         {include: '#string'},
         {include: '#extent'},
         {include: '#primitive-type'},
         {include: '#dll-type'},
-        {include: '#type-name-generic-progress'},
-        {include: '#type-name-progress'},
-        {include: '#type-name-generic'},
-        {include: '#type-name'},
+        {include: '#type-names'},
         {include: '#comment'}
       ]
     },
@@ -1993,18 +1999,32 @@ const grammar = {
       begin: '(?i)\\b(new)\\b(?!\\-)',
       beginCaptures: {1: {name: 'keyword.other.abl'}},
       end: '(?=\\()',
+      patterns: [{include: '#type-names'}, {include: '#string'}]
+    },
+    'new-record': {
       patterns: [
-        {include: '#type-name-generic-progress'},
-        {include: '#type-name-generic'},
-        {include: '#type-name-comma-progress'},
-        {include: '#type-name-progress'},
-        {include: '#type-name-comma'},
-        {include: '#type-name'},
-        {include: '#string'}
+        {
+          captures: {
+            1: {name: 'support.function.abl'},
+            2: {name: 'meta.brace.round.js'},
+            3: {name: 'storage.data.table.abl'},
+            5: {name: 'meta.brace.round.js'}
+          },
+          match:
+            '(?i)\\s*(new)\\s+(\\()\\s*([\\w\\-#$%]+(\\.[\\w\\-#$%]+)?)\\s*(\\))'
+        },
+        {
+          captures: {
+            2: {name: 'support.function.abl'},
+            3: {name: 'storage.data.table.abl'}
+          },
+          match: '(?i)\\s*((new)\\s+(?!.*\\()([\\w\\-#$%\\.]+))'
+        }
       ]
     },
     numeric: {
-      match: '(?<![\\w-])((0(x|X)[0-9a-fA-F]+)|(\\-?[0-9]+(\\.[0-9]+)?))',
+      match:
+        '(?<![\\w-])(0[xX][[:xdigit:]]+)|(\\-?[[:digit:]]+(\\.[[:digit:]]+)?)',
       name: 'constant.numeric.source.abl'
     },
     'of-phrase': {
@@ -2032,10 +2052,10 @@ const grammar = {
         1: {name: 'keyword.other.abl'},
         2: {name: 'keyword.other.abl'},
         3: {name: 'keyword.other.abl'},
-        4: {name: 'meta.block.label.abl'}
+        4: {name: 'entity.name.label.abl'}
       },
       match:
-        '(?i)\\s*(on)\\s+(endkey|error|stop|quit)\\s+(undo)\\s*(?!leave|next|retry|return|throw)([a-z0-9\\-\\_\\$]*)?\\s*'
+        '(?i)\\s*(on)\\s+(endkey|error|stop|quit)\\s+(undo)\\s*(?!leave|next|retry|return|throw)([\\w\\-\\$]*)?\\s*'
     },
     operator: {
       patterns: [
@@ -2057,7 +2077,7 @@ const grammar = {
         1: {name: 'keyword.other.abl'},
         2: {name: 'constant.numeric.source.abl'}
       },
-      match: '(?i)\\s*(ordinal)\\s((0x[0-9a-f]+)|([0-9]+)?)'
+      match: '(?i)\\s*(ordinal)\\s((0x)?[[:xdigit:]]+)?'
     },
     'parameter-as': {
       begin: '(?i)\\s*([\\w\\-]+)\\s+(as)\\s+',
@@ -2065,7 +2085,7 @@ const grammar = {
         1: {name: 'variable.parameter.abl'},
         2: {name: 'keyword.other.abl'}
       },
-      end: '(?=\\s|\\)|\\.)',
+      end: '(?=\\s|\\)|\\.|,)',
       patterns: [
         {
           captures: {1: {name: 'keyword.other.abl'}},
@@ -2073,9 +2093,7 @@ const grammar = {
         },
         {include: '#primitive-type'},
         {include: '#dll-type'},
-        {include: '#type-name-progress'},
-        {include: '#type-name-generic'},
-        {include: '#type-name'},
+        {include: '#type-names'},
         {include: '#parens'},
         {include: '#string'},
         {include: '#punctuation-period'},
@@ -2131,14 +2149,11 @@ const grammar = {
         {include: '#array-literal'},
         {include: '#decimals'},
         {include: '#constant'},
-        {include: '#type-name-generic-progress'},
-        {include: '#type-name-progress'},
         {include: '#abl-system-handles'},
         {include: '#keywords'},
         {include: '#handle-attributes'},
         {include: '#handle-methods'},
-        {include: '#type-name-generic'},
-        {include: '#type-name'},
+        {include: '#type-names'},
         {include: '#string'},
         {include: '#comment'},
         {include: '#preprocessors'}
@@ -2155,7 +2170,7 @@ const grammar = {
         2: {name: 'storage.type.function.abl'}
       },
       match:
-        '(?i)(\\&[\\w-]*)|({\\&[\\w-]*})|(&window-system|&text-height|&line-number|&batch-mode|&file-name|&undefine|&sequence|&message|defined|&elseif|&scoped|&global|&opsys|&endif|&else|&scop|&then|&glob|&if)'
+        '(?i)(&window-system|&text-height|&line-number|&batch-mode|&file-name|&undefine|&sequence|&message|defined|&elseif|&scoped|&global|&opsys|&endif|&else|&scop|&then|&glob|&if)|({\\&[\\w\\-\\s\\(\\)]+})|(\\&[\\w-])'
     },
     'primitive-type': {
       captures: {1: {name: 'storage.type.abl'}},
@@ -2178,7 +2193,7 @@ const grammar = {
         {include: '#string'},
         {
           captures: {1: {name: 'entity.name.function.abl'}},
-          match: '([a-zA-Z][a-zA-Z0-9\\#\\$\\-\\_\\%\\&\\.]+)(?<!\\.)'
+          match: '([[:alpha:]][\\w\\#\\$\\-\\%\\&\\.]+)(?<!\\.)'
         },
         {include: '#argument-reference'},
         {include: '#numeric'},
@@ -2204,7 +2219,7 @@ const grammar = {
         1: {name: 'punctuation.separator.colon.abl'},
         2: {name: 'entity.name.function.abl'}
       },
-      match: '(:)([a-zA-Z][a-zA-Z0-9\\#\\$\\-\\_\\%\\&]*)\\b'
+      match: '(:)([[:alpha:]][\\w\\#\\$\\-\\%\\&]*)\\b'
     },
     'property-get-set-block': {
       begin: '(?i)\\s*(?<!\\:)\\s*(get|set)\\b',
@@ -2286,13 +2301,23 @@ const grammar = {
         {include: '#db-dot-table'}
       ]
     },
+    'run-quoted': {
+      captures: {
+        1: {name: 'keyword.other.abl'},
+        2: {name: 'entity.name.procedure.abl'}
+      },
+      match: '(?i)\\s*(run)\\s+(?!value)\\s*([\'"].*[\'"])'
+    },
     'run-statement': {
+      patterns: [{include: '#run-unquoted'}, {include: '#run-quoted'}]
+    },
+    'run-unquoted': {
       captures: {
         1: {name: 'keyword.other.abl'},
         2: {name: 'entity.name.procedure.abl'}
       },
       match:
-        '(?i)\\s*(run)\\s+(?!value)(([a-z][a-z0-9\\/\\-\\_\\\\]+)(\\.[a-z]+)?)'
+        '(?i)\\s*(run)\\s+(?!value)\\s*([\\w\\-\\$\\@\\/\\\\]{1,253}(\\.[\\w@\\$\\-]{1,2})?)'
     },
     serializable: {
       captures: {1: {name: 'keyword.other.abl'}},
@@ -2360,6 +2385,7 @@ const grammar = {
         {include: '#constant'},
         {include: '#timestamp-constant'},
         {include: '#break-by'},
+        {include: '#new-record'},
         {include: '#type-reference'},
         {include: '#for-join'},
         {include: '#operator'},
@@ -2423,51 +2449,27 @@ const grammar = {
       match: '(?i)(:[L|R|T|C|U]\\d*)\\b'
     },
     'type-argument-function': {
-      begin: '(?i)\\s*(cast|type-of)\\s*(\\()',
-      beginCaptures: {
-        1: {name: 'support.function.abl'},
-        2: {name: 'meta.brace.round.js'}
-      },
+      begin: '(?i)\\s*(cast|type-of)\\s*(?=\\()',
+      beginCaptures: {1: {name: 'support.function.abl'}},
       end: '(?<=\\))',
       endCaptures: {1: {name: 'meta.brace.round.js'}},
       name: 'meta.function-call.abl',
       patterns: [
         {
-          captures: {
-            1: {name: 'storage.data.table.abl'},
-            4: {name: 'punctuation.separator.comma.abl'}
-          },
-          match: '\\s*(([\\w\\-#$%]+)\\.([\\w\\-#$%]+))\\s*(,)'
+          begin: '(?<=\\()',
+          end: '(,)',
+          endCaptures: {1: {name: 'punctuation.separator.comma.abl'}},
+          patterns: [
+            {include: '#function-arguments-no-parens'},
+            {include: '#parens'}
+          ]
         },
-        {
-          captures: {
-            1: {name: 'variable.other.abl'},
-            3: {name: 'punctuation.separator.comma.abl'}
-          },
-          match: '\\s*([a-zA-Z][a-zA-Z0-9\\#\\$\\-\\_\\%\\&]*)\\s*((,)|(?=:))'
-        },
-        {
-          captures: {
-            1: {name: 'entity.name.function.abl'},
-            2: {name: 'punctuation.separator.comma.abl'}
-          },
-          match: '\\s*:([\\w-]+)\\s*(,)'
-        },
-        {include: '#type-argument-function'},
-        {include: '#expression'},
-        {include: '#property-call'},
-        {include: '#static-object-property-call'},
-        {include: '#doublequotedstring'},
-        {include: '#singlequotedstring'},
-        {include: '#translation-attribute'},
-        {include: '#type-name-generic-progress'},
-        {include: '#type-name-generic'},
-        {include: '#type-name-comma-progress'},
-        {include: '#type-name-progress'},
-        {include: '#type-name-comma'},
-        {include: '#type-name'},
+        {include: '#type-names'},
+        {include: '#comment'},
+        {include: '#string'},
         {include: '#parens'},
-        {include: '#punctuation-comma'}
+        {include: '#punctuation-comma'},
+        {include: '#preprocessors'}
       ]
     },
     'type-member-call': {
@@ -2481,51 +2483,24 @@ const grammar = {
       captures: {1: {name: 'entity.name.type.abl'}},
       match: '(?i)\\b([\\w\\#\\$\\%\\-]+(\\.[\\w\\#\\$\\%\\-]+)*)\\b'
     },
-    'type-name-comma': {
-      captures: {
-        1: {name: 'punctuation.separator.comma.abl'},
-        2: {name: 'keyword.other.abl'},
-        3: {name: 'entity.name.type.abl'},
-        6: {name: 'punctuation.separator.comma.abl'}
-      },
-      match:
-        '(?i)\\s*(,*)\\s*(class)?\\s+(([\\w\\#\\$\\%]+)(\\.?[\\w\\#\\$\\%]*)*(?<!\\.))\\s*(,*)\\s*'
-    },
-    'type-name-comma-progress': {
-      captures: {
-        1: {name: 'punctuation.separator.comma.abl'},
-        2: {name: 'keyword.other.abl'},
-        3: {name: 'entity.name.type.abl'},
-        6: {name: 'punctuation.separator.comma.abl'}
-      },
-      match:
-        '(?i)\\s*(,*)\\s*(class)?\\s*((progress\\.|map|set)(\\.?[\\w\\#\\$\\%]*)*(?<!\\.))\\s*(,*)\\s*'
-    },
     'type-name-generic': {
-      begin: '(?i)\\s*(([\\w\\#\\$\\%\\-]+)(\\.[\\w\\#\\$\\%\\-]+)*\\s*)\\s*<',
-      beginCaptures: {1: {name: 'entity.name.type.abl'}},
-      end: '\\>',
-      name: 'entity.name.type.generic.abl',
-      patterns: [{include: '#generic-types'}]
-    },
-    'type-name-generic-progress': {
-      begin: '(?i)\\s*((progress)(\\.[\\w\\#\\$\\%\\-]+)*)\\s*<',
-      beginCaptures: {1: {name: 'entity.name.type.abl'}},
-      end: '\\>',
-      name: 'entity.name.type.generic.abl',
-      patterns: [{include: '#generic-types'}]
-    },
-    'type-name-progress': {
-      captures: {1: {name: 'entity.name.type.abl'}},
-      match: '(?i)\\s*((progress\\.)([\\.\\w\\#\\$\\%]+)*)\\s*(?<!\\.)'
-    },
-    'type-names': {
+      begin:
+        '(?i)\\s*(([\\w\\#\\$\\%\\-]+)(\\.[\\w\\#\\$\\%\\-]+)*\\s*)\\s*(<)',
+      beginCaptures: {
+        1: {name: 'entity.name.type.abl'},
+        4: {name: 'punctuation.definition.generic.begin.abl'}
+      },
+      end: '(>)',
+      endCaptures: {1: {name: 'punctuation.definition.generic.end.abl'}},
+      name: 'meta.generic.abl',
       patterns: [
-        {include: '#type-name-generic-progress'},
-        {include: '#type-name-progress'},
         {include: '#type-name-generic'},
+        {include: '#punctuation-comma'},
         {include: '#type-name'}
       ]
+    },
+    'type-names': {
+      patterns: [{include: '#type-name-generic'}, {include: '#type-name'}]
     },
     'type-reference': {
       patterns: [
@@ -2537,10 +2512,10 @@ const grammar = {
       ]
     },
     'undo-statement': {
-      begin: '(?i)\\s*(undo)\\s*([a-z0-9\\-\\_\\$]*)?\\s*(,)',
+      begin: '(?i)\\s*(undo)\\s*([\\w\\-\\$]*)?\\s*(,)',
       beginCaptures: {
         1: {name: 'keyword.other.abl'},
-        2: {name: 'meta.block.label.abl'},
+        2: {name: 'entity.name.label.abl'},
         3: {name: 'punctuation.separator.comma.abl'}
       },
       end: '(?=\\.|\\:)',
@@ -2549,9 +2524,9 @@ const grammar = {
         {
           captures: {
             1: {name: 'keyword.other.abl'},
-            2: {name: 'meta.block.label.abl'}
+            2: {name: 'entity.name.label.abl'}
           },
-          match: '(?i)\\s*(leave|next|retry)\\s([a-z0-9\\-\\_\\$]*)?'
+          match: '(?i)\\s*(leave|next|retry)\\s([\\w\\-\\$]*)?'
         },
         {include: '#new-class'},
         {include: '#keywords'},
@@ -2564,14 +2539,14 @@ const grammar = {
     },
     'unqualified-method-call': {
       captures: {1: {name: 'entity.name.function.abl'}},
-      match: '\\b([a-zA-Z][a-zA-Z0-9\\#\\$\\-\\_\\%\\&]*)\\b(?=\\()'
+      match: '\\b([[:alpha:]][\\w\\#\\$\\-\\%\\&]*)\\b(?=\\()'
     },
     'use-index': {
       captures: {
         1: {name: 'keyword.other.abl'},
         2: {name: 'storage.data.table.abl'}
       },
-      match: '(?i)\\b(use-index)\\s+([a-z][a-z0-9\\-\\_\\$]*)\\b'
+      match: '(?i)\\b(use-index)\\s+([[:alpha:]][\\w\\-\\$]*)\\b'
     },
     using: {
       begin: '(?i)\\s*(using)\\s*',
@@ -2605,7 +2580,7 @@ const grammar = {
     },
     'variable-name': {
       match:
-        '(?<=^|\\s|\\[|\\(|,)([a-zA-Z][a-zA-Z0-9\\#\\$\\-\\_\\%\\&]*)(?=\\.\\s|\\.$|,|:|\\s|\\)|\\]|\\[|$)',
+        '(?<=^|\\s|\\[|\\(|,)([[:alpha:]][\\w\\#\\$\\-\\%\\&]*)(?=\\.\\s|\\.$|,|:|\\s|\\)|\\]|\\[|$)',
       name: 'variable.other.abl'
     },
     'while-expression': {

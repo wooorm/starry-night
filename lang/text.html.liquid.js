@@ -42,6 +42,7 @@ const grammar = {
     core: {
       patterns: [
         {include: '#raw_tag'},
+        {include: '#doc_tag'},
         {include: '#comment_block'},
         {include: '#style_codefence'},
         {include: '#stylesheet_codefence'},
@@ -50,6 +51,26 @@ const grammar = {
         {include: '#object'},
         {include: '#tag'},
         {include: 'text.html.basic'}
+      ]
+    },
+    doc_tag: {
+      begin: '{%-?\\s*(doc)\\s*-?%}',
+      beginCaptures: {
+        0: {name: 'meta.tag.liquid'},
+        1: {name: 'entity.name.tag.doc.liquid'}
+      },
+      contentName: 'comment.block.documentation.liquid',
+      end: '{%-?\\s*(enddoc)\\s*-?%}',
+      endCaptures: {
+        0: {name: 'meta.tag.liquid'},
+        1: {name: 'entity.name.tag.doc.liquid'}
+      },
+      name: 'meta.block.doc.liquid',
+      patterns: [
+        {include: '#liquid_doc_description_tag'},
+        {include: '#liquid_doc_param_tag'},
+        {include: '#liquid_doc_example_tag'},
+        {include: '#liquid_doc_fallback_tag'}
       ]
     },
     filter: {
@@ -109,6 +130,39 @@ const grammar = {
     language_constant: {
       match: '\\b(false|true|nil|blank)\\b|empty(?!\\?)',
       name: 'constant.language.liquid'
+    },
+    liquid_doc_description_tag: {
+      begin: '(@description)\\b\\s*',
+      beginCaptures: {
+        0: {name: 'comment.block.documentation.liquid'},
+        1: {name: 'storage.type.class.liquid'}
+      },
+      end: '(?=@|{%-?\\s*enddoc\\s*-?%})',
+      patterns: [{match: '[^@]+', name: 'string.quoted.single.liquid'}]
+    },
+    liquid_doc_example_tag: {
+      begin: '(@example)\\b\\s*',
+      beginCaptures: {
+        0: {name: 'comment.block.documentation.liquid'},
+        1: {name: 'storage.type.class.liquid'}
+      },
+      contentName: 'meta.embedded.block.liquid',
+      end: '(?=@|{%-?\\s*enddoc\\s*-?%})',
+      patterns: [{include: '#core'}]
+    },
+    liquid_doc_fallback_tag: {
+      captures: {1: {name: 'comment.block.liquid'}},
+      match: '(@\\w+)\\b'
+    },
+    liquid_doc_param_tag: {
+      captures: {
+        1: {name: 'storage.type.class.liquid'},
+        2: {name: 'entity.name.type.instance.liquid'},
+        3: {name: 'variable.other.liquid'},
+        4: {name: 'string.quoted.single.liquid'}
+      },
+      match:
+        '(@param)\\s+(?:({[^}]*}?)\\s+)?(\\[?[a-zA-Z_][\\w-]*\\]?)?(?:\\s+(.*))?'
     },
     number: {
       match: '((-|\\+)\\s*)?[0-9]+(\\.[0-9]+)?',

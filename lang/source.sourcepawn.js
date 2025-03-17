@@ -18,6 +18,11 @@ const grammar = {
     {include: '#operators'},
     {include: '#preproc'},
     {
+      match:
+        '\\b(?:if|else|for|while|do|switch|case|default|return|break|continue)\\b',
+      name: 'keyword.control.statement.sourcepawn'
+    },
+    {
       captures: {
         1: {patterns: [{include: '#keywords'}]},
         2: {patterns: [{include: '#type'}]}
@@ -44,11 +49,6 @@ const grammar = {
         2: {patterns: [{include: '#variable_name'}]}
       },
       match: '(\\w+)\\:\\:(\\w*)'
-    },
-    {
-      match:
-        '\\b(?:if|else|for|while|do|switch|case|default|return|break|continue)\\b',
-      name: 'keyword.control.statement.sourcepawn'
     },
     {include: '#other-keywords'},
     {include: '#methodmap'},
@@ -633,7 +633,7 @@ const grammar = {
             6: {patterns: [{include: '#array-indexed-access'}]}
           },
           match:
-            '(?:(stock|public)\\s+)?((?:(?:const|static)\\s+)*)(\\w+)(\\s*(?:\\[[^\\]]*\\]\\s*)*)(?:(?:\\s*&\\s*)|\\s+)(\\w+)\\s*(\\s*(?:\\[[^\\]]*\\]\\s*)*)'
+            '(?:(stock|public)\\s+)?((?:(?:const|static)\\s+)*)(\\w+)(\\s*(?:\\[[^\\]]*\\]\\s*)*)\\s+(\\w+)\\s*(\\s*(?:\\[[^\\]]*\\]\\s*)*)'
         }
       ]
     },

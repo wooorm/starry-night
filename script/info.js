@@ -92,6 +92,10 @@ export const info = {
     homepage: 'https://github.com/tikkanz/JSyntax',
     license: 'mit'
   },
+  'source.jai': {
+    homepage: 'https://github.com/SogoCZE/Jails',
+    license: 'mit'
+  },
   'source.lolcode': {
     homepage: 'https://github.com/KrazIvan/LOLCODE-grammar-vscode',
     license: 'mit'
@@ -106,6 +110,10 @@ export const info = {
   },
   'source.religo': {
     homepage: 'https://github.com/pewulfman/Ligo-grammar',
+    license: 'mit'
+  },
+  'source.c.linker': {
+    homepage: 'https://github.com/donno2048/Linker.tmLanguage',
     license: 'mit'
   },
   'source.livescript': {
@@ -200,7 +208,7 @@ export const info = {
     license: 'mit'
   },
   'source.powerbuilder': {
-    homepage: 'https://github.com/micha4w/PowerBuilder.tmbundle',
+    homepage: 'https://github.com/informaticon/PowerBuilder.tmbundle',
     license: 'mit'
   },
   'text.rdoc': {
@@ -407,7 +415,6 @@ export const info = {
     license: 'mit'
   },
   'source.antlr': {},
-  'source.apache-config': {},
   'source.apex': {
     homepage: 'https://github.com/forcedotcom/apex-tmLanguage',
     license: 'bsd-3-clause'
@@ -425,6 +432,10 @@ export const info = {
   'text.html.asciidoc': {
     dependencies: ['text.html.basic'],
     homepage: 'https://github.com/zuckschwerdt/asciidoc.tmbundle',
+    license: 'mit'
+  },
+  'source.answersetprogramming': {
+    homepage: 'https://github.com/nickswalker/asp-syntax-highlight',
     license: 'mit'
   },
   'source.asp': {},
@@ -545,6 +556,10 @@ export const info = {
     homepage: 'https://github.com/browserslist/browserslist-vscode',
     license: 'mit'
   },
+  'source.bst': {
+    homepage: 'https://github.com/zyoshoka/bst.tmLanguage',
+    license: 'mit'
+  },
   'source.c': {
     dependencies: ['source.c.platform'],
     homepage: 'https://github.com/textmate/c.tmbundle'
@@ -561,7 +576,6 @@ export const info = {
     license: 'apache-2.0'
   },
   'source.cairo0': {
-    dependencies: ['source.cairo'],
     homepage: 'https://github.com/software-mansion-labs/cairo-tm-grammar',
     license: 'apache-2.0'
   },
@@ -698,9 +712,6 @@ export const info = {
     homepage: 'https://github.com/elves/elvish',
     license: 'bsd-2-clause'
   },
-  'source.erlang': {
-    homepage: 'https://github.com/textmate/erlang.tmbundle'
-  },
   'source.factor': {
     license: 'bsd-2-clause'
   },
@@ -752,6 +763,10 @@ export const info = {
   },
   'source.groovy.gradle': {
     dependencies: ['source.groovy'],
+    license: 'apache-2.0'
+  },
+  'source.erlang': {
+    homepage: 'https://github.com/erlang-ls/grammar',
     license: 'apache-2.0'
   },
   'source.graphql': {
@@ -808,6 +823,10 @@ export const info = {
   'source.fsharp': {
     homepage: 'https://github.com/ionide/ionide-fsgrammar',
     license: 'mit'
+  },
+  'source.ispc': {
+    homepage: 'https://github.com/ispc/ispc.syntax',
+    license: 'bsd-3-clause'
   },
   'text.jade': {
     dependencies: ['source.js', 'text.html.basic'],
@@ -1792,6 +1811,10 @@ export const info = {
     homepage: 'https://github.com/tbuser/openscad.tmbundle',
     license: 'mit'
   },
+  'source.overpassql': {
+    homepage: 'https://github.com/nickswalker/overpassql-tmlanguage',
+    license: 'mpl-2.0'
+  },
   'source.oz': {
     license: 'mit'
   },
@@ -1906,6 +1929,10 @@ export const info = {
   },
   'source.shaderlab': {
     license: 'mit'
+  },
+  'source.slang': {
+    homepage: 'https://github.com/shader-slang/slang-vscode-extension',
+    license: 'apache-2.0'
   },
   'source.slint': {
     homepage: 'https://github.com/slint-ui/slint-tmLanguage',
@@ -2148,7 +2175,7 @@ export const info = {
   },
   'source.typst': {
     homepage: 'https://github.com/michidk/typst-grammar',
-    license: 'mit'
+    license: 'apache-2.0'
   },
   'source.verilog': {},
   'source.vhdl': {},
@@ -2186,6 +2213,10 @@ export const info = {
   'text.html.statamic': {
     dependencies: ['text.html.basic'],
     homepage: 'https://github.com/Stillat/vscode-antlers-language-server',
+    license: 'mit'
+  },
+  'source.apacheconf': {
+    homepage: 'https://github.com/mrmlnc/vscode-apache',
     license: 'mit'
   },
   'source.bb': {
@@ -2274,9 +2305,17 @@ export const info = {
     homepage: 'https://github.com/jest-community/vscode-jest',
     license: 'mit'
   },
+  'source.json.comments': {
+    homepage: 'https://github.com/DecimalTurn/vscode-jsonc-syntax-highlighting',
+    license: 'mit'
+  },
   'source.just': {
     homepage: 'https://github.com/nefrob/vscode-just',
     license: 'mit'
+  },
+  'source.kdl': {
+    homepage: 'https://github.com/kdl-org/vscode-kdl',
+    license: 'apache-2.0'
   },
   'source.lean': {
     homepage: 'https://github.com/leanprover/vscode-lean',
@@ -2289,6 +2328,10 @@ export const info = {
   'source.livecodescript': {
     homepage: 'https://github.com/Ferruslogic/vscode-livecodescript',
     license: 'bsd-3-clause'
+  },
+  'source.mzn': {
+    homepage: 'https://github.com/Dekker1/vscode-minizinc',
+    license: 'mpl-2.0'
   },
   'source.mc': {
     license: 'mit'
@@ -2354,6 +2397,10 @@ export const info = {
     homepage: 'https://github.com/zeroc-ice/vscode-slice',
     license: 'bsd-3-clause'
   },
+  'source.scm': {
+    homepage: 'https://github.com/jrieken/vscode-tree-sitter-query',
+    license: 'mit'
+  },
   'source.vba': {
     homepage: 'https://github.com/serkonda7/vscode-vba',
     license: 'mpl-2.0'
@@ -2401,6 +2448,10 @@ export const info = {
   },
   'source.xc': {
     dependencies: ['source.c']
+  },
+  'source.xmake': {
+    homepage: 'https://github.com/xmake-io/xmake-lua.tmbundle',
+    license: 'mit'
   },
   'text.xml': {},
   'text.xml.xsl': {

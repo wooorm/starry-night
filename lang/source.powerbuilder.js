@@ -1,6 +1,6 @@
 // This is a TextMate grammar distributed by `starry-night`.
 // This grammar is developed at
-// <https://github.com/micha4w/PowerBuilder.tmbundle>
+// <https://github.com/informaticon/PowerBuilder.tmbundle>
 // and licensed `mit`.
 // See <https://github.com/wooorm/starry-night> for more info.
 /**

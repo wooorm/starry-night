@@ -10,7 +10,7 @@
 /** @type {Grammar} */
 const grammar = {
   dependencies: ['text.elixir', 'text.html.basic'],
-  extensions: ['.eex', '.html.heex', '.html.leex'],
+  extensions: ['.html.eex', '.heex', '.leex'],
   injections: {
     'R:text.html.elixir meta.tag meta.attribute string.quoted': {
       patterns: [{include: 'text.elixir'}]

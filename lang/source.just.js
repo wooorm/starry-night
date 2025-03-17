@@ -103,35 +103,30 @@ const grammar = {
           begin: '^\\s+(#!/usr/bin/env\\s+node.*)$',
           beginCaptures: {1: {name: 'comment.line.number-sign.shebang.just'}},
           contentName: 'source.js',
-          end: '^$',
           patterns: [{include: 'source.js'}]
         },
         {
           begin: '^\\s+(#!/usr/bin/env\\s+perl.*)$',
           beginCaptures: {1: {name: 'comment.line.number-sign.shebang.just'}},
           contentName: 'source.perl',
-          end: '^$',
           patterns: [{include: 'source.perl'}]
         },
         {
           begin: '^\\s+(#!/usr/bin/env\\s+python.*)$',
           beginCaptures: {1: {name: 'comment.line.number-sign.shebang.just'}},
           contentName: 'source.python',
-          end: '^$',
           patterns: [{include: 'source.python'}]
         },
         {
           begin: '^\\s+(#!/usr/bin/env\\s+ruby.*)$',
           beginCaptures: {1: {name: 'comment.line.number-sign.shebang.just'}},
           contentName: 'source.ruby',
-          end: '^$',
           patterns: [{include: 'source.ruby'}]
         },
         {
           begin: '^\\s+(#!/usr/bin/env\\s+(?:sh|bash|zsh|fish).*)$',
           beginCaptures: {1: {name: 'comment.line.number-sign.shebang.just'}},
           contentName: 'source.shell',
-          end: '^$',
           patterns: [{include: 'source.shell'}]
         }
       ]

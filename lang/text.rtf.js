@@ -15,19 +15,19 @@ const grammar = {
     {
       begin: '\\{\\\\\\*',
       beginCaptures: {
-        0: {name: 'keyword.operator.begin-ignorable-destination-group.rtf'}
+        0: {name: 'keyword.operator.group.ignorable-destination.begin.rtf'}
       },
       end: '}',
       endCaptures: {
-        0: {name: 'keyword.operator.end-ignorable-destination-group.rtf'}
+        0: {name: 'keyword.operator.group.ignorable-destination.end.rtf'}
       },
       patterns: [{include: '$self'}]
     },
     {
       begin: '\\{',
-      beginCaptures: {0: {name: 'keyword.operator.begin-group.rtf'}},
+      beginCaptures: {0: {name: 'keyword.operator.group.begin.rtf'}},
       end: '}',
-      endCaptures: {0: {name: 'keyword.operator.end-group.rtf'}},
+      endCaptures: {0: {name: 'keyword.operator.group.end.rtf'}},
       patterns: [{include: '$self'}]
     },
     {match: '\\\\[\\\\{}]', name: 'constant.character.escape.rtf'},

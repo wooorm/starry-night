@@ -27,10 +27,7 @@ const grammar = {
         {include: '#invalid'}
       ]
     },
-    sha: {
-      match: '[0-9a-fA-F]{40}(?=\\s*$)',
-      name: 'constant.numeric.sha.git-revlist'
-    }
+    sha: {name: 'constant.numeric.sha.git-revlist'}
   },
   scopeName: 'source.git-revlist'
 }

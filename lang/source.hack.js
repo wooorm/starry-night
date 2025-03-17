@@ -617,7 +617,7 @@ const grammar = {
         },
         {
           begin:
-            '(?x)\n\\s*((?:(?:final|abstract|public|private|protected|internal|static|async)\\s+)*)\n(function)\n(?:\\s+)\n(?:\n  (__(?:call|construct|destruct|get|set|isset|unset|tostring|clone|set_state|sleep|wakeup|autoload|invoke|callStatic|dispose|disposeAsync)(?=[^a-zA-Z0-9_\\x7f-\\xff]))\n  |\n  ([a-zA-Z0-9_]+)\n)',
+            '(?x)\n\\s*((?:(?:final|abstract|public|private|protected|internal|static|async)\\s+)*)\n(function)\n(?:\\s+)\n(?:\n  (__(?:call|construct|destruct|get|set|isset|unset|tostring|clone|set_state|sleep|wakeup|autoload|invoke|callStatic|dispose|disposeAsync)(?=[^a-zA-Z0-9_\\x{7f}-\\x{ff}]))\n  |\n  ([a-zA-Z0-9_]+)\n)',
           beginCaptures: {
             1: {
               patterns: [

@@ -7,7 +7,7 @@
 
 /** @type {Grammar} */
 const grammar = {
-  extensions: ['.s', '.x68'],
+  extensions: ['.x68'],
   names: ['motorola-68k-assembly', 'm68k'],
   patterns: [
     {match: '(;|\\B\\*).*$', name: 'comment.m68k'},

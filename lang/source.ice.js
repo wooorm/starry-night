@@ -12,10 +12,18 @@ const grammar = {
   extensions: [],
   names: ['slice'],
   patterns: [
-    {include: '#comment'},
-    {include: '#preprocessor'},
-    {include: '#metadata.global'},
-    {include: '#storage.module'}
+    {include: '#standard'},
+    {include: '#metadata'},
+    {include: '#constant'},
+    {include: '#storage.module'},
+    {include: '#storage.enum'},
+    {include: '#storage.struct'},
+    {include: '#storage.sequence'},
+    {include: '#storage.dictionary'},
+    {include: '#storage.interface'},
+    {include: '#storage.exception'},
+    {include: '#storage.class'},
+    {include: '#storage.operation'}
   ],
   repository: {
     annotation: {
@@ -193,9 +201,9 @@ const grammar = {
     },
     preprocessor: {
       patterns: [
-        {include: '#preprocessor.if'},
         {include: '#preprocessor.ifdef'},
         {include: '#preprocessor.ifndef'},
+        {include: '#preprocessor.if'},
         {include: '#preprocessor.elif'},
         {include: '#preprocessor.else'},
         {include: '#preprocessor.endif'},

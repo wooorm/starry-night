@@ -16,10 +16,13 @@ const grammar = {
     '--struct-content': {
       patterns: [
         {
-          begin: '[a-zA-Z_][a-zA-Z0-9_]*',
-          beginCaptures: {0: {name: 'support.type.property-name.nr'}},
-          end: '([a-zA-Z_][a-zA-Z0-9_]*)|,',
-          endCaptures: {1: {name: 'support.type.nr'}},
+          captures: {
+            1: {name: 'keyword.nr'},
+            2: {name: 'support.type.property-name.nr'},
+            3: {name: 'support.type.nr'}
+          },
+          match:
+            '(pub|pub\\(crate\\))?\\s*([a-zA-Z_][a-zA-Z0-9_]*)\\s*:\\s*([a-zA-Z_][a-zA-Z0-9_]*)',
           patterns: [{include: '#comments'}]
         },
         {begin: '<', end: '>', patterns: [{include: '#--struct-types'}]},
@@ -74,23 +77,39 @@ const grammar = {
           name: 'support.type.nr'
         },
         {
-          begin: '\\b([a-z_][a-zA-Z0-9_]*)\\s*\\(',
-          beginCaptures: {1: {name: 'support.function.nr'}},
+          begin: '\\b([a-z_][a-zA-Z0-9_]*)\\s*(::<(.*)>\\s*)?\\(',
+          beginCaptures: {
+            1: {name: 'support.function.nr'},
+            2: {patterns: [{include: '#code'}]}
+          },
           end: '\\)',
           patterns: [{include: '#code'}]
         },
         {match: '\\b[a-z_][a-zA-Z0-9_]*\\b', name: 'variable.nr'}
       ]
     },
+    'interpolated-string-escapes': {
+      match: '\\\\.|{{|}}',
+      name: 'constant.character.escape.nr'
+    },
+    interpolations: {
+      captures: {
+        1: {name: 'constant.character.nr'},
+        2: {name: 'constant.character.nr'}
+      },
+      match: '({)[^"{}]*(})',
+      name: 'variable.other.nr'
+    },
     keywords: {
       patterns: [
         {
-          match: '\\b(fn|impl|trait|type|mod|use|struct|if|else|for)\\b',
+          match:
+            '\\b(fn|impl|trait|type|mod|use|struct|if|else|for|loop|enum|match)\\b',
           name: 'keyword.control.nr'
         },
         {
           match:
-            '\\b(global|comptime|quote|unsafe|unconstrained|pub|&mut|mut|self|in|as|let)\\b',
+            '\\b(global|comptime|quote|unsafe|unconstrained|pub|crate|&mut|mut|self|in|as|let)\\b',
           name: 'keyword.nr'
         }
       ]
@@ -106,12 +125,32 @@ const grammar = {
         {match: '\\b(true|false)\\b', name: 'constant.language.nr'}
       ]
     },
+    'string-escapes': {match: '\\\\.', name: 'constant.character.escape.nr'},
     strings: {
-      captures: {
-        1: {patterns: [{match: '\\\\.', name: 'constant.character.escape.nr'}]}
-      },
-      match: '"(.*?)(\n|(?<!\\\\)")',
-      name: 'string.quoted.double.nr'
+      patterns: [
+        {
+          begin: '"',
+          end: '"',
+          name: 'string.quoted.double.nr',
+          patterns: [{include: '#string-escapes'}]
+        },
+        {
+          begin: 'r(#*)"',
+          beginCaptures: {1: {name: 'string.quoted.byte.raw.nr'}},
+          end: '"(\\1)',
+          endCaptures: {1: {name: 'string.quoted.byte.raw.nr'}},
+          name: 'string.quoted.double.nr'
+        },
+        {
+          begin: 'f"',
+          end: '"',
+          name: 'string.interpolated.nr',
+          patterns: [
+            {include: '#interpolated-string-escapes'},
+            {include: '#interpolations'}
+          ]
+        }
+      ]
     },
     syntax: {
       patterns: [
@@ -123,9 +162,7 @@ const grammar = {
             2: {name: 'support.type.nr'}
           },
           end: '\\}',
-          patterns: [
-            {match: '[a-zA-Z_(::)][a-zA-Z0-9_]*', name: 'support.type.nr'}
-          ]
+          patterns: [{include: '#code'}]
         },
         {
           captures: {

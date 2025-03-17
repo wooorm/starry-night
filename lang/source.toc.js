@@ -21,12 +21,12 @@ const grammar = {
             {match: '[Xx]-[^:]+', name: 'entity.name.tag.custom.toc'},
             {
               match:
-                '(?i)(Title-|Notes-|)(?-i)(enUS|enCN|enGB|enTW|frFR|deDE|esES|esMX|itIT|ptBR|ptPT|ruRU|koKR|zhTW|zhCN)',
+                '(?i)(Title-|Notes-|Category-|)(?-i)(enUS|enCN|enGB|enTW|frFR|deDE|esES|esMX|itIT|ptBR|ptPT|ruRU|koKR|zhTW|zhCN)',
               name: 'entity.name.tag.localized.toc'
             },
             {
               match:
-                '(?i)(Interface|Title|Notes|RequiredDeps|\\bDep[^:]*|OptionalDeps|LoadOnDemand|LoadWith|LoadManagers|SavedVariablesPerCharacter|SavedVariables|DefaultState|Author|Version|AddonCompartmentFunc(OnEnter|OnLeave)?|IconAtlas|IconTexture)',
+                '(?i)(Interface|Title|Notes|RequiredDeps|\\bDep[^:]*|OptionalDeps|LoadOnDemand|LoadWith|LoadManagers|SavedVariablesPerCharacter|SavedVariables|DefaultState|Author|Version|AddonCompartmentFunc(OnEnter|OnLeave)?|IconAtlas|IconTexture|Category|Group)',
               name: 'entity.name.tag.toc'
             },
             {

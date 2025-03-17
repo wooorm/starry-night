@@ -128,7 +128,7 @@ const grammar = {
       name: 'constant.character.escape.wdl'
     },
     'hints-block': {
-      begin: '(?:\\s*)(hints)',
+      begin: '(?:\\s*)(hints)\b',
       beginCaptures: {1: {name: 'keyword.other.hints.wdl'}},
       end: '(?:\\s*)({)',
       endCaptures: {1: {name: 'punctuation.bracket.angle.hints-start.wdl'}},
@@ -140,7 +140,7 @@ const grammar = {
       name: 'variable.other.wdl'
     },
     'input-block': {
-      begin: '(?:\\s*)(input)[?=\\s|{i]',
+      begin: '(?:\\s*)(input)\b',
       beginCaptures: {1: {name: 'keyword.other.input.wdl'}},
       end: '(?:\\s*)({)',
       endCaptures: {1: {name: 'punctuation.bracket.angle.input-start.wdl'}},
@@ -163,7 +163,7 @@ const grammar = {
         },
         {
           match:
-            '\\b(after|alias|as|call|command|else|false|hints|if|in|import|input|meta|null|object|output|parameter_meta|requirements|runtime|scatter|then|true|version)\\b\\s*(?!:)',
+            '\\b(after|alias|as|call|command|else|env|false|hints|if|in|import|input|meta|null|object|output|parameter_meta|requirements|runtime|scatter|then|true|version)\\b\\s*(?!:)',
           name: 'keyword.wdl'
         },
         {
@@ -174,7 +174,7 @@ const grammar = {
       ]
     },
     'meta-block': {
-      begin: '(?:\\s*)(meta)',
+      begin: '(?:\\s*)(meta)\b',
       beginCaptures: {1: {name: 'keyword.other.meta.wdl'}},
       end: '(?:\\s*)({)',
       endCaptures: {1: {name: 'punctuation.bracket.angle.meta-start.wdl'}},
@@ -193,7 +193,7 @@ const grammar = {
       name: 'constant.numeric.wdl'
     },
     'output-block': {
-      begin: '(?:\\s*)(output)[?=\\s|{]',
+      begin: '(?:\\s*)(output)\b',
       beginCaptures: {1: {name: 'keyword.other.output.wdl'}},
       end: '(?:\\s*)({)',
       endCaptures: {1: {name: 'punctuation.bracket.angle.output-start.wdl'}},
@@ -201,7 +201,7 @@ const grammar = {
       patterns: [{include: '#atom'}]
     },
     'parameter_meta-block': {
-      begin: '(?:\\s*)(parameter_meta)',
+      begin: '(?:\\s*)(parameter_meta)\b',
       beginCaptures: {1: {name: 'keyword.other.parameter_meta.wdl'}},
       end: '(?:\\s*)({)',
       endCaptures: {
@@ -215,7 +215,7 @@ const grammar = {
       name: 'constant.other.placeholder.wdl'
     },
     'requirements-block': {
-      begin: '(?:\\s*)(requirements)',
+      begin: '(?:\\s*)(requirements)\b',
       beginCaptures: {1: {name: 'keyword.other.requirements.wdl'}},
       end: '(?:\\s*)({)',
       endCaptures: {
@@ -225,7 +225,7 @@ const grammar = {
       patterns: [{include: '#atom'}]
     },
     'runtime-block': {
-      begin: '(?:\\s*)(runtime)',
+      begin: '(?:\\s*)(runtime)\b',
       beginCaptures: {1: {name: 'keyword.other.runtime.wdl'}},
       end: '(?:\\s*)({)',
       endCaptures: {1: {name: 'punctuation.bracket.angle.runtime-start.wdl'}},

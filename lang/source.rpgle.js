@@ -14,14 +14,15 @@ const grammar = {
   names: ['rpgle', 'ile-rpg', 'sqlrpgle'],
   patterns: [
     {
-      begin: '(?i)(?=(\\s*\\*\\*(FREE)))',
+      begin: '(?i)(?=(\\*\\*(FREE)))',
       end: '(E-\\*-O-\\*-F)',
       name: 'rpgle.free.allfree',
       patterns: [
         {
-          match: '(?i)^\\s*\\*\\*FREE',
+          match: '(?i)^\\*\\*FREE',
           name: 'keyword.other.rpgle.free.precompiler.allfree'
         },
+        {include: '#ctarrays'},
         {include: '#freeSQL'},
         {include: '#rpglecommon'},
         {include: '#freeformat'}
@@ -55,7 +56,9 @@ const grammar = {
         {
           begin: '(?=^(\\*{2})(?!free))',
           end: '(E-\\*-O-\\*-F)',
-          patterns: [{begin: '(\\*{2})', name: 'string.other.rpgle.ctarray'}]
+          patterns: [
+            {begin: '^(\\*{2}(\\ |CTDATA))', name: 'string.other.rpgle.ctarray'}
+          ]
         }
       ]
     },

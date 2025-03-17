@@ -358,6 +358,20 @@ const grammar = {
       name: 'meta.tag.inline.any.html',
       patterns: [{include: '#tag-stuff'}]
     },
+    'raw-go': {
+      begin: '{{',
+      beginCaptures: {
+        0: {name: 'start.raw-go.templ'},
+        1: {name: 'punctuation.brace.open'}
+      },
+      end: '}}',
+      endCaptures: {
+        0: {name: 'end.raw-go.templ'},
+        1: {name: 'punctuation.brace.open'}
+      },
+      name: 'raw-go.templ',
+      patterns: [{include: 'source.go'}]
+    },
     'script-element': {
       begin: '(<)(script)([^>]*)(>)',
       beginCaptures: {
@@ -601,7 +615,8 @@ const grammar = {
         {include: '#if-expression'},
         {include: '#else-expression'},
         {include: '#for-expression'},
-        {include: '#switch-expression'}
+        {include: '#switch-expression'},
+        {include: '#raw-go'}
       ]
     }
   },

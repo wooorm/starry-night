@@ -37,7 +37,7 @@ const grammar = {
         1: {name: 'entity.name.tag.tsp'},
         2: {name: 'entity.name.tag.tsp'}
       },
-      end: '(?=[_$[:alpha:]])|(?=,|;|@|\\)|\\}|\\b(?:extern)\\b|\\b(?:namespace|model|op|using|import|enum|alias|union|interface|dec|fn)\\b)',
+      end: '(?=([_$[:alpha:]]|`))|(?=,|;|@|\\)|\\}|\\b(?:extern)\\b|\\b(?:namespace|model|op|using|import|enum|alias|union|interface|dec|fn)\\b)',
       name: 'meta.augment-decorator-statement.typespec',
       patterns: [{include: '#token'}, {include: '#parenthesized-expression'}]
     },
@@ -83,7 +83,7 @@ const grammar = {
         1: {name: 'entity.name.tag.tsp'},
         2: {name: 'entity.name.tag.tsp'}
       },
-      end: '(?=[_$[:alpha:]])|(?=,|;|@|\\)|\\}|\\b(?:extern)\\b|\\b(?:namespace|model|op|using|import|enum|alias|union|interface|dec|fn)\\b)',
+      end: '(?=([_$[:alpha:]]|`))|(?=,|;|@|\\)|\\}|\\b(?:extern)\\b|\\b(?:namespace|model|op|using|import|enum|alias|union|interface|dec|fn)\\b)',
       name: 'meta.decorator.typespec',
       patterns: [{include: '#token'}, {include: '#parenthesized-expression'}]
     },
@@ -151,29 +151,6 @@ const grammar = {
         '(?x)((@)(?:\\b[_$[:alpha:]][_$[:alnum:]]*\\b|`(?:[^`\\\\]|\\\\.)*`))\\b',
       name: 'comment.block.tsp'
     },
-    'else-expression': {
-      begin: '\\b(else)\\b',
-      beginCaptures: {1: {name: 'keyword.other.tsp'}},
-      end: '((?<=\\})|(?=,|;|@|\\)|\\}|\\b(?:extern)\\b|\\b(?:namespace|model|op|using|import|enum|alias|union|interface|dec|fn)\\b))',
-      name: 'meta.else-expression.typespec',
-      patterns: [
-        {include: '#projection-expression'},
-        {include: '#projection-body'}
-      ]
-    },
-    'else-if-expression': {
-      begin: '\\b(else)\\s+(if)\\b',
-      beginCaptures: {
-        1: {name: 'keyword.other.tsp'},
-        2: {name: 'keyword.other.tsp'}
-      },
-      end: '((?<=\\})|(?=,|;|@|\\)|\\}|\\b(?:extern)\\b|\\b(?:namespace|model|op|using|import|enum|alias|union|interface|dec|fn)\\b))',
-      name: 'meta.else-if-expression.typespec',
-      patterns: [
-        {include: '#projection-expression'},
-        {include: '#projection-body'}
-      ]
-    },
     'enum-body': {
       begin: '\\{',
       beginCaptures: {0: {name: 'punctuation.curlybrace.open.tsp'}},
@@ -227,18 +204,6 @@ const grammar = {
         {include: '#identifier-expression'}
       ]
     },
-    'function-call': {
-      begin:
-        '(\\b[_$[:alpha:]][_$[:alnum:]]*\\b|`(?:[^`\\\\]|\\\\.)*`)\\s*(\\()',
-      beginCaptures: {
-        1: {name: 'entity.name.function.tsp'},
-        2: {name: 'punctuation.parenthesis.open.tsp'}
-      },
-      end: '\\)',
-      endCaptures: {0: {name: 'punctuation.parenthesis.close.tsp'}},
-      name: 'meta.function-call.typespec',
-      patterns: [{include: '#expression'}]
-    },
     'function-declaration-statement': {
       begin:
         '(?:(extern)\\s+)?\\b(fn)\\b\\s+(\\b[_$[:alpha:]][_$[:alnum:]]*\\b|`(?:[^`\\\\]|\\\\.)*`)',
@@ -258,16 +223,6 @@ const grammar = {
     'identifier-expression': {
       match: '\\b[_$[:alpha:]][_$[:alnum:]]*\\b|`(?:[^`\\\\]|\\\\.)*`',
       name: 'entity.name.type.tsp'
-    },
-    'if-expression': {
-      begin: '\\b(if)\\b',
-      beginCaptures: {1: {name: 'keyword.other.tsp'}},
-      end: '((?<=\\})|(?=,|;|@|\\)|\\}|\\b(?:extern)\\b|\\b(?:namespace|model|op|using|import|enum|alias|union|interface|dec|fn)\\b))',
-      name: 'meta.if-expression.typespec',
-      patterns: [
-        {include: '#projection-expression'},
-        {include: '#projection-body'}
-      ]
     },
     'import-statement': {
       begin: '\\b(import)\\b',
@@ -381,7 +336,7 @@ const grammar = {
       patterns: [{include: '#statement'}]
     },
     'namespace-name': {
-      begin: '(?=[_$[:alpha:]])',
+      begin: '(?=([_$[:alpha:]]|`))',
       end: '((?=\\{)|(?=,|;|@|\\)|\\}|\\b(?:extern)\\b|\\b(?:namespace|model|op|using|import|enum|alias|union|interface|dec|fn)\\b))',
       name: 'meta.namespace-name.typespec',
       patterns: [
@@ -482,70 +437,6 @@ const grammar = {
       name: 'meta.parenthesized-expression.typespec',
       patterns: [{include: '#expression'}, {include: '#punctuation-comma'}]
     },
-    projection: {
-      begin: '(from|to)',
-      beginCaptures: {1: {name: 'keyword.other.tsp'}},
-      end: '((?<=\\})|(?=,|;|@|\\)|\\}|\\b(?:extern)\\b|\\b(?:namespace|model|op|using|import|enum|alias|union|interface|dec|fn)\\b))',
-      name: 'meta.projection.typespec',
-      patterns: [
-        {include: '#projection-parameters'},
-        {include: '#projection-body'}
-      ]
-    },
-    'projection-body': {
-      begin: '\\{',
-      beginCaptures: {0: {name: 'punctuation.curlybrace.open.tsp'}},
-      end: '\\}',
-      endCaptures: {0: {name: 'punctuation.curlybrace.close.tsp'}},
-      name: 'meta.projection-body.typespec',
-      patterns: [
-        {include: '#projection-expression'},
-        {include: '#punctuation-semicolon'}
-      ]
-    },
-    'projection-expression': {
-      patterns: [
-        {include: '#else-if-expression'},
-        {include: '#if-expression'},
-        {include: '#else-expression'},
-        {include: '#function-call'}
-      ]
-    },
-    'projection-parameter': {
-      begin: '(\\b[_$[:alpha:]][_$[:alnum:]]*\\b|`(?:[^`\\\\]|\\\\.)*`)',
-      beginCaptures: {1: {name: 'variable.name.tsp'}},
-      end: '(?=\\))|(?=,|;|@|\\)|\\}|\\b(?:extern)\\b|\\b(?:namespace|model|op|using|import|enum|alias|union|interface|dec|fn)\\b)',
-      name: 'meta.projection-parameter.typespec'
-    },
-    'projection-parameters': {
-      begin: '\\(',
-      beginCaptures: {0: {name: 'punctuation.parenthesis.open.tsp'}},
-      end: '\\)',
-      endCaptures: {0: {name: 'punctuation.parenthesis.close.tsp'}},
-      name: 'meta.projection-parameters.typespec',
-      patterns: [{include: '#token'}, {include: '#projection-parameter'}]
-    },
-    'projection-statement': {
-      begin:
-        '\\b(projection)\\b\\s+(\\b[_$[:alpha:]][_$[:alnum:]]*\\b|`(?:[^`\\\\]|\\\\.)*`)(#)(\\b[_$[:alpha:]][_$[:alnum:]]*\\b|`(?:[^`\\\\]|\\\\.)*`)',
-      beginCaptures: {
-        1: {name: 'keyword.other.tsp'},
-        2: {name: 'keyword.other.tsp'},
-        3: {name: 'keyword.operator.selector.tsp'},
-        4: {name: 'variable.name.tsp'}
-      },
-      end: '((?<=\\})|(?=,|;|@|\\)|\\}|\\b(?:extern)\\b|\\b(?:namespace|model|op|using|import|enum|alias|union|interface|dec|fn)\\b))',
-      name: 'meta.projection-statement.typespec',
-      patterns: [{include: '#projection-statement-body'}]
-    },
-    'projection-statement-body': {
-      begin: '\\{',
-      beginCaptures: {0: {name: 'punctuation.curlybrace.open.tsp'}},
-      end: '\\}',
-      endCaptures: {0: {name: 'punctuation.curlybrace.close.tsp'}},
-      name: 'meta.projection-statement-body.typespec',
-      patterns: [{include: '#projection'}]
-    },
     'punctuation-accessor': {match: '\\.', name: 'punctuation.accessor.tsp'},
     'punctuation-comma': {match: ',', name: 'punctuation.comma.tsp'},
     'punctuation-semicolon': {
@@ -625,7 +516,6 @@ const grammar = {
         {include: '#using-statement'},
         {include: '#decorator-declaration-statement'},
         {include: '#function-declaration-statement'},
-        {include: '#projection-statement'},
         {include: '#punctuation-semicolon'}
       ]
     },

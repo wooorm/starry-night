@@ -122,6 +122,7 @@ const grammar = {
         {include: '#strings'},
         {include: '#initialization'},
         {include: '#xml-literal'},
+        {include: '#namedBounds'},
         {include: '#keywords'},
         {include: '#using'},
         {include: '#constants'},
@@ -531,6 +532,18 @@ const grammar = {
     },
     'meta-colons': {
       patterns: [{match: '(?<!:):(?!:)', name: 'meta.colon.scala'}]
+    },
+    namedBounds: {
+      patterns: [
+        {
+          captures: {
+            1: {name: 'keyword.other.import.as.scala'},
+            2: {name: 'variable.stable.declaration.scala'}
+          },
+          match:
+            '\\s+(as)\\s+([_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}][A-Z\\p{Lt}\\p{Lu}_a-z\\$\\p{Lo}\\p{Nl}\\p{Ll}0-9]*(?:(?<=_)[!#%&*+\\-\\/:<>=?@^|~\\p{Sm}\\p{So}]+)?)\\b'
+        }
+      ]
     },
     'parameter-list': {
       patterns: [

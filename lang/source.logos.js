@@ -10,7 +10,7 @@
 /** @type {Grammar} */
 const grammar = {
   dependencies: ['source.c++', 'source.objc'],
-  extensions: ['.xm', '.x', '.xi'],
+  extensions: ['.xm', '.xi'],
   names: ['logos'],
   patterns: [
     {

@@ -207,7 +207,20 @@ const grammar = {
         },
         {include: '#rule'},
         {match: '\\b(assert|assert_not)\\b', name: 'keyword.other'},
-        {include: '#comment'}
+        {include: '#comment'},
+        {
+          name: 'meta.iff-rule',
+          patterns: [
+            {include: '#rule-functor'},
+            {
+              begin: '\\biff\\b',
+              beginCaptures: {0: {name: 'keyword.control'}},
+              end: ';',
+              patterns: [{include: '#term'}]
+            },
+            {match: ';'}
+          ]
+        }
       ]
     }
   },
