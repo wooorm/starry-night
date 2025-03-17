@@ -130,7 +130,7 @@
     "strict": true
   },
   "type": "module",
-  "version": "3.6.0",
+  "version": "3.7.0",
   "xo": {
     "ignores": [
       "gems/",
