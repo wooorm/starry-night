@@ -7,10 +7,10 @@
 
 # starry-night
 
-[![Build][build-badge]][build]
-[![Coverage][coverage-badge]][coverage]
-[![Downloads][downloads-badge]][downloads]
-[![Size][size-badge]][size]
+[![Build][badge-build-image]][badge-build-url]
+[![Coverage][badge-coverage-image]][badge-coverage-url]
+[![Downloads][badge-downloads-image]][badge-downloads-url]
+[![Size][badge-size-image]][badge-size-url]
 
 Syntax highlighting, like what GitHub uses to highlight code, but free and open
 source and JavaScript!
@@ -70,20 +70,23 @@ which approaches how GitHub renders code.
 
 It has a WASM dependency, and rather big grammars, which means that
 `starry-night` might be too heavy particularly in browsers, in which case
-[`lowlight`][lowlight] or [`refractor`][refractor] might be more suitable.
+[`lowlight`][github-lowlight] or [`refractor`][github-refractor]
+might be more suitable.
 
-This project is similar to the excellent [`shiki`][shiki], and it uses the same
-underlying dependencies, but `starry-night` is meant to match GitHub in that it
-produces classes and works with the CSS it ships, making it easier to add dark
-mode and other themes with CSS compared to inline styles.
+This project is similar to the excellent [`shiki`][github-shiki],
+and it uses the same underlying dependencies,
+but `starry-night` is meant to match GitHub in that it produces classes and
+works with the CSS it ships,
+making it easier to add dark mode and other themes with CSS compared to inline
+styles.
 
 Finally, this package produces objects (an AST), which makes it useful when you
 want to perform syntax highlighting in a place where serialized HTML wouldn’t
 work or wouldn’t work well.
 For example, when you want to show code in a CLI by rendering to ANSI sequences,
 when you’re using virtual DOM frameworks (such as React or Preact) so that
-diffing can be performant, or when you’re working with [`hast`][hast] or
-[`rehype`][rehype].
+diffing can be performant, or when you’re working with [`hast`][github-hast] or
+[`rehype`][github-rehype].
 
 Bundled, minified, and gzipped, `starry-night` and the WASM binary are 185 kB.
 There are two lists of grammars you can use: [`common`][api-common] (±35
@@ -113,16 +116,19 @@ To illustrate, Astro costs 2.1 kB and TSX costs 25.4 kB.
 essentially the same)!
 
 `PrettyLights` is responsible for taking the flag `markdown`, looking it up in
-[`languages.yml`][languages-yml] from `github-linguist` to figure out that that
+[`languages.yml` from `github-linguist`][github-linguist-languages-yml]
+to figure out that that
 means markdown, taking a corresponding grammar (in this case
-[`wooorm/markdown-tm-language`][markdown-tm-language]),
+[`wooorm/markdown-tm-language`][github-markdown-tm-language]),
 doing some GPL magic in C,
 and turning it into spans with classes.
 
 GitHub is using `PrettyLights` since December 2014, when it
-[replaced `Pygments`][ref-1].
-They wanted to open source it, but [were unable][ref-2] due to licensing issues.
-Recently ([Feb 2019][ref-3]?), GitHub has slowly started to move towards
+[replaced `Pygments`][github-pages-pygments].
+They wanted to open source it, but [were unable][github-pages-license]
+due to licensing issues.
+Recently ([Feb 2019][github-tree-sitter-tree-lights]?),
+GitHub has slowly started to move towards
 `TreeLights`, which is based on TreeSitter, and also closed source.
 If `TreeLights` includes a language (currently: C, C#, CSS, CodeQL, EJS, Elixir,
 ERB, Gleam, Go, HTML, Java, JS, Nix, PHP, Python, RegEx, Ruby, Rust, TLA, TS),
@@ -133,12 +139,12 @@ I’m hopeful that that will be open sourced in the future and we can mimic both
 
 <br>
 
-[![](media/slice-1.jpg)][ref]
+[![](media/slice-1.jpg)][artsandculture-google-starry-night]
 
 ## Install
 
-This package is [ESM only][esm].
-In Node.js (version 16+), install with [npm][]:
+This package is [ESM only][github-gist-esm].
+In Node.js (version 16+), install with [npm][npmjs-install]:
 
 ```sh
 npm install @wooorm/starry-night
@@ -158,7 +164,7 @@ In browsers with [`esm.sh`][esmsh]:
 </script>
 ```
 
-To get the CSS in browsers, do (see [CSS][] for more info):
+To get the CSS in browsers, do (see [CSS][section-css] for more info):
 
 ```html
 <!-- This supports light and dark mode automatically. -->
@@ -308,7 +314,7 @@ Highlight programming code.
 
 ###### Returns
 
-Node representing highlighted code ([`Root`][hast-root]).
+Node representing highlighted code ([`Root`][github-hast-root]).
 
 ###### Example
 
@@ -444,14 +450,14 @@ Yields:
 Function to get a URL to the oniguruma WASM (TypeScript type).
 
 > 👉 **Note**: this must currently result in a version 2 URL of
-> `onig.wasm` from [`vscode-oniguruma`][vscode-oniguruma].
+> `onig.wasm` from [`vscode-oniguruma`][github-vscode-oniguruma].
 
 > ⚠️ **Danger**: when you use this functionality, your project might break at
 > any time (when reinstalling dependencies), except when you make sure that
 > the WASM binary you load manually is what our internally used
 > `vscode-oniguruma` dependency expects.
 > To solve this, you could for example use an npm script called
-> [`dependencies`][npm-script-dependencies] (which runs everytime
+> [`dependencies`][npmjs-using-npm-script-dependencies] (which runs everytime
 > `node_modules` is changed) which copies
 > `vscode-oniguruma/release/onig.wasm` to the place you want to host it.
 
@@ -511,8 +517,8 @@ Configuration (TypeScript type).
 
 ### Example: serializing hast as html
 
-[`hast`][hast] trees as returned by `starry-night` can be serialized with
-[`hast-util-to-html`][hast-util-to-html]:
+[`hast`][github-hast] trees as returned by `starry-night` can be serialized with
+[`hast-util-to-html`][github-hast-util-to-html]:
 
 ```js
 import {common, createStarryNight} from '@wooorm/starry-night'
@@ -540,8 +546,8 @@ on a page of comments.
 
 In those cases, you can run `starry-night` in the browser.
 Here is an example.
-It also uses [`hast-util-to-dom`][hast-util-to-dom], which is a light way to
-turn the AST into DOM nodes.
+It also uses [`hast-util-to-dom`][github-hast-util-to-dom], which is a light
+way to turn the AST into DOM nodes.
 
 Say we have this `example.js` on our browser (no bundling needed!):
 
@@ -596,7 +602,7 @@ Opening that page in a browser, we’d see the `<code>` being swapped with:
 
 hast trees as returned by `starry-night` can be turned into preact, react,
 solid, svelte, vue, etc., with
-[`hast-util-to-jsx-runtime`][hast-util-to-jsx-runtime]:
+[`hast-util-to-jsx-runtime`][github-hast-util-to-jsx-runtime]:
 
 ```js
 import {common, createStarryNight} from '@wooorm/starry-night'
@@ -766,7 +772,8 @@ Now running `node example.js` yields:
 ### Example: integrate with unified, remark, and rehype
 
 This example shows how to use
-[`rehype-starry-night`][rehype-starry-night] with [`unified`][unified].
+[`rehype-starry-night`][github-rehype-starry-night] with
+[`unified`][github-unified].
 If we have a markdown file `example.md`:
 
 ````markdown
@@ -878,12 +885,12 @@ Now running `node example.js` yields:
 
 <br>
 
-[![](media/slice-2.jpg)][ref]
+[![](media/slice-2.jpg)][artsandculture-google-starry-night]
 
 ## Syntax tree
 
-The generated [`hast`][hast] starts with a `root` node, that represents the
-fragment.
+The generated [`hast`][github-hast] starts with a `root` node,
+that represents the fragment.
 It contains up to three levels of `<span>` `element`s, each with a single class.
 All these levels can contain text nodes with the actual code.
 Interestingly, TextMate grammars work per line, so all line endings are in the
@@ -940,9 +947,9 @@ Some grammars need other grammars to work.
 You are responsible for loading those, use `missingScopes` to find which
 dependencies are needed.
 
-All licenses are permissive and made available in [`notice`][notice].
-Changes should go to upstream repos and [`languages.yml`][languages-yml] in
-`github-linguist`.
+All licenses are permissive and made available in [`notice`][file-notice].
+Changes should go to upstream repos and
+[`languages.yml` in `github-linguist`][github-linguist-languages-yml].
 
 <!--support start-->
 
@@ -1603,7 +1610,7 @@ This means we try to keep the current release line, `wooorm@starry-night@^3`,
 compatible with Node.js 16.
 
 You can pass your own TextMate grammars, provided that they work with
-[`vscode-textmate`][vscode-textmate], and that they have the added fields
+[`vscode-textmate`][github-vscode-textmate], and that they have the added fields
 `extensions`, `names`, and `scopeName` (see types for the definitions and the
 grammars in `lang/` for examples).
 
@@ -1613,103 +1620,29 @@ This package is safe.
 
 ## Related
 
-* [`lowlight`][lowlight]
+* [`lowlight`][github-lowlight]
   — similar but based on `highlight.js`
-* [`refractor`][refractor]
+* [`refractor`][github-refractor]
   — similar but based on `Prism`
 
 ## Contribute
 
 Yes please!
-See [How to Contribute to Open Source][contribute].
+See [How to Contribute to Open Source][opensource-guide-contribute].
 
 ## License
 
 The grammars included in this package are covered by their repositories’
 respective licenses, which are permissive (`apache-2.0`, `mit`, etc), and made
-available in [`notice`][notice].
+available in [`notice`][file-notice].
 
-All other files [MIT][license] © [Titus Wormer][author]
+All other files [MIT][file-license] © [Titus Wormer][wooorm]
 
 <br>
 
-[![](media/slice-3.jpg)][ref]
+[![](media/slice-3.jpg)][artsandculture-google-starry-night]
 
 <!-- Definitions -->
-
-[build-badge]: https://github.com/wooorm/starry-night/workflows/main/badge.svg
-
-[build]: https://github.com/wooorm/starry-night/actions
-
-[coverage-badge]: https://img.shields.io/codecov/c/github/wooorm/starry-night.svg
-
-[coverage]: https://codecov.io/github/wooorm/starry-night
-
-[downloads-badge]: https://img.shields.io/npm/dm/@wooorm/starry-night.svg
-
-[downloads]: https://www.npmjs.com/package/@wooorm/starry-night
-
-[size-badge]: https://img.shields.io/bundlejs/size/%40wooorm/starry-night?exports=createStarryNight
-
-[size]: https://bundlejs.com/?q=@wooorm/starry-night
-
-[npm]: https://docs.npmjs.com/cli/install
-
-[esmsh]: https://esm.sh
-
-[license]: license
-
-[notice]: notice
-
-[author]: https://wooorm.com
-
-[esm]: https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
-
-[typescript]: https://www.typescriptlang.org
-
-[contribute]: https://opensource.guide/how-to-contribute/
-
-[unified]: https://github.com/unifiedjs/unified
-
-[rehype]: https://github.com/rehypejs/rehype
-
-[rehype-starry-night]: https://github.com/rehypejs/rehype-starry-night
-
-[hast]: https://github.com/syntax-tree/hast
-
-[hast-root]: https://github.com/syntax-tree/hast#root
-
-[hast-util-to-html]: https://github.com/syntax-tree/hast-util-to-html
-
-[hast-util-to-dom]: https://github.com/syntax-tree/hast-util-to-dom
-
-[hast-util-to-jsx-runtime]: https://github.com/syntax-tree/hast-util-to-jsx-runtime
-
-[lowlight]: https://github.com/wooorm/lowlight
-
-[refractor]: https://github.com/wooorm/refractor
-
-[shiki]: https://github.com/shikijs/shiki
-
-[npm-script-dependencies]: https://docs.npmjs.com/cli/v8/using-npm/scripts#dependencies
-
-[vscode-oniguruma]: https://github.com/microsoft/vscode-oniguruma
-
-[vscode-textmate]: https://github.com/microsoft/vscode-textmate
-
-[ref]: https://artsandculture.google.com/asset/the-starry-night/bgEuwDxel93-Pg
-
-[ref-1]: https://github.com/github/pages-gem/pull/79#issuecomment-85997762
-
-[ref-2]: https://github.com/github/pages-gem/issues/160#issuecomment-134565796
-
-[ref-3]: https://github.com/tree-sitter/tree-sitter/pull/283#issuecomment-465509157
-
-[markdown-tm-language]: https://github.com/wooorm/markdown-tm-language
-
-[languages-yml]: https://github.com/github-linguist/linguist/blob/b5432eb/lib/linguist/languages.yml#L4031
-
-[css]: #css
 
 [api-all]: #all
 
@@ -1722,3 +1655,77 @@ All other files [MIT][license] © [Titus Wormer][author]
 [api-grammar]: #grammar
 
 [api-options]: #options
+
+[artsandculture-google-starry-night]: https://artsandculture.google.com/asset/the-starry-night/bgEuwDxel93-Pg
+
+[badge-build-image]: https://github.com/wooorm/starry-night/workflows/main/badge.svg
+
+[badge-build-url]: https://github.com/wooorm/starry-night/actions
+
+[badge-coverage-image]: https://img.shields.io/codecov/c/github/wooorm/starry-night.svg
+
+[badge-coverage-url]: https://codecov.io/github/wooorm/starry-night
+
+[badge-downloads-image]: https://img.shields.io/npm/dm/@wooorm/starry-night.svg
+
+[badge-downloads-url]: https://www.npmjs.com/package/@wooorm/starry-night
+
+[badge-size-image]: https://img.shields.io/bundlejs/size/@wooorm/starry-night?exports=createStarryNight
+
+[badge-size-url]: https://bundlejs.com/?q=@wooorm/starry-night
+
+[esmsh]: https://esm.sh
+
+[file-license]: license
+
+[file-notice]: notice
+
+[github-gist-esm]: https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
+
+[github-hast]: https://github.com/syntax-tree/hast
+
+[github-hast-root]: https://github.com/syntax-tree/hast#root
+
+[github-hast-util-to-dom]: https://github.com/syntax-tree/hast-util-to-dom
+
+[github-hast-util-to-html]: https://github.com/syntax-tree/hast-util-to-html
+
+[github-hast-util-to-jsx-runtime]: https://github.com/syntax-tree/hast-util-to-jsx-runtime
+
+[github-linguist-languages-yml]: https://github.com/github-linguist/linguist/blob/b5432eb/lib/linguist/languages.yml#L4031
+
+[github-lowlight]: https://github.com/wooorm/lowlight
+
+[github-markdown-tm-language]: https://github.com/wooorm/markdown-tm-language
+
+[github-pages-license]: https://github.com/github/pages-gem/issues/160#issuecomment-134565796
+
+[github-pages-pygments]: https://github.com/github/pages-gem/pull/79#issuecomment-85997762
+
+[github-refractor]: https://github.com/wooorm/refractor
+
+[github-rehype]: https://github.com/rehypejs/rehype
+
+[github-rehype-starry-night]: https://github.com/rehypejs/rehype-starry-night
+
+[github-shiki]: https://github.com/shikijs/shiki
+
+[github-tree-sitter-tree-lights]: https://github.com/tree-sitter/tree-sitter/pull/283#issuecomment-465509157
+
+[github-unified]: https://github.com/unifiedjs/unified
+
+[github-vscode-oniguruma]: https://github.com/microsoft/vscode-oniguruma
+
+[github-vscode-textmate]: https://github.com/microsoft/vscode-textmate
+
+[npmjs-install]: https://docs.npmjs.com/cli/install
+
+[npmjs-using-npm-script-dependencies]: https://docs.npmjs.com/cli/v11/using-npm/scripts#dependencies
+
+[opensource-guide-contribute]: https://opensource.guide/how-to-contribute/
+
+[section-css]: #css
+
+[typescript]: https://www.typescriptlang.org
+
+[wooorm]: https://wooorm.com

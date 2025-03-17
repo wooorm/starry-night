@@ -12,7 +12,7 @@
   },
   "description": "Syntax highlighting, like GitHub",
   "devDependencies": {
-    "@types/css": "^0.0.37",
+    "@types/css": "^0.0.38",
     "@types/json-stable-stringify": "^1.0.0",
     "@types/mdast": "^4.0.0",
     "@types/node": "^22.0.0",
@@ -24,11 +24,11 @@
     "mdast-zone": "^6.0.0",
     "prettier": "^3.0.0",
     "remark-cli": "^12.0.0",
-    "remark-preset-wooorm": "^10.0.0",
+    "remark-preset-wooorm": "^11.0.0",
     "type-coverage": "^2.0.0",
     "typescript": "^5.0.0",
     "unist-builder": "^4.0.0",
-    "xo": "^0.59.0",
+    "xo": "^0.60.0",
     "yaml": "^2.0.0"
   },
   "exports": {
