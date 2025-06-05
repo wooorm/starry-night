@@ -2,36 +2,36 @@
  * It’s based on what GitHub uses on their site.
  * See <https://github.com/wooorm/starry-night> for more info. */
 :root {
+  --color-prettylights-syntax-brackethighlighter-angle: #59636e;
+  --color-prettylights-syntax-brackethighlighter-unmatched: #6e011a;
+  --color-prettylights-syntax-carriage-return-bg: #a0111f;
+  --color-prettylights-syntax-carriage-return-text: #f6f8fa;
   --color-prettylights-syntax-comment: #59636e;
   --color-prettylights-syntax-constant: #023b95;
   --color-prettylights-syntax-constant-other-reference-link: #032563;
   --color-prettylights-syntax-entity: #512598;
-  --color-prettylights-syntax-storage-modifier-import: #010409;
   --color-prettylights-syntax-entity-tag: #023b95;
-  --color-prettylights-syntax-keyword: #a0111f;
-  --color-prettylights-syntax-string: #032563;
-  --color-prettylights-syntax-variable: #702c00;
-  --color-prettylights-syntax-brackethighlighter-unmatched: #6e011a;
-  --color-prettylights-syntax-brackethighlighter-angle: #59636e;
-  --color-prettylights-syntax-invalid-illegal-text: #f6f8fa;
   --color-prettylights-syntax-invalid-illegal-bg: #6e011a;
-  --color-prettylights-syntax-carriage-return-text: #f6f8fa;
-  --color-prettylights-syntax-carriage-return-bg: #a0111f;
-  --color-prettylights-syntax-string-regexp: #024c1a;
-  --color-prettylights-syntax-markup-list: #2e1800;
-  --color-prettylights-syntax-markup-heading: #023b95;
-  --color-prettylights-syntax-markup-italic: #010409;
-  --color-prettylights-syntax-markup-bold: #010409;
-  --color-prettylights-syntax-markup-deleted-text: #6e011a;
-  --color-prettylights-syntax-markup-deleted-bg: #fff0ee;
-  --color-prettylights-syntax-markup-inserted-text: #024c1a;
-  --color-prettylights-syntax-markup-inserted-bg: #d2fedb;
-  --color-prettylights-syntax-markup-changed-text: #702c00;
+  --color-prettylights-syntax-invalid-illegal-text: #f6f8fa;
+  --color-prettylights-syntax-keyword: #a0111f;
   --color-prettylights-syntax-markup-changed-bg: #ffc67b;
-  --color-prettylights-syntax-markup-ignored-text: #d1d9e0;
+  --color-prettylights-syntax-markup-changed-text: #702c00;
+  --color-prettylights-syntax-markup-deleted-bg: #fff0ee;
+  --color-prettylights-syntax-markup-deleted-text: #6e011a;
+  --color-prettylights-syntax-markup-heading: #023b95;
   --color-prettylights-syntax-markup-ignored-bg: #023b95;
+  --color-prettylights-syntax-markup-ignored-text: #d1d9e0;
+  --color-prettylights-syntax-markup-inserted-bg: #d2fedb;
+  --color-prettylights-syntax-markup-inserted-text: #024c1a;
+  --color-prettylights-syntax-markup-list: #2e1800;
   --color-prettylights-syntax-meta-diff-range: #622cbc;
+  --color-prettylights-syntax-string: #032563;
+  --color-prettylights-syntax-string-regexp: #024c1a;
   --color-prettylights-syntax-sublimelinter-gutter-mark: #818b98;
+  --color-prettylights-syntax-variable: #702c00;
+  --color-prettylights-syntax-markup-bold: #010409;
+  --color-prettylights-syntax-markup-italic: #010409;
+  --color-prettylights-syntax-storage-modifier-import: #010409;
 }
 
 .pl-c {
