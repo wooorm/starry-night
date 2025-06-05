@@ -28,7 +28,7 @@
     "type-coverage": "^2.0.0",
     "typescript": "^5.0.0",
     "unist-builder": "^4.0.0",
-    "xo": "^0.60.0",
+    "xo": "^1.0.0",
     "yaml": "^2.0.0"
   },
   "exports": {
@@ -129,54 +129,5 @@
     "strict": true
   },
   "type": "module",
-  "version": "3.7.0",
-  "xo": {
-    "ignores": [
-      "gems/",
-      "lang/"
-    ],
-    "overrides": [
-      {
-        "files": [
-          "**/*.d.ts"
-        ],
-        "rules": {
-          "@typescript-eslint/array-type": [
-            "error",
-            {
-              "default": "generic"
-            }
-          ],
-          "@typescript-eslint/ban-types": [
-            "error",
-            {
-              "extendDefaults": true
-            }
-          ],
-          "@typescript-eslint/consistent-type-definitions": [
-            "error",
-            "interface"
-          ]
-        }
-      },
-      {
-        "files": [
-          "script/**/*.js"
-        ],
-        "rules": {
-          "no-await-in-loop": "off"
-        }
-      }
-    ],
-    "prettier": true,
-    "rules": {
-      "max-depth": "off",
-      "n/file-extension-in-import": "off",
-      "no-bitwise": "off",
-      "no-template-curly-in-string": "off",
-      "unicorn/prefer-at": "off",
-      "unicorn/prefer-string-replace-all": "off",
-      "unicorn/prefer-top-level-await": "off"
-    }
-  }
+  "version": "3.7.0"
 }

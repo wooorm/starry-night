@@ -69,7 +69,7 @@ async function list() {
       'https://raw.githubusercontent.com/github-linguist/linguist/master/grammars.yml'
     )
   )
-  assert(grammarsBody, 'expected grammars')
+  assert.ok(grammarsBody, 'expected grammars')
   /** @type {Record<string, ReadonlyArray<string>>} */
   const grammars = parseYaml(grammarsBody)
   await fs.mkdir(infoFolder, {recursive: true})
@@ -153,7 +153,7 @@ The following files/folders contain third party software:`
     const vendor = vendors[index]
     const scopes = vendorToScope.get(vendor)
     const infoBody = rawInfo[index]
-    assert(scopes)
+    assert.ok(scopes)
 
     if (!infoBody) {
       console.log('No info for `%s`', vendor)

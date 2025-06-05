@@ -176,7 +176,7 @@ async function generate(light, dark) {
   const scopePrefix = '.markdown-body '
   const prefix = '.pl-'
 
-  assert(tree.stylesheet, 'expected `stylesheet` to be set')
+  assert.ok(tree.stylesheet, 'expected `stylesheet` to be set')
 
   // Get themes.
   // Note: types don’t put media as children, force any node.
@@ -233,7 +233,7 @@ async function generate(light, dark) {
  *   CSS.
  */
 function generateMedia(media, mode) {
-  assert(
+  assert.ok(
     media &&
       media.type === 'media' &&
       'media' in media &&
@@ -243,7 +243,7 @@ function generateMedia(media, mode) {
     'expected `' + mode + '` head'
   )
   const rule = media.rules[0]
-  assert(
+  assert.ok(
     rule && 'declarations' in rule && rule.declarations,
     'expected `' + mode + '` rule'
   )

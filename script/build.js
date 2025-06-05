@@ -83,7 +83,7 @@ if (!linguistBasename) {
 }
 
 const version = linguistBasename.slice(prefix.length)
-assert(version, 'expected version to be found for `linguist`')
+assert.ok(version, 'expected version to be found for `linguist`')
 
 console.log('generating from linguist %s', version)
 
@@ -125,7 +125,7 @@ for (const [name, language] of Object.entries(languages)) {
     const existing = uniqueIdentifiers.get(alias)
 
     if (existing) {
-      assert(
+      assert.ok(
         existing === scope,
         'expected duplicate names to refer to same language'
       )
@@ -169,7 +169,7 @@ for (name in languages) {
     const rawInfo = languages[name]
     const scope = rawInfo.tm_scope
 
-    assert(
+    assert.ok(
       // This one actually turns into two classes on GH, which must be a bug.
       scope === 'source.pov-ray sdl' ||
         // https://github.com/github-linguist/linguist/pull/6862#issuecomment-2157822516
@@ -239,7 +239,7 @@ const scopes = grammarBasenames.flatMap(function (d) {
     return path.basename(d, extension)
   }
 
-  assert(d === 'version', d)
+  assert.ok(d === 'version', d)
   return []
 })
 
@@ -257,7 +257,7 @@ await Promise.all(
       (JSON.parse(String(await fs.readFile(inputUrl)))),
       scope
     )
-    assert(grammar.scopeName === scope, 'expected scopes to match')
+    assert.ok(grammar.scopeName === scope, 'expected scopes to match')
 
     const result = analyze(grammar)
     dependencyInfo.set(scope, result)
@@ -266,8 +266,8 @@ await Promise.all(
 
     for (const name of info.names) {
       const mappedScope = uniqueIdentifiers.get(name)
-      assert(mappedScope, 'expected mapping')
-      assert(mappedScope === scope, 'expected names to be unique')
+      assert.ok(mappedScope, 'expected mapping')
+      assert.ok(mappedScope === scope, 'expected names to be unique')
     }
 
     /**
@@ -292,7 +292,7 @@ await Promise.all(
     for (const name of info.extensions) {
       const mappedScopeDot = uniqueIdentifiers.get(name)
       const short = name.slice(1)
-      assert(mappedScopeDot, 'expected mapping')
+      assert.ok(mappedScopeDot, 'expected mapping')
       const mappedScopeDotless = uniqueIdentifiers.get(short) || mappedScopeDot
 
       if (mappedScopeDot === scope) {
@@ -306,7 +306,7 @@ await Promise.all(
         // something else (`.html` weirdly maps to `ecmarkup`).
         // That means, the short form must be in names.
         // It might not currently be though, because we’re still looping!
-        assert(
+        assert.ok(
           info.names.includes(short),
           'expected extension (w/o dot) in names'
         )
@@ -436,7 +436,7 @@ function add(scope) {
   if (used.has(scope)) return
   used.add(scope)
   const deps = dependencies.get(scope)
-  assert(deps, scope)
+  assert.ok(deps, scope)
   for (const dep of deps) {
     add(dep)
   }
@@ -458,7 +458,7 @@ const usedScopes = [...used].sort()
 
 for (const scope of usedScopes) {
   const deps = dependencies.get(scope)
-  assert(deps, scope)
+  assert.ok(deps, scope)
 
   if (deps.size > 0) {
     const manifest = Object.hasOwn(graph, scope) ? graph[scope] : undefined
@@ -757,14 +757,14 @@ function clean(value, schema, path) {
   const allAllowed = new Set([...allow, ...need])
 
   for (const d of need) {
-    assert(
+    assert.ok(
       keys.includes(d),
       'expected field `' + d + '` in `' + value + '` at `' + path + '`'
     )
   }
 
   for (const d of keys) {
-    assert(
+    assert.ok(
       allAllowed.has(d),
       'unexpected field `' + d + '` in `' + value + '` at `' + path + '`'
     )
@@ -893,7 +893,7 @@ function scopeToId(value) {
     .replace(/[. -_]([a-z\d])/g, function (_, /** @type {string} */ $1) {
       return $1.toUpperCase()
     })
-  assert(/^[A-Za-z\d.]+$/.test(id), value)
+  assert.ok(/^[A-Za-z\d.]+$/.test(id), value)
   return id
 }
 
@@ -912,7 +912,7 @@ function normalizeLinguistName(d) {
   // For example `DNS zone` can be used as `dns-zone`, not as `dns`, `dns_zone`,
   // or `dnszone`.
   const normal = d.toLowerCase().replace(/ /g, '-')
-  assert(/^[-_a-z\d.#+'*()/]+$/.test(normal), normal)
+  assert.ok(/^[-_a-z\d.#+'*()/]+$/.test(normal), normal)
   return normal
 }
 
@@ -926,6 +926,6 @@ function normalizeLinguistExtension(d) {
   // Extensions are case-insensitive (example: for `.OutJob`, `.outjob` also works).
   // They can also contain dots, dashes, plusses, etc.
   const normal = d.toLowerCase()
-  assert(/^\.[\w+.-]+$/.test(normal), normal)
+  assert.ok(/^\.[\w+.-]+$/.test(normal), normal)
   return normal
 }
