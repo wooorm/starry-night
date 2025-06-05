@@ -1,6 +1,6 @@
 // This is a TextMate grammar distributed by `starry-night`.
 // This grammar is developed at
-// <https://github.com/textmate/c.tmbundle>
+// <https://github.com/mikomikotaishi/c.tmbundle>
 // and licensed permissive.
 // See <https://github.com/wooorm/starry-night> for more info.
 /**
@@ -24,6 +24,7 @@ const grammar = {
     '.gml',
     '.h++',
     '.hh',
+    '.hip',
     '.hpp',
     '.hxx',
     '.inl',
@@ -44,6 +45,7 @@ const grammar = {
     'cpp',
     'edje-data-collection',
     'game-maker-language',
+    'hip',
     'metal',
     'swig'
   ],
@@ -79,26 +81,25 @@ const grammar = {
       match: '\\b(f|m)[A-Z]\\w*\\b',
       name: 'variable.other.readwrite.member.c++'
     },
-    {match: '\\b(this|nullptr)\\b', name: 'variable.language.c++'},
+    {match: '\\b(this)\\b', name: 'variable.language.c++'},
     {match: '\\b(template|concept)\\b\\s*', name: 'storage.type.template.c++'},
     {
-      match: '\\b(const_cast|dynamic_cast|reinterpret_cast|static_cast)\\b\\s*',
+      match:
+        '\\b(const_cast|dynamic_cast|reinterpret_cast|static_assert|static_cast)\\b\\s*',
       name: 'keyword.operator.cast.c++'
     },
     {
       match:
-        '\\b(co_await|co_return|co_yield|and|and_eq|bitand|bitor|compl|not|not_eq|or|or_eq|typeid|xor|xor_eq)\\b',
+        '\\b(and|and_eq|bitand|bitor|co_await|co_return|co_yield|compl|not|not_eq|or|or_eq|typeid|xor|xor_eq)\\b',
       name: 'keyword.operator.c++'
     },
-    {
-      match: '\\b(class|wchar_t|char8_t|char16_t|char32_t)\\b',
-      name: 'storage.type.c++'
-    },
+    {match: '\\b(class)\\b', name: 'storage.type.c++'},
     {
       match:
-        '\\b(consteval|constinit|constexpr|export|mutable|typename|thread_local|noexcept|final|override)\\b',
+        '\\b(alignas|alignof|consteval|constinit|constexpr|decltype|final|mutable|noexcept|override|requires|thread_local|typename)\\b',
       name: 'storage.modifier.c++'
     },
+    {match: '\\b(import|export|module)\\b', name: 'keyword.module.c++'},
     {
       begin:
         '(?x)\n    \t\t\t\t(?:  ^                                 # begin-of-line\n    \t\t\t\t  |  (?: (?<!else|new|=) )             #  or word + space before name\n    \t\t\t\t)\n    \t\t\t\t((?:[A-Za-z_][A-Za-z0-9_]*::)*+~[A-Za-z_][A-Za-z0-9_]*) # actual name\n    \t\t\t\t \\s*(\\()                           # start bracket or end-of-line\n    \t\t\t',

@@ -7,7 +7,7 @@
 
 /** @type {Grammar} */
 const grammar = {
-  extensions: ['.smt2', '.smt'],
+  extensions: ['.smt2', '.smt', '.z3'],
   names: ['smt'],
   patterns: [
     {

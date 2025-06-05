@@ -156,6 +156,8 @@ const grammar = {
         {include: '#datetime'},
         {include: '#numbers'},
         {include: '#numbers-hexa'},
+        {include: '#numbers-octal'},
+        {include: '#numbers-binary'},
         {include: '#binary'}
       ]
     },
@@ -193,6 +195,7 @@ const grammar = {
         {match: '\\|', name: 'keyword.control.nushell'},
         {include: '#control-keywords'},
         {include: '#constant-value'},
+        {include: '#string-raw'},
         {include: '#command'},
         {include: '#value'}
       ]
@@ -325,11 +328,19 @@ const grammar = {
     },
     numbers: {
       match:
-        '(?<![\\w-])[-+]?(?:\\d+|\\d{1,3}(?:_\\d{3})*)(?:\\.\\d*)?(?i:ns|us|ms|sec|min|hr|day|wk|b|kb|mb|gb|tb|pt|eb|zb|kib|mib|gib|tib|pit|eib|zib)?(?:(?![\\w.])|(?=\\.\\.))',
+        '(?<![\\w-])_*+[-+]?_*+(?:(?i:NaN|infinity|inf)_*+|(?:\\d[\\d_]*+\\.?|\\._*+\\d)[\\d_]*+(?i:E_*+[-+]?_*+\\d[\\d_]*+)?)(?i:ns|us|µs|ms|sec|min|hr|day|wk|b|kb|mb|gb|tb|pt|eb|zb|kib|mib|gib|tib|pit|eib|zib)?(?:(?![\\w.])|(?=\\.\\.))',
+      name: 'constant.numeric.nushell'
+    },
+    'numbers-binary': {
+      match: '(?<![\\w-])_*+0_*+b_*+[01][01_]*+(?![\\w.])',
       name: 'constant.numeric.nushell'
     },
     'numbers-hexa': {
-      match: '(?<![\\w-])0x[0-9a-fA-F]+(?![\\w.])',
+      match: '(?<![\\w-])_*+0_*+x_*+[0-9a-fA-F][0-9a-fA-F_]*+(?![\\w.])',
+      name: 'constant.numeric.nushell'
+    },
+    'numbers-octal': {
+      match: '(?<![\\w-])_*+0_*+o_*+[0-7][0-7_]*+(?![\\w.])',
       name: 'constant.numeric.nushell'
     },
     operators: {
@@ -346,7 +357,7 @@ const grammar = {
     },
     'operators-word': {
       match:
-        '(?<= |\\()(?:mod|in|not-in|not|and|or|xor|bit-or|bit-and|bit-xor|bit-shl|bit-shr|starts-with|ends-with)(?= |\\)|$)',
+        '(?<= |\\()(?:mod|in|not-(?:in|like|has)|not|and|or|xor|bit-(?:or|and|xor|shl|shr)|starts-with|ends-with|like|has)(?= |\\)|$)',
       name: 'keyword.control.nushell'
     },
     parameters: {
@@ -380,6 +391,7 @@ const grammar = {
         {include: '#string-double-quote'},
         {include: '#string-interpolated-double'},
         {include: '#string-interpolated-single'},
+        {include: '#string-raw'},
         {include: '#string-bare'}
       ]
     },
@@ -391,7 +403,7 @@ const grammar = {
       name: 'string.quoted.single.nushell'
     },
     'string-bare': {
-      match: '[^$\\[{("\',|#\\s|][^\\[\\]{}()"\'\\s#,|]*',
+      match: '[^$\\[{("\',|#\\s|;][^\\[\\]{}()"\'\\s,|;]*',
       name: 'string.bare.nushell'
     },
     'string-double-quote': {
@@ -425,6 +437,13 @@ const grammar = {
       endCaptures: {0: {name: 'punctuation.definition.string.end.nushell'}},
       name: 'string.interpolated.single.nushell',
       patterns: [{include: '#paren-expression'}]
+    },
+    'string-raw': {
+      begin: "r(#+)'",
+      beginCaptures: {0: {name: 'punctuation.definition.string.begin.nushell'}},
+      end: "'\\1",
+      endCaptures: {0: {name: 'punctuation.definition.string.end.nushell'}},
+      name: 'string.raw.nushell'
     },
     'string-single-quote': {
       begin: "'",

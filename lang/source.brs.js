@@ -52,6 +52,7 @@ const grammar = {
     bsdoc: {
       patterns: [
         {include: '#bsdoc_param_and_type'},
+        {include: '#bsdoc_return_and_type'},
         {include: '#bsdoc_generic'}
       ]
     },
@@ -87,6 +88,25 @@ const grammar = {
       },
       match:
         "(?i:\\s*(rem|'+)\\s*(@)(param|type)\\s+(?:(\\{)\\s*([^\\}]+)\\s*(\\}))?\\s*([a-z0-9_.]+)?(.*))"
+    },
+    bsdoc_return_and_type: {
+      captures: {
+        1: {name: 'comment.line.apostrophe.brs'},
+        2: {
+          name: 'punctuation.definition.block.tag.bsdoc storage.type.class.bsdoc'
+        },
+        3: {
+          name: 'punctuation.definition.block.tag.bsdoc storage.type.class.bsdoc'
+        },
+        4: {name: 'punctuation.definition.bracket.curly.begin.bsdoc'},
+        5: {
+          name: ' comment.block.documentation.brs entity.name.type.instance.bsdoc'
+        },
+        6: {name: 'punctuation.definition.bracket.curly.end.bsdoc'},
+        7: {name: 'comment.block.documentation.brs'}
+      },
+      match:
+        "(?i:\\s*(rem|'+)\\s*(@)(return|returns)\\s+(?:(\\{)\\s*([^\\}]+)\\s*(\\}))?\\s*([a-z0-9_.]+.*)?)"
     },
     class_declaration: {
       captures: {
@@ -179,7 +199,6 @@ const grammar = {
         {include: '#try_catch'},
         {include: '#non_identifier_keywords'},
         {include: '#operators'},
-        {include: '#support_functions'},
         {include: '#variables_and_params'},
         {include: '#annotation'}
       ]
@@ -196,15 +215,20 @@ const grammar = {
       patterns: [
         {include: '#comment'},
         {include: '#annotation'},
-        {
-          begin: '(?i)\\s*\\b([a-z0-9_]+)(?:[ \\t]*(=))?',
-          beginCaptures: {
-            1: {name: 'variable.object.enummember.brs'},
-            2: {name: 'keyword.operator.assignment.brs'}
-          },
-          end: '\r?\n',
-          patterns: [{include: '#primitive_literal_expression'}]
-        }
+        {include: '#enum_field'}
+      ]
+    },
+    enum_field: {
+      begin: '(?i)\\s*\\b([a-z0-9_]+)(?:[ \\t]*(=))?',
+      beginCaptures: {
+        1: {name: 'variable.object.enummember.brs'},
+        2: {name: 'keyword.operator.assignment.brs'}
+      },
+      end: '\r?\n',
+      patterns: [
+        {include: '#primitive_literal_expression'},
+        {include: '#comment'},
+        {include: '#annotation'}
       ]
     },
     field: {
@@ -553,40 +577,6 @@ const grammar = {
       captures: {1: {name: 'storage.type.brs'}},
       match:
         '(?i:\\b(boolean|integer|longinteger|float|double|string|object|function|sub|interface|dynamic|brsub|dim|const)\\b)'
-    },
-    support_builtin_functions: {
-      match:
-        '(?i:\\b(GetLastRun(RuntimeError|CompileError)|Rnd|Box|Type|objfun|pos|eval)\\b)',
-      name: 'support.function.brs'
-    },
-    support_component_functions: {
-      match:
-        '(?i:\\b(R(ight|e(set(Index)?|ad(B(yte(IfAvailable)?|lock)|File|Line)?|move(Head|Tail|Index)))|Ge(nXML(Header)?|t(Res(ource|ponse(Headers|Code))|X|M(i(nute|llisecond)|o(nth|de(l)?)|essage)|B(yte(sPerBlock|Array)|o(o(tVersion(Number)?|lean)|dy))|S(t(orageCardInfo|a(ndards|tusByte)|ring(Count)?)|i(zeInMegabytes|gnedByte)|ource(Host|Identity|Port)|ub|ec(tionList|ond)|afe(X|Height|Y|Width))|H(o(stName|ur)|e(ight|ad))|Y(ear)?|N(extArticle|ame(dElements)?)|C(hildElements|ontrols|urrent(Standard|Con(trolValue|fig)|Input))|T(i(tle|me(Server|Zone))|o(String|File)|ext|ail)|I(n(t|dex|puts)|dentity)|ZoneDateTime|D(e(scription|vice(BootCount|Name|U(niqueId|ptime)))|a(y(OfWeek)?|ta))|U(se(dInMegabytes|rData)|tcDateTime)|Ent(ityEncode|ry)|V(ersion(Number)?|alue)|KeyList|F(ileSystemType|loat|a(ilureReason|mily)|reeInMegabytes)|W(holeState|idth)|LocalDateTime|Attributes))|M(id|D5|ap(StereoOutput(Aux)?|DigitalOutput))|Boolean|S(h(ift|ow)|canWiFi|t((Clear|Display)?|art|r(i(ng)?)?)|implify|ubtract(Milliseconds|Seconds)|e(nd(RawMessage|B(yte|lock)|Line)?|t(R(ollOverRegion|e(s(ize|olution)|c(tangle|eiveEol)))|X|M(i(n(imumTransferRate|ute)|llisecond)|o(nth|de(CaseSensitive)?)|ultiscreenBezel)|B(yteEventPort|o(olean|dy)|a(ckground(Bitmap|Color)|udRate))|S(t(andard|ring)|ub|e(ndEol|cond)|afeTextRegion)|H(o(stName|ur)|eight)|Y(ear)?|Name|C(hannelVolumes(Aux)?|ontrolValue|ursor(Bitmap|Pos(ition)?))|Time(Server|Zone)?|I(n(t|put)|P4(Gateway|Broadcast|Netmask|Address))|OutputState|D(HCP|omain|e(stination|fault(Mode|Transistion))|a(y(OfWeek)?|te(Time)?))|U(ser(Data|AndPassword)|tcDateTime|rl)|P(o(werSaveMode|rt)|assword|roxy)|E(ntry|cho|ol)|V(iewMode|olume(Aux)?)|F(o(nt|r(egroundColor|groundColor))|l(oat|ashRate))|W(holeState|i(dth|Fi(Passphrase|ESSID)))|L(ineEventPort|o(calDateTime|opMode)|auguage)|Audio(Mode(Aux)?|Stream(Aux)?|Output(Aux)?))|ek(Relative|ToEnd|Absolute)))|H(ide|ead|asAttribute)|N(ormalize|ext)|C(hr|ount|urrentPosition|l(s|ear(Region|Events)?))|T(o(Base64String|HexString|kenize|AsciiString)|estInter(netConnectivity|face)|rim)|I(s(MousePresent|N(ext|ame)|InputActive|Empty|Valid|LittleEndianCPU)|n(str|te(ger)|valid))|Object|D(ynamic|isplay(Preload|File(Ex)?)|o(uble|esExist)|elete)|U(n(shift|pack)|Case)|P(o(st(Message|From(String|File))|p(String(s)?)?)|ush(String)?|eek|lay(StaticImage|File)?|arse(String|File)?|reloadFile(Ex)?)|E(nable(R(ollover|egion)|Cursor|Input|Output)|xists)|Void|F(indIndex|unction|l(oat|ush)|rom(Base64String|HexString|AsciiString))|W(hile|aitMessage|rite(File)?)|L(ookup|e(n|ft))|A(s(ync(GetTo(String|File)|Head|PostFrom(String|File)|Flush)|c)?|tEof|dd(Re(ctangle(Region|_region)|place)|Milliseconds|BodyElement|Seconds|Head(er)?|CircleRegion|Tail|DNSServer|E(vent|lement(WithBody)?)|Attribute)|pp(end(String|File)?|ly))|ToStr)\\b)',
-      name: 'support.function.component.brs'
-    },
-    support_functions: {
-      patterns: [
-        {include: '#support_builtin_functions'},
-        {include: '#support_global_functions'},
-        {include: '#support_global_string_functions'},
-        {include: '#support_global_math_functions'},
-        {include: '#support_component_functions'}
-      ]
-    },
-    support_global_functions: {
-      match:
-        '(?i:\\b(Re(adAsciiFile|bootSystem)|GetInterface|MatchFiles|Sleep|C(opyFile|reate(Directory|Object))|Delete(Directory|File)|UpTime|FormatDrive|ListDir|W(ait|riteAsciiFile))\\b)',
-      name: 'support.function.brs'
-    },
-    support_global_math_functions: {
-      match:
-        '(?i:\\b(S(in|qr|gn)|C(sng|dbl|os)|Tan|Int|Exp|Fix|Log|A(tn|bs))\\b)',
-      name: 'support.function.brs'
-    },
-    support_global_string_functions: {
-      match:
-        '(?i:\\b(Right|Mid|Str(i(ng(i)?)?)?|Chr|Instr|UCase|Val|Asc|L(Case|e(n|ft)))\\b)',
-      name: 'support.function.brs'
     },
     template_string: {
       begin: '(`)',

@@ -517,7 +517,11 @@ const grammar = {
           },
           end: '(?=\\;)|(?=\\,)|(?=)(?=\\);)',
           name: 'meta.block.ballerina',
-          patterns: [{include: '#statements'}, {include: '#punctuation-comma'}]
+          patterns: [
+            {include: '#natural-expr'},
+            {include: '#statements'},
+            {include: '#punctuation-comma'}
+          ]
         },
         {match: '\\*', name: 'keyword.generator.asterisk.ballerina'}
       ]
@@ -733,6 +737,7 @@ const grammar = {
           match: '\\b(check|foreach|if|checkpanic)\\b',
           name: 'keyword.control.ballerina'
         },
+        {include: '#natural-expr'},
         {include: '#call'},
         {match: '\\b(var)\\b', name: 'support.type.primitive.ballerina'},
         {
@@ -1004,6 +1009,33 @@ const grammar = {
           name: 'storage.type.ballerina'
         },
         {match: '\\|', name: 'keyword.operator.ballerina'}
+      ]
+    },
+    'natural-expr': {
+      patterns: [
+        {
+          begin: 'natural',
+          beginCaptures: {0: {name: 'keyword.other.ballerina'}},
+          end: '(?=\\})',
+          endCaptures: {0: {name: 'punctuation.definition.block.ballerina'}},
+          patterns: [{include: '#natural-expr-body'}]
+        }
+      ]
+    },
+    'natural-expr-body': {
+      patterns: [
+        {
+          begin: '\\{',
+          beginCaptures: {0: {name: 'punctuation.definition.block.ballerina'}},
+          contentName: 'string.template.ballerina',
+          end: '(?=\\})',
+          endCaptures: {0: {name: 'punctuation.definition.block.ballerina'}},
+          patterns: [
+            {include: '#template-substitution-element'},
+            {include: '#string-character-escape'},
+            {include: '#templateVariable'}
+          ]
+        }
       ]
     },
     numbers: {

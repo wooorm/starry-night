@@ -614,12 +614,13 @@ const grammar = {
             2: {
               patterns: [
                 {
-                  match: '(NOT_OPTIMIZED|OPTIMIZED|PLATFORM|NOT_PLATFORM)',
+                  match:
+                    '(NOT_OPTIMIZED|OPTIMIZED|PLATFORM|NOT_PLATFORM|NOT_VALIDATE)',
                   name: 'keyword.control.hint.name'
                 },
                 {
                   match:
-                    '(windows|mac|android|ios|ext_chromium_mv3|ext_chromium|ext_ff|ext_edge|ext_opera|ext_ublock|ext_safari|ext_android_cb)',
+                    '(windows|mac|cli|android|ios|ext_chromium_mv3|ext_chromium|ext_ff|ext_edge|ext_opera|ext_ublock|ext_safari|ext_android_cb)',
                   name: 'constant.language.platform.name'
                 },
                 {match: '(\\(|\\)|,)', name: 'keyword.control.characters'}

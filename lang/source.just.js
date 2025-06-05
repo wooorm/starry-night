@@ -74,7 +74,7 @@ const grammar = {
       patterns: [
         {
           match:
-            '(?x) \\b(\n  arch|num_cpus|os|os_family|shell|env_var|env_var_or_default|env|\n  is_dependency|invocation_directory|invocation_dir|invocation_directory_native|\n  invocation_dir_native|justfile|justfile_directory|justfile_dir|just_executable|\n  just_pid|source_file|source_directory|source_dir|module_file|module_directory|\n  module_dir|append|prepend|encode_uri_component|quote|replace|replace_regex|\n  trim|trim_end|trim_end_match|trim_end_matches|trim_start|trim_start_match|\n  trim_start_matches|capitalize|kebabcase|lowercamelcase|lowercase|\n  shoutykebabcase|shoutysnakecase|snakecase|titlecase|uppercamelcase|\n  uppercase|absolute_path|blake3|blake3_file|canonicalize|extension|\n  file_name|file_stem|parent_directory|parent_dir|without_extension|clean|join|\n  path_exists|error|assert|sha256|sha256_file|uuid|choose|datetime|\n  datetime_utc|semver_matches|cache_directory|cache_dir|config_directory|config_dir|\n  config_local_directory|config_local_dir|data_directory|data_dir|data_local_directory|\n  data_local_dir|executable_directory|executable_dir|home_directory|home_dir\n)\\b\n',
+            '(?x) \\b(\n  arch|num_cpus|os|os_family|shell|env_var|env_var_or_default|env|\n  is_dependency|invocation_directory|invocation_dir|invocation_directory_native|\n  invocation_dir_native|justfile|justfile_directory|justfile_dir|just_executable|\n  just_pid|source_file|source_directory|source_dir|module_file|module_directory|\n  module_dir|append|prepend|encode_uri_component|quote|replace|replace_regex|\n  trim|trim_end|trim_end_match|trim_end_matches|trim_start|trim_start_match|\n  trim_start_matches|capitalize|kebabcase|lowercamelcase|lowercase|\n  shoutykebabcase|shoutysnakecase|snakecase|titlecase|uppercamelcase|\n  uppercase|absolute_path|blake3|blake3_file|canonicalize|extension|\n  file_name|file_stem|parent_directory|parent_dir|without_extension|clean|join|\n  path_exists|error|assert|sha256|sha256_file|uuid|choose|datetime|\n  datetime_utc|semver_matches|style|cache_directory|cache_dir|config_directory|config_dir|\n  config_local_directory|config_local_dir|data_directory|data_dir|data_local_directory|\n  data_local_dir|executable_directory|executable_dir|home_directory|home_dir|which|require|read\n)\\b\n',
           name: 'support.function.builtin.just'
         }
       ]
@@ -82,15 +82,16 @@ const grammar = {
     builtins: {
       patterns: [
         {
-          match: '\\b(HEX|HEXLOWER|HEXUPPER)\\b',
-          name: 'constant.language.hex.just'
+          match:
+            '(?x) \\b(\n  HEX|HEXLOWER|HEXUPPER|CLEAR|NORMAL|BOLD|ITALIC|UNDERLINE|INVERT|HIDE|\n  STRIKETHROUGH|BLACK|RED|GREEN|YELLOW|BLUE|MAGENTA|CYAN|WHITE|BG_BLACK|\n  BG_RED|BG_GREEN|BG_YELLOW|BG_BLUE|BG_MAGENTA|BG_CYAN|BG_WHITE\n)\\b\n',
+          name: 'constant.language.const.just'
         },
         {include: '#builtin-functions'},
         {include: '#literal'}
       ]
     },
     comments: {
-      patterns: [{match: '#([^!].*)$', name: 'comment.line.number-sign.just'}]
+      patterns: [{match: '#(?!\\!).*$', name: 'comment.line.number-sign.just'}]
     },
     'control-keywords': {
       patterns: [
@@ -160,6 +161,7 @@ const grammar = {
         {match: '\\/', name: 'keyword.operator.path-join.just'},
         {match: '\\+', name: 'keyword.operator.concat.just'},
         {match: '&&', name: 'keyword.operator.and.just'},
+        {match: '\\|\\|', name: 'keyword.operator.or.just'},
         {
           match: '(\\=\\=|\\=\\~|\\!\\=)',
           name: 'keyword.operator.equality.just'
@@ -311,7 +313,7 @@ const grammar = {
             3: {name: 'keyword.operator.assignment.just'}
           },
           end: '$',
-          patterns: [{include: '#expression'}]
+          patterns: [{include: '#expression'}, {include: '#comments'}]
         }
       ]
     },
@@ -393,7 +395,7 @@ const grammar = {
             3: {name: 'keyword.operator.assignment.just'}
           },
           end: '$',
-          patterns: [{include: '#expression'}]
+          patterns: [{include: '#expression'}, {include: '#comments'}]
         }
       ]
     }

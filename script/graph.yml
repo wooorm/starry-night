@@ -50,8 +50,6 @@ source.Caddyfile:
   source.json: false
   text.html.basic: false
   text.xml: false
-source.c:
-  source.c.platform: true
 source.c++:
   source.c: true
 source.c.ec:
@@ -414,6 +412,8 @@ source.logos:
   source.objc: true
 source.lua:
   source.c: false
+source.m3u:
+  etc: true
 source.m4:
   etc: true
 source.makefile:
@@ -545,7 +545,6 @@ source.ninja:
   source.shell: false
 source.objc:
   source.c: true
-  source.c.platform: true
   source.objc.platform: true
 source.objc++:
   source.c++: true
@@ -696,8 +695,15 @@ source.templ:
   source.css: false
   source.go: true
   source.js: false
+source.torrc:
+  etc: true
+  source.abnf: false
+  source.hosts: true
 source.vala:
   text.html.javadoc: false
+source.vento:
+  source.js: true
+  source.yaml: false
 source.vim-snippet:
   source.python: false
   source.regexp: false

@@ -18,7 +18,7 @@ const grammar = {
         1: {name: 'punctuation.separator.prompt.julia.console'},
         2: {patterns: [{include: 'source.julia'}]}
       },
-      match: '^(julia>|\\.{3}|In \\[\\d+\\]:) (.+)$'
+      match: '^(julia>)(\\s+.*(?:\\n\\s{6}\\s+.*)*)'
     },
     {
       captures: {

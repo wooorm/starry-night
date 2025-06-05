@@ -53,6 +53,7 @@ const grammar = {
     regex: {
       patterns: [
         {
+          begin: '/(?!/|\\*)',
           end: '/([dims]*)',
           endCaptures: {1: {name: 'storage.modifier.regex.rascal'}},
           name: 'string.regexp.rascal',

@@ -77,7 +77,11 @@ const grammar = {
         2: {name: 'keyword.operator.talon'}
       },
       end: '\n',
-      patterns: [{include: '#comment'}, {include: '#expression'}]
+      patterns: [
+        {include: '#comment'},
+        {include: '#comment-invalid'},
+        {include: '#expression'}
+      ]
     },
     'body-header': {
       begin: '^-$',
@@ -87,6 +91,7 @@ const grammar = {
     'body-noheader': {
       patterns: [
         {include: '#comment'},
+        {include: '#comment-invalid'},
         {include: '#other-rule-definition'},
         {include: '#speech-rule-definition'}
       ]
@@ -95,7 +100,8 @@ const grammar = {
       match: '(\\<[a-zA-Z0-9._]+\\>)',
       name: 'variable.parameter.talon'
     },
-    comment: {match: '(\\s*#.*)$', name: 'comment.line.number-sign.talon'},
+    comment: {match: '^\\s*(#.*)$', name: 'comment.line.number-sign.talon'},
+    'comment-invalid': {match: '(\\s*#.*)$', name: 'invalid.illegal'},
     context: {
       captures: {
         1: {
@@ -104,7 +110,11 @@ const grammar = {
         },
         2: {
           name: 'entity.name.type.talon',
-          patterns: [{include: '#comment'}, {include: '#regexp'}]
+          patterns: [
+            {include: '#comment'},
+            {include: '#comment-invalid'},
+            {include: '#regexp'}
+          ]
         }
       },
       match: '(.*): (.*)'
@@ -251,6 +261,7 @@ const grammar = {
     statement: {
       patterns: [
         {include: '#comment'},
+        {include: '#comment-invalid'},
         {include: '#qstring-long'},
         {include: '#action-key'},
         {include: '#action'},
@@ -275,7 +286,7 @@ const grammar = {
           patterns: [{match: '_', name: 'keyword.operator.talon'}]
         }
       },
-      match: '([a-zA-Z0-9._])(_(list|\\d+))?',
+      match: '([a-zA-Z0-9._])(_(list|\\d+)(?=[^a-zA-Z0-9._]))?',
       name: 'variable.parameter.talon'
     }
   },

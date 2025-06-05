@@ -30,6 +30,7 @@ const grammar = {
     '.yml.mysql'
   ],
   names: [
+    'buildstream',
     'jar-manifest',
     'kaitai-struct',
     'ksy',

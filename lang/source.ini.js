@@ -10,6 +10,7 @@ const grammar = {
   extensions: [
     '.cnf',
     '.dof',
+    '.frm',
     '.ini',
     '.lektorproject',
     '.outjob',

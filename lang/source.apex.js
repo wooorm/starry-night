@@ -22,7 +22,6 @@ const grammar = {
     'annotation-declaration': {
       begin: '([@][_[:alpha:]]+)\\b',
       beginCaptures: {1: {name: 'storage.type.annotation.apex'}},
-      end: '(?<=\\)|$)',
       patterns: [
         {
           begin: '\\(',

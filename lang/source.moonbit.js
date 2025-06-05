@@ -65,25 +65,25 @@ const grammar = {
     constants: {
       patterns: [
         {
-          match: '\\b\\d(\\d|_)*(?!\\.)(U)?(L)?\\b',
+          match: '\\b\\d(\\d|_)*(?!\\.)((U)?(L)?|N?)\\b',
           name: 'constant.numeric.moonbit'
         },
         {match: '(?<=\\.)\\d((?=\\.)|\\b)', name: 'constant.numeric.moonbit'},
-        {match: '\\b\\d+(\\.)\\d+\\b', name: 'constant.numeric.moonbit'},
+        {match: '\\b\\d+(?=\\.\\.)', name: 'constant.numeric.moonbit'},
         {
-          match: '\\b\\d[\\d_]*(\\.)[\\d_]+[Ee][+-]?\\d[\\d_]+\\b',
+          match: '\\b\\d[\\d_]*\\.[\\d_]*([Ee][+-]?\\d[\\d_]*\\b)?',
           name: 'constant.numeric.moonbit'
         },
         {
-          match: '\\b0[XxOoBb][\\dAaBbCcDdEeFf_]+(U)?(L)?(?!\\.)\\b',
+          match: '\\b0[Oo][0-7][0-7]*((U)?(L)?|N?)\\b',
           name: 'constant.numeric.moonbit'
         },
         {
           match:
-            '\\b0[Xx][\\dAaBbCcDdEeFf_]+(\\.)[\\dAaBbCcDdEeFf_]+[Pp][+-]?[\\dAaBbCcDdEeFf_]+\\b',
+            '\\b0[Xx][\\dAaBbCcDdEeFf][\\dAaBbCcDdEeFf_]*((U|L|UL|N)\\b|\\.[\\da-fA-F_]*([Pp][+-]?[\\da-fA-F_]+\\b)?)?',
           name: 'constant.numeric.moonbit'
         },
-        {match: '\\b(true|false|\\(\\))\\b', name: 'constant.language.moonbit'}
+        {match: '\\b(true|false)\\b', name: 'constant.language.moonbit'}
       ]
     },
     escape: {
@@ -169,7 +169,7 @@ const grammar = {
         },
         {
           match:
-            '\\b(type!|(type|typealias|let|const|enum|struct|import|trait|traitalias|derive|test|impl|with)\\b)',
+            '\\b(type!|(type|typealias|let|const|enum|struct|import|trait|traitalias|derive|test|impl|with|fnalias|recur)\\b)',
           name: 'keyword.moonbit'
         },
         {match: '\\b(self)\\b', name: 'variable.language.moonbit'},

@@ -19,7 +19,7 @@ const grammar = {
       end: '$',
       name: 'comment.line.number-sign.git-revlist'
     },
-    invalid: {match: '\\S.*?(?=\\s*$)', name: 'invalid.illegal.git-revlist'},
+    invalid: {match: '\\S.*?', name: 'invalid.illegal.git-revlist'},
     main: {
       patterns: [
         {include: '#comment'},
@@ -27,7 +27,10 @@ const grammar = {
         {include: '#invalid'}
       ]
     },
-    sha: {name: 'constant.numeric.sha.git-revlist'}
+    sha: {
+      match: '\\b[0-9a-fA-F]{40}\\b',
+      name: 'constant.numeric.sha.git-revlist'
+    }
   },
   scopeName: 'source.git-revlist'
 }

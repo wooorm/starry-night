@@ -88,7 +88,6 @@ const grammar = {
         {include: '#function_call'},
         {include: '#region'},
         {include: '#comment'},
-        {include: '#self'},
         {include: '#func'},
         {include: '#letter'},
         {include: '#numbers'},
@@ -241,7 +240,10 @@ const grammar = {
       },
       match: '(extends)\\s+([a-zA-Z_]\\w*\\.[a-zA-Z_]\\w*)?'
     },
-    func: {match: '\\bfunc\\b', name: 'keyword.language.gdscript'},
+    func: {
+      match: '\\bfunc\\b',
+      name: 'keyword.language.gdscript storage.type.function.gdscript'
+    },
     function_arguments: {
       begin: '(\\()',
       beginCaptures: {
@@ -343,7 +345,7 @@ const grammar = {
     },
     keywords: {
       match:
-        '\\b(?:class|class_name|abstract|is|onready|tool|static|export|as|void|enum|assert|breakpoint|sync|remote|master|puppet|slave|remotesync|mastersync|puppetsync|trait|namespace|super)\\b',
+        '\\b(?:class|class_name|abstract|is|onready|tool|static|export|as|void|enum|assert|breakpoint|sync|remote|master|puppet|slave|remotesync|mastersync|puppetsync|trait|namespace|super|self)\\b',
       name: 'keyword.language.gdscript'
     },
     lambda_declaration: {
@@ -413,8 +415,8 @@ const grammar = {
         {
           begin: '("|\')',
           end: '\\1',
-          name: 'string.quoted.gdscript meta.literal.nodepath.gdscript constant.character.escape',
-          patterns: [{match: '%', name: 'keyword.control.flow'}]
+          name: 'string.quoted.gdscript meta.literal.nodepath.gdscript constant.character.escape.gdscript',
+          patterns: [{match: '%', name: 'keyword.control.flow.gdscript'}]
         },
         {include: '#expression'}
       ]
@@ -506,7 +508,6 @@ const grammar = {
       endCaptures: {0: {name: 'punctuation.parenthesis.end.gdscript'}},
       patterns: [{include: '#base_expression'}, {include: '#any_variable'}]
     },
-    self: {match: '\\bself\\b', name: 'variable.language.gdscript'},
     signal_declaration: {
       begin: '(?x) \\s*\n (signal) \\s+\n ([a-zA-Z_]\\w*) \\s*\n (?=\\()',
       beginCaptures: {

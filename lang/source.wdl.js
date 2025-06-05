@@ -30,7 +30,7 @@ const grammar = {
       },
       contentName: 'entity.struct.wdl',
       end: '({)',
-      endCaptures: {1: {name: 'punctuation.bracket.angle.struct-start.wdl'}},
+      endCaptures: {1: {name: 'punctuation.bracket.curly.struct-start.wdl'}},
       patterns: [{include: '#atom'}]
     },
     {
@@ -41,7 +41,7 @@ const grammar = {
       },
       contentName: 'entity.task.wdl',
       end: '({)',
-      endCaptures: {1: {name: 'punctuation.bracket.angle.task-start.wdl'}},
+      endCaptures: {1: {name: 'punctuation.bracket.curly.task-start.wdl'}},
       patterns: [{include: '#atom'}]
     },
     {
@@ -51,11 +51,12 @@ const grammar = {
         2: {name: 'variable.name.workflow.wdl'}
       },
       end: '({)',
-      endCaptures: {1: {name: 'punctuation.bracket.angle.workflow-start.wdl'}},
+      endCaptures: {1: {name: 'punctuation.bracket.curly.workflow-start.wdl'}},
       patterns: [{include: '#atom'}]
     },
     {include: '#input-block'},
-    {include: '#command-block'},
+    {include: '#command-block-curly'},
+    {include: '#command-block-heredoc'},
     {include: '#output-block'},
     {include: '#requirements-block'},
     {include: '#hints-block'},
@@ -75,26 +76,42 @@ const grammar = {
         {include: '#identity'}
       ]
     },
-    'command-block': {
-      begin: '(?:\\s*)(command)\\s+(?:(<<<)|({))',
+    'command-block-curly': {
+      begin: '(?:\\s*)(command)\\s+({)',
       beginCaptures: {
         1: {name: 'storage.type.command.wdl'},
-        2: {name: 'punctuation.heredoc.command-start.wdl'},
-        3: {name: 'punctuation.bracket.angle.command-start.wdl'}
+        2: {name: 'punctuation.bracket.curly.command-start.wdl'}
       },
       contentName: 'meta.embedded.block.shellscript',
-      end: '(?:^|\\G)(?:\\s*)(?:(>>>)|(}))(?:\\s*)$',
-      endCaptures: {
-        1: {name: 'punctuation.heredoc.command-end.wdl'},
-        2: {name: 'punctuation.bracket.angle.command-end.wdl'}
-      },
+      end: '(?:^|\\G)(?:\\s*)(})(?:\\s*)$',
+      endCaptures: {1: {name: 'punctuation.bracket.curly.command-end.wdl'}},
       patterns: [
         {
-          begin: '(^|\\G)(\\s*)(.*)',
-          contentName: 'meta.embedded.block.shellscript',
-          patterns: [{include: 'source.shell'}],
-          while: '(^|\\G)(?!\\s*(?:(>>>)|(}))\\s*$)'
-        }
+          begin: '{',
+          end: '}',
+          name: 'meta.bracket.curly.inner',
+          patterns: [{include: '$self'}]
+        },
+        {include: 'source.shell'}
+      ]
+    },
+    'command-block-heredoc': {
+      begin: '(?:\\s*)(command)\\s+(<<<)',
+      beginCaptures: {
+        1: {name: 'storage.type.command.wdl'},
+        2: {name: 'punctuation.heredoc.command-start.wdl'}
+      },
+      contentName: 'meta.embedded.block.shellscript',
+      end: '(?:^|\\G)(?:\\s*)(>>>)(?:\\s*)$',
+      endCaptures: {1: {name: 'punctuation.bracket.curly.command-end.wdl'}},
+      patterns: [
+        {
+          begin: '<<<',
+          end: '>>>',
+          name: 'meta.brace.command',
+          patterns: [{include: '$self'}]
+        },
+        {include: 'source.shell'}
       ]
     },
     'double-number-sign-comments': {
@@ -131,7 +148,7 @@ const grammar = {
       begin: '(?:\\s*)(hints)\b',
       beginCaptures: {1: {name: 'keyword.other.hints.wdl'}},
       end: '(?:\\s*)({)',
-      endCaptures: {1: {name: 'punctuation.bracket.angle.hints-start.wdl'}},
+      endCaptures: {1: {name: 'punctuation.bracket.curly.hints-start.wdl'}},
       name: 'entity.hints-block.wdl',
       patterns: [{include: '#atom'}]
     },
@@ -143,7 +160,7 @@ const grammar = {
       begin: '(?:\\s*)(input)\b',
       beginCaptures: {1: {name: 'keyword.other.input.wdl'}},
       end: '(?:\\s*)({)',
-      endCaptures: {1: {name: 'punctuation.bracket.angle.input-start.wdl'}},
+      endCaptures: {1: {name: 'punctuation.bracket.curly.input-start.wdl'}},
       name: 'entity.input-block.wdl',
       patterns: [{include: '#atom'}]
     },
@@ -177,7 +194,7 @@ const grammar = {
       begin: '(?:\\s*)(meta)\b',
       beginCaptures: {1: {name: 'keyword.other.meta.wdl'}},
       end: '(?:\\s*)({)',
-      endCaptures: {1: {name: 'punctuation.bracket.angle.meta-start.wdl'}},
+      endCaptures: {1: {name: 'punctuation.bracket.curly.meta-start.wdl'}},
       name: 'entity.meta-block.wdl',
       patterns: [{include: '#atom'}]
     },
@@ -196,7 +213,7 @@ const grammar = {
       begin: '(?:\\s*)(output)\b',
       beginCaptures: {1: {name: 'keyword.other.output.wdl'}},
       end: '(?:\\s*)({)',
-      endCaptures: {1: {name: 'punctuation.bracket.angle.output-start.wdl'}},
+      endCaptures: {1: {name: 'punctuation.bracket.curly.output-start.wdl'}},
       name: 'entity.output-block.wdl',
       patterns: [{include: '#atom'}]
     },
@@ -205,7 +222,7 @@ const grammar = {
       beginCaptures: {1: {name: 'keyword.other.parameter_meta.wdl'}},
       end: '(?:\\s*)({)',
       endCaptures: {
-        1: {name: 'punctuation.bracket.angle.parameter_meta-start.wdl'}
+        1: {name: 'punctuation.bracket.curly.parameter_meta-start.wdl'}
       },
       name: 'entity.parameter_meta-block.wdl',
       patterns: [{include: '#atom'}]
@@ -219,7 +236,7 @@ const grammar = {
       beginCaptures: {1: {name: 'keyword.other.requirements.wdl'}},
       end: '(?:\\s*)({)',
       endCaptures: {
-        1: {name: 'punctuation.bracket.angle.requirements-start.wdl'}
+        1: {name: 'punctuation.bracket.curly.requirements-start.wdl'}
       },
       name: 'entity.requirements-block.wdl',
       patterns: [{include: '#atom'}]
@@ -228,7 +245,7 @@ const grammar = {
       begin: '(?:\\s*)(runtime)\b',
       beginCaptures: {1: {name: 'keyword.other.runtime.wdl'}},
       end: '(?:\\s*)({)',
-      endCaptures: {1: {name: 'punctuation.bracket.angle.runtime-start.wdl'}},
+      endCaptures: {1: {name: 'punctuation.bracket.curly.runtime-start.wdl'}},
       name: 'entity.runtime-block.wdl',
       patterns: [{include: '#atom'}]
     },

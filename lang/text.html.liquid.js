@@ -70,6 +70,7 @@ const grammar = {
         {include: '#liquid_doc_description_tag'},
         {include: '#liquid_doc_param_tag'},
         {include: '#liquid_doc_example_tag'},
+        {include: '#liquid_doc_prompt_tag'},
         {include: '#liquid_doc_fallback_tag'}
       ]
     },
@@ -137,8 +138,8 @@ const grammar = {
         0: {name: 'comment.block.documentation.liquid'},
         1: {name: 'storage.type.class.liquid'}
       },
-      end: '(?=@|{%-?\\s*enddoc\\s*-?%})',
-      patterns: [{match: '[^@]+', name: 'string.quoted.single.liquid'}]
+      contentName: 'string.quoted.single.liquid',
+      end: '(?=@prompt|@example|@param|@description|{%-?\\s*enddoc\\s*-?%})'
     },
     liquid_doc_example_tag: {
       begin: '(@example)\\b\\s*',
@@ -147,7 +148,7 @@ const grammar = {
         1: {name: 'storage.type.class.liquid'}
       },
       contentName: 'meta.embedded.block.liquid',
-      end: '(?=@|{%-?\\s*enddoc\\s*-?%})',
+      end: '(?=@prompt|@example|@param|@description|{%-?\\s*enddoc\\s*-?%})',
       patterns: [{include: '#core'}]
     },
     liquid_doc_fallback_tag: {
@@ -163,6 +164,15 @@ const grammar = {
       },
       match:
         '(@param)\\s+(?:({[^}]*}?)\\s+)?(\\[?[a-zA-Z_][\\w-]*\\]?)?(?:\\s+(.*))?'
+    },
+    liquid_doc_prompt_tag: {
+      begin: '(@prompt)\\b\\s*',
+      beginCaptures: {
+        0: {name: 'comment.block.documentation.liquid'},
+        1: {name: 'storage.type.class.liquid'}
+      },
+      contentName: 'string.quoted.single.liquid',
+      end: '(?=@prompt|@example|@param|@description|{%-?\\s*enddoc\\s*-?%})'
     },
     number: {
       match: '((-|\\+)\\s*)?[0-9]+(\\.[0-9]+)?',

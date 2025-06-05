@@ -13,6 +13,18 @@ const grammar = {
   names: ['openedge-abl', 'progress', 'openedge', 'abl'],
   patterns: [{include: '#statements'}],
   repository: {
+    'abl-function-variable-arg': {
+      begin: '(?i)\\s*(set-size)\\s*(?=\\()',
+      beginCaptures: {1: {name: 'support.function.abl'}},
+      end: '(\\))',
+      endCaptures: {1: {name: 'meta.brace.round.js'}},
+      name: 'meta.function-call.abl',
+      patterns: [
+        {include: '#parens'},
+        {include: '#type-member-call'},
+        {include: '#variable-name'}
+      ]
+    },
     'abl-functions': {
       patterns: [
         {include: '#abl-functions-A'},
@@ -42,7 +54,7 @@ const grammar = {
     },
     'abl-functions-A': {
       begin:
-        '(?i)\\s*(available|audit-enabled|asc|ambiguous|alias|add-interval|accum|absolute|absolut|absolu|absol|abso|abs)\\s*(?=\\()',
+        '(?i)\\s*((abs(?:olute|olut|olu|ol|o)?)|(accum(?:ulate|ulat|ula|ul|u)?)|(ambig(?:uous|uou|uo|u)?)|(asc(?:ending|endin|endi|end|en|e)?)|(avail(?:able|abl|ab|a)?)|add-interval|alias|audit-enabled)\\s*(?=\\()',
       beginCaptures: {1: {name: 'support.function.abl'}},
       end: '(\\))',
       endCaptures: {1: {name: 'meta.brace.round.js'}},
@@ -51,7 +63,7 @@ const grammar = {
     },
     'abl-functions-B': {
       begin:
-        '(?i)\\s*(buffer-tenant-name|buffer-tenant-id|buffer-partition-id|buffer-group-name|buffer-group-id|box|base64-encode|base64-decode)\\s*(?=\\()',
+        '(?i)\\s*(base64-decode|base64-encode|box|buffer-group-id|buffer-group-name|buffer-partition-id|buffer-tenant-id|buffer-tenant-name)\\s*(?=\\()',
       beginCaptures: {1: {name: 'support.function.abl'}},
       end: '(\\))',
       endCaptures: {1: {name: 'meta.brace.round.js'}},
@@ -60,7 +72,7 @@ const grammar = {
     },
     'abl-functions-C': {
       begin:
-        '(?i)\\s*(current-value|current-result-row|current-language|current-languag|current-langua|current-langu|current-lang|current-changed|count-of|connected|compare|codepage-convert|chr|cast|caps|can-set|can-query|can-find|can-do)\\s*(?=\\()',
+        '(?i)\\s*((compare(?:s)?)|(current-lang(?:uage|uag|ua|u)?)|can-do|can-find|can-query|can-set|caps|cast|chr|codepage-convert|connected|count-of|current-changed|current-result-row|current-value)\\s*(?=\\()',
       beginCaptures: {1: {name: 'support.function.abl'}},
       end: '(\\))',
       endCaptures: {1: {name: 'meta.brace.round.js'}},
@@ -69,7 +81,7 @@ const grammar = {
     },
     'abl-functions-D': {
       begin:
-        '(?i)\\s*(dynamic-property|dynamic-next-value|dynamic-invoke|dynamic-function|dynamic-functio|dynamic-functi|dynamic-funct|dynamic-func|dynamic-enum|dynamic-current-value|dynamic-cast|defined|decrypt|decimal|decima|decim|deci|dec|dbversion|dbversio|dbversi|dbvers|dbtype|dbtaskid|dbrestrictions|dbrestriction|dbrestrictio|dbrestricti|dbrestrict|dbrestric|dbrestri|dbrestr|dbrest|dbparam|dbname|dbcollation|dbcodepage|db-remote-host|day|datetime-tz|datetime|date|dataservers|data-source-modified)\\s*(?=\\()',
+        '(?i)\\s*((dbrest(?:rictions|riction|rictio|ricti|rict|ric|ri|r)?)|(dbvers(?:ion|io|i)?)|(dec(?:imal|ima|im|i)?)|(dynamic-func(?:tion|tio|ti|t)?)|data-source-modified|dataservers|date|datetime|datetime-tz|day|db-remote-host|dbcodepage|dbcollation|dbname|dbparam|dbtaskid|dbtype|decrypt|defined|dynamic-cast|dynamic-current-value|dynamic-enum|dynamic-invoke|dynamic-next-value|dynamic-property)\\s*(?=\\()',
       beginCaptures: {1: {name: 'support.function.abl'}},
       end: '(\\))',
       endCaptures: {1: {name: 'meta.brace.round.js'}},
@@ -78,7 +90,7 @@ const grammar = {
     },
     'abl-functions-E': {
       begin:
-        '(?i)\\s*(extent|exp|etime|error|entry|entered|encrypt|encode)\\s*(?=\\()',
+        '(?i)\\s*(encode|encrypt|entered|entry|error|etime|exp|extent)\\s*(?=\\()',
       beginCaptures: {1: {name: 'support.function.abl'}},
       end: '(\\))',
       endCaptures: {1: {name: 'meta.brace.round.js'}},
@@ -87,7 +99,7 @@ const grammar = {
     },
     'abl-functions-F': {
       begin:
-        '(?i)\\s*(frame-value|frame-valu|frame-val|frame-row|frame-name|frame-line|frame-index|frame-inde|frame-file|frame-field|frame-down|frame-db|frame-col|first-of|first|fill)\\s*(?=\\()',
+        '(?i)\\s*((frame-inde(?:x)?)|(frame-val(?:ue|u)?)|fill|first|first-of|frame-col|frame-db|frame-down|frame-field|frame-file|frame-line|frame-name|frame-row)\\s*(?=\\()',
       beginCaptures: {1: {name: 'support.function.abl'}},
       end: '(\\))',
       endCaptures: {1: {name: 'meta.brace.round.js'}},
@@ -96,7 +108,7 @@ const grammar = {
     },
     'abl-functions-G': {
       begin:
-        '(?i)\\s*(guid|go-pending|go-pendin|go-pendi|go-pend|get-unsigned-short|get-unsigned-long|get-string|get-size|get-short|get-pointer-value|get-long|get-int64|get-float|get-effective-tenant-name|get-effective-tenant-id|get-double|get-db-client|get-collations|get-collation|get-collatio|get-collati|get-collat|get-colla|get-coll|get-codepages|get-codepage|get-class|get-bytes|get-byte-order|get-byte|get-bits|generate-uuid|generate-random-key|generate-pbe-salt|generate-pbe-key|gateways|gateway)\\s*(?=\\()',
+        '(?i)\\s*((gateway(?:s)?)|(get-codepage(?:s)?)|(get-codepage(?:s)?)|(get-coll(?:ations|ation|atio|ati|at|a)?)|(go-pend(?:ing|in|i)?)|generate-pbe-key|generate-pbe-salt|generate-random-key|generate-uuid|get-bits|get-byte|get-byte-order|get-bytes|get-class|get-collation|get-db-client|get-double|get-effective-tenant-id|get-effective-tenant-name|get-float|get-int64|get-long|get-pointer-value|get-short|get-size|get-string|get-unsigned-long|get-unsigned-short|guid)\\s*(?=\\()',
       beginCaptures: {1: {name: 'support.function.abl'}},
       end: '(\\))',
       endCaptures: {1: {name: 'meta.brace.round.js'}},
@@ -104,7 +116,7 @@ const grammar = {
       patterns: [{include: '#function-arguments'}]
     },
     'abl-functions-H': {
-      begin: '(?i)\\s*(hex-encode|hex-decode|hash-code|handle)\\s*(?=\\()',
+      begin: '(?i)\\s*(handle|hash-code|hex-decode|hex-encode)\\s*(?=\\()',
       beginCaptures: {1: {name: 'support.function.abl'}},
       end: '(\\))',
       endCaptures: {1: {name: 'meta.brace.round.js'}},
@@ -113,7 +125,7 @@ const grammar = {
     },
     'abl-functions-I': {
       begin:
-        '(?i)\\s*(iso-date|is-lead-byte|is-db-multi-tenant|is-column-codepage|is-codepage-fixed|is-attr-space|is-attr-spac|is-attr-spa|is-attr-sp|is-attr-s|is-attr-|is-attr|interval|integer|intege|integ|inte|int64|int|input|index)\\s*(?=\\()',
+        '(?i)\\s*((int(?:eger|ege|eg|e)?)|(is-attr(?:-space|-spac|-spa|-sp|-s|-)?)|index|input|int64|interval|is-codepage-fixed|is-column-codepage|is-db-multi-tenant|is-lead-byte|iso-date)\\s*(?=\\()',
       beginCaptures: {1: {name: 'support.function.abl'}},
       end: '(\\))',
       endCaptures: {1: {name: 'meta.brace.round.js'}},
@@ -122,7 +134,7 @@ const grammar = {
     },
     'abl-functions-K': {
       begin:
-        '(?i)\\s*(keyword-all|keyword|keylabel|keyfunction|keyfunctio|keyfuncti|keyfunct|keyfunc|keycode|kblabel)\\s*(?=\\()',
+        '(?i)\\s*((keyfunc(?:tion|tio|ti|t)?)|kblabel|keycode|keylabel|keyword|keyword-all)\\s*(?=\\()',
       beginCaptures: {1: {name: 'support.function.abl'}},
       end: '(\\))',
       endCaptures: {1: {name: 'meta.brace.round.js'}},
@@ -131,7 +143,7 @@ const grammar = {
     },
     'abl-functions-L': {
       begin:
-        '(?i)\\s*(lower|lookup|logical|log|locked|list-widgets|list-set-attrs|list-query-attrs|list-events|line-counter|line-counte|line-count|library|length|left-trim|ldbname|lc|lastkey|last-of|last)\\s*(?=\\()',
+        '(?i)\\s*((line-count(?:er|e)?)|last|last-of|lastkey|lc|ldbname|left-trim|length|library|list-events|list-query-attrs|list-set-attrs|list-widgets|locked|log|logical|lookup|lower)\\s*(?=\\()',
       beginCaptures: {1: {name: 'support.function.abl'}},
       end: '(\\))',
       endCaptures: {1: {name: 'meta.brace.round.js'}},
@@ -140,7 +152,7 @@ const grammar = {
     },
     'abl-functions-M': {
       begin:
-        '(?i)\\s*(mtime|month|minimum|minimu|minim|mini|min|message-lines|message-digest|member|md5-digest|maximum)\\s*(?=\\()',
+        '(?i)\\s*((min(?:imum|imu|im|i)?)|maximum|md5-digest|member|message-digest|message-lines|month|mtime)\\s*(?=\\()',
       beginCaptures: {1: {name: 'support.function.abl'}},
       end: '(\\))',
       endCaptures: {1: {name: 'meta.brace.round.js'}},
@@ -149,7 +161,7 @@ const grammar = {
     },
     'abl-functions-N': {
       begin:
-        '(?i)\\s*(num-results|num-entries|num-dbs|num-aliases|num-aliase|num-alias|num-alia|num-ali|now|not entered|normalize|next-value|new)\\s*(?=\\()',
+        '(?i)\\s*((num-ali(?:ases|ase|as|a)?)|new|next-value|normalize|not|now|num-dbs|num-entries|num-results)\\s*(?=\\()',
       beginCaptures: {1: {name: 'support.function.abl'}},
       end: '(\\))',
       endCaptures: {1: {name: 'meta.brace.round.js'}},
@@ -157,7 +169,8 @@ const grammar = {
       patterns: [{include: '#function-arguments'}]
     },
     'abl-functions-O': {
-      begin: '(?i)\\s*(os-getenv|os-error|os-drives|os-drive|opsys)\\s*(?=\\()',
+      begin:
+        '(?i)\\s*((os-drive(?:s)?)|opsys|os-dir|os-error|os-getenv)\\s*(?=\\()',
       beginCaptures: {1: {name: 'support.function.abl'}},
       end: '(\\))',
       endCaptures: {1: {name: 'meta.brace.round.js'}},
@@ -166,7 +179,7 @@ const grammar = {
     },
     'abl-functions-P': {
       begin:
-        '(?i)\\s*(proversion|proversio|proversi|provers|propath|promsgs|progress|program-name|process-architecture|proc-status|proc-statu|proc-stat|proc-sta|proc-st|proc-handle|proc-handl|proc-hand|proc-han|proc-ha|pdbname|page-size|page-number|page-numbe|page-numb|page-num)\\s*(?=\\()',
+        '(?i)\\s*((page-num(?:ber|be|b)?)|(proc-ha(?:ndle|ndl|nd|n)?)|(proc-st(?:atus|atu|at|a)?)|(provers(?:ion|io|i)?)|page-size|pdbname|process-architecture|program-name|progress|promsgs|propath)\\s*(?=\\()',
       beginCaptures: {1: {name: 'support.function.abl'}},
       end: '(\\))',
       endCaptures: {1: {name: 'meta.brace.round.js'}},
@@ -174,7 +187,7 @@ const grammar = {
       patterns: [{include: '#function-arguments'}]
     },
     'abl-functions-Q': {
-      begin: '(?i)\\s*(quoter|query-off-end)\\s*(?=\\()',
+      begin: '(?i)\\s*(query-off-end|quoter)\\s*(?=\\()',
       beginCaptures: {1: {name: 'support.function.abl'}},
       end: '(\\))',
       endCaptures: {1: {name: 'meta.brace.round.js'}},
@@ -183,7 +196,7 @@ const grammar = {
     },
     'abl-functions-R': {
       begin:
-        '(?i)\\s*(rowid|row-state|round|right-trim|rgb-value|rgb-valu|rgb-val|rgb-va|rgb-v|return-value|return|retry|replace|relation-fields|relation-field|relation-fiel|relation-fie|relation-fi|rejected|record-length|recid|raw|random|r-index)\\s*(?=\\()',
+        '(?i)\\s*((record-len(?:gth|gt|g)?)|(relation-fi(?:elds|eld|el|e)?)|(return-val(?:ue|u)?)|(rgb-v(?:alue|alu|al|a)?)|r-index|random|raw|recid|rejected|replace|retry|return|right-trim|round|row-state|rowid)\\s*(?=\\()',
       beginCaptures: {1: {name: 'support.function.abl'}},
       end: '(\\))',
       endCaptures: {1: {name: 'meta.brace.round.js'}},
@@ -192,7 +205,7 @@ const grammar = {
     },
     'abl-functions-S': {
       begin:
-        '(?i)\\s*(super|substring|substrin|substri|substr|substitute|substitut|substitu|substit|substi|subst|string|ssl-server-name|sqrt|skip|sha1-digest|setuserid|setuseri|setuser|set-size|set-effective-tenant|set-db-client|seek|search|sdbname|screen-lines)\\s*(?=\\()',
+        '(?i)\\s*((setuser(?:id|i)?)|(subst(?:itute|itut|itu|it|i)?)|(substr(?:ing|in|i)?)|screen-lines|sdbname|search|seek|set-db-client|set-effective-tenant|set-size|sha1-digest|skip|sqrt|ssl-server-name|string|super)\\s*(?=\\()',
       beginCaptures: {1: {name: 'support.function.abl'}},
       end: '(\\))',
       endCaptures: {1: {name: 'meta.brace.round.js'}},
@@ -201,7 +214,7 @@ const grammar = {
     },
     'abl-functions-T': {
       begin:
-        '(?i)\\s*(type-of|truncate|truncat|trunca|trunc|trim|transaction|today|to-rowid|timezone|time|this-object|terminal|tenant-name-to-id|tenant-name|tenant-id)\\s*(?=\\()',
+        '(?i)\\s*((transact(?:ion|io|i)?)|(trunc(?:ate|at|a)?)|tenant-id|tenant-name|tenant-name-to-id|terminal|this-object|time|timezone|to-rowid|today|trim|type-of)\\s*(?=\\()',
       beginCaptures: {1: {name: 'support.function.abl'}},
       end: '(\\))',
       endCaptures: {1: {name: 'meta.brace.round.js'}},
@@ -209,7 +222,7 @@ const grammar = {
       patterns: [{include: '#function-arguments'}]
     },
     'abl-functions-U': {
-      begin: '(?i)\\s*(userid|unbox)\\s*(?=\\()',
+      begin: '(?i)\\s*(unbox|userid)\\s*(?=\\()',
       beginCaptures: {1: {name: 'support.function.abl'}},
       end: '(\\))',
       endCaptures: {1: {name: 'meta.brace.round.js'}},
@@ -217,7 +230,7 @@ const grammar = {
       patterns: [{include: '#function-arguments'}]
     },
     'abl-functions-V': {
-      begin: '(?i)\\s*(value|valid-object|valid-handle|valid-event)\\s*(?=\\()',
+      begin: '(?i)\\s*(valid-event|valid-handle|valid-object|value)\\s*(?=\\()',
       beginCaptures: {1: {name: 'support.function.abl'}},
       end: '(\\))',
       endCaptures: {1: {name: 'meta.brace.round.js'}},
@@ -225,8 +238,7 @@ const grammar = {
       patterns: [{include: '#function-arguments'}]
     },
     'abl-functions-W': {
-      begin:
-        '(?i)\\s*(widget-handle|widget-handl|widget-hand|widget-han|widget-ha|widget-h|weekday)\\s*(?=\\()',
+      begin: '(?i)\\s*((widget-h(?:andle|andl|and|an|a)?)|weekday)\\s*(?=\\()',
       beginCaptures: {1: {name: 'support.function.abl'}},
       end: '(\\))',
       endCaptures: {1: {name: 'meta.brace.round.js'}},
@@ -247,15 +259,15 @@ const grammar = {
         2: {name: 'punctuation.separator.colon.abl'}
       },
       match:
-        '(?i)\\b(this-object|super|self|this-procedure|target-procedure|source-procedure|session|error-status|compiler|audit-control|audit-policy|clipboard|codebase-locator|color-table|debugger|dslog-manager|file-information|file-info|font-table|last-event|log-manager|profiler|rcode-information|rcode-info|security-policy|session|web-context)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b(active-window|audit-control|audit-policy|clipboard|codebase-locator|color-table|compiler|current-window|debugger|default-window|dslog-manager|(error-stat(?:us|u)?)|(file-info(?:rmation|rmatio|rmati|rmat|rma|rm|r)?)|font-table|(last-even(?:t)?)|log-manager|profiler|(rcode-info(?:rmation|rmatio|rmati|rmat|rma|rm|r)?)|security-policy|self|session|source-procedure|super|target-procedure|this-object|this-procedure|web-context)\\b(?![#$\\-_%&])'
     },
     'access-modifier': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\s*(package-private|private|package-protected|protected|public|static|override|abstract|final)\\b'
+        '(?i)\\s*(package-private|private|package-protected|protected|public|static|override|abstract|final)\\s+'
     },
     'analyze-suspend-resume': {
-      begin: '(?i)(\\&analyze-suspend|\\&analyze-resume)\\s*',
+      begin: '(?i)(&analyze-suspend|&analyze-resume)\\s*',
       end: '(?=(?://|/\\*))|$',
       name: 'comment.preprocessor.analyze-suspend.abl'
     },
@@ -266,7 +278,7 @@ const grammar = {
       ]
     },
     'annotation-attributes': {
-      begin: '(^|\\s+)(\\@[[:alpha:]][\\w#\\$-%&]*)\\s*(?=\\()',
+      begin: '(^|\\s+)(\\@[a-zA-Z_][a-zA-Z0-9_#$\\-%&]*)\\s*(?=\\()',
       beginCaptures: {2: {name: 'entity.name.tag.abl'}},
       end: '(?=\\.)',
       name: 'meta.declaration.annotation.abl',
@@ -274,7 +286,7 @@ const grammar = {
         {include: '#parens'},
         {
           captures: {1: {name: 'entity.other.attribute-name.abl'}},
-          match: '\\s*([[:alpha:]][\\w#\\$-%&]+)(?=[\\=\\s$])'
+          match: '\\s*([a-zA-Z_][a-zA-Z0-9_#$\\-%&]+)(?=[\\=\\s$])'
         },
         {include: '#string'},
         {include: '#operator-no-space'},
@@ -283,19 +295,21 @@ const grammar = {
     },
     'annotation-simple': {
       captures: {2: {name: 'entity.name.tag.abl'}},
-      match: '(^|\\s*)(\\@[[:alpha:]][\\w#\\$-%&]*)\\s*(?=\\.)',
+      match: '(^|\\s*)(\\@[a-zA-Z_][a-zA-Z0-9_#$\\-%&]*)\\s*(?=\\.)',
       name: 'meta.declaration.annotation.abl'
     },
     'argument-reference': {
       captures: {1: {name: 'support.other.argument.abl'}},
       match:
-        '\\s*((\\{\\s*\\&[\\.\\w\\/-]+\\})|(\\{\\s*\\d+\\})|(\\{\\s*\\*\\}))\\s*'
+        '\\s*((\\{\\s*&[\\.a-zA-Z0-9_\\-#$%\\/]+\\})|(\\{\\s*\\d+\\})|(\\{\\s*\\*\\}))\\s*'
     },
     'array-literal': {
       begin: '\\[',
-      beginCaptures: {0: {name: 'meta.brace.square.abl'}},
+      beginCaptures: {
+        0: {name: 'punctuation.definition.bracket.square.begin.abl'}
+      },
       end: '\\]',
-      endCaptures: {0: {name: 'meta.brace.square.abl'}},
+      endCaptures: {0: {name: 'punctuation.definition.bracket.square.end.abl'}},
       name: 'meta.array.literal.abl',
       patterns: [
         {
@@ -303,19 +317,23 @@ const grammar = {
           match: '(?i)\\s+(for)\\s+'
         },
         {include: '#expression'},
+        {include: '#preprocessors'},
+        {include: '#comment'},
         {include: '#punctuation-comma'}
       ]
     },
     'array-use': {
       begin: '\\[',
-      beginCaptures: {0: {name: 'meta.brace.square.abl'}},
+      beginCaptures: {
+        0: {name: 'punctuation.definition.bracket.square.begin.abl'}
+      },
       end: '\\]',
-      endCaptures: {0: {name: 'meta.brace.square.abl'}},
+      endCaptures: {0: {name: 'punctuation.definition.bracket.square.end.abl'}},
       name: 'meta.array.literal.abl',
       patterns: [{include: '#expression'}, {include: '#punctuation-comma'}]
     },
     'as-type': {
-      begin: '(?i)\\s*(as)\\s*(class)?',
+      begin: '\\s*([Aa][Ss])\\s*([Cc][Ll][Aa][Ss]{2})?',
       beginCaptures: {
         1: {name: 'keyword.other.abl'},
         2: {name: 'keyword.other.abl'}
@@ -330,7 +348,7 @@ const grammar = {
         3: {name: 'punctuation.terminator.abl'}
       },
       match:
-        '(?i)^\\s*(?!(transaction|no-lock|exclusive-lock|exclusive-loc|exclusive-lo|exclusive-l|share-lock|share-loc|share-lo|share-|share):)([\\w\\-\\$\\#]+)(:)\\s'
+        '(?i)^\\s*(?!((?:transact(?:ion|io|i)?)|no-lock|(?:exclusive-l(?:ock|oc|o)?)|(?:share(?:-lock|-loc|-lo|-l|-)?)):)([a-zA-Z][a-zA-Z0-9_\\-#$%\\-$#]*)(:)\\s'
     },
     'block-statement': {
       begin: '(?i)(?<!end)\\s*(do|repeat|finally)\\b',
@@ -344,7 +362,7 @@ const grammar = {
         {include: '#from-to-by'},
         {include: '#while-expression'},
         {
-          match: '(?i)\\b(transaction|stop-after)\\b',
+          match: '(?i)\\b((transact(?:ion|io|i)?)|stop-after)\\b',
           name: 'keyword.other.abl'
         },
         {include: '#numeric'},
@@ -365,7 +383,7 @@ const grammar = {
         2: {name: 'entity.name.label.abl'}
       },
       match:
-        '(?i)\\s*(?<!,)\\s*(leave|next|retry|undo)\\s*(?!on)([\\w\\-\\$]*)?\\s*'
+        '(?i)\\s*(?<!,)\\s*(leave|next|retry|undo)\\s*(?!on)([a-zA-Z0-9_\\-#$%\\-$]*)?\\s*'
     },
     'branch-leave-next-retry-throw': {
       captures: {
@@ -373,7 +391,7 @@ const grammar = {
         2: {name: 'entity.name.label.abl'}
       },
       match:
-        '(?i)\\s*(?<=,)\\s*(leave|next|retry|throw)\\s*(?!on)([\\w\\-\\$]*)?\\s*'
+        '(?i)\\s*(?<=,)\\s*(leave|next|retry|throw)\\s*(?!on)([a-zA-Z0-9_\\-#$%\\-$]*)?\\s*'
     },
     'branch-options': {
       patterns: [
@@ -392,7 +410,7 @@ const grammar = {
         1: {name: 'keyword.other.abl'},
         2: {name: 'keyword.other.abl'}
       },
-      end: '(?=\\:|$)',
+      end: '(?=:|$)',
       patterns: [
         {include: '#new-class'},
         {include: '#function-arguments'},
@@ -439,7 +457,7 @@ const grammar = {
         4: {name: 'storage.data.table.abl'}
       },
       match:
-        '(?i)\\s*((break)\\s+)?(by)\\s+(([\\w\\-#$%]+\\.)?([\\w\\-#$%]+\\.)([\\w\\-#$%]+)(\\[\\d+\\])?)\\b'
+        '(?i)\\s*((break)\\s+)?(by)\\s+(([a-zA-Z][a-zA-Z_\\-#$%]*\\.)?([a-zA-Z][a-zA-Z_\\-#$%]*\\.)([a-zA-Z][a-zA-Z_\\-#$%]*)(\\[\\d+\\])?)\\b'
     },
     'break-group': {
       captures: {
@@ -449,7 +467,7 @@ const grammar = {
         4: {name: 'meta.brace.round.js'}
       },
       match:
-        '(?i)\\s*(first-of|first|last-of|last)\\s*(\\()\\s*([\\w\\-#$%]+\\.[\\w\\-#$%]+(\\.[\\w\\-#$%]+)?)\\s*(\\))\\s*'
+        '(?i)\\s*(first-of|first|last-of|last)\\s*(\\()\\s*([a-zA-Z][a-zA-Z#$\\-_%&]*\\.[a-zA-Z_][a-zA-Z#$\\-_%&]*(\\.[a-zA-Z_][a-zA-Z#$\\-_%&]*)?)\\s*(\\))\\s*'
     },
     'buffer-for-table': {
       captures: {
@@ -459,14 +477,23 @@ const grammar = {
         5: {name: 'storage.data.table.abl'}
       },
       match:
-        '(?i)\\s*(?!do|repeat|for)([\\w\\-#$%]+)\\s+(for)\\s+((temp-table)\\s+)?([\\w\\-#$%]+)\\s*'
+        '(?i)\\s*(?!do|repeat|for)([a-zA-Z_\\-#$%]+)\\s+(for)\\s+((temp-table)\\s+)?([a-zA-Z][a-zA-Z0-9_\\-#$%]*)\\s*'
     },
     'buffer-name': {
       captures: {
         1: {name: 'keyword.other.abl'},
         2: {name: 'storage.data.table.abl'}
       },
-      match: '(?i)\\b(buffer)\\s+([\\w\\-#$%]+(\\.[\\w\\-#$%]+)?)'
+      match:
+        '(?i)\\b(buffer)\\s+([a-zA-Z][a-zA-Z0-9_\\-#$%]*(\\.[a-zA-Z][a-zA-Z0-9_\\-#$%]*)?)'
+    },
+    'cache-value': {
+      captures: {
+        1: {name: 'keyword.other.abl'},
+        3: {name: 'constant.numeric.source.abl'}
+      },
+      match:
+        '\\b([Cc][Aa][Cc][Hh][Ee])\\s+(0[xX][[:xdigit:]]+)?|(\\-?[0-9]+(\\.[0-9]+)?)\\b'
     },
     'can-find': {
       begin: '(?i)\\s*(can-find)\\s*(\\()',
@@ -474,7 +501,7 @@ const grammar = {
         1: {name: 'support.function.abl'},
         2: {name: 'meta.brace.round.js'}
       },
-      end: '(?i)\\b(?=\\)|where|no-lock|share-lock|using|no-prefetch|no-wait)\\s*',
+      end: '(?i)\\b(?=\\)|where|no-lock|(share(?:-lock|-loc|-lo|-l|-)?)|using|(no-prefe(?:tch|tc|t)?)|no-wait)\\s*',
       patterns: [
         {include: '#parens'},
         {include: '#comment'},
@@ -492,6 +519,7 @@ const grammar = {
     },
     'code-block': {
       patterns: [
+        {include: '#create-statement'},
         {include: '#record-buffer-functions'},
         {include: '#can-find'},
         {include: '#comment'},
@@ -529,7 +557,8 @@ const grammar = {
       ]
     },
     constant: {
-      match: '(?i)(?<=^|\\s|\\()(true|false|yes|no|\\?)(?!\\w|-)',
+      match:
+        '(?i)(?<=^|\\b|\\s|\\()(true|false|yes|no|\\?)(?![a-zA-Z0-9_\\-#$%])',
       name: 'constant.language.abl'
     },
     'copy-lob': {
@@ -538,13 +567,30 @@ const grammar = {
       end: '(?=\\.)',
       patterns: [{include: '#code-block'}]
     },
+    'create-alias': {
+      begin: '(?i)\\s*(create)\\s+(alias)\\s*',
+      beginCaptures: {
+        1: {name: 'keyword.other.abl'},
+        2: {name: 'keyword.other.abl'}
+      },
+      end: '(?=\\.)',
+      patterns: [
+        {include: '#keywords'},
+        {include: '#abl-functions'},
+        {
+          captures: {1: {name: 'storage.data.database.abl'}},
+          match: '\\b([a-zA-Z0-9][a-zA-Z0-9_\\-]*)\\b'
+        },
+        {include: '#expression'}
+      ]
+    },
     'create-buffer': {
       begin: '(?i)(create)\\s+(buffer)\\b',
       beginCaptures: {
         1: {name: 'keyword.other.abl'},
         2: {name: 'keyword.other.abl'}
       },
-      end: '(?i)(\\b(buffer-name|in)\\b)|(?=\\.)',
+      end: '(?i)(\\b((buffer-n(?:ame|am|a)?)|in)\\b)|(?=\\.)',
       endCaptures: {1: {name: 'keyword.other.abl'}},
       patterns: [
         {
@@ -562,14 +608,51 @@ const grammar = {
         {include: '#variable-name'}
       ]
     },
+    'create-record': {
+      captures: {
+        1: {name: 'keyword.other.abl'},
+        2: {name: 'storage.data.table.abl'},
+        5: {name: 'keyword.other.abl'},
+        6: {name: 'keyword.other.abl'}
+      },
+      match:
+        '(?i)\\s*(create)\\s+([a-zA-Z][a-zA-Z_\\-#$%]*(\\.[a-zA-Z][a-zA-Z_\\-#$%]*)?)\\s*((for)\\s+(tenant))?\\s*'
+    },
+    'create-statement': {
+      patterns: [
+        {include: '#create-buffer'},
+        {include: '#create-alias'},
+        {include: '#create-widget'},
+        {include: '#create-with-expression'},
+        {include: '#create-record'}
+      ]
+    },
+    'create-widget': {
+      captures: {
+        1: {name: 'keyword.other.abl'},
+        2: {name: 'keyword.other.abl'},
+        3: {name: 'variable.other.abl'}
+      },
+      match:
+        '(?i)\\s*(create)\\s+(button|combo-box|(?:control-fram(?:e)?)|dialog-box|editor|fill-in|(?:fram(?:e)?)|image|menu|menu-item|radio-set|(?:rect(?:angle|angl|ang|an|a)?)|selection-list|slider|sub-menu|text|toggle-box|window)\\s+([a-zA-Z_][a-zA-Z0-9_#$\\-%&]*)\\b'
+    },
+    'create-with-expression': {
+      captures: {
+        1: {name: 'keyword.other.abl'},
+        2: {name: 'keyword.other.abl'}
+      },
+      match:
+        '(?i)\\s*(create)\\s+(browse|call|client-principal|database|dataset|data-source|query|sax-attributes|sax-reader|sax-writer|server|server-socket|soap-header|soap-header-entryref|socket|temp-table|widget-pool|x-document|x-noderef)\\s*'
+    },
     'db-dot-table': {
       captures: {1: {name: 'storage.data.table.abl'}},
-      match: '(?i)\\b([\\w\\-#$%]+(\\.[\\w\\-#$%]+)?)\\b'
+      match:
+        '(?i)\\b([a-zA-Z_][a-zA-Z0-9#$\\-_%&]*(\\.[a-zA-Z_][a-zA-Z0-9#$\\-_%&]*)?)\\b'
     },
     'db-dot-table-dot-field': {
       captures: {1: {name: 'storage.data.table.abl'}},
       match:
-        '(?i)(?<=^|\\s|\\(|,)(([\\w\\-#$%]+\\.)?([\\w\\-#$%]+\\.)([\\w\\-#$%]+)(\\[\\d+\\])?)'
+        '(?i)(?<=^|\\s|\\(|,)(([a-zA-Z][a-zA-Z0-9#$\\-_%&]*\\.)?([a-zA-Z_][a-zA-Z0-9#$\\-_%&]*\\.)([a-zA-Z_][a-zA-Z0-9#$\\-_%&]*)(\\[\\d+\\])?)'
     },
     decimals: {
       captures: {
@@ -580,7 +663,7 @@ const grammar = {
     },
     declarations: {patterns: [{include: '#define'}]},
     define: {
-      begin: '(?i)\\s*(define|defin|defi|def)\\b',
+      begin: '(?i)\\s*(def(?:ine|in|i)?)\\b',
       beginCaptures: {1: {name: 'keyword.other.abl'}},
       end: '(\\.)',
       endCaptures: {1: {name: 'punctuation.terminator.abl'}},
@@ -588,7 +671,7 @@ const grammar = {
       patterns: [
         {
           captures: {1: {name: 'keyword.other.abl'}},
-          match: '(?i)\\s*(new|global|glob|shared)\\s*'
+          match: '(?i)\\s*(new|(glob(?:al|a|)?)|shared)\\s*'
         },
         {include: '#serializable'},
         {include: '#access-modifier'},
@@ -638,15 +721,34 @@ const grammar = {
       ]
     },
     'define-browse': {
-      begin: '(?i)\\b(browse)\\s+([[:alpha:]][\\w\\#\\$\\-\\%\\&]*)\\s*',
+      begin: '(?i)\\b(browse)\\s+([a-zA-Z_][a-zA-Z0-9_#$\\-%&]*)\\s*',
       beginCaptures: {
         1: {name: 'keyword.other.abl'},
         2: {name: 'variable.other.abl'}
       },
-      end: '(?i)\\b(?=query)\\b'
+      end: '(?i)\\b(?=\\.)',
+      patterns: [
+        {
+          captures: {
+            1: {name: 'keyword.other.abl'},
+            2: {name: 'variable.other.abl'}
+          },
+          match:
+            '\\b([Qq][Uu][Ee][Rr][Yy])\\s+([a-zA-Z][a-zA-Z0-9\\-_#$%\\&]+)\\b'
+        },
+        {
+          captures: {1: {name: 'keyword.other.abl'}},
+          match:
+            '(?i)\\b((share(?:-lock|-loc|-lo|-l|-)?)|(exclusive-l(?:ock|oc|o)?)|no-lock|no-wait|(disp(?:lay|la|l)?))\\b'
+        },
+        {include: '#comment'},
+        {include: '#db-dot-table-dot-field'},
+        {include: '#keywords'},
+        {include: '#expression'}
+      ]
     },
     'define-buffer': {
-      begin: '(?i)\\s*(buffer)\\b(?![\\#\\$\\-\\_\\%\\&])',
+      begin: '(?i)\\s*(buffer)\\b(?![#$\\-_%&])',
       beginCaptures: {1: {name: 'keyword.other.abl'}},
       end: '(?=\\.)',
       patterns: [
@@ -658,7 +760,7 @@ const grammar = {
       ]
     },
     'define-button': {
-      begin: '(?i)\\s*(button)\\s+([[:alpha:]][\\w#$\\-%&]*)',
+      begin: '(?i)\\s*(button)\\s+([a-zA-Z_][a-zA-Z0-9_#$\\-%&]*)',
       beginCaptures: {
         1: {name: 'keyword.other.abl'},
         2: {name: 'variable.other.abl'}
@@ -674,8 +776,7 @@ const grammar = {
       ]
     },
     'define-class': {
-      begin:
-        '(?i)\\b(?<![\\#\\$\\-\\_\\%\\&])(class)\\b(?![\\#\\$\\-\\_\\%\\&])',
+      begin: '\\b(?<![#$\\-_%&])([Cc][Ll][Aa][Ss]{2})\\b(?![#$\\-_%&])',
       beginCaptures: {1: {name: 'keyword.other.abl'}},
       end: '\\s*(:)\\s*',
       endCaptures: {1: {name: 'punctuation.terminator.abl'}},
@@ -692,7 +793,7 @@ const grammar = {
       ]
     },
     'define-dataset': {
-      begin: '(?i)\\b(dataset)\\s+([[:alpha:]][\\w\\#\\$\\-\\%\\&]*)\\b',
+      begin: '(?i)\\b(dataset)\\s+([a-zA-Z_][a-zA-Z0-9_#$\\-%&]*)\\b',
       beginCaptures: {
         1: {name: 'keyword.other.abl'},
         2: {name: 'storage.data.dataset.abl'}
@@ -707,11 +808,11 @@ const grammar = {
             2: {name: 'storage.data.dataset.abl'}
           },
           match:
-            '(?i)\\b(data-relation|parent-id-relation)\\s*([[:alpha:]][\\w#$\\-\\%\\&]+)'
+            '(?i)\\b((?:data-rel(?:ation|atio|ati|at|a)?)|parent-id-relation)\\s*([a-zA-Z_][a-zA-Z0-9_#$\\-%&]*)'
         },
         {
           captures: {1: {name: 'support.function.abl'}},
-          match: '(?i)\\b(relation-fields)\\b'
+          match: '(?i)\\b(relation-fi(?:elds|eld|el|e)?)\\b'
         },
         {include: '#keywords'},
         {include: '#preprocessors'},
@@ -730,7 +831,7 @@ const grammar = {
         {include: '#numeric'},
         {
           captures: {1: {name: 'entity.name.function.abl'}},
-          match: '\\b([\\w\\#\\$\\%]+)\\b'
+          match: '\\b([a-zA-Z][a-zA-Z0-9_#$%]*)\\b'
         }
       ]
     },
@@ -743,7 +844,7 @@ const grammar = {
             3: {name: 'keyword.other.abl'},
             4: {name: 'punctuation.terminator.abl'}
           },
-          match: '(?i)\\b(enum)\\s+([\\w\\#\\$\\%\\.]+)\\s*(flags)?\\s*(:)',
+          match: '(?i)\\b(enum)\\s+([\\w#$%\\.]+)\\s*(flags)?\\s*(:)',
           name: 'meta.define.enum.abl'
         }
       ]
@@ -753,24 +854,24 @@ const grammar = {
         1: {name: 'keyword.other.abl'},
         2: {name: 'entity.name.function.abl'}
       },
-      match: '(?i)\\b(event)\\s+([[:alpha:]][\\w\\#\\$\\-\\%\\&]*)\\b'
+      match: '(?i)\\b(event)\\s+([a-zA-Z_][a-zA-Z0-9_#$\\-%&]*)\\b'
     },
     'define-field': {
       captures: {
         1: {name: 'keyword.other.abl'},
         2: {name: 'storage.data.table.abl'}
       },
-      match: '(?i)\\s*(field)\\s+([\\w\\-#$%]+)\\s*'
+      match: '(?i)\\s*(field)\\s+([a-zA-Z][a-zA-Z0-9_\\-#$%]*)\\s*'
     },
     'define-frame': {
       captures: {
         1: {name: 'keyword.other.abl'},
         2: {name: 'variable.other.abl'}
       },
-      match: '(?i)\\s*(frame)\\s*([[:alpha:]][\\w#$\\-%&]*)'
+      match: '(?i)\\s*((?:fram(?:e)?))\\s*([a-zA-Z_][a-zA-Z0-9_#$\\-%&]*)'
     },
     'define-index': {
-      begin: '(?i)\\s*(index)\\s+([[:alpha:]][\\w\\#\\$\\-\\%\\&]*)',
+      begin: '(?i)\\s*(index)\\s+([a-zA-Z_][a-zA-Z0-9_#$\\-%&]*)',
       beginCaptures: {
         1: {name: 'keyword.other.abl'},
         2: {name: 'storage.data.table.abl'}
@@ -780,17 +881,17 @@ const grammar = {
         {
           captures: {1: {name: 'keyword.other.abl'}},
           match:
-            '(?i)\\b(AS|IS|UNIQUE|PRIMARY|WORD-INDEX|ASCENDING|DESCENDING)\\b'
+            '(?i)\\b(AS|IS|UNIQUE|PRIMARY|WORD-INDEX|(asc(?:ending|endin|endi|end|en|e)?)|(desc(?:ending|endin|endi|end|en|e)?))\\b'
         },
         {
           captures: {1: {name: 'storage.data.table.abl'}},
-          match: '\\b([[:alpha:]][\\w\\#\\$\\-\\%\\&]*)\\b'
+          match: '\\b([a-zA-Z_][a-zA-Z0-9_#$\\-%&]*)\\b'
         }
       ]
     },
     'define-interface': {
       begin:
-        '(?i)\\b(interface)\\s+([\\w\\#\\$\\%]+[\\w\\#\\$\\%\\.]*(\\s*<\\s*[\\w\\#\\$\\%\\.]+\\s*\\>)?)',
+        '(?i)\\b(interface)\\s+([\\w#$%]+[\\w#$%\\.]*(\\s*<\\s*[\\w#$%\\.]+\\s*\\>)?)',
       beginCaptures: {
         1: {name: 'keyword.other.abl'},
         2: {name: 'entity.name.type.abl'}
@@ -813,12 +914,12 @@ const grammar = {
         2: {name: 'storage.data.table.abl'}
       },
       match:
-        '(?i)\\s*(like|like-sequential)\\s+(([\\w\\-#$%]+\\.)?([\\w\\-#$%]+\\.)?([\\w\\-#$%]+))'
+        '(?i)\\s*(like|like-sequential)\\s+(([a-zA-Z][a-zA-Z_\\-#$%]*\\.)?([a-zA-Z][a-zA-Z0-9_\\-#$%]*\\.)?([a-zA-Z][a-zA-Z0-9_\\-#$%]*))'
     },
     'define-parameter': {
-      begin: '(?i)\\b(parameter|paramete|paramet|parame|param)\\b',
+      begin: '(?i)\\b(param(?:eter|ete|et|e)?)\\b',
       beginCaptures: {1: {name: 'keyword.other.abl'}},
-      end: '(?i)(?=\\.)|\\b(?=bgcolor|column-label|contet-help-id|dcolor|decimals|drop-target|extent|font|fgcolor|format|initial|label|mouse-pointer|no-undo|not|case-sensitive|pfcolor|view-as|triggers)\\b',
+      end: '(?i)(?=\\.)|\\b(?=(bgc(?:olor|olo|ol|o)?)|(column-lab(?:el|e)?)|context-help-id|dcolor|decimals|drop-target|extent|font|(fgc(?:olor|olo|ol|o)?)|(form(?:at|a)?)|initial|label|(mouse-p(?:ointer|ointe|oint|oin|oi|o)?)|no-undo|not|(case-sen(?:sitive|sitiv|siti|sit|si|s)?)|(pfc(?:olor|olo|ol|o)?)|view-as|triggers)\\b',
       patterns: [
         {
           captures: {
@@ -827,7 +928,7 @@ const grammar = {
             3: {name: 'storage.data.table.abl'}
           },
           match:
-            '(?i)\\b(table)\\s+(for)\\s+([\\w\\-#$%]+(\\.[\\w\\-#$%]+)?)\\b'
+            '(?i)\\b(table)\\s+(for)\\s+([a-zA-Z][a-zA-Z_\\-#$%]*(\\.[a-zA-Z][a-zA-Z_\\-#$%]*)?)\\b'
         },
         {
           captures: {
@@ -835,7 +936,7 @@ const grammar = {
             2: {name: 'variable.other.abl'}
           },
           match:
-            '(?i)\\b(table-handle|dataset-handle)\\s+([[:alpha:]][\\w\\#\\$\\-\\%\\&]*)\\b'
+            '(?i)\\b(table-handle|dataset-handle)\\s+([a-zA-Z_][a-zA-Z0-9_#$\\-%&]*)\\b'
         },
         {
           captures: {
@@ -844,7 +945,7 @@ const grammar = {
             3: {name: 'storage.data.dataset.abl'}
           },
           match:
-            '(?i)\\b(dataset)\\s+(for)\\s+([\\w\\-#$%]+(\\.[\\w\\-#$%]+)?)\\b'
+            '(?i)\\b(dataset)\\s+(for)\\s+([a-zA-Z_\\-#$%]+(\\.[a-zA-Z_\\-#$%]+)?)\\b'
         },
         {include: '#parameter-as'},
         {include: '#keywords'},
@@ -852,9 +953,9 @@ const grammar = {
       ]
     },
     'define-property': {
-      begin: '(?i)\\b(property|prop)\\b',
+      begin: '(?i)\\b(property)\\b',
       beginCaptures: {1: {name: 'keyword.other.abl'}},
-      end: '(?i)\\s*(?=get|set)',
+      end: '\\s*(?=[Gg][Ee][Tt]|[Ss][Ee][Tt])',
       patterns: [
         {include: '#property-as'},
         {include: '#comment'},
@@ -870,19 +971,32 @@ const grammar = {
       ]
     },
     'define-query': {
-      begin: '(?i)\\b(query)\\s+([[:alpha:]][\\w\\#\\$\\-\\%\\&]*)\\s*',
+      begin: '(?i)\\b(query)\\s+([a-zA-Z_][a-zA-Z0-9_#$\\-%&]*)\\s*',
       beginCaptures: {
         1: {name: 'keyword.other.abl'},
         2: {name: 'variable.other.abl'}
       },
-      end: '(?i)\\b(?=for|display|share-lock|no-lock|exclusive-lock)\\b'
+      end: '(?i)\\b(?=\\.)\\b',
+      patterns: [
+        {
+          captures: {1: {name: 'keyword.other.abl'}},
+          match:
+            '(?i)\\b(for|scrolling|(rcode-info(?:rmation|rmatio|rmati|rmat|rma|rm|r)?))\\b'
+        },
+        {include: '#cache-value'},
+        {include: '#db-dot-table'},
+        {include: '#fields-except-list'},
+        {include: '#punctuation-comma'},
+        {include: '#expression'},
+        {include: '#keywords'}
+      ]
     },
     'define-stream': {
       captures: {
         1: {name: 'keyword.other.abl'},
         2: {patterns: [{include: '#variable-name'}]}
       },
-      match: '(?i)\\s*(stream)\\s*([\\w\\-]+)',
+      match: '(?i)\\s*(stream)\\s*([a-zA-Z][a-zA-Z0-9_\\-#$%\\-]*)',
       name: 'meta.define.stream.abl'
     },
     'define-table': {
@@ -890,7 +1004,8 @@ const grammar = {
         1: {name: 'keyword.other.abl'},
         2: {name: 'storage.data.table.abl'}
       },
-      match: '(?i)(?<=\\b)(temp-table|before-table)\\s*([\\w\\-#$%]+)\\s*'
+      match:
+        '(?i)(?<=\\b)(temp-table|before-table)\\s*([a-zA-Z_][a-zA-Z0-9_\\-#$%]*)\\s*'
     },
     'define-type': {
       patterns: [
@@ -900,14 +1015,14 @@ const grammar = {
       ]
     },
     'define-variable': {
-      begin: '(?i)\\s*(variable|variabl|variab|varia|vari|var)\\s*',
+      begin: '(?i)\\s*(var(?:iable|iabl|iab|ia|i)?)\\s*',
       beginCaptures: {1: {name: 'keyword.other.abl'}},
-      end: '(?i)(?=\\.)|\\b(?=bgcolor|column-label|contet-help-id|dcolor|decimals|drop-target|extent|font|fgcolor|format|initial|label|mouse-pointer|no-undo|not|case-sensitive|pfcolor|view-as|triggers)\\b',
+      end: '(?i)(?=\\.)|\\b(?=(bgc(?:olor|olo|ol|o)?)|(column-lab(?:el|e)?)|contet-help-id|dcolor|decimals|drop-target|extent|font|(fgc(?:olor|olo|ol|o)?)|(form(?:at|a)?)|initial|label|(mouse-p(?:ointer|ointe|oint|oin|oi|o)?)|no-undo|not|(case-sen(?:sitive|sitiv|siti|sit|si|s)?)|(pfc(?:olor|olo|ol|o)?)|view-as|triggers)\\b',
       endCaptures: {1: {name: 'keyword.other.abl'}},
       patterns: [
         {
           captures: {1: {name: 'keyword.other.abl'}},
-          match: '(?i)\\b(class)\\b'
+          match: '\\b([Cc][Ll][Aa][Ss][Ss])\\b'
         },
         {include: '#variable-as'},
         {include: '#variable-like'},
@@ -923,7 +1038,7 @@ const grammar = {
         2: {name: 'variable.other.abl'}
       },
       match:
-        '(?i)(variable|variabl|variab|varia|vari|var)\\s+([[:alpha:]][\\w#$-%&])+\\s*'
+        '(?i)(var(?:iable|iabl|iab|ia|i)?)\\s+([a-zA-Z_][a-zA-Z0-9_#$\\-%&]*)\\s*'
     },
     'dll-type': {
       captures: {1: {name: 'storage.type.abl'}},
@@ -932,12 +1047,12 @@ const grammar = {
     },
     'double-colon-field-name': {
       captures: {1: {name: 'storage.data.table.abl'}},
-      match: '\\s*::([\\w\\-#$%]+)\\s*'
+      match: '\\s*::([a-zA-Z_\\-#$%]+)\\s*'
     },
     doublequotedstring: {
       begin: '(")',
       beginCaptures: {1: {name: 'punctuation.definition.string.begin.abl'}},
-      end: '(?i)(")(:[L|R|T|C|U]\\d*\\b)?',
+      end: '(?i)(")(:[LlRrTtCcUu]\\d*\\b)?',
       endCaptures: {
         1: {name: 'punctuation.definition.string.end.abl'},
         2: {name: 'support.other.abl'}
@@ -976,7 +1091,7 @@ const grammar = {
             1: {name: 'entity.name.type.abl'},
             3: {name: 'punctuation.separator.colon.abl'}
           },
-          match: '\\s*([\\w\\#\\$\\%\\-]+(\\.[\\w\\#\\$\\%\\-]+)+)\\s*(:)'
+          match: '\\s*([\\w#$%\\-]+(\\.[\\w#$%\\-]+)+)\\s*(:)'
         },
         {
           captures: {
@@ -984,11 +1099,11 @@ const grammar = {
             3: {name: 'punctuation.separator.comma.abl'},
             4: {name: 'punctuation.separator.colon.abl'}
           },
-          match: '\\s*([[:alpha:]][\\w\\#\\$\\-\\%\\&]*)\\s*((,)|(:))\\s*'
+          match: '\\s*([a-zA-Z_][a-zA-Z0-9_#$\\-%&]*)\\s*((,)|(:))\\s*'
         },
         {
           captures: {1: {name: 'entity.name.function.abl'}},
-          match: '\\s*([[:alpha:]][\\w\\#\\$\\-\\%\\&]*)\\s*'
+          match: '\\s*([a-zA-Z_][a-zA-Z0-9_#$\\-%&]*)\\s*'
         },
         {include: '#string'}
       ]
@@ -1012,17 +1127,19 @@ const grammar = {
     },
     'field-as-object': {
       captures: {1: {name: 'entity.name.type.abl'}},
-      match: '(?i)\\s*(progress\\.lang\\.object|object)\\s*'
+      match: '(?i)\\s*((progress\\.lang\\.)?object)\\s*'
     },
     'field-name': {
       patterns: [
         {
           captures: {1: {name: 'storage.data.table.abl'}},
-          match: '\\s*([\\w\\-#$%]+(\\.[\\w\\-#$%]+)?\\s*(\\[\\d+\\]))\\s*'
+          match:
+            '\\s*([a-zA-Z][a-zA-Z0-9_\\-#$%]*(\\.[a-zA-Z][a-zA-Z0-9_\\-#$%]*)?\\s*(\\[\\d+\\]))\\s*'
         },
         {
           captures: {1: {name: 'storage.data.table.abl'}},
-          match: '\\s*([\\w\\-#$%]+(\\.[\\w\\-#$%]+)?)\\s*'
+          match:
+            '\\s*([a-zA-Z][a-zA-Z0-9_\\-#$%]*(\\.[a-zA-Z][a-zA-Z0-9_\\-#$%]*)?)\\s*'
         }
       ]
     },
@@ -1034,7 +1151,11 @@ const grammar = {
       },
       end: '(\\))',
       endCaptures: {1: {name: 'meta.brace.round.js'}},
-      patterns: [{include: '#db-dot-table-dot-field'}, {include: '#field-name'}]
+      patterns: [
+        {include: '#db-dot-table-dot-field'},
+        {include: '#field-name'},
+        {include: '#punctuation-comma'}
+      ]
     },
     'find-record': {
       captures: {
@@ -1043,7 +1164,7 @@ const grammar = {
         3: {name: 'storage.data.table.abl'}
       },
       match:
-        '(?i)\\s*(find)\\s+(first|last|next|prev|current)?\\s*([\\w\\-#$%]+)\\s*'
+        '(?i)\\s*(find)\\s+(first|last|next|prev|current)?\\s*([a-zA-Z_][a-zA-Z0-9#$\\-_%&]+(\\.[a-zA-Z_][a-zA-Z0-9#$\\-_%&]*)?)\\s*'
     },
     'for-each-join': {
       begin: '(?i)(?<=,)\\s*(each|first|last)\\s*',
@@ -1051,7 +1172,7 @@ const grammar = {
         1: {name: 'keyword.other.abl'},
         3: {name: 'storage.data.table.abl'}
       },
-      end: '(?i)\\s*(?=where|no-lock|exclusive-lock|exclusive-loc|exclusive-lo|exclusive-l|share-lock|share-loc|share-lo|share-|share|tenant-where|use-index|table-scan|using|no-prefetch|left|outer-join|break|by|transaction|,|:)\\s*',
+      end: '(?i)\\s*(?=where|no-lock|(exclusive-l(?:ock|oc|o)?)|(share(?:-lock|-loc|-lo|-l|-)?)|tenant-where|use-index|table-scan|using|(no-prefe(?:tch|tc|t)?)|left|outer-join|break|by|(transact(?:ion|io|i)?)|,|:)\\s*',
       patterns: [
         {include: '#fields-except-list'},
         {include: '#of-phrase'},
@@ -1060,17 +1181,19 @@ const grammar = {
             1: {name: 'keyword.other.abl'},
             2: {name: 'storage.data.table.abl'}
           },
-          match: '(?i)\\s*(of)\\s+([\\w\\-#$%]+(\\.[\\w\\-#$%]+)?)\\s*'
+          match:
+            '(?i)\\s*(of)\\s+([a-zA-Z][a-zA-Z_\\-#$%]*(\\.[a-zA-Z][a-zA-Z_\\-#$%]*)?)\\s*'
         },
         {
           captures: {1: {name: 'storage.data.table.abl'}},
-          match: '\\s*([\\w\\-#$%]+(\\.[\\w\\-#$%]+)?)\\s*'
+          match:
+            '\\s*([a-zA-Z][a-zA-Z0-9_\\-#$%]*(\\.[a-zA-Z][a-zA-Z0-9_\\-#$%]*)?)\\s*'
         }
       ]
     },
     'for-each-table': {
       beginCaptures: {1: {name: 'keyword.other.abl'}},
-      end: '(?i)\\s*(?=where|no-lock|exclusive-lock|exclusive-loc|exclusive-lo|exclusive-l|share-lock|share-loc|share-lo|share-|share|tenant-where|use-index|table-scan|using|no-prefetch|left|outer-join|break|by|transaction|,|:|on)\\s*',
+      end: '(?i)\\s*(?=where|no-lock|(exclusive-l(?:ock|oc|o)?)|(share(?:-lock|-loc|-lo|-l|-)?)|tenant-where|use-index|table-scan|using|(no-prefe(?:tch|tc|t)?)|left|outer-join|break|by|(transact(?:ion|io|i)?)|,|:|on)\\s*',
       patterns: [
         {
           captures: {1: {name: 'keyword.other.abl'}},
@@ -1080,13 +1203,15 @@ const grammar = {
         {include: '#of-phrase'},
         {include: '#field-name'},
         {include: '#db-dot-table'},
-        {include: '#db-dot-table-dot-field'}
+        {include: '#db-dot-table-dot-field'},
+        {include: '#while-expression'},
+        {include: '#comment'}
       ]
     },
     'for-join': {
       captures: {1: {name: 'storage.data.table.abl'}},
       match:
-        '(?i)(?<=,|^)\\s*([\\w\\-#$%]+(\\.[\\w\\-#$%]+)?)\\s+(?=where|no-lock|exclusive-lock|exclusive-loc|exclusive-lo|exclusive-l|share-lock|share-loc|share-lo|share-|share|tenant-where|use-index|table-scan|using|no-prefetch|left|outer-join|break|by|transaction)\\s*'
+        '(?i)(?<=,|^)\\s*([a-zA-Z][a-zA-Z0-9_\\-#$%]*(\\.[a-zA-Z_][a-zA-Z0-9_\\-#$%]*)?)\\s+(?=where|no-lock|(exclusive-l(?:ock|oc|o)?)|(share(?:-lock|-loc|-lo|-l|-)?)|tenant-where|use-index|table-scan|using|(no-prefe(?:tch|tc|t)?)|left|outer-join|break|by|(transact(?:ion|io|i)?))\\s*'
     },
     'for-record': {
       captures: {
@@ -1104,7 +1229,7 @@ const grammar = {
         9: {name: 'punctuation.separator.comma.abl'}
       },
       match:
-        '(?i)\\s*(for)\\s+([\\w\\-#$%]*)\\s*(,)?\\s*([\\w\\-#$%]*)?\\s*(,)?\\s*([\\w\\-#$%]*)?\\s*(,)?\\s*([\\w\\-#$%]*)?\\s*(,)?\\s*([\\w\\-#$%]*)?\\s*(,)?\\s*([\\w\\-#$%]*)?'
+        '(?i)\\s*(for)\\s+([a-zA-Z_\\-#$%]*)\\s*(,)?\\s*([a-zA-Z_\\-#$%]*)?\\s*(,)?\\s*([a-zA-Z_\\-#$%]*)?\\s*(,)?\\s*([a-zA-Z_\\-#$%]*)?\\s*(,)?\\s*([a-zA-Z_\\-#$%]*)?\\s*(,)?\\s*([a-zA-Z_\\-#$%]*)?'
     },
     'for-table': {
       captures: {
@@ -1112,22 +1237,22 @@ const grammar = {
         3: {name: 'keyword.other.abl'},
         4: {name: 'storage.data.table.abl'}
       },
-      match: '(?i)\\s*(for)\\s+((temp-table)\\s+)?([\\w\\-#$%]+)\\s*'
+      match: '(?i)\\s*(for)\\s+((temp-table)\\s+)?([a-zA-Z_\\-#$%]+)\\s*'
     },
     'format-constant': {
       captures: {
         1: {name: 'keyword.other.abl'},
         2: {name: 'constant.language.source.abl'}
       },
-      match: '(?i)\\b(format)\\s+(9+\\/9+\\/9+)\\b'
+      match: '(?i)\\b((?:form(?:at|a)?))\\s+(9+/9+/9+)\\b'
     },
     'from-to-by': {
-      begin: '\\s*([\\w\\$\\-\\_\\%\\&]+)\\s+(=)\\s*',
+      begin: '\\s*([a-zA-Z0-9_\\-#$%$\\-_%&]+)\\s+(=)\\s*',
       beginCaptures: {
         1: {name: 'variable.other.abl'},
         2: {name: 'keyword.operator.source.abl'}
       },
-      end: '(?i)(?=transaction|on|\\:|with|while)',
+      end: '(?i)(?=(transact(?:ion|io|i)?)|on|:|with|while)',
       patterns: [
         {
           captures: {1: {name: 'keyword.other.abl'}},
@@ -1149,7 +1274,7 @@ const grammar = {
         8: {name: 'keyword.other.abl'}
       },
       match:
-        '(?i)\\b(from)\\s+(X)\\s+((0(x)[[[:xdigit:]]]+)|(\\-?[[[:digit:]]]+(\\.[[[:digit:]]]+)?))\\s+(y)\\s+((0(x)[[[:xdigit:]]]+)|(\\-?[[[:digit:]]]+(\\.[[[:digit:]]]+)?))\\s+ '
+        '(?i)\\b(from)\\s+(X)\\s+((0(x)[[[:xdigit:]]]+)|(\\-?[[0-9]]+(\\.[[0-9]]+)?))\\s+(y)\\s+((0(x)[[[:xdigit:]]]+)|(\\-?[[0-9]]+(\\.[[0-9]]+)?))\\s+ '
     },
     'function-arguments': {
       begin: '(?=\\()',
@@ -1168,14 +1293,15 @@ const grammar = {
         {
           captures: {1: {name: 'keyword.other.abl'}},
           match:
-            '(?i)\\s*(input-output|input-outpu|input-outp|input-out|input-ou|input-o|output|input|table-handle|dataset-handle|APPEND|BY-VALUE|BY-REFERENCE|BIND)\\b(?![\\#\\$\\-\\_\\%\\&])'
+            '(?i)\\s*((input-o(?:utput|utpu|utp|u)?)|output|input|table-handle|dataset-handle|append|by-value|by-reference|bind)\\b(?![#$\\-_%&])'
         },
         {
           captures: {
             1: {name: 'keyword.other.abl'},
             2: {name: 'storage.data.dataset.abl'}
           },
-          match: '(?i)\\b(dataset)\\s+([\\w\\-#$%]+(\\.[\\w\\-#$%]+)?)\\b'
+          match:
+            '(?i)\\b(dataset)\\s+([a-zA-Z_\\-#$%]+(\\.[a-zA-Z_\\-#$%]+)?)\\b'
         },
         {
           captures: {
@@ -1183,31 +1309,34 @@ const grammar = {
             2: {name: 'storage.data.table.abl'}
           },
           match:
-            '(?i)\\b(temp-table|table|buffer)\\s+([\\w\\-#$%]+(\\.[\\w\\-#$%]+)?)\\b'
+            '(?i)\\b(temp-table|table|buffer)\\s+([a-zA-Z_\\-#$%]+(\\.[a-zA-Z_\\-#$%]+)?)\\b'
         },
+        {include: '#function-arguments'},
         {include: '#constant'},
         {include: '#type-reference'},
-        {include: '#db-dot-table-dot-field'},
         {include: '#abl-system-handles'},
         {include: '#can-find'},
         {include: '#language-functions'},
         {include: '#abl-functions'},
+        {include: '#type-member-call'},
+        {include: '#db-dot-table-dot-field'},
         {include: '#handle-attributes'},
         {include: '#handle-methods'},
-        {include: '#type-member-call'},
+        {include: '#keywords'},
         {include: '#expression'},
         {include: '#comment'},
+        {include: '#array-literal'},
         {include: '#punctuation-comma'},
         {include: '#preprocessors'}
       ]
     },
     'function-definition': {
-      begin: '(?i)\\b(function)\\s+([[:alnum:]][\\w#$\\-%&]+)\\b',
+      begin: '(?i)\\b(function)\\s+([a-zA-Z0-9_][a-zA-Z0-9_#$\\-%&]+)\\b',
       beginCaptures: {
         1: {name: 'keyword.other.abl'},
         2: {name: 'entity.name.function.abl'}
       },
-      end: '(\\.|\\:)',
+      end: '(\\.|:)',
       endCaptures: {1: {name: 'punctuation.terminator.abl'}},
       name: 'meta.define.function.abl',
       patterns: [
@@ -1216,7 +1345,8 @@ const grammar = {
             1: {name: 'keyword.other.abl'},
             2: {name: 'entity.name.function.abl'}
           },
-          match: '(?i)\\b(map|to)\\s+(?!to\\s+)([[:alpha:]][\\w#$\\-%&]+)\\b'
+          match:
+            '(?i)\\b(map|to)\\s+(?!to\\s+)([a-zA-Z_][a-zA-Z0-9_#$\\-%&]+)\\b'
         },
         {
           captures: {1: {name: 'keyword.other.abl'}},
@@ -1226,11 +1356,19 @@ const grammar = {
         {include: '#parens'},
         {
           begin: '(?i)(?<=\\)|in)',
-          end: '(?=(\\.|\\:)\\s)',
+          end: '(?=(\\.|:)\\s)',
           patterns: [
-            {include: '#keywords'},
+            {
+              captures: {1: {name: 'keyword.other.abl'}},
+              match: '\\b([Ii][Nn])\\b'
+            },
+            {
+              captures: {1: {name: 'keyword.other.abl'}},
+              match: '\\b([Ss][Uu][Pp][Ee][Rr])\\b'
+            },
             {include: '#type-member-call'},
             {include: '#variable-name'},
+            {include: '#keywords'},
             {include: '#comment'},
             {include: '#string'},
             {include: '#preprocessors'}
@@ -1263,12 +1401,13 @@ const grammar = {
       patterns: [{include: '#string'}, {include: '#type-names'}]
     },
     'global-scoped-define': {
-      begin: '(?i)(\\&scoped-define|\\&global-define)\\s*([\\.\\w\\\\/-]*)\\s*',
+      begin:
+        '(?i)((?:&scop(?:ed-define|ed-defin|ed-defi|ed-def|ed-de|ed-d|ed-|ed|e)?)|(?:&glob(?:al-define|al-defin|al-defi|al-def|al-de|al-d|al-|al|a)?))\\s*([\\.a-zA-Z0-9_\\-#$%\\\\/]*)\\s*',
       beginCaptures: {
         1: {name: 'keyword.other.abl'},
         2: {name: 'entity.name.function.preprocessor.abl'}
       },
-      end: '(?=(?://|/\\*))|$',
+      end: '(?=//|/\\*)|$',
       name: 'meta.preprocessor.define.abl',
       patterns: [{include: '#string'}]
     },
@@ -1306,7 +1445,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(available-formats|available|availabl|availab|availa|avail|auto-zap|auto-za|auto-z|auto-validate|auto-validat|auto-valida|auto-valid|auto-vali|auto-val|auto-synchronize|auto-return|auto-retur|auto-retu|auto-ret|auto-resize|auto-indent|auto-inden|auto-inde|auto-ind|auto-go|auto-end-key|auto-delete-xml|auto-delete|auto-completion|auto-completio|auto-completi|auto-complet|auto-comple|auto-compl|auto-comp|audit-event-context|attribute-names|attr-space|attr-spac|attr-spa|attr-sp|attr-s|attr-|attr|attached-pairlist|asynchronous|async-request-handle|async-request-count|appserver-userid|appserver-password|appserver-info|appl-context-id|appl-alert-boxes|appl-alert-boxe|appl-alert-box|appl-alert-bo|appl-alert-b|appl-alert-|appl-alert|ambiguous|ambiguou|ambiguo|ambigu|ambig|always-on-top|allow-prev-deserialization|allow-column-searching|after-table|after-rowid|after-buffer|adm-data|actor|active|accelerator)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)(:)((ambig(?:uous|uou|uo|u)?)|(appl-alert(?:-boxes|-boxe|-box|-bo|-b|-)?)|(attr(?:-space|-spac|-spa|-sp|-s|-)?)|(auto-comp(?:letion|letio|leti|let|le|l)?)|(auto-ind(?:ent|en|e)?)|(auto-ret(?:urn|ur|u)?)|(auto-val(?:idate|idat|ida|id|i)?)|(auto-z(?:ap|a)?)|(avail(?:able|abl|ab|a)?)|accelerator|active|actor|adm-data|after-buffer|after-rowid|after-table|allow-column-searching|allow-prev-deserialization|always-on-top|appl-context-id|appserver-info|appserver-password|appserver-userid|async-request-count|async-request-handle|asynchronous|attached-pairlist|attribute-names|audit-event-context|auto-delete|auto-delete-xml|auto-end-key|auto-go|auto-resize|auto-synchronize|available-formats)\\b(?![#$\\-_%&])'
     },
     'handle-attributes-B': {
       captures: {
@@ -1314,7 +1453,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(bytes-written|bytes-read|buffer-tenant-name|buffer-tenant-id|buffer-partition-id|buffer-name|buffer-nam|buffer-na|buffer-n|buffer-lines|buffer-handle|buffer-group-name|buffer-group-id|buffer-field|buffer-chars|box-selectable|box-selectabl|box-selectab|box-selecta|box-select|box|border-top-pixels|border-top-pixel|border-top-pixe|border-top-pix|border-top-pi|border-top-p|border-top-chars|border-top-char|border-top-cha|border-top-ch|border-top-c|border-right-pixels|border-right-pixel|border-right-pixe|border-right-pix|border-right-pi|border-right-p|border-right-chars|border-right-char|border-right-cha|border-right-ch|border-right-c|border-left-pixels|border-left-pixel|border-left-pixe|border-left-pix|border-left-pi|border-left-p|border-left-chars|border-left-char|border-left-cha|border-left-ch|border-left-c|border-bottom-pixels|border-bottom-pixel|border-bottom-pixe|border-bottom-pix|border-bottom-pi|border-bottom-p|border-bottom-chars|border-bottom-char|border-bottom-cha|border-bottom-ch|border-bottom-c|block-iteration-display|blank|bgcolor|bgcolo|bgcol|bgco|bgc|before-table|before-rowid|before-buffer|batch-size|batch-mode|basic-logging|base-ade|background|backgroun|backgrou|backgro|backgr|backg|back)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)(:)((back(?:ground|groun|grou|gro|gr|g)?)|(bgc(?:olor|olo|ol|o)?)|(border-bottom-c(?:hars|har|ha|h)?)|(border-bottom-p(?:ixels|ixel|ixe|ix|i)?)|(border-left-c(?:hars|har|ha|h)?)|(border-left-p(?:ixels|ixel|ixe|ix|i)?)|(border-right-c(?:hars|har|ha|h)?)|(border-right-p(?:ixels|ixel|ixe|ix|i)?)|(border-top-c(?:hars|har|ha|h)?)|(border-top-p(?:ixels|ixel|ixe|ix|i)?)|(box-select(?:able|abl|ab|a)?)|(buffer-n(?:ame|am|a)?)|base-ade|basic-logging|batch-mode|batch-size|before-buffer|before-rowid|before-table|blank|block-iteration-display|box|buffer-chars|buffer-field|buffer-group-id|buffer-group-name|buffer-handle|buffer-lines|buffer-partition-id|buffer-tenant-id|buffer-tenant-name|bytes-read|bytes-written)\\b(?![#$\\-_%&])'
     },
     'handle-attributes-C': {
       captures: {
@@ -1322,7 +1461,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(cursor-offset|cursor-line|cursor-char|current-window|current-row-modified|current-result-row|current-response-info|current-request-info|current-iteration|current-environment|current-environmen|current-environme|current-environm|current-environ|current-enviro|current-envir|current-envi|current-env|current-column|current-changed|crc-value|crc-valu|crc-val|cpterm|cpstream|cprcodeout|cprcodein|cpprint|cplog|cpinternal|cpinterna|cpintern|cpinter|cpinte|cpint|cpcoll|cpcase|coverage|convert-3d-colors|convert-3d-color|convert-3d-colo|convert-3d-col|convert-3d-co|convert-3d-c|convert-3d-|convert-3d|control-box|context-help-id|context-help-file|context-help|config-name|complete|com-handle|column-scrolling|column-scrollin|column-scrolli|column-scroll|column-scrol|column-scro|column-scr|column-sc|column-resizable|column-read-only|column-pfcolor|column-pfcolo|column-pfcol|column-pfco|column-pfc|column-movable|column-label|column-labe|column-lab|column-font|column-fgcolor|column-fgcolo|column-fgcol|column-fgco|column-fgc|column-dcolor|column-bgcolor|column-bgcolo|column-bgcol|column-bgco|column-bgc|column|codepage|code|client-workstation|client-type|client-tty|client-connection-id|class-type|child-num|child-buffer|checked|charset|centered|centere|center|case-sensitive|case-sensitiv|case-sensiti|case-sensit|case-sensi|case-sens|case-sen|careful-paint|cancelled|cancel-button|can-write|can-writ|can-read|can-do-domain-support|can-delete|can-delet|can-dele|can-create|can-creat|can-crea|call-type|call-name|cache)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)(:)((can-crea(?:te|t)?)|(can-dele(?:te|t)?)|(can-writ(?:e)?)|(case-sen(?:sitive|sitiv|siti|sit|si|s)?)|(center(?:ed|e)?)|(column(?:s)?)|(column-bgc(?:olor|olo|ol|o)?)|(column-fgc(?:olor|olo|ol|o)?)|(column-lab(?:el|e)?)|(column-pfc(?:olor|olo|ol|o)?)|(column-sc(?:rolling|rollin|rolli|roll|rol|ro|r)?)|(convert-3d(?:-colors|-color|-colo|-col|-co|-c|-)?)|(cpint(?:ernal|erna|ern|er|e)?)|(crc-val(?:ue|u)?)|(current-env(?:ironment|ironmen|ironme|ironm|iron|iro|ir|i)?)|cache|call-name|call-type|can-do-domain-support|can-read|cancel-button|cancelled|careful-paint|charset|checked|child-buffer|child-num|class-type|client-connection-id|client-tty|client-type|client-workstation|code|codepage|column-dcolor|column-font|column-movable|column-read-only|column-resizable|com-handle|complete|config-name|context-help|context-help-file|context-help-id|control-box|coverage|cpcase|cpcoll|cplog|cpprint|cprcodein|cprcodeout|cpstream|cpterm|current-changed|current-column|current-iteration|current-request-info|current-response-info|current-result-row|current-row-modified|current-window|cursor-char|cursor-line|cursor-offset)\\b(?![#$\\-_%&])'
     },
     'handle-attributes-D': {
       captures: {
@@ -1330,7 +1469,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(dynamic|drop-target|drag-enabled|down|domain-type|domain-name|domain-description|display-type|display-typ|display-ty|display-timezone|display-t|disable-auto-zap|directory|description|descriptio|descripti|descript|delimiter|default-value|default-string|default-commit|default-button|default-butto|default-butt|default-but|default-buffer-handle|default|decimals|debug-alert|deblank|dde-topic|dde-name|dde-item|dde-id|dde-i|dde-error|dcolor|dbname|db-references|db-list|db-context|date-format|date-forma|date-form|date-for|date-fo|date-f|dataset|data-type|data-typ|data-ty|data-t|data-source-rowid|data-source-modified|data-source-complete-map|data-source|data-entry-return|data-entry-retur|data-entry-retu|data-entry-ret)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)(:)((data-entry-ret(?:urn|ur|u)?)|(data-t(?:ype|yp|y)?)|(date-f(?:ormat|orma|orm|or|o)?)|(dde-i(?:d)?)|(default-but(?:ton|to|t)?)|(descript(?:ion|io|i)?)|(display-t(?:ype|yp|y)?)|data-source|data-source-complete-map|data-source-modified|data-source-rowid|dataset|db-context|db-list|db-references|dbname|dcolor|dde-error|dde-item|dde-name|dde-topic|deblank|debug-alert|decimals|default|default-buffer-handle|default-commit|default-string|default-value|delimiter|directory|disable-auto-zap|display-timezone|domain-description|domain-name|domain-type|down|drag-enabled|drop-target|dynamic)\\b(?![#$\\-_%&])'
     },
     'handle-attributes-E': {
       captures: {
@@ -1338,7 +1477,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(extent|expandable|expand|exit-code|execution-log|exclusive-id|event-type|event-typ|event-ty|event-t|event-procedure-context|event-procedure|event-handler-object|event-handler|event-group-id|error-string|error-stack-trace|error-row|error-object-detail|error-object|error-column|error-colum|error-colu|error-col|error|entry-types-list|entity-expansion-limit|end-user-prompt|encryption-salt|encoding|enabled|empty|edit-can-undo|edit-can-paste|edge-pixels|edge-pixel|edge-pixe|edge-pix|edge-pi|edge-p|edge-chars|edge-char|edge-cha|edge-ch|edge-c)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)(:)((edge-c(?:hars|har|ha|h)?)|(edge-p(?:ixels|ixel|ixe|ix|i)?)|(error-col(?:umn|um|u)?)|(event-t(?:ype|yp|y)?)|edit-can-paste|edit-can-undo|empty|enabled|encoding|encryption-salt|end-user-prompt|entity-expansion-limit|entry-types-list|error|error-object|error-object-detail|error-row|error-stack-trace|error-string|event-group-id|event-handler|event-handler-object|event-procedure|event-procedure-context|exclusive-id|execution-log|exit-code|expand|expandable|extent)\\b(?![#$\\-_%&])'
     },
     'handle-attributes-F': {
       captures: {
@@ -1346,7 +1485,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(function|full-width-pixels|full-width-pixel|full-width-pixe|full-width-pix|full-width-pi|full-width-p|full-width-chars|full-width-char|full-width-cha|full-width-ch|full-width-c|full-width-|full-width|full-pathname|full-pathnam|full-pathna|full-pathn|full-height-pixels|full-height-pixel|full-height-pixe|full-height-pix|full-height-pi|full-height-p|full-height-chars|full-height-char|full-height-cha|full-height-ch|full-height-c|frequency|frame-y|frame-x|frame-spacing|frame-spacin|frame-spaci|frame-spac|frame-spa|frame-row|frame-name|frame-col|frame|fram|fragment|fragmen|forward-only|formatted|formatte|format|forma|form-long-input|form-input|form|foreign-key-hidden|foreground|foregroun|foregrou|foregro|foregr|foreg|fore|font|focused-row-selected|focused-row|flat-button|fit-last-column|first-tab-item|first-tab-ite|first-tab-it|first-tab-i|first-socket|first-server-socket|first-server|first-serve|first-serv|first-query|first-procedure|first-procedur|first-procedu|first-proced|first-proce|first-proc|first-object|first-form|first-dataset|first-data-source|first-column|first-child|first-buffer|first-async-request|first-async-reques|first-async-reque|first-async-requ|first-async-req|first-async-re|first-async-r|first-async-|first-async|filled|fill-where-string|fill-mode|file-type|file-size|file-offset|file-offse|file-offs|file-off|file-name|file-mod-time|file-mod-tim|file-mod-ti|file-mod-t|file-mod-date|file-mod-dat|file-mod-da|file-mod-d|file-create-time|file-create-tim|file-create-ti|file-create-t|file-create-date|file-create-dat|file-create-da|file-create-d|fgcolor|fgcolo|fgcol|fgco|fgc)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)(:)((fgc(?:olor|olo|ol|o)?)|(file-create-d(?:ate|at|a)?)|(file-create-t(?:ime|im|i)?)|(file-mod-d(?:ate|at|a)?)|(file-mod-t(?:ime|im|i)?)|(file-off(?:set|se|s)?)|(first-async(?:-request|-reques|-reque|-requ|-req|-re|-r|-)?)|(first-proc(?:edure|edur|edu|ed|e)?)|(first-serv(?:er|e)?)|(first-tab-i(?:tem|te|t)?)|(fore(?:ground|groun|grou|gro|gr|g)?)|(form(?:at|a)?)|(formatte(?:d)?)|(fragmen(?:t)?)|(fram(?:e)?)|(frame-spa(?:cing|cin|ci|c)?)|(full-height-c(?:hars|har|ha|h)?)|(full-height-p(?:ixels|ixel|ixe|ix|i)?)|(full-pathn(?:ame|am|a)?)|(full-width(?:-chars|-char|-cha|-ch|-c|-)?)|(full-width-p(?:ixels|ixel|ixe|ix|i)?)|file-name|file-size|file-type|fill-mode|fill-where-string|filled|first-buffer|first-child|first-column|first-data-source|first-dataset|first-form|first-object|first-query|first-server-socket|first-socket|fit-last-column|flat-button|focused-row|focused-row-selected|font|foreign-key-hidden|form-input|form-long-input|forward-only|frame-col|frame-name|frame-row|frame-x|frame-y|frequency|function)\\b(?![#$\\-_%&])'
     },
     'handle-attributes-G': {
       captures: {
@@ -1354,7 +1493,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(group-box|grid-visible|grid-unit-width-pixels|grid-unit-width-pixel|grid-unit-width-pixe|grid-unit-width-pix|grid-unit-width-pi|grid-unit-width-p|grid-unit-width-chars|grid-unit-width-char|grid-unit-width-cha|grid-unit-width-ch|grid-unit-width-c|grid-unit-height-pixels|grid-unit-height-pixel|grid-unit-height-pixe|grid-unit-height-pix|grid-unit-height-pi|grid-unit-height-p|grid-unit-height-chars|grid-unit-height-char|grid-unit-height-cha|grid-unit-height-ch|grid-unit-height-c|grid-snap|grid-factor-vertical|grid-factor-vertica|grid-factor-vertic|grid-factor-verti|grid-factor-vert|grid-factor-ver|grid-factor-ve|grid-factor-v|grid-factor-horizontal|grid-factor-horizonta|grid-factor-horizont|grid-factor-horizon|grid-factor-horizo|grid-factor-horiz|grid-factor-hori|grid-factor-hor|grid-factor-ho|grid-factor-h|graphic-edge|graphic-edg|graphic-ed|graphic-e)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)(:)((graphic-e(?:dge|dg|d)?)|(grid-factor-h(?:orizontal|orizonta|orizont|orizon|orizo|oriz|ori|or|o)?)|(grid-factor-v(?:ertical|ertica|ertic|erti|ert|er|e)?)|(grid-unit-height-c(?:hars|har|ha|h)?)|(grid-unit-height-p(?:ixels|ixel|ixe|ix|i)?)|(grid-unit-width-c(?:hars|har|ha|h)?)|(grid-unit-width-p(?:ixels|ixel|ixe|ix|i)?)|grid-snap|grid-visible|group-box)\\b(?![#$\\-_%&])'
     },
     'handle-attributes-H': {
       captures: {
@@ -1362,7 +1501,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(hwnd|html-title-end|html-title-begin|html-header-end|html-header-begin|html-frame-end|html-frame-begin|html-end-of-page|html-end-of-line|html-charset|horizontal|horizonta|horizont|horizon|horizo|horiz|hori|hidden|help|height-pixels|height-pixel|height-pixe|height-pix|height-pi|height-p|height-chars|height-char|height-cha|height-ch|height-c|has-records|has-lobs|handler|handle)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)(:)((height-c(?:hars|har|ha|h)?)|(height-p(?:ixels|ixel|ixe|ix|i)?)|(hori(?:zontal|zonta|zont|zon|zo|z)?)|handle|handler|has-lobs|has-records|help|hidden|html-charset|html-end-of-line|html-end-of-page|html-frame-begin|html-frame-end|html-header-begin|html-header-end|html-title-begin|html-title-end|hwnd)\\b(?![#$\\-_%&])'
     },
     'handle-attributes-I': {
       captures: {
@@ -1370,7 +1509,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(items-per-row|is-xml|is-partitioned|is-partitione|is-parameter-set|is-open|is-multi-tenant|is-json|is-class|is-clas|internal-entries|instantiating-procedure|input-value|inner-lines|inner-chars|initial|inherit-fgcolor|inherit-fgcolo|inherit-fgcol|inherit-fgco|inherit-fgc|inherit-bgcolor|inherit-bgcolo|inherit-bgcol|inherit-bgco|inherit-bgc|index-information|index-informatio|index-informati|index-informat|index-informa|index-inform|index-infor|index-info|index|in-handle|immediate-display|image-up|image-insensitive|image-down|image|ignore-current-modified|ignore-current-modifie|ignore-current-modifi|ignore-current-modif|ignore-current-modi|ignore-current-mod|icon|icfparameter|icfparamete|icfparamet|icfparame|icfparam)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)(:)((icfparam(?:eter|ete|et|e)?)|(ignore-current-mod(?:ified|ifie|ifi|if|i)?)|(index-info(?:rmation|rmatio|rmati|rmat|rma|rm|r)?)|(inherit-bgc(?:olor|olo|ol|o)?)|(inherit-fgc(?:olor|olo|ol|o)?)|(is-clas(?:s)?)|(is-partitione(?:d)?)|icon|image|image-down|image-insensitive|image-up|immediate-display|in-handle|index|initial|inner-chars|inner-lines|input-value|instantiating-procedure|internal-entries|is-json|is-multi-tenant|is-open|is-parameter-set|is-xml|items-per-row)\\b(?![#$\\-_%&])'
     },
     'handle-attributes-K': {
       captures: {
@@ -1378,7 +1517,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(keys|key|keep-security-cache|keep-frame-z-order|keep-frame-z-orde|keep-frame-z-ord|keep-frame-z-or|keep-frame-z-o|keep-frame-z-|keep-frame-z|keep-connection-open)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)(:)((keep-frame-z(?:-order|-orde|-ord|-or|-o|-)?)|keep-connection-open|keep-security-cache|key|keys)\\b(?![#$\\-_%&])'
     },
     'handle-attributes-L': {
       captures: {
@@ -1386,7 +1525,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(login-state|login-host|login-expiration-timestamp|logging-level|logfile-name|log-threshold|log-entry-types|locked|locator-type|locator-system-id|locator-public-id|locator-line-number|locator-column-number|local-version-info|local-port|local-name|local-host|literal-question|listings|list-items|list-item-pairs|line|library-calling-convention|library|length|last-tab-item|last-tab-ite|last-tab-it|last-tab-i|last-socket|last-server-socket|last-server|last-serve|last-serv|last-procedure|last-procedur|last-procedu|last-proced|last-proce|last-object|last-form|last-child|last-batch|last-async-request|last-async-reques|last-async-reque|last-async-requ|last-async-req|last-async-re|last-async-r|last-async-|last-async|large-to-small|large|languages|language|labels-have-colons|labels|label-font|label-fgcolor|label-fgcolo|label-fgcol|label-fgco|label-fgc|label-dcolor|label-dcolo|label-dcol|label-dco|label-dc|label-bgcolor|label-bgcolo|label-bgcol|label-bgco|label-bgc|label)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)(:)((label-bgc(?:olor|olo|ol|o)?)|(label-dc(?:olor|olo|ol|o)?)|(label-fgc(?:olor|olo|ol|o)?)|(language(?:s)?)|(last-async(?:-request|-reques|-reque|-requ|-req|-re|-r|-)?)|(last-proce(?:dure|dur|du|d)?)|(last-serv(?:er|e)?)|(last-tab-i(?:tem|te|t)?)|label|label-font|labels|labels-have-colons|large|large-to-small|last-batch|last-child|last-form|last-object|last-server-socket|last-socket|length|library|library-calling-convention|line|list-item-pairs|list-items|listings|literal-question|local-host|local-name|local-port|local-version-info|locator-column-number|locator-line-number|locator-public-id|locator-system-id|locator-type|locked|log-entry-types|log-threshold|logfile-name|logging-level|login-expiration-timestamp|login-host|login-state)\\b(?![#$\\-_%&])'
     },
     'handle-attributes-M': {
       captures: {
@@ -1394,7 +1533,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(must-understand|multitasking-interval|multiple|multi-compile|movable|mouse-pointer|mouse-pointe|mouse-point|mouse-poin|mouse-poi|mouse-po|mouse-p|modified|min-width-pixels|min-width-pixel|min-width-pixe|min-width-pix|min-width-pi|min-width-p|min-width-chars|min-width-char|min-width-cha|min-width-ch|min-width-c|min-value|min-valu|min-val|min-schema-marshal|min-height-pixels|min-height-pixel|min-height-pixe|min-height-pix|min-height-pi|min-height-p|min-height-chars|min-height-char|min-height-cha|min-height-ch|min-height-c|min-column-width-pixels|min-column-width-pixel|min-column-width-pixe|min-column-width-pix|min-column-width-pi|min-column-width-p|min-column-width-chars|min-column-width-char|min-column-width-cha|min-column-width-ch|min-column-width-c|min-button|message-area-font|message-area|merge-by-field|menu-mouse|menu-mous|menu-mou|menu-mo|menu-m|menu-key|menu-ke|menu-k|menu-bar|maximum-level|max-width-pixels|max-width-pixel|max-width-pixe|max-width-pix|max-width-pi|max-width-p|max-width-chars|max-width-char|max-width-cha|max-width-ch|max-width-c|max-value|max-valu|max-val|max-height-pixels|max-height-pixel|max-height-pixe|max-height-pix|max-height-pi|max-height-p|max-height-chars|max-height-char|max-height-cha|max-height-ch|max-height-c|max-data-guess|max-chars|max-button|manual-highlight|mandatory)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)(:)((max-height-c(?:hars|har|ha|h)?)|(max-height-p(?:ixels|ixel|ixe|ix|i)?)|(max-val(?:ue|u)?)|(max-width-c(?:hars|har|ha|h)?)|(max-width-p(?:ixels|ixel|ixe|ix|i)?)|(menu-k(?:ey|e)?)|(menu-m(?:ouse|ous|ou|o)?)|(min-column-width-c(?:hars|har|ha|h)?)|(min-column-width-p(?:ixels|ixel|ixe|ix|i)?)|(min-height-c(?:hars|har|ha|h)?)|(min-height-p(?:ixels|ixel|ixe|ix|i)?)|(min-schema-marshal(?:l)?)|(min-val(?:ue|u)?)|(min-width-c(?:hars|har|ha|h)?)|(min-width-p(?:ixels|ixel|ixe|ix|i)?)|(mouse-p(?:ointer|ointe|oint|oin|oi|o)?)|mandatory|manual-highlight|max-button|max-chars|max-data-guess|maximum-level|menu-bar|merge-by-field|message-area|message-area-font|min-button|modified|movable|multi-compile|multiple|multitasking-interval|must-understand)\\b(?![#$\\-_%&])'
     },
     'handle-attributes-N': {
       captures: {
@@ -1402,7 +1541,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(numeric-separator|numeric-separato|numeric-separat|numeric-separa|numeric-separ|numeric-sepa|numeric-sep|numeric-format|numeric-forma|numeric-form|numeric-for|numeric-fo|numeric-f|numeric-decimal-point|numeric-decimal-poin|numeric-decimal-poi|numeric-decimal-po|numeric-decimal-p|numeric-decimal-|numeric-decimal|numeric-decima|numeric-decim|numeric-deci|numeric-dec|num-visible-columns|num-visible-column|num-visible-colum|num-visible-colu|num-visible-col|num-top-buffers|num-to-retain|num-tabs|num-source-buffers|num-selected-widgets|num-selected-rows|num-results|num-replaced|num-replace|num-replac|num-repla|num-repl|num-relations|num-references|num-parameters|num-messages|num-log-files|num-locked-columns|num-locked-column|num-locked-colum|num-locked-colu|num-locked-col|num-lines|num-iterations|num-items|num-header-entries|num-formats|num-fields|num-entries|num-dropped-files|num-columns|num-column|num-colum|num-colu|num-col|num-children|num-child-relations|num-buttons|num-button|num-butto|num-butt|num-but|num-buffers|nonamespace-schema-location|node-value|no-validate|no-validat|no-valida|no-valid|no-vali|no-val|no-schema-marshal|no-focus|no-empty-space|no-current-value|next-tab-item|next-tab-ite|next-sibling|next-rowid|next-column|next-colum|next-colu|next-col|new-row|new|nested|needs-prompt|needs-appserver-prompt|namespace-uri|namespace-prefix|name)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)(:)((next-col(?:umn|um|u)?)|(next-tab-ite(?:m)?)|(no-schema-marshal(?:l)?)|(no-val(?:idate|idat|ida|id|i)?)|(num-but(?:tons|ton|to|t)?)|(num-col(?:umns|umn|um|u)?)|(num-locked-col(?:umns|umn|um|u)?)|(num-repl(?:aced|ace|ac|a)?)|(num-visible-col(?:umns|umn|um|u)?)|(numeric-dec(?:imal-point|imal-poin|imal-poi|imal-po|imal-p|imal-|imal|ima|im|i)?)|(numeric-f(?:ormat|orma|orm|or|o)?)|(numeric-sep(?:arator|arato|arat|ara|ar|a)?)|name|namespace-prefix|namespace-uri|needs-appserver-prompt|needs-prompt|nested|new|new-row|next-rowid|next-sibling|no-current-value|no-empty-space|no-focus|node-value|nonamespace-schema-location|num-buffers|num-child-relations|num-children|num-dropped-files|num-entries|num-fields|num-formats|num-header-entries|num-items|num-iterations|num-lines|num-log-files|num-messages|num-parameters|num-references|num-relations|num-results|num-selected-rows|num-selected-widgets|num-source-buffers|num-tabs|num-to-retain|num-top-buffers)\\b(?![#$\\-_%&])'
     },
     'handle-attributes-O': {
       captures: {
@@ -1410,7 +1549,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(owner-document|owner|overlay|origin-rowid|origin-handle|ordinal|options|on-frame-border|on-frame-borde|on-frame-bord|on-frame-bor|on-frame-bo|on-frame-b|on-frame-|on-frame)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)(:)((on-frame(?:-border|-borde|-bord|-bor|-bo|-b|-)?)|options|ordinal|origin-handle|origin-rowid|overlay|owner|owner-document)\\b(?![#$\\-_%&])'
     },
     'handle-attributes-P': {
       captures: {
@@ -1418,7 +1557,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(published-events|public-id|proxy-userid|proxy-password|proxy|progress-source|progress-sourc|progress-sour|progress-sou|progress-so|progress-s|profiling|procedure-type|procedure-name|private-data|private-dat|private-da|private-d|printer-port|printer-name|printer-hdc|printer-control-handle|primary-passphrase|primary|prev-tab-item|prev-tab-ite|prev-tab-it|prev-tab-i|prev-sibling|prev-column|prev-colum|prev-colu|prev-col|prepared|prepare-string|prefer-dataset|position|popup-only|popup-onl|popup-on|popup-o|popup-menu|popup-men|popup-me|popup-m|pixels-per-row|pixels-per-column|pixels-per-colum|pixels-per-colu|pixels-per-col|pfcolor|pfcolo|pfcol|pfco|pfc|persistent-procedure|persistent-cache-disabled|persistent|persisten|persiste|persist|pbe-key-rounds|pbe-hash-algorithm|pbe-hash-algorith|pbe-hash-algorit|pbe-hash-algori|pbe-hash-algor|pbe-hash-algo|pbe-hash-alg|pathname|password-field|parse-status|parent-relation|parent-relatio|parent-relati|parent-relat|parent-rela|parent-rel|parent-id-relation|parent-fields-before|parent-fields-after|parent-buffer|parent|parameter|paramete|paramet|parame|param|page-top|page-bottom|page-botto|page-bott|page-bot)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)(:)((page-bot(?:tom|to|t)?)|(param(?:eter|ete|et|e)?)|(parent-rel(?:ation|atio|ati|at|a)?)|(pbe-hash-alg(?:orithm|orith|orit|ori|or|o)?)|(persist(?:ent|en|e)?)|(pfc(?:olor|olo|ol|o)?)|(pixels-per-col(?:umn|um|u)?)|(popup-m(?:enu|en|e)?)|(popup-o(?:nly|nl|n)?)|(prev-col(?:umn|um|u)?)|(prev-tab-i(?:tem|te|t)?)|(private-d(?:ata|at|a)?)|(progress-s(?:ource|ourc|our|ou|o)?)|page-top|parent|parent-buffer|parent-fields-after|parent-fields-before|parent-id-relation|parse-status|password-field|pathname|pbe-key-rounds|persistent-cache-disabled|persistent-procedure|pixels-per-row|position|prefer-dataset|prepare-string|prepared|prev-sibling|primary|primary-passphrase|printer-control-handle|printer-hdc|printer-name|printer-port|procedure-name|procedure-type|profiling|proxy|proxy-password|proxy-userid|public-id|published-events)\\b(?![#$\\-_%&])'
     },
     'handle-attributes-Q': {
       captures: {
@@ -1426,7 +1565,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(quit|query-off-end|query|qualified-user-id)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)(:)(qualified-user-id|query|query-off-end|quit)\\b(?![#$\\-_%&])'
     },
     'handle-attributes-R': {
       captures: {
@@ -1434,7 +1573,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(rowid|row-state|row-resizable|row-markers|row-marker|row-marke|row-mark|row-mar|row-ma|row-height-pixels|row-height-pixel|row-height-pixe|row-height-pix|row-height-pi|row-height-p|row-height-chars|row-height-char|row-height-cha|row-height-ch|row-height-c|row|rounded|roles|role|return-value-dll-type|return-value-data-type|return-value|return-valu|return-val|return-inserted|return-inserte|return-insert|return-inser|return-inse|return-ins|retain-shape|retain-shap|retain-sha|retain-sh|retain-s|restart-rowid|restart-row|response-info|resize|resizable|resizabl|resizab|resiza|request-info|reposition|remote-port|remote-host|remote|relations-active|relation-fields|relation-field|relation-fiel|relation-fie|relation-fi|rejected|refreshable|recursive|record-length|record-lengt|record-leng|record-len|recid|read-only|radio-buttons)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)(:)((record-len(?:gth|gt|g)?)|(relation-fi(?:elds|eld|el|e)?)|(resiza(?:ble|bl|b)?)|(retain-s(?:hape|hap|ha|h)?)|(return-ins(?:erted|erte|ert|er|e)?)|(return-val(?:ue|u)?)|(row-height-c(?:hars|har|ha|h)?)|(row-height-p(?:ixels|ixel|ixe|ix|i)?)|(row-ma(?:rkers|rker|rke|rk|r)?)|radio-buttons|read-only|recid|recursive|refreshable|rejected|relations-active|remote|remote-host|remote-port|reposition|request-info|resize|response-info|restart-row|restart-rowid|return-value-data-type|return-value-dll-type|role|roles|rounded|row|row-resizable|row-state|rowid)\\b(?![#$\\-_%&])'
     },
     'handle-attributes-S': {
       captures: {
@@ -1442,7 +1581,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(system-id|system-alert-boxes|system-alert-boxe|system-alert-box|system-alert-bo|system-alert-b|system-alert-|system-alert|symmetric-support|symmetric-encryption-key|symmetric-encryption-iv|symmetric-encryption-algorithm|symmetric-encryption-aad|suppress-warnings-list|suppress-warnings|suppress-warning|suppress-warnin|suppress-warni|suppress-warn|suppress-war|suppress-wa|suppress-w|suppress-namespace-processing|super-procedures|super-procedure|super-procedur|super-procedu|super-proced|super-proce|super-proc|subtype|strict-entity-resolution|strict|stretch-to-fit|stream|stopped|stoppe|stop-object|stop|status-area-font|status-area|statistics|state-detail|startup-parameters|standalone|ssl-server-name|sort-number|sort-ascending|sort|soap-version|soap-fault-subcode|soap-fault-string|soap-fault-role|soap-fault-node|soap-fault-misunderstood-header|soap-fault-detail|soap-fault-code|soap-fault-actor|small-title|small-icon|skip-deleted-record|skip-deleted-recor|skip-deleted-reco|skip-deleted-rec|singleton|single-run|signature-value|side-labels|side-label-handle|side-label-handl|side-label-hand|side-label-han|side-label-ha|side-label-h|show-in-taskbar|show-in-taskba|show-in-taskb|show-in-task|session-id|session-end|server-operating-mode|server-connection-id|server-connection-context|server-connection-contex|server-connection-conte|server-connection-cont|server-connection-con|server-connection-co|server-connection-bound-request|server-connection-bound-reques|server-connection-bound-reque|server-connection-bound-requ|server-connection-bound-req|server-connection-bound-re|server-connection-bound|server-connection-boun|server-connection-bou|server-connection-bo|server|serialize-name|serialize-hidden|separators|separator-fgcolor|separator-fgcolo|separator-fgcol|separator-fgco|separator-fgc|sensitive|selection-text|selection-start|selection-end|selected|selectable|seal-timestamp|scrollbar-vertical|scrollbar-vertica|scrollbar-vertic|scrollbar-verti|scrollbar-vert|scrollbar-ver|scrollbar-ve|scrollbar-v|scrollbar-horizontal|scrollbar-horizonta|scrollbar-horizont|scrollbar-horizon|scrollbar-horizo|scrollbar-horiz|scrollbar-hori|scrollbar-hor|scrollbar-ho|scrollbar-h|scrollable|scroll-bars|screen-value|screen-valu|screen-val|screen-lines|schema-path|schema-marshal|schema-location|schema-change|save-where-string)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)(:)((screen-val(?:ue|u)?)|(scrollbar-h(?:orizontal|orizonta|orizont|orizon|orizo|oriz|ori|or|o)?)|(scrollbar-v(?:ertical|ertica|ertic|erti|ert|er|e)?)|(separator-fgc(?:olor|olo|ol|o)?)|(server-connection-bo(?:und|un|u)?)|(server-connection-bound-re(?:quest|ques|que|qu|q)?)|(server-connection-co(?:ntext|ntex|nte|nt|n)?)|(show-in-task(?:bar|ba|b)?)|(side-label-h(?:andle|andl|and|an|a)?)|(skip-deleted-rec(?:ord|or|o)?)|(stoppe(?:d)?)|(super-proc(?:edures|edure|edur|edu|ed|e)?)|(suppress-w(?:arnings|arning|arnin|arni|arn|ar|a)?)|(system-alert(?:-boxes|-boxe|-box|-bo|-b|-)?)|save-where-string|schema-change|schema-location|schema-marshal|schema-path|screen-lines|scroll-bars|scrollable|seal-timestamp|selectable|selected|selection-end|selection-start|selection-text|sensitive|separators|serialize-hidden|serialize-name|server|server-connection-id|server-operating-mode|session-end|session-id|side-labels|signature-value|single-run|singleton|small-icon|small-title|soap-fault-actor|soap-fault-code|soap-fault-detail|soap-fault-misunderstood-header|soap-fault-node|soap-fault-role|soap-fault-string|soap-fault-subcode|soap-version|sort|sort-ascending|sort-number|ssl-server-name|standalone|startup-parameters|state-detail|statistics|status-area|status-area-font|stop|stop-object|stream|stretch-to-fit|strict|strict-entity-resolution|subtype|suppress-namespace-processing|suppress-warnings-list|symmetric-encryption-aad|symmetric-encryption-algorithm|symmetric-encryption-iv|symmetric-encryption-key|symmetric-support|system-id)\\b(?![#$\\-_%&])'
     },
     'handle-attributes-T': {
       captures: {
@@ -1450,7 +1589,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(type|transparent|transparen|transpare|transpar|transaction|transactio|transacti|transact|trans-init-procedure|trans-init-procedur|trans-init-procedu|trans-init-proced|trans-init-proce|trans-init-proc|tracking-changes|tracing|trace-filter|top-only|top-nav-query|tooltips|tooltip|toggle-box|title-font|title-fon|title-fo|title-fgcolor|title-fgcolo|title-fgcol|title-fgco|title-fgc|title-dcolor|title-dcolo|title-dcol|title-dco|title-dc|title-bgcolor|title-bgcolo|title-bgcol|title-bgco|title-bgc|title|timezone|time-source|tic-marks|three-d|thread-safe|text-selected|temp-directory|temp-director|temp-directo|temp-direct|temp-direc|temp-dire|temp-dir|table-number|table-numbe|table-numb|table-num|table-list|table-handle|table-crc-list|table|tab-stop|tab-position)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)(:)((table-num(?:ber|be|b)?)|(temp-dir(?:ectory|ector|ecto|ect|ec|e)?)|(title-bgc(?:olor|olo|ol|o)?)|(title-dc(?:olor|olo|ol|o)?)|(title-fgc(?:olor|olo|ol|o)?)|(title-fo(?:nt|n)?)|(trans-init-proc(?:edure|edur|edu|ed|e)?)|(transact(?:ion|io|i)?)|(transpar(?:ent|en|e)?)|tab-position|tab-stop|table|table-crc-list|table-handle|table-list|text-selected|thread-safe|three-d|tic-marks|time-source|timezone|title|toggle-box|tooltip|tooltips|top-nav-query|top-only|trace-filter|tracing|tracking-changes|type)\\b(?![#$\\-_%&])'
     },
     'handle-attributes-U': {
       captures: {
@@ -1458,7 +1597,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(user-id|url-userid|url-password|url|unique-match|unique-id|undo-throw-scope|undo)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)(:)(undo|undo-throw-scope|unique-id|unique-match|url|url-password|url-userid|user-id)\\b(?![#$\\-_%&])'
     },
     'handle-attributes-V': {
       captures: {
@@ -1466,7 +1605,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(visible|virtual-width-pixels|virtual-width-pixel|virtual-width-pixe|virtual-width-pix|virtual-width-pi|virtual-width-p|virtual-width-chars|virtual-width-char|virtual-width-cha|virtual-width-ch|virtual-width-c|virtual-height-pixels|virtual-height-pixel|virtual-height-pixe|virtual-height-pix|virtual-height-pi|virtual-height-p|virtual-height-chars|virtual-height-char|virtual-height-cha|virtual-height-ch|virtual-height-c|view-first-column-on-reopen|view-as|version|value|validation-enabled|validate-xml|validate-message|validate-expression|validate-expressio|v6display)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)(:)((validate-expressio(?:n)?)|(virtual-height-c(?:hars|har|ha|h)?)|(virtual-height-p(?:ixels|ixel|ixe|ix|i)?)|(virtual-width-c(?:hars|har|ha|h)?)|(virtual-width-p(?:ixels|ixel|ixe|ix|i)?)|v6display|validate-message|validate-xml|validation-enabled|value|version|view-as|view-first-column-on-reopen|visible)\\b(?![#$\\-_%&])'
     },
     'handle-attributes-W': {
       captures: {
@@ -1474,7 +1613,7 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(write-status|work-area-y|work-area-x|work-area-width-pixels|work-area-width-pixel|work-area-width-pixe|work-area-width-pix|work-area-width-pi|work-area-width-p|work-area-height-pixels|work-area-height-pixel|work-area-height-pixe|work-area-height-pix|work-area-height-pi|work-area-height-p|word-wrap|window-system|window-syste|window-syst|window-sys|window-state|window-stat|window-sta|window|width-pixels|width-pixel|width-pixe|width-pix|width-pi|width-p|width-chars|width-char|width-cha|width-ch|width-c|widget-leave|widget-leav|widget-lea|widget-le|widget-l|widget-id|widget-enter|widget-ente|widget-ent|widget-en|widget-e|where-string|wc-admin-app|warning)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)(:)((widget-e(?:nter|nte|nt|n)?)|(widget-l(?:eave|eav|ea|e)?)|(width-c(?:hars|har|ha|h)?)|(width-p(?:ixels|ixel|ixe|ix|i)?)|(window-sta(?:te|t)?)|(window-sys(?:tem|te|t)?)|(work-area-height-p(?:ixels|ixel|ixe|ix|i)?)|(work-area-width-p(?:ixels|ixel|ixe|ix|i)?)|warning|wc-admin-app|where-string|widget-id|window|word-wrap|work-area-x|work-area-y|write-status)\\b(?![#$\\-_%&])'
     },
     'handle-attributes-X': {
       captures: {
@@ -1482,14 +1621,14 @@ const grammar = {
         2: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)(:)(xml-suppress-namespace-processing|xml-strict-entity-resolution|xml-schema-path|xml-schema-pat|xml-node-type|xml-node-name|xml-entity-expansion-limit|xml-data-type|xcode-session-key|x-document|x)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)(:)((xml-schema-pat(?:h)?)|x|x-document|xcode-session-key|xml-data-type|xml-entity-expansion-limit|xml-node-name|xml-node-type|xml-strict-entity-resolution|xml-suppress-namespace-processing)\\b(?![#$\\-_%&])'
     },
     'handle-attributes-Y': {
       captures: {
         1: {name: 'punctuation.separator.colon.abl'},
         2: {name: 'entity.name.function.abl'}
       },
-      match: '(?i)(:)(year-offset|y)\\b(?![\\#\\$\\-\\_\\%\\&])'
+      match: '(?i)(:)(y|year-offset)\\b(?![#$\\-_%&])'
     },
     'handle-methods': {
       patterns: [
@@ -1515,7 +1654,7 @@ const grammar = {
     },
     'handle-methods-A': {
       begin:
-        '(?i)(:)(authentication-failed|attach-data-source|apply-callback|append-child|add-super-procedure|add-super-procedur|add-super-procedu|add-super-proced|add-super-proce|add-super-proc|add-source-buffer|add-schema-location|add-relation|add-relatio|add-relati|add-relat|add-rela|add-rel|add-parent-id-relation|add-new-index|add-new-field|add-like-index|add-like-field|add-like-column|add-like-colum|add-like-colu|add-like-col|add-last|add-index-field|add-header-entry|add-first|add-fields-from|add-events-procedure|add-events-procedur|add-events-procedu|add-events-proced|add-events-proce|add-events-proc|add-columns-from|add-calc-column|add-calc-colum|add-calc-colu|add-calc-col|add-buffer|accept-row-changes|accept-changes)\\s*(?=\\()',
+        '(?i)(:)((add-calc-col(?:umn|um|u)?)|(add-events-proc(?:edure|edur|edu|ed|e)?)|(add-like-col(?:umn|um|u)?)|(add-rel(?:ation|atio|ati|at|a)?)|(add-super-proc(?:edure|edur|edu|ed|e)?)|accept-changes|accept-row-changes|add-buffer|add-columns-from|add-fields-from|add-first|add-header-entry|add-index-field|add-last|add-like-field|add-like-index|add-new-field|add-new-index|add-parent-id-relation|add-schema-location|add-source-buffer|append-child|apply-callback|attach-data-source|authentication-failed)\\s*(?=\\()',
       beginCaptures: {
         1: {name: 'punctuation.separator.colon.abl'},
         2: {name: 'support.function.abl'}
@@ -1526,7 +1665,7 @@ const grammar = {
     },
     'handle-methods-B': {
       begin:
-        '(?i)(:)(buffer-value|buffer-validate|buffer-release|buffer-releas|buffer-import-fields|buffer-import|buffer-field|buffer-export-fields|buffer-export|buffer-delete|buffer-create|buffer-copy|buffer-compare|buffer-compar|buffer-compa|buffer-comp|begin-event-group)\\s*(?=\\()',
+        '(?i)(:)((buffer-comp(?:are|ar|a)?)|(buffer-releas(?:e)?)|begin-event-group|buffer-copy|buffer-create|buffer-delete|buffer-export|buffer-export-fields|buffer-field|buffer-import|buffer-import-fields|buffer-validate|buffer-value)\\s*(?=\\()',
       beginCaptures: {
         1: {name: 'punctuation.separator.colon.abl'},
         2: {name: 'support.function.abl'}
@@ -1537,7 +1676,7 @@ const grammar = {
     },
     'handle-methods-C': {
       begin:
-        '(?i)(:)(current-query|create-result-list-entry|create-node-namespace|create-node|create-like-sequential|create-like|copy-temp-table|copy-sax-attributes|copy-dataset|convert-to-offset|convert-to-offse|convert-to-offs|connected|connect|close-log|clone-node|clear-sort-arrows|clear-sort-arrow|clear-selection|clear-selectio|clear-selecti|clear-select|clear-log|clear-appl-context|clear|cancel-requests-after|cancel-requests|cancel-break)\\s*(?=\\()',
+        '(?i)(:)((clear-select(?:ion|io|i)?)|(clear-sort-arrow(?:s)?)|(convert-to-offs(?:et|e)?)|cancel-break|cancel-requests|cancel-requests-after|clear|clear-appl-context|clear-log|clone-node|close-log|connect|connected|copy-dataset|copy-sax-attributes|copy-temp-table|create-like|create-like-sequential|create-node|create-node-namespace|create-result-list-entry|current-query)\\s*(?=\\()',
       beginCaptures: {
         1: {name: 'punctuation.separator.colon.abl'},
         2: {name: 'support.function.abl'}
@@ -1548,7 +1687,7 @@ const grammar = {
     },
     'handle-methods-D': {
       begin:
-        '(?i)(:)(dump-logging-now|display-message|disconnect|disconnec|disconne|disconn|discon|disable-load-triggers|disable-dump-triggers|disable-connections|disable|detach-data-source|deselect-selected-row|deselect-rows|deselect-focused-row|delete-selected-rows|delete-selected-row|delete-result-list-entry|delete-node|delete-line|delete-header-entry|delete-current-row|delete-char|delete|declare-namespace|debug|debu)\\s*(?=\\()',
+        '(?i)(:)((debu(?:g)?)|(discon(?:nect|nec|ne|n)?)|declare-namespace|delete|delete-char|delete-current-row|delete-header-entry|delete-line|delete-node|delete-result-list-entry|delete-selected-row|delete-selected-rows|deselect-focused-row|deselect-rows|deselect-selected-row|detach-data-source|disable|disable-connections|disable-dump-triggers|disable-load-triggers|display-message|dump-logging-now)\\s*(?=\\()',
       beginCaptures: {
         1: {name: 'punctuation.separator.colon.abl'},
         2: {name: 'support.function.abl'}
@@ -1559,7 +1698,7 @@ const grammar = {
     },
     'handle-methods-E': {
       begin:
-        '(?i)(:)(export-principal|export|entry|end-file-drop|end-event-group|end-element|end-document|encrypt-audit-mac-key|encode-domain-access-code|enable-events|enable-connections|enable|empty-temp-table|empty-dataset|edit-undo|edit-paste|edit-cut|edit-copy|edit-clear)\\s*(?=\\()',
+        '(?i)(:)(edit-clear|edit-copy|edit-cut|edit-paste|edit-undo|empty-dataset|empty-temp-table|enable|enable-connections|encode-domain-access-code|encrypt-audit-mac-key|end-document|end-element|end-event-group|end-file-drop|entry|export|export-principal|)\\s*(?=\\()',
       beginCaptures: {
         1: {name: 'punctuation.separator.colon.abl'},
         2: {name: 'support.function.abl'}
@@ -1570,7 +1709,7 @@ const grammar = {
     },
     'handle-methods-F': {
       begin:
-        '(?i)(:)(first-of|find-unique|find-last|find-first|find-current|find-by-rowid|fill|fetch-selected-row)\\s*(?=\\()',
+        '(?i)(:)(fetch-selected-row|fill|find-by-rowid|find-current|find-first|find-last|find-unique|first-of)\\s*(?=\\()',
       beginCaptures: {
         1: {name: 'punctuation.separator.colon.abl'},
         2: {name: 'support.function.abl'}
@@ -1581,7 +1720,7 @@ const grammar = {
     },
     'handle-methods-G': {
       begin:
-        '(?i)(:)(get-wait-state|get-wait-stat|get-wait-sta|get-wait-st|get-wait-s|get-wait-|get-wait|get-value-by-qname|get-value-by-namespace-name|get-value-by-index|get-uri-by-index|get-type-by-qname|get-type-by-namespace-name|get-type-by-index|get-top-buffer|get-text-width-pixels|get-text-width-pixel|get-text-width-pixe|get-text-width-pix|get-text-width-pi|get-text-width-p|get-text-width-chars|get-text-width-char|get-text-width-cha|get-text-width-ch|get-text-width-c|get-text-height-pixels|get-text-height-pixel|get-text-height-pixe|get-text-height-pix|get-text-height-pi|get-text-height-p|get-text-height-chars|get-text-height-char|get-text-height-cha|get-text-height-ch|get-text-height-c|get-tab-item|get-source-buffer|get-socket-option|get-signature|get-serialized|get-selected-widget|get-selected-widge|get-selected-widg|get-selected-wid|get-selected-wi|get-selected-w|get-selected-|get-selected|get-safe-user|get-row|get-rgb-value|get-rgb-valu|get-rgb-val|get-rgb-va|get-rgb-v|get-rgb-|get-rgb|get-repositioned-row|get-relation|get-relatio|get-relati|get-relat|get-rela|get-rel|get-red-value|get-red-valu|get-red-val|get-red-va|get-red-v|get-red-|get-red|get-qname-by-index|get-property|get-printers|get-prev|get-parent|get-number|get-node|get-next|get-message-type|get-message|get-localname-by-index|get-last|get-iteration|get-index-by-qname|get-index-by-namespace-name|get-header-entry|get-header-entr|get-green-value|get-green-valu|get-green-val|get-green-va|get-green-v|get-green-|get-green|get-first|get-firs|get-file-offset|get-file-offse|get-file-name|get-error-row|get-error-column|get-dynamic|get-dropped-file|get-document-element|get-dataset-buffer|get-current|get-curren|get-curre|get-curr|get-config-value|get-column|get-client|get-child-relation|get-child-relatio|get-child-relati|get-child-relat|get-child-rela|get-child-rel|get-child|get-changes|get-cgi-value|get-cgi-long-value|get-cgi-list|get-callback-proc-name|get-callback-proc-context|get-bytes-available|get-buffer-handle|get-browse-column|get-browse-colum|get-browse-colu|get-browse-col|get-blue-value|get-blue-valu|get-blue-val|get-blue-va|get-blue-v|get-blue-|get-blue|get-binary-data|get-attribute-node|get-attribute)\\s*(?=\\()',
+        '(?i)(:)((get-blue(?:-value|-valu|-val|-va|-v|-)?)|(get-browse-col(?:umn|um|u)?)|(get-child-rel(?:ation|atio|ati|at|a)?)|(get-curr(?:ent|en|e)?)|(get-file-offse(?:t)?)|(get-firs(?:t)?)|(get-green(?:-value|-valu|-val|-va|-v|-)?)|(get-header-entr(?:y)?)|(get-red(?:-value|-valu|-val|-va|-v|-)?)|(get-rel(?:ation|atio|ati|at|a)?)|(get-rgb(?:-value|-valu|-val|-va|-v|-)?)|(get-selected(?:-widget|-widge|-widg|-wid|-wi|-w|-)?)|(get-text-height-c(?:hars|har|ha|h)?)|(get-text-height-p(?:ixels|ixel|ixe|ix|i)?)|(get-text-width-c(?:hars|har|ha|h)?)|(get-text-width-p(?:ixels|ixel|ixe|ix|i)?)|(get-wait(?:-state|-stat|-sta|-st|-s|-)?)|get-attribute|get-attribute-node|get-binary-data|get-buffer-handle|get-bytes-available|get-callback-proc-context|get-callback-proc-name|get-cgi-list|get-cgi-long-value|get-cgi-value|get-changes|get-child|get-client|get-column|get-config-value|get-dataset-buffer|get-document-element|get-dropped-file|get-dynamic|get-error-column|get-error-row|get-file-name|get-index-by-namespace-name|get-index-by-qname|get-iteration|get-last|get-localname-by-index|get-message|get-message-type|get-next|get-node|get-number|get-parent|get-prev|get-printers|get-property|get-qname-by-index|get-repositioned-row|get-row|get-safe-user|get-serialized|get-signature|get-socket-option|get-source-buffer|get-tab-item|get-top-buffer|get-type-by-index|get-type-by-namespace-name|get-type-by-qname|get-uri-by-index|get-value-by-index|get-value-by-namespace-name|get-value-by-qname)\\s*(?=\\()',
       beginCaptures: {
         1: {name: 'punctuation.separator.colon.abl'},
         2: {name: 'support.function.abl'}
@@ -1592,7 +1731,7 @@ const grammar = {
     },
     'handle-methods-I': {
       begin:
-        '(?i)(:)(is-selected|is-row-selected|invoke|insert-tab|insert-ta|insert-t|insert-string|insert-row|insert-file|insert-before|insert-backtab|insert-backta|insert-backt|insert-back|insert-bac|insert-ba|insert-b|insert-attribute|insert|initiate|initialize-document-type|initialize|index-information|increment-exclusive-id|import-principal|import-node)\\s*(?=\\()',
+        '(?i)(:)((index-info(?:rmation|rmatio|rmati|rmat|rma|rm|r)?)|(insert-b(?:acktab|ackta|ackt|ack|ac|a)?)|(insert-t(?:ab|a)?)|import-node|import-principal|increment-exclusive-id|initialize|initialize-document-type|initiate|insert|insert-attribute|insert-before|insert-file|insert-row|insert-string|invoke|is-row-selected|is-selected)\\s*(?=\\()',
       beginCaptures: {
         1: {name: 'punctuation.separator.colon.abl'},
         2: {name: 'support.function.abl'}
@@ -1603,7 +1742,7 @@ const grammar = {
     },
     'handle-methods-L': {
       begin:
-        '(?i)(:)(lookup|longchar-to-node-value|logout|log-audit-event|lock-registration|loadcontrols|load-small-icon|load-mouse-pointer|load-mouse-pointe|load-mouse-point|load-mouse-poin|load-mouse-poi|load-mouse-po|load-mouse-p|load-image-up|load-image-insensitive|load-image-down|load-image|load-icon|load-domains|load|list-property-names|last-of)\\s*(?=\\()',
+        '(?i)(:)((load-mouse-p(?:ointer|ointe|oint|oin|oi|o)?)|last-of|list-property-names|load|load-domains|load-icon|load-image|load-image-down|load-image-insensitive|load-image-up|load-small-icon|lock-registration|log-audit-event|logout|longchar-to-node-value|lookup|)\\s*(?=\\()',
       beginCaptures: {
         1: {name: 'punctuation.separator.colon.abl'},
         2: {name: 'support.function.abl'}
@@ -1614,7 +1753,7 @@ const grammar = {
     },
     'handle-methods-M': {
       begin:
-        '(?i)(:)(move-to-top|move-to-to|move-to-t|move-to-eof|move-to-bottom|move-to-botto|move-to-bott|move-to-bot|move-to-bo|move-to-b|move-column|move-colum|move-colu|move-col|move-before-tab-item|move-before-tab-ite|move-before-tab-it|move-before-tab-i|move-before-tab-|move-before-tab|move-before-ta|move-before-t|move-before-|move-before|move-befor|move-after-tab-item|move-after-tab-ite|move-after-tab-it|move-after-tab-i|move-after-tab-|move-after-tab|move-after-ta|move-after-t|move-after-|move-after|merge-row-changes|merge-changes|memptr-to-node-value|mark-row-state|mark-new)\\s*(?=\\()',
+        '(?i)(:)((move-after(?:-tab-item|-tab-ite|-tab-it|-tab-i|-tab-|-tab|-ta|-t|-)?)|(move-befor(?:e-tab-item|e-tab-ite|e-tab-it|e-tab-i|e-tab-|e-tab|e-ta|e-t|e-|e)?)|(move-col(?:umn|um|u)?)|(move-to-b(?:ottom|otto|ott|ot|o)?)|(move-to-t(?:op|o)?)|mark-new|mark-row-state|memptr-to-node-value|merge-changes|merge-row-changes|move-to-eof)\\s*(?=\\()',
       beginCaptures: {
         1: {name: 'punctuation.separator.colon.abl'},
         2: {name: 'support.function.abl'}
@@ -1625,7 +1764,7 @@ const grammar = {
     },
     'handle-methods-N': {
       begin:
-        '(?i)(:)(normalize|node-value-to-memptr|node-value-to-longchar)\\s*(?=\\()',
+        '(?i)(:)(node-value-to-longchar|node-value-to-memptr|normalize)\\s*(?=\\()',
       beginCaptures: {
         1: {name: 'punctuation.separator.colon.abl'},
         2: {name: 'support.function.abl'}
@@ -1635,7 +1774,7 @@ const grammar = {
       patterns: [{include: '#function-arguments'}]
     },
     'handle-methods-Q': {
-      begin: '(?i)(:)(query-prepare|query-open|query-close)\\s*(?=\\()',
+      begin: '(?i)(:)(query-close|query-open|query-prepare)\\s*(?=\\()',
       beginCaptures: {
         1: {name: 'punctuation.separator.colon.abl'},
         2: {name: 'support.function.abl'}
@@ -1646,7 +1785,7 @@ const grammar = {
     },
     'handle-methods-R': {
       begin:
-        '(?i)(:)(reset|reposition-to-rowid|reposition-to-row|reposition-forward|reposition-backward|replace-selection-text|replace-child|replace|remove-super-procedure|remove-super-procedur|remove-super-procedu|remove-super-proced|remove-super-proce|remove-super-proc|remove-events-procedure|remove-events-procedur|remove-events-procedu|remove-events-proced|remove-events-proce|remove-events-proc|remove-child|remove-attribute|reject-row-changes|reject-changes|register-domain|refresh-audit-policy|refresh|read-xmlschema|read-xml|read-json|read-file|read|raw-transfer)\\s*(?=\\()',
+        '(?i)(:)((remove-events-proc(?:edure|edur|edu|ed|e)?)|(remove-super-proc(?:edure|edur|edu|ed|e)?)|raw-transfer|read|read-file|read-json|read-xml|read-xmlschema|refresh|refresh-audit-policy|register-domain|reject-changes|reject-row-changes|remove-attribute|remove-child|replace|replace-child|replace-selection-text|reposition-to-row|reposition-to-rowid|reset||)\\s*(?=\\()',
       beginCaptures: {
         1: {name: 'punctuation.separator.colon.abl'},
         2: {name: 'support.function.abl'}
@@ -1657,7 +1796,7 @@ const grammar = {
     },
     'handle-methods-S': {
       begin:
-        '(?i)(:)(synchronize|string-value|stop-parsing|start-element|start-document|set-wait-state|set-wait-stat|set-wait-sta|set-wait-st|set-wait-s|set-wait-|set-wait|set-sort-arrow|set-socket-option|set-serialized|set-selection|set-safe-user|set-rollback|set-role|set-rgb-value|set-rgb-valu|set-rgb-val|set-rgb-va|set-rgb-v|set-rgb-|set-rgb|set-repositioned-row|set-red-value|set-red-valu|set-red-val|set-red-va|set-red-v|set-red-|set-red|set-read-response-procedure|set-property|set-parameter|set-output-destination|set-numeric-format|set-numeric-forma|set-numeric-form|set-node|set-must-understand|set-input-source|set-green-value|set-green-valu|set-green-val|set-green-va|set-green-v|set-green-|set-green|set-dynamic|set-connect-procedure|set-commit|set-client|set-callback-procedure|set-callback|set-buffers|set-break|set-blue-value|set-blue-valu|set-blue-val|set-blue-va|set-blue-v|set-blue-|set-blue|set-attribute-node|set-attribute|set-appl-context|set-actor|serialize-row|select-row|select-prev-row|select-next-row|select-focused-row|select-all|search|seal|scroll-to-selected-row|scroll-to-item|scroll-to-ite|scroll-to-it|scroll-to-i|scroll-to-current-row|sax-parse-next|sax-parse-first|sax-parse|save-row-changes|save-file|save)\\s*(?=\\()',
+        '(?i)(:)((scroll-to-i(?:tem|te|t)?)|(set-blue(?:-value|-valu|-val|-va|-v|-)?)|(set-green(?:-value|-valu|-val|-va|-v|-)?)|(set-numeric-form(?:at|a)?)|(set-red(?:-value|-valu|-val|-va|-v|-)?)|(set-rgb(?:-value|-valu|-val|-va|-v|-)?)|(set-wait(?:-state|-stat|-sta|-st|-s|-)?)|save|save-file|save-row-changes|sax-parse|sax-parse-first|sax-parse-next|scroll-to-current-row|scroll-to-selected-row|seal|search|select-all|select-focused-row|select-next-row|select-prev-row|select-row|serialize-row|set-actor|set-appl-context|set-attribute|set-attribute-node|set-break|set-buffers|set-callback|set-callback-procedure|set-client|set-commit|set-connect-procedure|set-dynamic|set-input-source|set-must-understand|set-node|set-output-destination|set-parameter|set-property|set-read-response-procedure|set-repositioned-row|set-role|set-rollback|set-safe-user|set-selection|set-serialized|set-socket-option|set-sort-arrow|start-document|start-element|stop-parsing|string-value|synchronize)\\s*(?=\\()',
       beginCaptures: {
         1: {name: 'punctuation.separator.colon.abl'},
         2: {name: 'support.function.abl'}
@@ -1668,7 +1807,7 @@ const grammar = {
     },
     'handle-methods-T': {
       begin:
-        '(?i)(:)(tenant-name|tenant-id|temp-table-prepare|temp-table-prepar)\\s*(?=\\()',
+        '(?i)(:)((temp-table-prepar(?:e)?)|tenant-id|tenant-name)\\s*(?=\\()',
       beginCaptures: {
         1: {name: 'punctuation.separator.colon.abl'},
         2: {name: 'support.function.abl'}
@@ -1679,7 +1818,7 @@ const grammar = {
     },
     'handle-methods-U': {
       begin:
-        '(?i)(:)(user-data|url-encode|url-decode|update-attribute)\\s*(?=\\()',
+        '(?i)(:)(update-attribute|url-decode|url-encode|user-data)\\s*(?=\\()',
       beginCaptures: {
         1: {name: 'punctuation.separator.colon.abl'},
         2: {name: 'support.function.abl'}
@@ -1690,7 +1829,7 @@ const grammar = {
     },
     'handle-methods-V': {
       begin:
-        '(?i)(:)(validate-seal|validate-domain-access-code|validate)\\s*(?=\\()',
+        '(?i)(:)(validate|validate-domain-access-code|validate-seal)\\s*(?=\\()',
       beginCaptures: {
         1: {name: 'punctuation.separator.colon.abl'},
         2: {name: 'support.function.abl'}
@@ -1701,7 +1840,7 @@ const grammar = {
     },
     'handle-methods-W': {
       begin:
-        '(?i)(:)(write-xmlschema|write-xml|write-processing-instruction|write-message|write-json|write-fragment|write-external-dtd|write-entity-ref|write-empty-element|write-data-element|write-data|write-comment|write-characters|write-cdata|write)\\s*(?=\\()',
+        '(?i)(:)(write|write-cdata|write-characters|write-comment|write-data|write-data-element|write-empty-element|write-entity-ref|write-external-dtd|write-fragment|write-json|write-message|write-processing-instruction|write-xml|write-xmlschema)\\s*(?=\\()',
       beginCaptures: {
         1: {name: 'punctuation.separator.colon.abl'},
         2: {name: 'support.function.abl'}
@@ -1711,7 +1850,7 @@ const grammar = {
       patterns: [{include: '#function-arguments'}]
     },
     'if-then': {
-      begin: '(?i)\\s*(if)\\s*',
+      begin: '(?i)\\b(if)\\b',
       beginCaptures: {1: {name: 'keyword.other.abl'}},
       end: '(?i)\\b(?=then)\\b',
       patterns: [
@@ -1729,11 +1868,12 @@ const grammar = {
         {include: '#code-block'},
         {include: '#handle-attributes'},
         {include: '#preprocessors'},
+        {include: '#abl-system-handles'},
         {include: '#keywords'}
       ]
     },
     'include-file': {
-      begin: '({)\\s*(([[:alpha:]][\\w\\/\\-\\\\]+)(\\.[[:alpha:]]+)?)',
+      begin: '({)\\s*([\'"]?([\\\\\\/\\w$\\-]+)(\\.[\\w]+[\'"]?)?)',
       beginCaptures: {
         1: {name: 'punctuation.section.abl'},
         2: {name: 'entity.name.include.abl'}
@@ -1748,36 +1888,25 @@ const grammar = {
             1: {name: 'support.other.argument.abl'},
             2: {name: 'keyword.operator.source.abl'}
           },
-          match: '(?<=\\s)(&[[:alpha:]][\\w\\#\\$\\-\\%\\.]+)\\s*(=?)',
+          match: '(?<=\\s)(&[a-zA-Z0-9][a-zA-Z0-9_\\-#$%#$\\-%\\.]+)\\s*(=)?',
           name: 'meta.include.argument.abl'
         },
         {include: '#string'},
-        {
-          captures: {
-            1: {name: 'support.other.argument.abl'},
-            2: {name: 'keyword.operator.source.abl'}
-          },
-          match: '(?<=\\s)(&[[:alpha:]][\\w\\#\\$\\-\\%\\.]+)\\s*(=?)',
-          name: 'meta.include.argument.abl'
-        },
-        {include: '#string'},
-        {
-          captures: {
-            1: {name: 'support.other.argument.abl'},
-            2: {name: 'keyword.operator.source.abl'}
-          },
-          match: '(?<=\\s)(&[[:alpha:]][\\w\\#\\$\\-\\%\\.]+)\\s*(=?)',
-          name: 'meta.include.argument.abl'
-        },
         {
           captures: {1: {name: 'support.other.argument.abl'}},
-          match: '(?<=\\s)([[:alpha:]][\\w\\#\\$\\-\\%\\.\\:]+)\\b'
-        }
+          match: '([a-zA-Z0-9][a-zA-Z0-9_\\-#$%#$\\-%\\.:]+)\\b'
+        },
+        {
+          captures: {0: {name: 'support.other.argument.abl'}},
+          match: '(?<=\\=)(/\\*+)|(\\*+/)|(//)'
+        },
+        {include: '#argument-reference'},
+        {include: '#comment'}
       ]
     },
     'inherits-implements-type': {
       begin:
-        '(?i)\\s*(implements|inherits)\\s*(([\\w\\#\\$\\%]+|progress)(\\.[\\w\\#\\$\\%]+)*(?<!\\.))\\s*',
+        '(?i)\\s*(implements|inherits)\\s*(([\\w#$%]+|progress)(\\.[\\w#$%]+)*(?<!\\.))\\s*',
       beginCaptures: {
         1: {name: 'keyword.other.abl'},
         2: {name: 'entity.name.type.abl'}
@@ -1786,6 +1915,28 @@ const grammar = {
       endCaptures: {1: {name: 'keyword.other.abl'}},
       name: 'meta.define-type.implements.abl',
       patterns: [{include: '#type-names'}]
+    },
+    'input-output-from-to': {
+      begin:
+        '(?i)\\b(input|output)\\s+((stream|stream-handle)\\s+([a-zA-Z_][a-zA-Z0-9_#$\\-%&]*)\\s+)?(from|to)',
+      beginCaptures: {
+        1: {name: 'keyword.other.abl'},
+        3: {name: 'keyword.other.abl'},
+        4: {patterns: [{include: '#variable-name'}]},
+        5: {name: 'keyword.other.abl'}
+      },
+      end: '(?i)(?=\\.|target|source)',
+      patterns: [
+        {include: '#type-member-call'},
+        {include: '#abl-functions'},
+        {include: '#abl-system-handles'},
+        {include: '#keywords'},
+        {include: '#comment'},
+        {include: '#array-literal'},
+        {include: '#preprocessors'},
+        {include: '#opsys-device-name'},
+        {include: '#expression'}
+      ]
     },
     keywords: {
       patterns: [
@@ -1819,138 +1970,136 @@ const grammar = {
     'keywords-A': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(avg|average|averag|avera|aver|ave|available|automatic|auto-go|auto-endkey|authorization|audit-policy|audit-control|attribute-type|attachment|attach|at|assign|assembly|ask-overwrite|ascending|ascendin|ascendi|ascend|ascen|asce|asc|as-cursor|as|array-message|array-messag|array-messa|array-mess|array-mes|array-me|array-m|apply|application|append-line|append|anywhere|any-printable|any-key|any|ansi-only|and|ambiguous|alternate-key|alter|allow-replication|all|alert-box|aggregate|advise|add|active-window|active-form|across|accumulate|accumulat|accumula|accumul|accumu|accum|abstract|abort)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b((accum(?:ulate|ulat|ula|ul|u)?)|(ambig(?:uous|uou|uo|u)?)|(array-m(?:essage|essag|essa|ess|es|e)?)|(asc(?:ending|endin|endi|end|en|e)?)|(avail(?:able|abl|ab|a)?)|(ave(?:rage|rag|ra|r)?)|abort|abstract|across|active-form|active-window|add|advise|aggregate|alert-box|all|allow-replication|alter|alternate-key|and|ansi-only|any|any-key|any-printable|anywhere|append|append-line|application|apply|as|as-cursor|ask-overwrite|assembly|assign|at|attach|attachment|attribute-type|audit-control|audit-policy|authorization|auto-endkey|auto-go|automatic|avg)\\b(?![#$\\-_%&])'
     },
     'keywords-B': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(byte|by-variant-pointer|by-variant-pointe|by-variant-point|by-value|by-reference|by-pointer|by|buttons|button|buffer-copy|buffer-compare|buffer|btos|browse-header|browse-column-labels|browse-column-formats|browse-column-data-types|browse|break-line|break|bottom-column|bottom|both|border-top|border-to|border-t|border-right|border-righ|border-rig|border-ri|border-r|border-left|border-lef|border-le|border-l|border-bottom|border-botto|border-bott|border-bot|border-bo|border-b|block-level|block-leve|block-lev|block|blob|bind-where|bind|binary|big-endian|bgcolor|between|bell|begins|before-hide|before-hid|before-hi|before-h|batch|base64|base-key|backwards|backward|backspace|back-tab)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b((backward(?:s)?)|(before-h(?:ide|id|i)?)|(bgc(?:olor|olo|ol|o)?)|(block-lev(?:el|e)?)|(border-b(?:ottom|otto|ott|ot|o)?)|(border-l(?:eft|ef|e)?)|(border-r(?:ight|igh|ig|i)?)|(border-t(?:op|o)?)|(buffer-comp(?:are|ar|a)?)|(button(?:s)?)|(button(?:s)?)|(by-variant-point(?:er|e)?)|back-tab|backspace|base-key|base64|batch|begins|bell|between|big-endian|binary|bind|bind-where|blob|block|both|bottom|bottom-column|break|break-line|browse|browse-column-data-types|browse-column-formats|browse-column-labels|browse-header|btos|buffer|buffer-copy|by|by-pointer|by-reference|by-value|byte)\\b(?![#$\\-_%&])'
     },
     'keywords-C': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(cut|cursor-up|cursor-right|cursor-left|cursor-down|cursor|curso|curs|current_date|current-value|current-language|current|ctos|create-test-file|create-on-add|create|count|copy-lob|copy|convert|control-frame|control-fram|control-container|control-containe|control-contain|control-contai|control-conta|control-cont|control|context-popup|context-popu|context-pop|context-help-id|context|contents|contains|container-event|constructor|constrained|connect|component-self|component-handle|compiler|compile|compares|compare|command|combo-box|com-self|columns|column-of|column-label-height-pixels|column-label-height-pixel|column-label-height-pixe|column-label-height-pix|column-label-height-pi|column-label-height-p|column-label-height-chars|column-label-height-char|column-label-height-cha|column-label-height-ch|column-label-height-c|column-label-font|column-label-fgcolor|column-label-fgcolo|column-label-fgcol|column-label-fgco|column-label-fgc|column-label-dcolor|column-label-bgcolor|column-label-bgcolo|column-label-bgcol|column-label-bgco|column-label-bgc|column-codepage|column|color-table|color|colon-aligned|colon-aligne|colon-align|colon|collate|col-of|col|codebase-locator|close|clob|clipboard|client-principal|clear|class|choose|choices|check-mem-stomp|check|character_length|character|characte|charact|charac|chara|char|chained|centered|cdecl|catch|case|cancel-pick|call|cache-size|cache)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b((center(?:ed|e)?)|(char(?:acter|acte|act|ac|a)?)|(colon-align(?:ed|e)?)|(column(?:s)?)|(column-lab(?:el|e)?)|(column-label-bgc(?:olor|olo|ol|o)?)|(column-label-fgc(?:olor|olo|ol|o)?)|(column-label-height-c(?:hars|har|ha|h)?)|(column-label-height-p(?:ixels|ixel|ixe|ix|i)?)|(compare(?:s)?)|(context-pop(?:up|u)?)|(control-cont(?:ainer|aine|ain|ai|a)?)|(control-fram(?:e)?)|(current-lang(?:uage|uag|ua|u)?)|(curs(?:or|o)?)|cache|cache-size|call|cancel-pick|case|catch|cdecl|chained|character_length|check|check-mem-stomp|choices|choose|class|clear|client-principal|clipboard|clob|close|codebase-locator|col|col-of|collate|colon|color|color-table|column-codepage|column-label-dcolor|column-label-font|column-of|com-self|combo-box|command|compile|compiler|component-handle|component-self|connect|constrained|constructor|container-event|contains|contents|context|context-help-id|control|convert|copy|copy-lob|count|create|create-on-add|create-test-file|ctos|current|current-value|current_date|cursor-down|cursor-left|cursor-right|cursor-up|cut)\\b(?![#$\\-_%&])'
     },
     'keywords-D': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(dynamic-property|dynamic-new|dynamic-current-value|dump|dslog-manager|drop-target|drop-file-notify|drop-down-list|drop-down|drop|down|double|dotnet-clr-loaded|dos-end|dos|do|dll-call-type|distinct|display|displa|displ|disp|dismiss-menu|disconnect|disabled|disable|dir|dictionary|dictionar|dictiona|diction|dictio|dicti|dict|dialog-help|dialog-box|detach|destructor|deselection-extend|deselection|deselect-extend|deselect|descending|descendin|descendi|descend|descen|desce|desc|delimiter|delete-word|delete-field|delete-end-line|delete-column|delete-character|delete|delegate|del|define-user-event-manager|define|defin|defi|defer-lob-fetch|default-window|default-untranslatable|default-pop-up|default-extension|default-extensio|default-extensi|default-extens|default-exten|default-exte|default-ext|default-ex|default-action|default|def|declare|debugger|debug-set-tenant|debug-list|dde-notify|dde|dcolor|dataset-handle|dataset|database|data-source|data-relation|data-relatio|data-relati|data-relat|data-rela|data-rel|data-refresh-page|data-refresh-line|data-bind|data-bin|data-bi|data-b)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b((data-b(?:ind|in|i)?)|(data-rel(?:ation|atio|ati|at|a)?)|(def(?:ine|in|i)?)|(default-ex(?:tension|tensio|tensi|tens|ten|te|t)?)|(desc(?:ending|endin|endi|end|en|e)?)|(dict(?:ionary|ionar|iona|ion|io|i)?)|(discon(?:nect|nec|ne|n)?)|(disp(?:lay|la|l)?)|data-refresh-line|data-refresh-page|data-source|database|dataset|dataset-handle|dcolor|dde|dde-notify|debug-list|debug-set-tenant|debugger|declare|default|default-action|default-pop-up|default-untranslatable|default-window|defer-lob-fetch|define-user-event-manager|del|delegate|delete|delete-character|delete-column|delete-end-line|delete-field|delete-word|delimiter|deselect|deselect-extend|deselection|deselection-extend|destructor|detach|dialog-box|dialog-help|dir|disable|disabled|dismiss-menu|distinct|dll-call-type|do|dos|dos-end|dotnet-clr-loaded|double|down|drop|drop-down|drop-down-list|drop-file-notify|drop-target|dslog-manager|dump|dynamic-current-value|dynamic-new|dynamic-property)\\b(?![#$\\-_%&])'
     },
     'keywords-E': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(extract|external|extent|extended|export|explicit|expire|exit|exists|execute|exclusive-web-user|exclusive-web-use|exclusive-web-us|exclusive-web-u|exclusive-web-|exclusive-web|exclusive-lock|exclusive-loc|exclusive-lo|exclusive-l|exclusive|except|events|event-handler-context|event|escape|error-status|error-statu|error-stat|error|eq|enum|entry|enter-menubar|endkey|end-search|end-row-resize|end-resize|end-move|end-key|end-error|end-box-selection|end|enable|empty-selection|empty|else|editor-tab|editor-backtab|editor|editing|edge|echo|each)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b((error-stat(?:us|u)?)|(exclusive-l(?:ock|oc|o)?)|(exclusive-web(?:-user|-use|-us|-u|-)?)|each|echo|edge|editing|editor|editor-backtab|editor-tab|else|empty|empty-selection|enable|end|end-box-selection|end-error|end-key|end-move|end-resize|end-row-resize|end-search|endkey|enter-menubar|entry|enum|eq|error|escape|event|event-handler-context|events|except|exclusive|execute|exists|exit|expire|explicit|export|extended|extent|external|extract)\\b(?![#$\\-_%&])'
     },
     'keywords-F': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(function-call-type|function|full-height|fromnoreorder|from-pixels|from-pixel|from-pixe|from-pix|from-pi|from-p|from-current|from-curren|from-curre|from-curr|from-cur|from-chars|from-char|from-cha|from-ch|from-c|from|frame-value|frame|forwards|forward|format|form|foreign-key-hidden|force-file|for|font-table|font|focus-in|focus|float|flat-button|flags|fixed-only|fix-codepage|first|firehose-cursor|finder|find-wrap-around|find-select|find-previous|find-prev-occurrence|find-next-occurrence|find-next|find-global|find-case-sensitive|find|finally|final|filters|fill-in|filename|file-information|file-informatio|file-informati|file-informat|file-informa|file-inform|file-infor|file-info|file-access-time|file-access-tim|file-access-ti|file-access-t|file-access-date|file-access-dat|file-access-da|file-access-d|file|fields|field|fgcolor|fetch|false-leaks|false)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b((fgc(?:olor|olo|ol|o)?)|(field(?:s)?)|(file-access-d(?:ate|at|a)?)|(file-access-t(?:ime|im|i)?)|(file-info(?:rmation|rmatio|rmati|rmat|rma|rm|r)?)|(form(?:at|a)?)|(form(?:at|a)?)|(forward(?:s)?)|(fram(?:e)?)|(frame-val(?:ue|u)?)|(from-c(?:hars|har|ha|h)?)|(from-cur(?:rent|ren|re|r)?)|(from-p(?:ixels|ixel|ixe|ix|i)?)|false|false-leaks|fetch|file|filename|fill-in|filters|final|finally|find|find-case-sensitive|find-global|find-next|find-next-occurrence|find-prev-occurrence|find-previous|find-select|find-wrap-around|finder|firehose-cursor|first|fix-codepage|fixed-only|flags|flat-button|float|focus|focus-in|font|font-table|for|force-file|foreign-key-hidden|from|fromnoreorder|full-height|function|function-call-type)\\b(?![#$\\-_%&])'
     },
     'keywords-G': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(gt|group|grid-unit-width|grid-unit-height|grid-set|grayed|grant-archive|grant|goto|go-on|go|global|getbyte|get-text-width|get-text-height|get-key-value|get-key-valu|get-key-val|get-file|get-dir|get-attr-call-type|get|generate-md5|ge)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b((get-key-val(?:ue|u)?)|ge|generate-md5|get|get-attr-call-type|get-dir|get-file|get-text-height|get-text-width|getbyte|global|go|go-on|goto|grant|grant-archive|grayed|grid-set|grid-unit-height|grid-unit-width|group|gt)\\b(?![#$\\-_%&])'
     },
     'keywords-H': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(host-byte-order|horiz-scroll-drag|horiz-home|horiz-end|home|hint|hide|helpfile-name|helpfile-nam|helpfile-na|helpfile-n|help-topic|help-context|help-contex|help-conte|help-cont|help-con|height|header|having)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b((help-con(?:text|tex|te|t)?)|(helpfile-n(?:ame|am|a)?)|having|header|height|help-topic|hidden|hide|hint|home|horiz-end|horiz-home|horiz-scroll-drag|host-byte-order)\\b(?![#$\\-_%&])'
     },
     'keywords-I': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(iteration-changed|item|is|into|interface|insert-mode|insert-field-label|insert-field-data|insert-field|insert-column|insert|input-output|input-outpu|input-outp|input-out|input-ou|input-o|input|inner|initiate|initial-filter|initial-dir|initial|init|inherits|inherit-color-mode|information|informatio|informati|informat|informa|inform|infor|info|indicator|indexed-reposition|index-hint|in|import|implements|image-up|image-size-pixels|image-size-pixel|image-size-pixe|image-size-pix|image-size-pi|image-size-p|image-size-chars|image-size-char|image-size-cha|image-size-ch|image-size-c|image-size|image-insensitive|image-down|image|if)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b((image-size-c(?:hars|har|ha|h)?)|(image-size-p(?:ixels|ixel|ixe|ix|i)?)|(info(?:rmation|rmatio|rmati|rmat|rma|rm|r)?)|(input-o(?:utput|utpu|utp|ut|u)?)|if|image|image-down|image-insensitive|image-size|image-up|implements|import|in|index-hint|indexed-reposition|indicator|inherit-color-mode|inherits|init|initial|initial-dir|initial-filter|initiate|inner|input|insert|insert-column|insert-field|insert-field-data|insert-field-label|insert-mode|interface|into|is|item|iteration-changed)\\b(?![#$\\-_%&])'
     },
     'keywords-J': {
       captures: {1: {name: 'keyword.other.abl'}},
-      match:
-        '(?i)\\b(join-on-select|join-by-sqldb|join)\\b(?![\\#\\$\\-\\_\\%\\&])'
+      match: '(?i)\\b(join|join-by-sqldb|join-on-select)\\b(?![#$\\-_%&])'
     },
     'keywords-K': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(keycache-join|key-label|key-function|key-functio|key-functi|key-funct|key-func|key-code|keep-tab-order|keep-messages)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b((keep-frame-z(?:-order|-orde|-ord|-or|-o|-)?)|(key-func(?:tion|tio|ti|t)?)|keep-messages|keep-tab-order|key-code|key-label|keycache-join)\\b(?![#$\\-_%&])'
     },
     'keywords-L': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(lt|lower|lookahead|longchar|longcha|longch|long|log-manager|log-id|locked|lob-dir|load-result-into|load-picture|load-from|load|little-endian|listing|listin|listi|line-up|line-right|line-left|line-down|like-sequential|like|length|left-end|left-aligned|left-aligne|left-align|left|leave|leak-detection|leading|le|last-key|last-event|last-even|landscape|label-pfcolor|label-pfcolo|label-pfcol|label-pfco|label-pfc|label)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b((label-pfc(?:olor|olo|ol|o)?)|(last-even(?:t)?)|(left-align(?:ed|e)?)|(listi(?:ng|n)?)|(longch(?:ar|a)?)|label|landscape|last-key|le|leading|leak-detection|leave|left|left-end|length|like|like-sequential|line-down|line-left|line-right|line-up|little-endian|load|load-from|load-picture|load-result-into|lob-dir|locked|log-id|log-manager|long|lookahead|lower|lt)\\b(?![#$\\-_%&])'
     },
     'keywords-M': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(must-exist|multiple-key|mpe|move|mouse-pointer|mouse|modulo|mod|min-width|min-size|min-schema-marshall|min-schema-marshal|min-height|method|message-line|message-area-msg|message|menubar|menu-item|menu-drop|menu|memptr|md5-value|maximize|max-width|max-size|max-rows|max-height|max|matches|margin-width-pixels|margin-width-pixel|margin-width-pixe|margin-width-pix|margin-width-pi|margin-width-p|margin-width-chars|margin-width-char|margin-width-cha|margin-width-ch|margin-width-c|margin-width|margin-height-pixels|margin-height-pixel|margin-height-pixe|margin-height-pix|margin-height-pi|margin-height-p|margin-height-chars|margin-height-char|margin-height-cha|margin-height-ch|margin-height-c|margin-height|margin-extra|map|main-menu|machine-class)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b((margin-height-c(?:hars|har|ha|h)?)|(margin-height-p(?:ixels|ixel|ixe|ix|i)?)|(margin-width-c(?:hars|har|ha|h)?)|(margin-width-p(?:ixels|ixel|ixe|ix|i)?)|(min-schema-marshal(?:l)?)|(mouse-p(?:ointer|ointe|oint|oin|oi|o)?)|machine-class|main-menu|map|margin-extra|margin-height|margin-width|matches|max|max-button|max-height|max-rows|max-size|max-width|maximize|md5-value|memptr|menu|menu-drop|menu-item|menubar|message|message-area|message-area-msg|message-line|method|min-height|min-size|min-width|mod|modulo|mouse|move|mpe|multiple-key|must-exist)\\b(?![#$\\-_%&])'
     },
     'keywords-N': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(numeric|num-selected|num-copies|null|not-active|not|none|non-serializable|node-type|no-word-wrap|no-wait|no-undo|no-underline|no-underlin|no-underli|no-underl|no-under|no-unde|no-und|no-tab-stop|no-tab-sto|no-tab-st|no-tab-s|no-tab-|no-tab|no-separators|no-separate-connection|no-scrolling|no-scrollbar-vertical|no-scrollbar-vertica|no-scrollbar-vertic|no-scrollbar-verti|no-scrollbar-vert|no-scrollbar-ver|no-scrollbar-ve|no-scrollbar-v|no-schema-marshall|no-schema-marshal|no-row-markers|no-return-value|no-return-valu|no-return-val|no-query-unique-added|no-query-unique-adde|no-query-unique-add|no-query-unique-ad|no-query-unique-a|no-query-unique-|no-query-unique|no-query-uniqu|no-query-uniq|no-query-uni|no-query-un|no-query-u|no-query-order-added|no-query-order-adde|no-query-order-add|no-query-order-ad|no-query-order-a|no-query-order-|no-query-order|no-query-orde|no-query-ord|no-query-or|no-query-o|no-prefetch|no-prefetc|no-prefet|no-prefe|no-pause|no-message|no-messag|no-messa|no-mess|no-mes|no-map|no-lookahead|no-lock|no-lobs|no-labels|no-label|no-keycache-join|no-join-by-sqldb|no-inherit-fgcolor|no-inherit-fgcolo|no-inherit-fgcol|no-inherit-fgco|no-inherit-fgc|no-inherit-bgcolor|no-inherit-bgcolo|no-inherit-bgcol|no-inherit-bgco|no-inherit-bgc|no-index-hint|no-hide|no-help|no-focus|no-firehose-cursor|no-fill|no-fil|no-fi|no-f|no-error|no-echo|no-drag|no-debug|no-convert-3d-colors|no-convert-3d-color|no-convert-3d-colo|no-convert-3d-col|no-convert-3d-co|no-convert-3d-c|no-convert-3d-|no-convert-3d|no-convert|no-console|no-column-scrolling|no-column-scrollin|no-column-scrolli|no-column-scroll|no-column-scrol|no-column-scro|no-column-scr|no-column-sc|no-box|no-bind-where|no-auto-validate|no-auto-trim|no-auto-tri|no-attr-space|no-attr-spac|no-attr-spa|no-attr-sp|no-attr-s|no-attr-list|no-attr-lis|no-attr-li|no-attr-l|no-attr|no-assign|no-array-message|no-array-messag|no-array-messa|no-array-mess|no-array-mes|no-array-me|no-array-m|no-apply|no|next-word|next-prompt|next-frame|next-error|next|new-line|new-instance|new|nested|ne|native|namespace-uri|namespace-prefix)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b((no-array-m(?:essage|essag|essa|ess|es|e)?)|(no-attr-l(?:ist|is|i)?)|(no-attr-s(?:pace|pac|pa|p)?)|(no-auto-tri(?:m)?)|(no-column-sc(?:rolling|rollin|rolli|roll|rol|ro|r)?)|(no-convert-3d(?:-colors|-color|-colo|-col|-co|-c|-)?)|(no-f(?:ill|il|i)?)|(no-inherit-bgc(?:olor|olo|ol|o)?)|(no-inherit-fgc(?:olor|olo|ol|o)?)|(no-label(?:s)?)|(no-mes(?:sage|sag|sa|s)?)|(no-prefe(?:tch|tc|t)?)|(no-query-o(?:rder-added|rder-adde|rder-add|rder-ad|rder-a|rder-|rder|rde|rd|r)?)|(no-query-u(?:nique-added|nique-adde|nique-add|nique-ad|nique-a|nique-|nique|niqu|niq|ni|n)?)|(no-return-val(?:ue|u)?)|(no-schema-marshal(?:l)?)|(no-scrollbar-v(?:ertical|ertica|ertic|erti|ert|er|e)?)|(no-tab(?:-stop|-sto|-st|-s|-)?)|(no-und(?:erline|erlin|erli|erl|er|e)?)|namespace-prefix|namespace-uri|native|ne|nested|new|new-instance|new-line|next|next-error|next-frame|next-prompt|next-word|no|no-apply|no-assign|no-attr|no-auto-validate|no-bind-where|no-box|no-console|no-convert|no-debug|no-drag|no-echo|no-error|no-firehose-cursor|no-focus|no-help|no-hide|no-index-hint|no-join-by-sqldb|no-keycache-join|no-lobs|no-lock|no-lookahead|no-map|no-pause|no-row-markers|no-scrolling|no-separate-connection|no-separators|no-undo|no-wait|no-word-wrap|node-type|non-serializable|none|not-active|null|num-copies|num-selected|numeric)\\b(?![#$\\-_%&])'
     },
     'keywords-O': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(override|overlay|output|outer-join|outer|out-of-data|otherwise|os400|os2|os-rename|os-dir|os-delete|os-create-dir|os-copy|os-command|os-append|orientation|ordered-join|or|options-file|option|open-line-above|open|on|ole-names-locale|ole-names-local|ole-names-loca|ole-invoke-locale|ole-invoke-local|ole-invoke-loca|old|ok-cancel|ok|off-home|off-end|off|of|octet_length|object)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b((ole-invoke-loca(?:le|l)?)|(ole-names-loca(?:le|l)?)|object|octet_length|of|off|off-end|off-home|ok|ok-cancel|old|on|open|open-line-above|option|options-file|or|ordered-join|orientation|os-append|os-command|os-copy|os-create-dir|os-delete|os-dir|os-rename|os2|os400|otherwise|out-of-data|outer|outer-join|output|overlay|override)\\b(?![#$\\-_%&])'
     },
     'keywords-P': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(putbyte|put-unsigned-short|put-unsigned-long|put-string|put-short|put-long|put-key-value|put-key-valu|put-key-val|put-int64|put-float|put-double|put-bytes|put-byte|put-bits|put|publish|public|protected|property|propath|promsgs|prompt-for|prompt-fo|prompt-f|prompt|profiler|profile-file|process|procedure-complete|procedure-call-type|procedure|procedur|procedu|proced|proce|privileges|private|printer-setup|printer|prev-word|prev-frame|prev|preselect|preselec|presele|presel|preprocess|preproces|preproce|preproc|precision|portrait|pixels|pick-both|pick-area|pick|pfcolor|performance|performanc|performan|performa|perform|perfor|perfo|perf|pause|paste|pascal|partial-key|parent-window-close|parent-id-field|parameter|paged|page-width|page-widt|page-wid|page-up|page-right-text|page-right|page-left|page-down|page|package-protected|package-private)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b((page-wid(?:th|t)?)|(param(?:eter|ete|et|e)?)|(perf(?:ormance|ormanc|orman|orma|orm|or|o)?)|(pfc(?:olor|olo|ol|o)?)|(preproc(?:ess|es|e)?)|(presel(?:ect|ec|e)?)|(proce(?:dure|dur|du|d)?)|(prompt-f(?:or|o)?)|(put-key-val(?:ue|u)?)|package-private|package-protected|page|page-down|page-left|page-right|page-right-text|page-up|paged|parent-id-field|parent-window-close|partial-key|pascal|paste|pause|pick|pick-area|pick-both|pixels|portrait|precision|prev|prev-frame|prev-word|printer|printer-setup|private|privileges|procedure-call-type|procedure-complete|process|profile-file|profiler|prompt|promsgs|propath|property|protected|public|publish|put|put-bits|put-byte|put-bytes|put-double|put-float|put-int64|put-long|put-short|put-string|put-unsigned-long|put-unsigned-short|putbyte)\\b(?![#$\\-_%&])'
     },
     'keywords-Q': {
       captures: {1: {name: 'keyword.other.abl'}},
-      match:
-        '(?i)\\b(quit|question|query-tuning|query)\\b(?![\\#\\$\\-\\_\\%\\&])'
+      match: '(?i)\\b(query|query-tuning|question|quit)\\b(?![#$\\-_%&])'
     },
     'keywords-R': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(run-procedure|run-procedur|run-procedu|run-proced|run-proce|run-proc|run|rule-y|rule-row|rule|row-unmodified|row-of|row-modified|row-leave|row-height|row-entry|row-display|row-deleted|row-created|row|routine-level|right-end|right-aligned|right-aligne|right-align|right|revoke|revert|reverse-from|returns|return-value|return-to-start-dir|return-to-start-di|return|retry-cancel|retain|resume-display|result|request|reposition-parent-relation|reposition-parent-relatio|reposition-parent-relati|reposition-parent-relat|reposition-parent-rela|reposition-parent-rel|reposition-forwards|reposition-forward|reposition-forwar|reposition-forwa|reposition-forw|reposition-backwards|reposition-backward|reposition-backwar|reposition-backwa|reposition-backw|reposition-back|reposition|reports|replication-write|replication-delete|replication-create|repeat|release|reinstate|reference-only|recursive|rectangle|rectangl|rectang|rectan|recta|rect|recall|real|readkey|read-response|read-exact-num|read-available|rcode-information|rcode-informatio|rcode-informati|rcode-informat|rcode-informa|rcode-inform|rcode-infor|rcode-info|raw-transfer|raw|radio-set)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b((rcode-info(?:rmation|rmatio|rmati|rmat|rma|rm|r)?)|(rect(?:angle|angl|ang|an|a)?)|(reposition-back(?:wards|ward|war|wa|w)?)|(reposition-forw(?:ards|ard|ar|a)?)|(reposition-parent-rel(?:ation|atio|ati|at|a)?)|(return-to-start-di(?:r)?)|(return-val(?:ue|u)?)|(right-align(?:ed|e)?)|(run-proc(?:edure|edur|edu|ed|e)?)|radio-set|raw|raw-transfer|read-available|read-exact-num|read-response|readkey|real|recall|recursive|reference-only|reinstate|release|repeat|replication-create|replication-delete|replication-write|reports|reposition|request|resize|result|resume-display|retain|retry-cancel|return|returns|reverse-from|revert|revoke|right|right-end|routine-level|row|row-created|row-deleted|row-display|row-entry|row-height|row-leave|row-modified|row-of|row-unmodified|rule|rule-row|rule-y|run)\\b(?![#$\\-_%&])'
     },
     'keywords-S': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(system-help|system-dialog|suspend|super|summary|sum|substring|subscribe|sub-total|sub-minimum|sub-minimu|sub-minim|sub-mini|sub-min|sub-menu-help|sub-menu|sub-maximum|sub-maximu|sub-maxim|sub-maxi|sub-max|sub-count|sub-average|sub-averag|sub-avera|sub-aver|sub-ave|string-xref|stream-io|stream-handle|stream|stored-procedure|stored-procedur|stored-procedu|stored-proced|stored-proce|stored-proc|stop-mem-check|stop-display|stop-after|stop|stomp-frequency|stomp-detection|stdcall|status-area-msg|status|static|starting|start-search|start-row-resize|start-resize|start-move|start-mem-check|start-extend-box-selection|start-box-selection|start|sql|space|source-procedure|source|some|socket|soap-header-entryref|soap-header|soap-fault|smallint|slider|skip-schema-check|skip-group-duplicates|skip|size-pixels|size-pixel|size-pixe|size-pix|size-pi|size-p|size-chars|size-char|size-cha|size-ch|size-c|size|single-run|single-character|single|simple|silent|signature|side-label|side-labe|side-lab|show-stats|show-stat|short|shared|share-lock|share-loc|share-lo|share-l|share-|share|settings|set-state|set-pointer-value|set-pointer-valu|set-pointer-val|set-option|set-event-manager-option|set-db-logging|set-contents|set-cell-focus|set-byte-order|set-attr-call-type|set|session|server-socket|server|serialize-name|serialize-hidden|serializable|separators|separate-connection|send|self|selection-list|selection-extend|selection|selected-items|select-repositioned-row|select-on-join|select-extend|select|seek|security-policy|section|search-target|search-self|scrolling|scrolled-row-position|scrolled-row-positio|scrolled-row-positi|scrolled-row-posit|scrolled-row-posi|scrolled-row-pos|scrollbar-drag|scroll-vertical|scroll-right|scroll-notify|scroll-mode|scroll-left|scroll-horizontal|scroll|screen-io|screen|schema|sax-xml|sax-writer|sax-write-tag|sax-write-idle|sax-write-error|sax-write-element|sax-write-content|sax-write-complete|sax-write-begin|sax-uninitialized|sax-running|sax-reader|sax-parser-error|sax-complete|sax-complet|sax-comple|sax-attributes|save-as|save)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b((sax-comple(?:te|t)?)|(scrolled-row-pos(?:ition|itio|iti|it|i)?)|(set-pointer-val(?:ue|u)?)|(share(?:-lock|-loc|-lo|-l|-)?)|(show-stat(?:s)?)|(side-lab(?:el|e)?)|(size-c(?:hars|har|ha|h)?)|(size-p(?:ixels|ixel|ixe|ix|i)?)|(stored-proc(?:edure|edur|edu|ed|e)?)|(sub-ave(?:rage|rag|ra|r)?)|(sub-max(?:imum|imu|im|i)?)|(sub-min(?:imum|imu|im|i)?)|(substr(?:ing|in|i)?)|save|save-as|sax-attributes|sax-parser-error|sax-reader|sax-running|sax-uninitialized|sax-write-begin|sax-write-complete|sax-write-content|sax-write-element|sax-write-error|sax-write-idle|sax-write-tag|sax-writer|sax-xml|schema|screen|screen-io|scroll|scroll-bars|scroll-horizontal|scroll-left|scroll-mode|scroll-notify|scroll-right|scroll-vertical|scrollbar-drag|scrolling|search-self|search-target|section|security-policy|seek|select|select-extend|select-on-join|select-repositioned-row|selected-items|selection|selection-extend|selection-list|self|send|sensitive|separate-connection|separators|serializable|serialize-hidden|serialize-name|server|server-socket|session|set|set-attr-call-type|set-byte-order|set-cell-focus|set-contents|set-db-logging|set-event-manager-option|set-option|set-state|settings|shared|short|signature|silent|simple|single|single-character|single-run|size|skip|skip-group-duplicates|skip-schema-check|slider|smallint|soap-fault|soap-header|soap-header-entryref|socket|some|source|source-procedure|space|sql|start|start-box-selection|start-extend-box-selection|start-mem-check|start-move|start-resize|start-row-resize|start-search|starting|static|status|status-area|status-area-msg|stdcall|stomp-detection|stomp-frequency|stop|stop-after|stop-display|stop-mem-check|stream|stream-handle|stream-io|string-xref|sub-count|sub-menu|sub-menu-help|sub-total|subscribe|sum|summary|super|suspend|system-dialog|system-help)\\b(?![#$\\-_%&])'
     },
     'keywords-T': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(ttcodepage|true|triggers|trigger|transaction-mode|transaction|trans|trailing|total|topic|top-column|top|tooltip|to|thru|throw|through|this-procedure|this-object|then|text-seg-growth|text-seg-growt|text-seg-grow|text-seg-gro|text-seg-gr|text-seg-g|text-seg-|text-seg|text-cursor|text|terminate|terminal|term|tenant-where|tenant|temp-table|target-procedure|target|table-scan|tab)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b((text-seg(?:-growth|-growt|-grow|-gro|-gr|-g|-)?)|(transact(?:ion|io|i)?)|tab|table-scan|target|target-procedure|temp-table|tenant|tenant-where|term|terminal|terminate|text|text-cursor|then|this-object|this-procedure|three-d|through|throw|thru|title|to|tooltip|top|top-column|topic|total|trailing|trans|transaction-mode|trigger|triggers|true|ttcodepage)\\b(?![#$\\-_%&])'
     },
     'keywords-U': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(utc-offset|using|user|use-widget-pool|use-underline|use-text|use-revvideo|use-index|use-filename|use-dict-exps|use-dict-exp|use-dict-ex|use-dict-e|use-dict-|use-dict|use-dic|use|upper|update|up|unsubscribe|unsigned-short|unsigned-long|unsigned-integer|unsigned-int64|unsigned-byte|unload|unless-hidden|unix-end|unix|unique|union|unformatted|unformatte|unformatt|unformat|unforma|unform|undo|underline|underlin|underli|underl|unbuffered|unbuffere|unbuffer|unbuffe|unbuff)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b((unbuff(?:ered|ere|er|e)?)|(underl(?:ine|in|i)?)|(unform(?:atted|atte|att|at|a)?)|(use-dic(?:t-exps|t-exp|t-ex|t-e|t-|t)?)|undo|union|unique|unix|unix-end|unless-hidden|unload|unsigned-byte|unsigned-int64|unsigned-integer|unsigned-long|unsigned-short|unsubscribe|up|update|upper|use|use-filename|use-index|use-revvideo|use-text|use-underline|use-widget-pool|user|using|utc-offset)\\b(?![#$\\-_%&])'
     },
     'keywords-V': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(void|vms|virtual-width|virtual-height|view-as|view|vertical|vertica|vertic|verti|vert|verbose|verbos|verbo|verb|variable|variabl|variab|varia|vari|var|values|value-changed|validate|v6frame)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b((vari(?:able|abl|ab|a)?)|(verb(?:ose|os|o)?)|(vert(?:ical|ica|ic|i)?)|v6frame|validate|value-changed|values|var|view|view-as|virtual-height|virtual-width|vms|void)\\b(?![#$\\-_%&])'
     },
     'keywords-W': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(workfile|work-table|work-tabl|work-tab|word-index|with|window-restored|window-resized|window-normal|window-name|window-minimized|window-minimize|window-minimiz|window-minimi|window-minim|window-maximized|window-maximize|window-maximiz|window-maximi|window-maxim|window-delayed-minimize|window-delayed-minimiz|window-delayed-minimi|window-delayed-minim|window-delayed-mini|window-delayed-min|window-close|width|widget-pool|widget|while|where|when|web-notify|web-context|web-contex|web-conte|web-cont|web-con|warning|wait-for|wait)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b((web-con(?:text|tex|te|t)?)|(window-delayed-min(?:imize|imiz|imi|im|i)?)|(work-tab(?:le|l)?)|wait|wait-for|warning|web-notify|when|where|while|widget|widget-pool|width|window-close|window-maximized|window-minimized|window-name|window-normal|window-resized|window-restored|with|word-index|workfile)\\b(?![#$\\-_%&])'
     },
     'keywords-X': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(xref-xml|xref|xor|xml-node-type|xml-node-name|xml-data-type|xcode|x-of|x-noderef|x-document)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b(x-document|x-noderef|x-of|xcode|xml-data-type|xml-node-name|xml-node-type|xor|xref|xref-xml)\\b(?![#$\\-_%&])'
     },
     'keywords-Y': {
       captures: {1: {name: 'keyword.other.abl'}},
       match:
-        '(?i)\\b(yes-no-cancel|yes-no|yes|year-offset|year|y-of)\\b(?![\\#\\$\\-\\_\\%\\&])'
+        '(?i)\\b(y-of|year|year-offset|yes|yes-no|yes-no-cancel)\\b(?![#$\\-_%&])'
     },
     'label-variable': {
       captures: {
         1: {name: 'variable.other.abl'},
         2: {name: 'keyword.other.abl'}
       },
-      match: '(?i)\\s*(\\w+)\\s+(label)\\s*'
+      match: '(?i)\\s*([a-zA-Z0-9_\\-#$%]+)\\s+(label)\\s*'
     },
     'language-functions': {
       captures: {1: {name: 'support.function.abl'}},
-      match: '(?i)\\b(opsys|proversion|guid|generate-uuid)\\b'
+      match: '(?i)\\b(opsys|(provers(?:ion|io|i)?)|guid|generate-uuid)\\b'
     },
     'method-definition': {
       begin: '(?i)^\\s*(method|constructor|destructor)\\s*',
@@ -1964,11 +2113,7 @@ const grammar = {
           match: '(?i)\\s*(void)\\s*'
         },
         {
-          captures: {1: {name: 'entity.name.function.abl'}},
-          match: '(?i)\\b([[:alpha:]_]+[\\w\\-{}#$%&]*)\\b\\R'
-        },
-        {
-          begin: '(?i)\\s*([[:alpha:]_]+[\\w\\-{}#$%&]*)?\\s*(\\()\\s*',
+          begin: '(?i)\\s*([a-zA-Z0-9_]+[a-zA-Z0-9_\\-{}#$%&]*)?\\s*(\\()\\s*',
           beginCaptures: {
             1: {name: 'entity.name.function.abl'},
             2: {name: 'meta.brace.round.js'}
@@ -1981,15 +2126,19 @@ const grammar = {
         {include: '#string'},
         {include: '#extent'},
         {include: '#primitive-type'},
+        {
+          captures: {1: {name: 'entity.name.function.abl'}},
+          match: '(?i)\\b([a-zA-Z0-9_]+[a-zA-Z0-9_\\-{}#$%&]*)\\b\\R'
+        },
         {include: '#dll-type'},
         {include: '#type-names'},
         {include: '#comment'}
       ]
     },
     multilinecomment: {
-      begin: '(?<!=)\\/\\*',
+      begin: '/\\*',
       contentName: 'comment',
-      end: '\\*\\/',
+      end: '\\*/',
       name: 'comment.block.source.abl',
       patterns: [
         {include: '#multilinecomment', name: 'comment.block.source.abl'}
@@ -2011,20 +2160,20 @@ const grammar = {
             5: {name: 'meta.brace.round.js'}
           },
           match:
-            '(?i)\\s*(new)\\s+(\\()\\s*([\\w\\-#$%]+(\\.[\\w\\-#$%]+)?)\\s*(\\))'
+            '(?i)\\s*(new)\\s+(\\()\\s*([a-zA-Z_][a-zA-Z0-9_\\-#$%]*(\\.[a-zA-Z][a-zA-Z0-9_\\-#$%]*)?)\\s*(\\))'
         },
         {
           captures: {
             2: {name: 'support.function.abl'},
             3: {name: 'storage.data.table.abl'}
           },
-          match: '(?i)\\s*((new)\\s+(?!.*\\()([\\w\\-#$%\\.]+))'
+          match: '(?i)\\s*((new)\\s+(?!.*\\()([a-zA-Z_][a-zA-Z0-9_\\-#$%\\.]*))'
         }
       ]
     },
     numeric: {
       match:
-        '(?<![\\w-])(0[xX][[:xdigit:]]+)|(\\-?[[:digit:]]+(\\.[[:digit:]]+)?)',
+        '(?<![a-zA-Z0-9_\\-#$%-])(0[xX][[:xdigit:]]+)|(\\-?[0-9]+(\\.[0-9]+)?)',
       name: 'constant.numeric.source.abl'
     },
     'of-phrase': {
@@ -2034,7 +2183,8 @@ const grammar = {
             1: {name: 'keyword.other.abl'},
             2: {name: 'storage.data.table.abl'}
           },
-          match: '(?i)\\s*(of)\\s+([\\w\\-#$%]+(\\.[\\w\\-#$%]+)?)\\s*'
+          match:
+            '\\s*([Oo][Ff])\\s+([a-zA-Z][a-zA-Z0-9_\\-#$%]*(\\.[a-zA-Z_][a-zA-Z0-9_\\-#$%]*)?)\\s*'
         },
         {
           captures: {
@@ -2043,7 +2193,7 @@ const grammar = {
             4: {name: 'storage.data.table.abl'}
           },
           match:
-            '(?i)\\s*([\\w\\-#$%]+(\\.[\\w\\-#$%]+)?)\\s+(of)\\s+([\\w\\-#$%]+(\\.[\\w\\-#$%]+)?)\\s*'
+            '(?i)\\s*([a-zA-Z][a-zA-Z0-9_\\-#$%]*(\\.[a-zA-Z_][a-zA-Z0-9_\\-#$%]*)?)\\s+(of)\\s+([a-zA-Z][a-zA-Z0-9_\\-#$%]*(\\.[a-zA-Z_][a-zA-Z0-9_\\-#$%]*)?)\\s*'
         }
       ]
     },
@@ -2055,22 +2205,31 @@ const grammar = {
         4: {name: 'entity.name.label.abl'}
       },
       match:
-        '(?i)\\s*(on)\\s+(endkey|error|stop|quit)\\s+(undo)\\s*(?!leave|next|retry|return|throw)([\\w\\-\\$]*)?\\s*'
+        '(?i)\\s*(on)\\s+(endkey|error|stop|quit)\\s+(undo)\\s*(?!leave|next|retry|return|throw)([a-zA-Z0-9_\\-#$%\\-$]*)?\\s*'
     },
     operator: {
       patterns: [
         {include: '#operator-no-space'},
-        {include: '#operator-with-space'}
+        {include: '#operator-with-space'},
+        {include: '#operator-with-trailing-space'}
       ]
     },
     'operator-no-space': {
       captures: {1: {name: 'keyword.operator.source.abl'}},
-      match: '(\\+=|-=|\\\\=|\\*=|<=|<>|>=|=|\\+|\\-|/|<|>|\\*)'
+      match: '(\\+=|-=|\\\\=|\\*=|<=|<>|>=|=|\\+|-|/|<|>|\\*)'
     },
     'operator-with-space': {
       captures: {1: {name: 'keyword.operator.source.abl'}},
       match:
-        '(?i)(?<=\\s)(not|contains|begins|matches|eq|le|lt|ge|gt|ne)(?=\\s|\\()'
+        '(?i)(?<=\\s)(contains|begins|matches|eq|le|lt|ge|gt|ne)(?=\\s|\\()'
+    },
+    'operator-with-trailing-space': {
+      captures: {1: {name: 'keyword.operator.source.abl'}},
+      match: '\\b([Nn][Oo][Tt])(?=\\s|\\()'
+    },
+    'opsys-device-name': {
+      captures: {1: {name: 'storage.other.opsys-device.abl'}},
+      match: '([_\\w\\/\\-\\\\$:\\.]+)(?<!\\.)'
     },
     ordinal: {
       captures: {
@@ -2080,7 +2239,7 @@ const grammar = {
       match: '(?i)\\s*(ordinal)\\s((0x)?[[:xdigit:]]+)?'
     },
     'parameter-as': {
-      begin: '(?i)\\s*([\\w\\-]+)\\s+(as)\\s+',
+      begin: '\\s*([a-zA-Z0-9_\\-#$%]+)\\s+([Aa][Ss])\\s+',
       beginCaptures: {
         1: {name: 'variable.parameter.abl'},
         2: {name: 'keyword.other.abl'}
@@ -2089,7 +2248,7 @@ const grammar = {
       patterns: [
         {
           captures: {1: {name: 'keyword.other.abl'}},
-          match: '(?i)\\s*(class)\\s*'
+          match: '\\s*([Cc][Ll][Aa][Ss]{2})\\s*'
         },
         {include: '#primitive-type'},
         {include: '#dll-type'},
@@ -2106,28 +2265,29 @@ const grammar = {
         {
           captures: {1: {name: 'keyword.other.abl'}},
           match:
-            '(?i)\\s*(input-output|input-outpu|input-outp|input-out|input-ou|input-o|input|output|append|bind|by-value|preselect|buffer|parameter|param|no-undo)\\s*'
+            '(?i)\\s*((input-o(?:utput|utpu|utp|u)?)|input|output|append|bind|by-value|(presel(?:ect|ec|e)?)|buffer|(param(?:eter|ete|et|e)?)|no-undo)\\s*'
         },
         {
           captures: {
             1: {name: 'keyword.other.abl'},
             2: {name: 'variable.parameter.abl'}
           },
-          match: '(?i)\\s*(dataset-handle|table-handle)\\s+([\\w\\-]+)'
+          match:
+            '(?i)\\s*(dataset-handle|table-handle)\\s+([a-zA-Z][a-zA-Z0-9_\\-]*)'
         },
         {
           captures: {
             1: {name: 'keyword.other.abl'},
             2: {name: 'storage.data.dataset.abl'}
           },
-          match: '(?i)\\s*(dataset)\\s+([\\w\\-]+)\\s*'
+          match: '(?i)\\s*(dataset)\\s+([a-zA-Z][a-zA-Z0-9_\\-]*)\\s*'
         },
         {
           captures: {
             1: {name: 'keyword.other.abl'},
             2: {name: 'storage.data.table.abl'}
           },
-          match: '(?i)\\s*(table)\\s+([\\w\\-]+)\\s*'
+          match: '(?i)\\s*(table)\\s+([a-zA-Z][a-zA-Z0-9_\\-]*)\\s*'
         },
         {include: '#parameter-as'},
         {
@@ -2136,7 +2296,7 @@ const grammar = {
             2: {name: 'punctuation.separator.comma.abl'}
           },
           match:
-            '(?i)\\s*(character|characte|charact|charac|chara|char|com-handle|date|datetime-tz|datetime|decimal|decima|decim|deci|dec|handle|int64|integer|intege|integ|inte|int|logical|logica|logic|logi|log|longchar|longcha|longch|memptr|raw|recid|rowid|widget-handle|widget-h?)(?![=\\w-])\\s*(,*)'
+            '(?i)\\s*((char(?:acter|acte|act|ac|a)?)|com-handle|date|datetime-tz|datetime|(dec(?:imal|ima|im|i)?)|handle|int64|(int(?:eger|ege|eg|e)?)|(log(?:ical|ica|ic|i)?)|(longch(?:ar|a)?)|memptr|raw|recid|rowid|(widget-h(?:andle|andl|and|an|a)?))(?![=a-zA-Z0-9_\\-])\\s*(,*)'
         },
         {
           captures: {1: {name: 'punctuation.separator.comma.abl'}},
@@ -2160,7 +2320,7 @@ const grammar = {
       ]
     },
     'parameter-name': {
-      match: '(?<=^|\\s)(\\w|-)+(?=\\s)',
+      match: '(?<=^|\\s)(a-zA-Z0-9_\\-#$%|-)+(?=\\s)',
       name: 'variable.parameter.abl'
     },
     parens: {match: '\\(|\\)', name: 'meta.brace.round.js'},
@@ -2170,16 +2330,15 @@ const grammar = {
         2: {name: 'storage.type.function.abl'}
       },
       match:
-        '(?i)(&window-system|&text-height|&line-number|&batch-mode|&file-name|&undefine|&sequence|&message|defined|&elseif|&scoped|&global|&opsys|&endif|&else|&scop|&then|&glob|&if)|({\\&[\\w\\-\\s\\(\\)]+})|(\\&[\\w-])'
+        '(?i)(&window-system|&text-height|&line-number|&batch-mode|&file-name|&undefine|&sequence|&message|defined|&elseif|(?:&scop(?:ed-define|ed-defin|ed-defi|ed-def|ed-de|ed-d|ed-|ed|e)?)|(?:&glob(?:al-define|al-defin|al-defi|al-def|al-de|al-d|al-|al|a)?)|&opsys|&endif|&else|&then|&if)|({&[a-zA-Z0-9_\\-#$%\\s\\(\\)]+})|(&[a-zA-Z0-9_\\-#$%]+)'
     },
     'primitive-type': {
       captures: {1: {name: 'storage.type.abl'}},
       match:
-        '(?i)(?<=^|\\s)(blob|character|characte|charact|charac|chara|char|cha|ch|c|clob|com-handle|date|da|datetime|datetime-tz|decimal|decima|decim|deci|dec|de|handle|int64|integer|intege|integ|inte|int|in|i|logical|logica|logic|logi|log|lo|l|longchar|longcha|longch|memptr|raw|recid|rowid|widget-handle)(?![=\\w-])'
+        '(?i)(?<=^|\\s)(blob|(char(?:acter|acte|act|ac|a)?)|cha|ch|c|clob|com-handle|date|da|datetime|datetime-tz|(dec(?:imal|ima|im|i)?)|de|handle|int64|(int(?:eger|ege|eg|e)?)|in|i|(log(?:ical|ica|ic|i)?)|lo|l|(longch(?:ar|a)?)|memptr|raw|recid|rowid|widget-handle)(?![=a-zA-Z0-9_\\-#$%\\-])'
     },
     'procedure-definition': {
-      begin:
-        '(?i)\\s*(procedure|procedur|procedu|proced|proce)\\s+(?=[\\w\'"#\\$_])',
+      begin: '(?i)\\s*(proce(?:dure|dur|du|d)?)\\s+(?=[a-zA-Z_])',
       beginCaptures: {1: {name: 'keyword.other.abl'}},
       end: '(?=:|\\.)',
       endCaptures: {1: {name: 'punctuation.terminator.abl'}},
@@ -2188,12 +2347,12 @@ const grammar = {
         {
           captures: {1: {name: 'keyword.other.abl'}},
           match:
-            '(?i)\\b(external|cdecl|pascal|stdcall|ordinal|persistent|thread-safe|in|super)\\b'
+            '(?i)\\b(external|cdecl|pascal|stdcall|ordinal|(persist(?:ent|en|e)?)|thread-safe|in|super)\\b'
         },
         {include: '#string'},
         {
           captures: {1: {name: 'entity.name.function.abl'}},
-          match: '([[:alpha:]][\\w\\#\\$\\-\\%\\&\\.]+)(?<!\\.)'
+          match: '([a-zA-Z_][a-zA-Z0-9_#$\\-%&\\.]+)(?<!\\.)'
         },
         {include: '#argument-reference'},
         {include: '#numeric'},
@@ -2212,19 +2371,19 @@ const grammar = {
         1: {name: 'entity.name.function.abl'},
         2: {name: 'keyword.other.abl'}
       },
-      match: '(?i)\\s*([\\w\\-]+)\\s+(as)\\s*'
+      match: '\\s*([a-zA-Z0-9_\\-#$%]+)\\s+([Aa][Ss])\\s*'
     },
     'property-call': {
       captures: {
         1: {name: 'punctuation.separator.colon.abl'},
         2: {name: 'entity.name.function.abl'}
       },
-      match: '(:)([[:alpha:]][\\w\\#\\$\\-\\%\\&]*)\\b'
+      match: '(:)([a-zA-Z_][a-zA-Z0-9_#$\\-%&]*)\\b'
     },
     'property-get-set-block': {
-      begin: '(?i)\\s*(?<!\\:)\\s*(get|set)\\b',
+      begin: '\\s*(?<!:)\\s*([Gg][Ee][Tt]|[Ss][Ee][Tt])\\b(?![#$\\-_%&])',
       beginCaptures: {1: {name: 'keyword.other.abl'}},
-      end: '(?i)\\s*(end)\\s*(get|set)?\\s*(?=\\.)\\s*',
+      end: '\\s*([Ee][Nn][Dd])\\s*([Gg][Ee][Tt]|[Ss][Ee][Tt])?\\s*(?=\\.)\\s*',
       endCaptures: {
         1: {name: 'keyword.other.abl'},
         2: {name: 'keyword.other.abl'}
@@ -2237,14 +2396,14 @@ const grammar = {
     },
     'property-get-set-empty': {
       captures: {1: {name: 'keyword.other.abl'}},
-      match: '\\b(get|set)\\s*(?=\\.)'
+      match: '\\b([Gg][Ee][Tt]|[Ss][Ee][Tt])\\s*(?=\\.)'
     },
     'property-get-set-super': {
       captures: {
         1: {name: 'keyword.other.abl'},
         2: {name: 'keyword.other.abl'}
       },
-      match: '\\b(get|set)\\s+(super)\\s*(?=\\.)'
+      match: '(?i)\\b(get|set)\\s+(super)\\s*(?=\\.)'
     },
     'punctuation-colon': {match: ':', name: 'punctuation.terminator.abl'},
     'punctuation-comma': {
@@ -2265,7 +2424,7 @@ const grammar = {
         {include: '#punctuation-comma'},
         {
           captures: {1: {name: 'punctuation.separator.colon.abl'}},
-          match: '(\\:)'
+          match: '(:)'
         },
         {
           captures: {1: {name: 'punctuation.separator.period.abl'}},
@@ -2281,7 +2440,7 @@ const grammar = {
         5: {name: 'meta.brace.round.js'}
       },
       match:
-        '(?i)\\b(available|locked|ambiguous)\\s*(\\()?\\s*([\\w\\-#$%]+(\\.[\\w\\-#$%]+)?)\\s*(\\))?'
+        '(?i)\\b((?:avail(?:able|abl|ab|a)?)|locked|ambiguous)\\s*(\\()?\\s*([a-zA-Z][a-zA-Z0-9_\\-#$%]*(\\.[a-zA-Z][a-zA-Z0-9_\\-#$%]*)?)\\s*(\\))?'
     },
     release: {
       begin: '(?i)\\s*(release)\\s*',
@@ -2301,6 +2460,16 @@ const grammar = {
         {include: '#db-dot-table'}
       ]
     },
+    'rowid-function': {
+      captures: {
+        1: {name: 'support.function.abl'},
+        2: {name: 'meta.brace.round.js'},
+        3: {name: 'storage.data.table.abl'},
+        5: {name: 'meta.brace.round.js'}
+      },
+      match:
+        '(?i)\\s*(rowid)\\s*(\\()\\s*([a-zA-Z_][a-zA-Z0-9_\\-#$%]*(\\.[a-zA-Z][a-zA-Z0-9_\\-#$%]*)?)\\s*(\\))'
+    },
     'run-quoted': {
       captures: {
         1: {name: 'keyword.other.abl'},
@@ -2317,16 +2486,13 @@ const grammar = {
         2: {name: 'entity.name.procedure.abl'}
       },
       match:
-        '(?i)\\s*(run)\\s+(?!value)\\s*([\\w\\-\\$\\@\\/\\\\]{1,253}(\\.[\\w@\\$\\-]{1,2})?)'
+        '(?i)\\s*(run)\\s+(?!value)\\s*([\\w\\-$\\@\\/\\\\]{1,253}(\\.[\\w@$\\-]{1,2})?)'
     },
     serializable: {
       captures: {1: {name: 'keyword.other.abl'}},
       match: '(?i)\\b(non-serializable|serializable)\\b'
     },
-    singlelinecomment: {
-      match: '\\/\\/.*$',
-      name: 'comment.line.double-slash.abl'
-    },
+    singlelinecomment: {match: '//.*$', name: 'comment.line.double-slash.abl'},
     singlequotedstring: {
       begin: "(')",
       beginCaptures: {1: {name: 'punctuation.definition.string.begin.abl'}},
@@ -2341,13 +2507,19 @@ const grammar = {
     statements: {
       name: 'meta.statements.abl',
       patterns: [
+        {include: '#comment'},
+        {include: '#abl-function-variable-arg'},
+        {include: '#while-expression'},
+        {include: '#rowid-function'},
+        {include: '#var-statement'},
+        {include: '#input-output-from-to'},
         {include: '#function-definition'},
         {include: '#record-buffer-functions'},
+        {include: '#create-statement'},
         {include: '#can-find'},
         {include: '#release'},
         {include: '#copy-lob'},
         {include: '#event-un-subscribe'},
-        {include: '#create-buffer'},
         {include: '#buffer-name'},
         {include: '#temp-table-name'},
         {include: '#annotation'},
@@ -2377,8 +2549,6 @@ const grammar = {
           match: '(?i)\\s*(void)\\s*'
         },
         {include: '#parens'},
-        {include: '#singlelinecomment'},
-        {include: '#multilinecomment'},
         {include: '#declarations'},
         {include: '#decimals'},
         {include: '#numeric'},
@@ -2427,7 +2597,7 @@ const grammar = {
         5: {name: 'entity.name.function.abl'}
       },
       match:
-        '(?i)\\s*(([\\w\\#\\$\\%\\-]+|progress)(\\.[\\w\\#\\$\\%\\-]+)+)\\s*(:)([\\w-]+)\\s*'
+        '(?i)\\s*(([\\w#$%\\-]+|progress)(\\.[\\w#$%\\-]+)+)\\s*(:)([\\w\\-]+)\\s*'
     },
     string: {
       patterns: [
@@ -2441,12 +2611,12 @@ const grammar = {
         1: {name: 'keyword.other.abl'},
         2: {name: 'storage.data.table.abl'}
       },
-      match: '(?i)\\b(temp-table)\\s+([\\w\\-#$%]+)'
+      match: '(?i)\\b(temp-table)\\s+([a-zA-Z][a-zA-Z0-9_\\-#$%]*)'
     },
     'timestamp-constant': {name: 'constant.language.abl'},
     'translation-attribute': {
       captures: {1: {name: 'support.other.abl'}},
-      match: '(?i)(:[L|R|T|C|U]\\d*)\\b'
+      match: '(:[LlRrTtCcUu]\\d*)\\b'
     },
     'type-argument-function': {
       begin: '(?i)\\s*(cast|type-of)\\s*(?=\\()',
@@ -2481,11 +2651,10 @@ const grammar = {
     },
     'type-name': {
       captures: {1: {name: 'entity.name.type.abl'}},
-      match: '(?i)\\b([\\w\\#\\$\\%\\-]+(\\.[\\w\\#\\$\\%\\-]+)*)\\b'
+      match: '(?i)\\b([\\w#$%\\-]+(\\.[\\w#$%\\-]+)*)\\b'
     },
     'type-name-generic': {
-      begin:
-        '(?i)\\s*(([\\w\\#\\$\\%\\-]+)(\\.[\\w\\#\\$\\%\\-]+)*\\s*)\\s*(<)',
+      begin: '(?i)\\s*(([\\w#$%\\-]+)(\\.[\\w#$%\\-]+)*\\s*)\\s*(<)',
       beginCaptures: {
         1: {name: 'entity.name.type.abl'},
         4: {name: 'punctuation.definition.generic.begin.abl'}
@@ -2512,13 +2681,13 @@ const grammar = {
       ]
     },
     'undo-statement': {
-      begin: '(?i)\\s*(undo)\\s*([\\w\\-\\$]*)?\\s*(,)',
+      begin: '(?i)\\s*(undo)\\s*([a-zA-Z0-9_\\-#$%\\-$]*)?\\s*(,)',
       beginCaptures: {
         1: {name: 'keyword.other.abl'},
         2: {name: 'entity.name.label.abl'},
         3: {name: 'punctuation.separator.comma.abl'}
       },
-      end: '(?=\\.|\\:)',
+      end: '(?=\\.|:)',
       patterns: [
         {include: '#string'},
         {
@@ -2526,7 +2695,7 @@ const grammar = {
             1: {name: 'keyword.other.abl'},
             2: {name: 'entity.name.label.abl'}
           },
-          match: '(?i)\\s*(leave|next|retry)\\s([\\w\\-\\$]*)?'
+          match: '(?i)\\s*(leave|next|retry)\\s([a-zA-Z0-9_\\-#$%\\-$]*)?'
         },
         {include: '#new-class'},
         {include: '#keywords'},
@@ -2539,14 +2708,14 @@ const grammar = {
     },
     'unqualified-method-call': {
       captures: {1: {name: 'entity.name.function.abl'}},
-      match: '\\b([[:alpha:]][\\w\\#\\$\\-\\%\\&]*)\\b(?=\\()'
+      match: '\\b([a-zA-Z_][a-zA-Z0-9_#$\\-%&]*)\\b(?=\\()'
     },
     'use-index': {
       captures: {
         1: {name: 'keyword.other.abl'},
         2: {name: 'storage.data.table.abl'}
       },
-      match: '(?i)\\b(use-index)\\s+([[:alpha:]][\\w\\-\\$]*)\\b'
+      match: '(?i)\\b(use-index)\\s+([a-zA-Z_][a-zA-Z0-9_\\-$]*)\\b'
     },
     using: {
       begin: '(?i)\\s*(using)\\s*',
@@ -2557,8 +2726,7 @@ const grammar = {
       patterns: [
         {
           captures: {2: {name: 'entity.name.package.abl'}},
-          match:
-            '(?i)\\s*((([\\w\\#\\$\\%]+|progress)(\\.[\\w\\#\\$\\%]+)*)\\.\\*)\\s*'
+          match: '(?i)\\s*((([\\w#$%]+|progress)(\\.[\\w#$%]+)*)\\.\\*)\\s*'
         },
         {
           captures: {1: {name: 'keyword.other.abl'}},
@@ -2567,26 +2735,51 @@ const grammar = {
         {include: '#type-name'}
       ]
     },
+    'var-statement': {
+      begin: '^\\s*(var)\\s+',
+      beginCaptures: {1: {name: 'keyword.other.abl'}},
+      end: '(\\s([a-zA-Z][a-zA-Z0-9_\\-#$%]*))',
+      endCaptures: {2: {name: 'variable.other.abl'}},
+      name: 'meta.define.abl',
+      patterns: [
+        {include: '#access-modifier'},
+        {include: '#serializable'},
+        {
+          captures: {
+            1: {name: 'keyword.other.abl'},
+            2: {name: 'entity.name.type.abl'}
+          },
+          match:
+            '(?i)\\s*(class)\\s*(blob|character|char|clob|com-handle|date|datetime|datetime-tz|decimal|handle|int64|integer|int|logical|longchar|memptr|raw|recid|rowid|widget-handle)?'
+        },
+        {include: '#primitive-type'},
+        {include: '#type-names'},
+        {include: '#array-literal'},
+        {include: '#string'},
+        {include: '#comment'},
+        {include: '#preprocessors'}
+      ]
+    },
     'variable-as': {
       captures: {
         1: {name: 'variable.other.abl'},
         2: {name: 'keyword.other.abl'}
       },
-      match: '(?i)\\s*([\\w\\-]+)\\s+(as)\\s*'
+      match: '\\s*([a-zA-Z0-9_\\-#$%\\-]+)\\s+([Aa][Ss])\\s*'
     },
     'variable-like': {
       captures: {1: {name: 'variable.other.abl'}},
-      match: '(?i)\\s*([\\w\\-]+)\\s+(?=like)\\s*'
+      match: '(?i)\\s*([a-zA-Z0-9_\\-#$%\\-]+)\\s+(?=like)\\s*'
     },
     'variable-name': {
       match:
-        '(?<=^|\\s|\\[|\\(|,)([[:alpha:]][\\w\\#\\$\\-\\%\\&]*)(?=\\.\\s|\\.$|,|:|\\s|\\)|\\]|\\[|$)',
+        '(?<=^|\\s|\\[|\\(|,)([a-zA-Z_][a-zA-Z0-9_#$\\-%&]*)(?=\\.\\s|\\.$|,|:|\\s|\\)|\\]|\\[|$)',
       name: 'variable.other.abl'
     },
     'while-expression': {
       begin: '(?i)\\s*(while)\\b',
       beginCaptures: {1: {name: 'keyword.other.abl'}},
-      end: '(?i)(?=transaction|on|\\:|with)',
+      end: '(?i)(?=(transact(?:ion|io|i)?)|on|:|with)',
       patterns: [
         {include: '#comment'},
         {include: '#operator'},

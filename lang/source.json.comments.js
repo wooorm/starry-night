@@ -122,13 +122,15 @@ const grammar = {
     objectkey: {
       begin: '"',
       beginCaptures: {
-        0: {name: 'punctuation.support.type.property-name.begin.json.comments'}
+        0: {
+          name: 'punctuation.entity.name.tag.property-name.begin.json.comments'
+        }
       },
       end: '"',
       endCaptures: {
-        0: {name: 'punctuation.support.type.property-name.end.json.comments'}
+        0: {name: 'punctuation.entity.name.tag.property-name.end.json.comments'}
       },
-      name: 'string.json.comments support.type.property-name.json.comments',
+      name: 'string.json.comments entity.name.tag.property-name.json.comments',
       patterns: [{include: '#stringcontent'}]
     },
     string: {

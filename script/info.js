@@ -28,6 +28,10 @@ export const info = {
     homepage: 'https://github.com/relikd/CUE-Sheet_sublime',
     license: 'mit'
   },
+  'source.clue': {
+    homepage: 'https://github.com/ClueLang/Clue-for-VSCode',
+    license: 'mit'
+  },
   'source.gsc': {
     homepage: 'https://github.com/Jake-NotTheMuss/CoDT7-Sublime',
     license: 'unlicense'
@@ -114,10 +118,6 @@ export const info = {
   },
   'source.c.linker': {
     homepage: 'https://github.com/donno2048/Linker.tmLanguage',
-    license: 'mit'
-  },
-  'source.livescript': {
-    homepage: 'https://github.com/paulmillr/LiveScript.tmbundle',
     license: 'mit'
   },
   'source.luau': {
@@ -561,15 +561,11 @@ export const info = {
     license: 'mit'
   },
   'source.c': {
-    dependencies: ['source.c.platform'],
-    homepage: 'https://github.com/textmate/c.tmbundle'
+    homepage: 'https://github.com/mikomikotaishi/c.tmbundle'
   },
   'source.c++': {
     dependencies: ['source.c'],
-    homepage: 'https://github.com/textmate/c.tmbundle'
-  },
-  'source.c.platform': {
-    homepage: 'https://github.com/textmate/c.tmbundle'
+    homepage: 'https://github.com/mikomikotaishi/c.tmbundle'
   },
   'source.cairo': {
     homepage: 'https://github.com/software-mansion-labs/cairo-tm-grammar',
@@ -646,6 +642,10 @@ export const info = {
   'source.dart': {
     homepage: 'https://github.com/dart-lang/dart-syntax-highlight',
     license: 'bsd-3-clause'
+  },
+  'source.daslang': {
+    homepage: 'https://github.com/moleium/daslang-grammar',
+    license: 'mit'
   },
   'source.data-weave': {
     homepage: 'https://github.com/mulesoft-labs/data-weave-tmLanguage',
@@ -758,6 +758,10 @@ export const info = {
     homepage: 'https://github.com/godotengine/godot-vscode-plugin',
     license: 'mit'
   },
+  'source.gdshader': {
+    homepage: 'https://github.com/godotengine/godot-vscode-plugin',
+    license: 'mit'
+  },
   'source.grace': {
     license: 'mit'
   },
@@ -864,6 +868,10 @@ export const info = {
     dependencies: ['source.python'],
     homepage: 'https://github.com/p0lygun/kivy-language-grammer',
     license: 'mit'
+  },
+  'source.koka': {
+    homepage: 'https://github.com/koka-community/koka-textmate-grammar',
+    license: 'apache-2.0'
   },
   'source.kusto': {
     homepage: 'https://github.com/mmanela/kusto-sublime',
@@ -1046,6 +1054,11 @@ export const info = {
     homepage: 'https://github.com/Alhadis/language-etc',
     license: 'isc'
   },
+  'source.m3u': {
+    dependencies: ['etc'],
+    homepage: 'https://github.com/Alhadis/language-etc',
+    license: 'isc'
+  },
   'source.m4': {
     dependencies: ['etc'],
     homepage: 'https://github.com/Alhadis/language-etc',
@@ -1108,6 +1121,11 @@ export const info = {
   },
   'source.string-template': {
     dependencies: ['etc'],
+    homepage: 'https://github.com/Alhadis/language-etc',
+    license: 'isc'
+  },
+  'source.torrc': {
+    dependencies: ['etc', 'source.hosts'],
     homepage: 'https://github.com/Alhadis/language-etc',
     license: 'isc'
   },
@@ -1678,6 +1696,10 @@ export const info = {
     dependencies: ['text.tex'],
     homepage: 'https://github.com/textmate/latex.tmbundle'
   },
+  'source.leo': {
+    homepage: 'https://github.com/ProvableHQ/leo-linguist',
+    license: 'apache-2.0'
+  },
   'source.lilypond': {
     dependencies: ['source.lisp'],
     homepage: 'https://github.com/nwhetsell/linter-lilypond',
@@ -1689,6 +1711,10 @@ export const info = {
     license: 'mit'
   },
   'source.lisp': {},
+  'source.livescript': {
+    homepage: 'https://github.com/sharktide/livescript-vscode',
+    license: 'apache-2.0'
+  },
   'source.llvm': {
     homepage: 'https://github.com/whitequark/llvm.tmbundle',
     license: 'mit'
@@ -1780,7 +1806,7 @@ export const info = {
     license: 'apache-2.0'
   },
   'source.objc': {
-    dependencies: ['source.c', 'source.c.platform', 'source.objc.platform']
+    dependencies: ['source.c', 'source.objc.platform']
   },
   'source.objc++': {
     dependencies: ['source.c++', 'source.objc']
@@ -1907,6 +1933,10 @@ export const info = {
   },
   'source.rust': {
     homepage: 'https://github.com/dustypomerleau/rust-syntax',
+    license: 'mit'
+  },
+  'source.sail': {
+    homepage: 'https://github.com/Timmmm/sail_vscode',
     license: 'mit'
   },
   'source.sas': {
@@ -2210,6 +2240,14 @@ export const info = {
     homepage: 'https://github.com/mrob95/vscode-TalonScript',
     license: 'mit'
   },
+  'source.aiken': {
+    homepage: 'https://github.com/aiken-lang/vscode-aiken',
+    license: 'apache-2.0'
+  },
+  'source.uplc': {
+    homepage: 'https://github.com/aiken-lang/vscode-aiken',
+    license: 'apache-2.0'
+  },
   'text.html.statamic': {
     dependencies: ['text.html.basic'],
     homepage: 'https://github.com/Stillat/vscode-antlers-language-server',
@@ -2409,6 +2447,11 @@ export const info = {
     homepage: 'https://github.com/cstrachan88/vscode-vcard',
     license: 'mit'
   },
+  'source.vento': {
+    dependencies: ['source.js'],
+    homepage: 'https://github.com/ventojs/vscode-vento',
+    license: 'mit'
+  },
   'source.v': {
     homepage: 'https://github.com/0x9ef/vscode-vlang',
     license: 'mit'
@@ -2460,6 +2503,10 @@ export const info = {
   'source.zeek': {
     homepage: 'https://github.com/zeek/zeek-sublime',
     license: 'bsd-3-clause'
+  },
+  'source.zmodel': {
+    homepage: 'https://github.com/zenstackhq/zenstack',
+    license: 'mit'
   },
   'source.php.zephir': {
     homepage: 'https://github.com/phalcon/zephir-sublime'

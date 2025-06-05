@@ -15,7 +15,7 @@ const grammar = {
     {match: '(\\b_[a-zA-Z0-9_]*\\b)', name: 'keyword.unused.roc'},
     {
       match:
-        '\\b(dbg|if|then|else|when|is|app|packages|imports?|provides|to|as|expect|exposes)\\s+',
+        '\\b(dbg|if|then|else|when|is|app|module|package|import|as|exposing|expect)\\s+',
       name: 'keyword.control.roc'
     },
     {include: '#comments'},

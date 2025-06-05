@@ -9,7 +9,7 @@
 
 /** @type {Grammar} */
 const grammar = {
-  extensions: ['.res'],
+  extensions: ['.res', '.resi'],
   names: ['rescript'],
   patterns: [
     {include: '#ffi-single'},
@@ -55,11 +55,11 @@ const grammar = {
             1: {name: 'variable'},
             2: {name: 'keyword.operator keyword'}
           },
-          match: '(to|downto)\\s*(=)'
+          match: '~(to|downto)\\s*(=)'
         },
         {
           captures: {1: {name: 'variable'}, 2: {name: 'keyword.control'}},
-          match: '(to|downto)\\s*(as)'
+          match: '~(to|downto)\\s+(as)'
         }
       ]
     },

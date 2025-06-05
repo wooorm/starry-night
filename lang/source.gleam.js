@@ -21,7 +21,7 @@ const grammar = {
   ],
   repository: {
     binary_number: {
-      match: '\\b0[bB]0*1[01_]*\\b',
+      match: '\\b0[bB][01_]*\\b',
       name: 'constant.numeric.binary.gleam'
     },
     comments: {patterns: [{match: '//.*', name: 'comment.line.gleam'}]},
@@ -31,13 +31,11 @@ const grammar = {
         {include: '#octal_number'},
         {include: '#hexadecimal_number'},
         {include: '#decimal_number'},
-        {include: '#boolean'},
         {match: '[[:upper:]][[:alnum:]]*', name: 'entity.name.type.gleam'}
       ]
     },
     decimal_number: {
-      match:
-        '\\b(0*[1-9][0-9_]*|0)(\\.(0*[1-9][0-9_]*|0)?(e-?0*[1-9][0-9]*)?)?\\b',
+      match: '\\b([0-9][0-9_]*)(\\.([0-9_]*)?(e-?[0-9]+)?)?\\b',
       name: 'constant.numeric.decimal.gleam'
     },
     discards: {match: '\\b_(?:[[:word:]]+)?\\b', name: 'comment.unused.gleam'},
@@ -60,14 +58,14 @@ const grammar = {
       ]
     },
     hexadecimal_number: {
-      match: '\\b0[xX]0*[1-9a-zA-Z][0-9a-zA-Z]*\\b',
+      match: '\\b0[xX][0-9a-fA-F_]+\\b',
       name: 'constant.numeric.hexadecimal.gleam'
     },
     keywords: {
       patterns: [
         {
           match:
-            '\\b(as|use|case|if|fn|import|let|assert|pub|type|opaque|const|todo|panic|else|try|echo)\\b',
+            '\\b(as|use|case|if|fn|import|let|assert|pub|type|opaque|const|todo|panic|else|echo)\\b',
           name: 'keyword.control.gleam'
         },
         {match: '(<\\-|\\->)', name: 'keyword.operator.arrow.gleam'},
@@ -94,7 +92,7 @@ const grammar = {
       ]
     },
     octal_number: {
-      match: '\\b0[oO]0*[1-7][0-7]*\\b',
+      match: '\\b0[oO][0-7_]*\\b',
       name: 'constant.numeric.octal.gleam'
     },
     strings: {

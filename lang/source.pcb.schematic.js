@@ -10,7 +10,7 @@
 /** @type {Grammar} */
 const grammar = {
   dependencies: ['source.pcb.sexp', 'source.scheme'],
-  extensions: ['.kicad_sch'],
+  extensions: ['.kicad_sch', '.kicad_sym'],
   names: ['kicad-schematic', 'eeschema-schematic'],
   patterns: [
     {

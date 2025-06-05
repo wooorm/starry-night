@@ -143,6 +143,16 @@ const grammar = {
         {include: '#shapeid'},
         {match: '[^\\n]', name: 'invalid.illegal.apply.smithy'}
       ]
+    },
+    {
+      begin: '^([A-Z-a-z_][A-Z-a-z0-9_]*)(:)\\s*',
+      beginCaptures: {
+        1: {name: 'support.type.property-name.smithy'},
+        2: {name: 'punctuation.separator.dictionary.pair.smithy'}
+      },
+      end: '\\n',
+      name: 'meta.keyword.statement.member.smithy',
+      patterns: [{include: '#shapeid'}]
     }
   ],
   repository: {

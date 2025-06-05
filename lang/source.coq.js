@@ -9,7 +9,7 @@
 const grammar = {
   extensions: ['.coq'],
   extensionsWithDot: ['.v'],
-  names: ['coq'],
+  names: ['rocq-prover', 'coq', 'rocq'],
   patterns: [
     {include: '#multilinecomment'},
     {

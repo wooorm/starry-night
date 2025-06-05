@@ -26,12 +26,12 @@ const grammar = {
             },
             {
               match:
-                '(?i)(Interface|Title|Notes|RequiredDeps|\\bDep[^:]*|OptionalDeps|LoadOnDemand|LoadWith|LoadManagers|SavedVariablesPerCharacter|SavedVariables|DefaultState|Author|Version|AddonCompartmentFunc(OnEnter|OnLeave)?|IconAtlas|IconTexture|Category|Group)',
+                '(?i)(Interface|Title|Notes|RequiredDeps|\\bDep[^:]*|OptionalDeps|LoadOnDemand|LoadWith|LoadManagers|AllowLoadGameType|SavedVariablesPerCharacter|SavedVariables|LoadSavedVariablesFirst|DefaultState|Author|Version|AddonCompartmentFunc(OnEnter|OnLeave)?|IconAtlas|IconTexture|Category|Group)',
               name: 'entity.name.tag.toc'
             },
             {
               match:
-                '(?i)(AllowLoad(GameType)?|OnlyBetaAndPTR|SavedVariablesMachine|Secure|LoadFirst|UseSecureEnvironment)',
+                '(?i)(AllowLoad|OnlyBetaAndPTR|SavedVariablesMachine|Secure|LoadFirst|UseSecureEnvironment)',
               name: 'entity.name.tag.restricted.toc'
             },
             {match: '\\S[^:]+', name: 'invalid.tag.toc'}
@@ -56,9 +56,48 @@ const grammar = {
       match: '^(##\\s*(\\S+))\\s*(:)\\s*(.*)$'
     },
     {match: '#.*$', name: 'comment.toc'},
-    {match: '^(?!#)[^ ].+\\.xml', name: 'meta.require.xml.toc'},
+    {
+      begin: '^(?!#)\\s*(?=[\\w\\[])',
+      end: '\\n',
+      name: 'entity.name.file.toc',
+      patterns: [
+        {include: '#inline-conditional-directive'},
+        {include: '#inline-variable-directive'}
+      ]
+    },
     {match: '@.*?@', name: 'constant.other.packager.toc'}
   ],
+  repository: {
+    'inline-conditional-directive': {
+      captures: {
+        1: {
+          name: 'keyword.tag.toc',
+          patterns: [
+            {match: '(?i)(AllowLoadGameType)', name: 'entity.name.tag.toc'},
+            {match: '(?i)(AllowLoad)', name: 'entity.name.tag.restricted.toc'},
+            {match: '.+', name: 'invalid.tag.toc'}
+          ]
+        },
+        2: {name: 'punctuation.separator.key-value'},
+        3: {name: 'string.escape.coloring.toc'}
+      },
+      match: '\\[(\\w+)(\\s+)([^\\]]*)\\]',
+      name: 'keyword.tag.toc'
+    },
+    'inline-variable-directive': {
+      captures: {
+        1: {
+          name: 'keyword.tag.toc',
+          patterns: [
+            {match: '(?i)(Family|Game)', name: 'entity.name.tag.variable.toc'},
+            {match: '\\S[^:]+', name: 'invalid.tag.toc'}
+          ]
+        }
+      },
+      match: '\\[(\\w+)\\]',
+      name: 'keyword.tag.toc'
+    }
+  },
   scopeName: 'source.toc'
 }
 

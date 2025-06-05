@@ -99,7 +99,8 @@ const grammar = {
         {match: '\\b(context)\\b', name: 'keyword.operator.odin'},
         {match: '\\b(nil|true|false)\\b', name: 'constant.language.odin'},
         {
-          match: '\\b(\\d(\\d|_)*(.\\d(\\d|_)*)?)((e|E)(\\+|-)?\\d+)?[ijk]?\\b',
+          match:
+            '\\b(\\d(\\d|_)*(\\.\\d(\\d|_)*)?)((e|E)(\\+|-)?\\d+)?[ijk]?\\b',
           name: 'constant.numeric.odin'
         },
         {

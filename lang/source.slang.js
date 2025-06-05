@@ -27,7 +27,7 @@ const grammar = {
     {match: 'typedef', name: 'keyword.other.typedef.slang'},
     {
       match:
-        '\\b(throws|using|__generic|func|associatedtype|public|internal|private|import|module|implementing|__include|export|__exported|groupshared|let|var|property|extension|in|out|inout|ref|namespace|this|cbuffer|tbuffer|(dynamic_)?uniform|typealias|new|__extern_cpp|__(target|stage)_intrinsic|__intrinsic_asm|spirv_asm|(__)?(f|b)wd_diff|__dispatch_kernel|no_diff|__constref|expand|each|where|typename)\\b',
+        '\\b(throws|using|__generic|func|associatedtype|public|internal|private|import|module|implementing|__include|export|__exported|groupshared|let|var|property|extension|in|out|inout|ref|namespace|this|cbuffer|tbuffer|(dynamic_)?uniform|typealias|new|__extern_cpp|__(target|stage)_intrinsic|__intrinsic_asm|spirv_asm|(__)?(f|b)wd_diff|__dispatch_kernel|no_diff|__constref|expand|each|where|typename|constexpr|dyn|some)\\b',
       name: 'keyword.other.additional.slang'
     },
     {

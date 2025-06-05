@@ -1,6 +1,6 @@
 // This is a TextMate grammar distributed by `starry-night`.
 // This grammar is developed at
-// <https://github.com/textmate/c.tmbundle>
+// <https://github.com/mikomikotaishi/c.tmbundle>
 // and licensed permissive.
 // See <https://github.com/wooorm/starry-night> for more info.
 /**
@@ -9,7 +9,6 @@
 
 /** @type {Grammar} */
 const grammar = {
-  dependencies: ['source.c.platform'],
   extensions: [
     '.c',
     '.cats',
@@ -43,7 +42,6 @@ const grammar = {
     {include: '#preprocessor-rule-disabled'},
     {include: '#preprocessor-rule-other'},
     {include: '#comments'},
-    {include: 'source.c.platform'},
     {
       match:
         '\\b(break|case|continue|default|do|else|for|goto|if|_Pragma|return|switch|while)\\b',
@@ -53,6 +51,11 @@ const grammar = {
       match:
         '\\b(asm|__asm__|auto|bool|_Bool|char|_Complex|double|enum|float|_Imaginary|int|long|short|signed|struct|typedef|union|unsigned|void)\\b',
       name: 'storage.type.c'
+    },
+    {
+      match:
+        '\\b(?:(?:u?int|char(?:8|16|32)|wchar|float(?:16|32|64|128)|bfloat16)_t|[uif](?:8|16|32|64|128)|bf16)\\b',
+      name: 'storage.typealias.c'
     },
     {
       match: '\\b(const|extern|register|restrict|static|volatile|inline)\\b',
@@ -67,7 +70,10 @@ const grammar = {
       match: '\\bs[A-Z]\\w*\\b',
       name: 'variable.other.readwrite.static.mac-classic.c'
     },
-    {match: '\\b(NULL|true|false|TRUE|FALSE)\\b', name: 'constant.language.c'},
+    {
+      match: '\\b(NULL|nullptr|true|false|TRUE|FALSE)\\b',
+      name: 'constant.language.c'
+    },
     {include: '#sizeof'},
     {
       captures: {
@@ -127,7 +133,7 @@ const grammar = {
       ]
     },
     {
-      begin: '^\\s*#\\s*(include|import)\\b',
+      begin: '^\\s*#\\s*(embed|include|import)\\b',
       captures: {1: {name: 'keyword.control.import.include.c'}},
       end: '(?=(?://|/\\*))|$',
       name: 'meta.preprocessor.c.include',
@@ -155,7 +161,7 @@ const grammar = {
     {include: '#pragma-mark'},
     {
       begin:
-        '^\\s*#\\s*(define|defined|elif|else|if|ifdef|ifndef|line|pragma|undef)\\b',
+        '^\\s*#\\s*(define|defined|elif|elifdef|elifndef|else|if|ifdef|ifndef|line|pragma|undef)\\b',
       captures: {1: {name: 'keyword.control.import.c'}},
       end: '(?=(?://|/\\*))|$',
       name: 'meta.preprocessor.c',
@@ -179,7 +185,7 @@ const grammar = {
         {include: '#comments'},
         {include: '#parens'},
         {
-          match: '\\b(const|final|override|noexcept)\\b',
+          match: '\\b(const|constexpr|final|override|noexcept)\\b',
           name: 'storage.modifier.$1.c++'
         },
         {include: '#block'}
@@ -215,7 +221,6 @@ const grammar = {
         {include: '#preprocessor-rule-other-block'},
         {include: '#sizeof'},
         {include: '#access'},
-        {include: 'source.c.platform#functions'},
         {include: '#c_function_call'},
         {
           captures: {

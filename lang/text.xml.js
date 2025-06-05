@@ -72,6 +72,7 @@ const grammar = {
     '.scxml',
     '.sfproj',
     '.shproj',
+    '.slnx',
     '.srdf',
     '.storyboard',
     '.sublime-snippet',

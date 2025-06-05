@@ -121,7 +121,7 @@ const grammar = {
         },
         {
           match:
-            '(?<!\\.)\\b(SendDefaultMode|SendRemainingValue|SendRemainingBalance|SendPayGasSeparately|SendIgnoreErrors|SendBounceIfActionFail|SendDestroyIfZero|SendOnlyEstimateFee|ReserveExact|ReserveAllExcept|ReserveAtMost|ReserveAddOriginalBalance|ReserveInvertSign|ReserveBounceIfActionFail)\\b',
+            '(?<!\\.)\\b(SendDefaultMode|SendRemainingValue|SendRemainingBalance|SendPayGasSeparately|SendPayFwdFeesSeparately|SendIgnoreErrors|SendBounceIfActionFail|SendDestroyIfZero|SendOnlyEstimateFee|ReserveExact|ReserveAllExcept|ReserveAtMost|ReserveAddOriginalBalance|ReserveInvertSign|ReserveBounceIfActionFail|TactExitCodeNullReferenceException|TactExitCodeInvalidSerializationPrefix|TactExitCodeInvalidIncomingMessage|TactExitCodeConstraintsError|TactExitCodeAccessDenied|TactExitCodeContractStopped|TactExitCodeInvalidArgument|TactExitCodeContractCodeNotFound|TactExitCodeInvalidStandardAddress|TactExitCodeNotBasechainAddress)\\b',
           name: 'constant.other.builtin.tact'
         },
         {match: '\\b([A-Z]{2}[A-Z0-9_]*)\\b', name: 'constant.other.caps.tact'},
@@ -211,11 +211,20 @@ const grammar = {
           match: '(?<!\\.)\\b(as)\\b',
           name: 'keyword.other.as.tact storage.modifier.tact'
         },
-        {match: '(?<!\\.)\\b(struct)\\b', name: 'keyword.other.struct.tact'},
-        {match: '(?<!\\.)\\b(message)\\b', name: 'keyword.other.message.tact'},
-        {match: '(?<!\\.)\\b(trait)\\b', name: 'keyword.other.trait.tact'},
         {
-          match: '(?<!\\.)\\b(contract)\\b',
+          match: '(?<!\\.)\\b(struct)\\b(?!\\s*:)',
+          name: 'keyword.other.struct.tact'
+        },
+        {
+          match: '(?<!\\.)\\b(message)\\b(?!\\s*(?::|\\(\\s*M|\\(\\s*\\)))',
+          name: 'keyword.other.message.tact'
+        },
+        {
+          match: '(?<!\\.)\\b(trait)\\b(?!\\s*:)',
+          name: 'keyword.other.trait.tact'
+        },
+        {
+          match: '(?<!\\.)\\b(contract)\\b(?!\\s*:)',
           name: 'keyword.other.contract.tact'
         },
         {
@@ -311,7 +320,7 @@ const grammar = {
           patterns: [{include: '#simple-type'}]
         },
         {
-          begin: '(?<!\\.)\\b(map)\\s*(<)',
+          begin: '(?<!\\.)\\b(map|set)\\s*(<)',
           beginCaptures: {
             1: {name: 'entity.name.type.tact'},
             2: {name: 'punctuation.brackets.angle.tact'}

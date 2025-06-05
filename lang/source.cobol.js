@@ -551,7 +551,7 @@ const grammar = {
     },
     {
       match:
-        '(?<![-_])(?i:if|else|end-if|exit\\s+iterator|exit\\s+program|exit\\s+method|evaluate|end-evaluate|exit\\s+perform|perform|end-perform|when\\s+other|when|continue|call|end-call|chain|end-chain|invoke|end\\s+invoke|go\\s+to|go|sort|merge|use|xml|parse|stop\\s+run|goback\\s+returning|goback|raise|exit\\s+function|exit\\sparagraph|await)(?![0-9A-Za-z_-])',
+        '(?<![-_])(?i:if|else|end-if|exit\\s+iterator|exit\\s+program|exit\\s+method|evaluate|end-evaluate|exit\\s+perform|perform|end-perform|when\\s+other|when|continue|call|end-call|chain|end-chain|invoke|end\\s+invoke|end-xml|go\\s+to|go|sort|merge|use|xml\\s+parse|xml|top\\s+run|goback\\s+returning|goback|raise|exit\\s+function|exit\\sparagraph|await)(?![0-9A-Za-z_-])',
       name: 'keyword.control.cobol'
     },
     {
@@ -684,7 +684,7 @@ const grammar = {
     },
     {
       match:
-        '(?<![-_])(?i:end-xml|processing.*procedure|xml\\sparse|xml|xml-information|xml-text|xml-schemal|xml-declaration)(?![0-9A-Za-z_-])',
+        '(?<![-_])(?i:processing.*procedure|xml-information|xml-text|xml-schemal|xml-declaration)(?![0-9A-Za-z_-])',
       name: 'keyword.xml.cobol'
     },
     {

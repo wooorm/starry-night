@@ -11,7 +11,7 @@
 const grammar = {
   extensions: ['.typ'],
   names: ['typst', 'typ'],
-  patterns: [{include: '#markup'}],
+  patterns: [{include: '#shebang'}, {include: '#markup'}],
   repository: {
     arrayOrDict: {
       patterns: [
@@ -660,6 +660,14 @@ const grammar = {
         {include: '#setClause'},
         {include: '#setIfClause'}
       ]
+    },
+    shebang: {
+      begin: '^(#!)',
+      beginCaptures: {
+        1: {name: 'punctuation.definition.comment.line.shebang.typst'}
+      },
+      end: '\\n',
+      name: 'comment.line.shebang.typst'
     },
     showAnyClause: {
       captures: {1: {name: 'keyword.control.other.typst'}},

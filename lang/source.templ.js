@@ -86,7 +86,7 @@ const grammar = {
           patterns: [{include: 'source.go'}]
         },
         {
-          begin: '(?<=\\)) ({)$',
+          begin: '(?<=\\))\\s*({)$',
           beginCaptures: {
             1: {name: 'punctuation.definition.begin.bracket.curly.go'}
           },
@@ -265,7 +265,7 @@ const grammar = {
           patterns: [{include: 'source.go'}]
         },
         {
-          begin: '(?<=\\)) ({)$',
+          begin: '(?<=\\))\\s*({)$',
           beginCaptures: {
             1: {name: 'punctuation.definition.begin.bracket.curly.go'}
           },
@@ -404,7 +404,7 @@ const grammar = {
           patterns: [{include: 'source.go'}]
         },
         {
-          begin: '(?<=\\)) ({)$',
+          begin: '(?<=\\))\\s*({)$',
           beginCaptures: {
             1: {name: 'punctuation.definition.begin.bracket.curly.go'}
           },

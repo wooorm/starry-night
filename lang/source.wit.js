@@ -13,6 +13,7 @@ const grammar = {
   names: ['webassembly-interface-type', 'wit'],
   patterns: [
     {include: '#comment'},
+    {include: '#feature-gate'},
     {include: '#package'},
     {include: '#toplevel-use'},
     {include: '#world'},
@@ -125,6 +126,61 @@ const grammar = {
         {include: '#use-path'}
       ]
     },
+    'feature-gate': {
+      name: 'meta.feature-gate.wit',
+      patterns: [
+        {
+          begin: '(@unstable)(\\()',
+          beginCaptures: {
+            1: {name: 'keyword.control.unstable.wit'},
+            2: {name: 'punctuation.brackets.round.begin.wit'}
+          },
+          end: '(\\))',
+          endCaptures: {1: {name: 'punctuation.brackets.round.end.wit'}},
+          name: 'meta.annotation.unstable.wit',
+          patterns: [{include: '#feature-gate-content'}]
+        },
+        {
+          begin: '(@since)(\\()',
+          beginCaptures: {
+            1: {name: 'keyword.control.since.wit'},
+            2: {name: 'punctuation.brackets.round.begin.wit'}
+          },
+          end: '(\\))',
+          endCaptures: {1: {name: 'punctuation.brackets.round.end.wit'}},
+          name: 'meta.annotation.since.wit',
+          patterns: [{include: '#feature-gate-content'}]
+        },
+        {
+          begin: '(@deprecated)(\\()',
+          beginCaptures: {
+            1: {name: 'keyword.control.deprecated.wit'},
+            2: {name: 'punctuation.brackets.round.begin.wit'}
+          },
+          end: '(\\))',
+          endCaptures: {1: {name: 'punctuation.brackets.round.end.wit'}},
+          name: 'meta.annotation.deprecated.wit',
+          patterns: [{include: '#feature-gate-content'}]
+        }
+      ]
+    },
+    'feature-gate-content': {
+      name: 'meta.feature-gate-content.wit',
+      patterns: [
+        {include: '#comment'},
+        {
+          captures: {
+            1: {name: 'variable.parameter.feature-gate.wit'},
+            2: {name: 'keyword.operator.assignment.wit'},
+            3: {name: 'string.quoted.feature-gate.wit'}
+          },
+          match: '\\b(feature|version)\\s*(=)\\s*([^\\s,)]+|"[^"]*")',
+          name: 'meta.feature-gate-parameter.wit'
+        },
+        {match: ',', name: 'punctuation.comma.wit'},
+        {include: '#whitespace'}
+      ]
+    },
     flags: {
       applyEndPatternLast: true,
       begin:
@@ -169,7 +225,11 @@ const grammar = {
       },
       end: '((?<=\\n)|(?=\\}))',
       name: 'meta.func-item.wit',
-      patterns: [{include: '#function-definition'}, {include: '#whitespace'}]
+      patterns: [
+        {include: '#feature-gate'},
+        {include: '#function-definition'},
+        {include: '#whitespace'}
+      ]
     },
     'function-definition': {
       name: 'meta.func-type.wit',
@@ -211,7 +271,7 @@ const grammar = {
     interface: {
       applyEndPatternLast: true,
       begin:
-        '^\\b(default\\s+)?(interface)\\s+%?((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\s*(\\{)',
+        '^\\s*\\b(default\\s+)?(interface)\\s+%?((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\s*(\\{)',
       beginCaptures: {
         1: {name: 'storage.modifier.default.interface-item.wit'},
         2: {
@@ -225,6 +285,7 @@ const grammar = {
       name: 'meta.interface-item.wit',
       patterns: [
         {include: '#comment'},
+        {include: '#feature-gate'},
         {include: '#interface-items'},
         {include: '#whitespace'}
       ]
@@ -232,6 +293,7 @@ const grammar = {
     'interface-items': {
       name: 'meta.interface-items.wit',
       patterns: [
+        {include: '#feature-gate'},
         {include: '#typedef-item'},
         {include: '#use'},
         {include: '#function'}
@@ -448,6 +510,7 @@ const grammar = {
       name: 'meta.resource-methods.wit',
       patterns: [
         {include: '#comment'},
+        {include: '#feature-gate'},
         {
           applyEndPatternLast: true,
           begin: '\\b(constructor)\\b',
@@ -469,35 +532,28 @@ const grammar = {
     },
     result: {
       applyEndPatternLast: true,
-      begin: '\\b(result)\\b',
+      begin: '\\b(result)\\b(\\<)',
       beginCaptures: {
         1: {name: 'entity.name.type.result.wit'},
         2: {name: 'punctuation.brackets.angle.begin.wit'}
       },
-      end: '((?<=\\n)|(?=\\,)|(?=\\}))',
+      end: '(\\>)',
+      endCaptures: {1: {name: 'punctuation.brackets.angle.end.wit'}},
       name: 'meta.result.ty.wit',
       patterns: [
         {include: '#comment'},
         {
-          applyEndPatternLast: true,
-          begin: '(\\<)',
-          beginCaptures: {1: {name: 'punctuation.brackets.angle.begin.wit'}},
-          end: '(\\>)',
-          endCaptures: {1: {name: 'punctuation.brackets.angle.end.wit'}},
-          name: 'meta.inner.result.wit',
-          patterns: [
-            {include: '#comment'},
-            {
-              match: '(?<!\\w)(\\_)(?!\\w)',
-              name: 'variable.other.inferred-type.result.wit'
-            },
-            {include: '#types', name: 'meta.types.result.wit'},
-            {match: '(?<!result)\\s*(\\,)', name: 'punctuation.comma.wit'},
-            {include: '#whitespace'}
-          ]
+          match: '(?<!\\w)(\\_)(?!\\w)',
+          name: 'variable.other.inferred-type.result.wit'
         },
+        {include: '#types', name: 'meta.types.list.wit'},
+        {match: '(?<!result)\\s*(\\,)', name: 'punctuation.comma.wit'},
         {include: '#whitespace'}
       ]
+    },
+    'result-base': {
+      match: '\\b(result)\\b',
+      name: 'entity.name.type.result.wit'
     },
     'result-list': {
       applyEndPatternLast: true,
@@ -575,12 +631,14 @@ const grammar = {
       name: 'meta.type-item.wit',
       patterns: [
         {include: '#types', name: 'meta.types.type-item.wit'},
+        {include: '#comment'},
         {include: '#whitespace'}
       ]
     },
     'typedef-item': {
       name: 'meta.typedef-item.wit',
       patterns: [
+        {include: '#feature-gate'},
         {include: '#resource'},
         {include: '#variant'},
         {include: '#record'},
@@ -594,6 +652,7 @@ const grammar = {
       patterns: [
         {include: '#primitive'},
         {include: '#container'},
+        {include: '#result-base'},
         {include: '#identifier'}
       ]
     },
@@ -685,7 +744,7 @@ const grammar = {
     world: {
       applyEndPatternLast: true,
       begin:
-        '^\\b(default\\s+)?(world)\\s+%?((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\s*(\\{)',
+        '^\\s*\\b(default\\s+)?(world)\\s+%?((?<![\\-\\w])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*)(([\\-])([a-z][0-9a-z]*|[A-Z][0-9A-Z]*))*)\\s*(\\{)',
       beginCaptures: {
         1: {name: 'storage.modifier.default.world-item.wit'},
         2: {name: 'keyword.declaration.world.world-item.wit storage.type.wit'},
@@ -697,6 +756,7 @@ const grammar = {
       name: 'meta.world-item.wit',
       patterns: [
         {include: '#comment'},
+        {include: '#feature-gate'},
         {
           applyEndPatternLast: true,
           begin: '\\b(export)\\b\\s+([^\\s]+)',

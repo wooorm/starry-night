@@ -836,6 +836,30 @@ const grammar = {
         },
         {
           captures: {
+            1: {name: 'entity.name.function.preprocessor.jai'},
+            10: {name: 'punctuation.return.jai'},
+            11: {
+              name: 'meta.function.return-type.jai',
+              patterns: [{include: '#return-declarations'}]
+            },
+            12: {name: 'keyword.other.directive.jai'},
+            14: {name: 'keyword.other.directive.jai'},
+            2: {name: 'keyword.declaration.jai'},
+            4: {name: 'storage.modifier.jai'},
+            5: {name: 'storage.modifier.jai'},
+            6: {name: 'punctuation.section.parens.begin.jai'},
+            7: {
+              name: 'meta.function.preprocessor.parameters.jai',
+              patterns: [{include: '#parameter-declarations'}]
+            },
+            8: {name: 'punctuation.section.parens.end.jai'}
+          },
+          match:
+            '\\b([a-zA-Z_](?:\\w|\\\\ *)*)\\s*(::)\\s*((inline)\\s*|(no_inline)\\s*)*(\\()(.*)(\\))\\s*((->)([^{]+))?\\s*(#expand)(\\s*(#no_debug))?',
+          name: 'meta.preprocessor.macro.declaration.jai'
+        },
+        {
+          captures: {
             1: {name: 'entity.name.function.jai'},
             10: {name: 'punctuation.section.parens.end.jai'},
             12: {name: 'punctuation.return.jai'},

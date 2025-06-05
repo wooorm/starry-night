@@ -30,6 +30,10 @@ const grammar = {
       match: '\\b(true|false|TRUE|FALSE)\\b',
       name: 'constant.logical.bool.boolean.${1:/downcase}'
     },
+    boolish: {
+      match: '(?i)\\b(true|false|yes|no|on|off)\\b',
+      name: 'constant.logical.bool.boolean.${1:/downcase}'
+    },
     bracket: {
       patterns: [
         {

@@ -27,6 +27,7 @@ const grammar = {
     {include: '#record-directive'},
     {include: '#define-directive'},
     {include: '#macro-directive'},
+    {include: '#doc-directive'},
     {include: '#directive'},
     {include: '#function'},
     {include: '#everything-else'}
@@ -213,6 +214,33 @@ const grammar = {
         }
       ]
     },
+    'doc-directive': {
+      begin:
+        '^\\s*+(-)\\s*+((module)?doc)\\s*([(]\\s*)?(~[bBsS]?)?((["]{3,})\\s*)(\\S.*)?$',
+      beginCaptures: {
+        1: {name: 'punctuation.section.directive.begin.erlang'},
+        2: {name: 'keyword.control.directive.doc.erlang'},
+        4: {name: 'punctuation.definition.parameters.begin.erlang'},
+        5: {name: 'storage.type.string.erlang'},
+        6: {name: 'comment.block.documentation.erlang'},
+        7: {name: 'punctuation.definition.string.begin.erlang'},
+        8: {name: 'invalid.illegal.string.erlang'}
+      },
+      end: '^(\\s*(\\7))\\s*([)]\\s*)?(\\.)',
+      endCaptures: {
+        1: {name: 'comment.block.documentation.erlang'},
+        2: {name: 'punctuation.definition.string.end.erlang'},
+        3: {name: 'punctuation.section.directive.end.Erlang'}
+      },
+      name: 'meta.directive.doc.erlang',
+      patterns: [
+        {
+          begin: '\\G',
+          contentName: 'comment.block.documentation.erlang',
+          while: '(^)(?!\\s*(\\5))'
+        }
+      ]
+    },
     docstring: {
       begin: '(?<!")((["]{3,})\\s*)(\\S.*)?$',
       beginCaptures: {
@@ -225,7 +253,8 @@ const grammar = {
         1: {name: 'meta.string.quoted.triple.end.erlang'},
         2: {name: 'punctuation.definition.string.end.erlang'}
       },
-      name: 'string.quoted.triple.erlang'
+      name: 'string.quoted.triple.erlang',
+      patterns: [{include: '#internal-string-body-verbatim'}]
     },
     'everything-else': {
       patterns: [
@@ -245,6 +274,7 @@ const grammar = {
         {include: '#number'},
         {include: '#atom'},
         {include: '#sigil-docstring'},
+        {include: '#sigil-docstring-verbatim'},
         {include: '#sigil-string'},
         {include: '#docstring'},
         {include: '#string'},
@@ -586,6 +616,11 @@ const grammar = {
           name: 'constant.character.escape.erlang'
         },
         {match: '\\\\\\^?.?', name: 'invalid.illegal.string.erlang'},
+        {include: '#internal-string-body-verbatim'}
+      ]
+    },
+    'internal-string-body-verbatim': {
+      patterns: [
         {
           captures: {
             1: {name: 'punctuation.definition.placeholder.erlang'},
@@ -957,7 +992,7 @@ const grammar = {
       ]
     },
     'sigil-docstring': {
-      begin: '(~[bBsS]?)((["]{3,})\\s*)(\\S.*)?$',
+      begin: '(~[bs])((["]{3,})\\s*)(\\S.*)?$',
       beginCaptures: {
         1: {name: 'storage.type.string.erlang'},
         2: {name: 'meta.string.quoted.triple.begin.erlang'},
@@ -969,7 +1004,24 @@ const grammar = {
         1: {name: 'meta.string.quoted.triple.end.erlang'},
         2: {name: 'punctuation.definition.string.end.erlang'}
       },
-      name: 'string.quoted.tripple.sigil.erlang'
+      name: 'string.quoted.tripple.sigil.erlang',
+      patterns: [{include: '#internal-string-body'}]
+    },
+    'sigil-docstring-verbatim': {
+      begin: '(~[BS]?)((["]{3,})\\s*)(\\S.*)?$',
+      beginCaptures: {
+        1: {name: 'storage.type.string.erlang'},
+        2: {name: 'meta.string.quoted.triple.begin.erlang'},
+        3: {name: 'punctuation.definition.string.begin.erlang'},
+        4: {name: 'invalid.illegal.string.erlang'}
+      },
+      end: '^(\\s*(\\3))(?!")',
+      endCaptures: {
+        1: {name: 'meta.string.quoted.triple.end.erlang'},
+        2: {name: 'punctuation.definition.string.end.erlang'}
+      },
+      name: 'string.quoted.tripple.sigil.erlang',
+      patterns: [{include: '#internal-string-body-verbatim'}]
     },
     'sigil-string': {
       patterns: [
@@ -1008,7 +1060,8 @@ const grammar = {
       },
       end: '([}])',
       endCaptures: {1: {name: 'punctuation.definition.string.end.erlang'}},
-      name: 'string.quoted.curly-brackets.sigil.erlang'
+      name: 'string.quoted.curly-brackets.sigil.erlang',
+      patterns: [{include: '#internal-string-body-verbatim'}]
     },
     'sigil-string-double-quote': {
       begin: '(~[bs]?)(")',
@@ -1029,7 +1082,8 @@ const grammar = {
       },
       end: '(\\2)',
       endCaptures: {1: {name: 'punctuation.definition.string.end.erlang'}},
-      name: 'string.quoted.double.sigil.erlang'
+      name: 'string.quoted.double.sigil.erlang',
+      patterns: [{include: '#internal-string-body-verbatim'}]
     },
     'sigil-string-less-greater': {
       begin: '(~[bs]?)(<)',
@@ -1050,7 +1104,8 @@ const grammar = {
       },
       end: '(>)',
       endCaptures: {1: {name: 'punctuation.definition.string.end.erlang'}},
-      name: 'string.quoted.less-greater.sigil.erlang'
+      name: 'string.quoted.less-greater.sigil.erlang',
+      patterns: [{include: '#internal-string-body-verbatim'}]
     },
     'sigil-string-parenthesis': {
       begin: '(~[bs]?)([(])',
@@ -1071,7 +1126,8 @@ const grammar = {
       },
       end: '([)])',
       endCaptures: {1: {name: 'punctuation.definition.string.end.erlang'}},
-      name: 'string.quoted.parenthesis.sigil.erlang'
+      name: 'string.quoted.parenthesis.sigil.erlang',
+      patterns: [{include: '#internal-string-body-verbatim'}]
     },
     'sigil-string-single-character': {
       begin: '(~[bs]?)([/\\|`#])',
@@ -1092,7 +1148,8 @@ const grammar = {
       },
       end: '(\\2)',
       endCaptures: {1: {name: 'punctuation.definition.string.end.erlang'}},
-      name: 'string.quoted.other.sigil.erlang'
+      name: 'string.quoted.other.sigil.erlang',
+      patterns: [{include: '#internal-string-body-verbatim'}]
     },
     'sigil-string-single-quote': {
       begin: "(~[bs]?)(')",
@@ -1113,7 +1170,8 @@ const grammar = {
       },
       end: '(\\2)',
       endCaptures: {1: {name: 'punctuation.definition.string.end.erlang'}},
-      name: 'string.quoted.single.sigil.erlang'
+      name: 'string.quoted.single.sigil.erlang',
+      patterns: [{include: '#internal-string-body-verbatim'}]
     },
     'sigil-string-square-brackets': {
       begin: '(~[bs]?)([\\[])',
@@ -1134,7 +1192,8 @@ const grammar = {
       },
       end: '([\\]])',
       endCaptures: {1: {name: 'punctuation.definition.string.end.erlang'}},
-      name: 'string.quoted.square-brackets.sigil.erlang'
+      name: 'string.quoted.square-brackets.sigil.erlang',
+      patterns: [{include: '#internal-string-body-verbatim'}]
     },
     string: {
       begin: '(")',

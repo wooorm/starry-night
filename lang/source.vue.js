@@ -14,7 +14,6 @@ const grammar = {
   names: ['vue'],
   patterns: [
     {include: '#vue-comments'},
-    {include: 'text.html.basic#comment'},
     {include: '#self-closing-tag'},
     {
       begin: '(<)',
@@ -561,7 +560,17 @@ const grammar = {
         }
       ]
     },
-    'vue-comments': {patterns: [{include: '#vue-comments-key-value'}]},
+    'vue-comments': {
+      patterns: [
+        {include: '#vue-comments-key-value'},
+        {
+          begin: '<!--',
+          captures: {0: {name: 'punctuation.definition.comment.vue'}},
+          end: '-->',
+          name: 'comment.block.vue'
+        }
+      ]
+    },
     'vue-comments-key-value': {
       begin: '(<!--)\\s*(@)([\\w$]+)(?=\\s)',
       beginCaptures: {
@@ -577,18 +586,18 @@ const grammar = {
     'vue-directives': {
       patterns: [
         {include: '#vue-directives-control'},
+        {include: '#vue-directives-generic-attr'},
         {include: '#vue-directives-style-attr'},
-        {include: '#vue-directives-original'},
-        {include: '#vue-directives-generic-attr'}
+        {include: '#vue-directives-original'}
       ]
     },
     'vue-directives-control': {
-      begin: '(v-for)|(v-if|v-else-if|v-else)',
-      captures: {
+      begin: '(?:(v-for)|(v-if|v-else-if|v-else))(?==)',
+      beginCaptures: {
         1: {name: 'keyword.control.loop.vue'},
         2: {name: 'keyword.control.conditional.vue'}
       },
-      end: '(?=\\s*+[^=\\s])',
+      end: '(?=\\s*[^=\\s])',
       name: 'meta.attribute.directive.control.vue',
       patterns: [{include: '#vue-directives-expression'}]
     },
@@ -632,7 +641,7 @@ const grammar = {
     },
     'vue-directives-generic-attr': {
       begin: '\\b(generic)\\s*(=)',
-      captures: {
+      beginCaptures: {
         1: {name: 'entity.other.attribute-name.html.vue'},
         2: {name: 'punctuation.separator.key-value.html.vue'}
       },
@@ -681,7 +690,6 @@ const grammar = {
         9: {name: 'entity.other.attribute-name.html.vue'}
       },
       end: '(?=\\s*[^=\\s])',
-      endCaptures: {1: {name: 'punctuation.definition.string.end.html.vue'}},
       name: 'meta.attribute.directive.vue',
       patterns: [
         {match: '(\\.)([\\w-]*)'},
@@ -690,7 +698,7 @@ const grammar = {
     },
     'vue-directives-style-attr': {
       begin: '\\b(style)\\s*(=)',
-      captures: {
+      beginCaptures: {
         1: {name: 'entity.other.attribute-name.html.vue'},
         2: {name: 'punctuation.separator.key-value.html.vue'}
       },

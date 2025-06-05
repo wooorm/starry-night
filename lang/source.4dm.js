@@ -277,7 +277,7 @@ const grammar = {
       patterns: [
         {
           match:
-            '^\\n*[\\t ]*(?i)(If|While|Else|End if|For each|End for each|End for|Begin SQL|End SQL|while|End while|Use|End use|Case of|End case|Repeat|Until|For)\\b',
+            '^\\n*[\\t ]*(?i)(If|While|Else|End if|For each|End for each|End for|Begin SQL|End SQL|while|End while|Use|End use|Case of|End case|Repeat|Until|For|End try|Try|Catch|Throw|return|continue|break|property|var)\\b',
           name: 'keyword.control.4d'
         }
       ]

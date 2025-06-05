@@ -19,7 +19,7 @@ const grammar = {
     'classic-quickbasic'
   ],
   patterns: [
-    {match: '\\n', name: 'meta.ending-space'},
+    {match: '\\r?\\n', name: 'meta.ending-space'},
     {include: '#round-brackets'},
     {
       begin: '^(?=\\t)',
@@ -58,7 +58,7 @@ const grammar = {
         5: {name: 'punctuation.definition.parameters.QB64'}
       },
       match:
-        '^\\s*((?i:function|sub))\\s*([a-zA-Z_]\\w*)\\s*(\\()([^)]*)(\\)).*\\n?',
+        '^\\s*((?i:function|sub))\\s*([a-zA-Z_]\\w*)\\s*(\\()([^)]*)(\\)).*\\r?\\n?',
       name: 'meta.function.QB64'
     },
     {
@@ -75,7 +75,7 @@ const grammar = {
         {
           begin: "'|",
           beginCaptures: {0: {name: 'punctuation.definition.comment.QB64'}},
-          end: '\\n',
+          end: '\\r?\\n',
           name: 'comment.line.apostrophe.QB64'
         }
       ]

@@ -9,7 +9,7 @@
 
 /** @type {Grammar} */
 const grammar = {
-  extensions: ['.bas', '.bas', '.bas', '.ctl', '.dsr', '.frm', '.frm', '.vba'],
+  extensions: ['.bas', '.bas', '.bas', '.ctl', '.dsr', '.vba'],
   names: [
     'b4x',
     'basic-for-android',
@@ -88,6 +88,11 @@ const grammar = {
           match:
             '(?i)\\bOption (Base [01]|Compare (Binary|Text)|Explicit|Private Module)\\b',
           name: 'keyword.other.option.vba'
+        },
+        {
+          match:
+            '(?i)\\b(DefBool|DefByte|DefInt|DefLng|DefLngLng|DefLngPtr|DefCur|DefSng|DefDbl|DefDec|DefDate|DefStr|DefObj|DefVar)\\b',
+          name: 'keyword.other.deftype.vba'
         },
         {
           match: '(?i:\\b(Private|Public|Global|Friend)\\b)',

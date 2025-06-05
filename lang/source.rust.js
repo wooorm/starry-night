@@ -39,7 +39,7 @@ const grammar = {
         7: {name: 'variable.other.metavariable.specifier.rust'}
       },
       match:
-        '(\\$)((crate)|([A-Z][A-Za-z0-9_]*))((:)(block|expr|ident|item|lifetime|literal|meta|path?|stmt|tt|ty|vis))?',
+        '(\\$)((crate)|([A-Z]\\w*))(\\s*(:)\\s*(block|expr(?:_2021)?|ident|item|lifetime|literal|meta|pat(?:_param)?|path|stmt|tt|ty|vis)\\b)?',
       name: 'meta.macro.metavariable.type.rust',
       patterns: [{include: '#keywords'}]
     },
@@ -51,7 +51,7 @@ const grammar = {
         5: {name: 'variable.other.metavariable.specifier.rust'}
       },
       match:
-        '(\\$)([a-z][A-Za-z0-9_]*)((:)(block|expr|ident|item|lifetime|literal|meta|path?|stmt|tt|ty|vis))?',
+        '(\\$)([a-z]\\w*)(\\s*(:)\\s*(block|expr(?:_2021)?|ident|item|lifetime|literal|meta|pat(?:_param)?|path|stmt|tt|ty|vis)\\b)?',
       name: 'meta.macro.metavariable.rust',
       patterns: [{include: '#keywords'}]
     },

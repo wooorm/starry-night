@@ -326,22 +326,10 @@ const grammar = {
         },
         {match: '\\b(const)\\b', name: 'storage.modifier.sway'},
         {match: '\\b(let)\\b', name: 'storage.modifier.sway'},
-        {
-          match: '\\b(type)\\b',
-          name: 'keyword.declaration.type.sway storage.type.sway'
-        },
-        {
-          match: '\\b(enum)\\b',
-          name: 'keyword.declaration.enum.sway storage.type.sway'
-        },
-        {
-          match: '\\b(trait)\\b',
-          name: 'keyword.declaration.trait.sway storage.type.sway'
-        },
-        {
-          match: '\\b(abi)\\b',
-          name: 'keyword.declaration.abi.sway storage.type.sway'
-        },
+        {match: '\\b(type)\\b', name: 'keyword.declaration.type.sway'},
+        {match: '\\b(enum)\\b', name: 'keyword.declaration.enum.sway'},
+        {match: '\\b(trait)\\b', name: 'keyword.declaration.trait.sway'},
+        {match: '\\b(abi)\\b', name: 'keyword.declaration.abi.sway'},
         {match: '\\b(struct)\\b', name: 'keyword.declaration.struct.sway'},
         {match: '\\b(abstract|static)\\b', name: 'storage.modifier.sway'},
         {
@@ -350,7 +338,7 @@ const grammar = {
           name: 'keyword.other.sway'
         },
         {match: '\\bfn\\b', name: 'keyword.other.fn.sway'},
-        {match: '\\basm\\b', name: 'meta.attribute.asm.sway'},
+        {match: '\\basm\\b', name: 'keyword.other.asm.sway'},
         {match: '\\bcrate\\b', name: 'keyword.other.crate.sway'},
         {match: '\\bmut\\b', name: 'storage.modifier.mut.sway'},
         {
@@ -532,14 +520,14 @@ const grammar = {
         },
         {
           captures: {
-            1: {name: 'keyword.declaration.trait.sway storage.type.sway'},
+            1: {name: 'keyword.declaration.trait.sway'},
             2: {name: 'entity.name.type.trait.sway'}
           },
           match: '\\b(trait)\\s+([A-Z][A-Za-z0-9]*)\\b'
         },
         {
           captures: {
-            1: {name: 'keyword.declaration.abi.sway storage.type.sway'},
+            1: {name: 'keyword.declaration.abi.sway'},
             2: {name: 'entity.name.type.abi.sway'}
           },
           match: '\\b(abi)\\s+([A-Z][A-Za-z0-9]*)\\b'
@@ -560,7 +548,7 @@ const grammar = {
         },
         {
           captures: {
-            1: {name: 'keyword.declaration.type.sway storage.type.sway'},
+            1: {name: 'keyword.declaration.type.sway'},
             2: {name: 'entity.name.type.declaration.sway'}
           },
           match: '\\b(type)\\s+([A-Z][A-Za-z0-9_]*)\\b'

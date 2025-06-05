@@ -30,6 +30,7 @@ import {common} from './common.js'
  * This prevents having to introduce breaking changes in `starry-night`.
  *
  * To do: is this a major? drop the ones here.
+ * Also: remove everything that does not have a new name.
  *
  * @type {Record<string, string>}
  */

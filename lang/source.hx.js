@@ -716,6 +716,7 @@ const grammar = {
       match: '(\\?)(?!\\s)',
       name: 'keyword.operator.optional.hx'
     },
+    'operator-rest': {match: '\\.\\.\\.', name: 'keyword.operator.rest.hx'},
     'operator-type-hint': {
       match: '(:)',
       name: 'keyword.operator.type.annotation.hx'
@@ -741,7 +742,7 @@ const grammar = {
           beginCaptures: {0: {name: 'keyword.operator.ternary.hx'}},
           end: ':',
           endCaptures: {0: {name: 'keyword.operator.ternary.hx'}},
-          patterns: [{include: '#block-contents'}]
+          patterns: [{include: '#block'}, {include: '#block-contents'}]
         }
       ]
     },
@@ -759,7 +760,6 @@ const grammar = {
         {include: '#parameter-name'},
         {include: '#parameter-type-hint'},
         {include: '#parameter-assign'},
-        {include: '#punctuation-comma'},
         {include: '#global'}
       ]
     },
@@ -770,13 +770,15 @@ const grammar = {
       patterns: [{include: '#block'}, {include: '#block-contents'}]
     },
     'parameter-name': {
-      begin: '(?<=\\(|,)',
-      end: '([_a-zA-Z]\\w*)',
-      endCaptures: {1: {name: 'variable.parameter.hx'}},
       patterns: [
+        {
+          captures: {1: {name: 'variable.parameter.hx'}},
+          match: '\\s*([_a-zA-Z]\\w*)'
+        },
         {include: '#global'},
         {include: '#metadata'},
-        {include: '#operator-optional'}
+        {include: '#operator-optional'},
+        {include: '#operator-rest'}
       ]
     },
     'parameter-type-hint': {
@@ -791,7 +793,7 @@ const grammar = {
       end: '\\s*(\\)(?!\\s*->))',
       endCaptures: {1: {name: 'punctuation.definition.parameters.end.hx'}},
       name: 'meta.parameters.hx',
-      patterns: [{include: '#parameter'}]
+      patterns: [{include: '#parameter'}, {include: '#punctuation-comma'}]
     },
     'punctuation-accessor': {match: '\\.', name: 'punctuation.accessor.hx'},
     'punctuation-braces': {

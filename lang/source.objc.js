@@ -7,7 +7,7 @@
 
 /** @type {Grammar} */
 const grammar = {
-  dependencies: ['source.c', 'source.c.platform', 'source.objc.platform'],
+  dependencies: ['source.c', 'source.objc.platform'],
   extensions: [],
   names: ['objective-c', 'obj-c', 'objc', 'objectivec'],
   patterns: [
@@ -237,7 +237,6 @@ const grammar = {
     },
     c_functions: {
       patterns: [
-        {include: 'source.c.platform#functions'},
         {
           captures: {
             1: {name: 'punctuation.whitespace.function-call.leading.c'},
