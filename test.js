@@ -23,18 +23,6 @@ test('@wooorm/starry-night', async function (t) {
   })
 })
 
-test('createStarryNight', async function (t) {
-  await t.test('should support `getOnigurumaUrlFs`', async function () {
-    assert.rejects(async function () {
-      await createStarryNight(common, {
-        getOnigurumaUrlFs() {
-          return new URL('file:///foo/baz/onig.wasm')
-        }
-      })
-    }, /no such file or directory/)
-  })
-})
-
 test('.flagToScope(flag)', async function (t) {
   const starryNight = await createStarryNight(common)
   const phpThenAssembly = await createStarryNight([textPhp, sourceAssembly])

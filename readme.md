@@ -26,7 +26,7 @@ but free and open source and JavaScript!
 * [API](#api)
   * [`all`](#all)
   * [`common`](#common)
-  * [`createStarryNight(grammars[, options])`](#createstarrynightgrammars-options)
+  * [`createStarryNight(grammars)`](#createstarrynightgrammars)
   * [`starryNight.flagToScope(flag)`](#starrynightflagtoscopeflag)
   * [`starryNight.highlight(value, scope)`](#starrynighthighlightvalue-scope)
   * [`starryNight.missingScopes()`](#starrynightmissingscopes)
@@ -34,7 +34,6 @@ but free and open source and JavaScript!
   * [`starryNight.scopes()`](#starrynightscopes)
   * [`GetOnigurumaUrl`](#getonigurumaurl)
   * [`Grammar`](#grammar)
-  * [`Options`](#options)
 * [Examples](#examples)
   * [Example: serializing hast as html](#example-serializing-hast-as-html)
   * [Example: using `starry-night` on the client](#example-using-starry-night-on-the-client)
@@ -240,8 +239,7 @@ and
 from the main module.
 It exports the additional [TypeScript][] types
 [`GetOnigurumaUrl`][api-get-oniguruma-url],
-[`Grammar`][api-grammar],
-and [`Options`][api-options].
+and [`Grammar`][api-grammar].
 There is no default export.
 
 It also includes grammars directly in its export map,
@@ -264,7 +262,7 @@ List of all grammars ([`Array<Grammar>`][api-grammar])
 
 List of ±35 common grammars ([`Array<Grammar>`][api-grammar])
 
-### `createStarryNight(grammars[, options])`
+### `createStarryNight(grammars)`
 
 Create a `StarryNight` that can highlight things with the given `grammars`.
 This is async to allow async loading and registering,
@@ -275,9 +273,6 @@ which is currently only used for WASM.
 * `grammars`
   ([`Array<Grammar>`][api-grammar])
   — grammars to support
-* `options`
-  ([`Options`][api-options], optional)
-  — configuration
 
 ###### Returns
 
@@ -561,21 +556,6 @@ TextMate grammar with some extra info (TypeScript type).
 * `scopeName`
   (`string`, example: `'source.mdx'`)
   — scope
-
-### `Options`
-
-Configuration (TypeScript type).
-
-###### Fields
-
-* `getOnigurumaUrlFetch`
-  ([`GetOnigurumaUrl`][api-get-oniguruma-url], optional)
-  — get a URL to the oniguruma WASM,
-  typically used in browsers
-* `getOnigurumaUrlFs`
-  ([`GetOnigurumaUrl`][api-get-oniguruma-url], optional)
-  — get a URL to the oniguruma WASM,
-  typically used in Node.js
 
 ## Examples
 
@@ -1741,13 +1721,11 @@ All other files [MIT][file-license] © [Titus Wormer][wooorm]
 
 [api-common]: #common
 
-[api-create-starry-night]: #createstarrynightgrammars-options
+[api-create-starry-night]: #createstarrynightgrammars
 
 [api-get-oniguruma-url]: #getonigurumaurl
 
 [api-grammar]: #grammar
-
-[api-options]: #options
 
 [artsandculture-google-starry-night]: https://artsandculture.google.com/asset/the-starry-night/bgEuwDxel93-Pg
 
