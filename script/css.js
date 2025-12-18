@@ -38,6 +38,7 @@
 
 import assert from 'node:assert/strict'
 import fs from 'node:fs/promises'
+import path from 'node:path'
 import {fileURLToPath} from 'node:url'
 import css from 'css'
 // @ts-expect-error: untyped.
@@ -145,6 +146,8 @@ for (const fileName of fileNames) {
     document.push(rule)
   }
 
+  const {ext, name} = path.parse(fileName)
+
   writePromises.push(
     fs.writeFile(
       new URL(fileName, base),
@@ -155,7 +158,8 @@ for (const fileName of fileNames) {
           document.join('\n\n'),
         {...prettierConfig, parser: 'css'}
       )
-    )
+    ),
+    fs.writeFile(new URL(name + '.d' + ext + '.ts', base), 'export {}\n')
   )
 }
 
