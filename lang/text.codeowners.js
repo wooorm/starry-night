@@ -53,7 +53,7 @@ const grammar = {
       end: '$|(?=#)',
       name: 'meta.pattern.codeowners',
       patterns: [
-        {include: '#comment'},
+        {include: 'etc#comment'},
         {
           begin: '\\s',
           end: '(?=$|#)',

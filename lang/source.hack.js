@@ -520,7 +520,7 @@ const grammar = {
         {
           captures: {1: {name: 'keyword.control.php'}},
           match:
-            '\\s*\\b(await|break|c(ase|ontinue)|concurrent|default|do|else|for(each)?|if|return|switch|use|while)\\b'
+            '\\s*\\b(await|break|c(ase|ontinue)|concurrent|default|do|else|for(each)?|if|nameof|return|switch|use|while)\\b'
         },
         {
           begin: '(?i)\\b((?:require|include)(?:_once)?)\\b\\s*',

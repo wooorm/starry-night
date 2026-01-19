@@ -35,7 +35,7 @@ const grammar = {
       patterns: [
         {
           match:
-            '\\b(?:channel|channelinterface|simple|module|network|moduleinterface|parameters|gates|types|submodules|connections|allowunconnected|extends|for|if|import|like|package|property)\\b',
+            '\\b(?:channel|channelinterface|simple|module|network|moduleinterface|parameters|gates|types|submodules|connections|allowunconnected|extends|for|if|import|like|package|property|parent)\\b',
           name: 'keyword.other.ned'
         }
       ]

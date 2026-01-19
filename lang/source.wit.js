@@ -313,6 +313,16 @@ const grammar = {
       patterns: [
         {include: '#comment'},
         {include: '#types', name: 'meta.types.list.wit'},
+        {
+          captures: {1: {name: 'punctuation.comma.wit'}},
+          match: '\\s*(,)\\s*',
+          name: 'meta.list-size-separator.wit'
+        },
+        {
+          captures: {1: {name: 'constant.numeric.integer.list-size.wit'}},
+          match: '\\b([0-9]+)\\b',
+          name: 'meta.list-size.wit'
+        },
         {include: '#whitespace'}
       ]
     },

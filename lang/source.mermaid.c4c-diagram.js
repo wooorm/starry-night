@@ -9,7 +9,7 @@
 
 /** @type {Grammar} */
 const grammar = {
-  dependencies: ['source.mermaid', 'source.mermaid.user-journey', 'source.wsd'],
+  dependencies: ['source.mermaid', 'source.wsd'],
   extensions: [],
   names: [],
   patterns: [{include: '#main'}],

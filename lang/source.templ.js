@@ -238,7 +238,7 @@ const grammar = {
     },
     'html-template': {
       begin:
-        '^(templ) ((?:\\([A-z_][A-z_0-9]* \\*?[A-z_][A-z_0-9]*\\) )?[A-z_][A-z_0-9]*(\\(|\\[))',
+        '^(templ) ((?:\\((?:[A-Za-z_][A-Za-z_0-9]*\\s+\\*?[A-Za-z_][A-Za-z_0-9]*|\\*?[A-Za-z_][A-Za-z_0-9]*)\\)\\s*)?[A-Za-z_][A-Za-z_0-9]*(\\(|\\[))',
       beginCaptures: {
         1: {name: 'keyword.control.go'},
         2: {patterns: [{include: 'source.go'}]}

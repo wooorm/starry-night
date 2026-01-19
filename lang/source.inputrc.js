@@ -38,7 +38,7 @@ const grammar = {
           patterns: [{include: '#main'}]
         },
         {
-          beginCaptures: {
+          captures: {
             1: {name: 'keyword.control.flow.$3.inputrc'},
             2: {name: 'punctuation.definition.directive.inputrc'}
           },

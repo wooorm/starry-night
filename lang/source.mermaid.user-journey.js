@@ -19,7 +19,7 @@ const grammar = {
         {include: 'source.mermaid#a11y'},
         {include: 'source.mermaid#directive'},
         {include: 'source.mermaid#comment'},
-        {include: '#title'},
+        {include: 'source.mermaid#title'},
         {include: '#section'}
       ]
     },
@@ -57,14 +57,6 @@ const grammar = {
         {match: '(?=\\S)[^,\\r\\n]+', name: 'variable.parameter.actor.mermaid'},
         {include: 'source.mermaid#comma'}
       ]
-    },
-    title: {
-      begin: '(?i)title(?=$|\\s)[ \\t]*',
-      beginCaptures: {0: {name: 'storage.type.title.mermaid'}},
-      contentName: 'string.unquoted.diagram-title.mermaid',
-      end: '(?=\\s*$)',
-      name: 'meta.title.mermaid',
-      patterns: [{include: 'source.mermaid#entity'}]
     }
   },
   scopeName: 'source.mermaid.user-journey'

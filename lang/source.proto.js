@@ -44,7 +44,8 @@ const grammar = {
         {include: '#optionStmt'},
         {include: '#comments'},
         {
-          begin: '([A-Za-z][A-Za-z0-9_]*)\\s*(=)\\s*(0[xX][0-9a-fA-F]+|[0-9]+)',
+          begin:
+            '([A-Za-z][A-Za-z0-9_]*)\\s*(=)\\s*(-?0[xX][0-9a-fA-F]+|-?[0-9]+)',
           beginCaptures: {
             1: {name: 'variable.other.proto'},
             2: {name: 'keyword.operator.assignment.proto'},
@@ -58,7 +59,7 @@ const grammar = {
     },
     field: {
       begin:
-        '\\s*(optional|repeated|required)?\\s*\\b([\\w.]+)\\s+(\\w+)\\s*(=)\\s*(0[xX][0-9a-fA-F]+|[0-9]+)',
+        '\\s*(optional|repeated|required)?\\s*(\\.?[\\w.]+)\\s+(\\w+)\\s*(=)\\s*(0[xX][0-9a-fA-F]+|[0-9]+)',
       beginCaptures: {
         1: {name: 'storage.modifier.proto'},
         2: {name: 'storage.type.proto'},
@@ -81,7 +82,10 @@ const grammar = {
         {include: '#optionName'}
       ]
     },
-    ident: {match: '[A-Za-z][A-Za-z0-9_]*', name: 'entity.name.class.proto'},
+    ident: {
+      match: '\\.?[A-Za-z][A-Za-z0-9_.]*',
+      name: 'entity.name.class.proto'
+    },
     import: {
       captures: {
         1: {name: 'keyword.other.proto'},
@@ -108,7 +112,7 @@ const grammar = {
     },
     mapfield: {
       begin:
-        '\\s*(map)\\s*(<)\\s*([\\w.]+)\\s*,\\s*([\\w.]+)\\s*(>)\\s+(\\w+)\\s*(=)\\s*(\\d+)',
+        '\\s*(map)\\s*(<)\\s*(\\.?[\\w.]+)\\s*,\\s*(\\.?[\\w.]+)\\s*(>)\\s+(\\w+)\\s*(=)\\s*(\\d+)',
       beginCaptures: {
         1: {name: 'storage.type.proto'},
         2: {name: 'punctuation.definition.typeparameters.begin.proto'},
@@ -245,7 +249,7 @@ const grammar = {
       name: 'storage.type.proto'
     },
     string: {
-      match: '(\'([^\']|\\\')*\')|("([^"]|\\")*")',
+      match: '(["\'])(?:\\\\.|[^\\\\])*?\\1',
       name: 'string.quoted.double.proto'
     },
     subMsgOption: {

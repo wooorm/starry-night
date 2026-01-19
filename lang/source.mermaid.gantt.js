@@ -137,12 +137,9 @@ const grammar = {
       ]
     },
     title: {
-      begin: '(?i)^\\s*(title)(?=$|\\s)[ \\t]*',
-      beginCaptures: {1: {name: 'storage.type.title.mermaid'}},
-      contentName: 'string.unquoted.chart-title.mermaid',
-      end: '(?=\\s*$)',
-      name: 'meta.title.statement.mermaid',
-      patterns: [{include: 'source.mermaid#entity'}]
+      begin: '(?i)(?=^\\s*title(?:$|\\s))',
+      end: '(?!\\G)',
+      patterns: [{include: 'source.mermaid#title'}]
     },
     'today-marker': {
       applyEndPatternLast: true,

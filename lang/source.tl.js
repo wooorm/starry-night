@@ -7,7 +7,7 @@
 
 /** @type {Grammar} */
 const grammar = {
-  extensions: ['.tl'],
+  extensions: [],
   names: ['type-language', 'tl'],
   patterns: [
     {include: '#comments'},

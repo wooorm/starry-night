@@ -17,13 +17,14 @@ const grammar = {
     '.nb',
     '.nbp',
     '.wl',
+    '.wls',
     '.wlt'
   ],
   names: [
+    'wolfram-language',
     'mathematica',
     'mma',
     'wolfram',
-    'wolfram-language',
     'wolfram-lang',
     'wl'
   ],

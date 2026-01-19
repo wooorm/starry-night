@@ -113,7 +113,8 @@ const grammar = {
         {include: '#underline'},
         {include: '#strike'},
         {include: '#font'},
-        {include: '#align'}
+        {include: '#align'},
+        {include: '#unknownTag'}
       ]
     },
     italic: {
@@ -164,7 +165,7 @@ const grammar = {
         3: {name: 'punctuation.separator.speaker.colon.srt'}
       },
       match:
-        '(?:^|\\G)(-[ \\t]*)?((?:[^-<>\\s:][^:]*(?=:[ \\t]*\\S)|[^-<>\\s:a-z][^:a-z]*)(:))(?=$|\\s)'
+        '(?x)\n(?:^|\\G)\n(-[ \\t]*)?\n(\n\t(?: [^-<>\\s:]    [^<>:]* (?=:[ \\t]*\\S)\n\t|   [^-<>\\s:a-z] [^<>:a-z]*\n\t|   <(?!/(?i:[bisu]|font)>\\s*:)\n\t)++\n\t(?:\n\t\t(?=(?:\\s*</(?i:[bisu]|font)>)++\\s*:)\n\t\t|\n\t\t(:)\n\t)\n)(?=$|\\s|</)'
     },
     strike: {
       begin: '(<)([Ss])(?=$|>|\\s)([^>]*)(>)',
@@ -274,6 +275,15 @@ const grammar = {
         3: {name: 'punctuation.definition.tag.end.html.srt'}
       },
       patterns: [{include: '#text'}]
+    },
+    unknownTag: {
+      captures: {
+        0: {name: 'invalid.unimplemented.syntax.tag.srt'},
+        1: {name: 'punctuation.definition.tag.begin.srt'},
+        2: {name: 'punctuation.definition.tag.end.srt'}
+      },
+      match: '({)(?:.:[^}]*|\\\\[^}]*)(})',
+      name: 'meta.tag.override.unsupported.srt'
     }
   },
   scopeName: 'text.srt'

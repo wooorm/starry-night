@@ -55,7 +55,7 @@ const grammar = {
     },
     {
       match:
-        '(?<=^|[[:space:]\\(\\){}])(abstract|constructor|data|do|eta-equality|field|forall|hiding|import|in|inductive|infix|infixl|infixr|instance|interleaved|let|macro|module|mutual|no-eta-equality|open|overlap|pattern|postulate|primitive|private|public|quote|quoteContext|quoteGoal|quoteTerm|record|renaming|rewrite|syntax|tactic|unquote|unquoteDecl|unquoteDef|using|variable|where|with)(?=$|[[:space:]\\(\\){}])',
+        '(?<=^|[[:space:]\\(\\){}])(abstract|codata|coinductive|constructor|data|do|eta-equality|field|forall|hiding|import|in|inductive|infix|infixl|infixr|instance|interleaved|let|macro|module|mutual|no-eta-equality|opaque|open|overlap|pattern|postulate|primitive|private|public|quote|quoteTerm|record|renaming|rewrite|syntax|tactic|unfolding|unquote|unquoteDecl|unquoteDef|using|variable|where|with)(?=$|[[:space:]\\(\\){}])',
       name: 'keyword.other.agda'
     }
   ],

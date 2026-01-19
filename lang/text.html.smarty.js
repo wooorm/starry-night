@@ -8,7 +8,7 @@
 /** @type {Grammar} */
 const grammar = {
   dependencies: ['text.html.basic'],
-  extensions: ['.latte', '.mustache', '.tpl'],
+  extensions: ['.latte', '.mustache'],
   injections: {
     'text.html.smarty - (meta.embedded | meta.tag | comment.block | meta.block.literal), L:text.html.smarty meta.tag':
       {patterns: [{include: '#comments'}, {include: '#blocks'}]}

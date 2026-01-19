@@ -165,7 +165,7 @@ const grammar = {
     },
     'array-creation-expression': {
       begin:
-        '(?x)\n\\b(new|stackalloc)\\b\\s*\n(?<type_name>\n  (?:\n    (?:\n      (?:(?<identifier>@?[_[:alpha:]][_[:alnum:]]*)\\s*\\:\\:\\s*)? # alias-qualification\n      (?<name_and_type_args> # identifier + type arguments (if any)\n        \\g<identifier>\\s*\n        (?<type_args>\\s*<(?:[^<>]|\\g<type_args>)+>\\s*)?\n      )\n      (?:\\s*\\.\\s*\\g<name_and_type_args>)* | # Are there any more names being dotted into?\n      (?<tuple>\\s*\\((?:[^\\(\\)]|\\g<tuple>)+\\))\n    )\n    (?:\\s*\\?\\s*)? # nullable suffix?\n    (?:\\s* # array suffix?\n      \\[\n        (?:\\s*,\\s*)* # commata for multi-dimensional arrays\n      \\]\n      \\s*\n      (?:\\?)? # arrays can be nullable reference types\n      \\s*\n    )*\n  )\n)?\\s*\n(?=\\[)',
+        '(?x)\n\\b(new|stackalloc)\\b\\s*\n(?<type_name>\n  (?:\n    (?:\n      (?:(?<identifier>@?[_[:alpha:]][_[:alnum:]]*)\\s*\\:\\:\\s*)? # alias-qualification\n      (?<name_and_type_args> # identifier + type arguments (if any)\n        \\g<identifier>\\s*\n        (?<type_args>\\s*<(?:[^<>]|\\g<type_args>)+>\\s*)?\n      )\n      (?:\\s*\\.\\s*\\g<name_and_type_args>)* | # Are there any more names being dotted into?\n      (?<tuple>\\s*\\((?:[^\\(\\)]|\\g<tuple>)+\\))\n    )\n    (?:\\s*\\*\\s*)* # pointer suffix?\n    (?:\\s*\\?\\s*)? # nullable suffix?\n    (?:\\s* # array suffix?\n      \\[\n        (?:\\s*,\\s*)* # commata for multi-dimensional arrays\n      \\]\n      \\s*\n      (?:\\?)? # arrays can be nullable reference types\n      \\s*\n    )*\n  )\n)?\\s*\n(?=\\[)',
       beginCaptures: {
         1: {name: 'keyword.operator.expression.$1.cs'},
         2: {patterns: [{include: '#type'}]}
@@ -226,7 +226,7 @@ const grammar = {
     },
     'attribute-section': {
       begin:
-        '(\\[)(assembly|module|field|event|method|param|property|return|type)?(\\:)?',
+        '(\\[)(assembly|module|field|event|method|param|property|return|typevar|type)?(\\:)?',
       beginCaptures: {
         1: {name: 'punctuation.squarebracket.open.cs'},
         2: {name: 'keyword.other.attribute-specifier.cs'},
@@ -250,11 +250,24 @@ const grammar = {
         {include: '#expression'}
       ]
     },
+    'base-class-constructor-call': {
+      begin:
+        '(?x)\n(?:\n  (@?[_[:alpha:]][_[:alnum:]]*)\\s*(\\.)  # qualified name part\n)*\n(@?[_[:alpha:]][_[:alnum:]]*)\\s*        # type name\n(\n  <\n  (?<type_args>\n    [^<>()]|\n    \\((?:[^<>()]|<[^<>()]*>|\\([^<>()]*\\))*\\)|\n    <\\g<type_args>*>\n  )*\n  >\\s*\n)?                                      # optional type arguments\n(?=\\()                                  # followed by argument list',
+      beginCaptures: {
+        1: {name: 'entity.name.type.cs'},
+        2: {name: 'punctuation.accessor.cs'},
+        3: {name: 'entity.name.type.cs'},
+        4: {patterns: [{include: '#type-arguments'}]}
+      },
+      end: '(?<=\\))',
+      patterns: [{include: '#argument-list'}]
+    },
     'base-types': {
       begin: ':',
       beginCaptures: {0: {name: 'punctuation.separator.colon.cs'}},
       end: '(?=\\{|where|;)',
       patterns: [
+        {include: '#base-class-constructor-call'},
         {include: '#type'},
         {include: '#punctuation-comma'},
         {include: '#preprocessor'}
@@ -446,12 +459,13 @@ const grammar = {
         {include: '#comment'},
         {include: '#storage-modifier'},
         {include: '#type-declarations'},
+        {include: '#constructor-declaration'},
         {include: '#property-declaration'},
+        {include: '#fixed-size-buffer-declaration'},
         {include: '#field-declaration'},
         {include: '#event-declaration'},
         {include: '#indexer-declaration'},
         {include: '#variable-initializer'},
-        {include: '#constructor-declaration'},
         {include: '#destructor-declaration'},
         {include: '#operator-declaration'},
         {include: '#conversion-operator-declaration'},
@@ -537,13 +551,10 @@ const grammar = {
       ]
     },
     'constructor-declaration': {
-      begin: '(?=@?[_[:alpha:]][_[:alnum:]]*\\s*\\()',
+      begin: '(@?[_[:alpha:]][_[:alnum:]]*)\\s*(?=\\(|$)',
+      beginCaptures: {1: {name: 'entity.name.function.cs'}},
       end: '(?<=\\})|(?=;)',
       patterns: [
-        {
-          captures: {1: {name: 'entity.name.function.cs'}},
-          match: '(@?[_[:alpha:]][_[:alnum:]]*)\\b'
-        },
         {
           begin: '(:)',
           beginCaptures: {1: {name: 'punctuation.separator.colon.cs'}},
@@ -708,7 +719,7 @@ const grammar = {
       },
       end: '\\}\\}',
       endCaptures: {0: {name: 'punctuation.definition.interpolation.end.cs'}},
-      name: 'meta.interpolation.cs',
+      name: 'meta.embedded.interpolation.cs',
       patterns: [{include: '#expression'}]
     },
     'element-access-expression': {
@@ -852,6 +863,8 @@ const grammar = {
         {include: '#query-expression'},
         {include: '#as-expression'},
         {include: '#is-expression'},
+        {include: '#boolean-literal'},
+        {include: '#null-literal'},
         {include: '#anonymous-method-expression'},
         {include: '#object-creation-expression'},
         {include: '#array-creation-expression'},
@@ -936,6 +949,17 @@ const grammar = {
       end: '(?<=\\})',
       patterns: [{include: '#comment'}, {include: '#block'}]
     },
+    'fixed-size-buffer-declaration': {
+      begin:
+        '(?x)\n\\b(fixed)\\b\\s+\n(?<type_name>\n  (?:\n    (?:(?<identifier>@?[_[:alpha:]][_[:alnum:]]*)\\s*\\:\\:\\s*)? # alias-qualification\n    (?<name_and_type_args> # identifier + type arguments (if any)\n      \\g<identifier>\\s*\n      (?<type_args>\\s*<(?:[^<>]|\\g<type_args>)+>\\s*)?\n    )\n    (?:\\s*\\.\\s*\\g<name_and_type_args>)* # Are there any more names being dotted into?\n  )\n)\\s+\n(\\g<identifier>)\\s* # buffer name\n(?=\\[)',
+      beginCaptures: {
+        1: {name: 'storage.modifier.fixed.cs'},
+        2: {patterns: [{include: '#type'}]},
+        6: {name: 'entity.name.variable.field.cs'}
+      },
+      end: '(?=;)',
+      patterns: [{include: '#bracketed-argument-list'}, {include: '#comment'}]
+    },
     'fixed-statement': {
       begin: '\\b(fixed)\\b',
       beginCaptures: {1: {name: 'keyword.control.context.fixed.cs'}},
@@ -970,7 +994,10 @@ const grammar = {
               end: '(?=;|\\))',
               patterns: [
                 {include: '#intrusive'},
-                {include: '#local-variable-declaration'}
+                {include: '#local-variable-declaration'},
+                {include: '#local-tuple-var-deconstruction'},
+                {include: '#tuple-deconstruction-assignment'},
+                {include: '#expression'}
               ]
             },
             {
@@ -1211,7 +1238,7 @@ const grammar = {
       },
       end: '\\}',
       endCaptures: {0: {name: 'punctuation.definition.interpolation.end.cs'}},
-      name: 'meta.interpolation.cs',
+      name: 'meta.embedded.interpolation.cs',
       patterns: [{include: '#expression'}]
     },
     intrusive: {patterns: [{include: '#preprocessor'}, {include: '#comment'}]},
@@ -1348,7 +1375,8 @@ const grammar = {
         {include: '#local-constant-declaration'},
         {include: '#local-variable-declaration'},
         {include: '#local-function-declaration'},
-        {include: '#local-tuple-var-deconstruction'}
+        {include: '#local-tuple-var-deconstruction'},
+        {include: '#local-tuple-declaration-deconstruction'}
       ]
     },
     'local-function-declaration': {
@@ -1369,6 +1397,17 @@ const grammar = {
         {include: '#block'}
       ]
     },
+    'local-tuple-declaration-deconstruction': {
+      captures: {
+        1: {
+          patterns: [
+            {include: '#tuple-declaration-deconstruction-element-list'}
+          ]
+        }
+      },
+      match:
+        '(?x) # e.g. (int x, var y) = GetPoint();\n(?<tuple>\\((?:[^\\(\\)]|\\g<tuple>)+\\))\\s*\n(?!=>|==)(?==)'
+    },
     'local-tuple-var-deconstruction': {
       begin:
         '(?x) # e.g. var (x, y) = GetPoint();\n(?:\\b(var)\\b\\s*)\n(?<tuple>\\((?:[^\\(\\)]|\\g<tuple>)+\\))\\s*\n(?=;|=|\\))',
@@ -1385,7 +1424,7 @@ const grammar = {
     },
     'local-variable-declaration': {
       begin:
-        '(?x)\n(?:\n  (?:(\\bref)\\s+(?:(\\breadonly)\\s+)?)?(\\bvar\\b)| # ref local\n  (?<type_name>\n    (?:\n      (?:ref\\s+(?:readonly\\s+)?)?   # ref local\n      (?:\n        (?:(?<identifier>@?[_[:alpha:]][_[:alnum:]]*)\\s*\\:\\:\\s*)? # alias-qualification\n        (?<name_and_type_args> # identifier + type arguments (if any)\n          \\g<identifier>\\s*\n          (?<type_args>\\s*<(?:[^<>]|\\g<type_args>)+>\\s*)?\n        )\n        (?:\\s*\\.\\s*\\g<name_and_type_args>)* | # Are there any more names being dotted into?\n        (?<tuple>\\s*\\((?:[^\\(\\)]|\\g<tuple>)+\\))\n      )\n      (?:\\s*[?*]\\s*)? # nullable or pointer suffix?\n      (?:\\s* # array suffix?\n        \\[\n          (?:\\s*,\\s*)* # commata for multi-dimensional arrays\n        \\]\n        \\s*\n        (?:\\?)? # arrays can be nullable reference types\n        \\s*\n      )*\n    )\n  )\n)\\s+\n(\\g<identifier>)\\s*\n(?!=>)\n(?=,|;|=|\\))',
+        '(?x)\n(?:\n  (?:(\\bref)\\s+(?:(\\breadonly)\\s+)?)?(\\bvar\\b)| # ref local\n  (?<type_name>\n    (?:\n      (?:ref\\s+(?:readonly\\s+)?)?   # ref local\n      (?:\n        (?:(?<identifier>@?[_[:alpha:]][_[:alnum:]]*)\\s*\\:\\:\\s*)? # alias-qualification\n        (?<name_and_type_args> # identifier + type arguments (if any)\n          \\g<identifier>\\s*\n          (?<type_args>\\s*<(?:[^<>]|\\g<type_args>)+>\\s*)?\n        )\n        (?:\\s*\\.\\s*\\g<name_and_type_args>)* | # Are there any more names being dotted into?\n        (?<tuple>\\s*\\((?:[^\\(\\)]|\\g<tuple>)+\\))\n      )\n      (?:\\s*\\*\\s*)* # pointer suffix?\n      (?:\\s*\\?\\s*)? # nullable suffix?\n      (?:\\s* # array suffix?\n        \\[\n          (?:\\s*,\\s*)* # commata for multi-dimensional arrays\n        \\]\n        \\s*\n        (?:\\?)? # arrays can be nullable reference types\n        \\s*\n      )*\n    )\n  )\n)\\s+\n(\\g<identifier>)\\s*\n(?!=>)\n(?=,|;|=|\\))',
       beginCaptures: {
         1: {name: 'storage.modifier.ref.cs'},
         2: {name: 'storage.modifier.readonly.cs'},
@@ -1759,7 +1798,7 @@ const grammar = {
       end: '(?<=$)',
       name: 'meta.preprocessor.cs',
       patterns: [
-        {include: '#comment'},
+        {include: '#preprocessor-comment'},
         {include: '#preprocessor-define-or-undef'},
         {include: '#preprocessor-if-or-elif'},
         {include: '#preprocessor-else-or-endif'},
@@ -1770,7 +1809,88 @@ const grammar = {
         {include: '#preprocessor-r'},
         {include: '#preprocessor-line'},
         {include: '#preprocessor-pragma-warning'},
-        {include: '#preprocessor-pragma-checksum'}
+        {include: '#preprocessor-pragma-checksum'},
+        {include: '#preprocessor-app-directive'}
+      ]
+    },
+    'preprocessor-app-directive': {
+      begin: '\\s*(:)\\s*',
+      beginCaptures: {1: {name: 'punctuation.separator.colon.cs'}},
+      end: '(?=$)',
+      patterns: [
+        {include: '#preprocessor-app-directive-package'},
+        {include: '#preprocessor-app-directive-property'},
+        {include: '#preprocessor-app-directive-project'},
+        {include: '#preprocessor-app-directive-sdk'},
+        {include: '#preprocessor-app-directive-generic'}
+      ]
+    },
+    'preprocessor-app-directive-generic': {
+      captures: {1: {name: 'string.unquoted.preprocessor.message.cs'}},
+      match: '\\b(.*)?\\s*'
+    },
+    'preprocessor-app-directive-package': {
+      captures: {
+        1: {name: 'keyword.preprocessor.package.cs'},
+        2: {patterns: [{include: '#preprocessor-app-directive-package-name'}]},
+        3: {name: 'punctuation.separator.at.cs'},
+        4: {name: 'string.unquoted.preprocessor.message.cs'}
+      },
+      match: '\\b(package)\\b\\s*([_[:alpha:]][_.[:alnum:]]*)?(@)?(.*)?\\s*'
+    },
+    'preprocessor-app-directive-package-name': {
+      patterns: [
+        {
+          captures: {
+            1: {name: 'punctuation.dot.cs'},
+            2: {name: 'entity.name.variable.preprocessor.symbol.cs'}
+          },
+          match: '(\\.)([_[:alpha:]][_[:alnum:]]*)'
+        },
+        {
+          match: '[_[:alpha:]][_[:alnum:]]*',
+          name: 'entity.name.variable.preprocessor.symbol.cs'
+        }
+      ]
+    },
+    'preprocessor-app-directive-project': {
+      captures: {
+        1: {name: 'keyword.preprocessor.project.cs'},
+        2: {name: 'string.unquoted.preprocessor.message.cs'}
+      },
+      match: '\\b(project)\\b\\s*(.*)?\\s*'
+    },
+    'preprocessor-app-directive-property': {
+      captures: {
+        1: {name: 'keyword.preprocessor.property.cs'},
+        2: {name: 'entity.name.variable.preprocessor.symbol.cs'},
+        3: {name: 'punctuation.separator.equals.cs'},
+        4: {name: 'string.unquoted.preprocessor.message.cs'}
+      },
+      match: '\\b(property)\\b\\s*([_[:alpha:]][_[:alnum:]]*)?(=)?(.*)?\\s*'
+    },
+    'preprocessor-app-directive-sdk': {
+      captures: {
+        1: {name: 'keyword.preprocessor.sdk.cs'},
+        2: {patterns: [{include: '#preprocessor-app-directive-package-name'}]},
+        3: {name: 'punctuation.separator.at.cs'},
+        4: {name: 'string.unquoted.preprocessor.message.cs'}
+      },
+      match: '\\b(sdk)\\b\\s*([_[:alpha:]][_.[:alnum:]]*)?(@)?(.*)?\\s*'
+    },
+    'preprocessor-comment': {
+      patterns: [
+        {
+          captures: {1: {name: 'punctuation.definition.comment.cs'}},
+          match: '(//).*(?=$)',
+          name: 'comment.line.double-slash.cs'
+        },
+        {
+          begin: '/\\*',
+          captures: {0: {name: 'punctuation.definition.comment.cs'}},
+          end: '\\*/',
+          name: 'comment.block.cs'
+        }
       ]
     },
     'preprocessor-define-or-undef': {
@@ -1825,7 +1945,10 @@ const grammar = {
         2: {name: 'keyword.preprocessor.elif.cs'}
       },
       end: '(?=$)',
-      patterns: [{include: '#comment'}, {include: '#preprocessor-expression'}]
+      patterns: [
+        {include: '#preprocessor-comment'},
+        {include: '#preprocessor-expression'}
+      ]
     },
     'preprocessor-line': {
       begin: '\\b(line)\\b',
@@ -1917,8 +2040,11 @@ const grammar = {
           name: 'storage.modifier.$1.cs'
         },
         {
-          begin: '\\b(get)\\b\\s*(?=\\{|;|=>|//|/\\*|$)',
-          beginCaptures: {1: {name: 'storage.type.accessor.$1.cs'}},
+          begin: '(?:\\b(readonly)\\s+)?\\b(get)\\b\\s*(?=\\{|;|=>|//|/\\*|$)',
+          beginCaptures: {
+            1: {name: 'storage.modifier.readonly.cs'},
+            2: {name: 'storage.type.accessor.get.cs'}
+          },
           end: '(?<=\\}|;)|(?=\\})',
           patterns: [{include: '#accessor-getter'}]
         },
@@ -2072,7 +2198,7 @@ const grammar = {
       },
       end: '\\}',
       endCaptures: {0: {name: 'punctuation.definition.interpolation.end.cs'}},
-      name: 'meta.interpolation.cs',
+      name: 'meta.embedded.interpolation.cs',
       patterns: [{include: '#expression'}]
     },
     'raw-string-literal': {

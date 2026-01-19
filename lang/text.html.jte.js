@@ -13,6 +13,7 @@ const grammar = {
   extensions: ['.jte'],
   names: ['java-template-engine', 'jte'],
   patterns: [
+    {include: '#jte-keyword'},
     {include: '#jte-comment'},
     {include: '#jte-statement'},
     {include: '#jte-declaration'},
@@ -238,6 +239,10 @@ const grammar = {
       end: '\n',
       name: 'declaration.jte',
       patterns: [{include: 'source.java'}]
+    },
+    'jte-keyword': {
+      match: '@(import|param|if|else|elseif|endif|for|endfor|template)',
+      name: 'keyword.jte'
     },
     'jte-statement': {
       begin: '\\${',

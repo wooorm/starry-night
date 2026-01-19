@@ -40,7 +40,11 @@ const grammar = {
         {match: '\\S+', name: 'invalid.illegal.identifier.jq'}
       ]
     },
-    comment: {begin: '#', end: '$', name: 'comment.line.number-sign.jq'},
+    comment: {
+      begin: '#',
+      end: '(?<!\\\\)\\r?\\n',
+      name: 'comment.line.number-sign.jq'
+    },
     constant: {
       match: '(?<!\\.)\\b(true|false|null)(?!\\s*:)\\b',
       name: 'constant.language.jq'

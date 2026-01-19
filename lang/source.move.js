@@ -14,10 +14,9 @@ const grammar = {
   patterns: [
     {include: '#address'},
     {include: '#comments'},
+    {include: '#extend_module'},
     {include: '#module'},
     {include: '#script'},
-    {include: '#annotation'},
-    {include: '#comments'},
     {include: '#annotation'},
     {include: '#entry'},
     {include: '#public-scope'},
@@ -63,6 +62,7 @@ const grammar = {
       end: '\\]',
       name: 'support.constant.annotation.move',
       patterns: [
+        {include: '#comments'},
         {match: '\\b(\\w+)\\s*(?=\\=)', name: 'meta.annotation.name.move'},
         {
           begin: '=',
@@ -238,6 +238,13 @@ const grammar = {
         {include: '#expr_generic'}
       ]
     },
+    extend_module: {
+      begin: '\\b(extend)\\b',
+      beginCaptures: {1: {name: 'storage.modifier.type.extend.move'}},
+      end: '(?<=[;}])',
+      name: 'meta.extend_module.move',
+      patterns: [{include: '#comments'}, {include: '#module'}]
+    },
     friend: {
       begin: '\\b(friend)\\b',
       beginCaptures: {1: {name: 'storage.modifier.type.move'}},
@@ -298,7 +305,7 @@ const grammar = {
             {match: '\\b(\\w+)\\b', name: 'entity.name.function.move'}
           ]
         },
-        {include: '#type_param'},
+        {include: '#fun_type_param'},
         {
           begin: '[(]',
           end: '[)]',
@@ -315,6 +322,19 @@ const grammar = {
           ]
         },
         {match: '\\b(acquires)\\b', name: 'storage.modifier'}
+      ]
+    },
+    fun_type_param: {
+      begin: '<',
+      end: '>',
+      name: 'meta.fun_generic_param.move',
+      patterns: [
+        {include: '#comments'},
+        {include: '#types'},
+        {include: '#phantom'},
+        {include: '#capitalized'},
+        {include: '#module_access'},
+        {include: '#abilities'}
       ]
     },
     has: {match: '\\b(has)\\b', name: 'keyword.control.ability.has.move'},
@@ -405,9 +425,10 @@ const grammar = {
         },
         {match: '\\b(?:true|false)\\b', name: 'constant.language.boolean.move'},
         {
-          begin: 'vector\\[',
+          begin: '(\\bvector\\b)\\[',
+          captures: {1: {name: 'support.type.vector.move'}},
           end: '\\]',
-          name: 'meta.vector.literal.macro.move',
+          name: 'meta.vector.literal.move',
           patterns: [{include: '#expr'}]
         }
       ]
@@ -424,8 +445,11 @@ const grammar = {
       patterns: [{include: '#comments'}, {include: '#fun'}]
     },
     macro_call: {
-      captures: {2: {name: 'support.function.macro.move'}},
-      match: '(\\b|\\.)([a-z][A-Za-z0-9_]*)!',
+      captures: {
+        2: {name: 'support.function.macro.move'},
+        3: {name: 'support.function.operator.macro.move'}
+      },
+      match: '(\\b|\\.)([a-z][A-Za-z0-9_]*)(!)',
       name: 'meta.macro.call'
     },
     match_expression: {
@@ -518,21 +542,6 @@ const grammar = {
       },
       match: '\\b(\\w+)::(\\w+)\\b',
       name: 'meta.module_access.move'
-    },
-    module_label: {
-      begin: '^\\s*(module)\\b',
-      end: ';\\s*$',
-      name: 'meta.module.label.move',
-      patterns: [
-        {include: '#comments'},
-        {include: '#escaped_identifier'},
-        {
-          begin: '(?<=\\bmodule\\b)',
-          end: '(?=[(::){])',
-          name: 'constant.other.move'
-        },
-        {begin: '(?<=::)', end: '(?=[\\s{])', name: 'entity.name.type.move'}
-      ]
     },
     move_copy: {match: '\\b(move|copy)\\b', name: 'variable.language.move'},
     mut: {match: '\\b(mut)\\b', name: 'storage.modifier.mut.move'},

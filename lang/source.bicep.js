@@ -47,7 +47,9 @@ const grammar = {
     expression: {
       patterns: [
         {include: '#string-literal'},
-        {include: '#string-verbatim'},
+        {include: '#multiline-string'},
+        {include: '#multiline-string-1-interp'},
+        {include: '#multiline-string-2-interp'},
         {include: '#numeric-literal'},
         {include: '#named-literal'},
         {include: '#object-literal'},
@@ -94,6 +96,47 @@ const grammar = {
       match: '//.*(?=$)',
       name: 'comment.line.double-slash.bicep'
     },
+    'multiline-1-string-subst': {
+      begin: '(\\${)',
+      beginCaptures: {
+        1: {name: 'punctuation.definition.template-expression.begin.bicep'}
+      },
+      end: '(})',
+      endCaptures: {
+        1: {name: 'punctuation.definition.template-expression.end.bicep'}
+      },
+      name: 'meta.multiline-1-string-subst.bicep',
+      patterns: [{include: '#expression'}, {include: '#comments'}]
+    },
+    'multiline-2-string-subst': {
+      begin: '(\\$\\${)',
+      beginCaptures: {
+        1: {name: 'punctuation.definition.template-expression.begin.bicep'}
+      },
+      end: '(})',
+      endCaptures: {
+        1: {name: 'punctuation.definition.template-expression.end.bicep'}
+      },
+      name: 'meta.multiline-2-string-subst.bicep',
+      patterns: [{include: '#expression'}, {include: '#comments'}]
+    },
+    'multiline-string': {
+      begin: "'''",
+      end: "'''(?!')",
+      name: 'string.quoted.multi.bicep'
+    },
+    'multiline-string-1-interp': {
+      begin: "(?<!\\$)\\$'''",
+      end: "'''(?!')",
+      name: 'string.quoted.multi.bicep',
+      patterns: [{include: '#multiline-1-string-subst'}]
+    },
+    'multiline-string-2-interp': {
+      begin: "\\$\\$'''",
+      end: "'''(?!')",
+      name: 'string.quoted.multi.bicep',
+      patterns: [{include: '#multiline-2-string-subst'}]
+    },
     'named-literal': {
       match: '\\b(true|false|null)\\b',
       name: 'constant.language.bicep'
@@ -118,12 +161,9 @@ const grammar = {
       begin: "'(?!'')",
       end: "'",
       name: 'string.quoted.single.bicep',
-      patterns: [
-        {include: '#escape-character'},
-        {include: '#string-literal-subst'}
-      ]
+      patterns: [{include: '#escape-character'}, {include: '#string-subst'}]
     },
-    'string-literal-subst': {
+    'string-subst': {
       begin: '(?<!\\\\)(\\${)',
       beginCaptures: {
         1: {name: 'punctuation.definition.template-expression.begin.bicep'}
@@ -132,13 +172,8 @@ const grammar = {
       endCaptures: {
         1: {name: 'punctuation.definition.template-expression.end.bicep'}
       },
-      name: 'meta.string-literal-subst.bicep',
+      name: 'meta.string-subst.bicep',
       patterns: [{include: '#expression'}, {include: '#comments'}]
-    },
-    'string-verbatim': {
-      begin: "'''",
-      end: "'''(?!')",
-      name: 'string.quoted.multi.bicep'
     }
   },
   scopeName: 'source.bicep'

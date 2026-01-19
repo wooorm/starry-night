@@ -1,6 +1,6 @@
 // This is a TextMate grammar distributed by `starry-night`.
 // This grammar is developed at
-// <https://github.com/dfinity/vscode-motoko>
+// <https://github.com/caffeinelabs/vscode-motoko>
 // and licensed `apache-2.0`.
 // See <https://github.com/wooorm/starry-night> for more info.
 /**
@@ -321,11 +321,12 @@ const grammar = {
         },
         {
           match:
-            '\\b(assert|break|case|continue|debug|debug_show|else|if|ignore|in|for|label|null|return|switch|while|loop|try|throw|catch|finally|do|to_candid|from_candid|with)\\b',
+            '\\b(assert|break|case|continue|debug|debug_show|else|if|ignore|in|for|label|null|return|switch|while|loop|try|throw|catch|finally|do|to_candid|from_candid|with|include)\\b',
           name: 'keyword.statement.motoko'
         },
         {
-          match: '\\b(query|composite|stable|flexible|persistent|transient)\\b',
+          match:
+            '\\b(query|composite|stable|flexible|persistent|transient|implicit|weak|mixin)\\b',
           name: 'keyword.other.motoko'
         }
       ]

@@ -9,8 +9,8 @@
 
 /** @type {Grammar} */
 const grammar = {
-  extensions: ['.hcl', '.nomad', '.tf', '.tfvars', '.workflow'],
-  names: ['hcl', 'hashicorp-configuration-language', 'terraform'],
+  extensions: ['.hcl', '.nomad', '.tf', '.tfvars', '.tofu', '.workflow'],
+  names: ['hcl', 'hashicorp-configuration-language', 'opentofu', 'terraform'],
   patterns: [
     {include: '#comments'},
     {include: '#attribute_definition'},

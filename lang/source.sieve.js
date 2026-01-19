@@ -91,7 +91,11 @@ const grammar = {
       beginCaptures: {1: {name: 'keyword.control.flow.${1:/downcase}.sieve'}},
       end: '(?<=\\})',
       name: 'meta.conditional.${1:/downcase}.sieve',
-      patterns: [{include: '#test'}, {include: '#comment'}, {include: '#block'}]
+      patterns: [
+        {include: '#test'},
+        {include: '#comments'},
+        {include: '#block'}
+      ]
     },
     encodedCharacter: {
       captures: {

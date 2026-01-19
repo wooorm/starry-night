@@ -22,10 +22,9 @@ const grammar = {
     '.gtl',
     '.gto',
     '.gtp',
-    '.gts',
     '.sol'
   ],
-  extensionsWithDot: ['.ncl'],
+  extensionsWithDot: ['.gts', '.ncl'],
   names: ['gerber-image', 'rs-274x'],
   patterns: [
     {

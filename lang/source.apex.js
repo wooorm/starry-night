@@ -169,6 +169,7 @@ const grammar = {
         {include: '#variable-initializer'},
         {include: '#constructor-declaration'},
         {include: '#method-declaration'},
+        {include: '#initializer-block'},
         {include: '#punctuation-semicolon'}
       ]
     },
@@ -210,7 +211,7 @@ const grammar = {
       ]
     },
     'conditional-operator': {
-      begin: '(?<!\\?)\\?(?!\\?|\\.|\\[)',
+      begin: '(?<!\\?)\\?(?!\\?|\\.(?!\\d)|\\[)',
       beginCaptures: {
         0: {name: 'keyword.operator.conditional.question-mark.apex'}
       },
@@ -261,6 +262,12 @@ const grammar = {
       ]
     },
     directives: {patterns: [{include: '#punctuation-semicolon'}]},
+    'dml-expression': {
+      begin: '\\b(delete|insert|undelete|update|upsert)\\b\\s+(?!new\\b)',
+      beginCaptures: {1: {name: 'support.function.apex'}},
+      end: '(?<=\\;)',
+      patterns: [{include: '#expression'}, {include: '#punctuation-semicolon'}]
+    },
     'do-statement': {
       begin: '(?<!\\.)\\b(do)\\b',
       beginCaptures: {1: {name: 'keyword.control.loop.do.apex'}},
@@ -338,6 +345,7 @@ const grammar = {
     expression: {
       patterns: [
         {include: '#comment'},
+        {include: '#dml-expression'},
         {include: '#merge-expression'},
         {include: '#support-expression'},
         {include: '#throw-expression'},
@@ -386,12 +394,20 @@ const grammar = {
       ]
     },
     'extends-class': {
-      begin: '(extends)\\b\\s+([_[:alpha:]][_[:alnum:]]*)',
-      beginCaptures: {
-        1: {name: 'keyword.other.extends.apex'},
-        2: {name: 'entity.name.type.extends.apex'}
-      },
-      end: '(?={|implements)'
+      begin: '(extends)\\b\\s+',
+      beginCaptures: {1: {name: 'keyword.other.extends.apex'}},
+      end: '(?={|implements)',
+      patterns: [
+        {
+          begin: '(?=[_[:alpha:]][_[:alnum:]]*\\s*\\.)',
+          end: '(?={|implements)',
+          patterns: [{include: '#support-type'}, {include: '#type'}]
+        },
+        {
+          captures: {1: {name: 'entity.name.type.extends.apex'}},
+          match: '([_[:alpha:]][_[:alnum:]]*)'
+        }
+      ]
     },
     'field-declaration': {
       begin:
@@ -494,12 +510,24 @@ const grammar = {
       ]
     },
     'implements-class': {
-      begin: '(implements)\\b\\s+([_[:alpha:]][_[:alnum:]]*)',
-      beginCaptures: {
-        1: {name: 'keyword.other.implements.apex'},
-        2: {name: 'entity.name.type.implements.apex'}
-      },
-      end: '(?={|extends)'
+      begin: '(implements)\\b',
+      beginCaptures: {1: {name: 'keyword.other.implements.apex'}},
+      end: '(?={|extends)',
+      patterns: [
+        {
+          begin: '(?=[_[:alpha:]][_[:alnum:]]*\\s*\\.)',
+          end: '(?={|extends|,)',
+          patterns: [{include: '#support-type'}, {include: '#type'}]
+        },
+        {
+          captures: {
+            1: {name: 'entity.name.type.implements.apex'},
+            2: {name: 'punctuation.separator.comma.apex'}
+          },
+          match: '([_[:alpha:]][_[:alnum:]]*)\\b\\s*(,)?'
+        },
+        {include: '#punctuation-comma'}
+      ]
     },
     'indexer-declaration': {
       begin:
@@ -516,6 +544,13 @@ const grammar = {
         {include: '#expression-body'},
         {include: '#variable-initializer'}
       ]
+    },
+    'initializer-block': {
+      begin: '\\{',
+      beginCaptures: {0: {name: 'punctuation.curlybrace.open.apex'}},
+      end: '\\}',
+      endCaptures: {0: {name: 'punctuation.curlybrace.close.apex'}},
+      patterns: [{include: '#statement'}]
     },
     'initializer-expression': {
       begin: '\\{',
@@ -865,7 +900,7 @@ const grammar = {
         6: {name: 'entity.name.variable.parameter.apex'}
       },
       match:
-        '(?x)\n(?:(?:\\b(this)\\b)\\s+)?\n(?<type_name>\n  (?:\n    (?:ref\\s+)?   # ref return\n    (?:\n      (?:(?<identifier>@?[_[:alpha:]][_[:alnum:]]*)\\s*\\:\\:\\s*)? # alias-qualification\n      (?<name_and_type_args> # identifier + type arguments (if any)\n        \\g<identifier>\\s*\n        (?<type_args>\\s*<(?:[^<>]|\\g<type_args>)+>\\s*)?\n      )\n      (?:\\s*\\.\\s*\\g<name_and_type_args>)*\n    )\n    (?:\\s*\\?\\s*)? # nullable suffix?\n    (?:\\s*\\[(?:\\s*,\\s*)*\\]\\s*)* # array suffix?\n  )\n)\\s+\n(\\g<identifier>)'
+        '(?x)\n(?:(?:\\b(this|final)\\b)\\s+)?\n(?<type_name>\n  (?:\n    (?:ref\\s+)?   # ref return\n    (?:\n      (?:(?<identifier>@?[_[:alpha:]][_[:alnum:]]*)\\s*\\:\\:\\s*)? # alias-qualification\n      (?<name_and_type_args> # identifier + type arguments (if any)\n        \\g<identifier>\\s*\n        (?<type_args>\\s*<(?:[^<>]|\\g<type_args>)+>\\s*)?\n      )\n      (?:\\s*\\.\\s*\\g<name_and_type_args>)*\n    )\n    (?:\\s*\\?\\s*)? # nullable suffix?\n    (?:\\s*\\[(?:\\s*,\\s*)*\\]\\s*)* # array suffix?\n  )\n)\\s+\n(\\g<identifier>)'
     },
     'parenthesized-expression': {
       begin: '\\(',
@@ -1198,8 +1233,7 @@ const grammar = {
       ]
     },
     'switch-statement': {
-      begin:
-        "(?x)\n(switch)\\b\\s+\n(on)\\b\\s+\n(?:([_.?\\'\\(\\)[:alnum:]]+)\\s*)?\n(\\{)",
+      begin: '(?x)\n(switch)\\b\\s+\n(on)\\b\\s+\n(.*)\n(\\{)',
       beginCaptures: {
         1: {name: 'keyword.control.switch.apex'},
         2: {name: 'keyword.control.switch.on.apex'},
@@ -1385,7 +1419,7 @@ const grammar = {
     'type-builtin': {
       captures: {1: {name: 'keyword.type.apex'}},
       match:
-        '\\b(Blob|Boolean|byte|Date|Datetime|Decimal|Double|ID|Integer|Long|Object|String|Time|void)\\b'
+        '\\b(Blob|Boolean|byte|Date|Datetime|Decimal|Double|Id|ID|Integer|Long|Object|String|Time|void)\\b'
     },
     'type-declarations': {
       patterns: [
@@ -1459,14 +1493,18 @@ const grammar = {
         1: {name: 'keyword.control.switch.when.apex'},
         2: {name: 'keyword.control.switch.else.apex'}
       },
-      end: '(?<=\\})',
+      end: '(?=\\})|(?=when\\b)',
       patterns: [{include: '#block'}, {include: '#expression'}]
     },
     'when-multiple-statement': {
       begin: '(when)\\b\\s*',
       beginCaptures: {1: {name: 'keyword.control.switch.when.apex'}},
-      end: '(?<=\\})',
-      patterns: [{include: '#block'}, {include: '#expression'}]
+      end: '(?=\\})|(?=when\\b)',
+      patterns: [
+        {include: '#block'},
+        {include: '#expression'},
+        {include: '#punctuation-comma'}
+      ]
     },
     'when-sobject-statement': {
       begin: '(when)\\b\\s+([_[:alnum:]]+)\\s+([_[:alnum:]]+)\\s*',
@@ -1475,45 +1513,28 @@ const grammar = {
         2: {name: 'storage.type.apex'},
         3: {name: 'entity.name.variable.local.apex'}
       },
-      end: '(?<=\\})',
+      end: '(?=\\})|(?=when\\b)',
       patterns: [{include: '#block'}, {include: '#expression'}]
     },
     'when-statement': {
-      begin: "(when)\\b\\s+([\\'_\\-[:alnum:]]+)\\s*",
+      begin: '(when)\\b\\s+([_\\-[:alnum:]]+)\\s*',
       beginCaptures: {
         1: {name: 'keyword.control.switch.when.apex'},
         2: {patterns: [{include: '#expression'}]}
       },
-      end: '(?<=\\})',
+      end: '(?=\\})|(?=when\\b)',
       patterns: [{include: '#block'}, {include: '#expression'}]
     },
     'when-string': {
-      begin: "(when)(\\b\\s*)((\\')[_.\\,\\'\\s*[:alnum:]]+)",
+      begin: "(when)\\b\\s*('[^'\\n]*')(\\s*(,)\\s*('[^'\\n]*'))*\\s*",
       beginCaptures: {
         1: {name: 'keyword.control.switch.when.apex'},
-        2: {name: 'punctuation.whitespace.apex'},
-        3: {
-          patterns: [
-            {include: '#when-string-statement'},
-            {include: '#punctuation-comma'}
-          ]
-        }
+        2: {patterns: [{include: '#string-literal'}]},
+        4: {patterns: [{include: '#punctuation-comma'}]},
+        5: {patterns: [{include: '#string-literal'}]}
       },
-      end: '(?<=\\})',
+      end: '(?=\\})|(?=when\\b)',
       patterns: [{include: '#block'}, {include: '#expression'}]
-    },
-    'when-string-statement': {
-      patterns: [
-        {
-          begin: "\\'",
-          beginCaptures: {
-            0: {name: 'punctuation.definition.string.begin.apex'}
-          },
-          end: "\\'",
-          endCaptures: {0: {name: 'punctuation.definition.string.end.apex'}},
-          name: 'string.quoted.single.apex'
-        }
-      ]
     },
     'where-clause': {
       captures: {1: {name: 'keyword.operator.query.where.apex'}},

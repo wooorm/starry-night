@@ -42,6 +42,12 @@ source.awk:
   source.regexp: false
 source.bdf:
   source.xlfd: true
+source.bru:
+  source.graphql: false
+  source.js: false
+  source.json: false
+  text.md: false
+  text.xml: false
 source.bsl:
   source.sdbl: true
 source.Caddyfile:
@@ -54,6 +60,8 @@ source.c++:
   source.c: true
 source.c.ec:
   source.c: true
+source.c.linker:
+  source.c: true
 source.c.nwscript:
   source.c: true
 source.cairo0:
@@ -63,6 +71,8 @@ source.camlp4.ocaml:
 source.cfscript:
   source.sql: true
   text.html.javadoc: false
+source.clean:
+  text.md: false
 source.cobol:
   source.java: false
   source.openesql: false
@@ -72,6 +82,8 @@ source.coffee:
   source.js.regexp: false
 source.context:
   source.shell: true
+source.cooklang:
+  source.yaml: false
 source.crystal:
   source.c: false
   source.c++: false
@@ -131,12 +143,16 @@ source.elm:
   source.glsl: false
 source.elvish-transcript:
   source.elvish: true
+source.erlang:
+  text.md: false
 source.fontdir:
   source.xlfd: true
 source.fortran.modern:
   source.fortran: true
 source.futhark:
   etc: true
+source.fsharp:
+  text.md: false
 source.gdresource:
   source.gdscript: false
   source.gdshader: false
@@ -223,6 +239,9 @@ source.hosts:
   etc: true
 source.httpspec:
   source.json: true
+source.hurl:
+  source.graphql: false
+  text.xml: false
 source.hxml:
   source.hx: true
 source.ideal:
@@ -256,6 +275,7 @@ source.jai:
   source.toml: false
   source.ts: false
   source.yaml: false
+  text.md: false
   text.xml: false
   text.xml.xsl: false
 source.java:
@@ -284,6 +304,7 @@ source.julia.console:
   source.julia: true
   source.shell: true
 source.julia:
+  source.c++: false
   source.js: false
   source.python: false
   source.r: false
@@ -344,10 +365,12 @@ source.lean.markdown:
   source.ts: false
   source.tsx: false
   source.yaml: false
+  text.git-commit: false
   text.html.basic: false
   text.html.handlebars: false
   text.html.php: false
   text.jade: false
+  text.md: false
   text.xml: false
   text.xml.xsl: false
 source.lean4:
@@ -392,10 +415,12 @@ source.lean4.markdown:
   source.ts: false
   source.tsx: false
   source.yaml: false
+  text.git-commit: false
   text.html.basic: false
   text.html.handlebars: false
   text.html.php: false
   text.jade: false
+  text.md: false
   text.xml: false
   text.xml.xsl: false
 source.lex:
@@ -422,6 +447,7 @@ source.mask:
   source.css: false
   source.js: true
   text.html.basic: true
+  text.md: false
 source.mathematica:
   source.sql: false
 source.matlab:
@@ -472,6 +498,7 @@ source.mdx:
   text.html.basic: false
   text.html.markdown.source.gfm.apib: false
   text.html.php: false
+  text.md: false
   text.python.console: false
   text.shell-session: false
   text.xml: false
@@ -487,14 +514,18 @@ source.mermaid:
   source.mermaid.gitgraph: true
   source.mermaid.mindmap: true
   source.mermaid.pie-chart: true
+  source.mermaid.quad-chart: true
   source.mermaid.requirement-diagram: true
+  source.mermaid.sankey: true
   source.mermaid.sequence-diagram: true
   source.mermaid.state-diagram: true
+  source.mermaid.timeline: true
   source.mermaid.user-journey: true
+  source.mermaid.zenuml: true
   text.html.basic: false
+  source.yaml: false
 source.mermaid.c4c-diagram:
   source.mermaid: true
-  source.mermaid.user-journey: true
   source.wsd: true
 source.mermaid.class-diagram:
   source.mermaid: true
@@ -514,15 +545,24 @@ source.mermaid.mindmap:
   source.mermaid.flowchart: true
 source.mermaid.pie-chart:
   source.mermaid: true
+source.mermaid.quad-chart:
+  source.mermaid: true
 source.mermaid.requirement-diagram:
+  source.mermaid: true
+source.mermaid.sankey:
   source.mermaid: true
 source.mermaid.sequence-diagram:
   source.json: true
   source.mermaid: true
 source.mermaid.state-diagram:
   source.mermaid: true
+source.mermaid.timeline:
+  source.mermaid: true
 source.mermaid.user-journey:
   source.mermaid: true
+source.mermaid.zenuml:
+  source.mermaid: true
+  text.md: false
 source.mint:
   source.css: true
   source.css.scss: true
@@ -657,6 +697,7 @@ source.shell:
   source.python: false
   source.ruby: false
   text.html.basic: false
+  text.md: false
 source.shellcheckrc:
   etc: true
 source.smpl:
@@ -675,6 +716,8 @@ source.stl:
   etc: true
 source.string-template:
   etc: true
+source.surrealql:
+  source.js: false
 source.svelte:
   source.coffee: false
   source.css: true
@@ -701,9 +744,12 @@ source.torrc:
   source.hosts: true
 source.vala:
   text.html.javadoc: false
+source.vba:
+  source.vb6: true
 source.vento:
   source.js: true
   source.yaml: false
+  text.html.basic: true
 source.vim-snippet:
   source.python: false
   source.regexp: false
@@ -729,7 +775,8 @@ source.vue:
   text.html.basic: true
   text.jade: false
 source.wdl:
-  source.shell: false
+  source.python: false
+  text.md: false
 source.wgetrc:
   etc: true
 source.win32-messages:
@@ -771,6 +818,7 @@ text.haml:
   source.ruby: true
   source.sass: false
   text.html.php: false
+  text.md: false
 text.html.asciidoc:
   text.html.basic: true
 text.html.asdoc:
@@ -888,10 +936,12 @@ text.html.markdown.d2:
   source.tsx: false
   source.yaml: false
   text.bibtex: false
+  text.git-commit: false
   text.html.basic: false
   text.html.handlebars: false
   text.html.php: false
   text.jade: false
+  text.md: false
   text.tex.latex: false
   text.xml: false
   text.xml.xsl: false
@@ -997,14 +1047,20 @@ text.html.vue:
   source.css: false
   source.css.less: false
   source.css.scss: false
+  source.graphql: false
+  source.json: false
+  source.json.comments: false
   source.js: false
-  source.livescript: false
   source.postcss: false
   source.sass: false
   source.stylus: false
+  source.toml: false
+  source.tsx: false
   source.ts: false
+  source.yaml: false
+  text.html.basic: false
   text.jade: false
-  text.slim: false
+  text.md: false
 text.jade:
   source.coffee: false
   source.css: false
@@ -1017,7 +1073,7 @@ text.marko:
   source.css: false
   source.css.less: false
   source.css.scss: false
-  source.js: true
+  source.ts: true
 text.md:
   source.c: false
   source.c++: false
@@ -1137,9 +1193,9 @@ text.slim:
   source.js: false
   source.ruby: false
   source.sass: false
-  source.yaml: false
   text.html.basic: true
   text.html.erb: false
+  text.md: false
 text.srt:
   text.html.basic: true
 text.tex:

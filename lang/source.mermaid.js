@@ -18,14 +18,39 @@ const grammar = {
     'source.mermaid.gitgraph',
     'source.mermaid.mindmap',
     'source.mermaid.pie-chart',
+    'source.mermaid.quad-chart',
     'source.mermaid.requirement-diagram',
+    'source.mermaid.sankey',
     'source.mermaid.sequence-diagram',
     'source.mermaid.state-diagram',
-    'source.mermaid.user-journey'
+    'source.mermaid.timeline',
+    'source.mermaid.user-journey',
+    'source.mermaid.zenuml'
   ],
   extensions: ['.mmd', '.mermaid'],
   names: ['mermaid', 'mermaid-example'],
-  patterns: [{include: '#main'}],
+  patterns: [
+    {
+      begin: '^([ \\t]*)((---))[ \\t]*$',
+      beginCaptures: {
+        2: {name: 'punctuation.section.front-matter.begin.mermaid'},
+        3: {name: 'sublimelinter.gutter-mark'}
+      },
+      end: '^\\1((---))(?=[ \\t]*$)',
+      endCaptures: {
+        1: {name: 'punctuation.section.front-matter.end.mermaid'},
+        2: {name: 'sublimelinter.gutter-mark'}
+      },
+      name: 'meta.front-matter.mermaid',
+      patterns: [{include: 'source.yaml'}]
+    },
+    {
+      begin: '(?<=---)[ \\t]*$|^',
+      end: '(?=A)B|(?=^[ \\t]*(?:`{3,}|~{3,})\\s*$)',
+      name: 'meta.file-body.mermaid',
+      patterns: [{include: '#main'}]
+    }
+  ],
   repository: {
     a11y: {
       begin: '(?:\\G|^|(?<=\\s|;|%%))acc(Title|Descr)(?:(?=\\s*[:{])|[ \\t]*$)',
@@ -209,7 +234,15 @@ const grammar = {
       patterns: [
         {
           captures: {
-            0: {patterns: [{include: 'source.css#rule-list-innards'}]}
+            0: {
+              patterns: [
+                {
+                  match: '(?i)(?<![\\w-])(stroke-color)(?![\\w-])',
+                  name: 'support.type.property-name.non-standard.mermaid-only.css'
+                },
+                {include: 'source.css#rule-list-innards'}
+              ]
+            }
           },
           match: '(?=\\S)(?:[^,;\\r\\n%]|(?<!%)%(?!%))++',
           name: 'source.embedded.css'
@@ -229,10 +262,14 @@ const grammar = {
         {include: '#user-journey'},
         {include: '#gantt'},
         {include: '#pie-chart'},
+        {include: '#quad-chart'},
         {include: '#requirement-diagram'},
         {include: '#gitgraph'},
         {include: '#c4c-diagram'},
-        {include: '#mindmap'}
+        {include: '#mindmap'},
+        {include: '#timeline'},
+        {include: '#zenuml'},
+        {include: '#sankey'}
       ]
     },
     mindmap: {
@@ -249,6 +286,13 @@ const grammar = {
       name: 'meta.pie-chart.mermaid',
       patterns: [{include: 'source.mermaid.pie-chart'}]
     },
+    'quad-chart': {
+      begin: '(?i)^[ \\t]*(quadrantChart)(?=$|\\s)',
+      beginCaptures: {1: {name: 'keyword.control.quad-chart.begin.mermaid'}},
+      end: '(?=A)B|(?=^[ \\t]*(?:`{3,}|~{3,})\\s*$)',
+      name: 'meta.quad-chart.mermaid',
+      patterns: [{include: 'source.mermaid.quad-chart'}]
+    },
     'requirement-diagram': {
       begin: '(?i)^[ \\t]*(requirementDiagram)(?=$|\\s)',
       beginCaptures: {
@@ -257,6 +301,13 @@ const grammar = {
       end: '(?=A)B|(?=^[ \\t]*(?:`{3,}|~{3,})\\s*$)',
       name: 'meta.requirement-diagram.mermaid',
       patterns: [{include: 'source.mermaid.requirement-diagram'}]
+    },
+    sankey: {
+      begin: '(?i)^[ \\t]*(sankey(?:-beta)?)(?=$|\\s|;)',
+      beginCaptures: {1: {name: 'keyword.control.sankey.begin.mermaid'}},
+      end: '(?=A)B|(?=^[ \\t]*(?:`{3,}|~{3,})\\s*$)',
+      name: 'meta.sankey.mermaid',
+      patterns: [{include: 'source.mermaid.sankey'}]
     },
     'sequence-diagram': {
       begin: '(?i)^[ \\t]*(sequenceDiagram)(?=$|\\s|;)',
@@ -279,12 +330,34 @@ const grammar = {
       match: ';',
       name: 'punctuation.terminator.statement.mermaid'
     },
+    timeline: {
+      begin: '(?i)^[ \\t]*(timeline)(?=$|\\s)',
+      beginCaptures: {1: {name: 'keyword.control.timeline.begin.mermaid'}},
+      end: '(?=A)B|(?=^[ \\t]*(?:`{3,}|~{3,})\\s*$)',
+      name: 'meta.timeline.mermaid',
+      patterns: [{include: 'source.mermaid.timeline'}]
+    },
+    title: {
+      begin: '(?i)(?:^|\\G|(?<=\\s))\\s*(title)(?=$|\\s)[ \\t]*',
+      beginCaptures: {1: {name: 'storage.type.title.mermaid'}},
+      contentName: 'string.unquoted.diagram-title.mermaid',
+      end: '(?=\\s*$)',
+      name: 'meta.title.mermaid',
+      patterns: [{include: '#entity'}]
+    },
     'user-journey': {
       begin: '(?i)^[ \\t]*(journey)(?=$|\\s)',
       beginCaptures: {1: {name: 'keyword.control.user-journey.begin.mermaid'}},
       end: '(?=A)B|(?=^[ \\t]*(?:`{3,}|~{3,})\\s*$)',
       name: 'meta.user-journey.mermaid',
       patterns: [{include: 'source.mermaid.user-journey'}]
+    },
+    zenuml: {
+      begin: '(?i)^[ \\t]*(zenuml)(?=$|\\s)',
+      beginCaptures: {1: {name: 'keyword.control.zenuml.begin.mermaid'}},
+      end: '(?=A)B|(?=^[ \\t]*(?:`{3,}|~{3,})\\s*$)',
+      name: 'meta.zenuml.mermaid',
+      patterns: [{include: 'source.mermaid.zenuml'}]
     }
   },
   scopeName: 'source.mermaid'

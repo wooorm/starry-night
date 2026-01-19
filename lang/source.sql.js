@@ -8,7 +8,6 @@
 /** @type {Grammar} */
 const grammar = {
   extensions: [
-    '.cql',
     '.db2',
     '.ddl',
     '.mysql',

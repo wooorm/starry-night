@@ -224,7 +224,7 @@ const grammar = {
       end: '(\'\'\'|""")',
       endCaptures: {1: {name: 'variable.parameter'}},
       name: 'syntax.markdown.mask',
-      patterns: [{include: 'source.gfm'}]
+      patterns: [{include: 'text.md'}]
     },
     node: {
       begin: '([^\\s\\.#;>\\{\\(]+)',
@@ -390,7 +390,7 @@ const grammar = {
       end: '(?i)</markdown[^\\>]*>',
       endCaptures: {0: {name: 'variable.parameter'}},
       name: 'syntax.markdown.mask',
-      patterns: [{include: 'source.gfm'}]
+      patterns: [{include: 'text.md'}]
     },
     xml_script: {
       begin: '(?i)<script[^\\>]*>',

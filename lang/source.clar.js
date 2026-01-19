@@ -25,7 +25,7 @@ const grammar = {
   repository: {
     'built-in-func': {
       begin:
-        '(?x) (\\() \\s* (\\-|\\+|<\\=|>\\=|<|>|\\*|/|and|append|as-contract|as-max-len\\?|asserts!|at-block|begin|bit-and|bit-not|bit-or|bit-shift-left|bit-shift-right|bit-xor|buff-to-int-be|buff-to-int-le|buff-to-uint-be|buff-to-uint-le|concat|contract-call\\?|contract-of|default-to|element-at|element-at\\?|filter|fold|from-consensus-buff\\?|ft-burn\\?|ft-get-balance|ft-get-supply|ft-mint\\?|ft-transfer\\?|get-block-info\\?|get-burn-block-info\\?|get-stacks-block-info\\?|get-tenure-info\\?|hash160|if|impl-trait|index-of|index-of\\?|int-to-ascii|int-to-utf8|is-eq|is-err|is-none|is-ok|is-some|is-standard|keccak256|len|log2|map|match|merge|mod|nft-burn\\?|nft-get-owner\\?|nft-mint\\?|nft-transfer\\?|not|or|pow|principal-construct\\?|principal-destruct\\?|principal-of\\?|print|replace-at\\?|secp256k1-recover\\?|secp256k1-verify|sha256|sha512|sha512/256|slice\\?|sqrti|string-to-int\\?|string-to-uint\\?|stx-account|stx-burn\\?|stx-get-balance|stx-transfer-memo\\?|stx-transfer\\?|to-consensus-buff\\?|to-int|to-uint|try!|unwrap!|unwrap-err!|unwrap-err-panic|unwrap-panic|xor) \\s+',
+        '(?x) (\\() \\s* (\\-|\\+|<\\=|>\\=|<|>|\\*|/|and|append|as-contract|as-contract\\?|as-max-len\\?|asserts!|at-block|begin|bit-and|bit-not|bit-or|bit-shift-left|bit-shift-right|bit-xor|buff-to-int-be|buff-to-int-le|buff-to-uint-be|buff-to-uint-le|concat|contract-call\\?|contract-of|default-to|element-at|element-at\\?|filter|fold|from-consensus-buff\\?|ft-burn\\?|ft-get-balance|ft-get-supply|ft-mint\\?|ft-transfer\\?|get-block-info\\?|get-burn-block-info\\?|get-stacks-block-info\\?|get-tenure-info\\?|hash160|if|impl-trait|index-of|index-of\\?|int-to-ascii|int-to-utf8|is-eq|is-err|is-none|is-ok|is-some|is-standard|keccak256|len|log2|map|match|merge|mod|nft-burn\\?|nft-get-owner\\?|nft-mint\\?|nft-transfer\\?|not|or|pow|principal-construct\\?|principal-destruct\\?|principal-of\\?|print|replace-at\\?|secp256k1-recover\\?|secp256k1-verify|sha256|sha512|sha512/256|slice\\?|sqrti|string-to-int\\?|string-to-uint\\?|to-ascii\\?|stx-account|stx-burn\\?|stx-get-balance|stx-transfer-memo\\?|stx-transfer\\?|to-consensus-buff\\?|to-int|to-uint|try!|unwrap!|unwrap-err!|unwrap-err-panic|unwrap-panic|xor|contract-hash\\?|restrict-assets\\?|with-stx|with-ft|with-nft|with-stacking|with-all-assets-unsafe|secp256r1-recover\\?|secp256r1-verify) \\s+',
       beginCaptures: {
         1: {name: 'punctuation.built-in-function.start.clarity'},
         2: {name: 'keyword.declaration.built-in-function.clarity'}
@@ -304,7 +304,7 @@ const grammar = {
     },
     keyword: {
       match:
-        '(?<!\\S)(?!-)\\b(?:block-height|burn-block-height|chain-id|contract-caller|is-in-regtest|stacks-block-height|stx-liquid-supply|tenure-height|tx-sender|tx-sponsor?)\\b(?!\\s*-)',
+        '(?<!\\S)(?!-)\\b(?:block-height|burn-block-height|chain-id|contract-caller|is-in-regtest|stacks-block-height|stx-liquid-supply|tenure-height|tx-sender|tx-sponsor?|current-contract|stacks-block-time)\\b(?!\\s*-)',
       name: 'constant.language.clarity'
     },
     'let-func': {

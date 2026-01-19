@@ -137,17 +137,12 @@ const grammar = {
     comments: {
       patterns: [
         {
-          beginCaptures: {1: {name: 'comment.block.fsharp'}},
-          match: '(\\(\\*{3}.*\\*{3}\\))',
-          name: 'comment.literate.command.fsharp'
-        },
-        {
           begin: '^\\s*(\\(\\*\\*(?!\\)))((?!\\*\\)).)*$',
           beginCaptures: {1: {name: 'comment.block.fsharp'}},
-          endCaptures: {1: {name: 'comment.block.fsharp'}},
           name: 'comment.block.markdown.fsharp',
-          patterns: [{include: 'source.gfm'}],
-          while: '^(?!\\s*(\\*)+\\)\\s*$)'
+          patterns: [{include: 'text.md'}],
+          while: '^(?!\\s*(\\*)+\\)\\s*$)',
+          whileCaptures: {1: {name: 'comment.block.fsharp'}}
         },
         {
           begin: '(\\(\\*(?!\\)))',
@@ -175,7 +170,7 @@ const grammar = {
         {
           begin: '(?<![!%&+-.<=>?@^|/])///(?!/)',
           name: 'comment.line.markdown.fsharp',
-          patterns: [{include: 'source.gfm'}],
+          patterns: [{include: 'text.md'}],
           while: '(?<![!%&+-.<=>?@^|/])///(?!/)'
         },
         {
@@ -240,9 +235,10 @@ const grammar = {
         {
           captures: {
             1: {name: 'keyword.symbol.fsharp'},
-            2: {name: 'entity.name.type.fsharp'}
+            2: {name: 'entity.name.type.fsharp'},
+            4: {name: 'entity.name.type.fsharp'}
           },
-          match: "(:)\\s*([?[:alpha:]0-9'`^._ ]+)"
+          match: "(:)\\s*([?[:alpha:]0-9'`^._ ]+)(\\|\\s*(null))?"
         },
         {
           captures: {
@@ -347,7 +343,7 @@ const grammar = {
     compiler_directives: {
       patterns: [
         {
-          match: '\\s?(#if|#elif|#elseif|#else|#endif|#light|#nowarn)',
+          match: '\\s?(#if|#elif|#elseif|#else|#endif|#light|#nowarn|#warnon)',
           name: 'keyword.control.directive.fsharp'
         }
       ]
@@ -373,7 +369,7 @@ const grammar = {
       patterns: [
         {
           begin:
-            '\\b(let mutable|static let mutable|static let|let inline|let|and|member val|member inline|static member inline|static member val|static member|default|member|override|let!)(\\s+rec|mutable)?(\\s+\\[\\<.*\\>\\])?\\s*(private|internal|public)?\\s+(\\[[^-=]*\\]|[_[:alpha:]]([_[:alpha:]0-9\\._]+)*|``[_[:alpha:]]([_[:alpha:]0-9\\._`\\s]+|(?<=,)\\s)*)?',
+            '\\b(let mutable|static let mutable|static let|let inline|let|and inline|and|member val|member inline|static member inline|static member val|static member|default|member|override|let!)(\\s+rec|mutable)?(\\s+\\[\\<.*\\>\\])?\\s*(private|internal|public)?\\s+(\\[[^-=]*\\]|[_[:alpha:]]([_[:alpha:]0-9\\._]+)*|``[_[:alpha:]]([_[:alpha:]0-9\\._`\\s]+|(?<=,)\\s)*)?',
           beginCaptures: {
             1: {name: 'keyword.fsharp'},
             2: {name: 'keyword.fsharp'},
@@ -381,7 +377,7 @@ const grammar = {
             4: {name: 'storage.modifier.fsharp'},
             5: {name: 'variable.fsharp'}
           },
-          end: '\\s*((with\\b)|(=|\\n+=|(?<=\\=)))',
+          end: '\\s*((with inline|with)\\b|(=|\\n+=|(?<=\\=)))',
           endCaptures: {
             2: {name: 'keyword.fsharp'},
             3: {name: 'keyword.symbol.fsharp'}
@@ -610,10 +606,11 @@ const grammar = {
             1: {name: 'keyword.symbol.fsharp'},
             2: {name: 'variable.parameter.fsharp'},
             3: {name: 'keyword.symbol.fsharp'},
-            4: {name: 'entity.name.type.fsharp'}
+            4: {name: 'entity.name.type.fsharp'},
+            7: {name: 'entity.name.type.fsharp'}
           },
           match:
-            "(\\?{0,1})([[:alpha:]0-9'`^._]+|``[[:alpha:]0-9'`^:,._ ]+``)\\s*(:{0,1})(\\s*([?[:alpha:]0-9'`<>._ ]+)){0,1}"
+            "(\\?{0,1})([[:alpha:]0-9'`^._]+|``[[:alpha:]0-9'`^:,._ ]+``)\\s*(:{0,1})(\\s*([?[:alpha:]0-9'`<>._ ]+)){0,1}(\\|\\s*(null))?"
         },
         {include: '#keywords'}
       ]

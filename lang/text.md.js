@@ -1609,7 +1609,11 @@ const grammar = {
             {
               begin: '(^|\\G)(\\s*)(.*)',
               contentName: 'meta.embedded.md',
-              patterns: [{include: 'source.gfm'}, {include: 'source.gfm'}],
+              patterns: [
+                {include: 'text.md'},
+                {include: 'text.md'},
+                {include: 'text.md'}
+              ],
               while: '(^|\\G)(?![\\t ]*([`~]{3,})[\\t ]*$)'
             }
           ]
@@ -1632,7 +1636,11 @@ const grammar = {
             {
               begin: '(^|\\G)(\\s*)(.*)',
               contentName: 'meta.embedded.md',
-              patterns: [{include: 'source.gfm'}, {include: 'source.gfm'}],
+              patterns: [
+                {include: 'text.md'},
+                {include: 'text.md'},
+                {include: 'text.md'}
+              ],
               while: '(^|\\G)(?![\\t ]*([`~]{3,})[\\t ]*$)'
             }
           ]

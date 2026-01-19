@@ -33,6 +33,8 @@ const grammar = {
     '.ixx',
     '.metal',
     '.re',
+    '.swg',
+    '.swig',
     '.tcc',
     '.tpp',
     '.txx'
@@ -70,7 +72,8 @@ const grammar = {
     {match: '\\b(friend|explicit|virtual)\\b', name: 'storage.modifier.$1.c++'},
     {match: '\\b(private|protected|public):', name: 'storage.modifier.$1.c++'},
     {
-      match: '\\b(catch|operator|try|throw|using)\\b',
+      match:
+        '\\b(atomic_cancel|atomic_commit|atomic_noexcept|catch|contract_assert|operator|pre|post|synchronized|transaction_safe|transaction_safe_dynamic|try|throw|using)\\b',
       name: 'keyword.control.c++'
     },
     {
@@ -81,11 +84,11 @@ const grammar = {
       match: '\\b(f|m)[A-Z]\\w*\\b',
       name: 'variable.other.readwrite.member.c++'
     },
+    {match: '\\b(nullopt)\\b', name: 'constant.language.c++'},
     {match: '\\b(this)\\b', name: 'variable.language.c++'},
     {match: '\\b(template|concept)\\b\\s*', name: 'storage.type.template.c++'},
     {
-      match:
-        '\\b(const_cast|dynamic_cast|reinterpret_cast|static_assert|static_cast)\\b\\s*',
+      match: '\\b(const_cast|dynamic_cast|reinterpret_cast|static_cast)\\b\\s*',
       name: 'keyword.operator.cast.c++'
     },
     {
@@ -96,7 +99,7 @@ const grammar = {
     {match: '\\b(class)\\b', name: 'storage.type.c++'},
     {
       match:
-        '\\b(alignas|alignof|consteval|constinit|constexpr|decltype|final|mutable|noexcept|override|requires|thread_local|typename)\\b',
+        '\\b(alignas|alignof|consteval|constinit|decltype|final|mutable|noexcept|override|reflexpr|requires|typename)\\b',
       name: 'storage.modifier.c++'
     },
     {match: '\\b(import|export|module)\\b', name: 'keyword.module.c++'},

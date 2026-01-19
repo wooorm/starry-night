@@ -37,35 +37,16 @@ const grammar = {
           name: 'source.shell.embedded.dotenv'
         }
       ]
-    },
-    'source.dotenv meta.field.rhs string.unquoted': {
-      patterns: [
-        {
-          begin: '(?<=\\S)[ \\t]+(#)',
-          captures: {1: {name: 'punctuation.definition.comment.dotenv'}},
-          end: '(?=$)',
-          name: 'comment.line.number-sign.inline.dotenv'
-        }
-      ]
     }
   },
   names: ['dotenv'],
   patterns: [{include: '#main'}],
   repository: {
     comment: {
-      begin: '^([ \\t]*)(?=#)',
-      beginCaptures: {
-        1: {name: 'punctuation.whitespace.leading.comment.dotenv'}
-      },
-      end: '(?!\\G)',
-      patterns: [
-        {
-          begin: '\\G(#)',
-          beginCaptures: {1: {name: 'punctuation.definition.comment.dotenv'}},
-          end: '$',
-          name: 'comment.line.number-sign.dotenv'
-        }
-      ]
+      begin: '#',
+      beginCaptures: {0: {name: 'punctuation.definition.comment.dotenv'}},
+      end: '$',
+      name: 'comment.line.number-sign.dotenv'
     },
     field: {
       begin: '^(([ \\t]*)(?:(export)\\s+)?([-\\w.]+)\\s*)(=|:)',
@@ -85,64 +66,79 @@ const grammar = {
           name: 'punctuation.whitespace.trailing.empty-value.dotenv'
         },
         {
-          begin: '\\G[ \\t]*(?=("|\')(?:[^\\\\"\']|(?!\\1)["\']|\\\\.)*+\\1$)',
+          begin: '\\G[ \\t]*(?=["\'`])',
           end: '(?!\\G)',
           patterns: [{include: '#strings'}]
         },
         {
-          begin: '\\G[ \\t]*(?!"|\')(?=\\S)',
+          begin: '\\G[ \\t]*(?!"|\')(?=[^#\\s])',
           contentName: 'string.unquoted.field.dotenv',
-          end: '([ \\t]*)$',
+          end: '([ \\t]*)(?=$|#)',
           endCaptures: {1: {name: 'punctuation.whitespace.trailing.dotenv'}}
         }
       ]
     },
     main: {patterns: [{include: '#comment'}, {include: '#field'}]},
-    strings: {
+    stringBackticks: {
+      begin: '\\G`',
+      beginCaptures: {0: {name: 'punctuation.definition.string.begin.dotenv'}},
+      end: '`',
+      endCaptures: {0: {name: 'punctuation.definition.string.end.dotenv'}},
+      name: 'string.quoted.backticks.dotenv',
       patterns: [
         {
-          begin: '\\G"',
-          beginCaptures: {
-            0: {name: 'punctuation.definition.string.begin.dotenv'}
+          captures: {
+            1: {name: 'punctuation.definition.escape.backslash.dotenv'}
           },
-          end: '"',
-          endCaptures: {0: {name: 'punctuation.definition.string.env.dotenv'}},
-          name: 'string.quoted.double.dotenv',
-          patterns: [
-            {
-              captures: {
-                1: {name: 'punctuation.definition.escape.backslash.dotenv'}
-              },
-              match: '(\\\\)n',
-              name: 'constant.character.escape.newline.dotenv'
-            },
-            {
-              captures: {
-                1: {name: 'punctuation.definition.escape.backslash.dotenv'}
-              },
-              match: '(\\\\)"',
-              name: 'constant.character.escape.quote.dotenv'
-            }
-          ]
+          match: '(\\\\)`',
+          name: 'constant.character.escape.quote.dotenv'
+        }
+      ]
+    },
+    stringDoubleQuoted: {
+      begin: '\\G"',
+      beginCaptures: {0: {name: 'punctuation.definition.string.begin.dotenv'}},
+      end: '"',
+      endCaptures: {0: {name: 'punctuation.definition.string.end.dotenv'}},
+      name: 'string.quoted.double.dotenv',
+      patterns: [
+        {
+          captures: {
+            1: {name: 'punctuation.definition.escape.backslash.dotenv'}
+          },
+          match: '(\\\\)n',
+          name: 'constant.character.escape.newline.dotenv'
         },
         {
-          begin: "\\G'",
-          beginCaptures: {
-            0: {name: 'punctuation.definition.string.begin.dotenv'}
+          captures: {
+            1: {name: 'punctuation.definition.escape.backslash.dotenv'}
           },
-          end: "'",
-          endCaptures: {0: {name: 'punctuation.definition.string.env.dotenv'}},
-          name: 'string.quoted.single.dotenv',
-          patterns: [
-            {
-              captures: {
-                1: {name: 'punctuation.definition.escape.backslash.dotenv'}
-              },
-              match: "(\\\\)'",
-              name: 'constant.character.escape.quote.dotenv'
-            }
-          ]
+          match: '(\\\\)"',
+          name: 'constant.character.escape.quote.dotenv'
         }
+      ]
+    },
+    stringSingleQuoted: {
+      begin: "\\G'",
+      beginCaptures: {0: {name: 'punctuation.definition.string.begin.dotenv'}},
+      end: "'",
+      endCaptures: {0: {name: 'punctuation.definition.string.end.dotenv'}},
+      name: 'string.quoted.single.dotenv',
+      patterns: [
+        {
+          captures: {
+            1: {name: 'punctuation.definition.escape.backslash.dotenv'}
+          },
+          match: "(\\\\)'",
+          name: 'constant.character.escape.quote.dotenv'
+        }
+      ]
+    },
+    strings: {
+      patterns: [
+        {include: '#stringDoubleQuoted'},
+        {include: '#stringSingleQuoted'},
+        {include: '#stringBackticks'}
       ]
     }
   },

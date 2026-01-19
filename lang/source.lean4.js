@@ -10,26 +10,41 @@
 /** @type {Grammar} */
 const grammar = {
   extensions: [],
-  names: ['lean-4'],
+  names: ['lean-4', 'lean4'],
   patterns: [
     {include: '#comments'},
     {match: '\\b(Prop|Type|Sort)\\b', name: 'storage.type.lean4'},
-    {match: '\\battribute\\b\\s*\\[[^\\]]*\\]', name: 'storage.modifier.lean4'},
-    {match: '@\\[[^\\]]*\\]', name: 'storage.modifier.lean4'},
+    {
+      captures: {
+        1: {name: 'storage.modifier.lean4'},
+        2: {name: 'storage.modifier.lean4'},
+        3: {name: 'storage.modifier.lean4'}
+      },
+      match: '\\b(attribute\\b\\s*)(?:(\\[[^\\]\\s]*\\])|\\[([^\\]\\s]*))'
+    },
+    {
+      captures: {
+        1: {name: 'storage.modifier.lean4'},
+        2: {name: 'storage.modifier.lean4'},
+        3: {name: 'storage.modifier.lean4'}
+      },
+      match: '(@)(?:(\\[[^\\]\\s]*\\])|\\[([^\\]\\s]*))'
+    },
     {
       match:
-        '\\b(?<!\\.)(global|local|scoped|partial|unsafe|private|protected|noncomputable)(?!\\.)\\b',
+        '\\b(?<!\\.)(local|scoped|partial|unsafe|nonrec|public|private|protected|noncomputable|meta)(?!\\.)\\b',
       name: 'storage.modifier.lean4'
     },
-    {match: '\\b(sorry|admit|stop)\\b', name: 'invalid.illegal.lean4'},
+    {match: '\\b(sorry|admit|#exit)\\b', name: 'invalid.illegal.lean4'},
     {
-      match: '#(print|eval|reduce|check|check_failure)\\b',
+      match:
+        '#(print|eval|eval!|reduce|synth|widget|where|version|with_exporting|check|check_tactic|check_tactic_failure|check_failure|check_simp|discr_tree_key|discr_tree_simp_key|guard|guard_expr|guard_msgs)\\b',
       name: 'keyword.other.lean4'
     },
     {match: '\\bderiving\\s+instance\\b', name: 'keyword.other.command.lean4'},
     {
       begin:
-        '\\b(?<!\\.)(inductive|coinductive|structure|theorem|axiom|abbrev|lemma|def|instance|class|constant)\\b\\s+(\\{[^}]*\\})?',
+        '\\b(?<!\\.)(inductive|coinductive|structure|theorem|axiom|abbrev|lemma|def|instance|class)\\b\\s+(\\{[^}]*\\})?',
       beginCaptures: {1: {name: 'keyword.other.definitioncommand.lean4'}},
       end: '(?=\\bwith\\b|\\bextends\\b|\\bwhere\\b|[:\\|\\(\\[\\{⦃<>])',
       name: 'meta.definitioncommand.lean4',
@@ -41,12 +56,13 @@ const grammar = {
     },
     {
       match:
-        '\\b(?<!\\.)(theorem|show|have|from|suffices|nomatch|def|class|structure|instance|set_option|initialize|builtin_initialize|example|inductive|coinductive|axiom|constant|universe|universes|variable|variables|import|open|export|theory|prelude|renaming|hiding|exposing|do|by|let|extends|mutual|mut|where|rec|syntax|macro_rules|macro|deriving|fun|section|namespace|end|infix|infixl|infixr|postfix|prefix|notation|abbrev|if|then|else|calc|match|with|for|in|unless|try|catch|finally|return|continue|break)(?!\\.)\\b',
+        '\\b(?<!\\.)(theorem|show|have|using|haveI|from|suffices|nomatch|nofun|no_index|def|class|structure|instance|elab|set_option|initialize|builtin_initialize|example|inductive_fixpoint|inductive|coinductive_fixpoint|coinductive|termination_by\\?|termination_by|decreasing_by|partial_fixpoint|axiom|universe|variable|module|import all|import|open|export|prelude|renaming|hiding|do|by\\?|by|let|letI|let_expr|extends|mutual|mut|where|rec|declare_syntax_cat|syntax|macro_rules|macro|binop_lazy%|binop%|unop%|binrel_no_prop%|binrel%|leftact%|rightact%|max_prec|leading_parser|elab_rules|deriving|fun|section|namespace|end|prefix|postfix|infixl|infixr|infix|notation|abbrev|if|bif|then|else|calc|matches|match_expr|match|with|forall|for|while|repeat|unless|until|panic!|unreachable!|assert!|try|catch|finally|return|continue|break|exists|mod_cast|exact\\?%|include_str|include|in|trailing_parser|tactic_tag|tactic_alt|tactic_extension|register_tactic_tag|type_of%|binder_predicate|grind_propagator|builtin_grind_propagator|grind_pattern|simproc|builtin_simproc|simproc_pattern%|builtin_simproc_pattern%|simproc_decl|builtin_simproc_decl|dsimproc|builtin_dsimproc|dsimproc_decl|builtin_dsimproc_decl|show_panel_widgets|show_term|seal|unseal|nat_lit|norm_cast_add_elim|println!|private_decl%|declare_config_elab|decl_name%|register_error_explanation|register_builtin_option|register_option|register_parser_alias|register_simp_attr|register_linter_set|register_label_attr|recommended_spelling|reportIssue!|reprove|run_elab|run_cmd|run_meta|value_of%|add_decl_doc|omit|opaque|json%|dbg_trace|trace_goal\\[[^\\]\\s]*\\]|trace\\[[^\\]\\s]*\\]|throwErrorAt|throwError|throwNamedErrorAt|throwNamedError|logNamedWarningAt|logNamedWarning|logNamedErrorAt|logNamedError)(?!\\.)\\b',
       name: 'keyword.other.lean4'
     },
     {begin: '«', contentName: 'entity.name.lean4', end: '»'},
     {
-      begin: '(s!)"',
+      begin:
+        '(s!|m!|throwError|dbg_trace|panic!|reportIssue!|(?:trace_goal|trace)\\[[^\\]\\s]*\\])\\s*"',
       beginCaptures: {1: {name: 'keyword.other.lean4'}},
       end: '"',
       name: 'string.interpolated.lean4',
@@ -86,14 +102,13 @@ const grammar = {
       ]
     },
     {match: '\\b(true|false)\\b', name: 'constant.language.lean4'},
-    {match: "'[^\\\\']'", name: 'string.quoted.single.lean4'},
+    {match: "(?<!\\]|\\w)'[^\\\\']'", name: 'string.quoted.single.lean4'},
     {
       captures: {1: {name: 'constant.character.escape.lean4'}},
       match:
-        "'(\\\\(x[0-9A-Fa-f][0-9A-Fa-f]|u[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f]|.))'",
+        "(?<!\\]|\\w)'(\\\\(x[0-9A-Fa-f][0-9A-Fa-f]|u[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f]|.))'",
       name: 'string.quoted.single.lean4'
     },
-    {match: '`+[^\\[(]\\S+', name: 'entity.name.lean4'},
     {
       match:
         '\\b([0-9]+|0([xX][0-9a-fA-F]+)|[-]?(0|[1-9][0-9]*)(\\.[0-9]+)?([eE][+-]?[0-9]+)?)\\b',
@@ -111,7 +126,6 @@ const grammar = {
       patterns: [
         {include: '#dashComment'},
         {include: '#docComment'},
-        {include: '#stringBlock'},
         {include: '#modDocComment'},
         {include: '#blockComment'}
       ]

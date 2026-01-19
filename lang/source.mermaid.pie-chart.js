@@ -19,8 +19,8 @@ const grammar = {
         {include: 'source.mermaid#a11y'},
         {include: 'source.mermaid#directive'},
         {include: 'source.mermaid#comment'},
+        {include: 'source.mermaid#title'},
         {include: '#show-data'},
-        {include: '#title'},
         {include: '#slice'}
       ]
     },
@@ -38,14 +38,6 @@ const grammar = {
       },
       match: '^\\s*((")([^"]*)("))\\s*(:)[ \\t]*(?:([-+]?\\d+(?:\\.\\d+)?))?',
       name: 'meta.data-set.mermaid'
-    },
-    title: {
-      begin: '(?i)(?:^|\\G|(?<=\\s))\\s*(title)(?=$|\\s)[ \\t]*',
-      beginCaptures: {1: {name: 'storage.type.title.mermaid'}},
-      contentName: 'string.unquoted.diagram-title.mermaid',
-      end: '(?=\\s*$)',
-      name: 'meta.title.mermaid',
-      patterns: [{include: 'source.mermaid#entity'}]
     }
   },
   scopeName: 'source.mermaid.pie-chart'

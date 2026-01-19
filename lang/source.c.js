@@ -44,12 +44,12 @@ const grammar = {
     {include: '#comments'},
     {
       match:
-        '\\b(break|case|continue|default|do|else|for|goto|if|_Pragma|return|switch|while)\\b',
+        '\\b(assert|break|case|continue|countof|_Countof|default|defined|do|else|for|goto|if|_Pragma|return|sizeof|static_assert|_Static_assert|switch|typeof|typeof_unqual|while)\\b',
       name: 'keyword.control.c'
     },
     {
       match:
-        '\\b(asm|__asm__|auto|bool|_Bool|char|_Complex|double|enum|float|_Imaginary|int|long|short|signed|struct|typedef|union|unsigned|void)\\b',
+        '\\b(_Atomic|asm|__asm__|auto|_BitInt|bool|_Bool|char|complex|_Complex|_Decimal32|_Decimal64|_Decimal128|double|enum|float|fortran|__fortran__|_Generic|imaginary|_Imaginary|int|long|_Noreturn|short|signed|struct|typedef|union|unsigned|void)\\b',
       name: 'storage.type.c'
     },
     {
@@ -58,7 +58,8 @@ const grammar = {
       name: 'storage.typealias.c'
     },
     {
-      match: '\\b(const|extern|register|restrict|static|volatile|inline)\\b',
+      match:
+        '\\b(alignas|_Alignas|alignof|_Alignof|const|constexpr|extern|register|restrict|static|thread_local|_Thread_local|volatile|inline)\\b',
       name: 'storage.modifier.c'
     },
     {match: '\\bk[A-Z]\\w*\\b', name: 'constant.other.variable.mac-classic.c'},
@@ -173,7 +174,7 @@ const grammar = {
     {include: '#block'},
     {
       begin:
-        '(?x)\n    \t\t(?:  ^                                 # begin-of-line\n    \t\t  |  \n    \t\t     (?: (?= \\s )           (?<!else|new|return) (?<=\\w)      #  or word + space before name\n    \t\t       | (?= \\s*[A-Za-z_] ) (?<!&&)       (?<=[*&>])   #  or type modifier before name\n    \t\t     )\n    \t\t)\n    \t\t(\\s*) (?!(while|for|do|if|else|switch|catch|enumerate|return|sizeof|[cr]?iterate|(?:::)?new|(?:::)?delete)\\s*\\()\n    \t\t(\n    \t\t\t(?: [A-Za-z_][A-Za-z0-9_]*+ | :: )++ |                  # actual name\n    \t\t\t(?: (?<=operator) (?: [-*&<>=+!]+ | \\(\\) | \\[\\] ) )  # if it is a C++ operator\n    \t\t)\n    \t\t \\s*(?=\\()',
+        '(?x)\n    \t\t(?:  ^                                 # begin-of-line\n    \t\t  |  \n    \t\t     (?: (?= \\s )           (?<!else|new|return) (?<=\\w)      #  or word + space before name\n    \t\t       | (?= \\s*[A-Za-z_] ) (?<!&&)       (?<=[*&>])   #  or type modifier before name\n    \t\t     )\n    \t\t)\n    \t\t(\\s*) (?!(while|for|do|if|else|switch|catch|enumerate|return|sizeof|assert|[cr]?iterate|(?:::)?new|(?:::)?delete)\\s*\\()\n    \t\t(\n    \t\t\t(?: [A-Za-z_][A-Za-z0-9_]*+ | :: )++ |                  # actual name\n    \t\t\t(?: (?<=operator) (?: [-*&<>=+!]+ | \\(\\) | \\[\\] ) )  # if it is a C++ operator\n    \t\t)\n    \t\t \\s*(?=\\()',
       beginCaptures: {
         1: {name: 'punctuation.whitespace.function.leading.c'},
         3: {name: 'entity.name.function.c'},
@@ -242,7 +243,7 @@ const grammar = {
         3: {name: 'punctuation.definition.parameters.c'}
       },
       match:
-        '(?x) (?: (?= \\s )  (?:(?<=else|new|return) | (?<!\\w)) (\\s+))?\n\t\t\t(\\b \n\t\t\t\t(?!(while|for|do|if|else|switch|catch|enumerate|return|sizeof|[cr]?iterate|(?:::)?new|(?:::)?delete)\\s*\\()(?:(?!NS)[A-Za-z_][A-Za-z0-9_]*+\\b | :: )++                  # actual name\n\t\t\t)\n\t\t\t \\s*(\\()',
+        '(?x) (?: (?= \\s )  (?:(?<=else|new|return) | (?<!\\w)) (\\s+))?\n\t\t\t(\\b \n\t\t\t\t(?!(while|for|do|if|else|switch|catch|enumerate|return|sizeof|assert|[cr]?iterate|(?:::)?new|(?:::)?delete)\\s*\\()(?:(?!NS)[A-Za-z_][A-Za-z0-9_]*+\\b | :: )++                  # actual name\n\t\t\t)\n\t\t\t \\s*(\\()',
       name: 'meta.function-call.c'
     },
     comments: {

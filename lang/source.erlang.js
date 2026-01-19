@@ -226,6 +226,7 @@ const grammar = {
         7: {name: 'punctuation.definition.string.begin.erlang'},
         8: {name: 'invalid.illegal.string.erlang'}
       },
+      contentName: 'meta.embedded.block.markdown',
       end: '^(\\s*(\\7))\\s*([)]\\s*)?(\\.)',
       endCaptures: {
         1: {name: 'comment.block.documentation.erlang'},
@@ -233,13 +234,7 @@ const grammar = {
         3: {name: 'punctuation.section.directive.end.Erlang'}
       },
       name: 'meta.directive.doc.erlang',
-      patterns: [
-        {
-          begin: '\\G',
-          contentName: 'comment.block.documentation.erlang',
-          while: '(^)(?!\\s*(\\5))'
-        }
-      ]
+      patterns: [{include: 'text.md'}]
     },
     docstring: {
       begin: '(?<!")((["]{3,})\\s*)(\\S.*)?$',

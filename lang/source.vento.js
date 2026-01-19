@@ -9,7 +9,7 @@
 
 /** @type {Grammar} */
 const grammar = {
-  dependencies: ['source.js'],
+  dependencies: ['source.js', 'text.html.basic'],
   extensions: ['.vto'],
   injections: {
     'L:string - (string.quoted.*.html)': {patterns: [{include: 'source.vento'}]}
@@ -20,7 +20,7 @@ const grammar = {
     {include: '#js_code'},
     {include: '#template_tag'},
     {include: '#front_matter'},
-    {name: 'html.vento'}
+    {include: 'text.html.basic', name: 'html.vento'}
   ],
   repository: {
     front_matter: {
@@ -39,7 +39,7 @@ const grammar = {
     },
     template_keyword: {
       match:
-        '\\b(for|of|if|else\\s+if|else|include|set|layout|echo|function|async\\s+function|import|from|export|await)\\b',
+        '\\b(for|of|if|else\\s+if|else|include|set|layout|echo|function|async\\s+function|import|from|export|await|continue|break|slot|default)\\b',
       name: 'keyword.vento'
     },
     template_tag: {

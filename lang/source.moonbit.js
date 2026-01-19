@@ -134,10 +134,10 @@ const grammar = {
           patterns: [
             {include: '#comments'},
             {include: '#constants'},
+            {include: '#keywords'},
             {include: '#functions'},
             {include: '#support'},
             {include: '#types'},
-            {include: '#keywords'},
             {include: '#modules'},
             {include: '#strings'},
             {include: '#variables'}
@@ -162,17 +162,17 @@ const grammar = {
     },
     keywords: {
       patterns: [
+        {match: '\\b(async)\\b', name: 'keyword.control.moonbit.async'},
         {
           match:
-            '\\b(guard|if|while|break|continue|return|try|catch|except|raise|match|else|as|in|is|loop|for|async)\\b',
+            '\\b(guard|if|while|break|continue|return|try|catch|except|raise|noraise|match|lexmatch|using|else|as|in|is|loop|for|async|defer)\\b',
           name: 'keyword.control.moonbit'
         },
         {
           match:
-            '\\b(type!|(type|typealias|let|const|enum|struct|import|trait|traitalias|derive|test|impl|with|fnalias|recur)\\b)',
+            '\\b(type!|lexmatch\\?|(type|typealias|let|const|enum|struct|import|trait|traitalias|derive|test|impl|with|fnalias|recur|suberror|letrec|and)\\b)',
           name: 'keyword.moonbit'
         },
-        {match: '\\b(self)\\b', name: 'variable.language.moonbit'},
         {
           match: '\\b(mut|pub|priv|readonly|extern)\\b',
           name: 'storage.modifier.moonbit'

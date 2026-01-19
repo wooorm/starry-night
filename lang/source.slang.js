@@ -27,25 +27,13 @@ const grammar = {
     {match: 'typedef', name: 'keyword.other.typedef.slang'},
     {
       match:
-        '\\b(throws|using|__generic|func|associatedtype|public|internal|private|import|module|implementing|__include|export|__exported|groupshared|let|var|property|extension|in|out|inout|ref|namespace|this|cbuffer|tbuffer|(dynamic_)?uniform|typealias|new|__extern_cpp|__(target|stage)_intrinsic|__intrinsic_asm|spirv_asm|(__)?(f|b)wd_diff|__dispatch_kernel|no_diff|__constref|expand|each|where|typename|constexpr|dyn|some)\\b',
+        '\\b(throws|using|__generic|func|associatedtype|override|public|internal|private|import|module|implementing|__include|export|__exported|groupshared|let|var|property|extension|in|out|inout|ref|namespace|this|cbuffer|tbuffer|(dynamic_)?uniform|typealias|new|__extern_cpp|__(target|stage)_intrinsic|__intrinsic_asm|spirv_asm|(__)?(f|b)wd_diff|__dispatch_kernel|no_diff|__constref|expand|each|where|typename|constexpr|dyn|some|implicit|noncopyable)\\b',
       name: 'keyword.other.additional.slang'
     },
     {
       match:
         '\\b(const|extern|register|restrict|static|volatile|inline|nointerpolation|precise|row_major|column_major|snorm|unorm|globallycoherent|layout)\\b',
       name: 'storage.modifier.slang'
-    },
-    {
-      match: '\\bk[A-Z]\\w*\\b',
-      name: 'constant.other.variable.mac-classic.slang'
-    },
-    {
-      match: '\\bg[A-Z]\\w*\\b',
-      name: 'variable.other.readwrite.global.mac-classic.slang'
-    },
-    {
-      match: '\\bs[A-Z]\\w*\\b',
-      name: 'variable.other.readwrite.static.mac-classic.slang'
     },
     {match: '\\b(nullptr|none|true|false)\\b', name: 'constant.language.slang'},
     {include: '#operators'},
@@ -279,6 +267,17 @@ const grammar = {
       name: 'meta.function-call.member.slang',
       patterns: [{include: '#function-call-innards'}]
     },
+    access_qualifier: {
+      captures: {
+        1: {name: 'punctuation.separator.delimiter.colon.slang'},
+        2: {name: 'keyword.other.additional.slang'},
+        3: {patterns: [{include: '#shader_stages'}]},
+        5: {patterns: [{include: '#shader_stages'}]}
+      },
+      match:
+        '(?x)(:)\\s*\\b(read|write)\\b \\((([A-z]+)(,\\s*([A-z]+)\\s*)*)?(\\))',
+      name: 'meta.variable.qualifer.access_qualifier'
+    },
     backslash_escapes: {
       match:
         '(?x)\\\\ (\n\\\\\t\t\t |\n[abefnprtv\'"?]   |\n[0-3][0-7]{,2}\t |\n[4-7]\\d?\t\t|\nx[a-fA-F0-9]{,2} |\nu[a-fA-F0-9]{,4} |\nU[a-fA-F0-9]{,8} )',
@@ -296,7 +295,21 @@ const grammar = {
             0: {name: 'punctuation.section.block.end.bracket.curly.slang'}
           },
           name: 'meta.block.slang',
-          patterns: [{include: '#block_innards'}]
+          patterns: [
+            {include: '#block_innards'},
+            {
+              begin:
+                '(?x) (\\b([a-zA-Z_][a-zA-Z_0-9]*)\\b)\\s*(?=:\\s*((read|write).*))',
+              beginCaptures: {
+                1: {name: 'variable.other.slang'},
+                3: {patterns: [{include: '#access_qualifier'}]}
+              },
+              end: ';',
+              endCaptures: {0: {name: 'punctuation.semicolon.slang'}},
+              name: 'meta.variable.qualifer',
+              patterns: [{include: '#access_qualifier'}]
+            }
+          ]
         }
       ]
     },
@@ -1767,15 +1780,20 @@ const grammar = {
     'preprocessor-version': {
       captures: {
         2: {name: 'keyword.control.directive.version.slang'},
-        3: {name: 'constant.numeric.decimal.slang'}
+        4: {name: 'constant.numeric.decimal.slang'}
       },
-      match: '^\\s*((#\\s*version)\\s+(.*))',
+      match: '^\\s*((#\\s*(version|lang|language))\\s+(.*))',
       name: 'meta.section.slang'
     },
     probably_a_parameter: {
       captures: {1: {name: 'variable.parameter.probably.slang'}},
       match:
         '(?<=[a-zA-Z_0-9] |[&*>\\]\\)])\\s*([a-zA-Z_]\\w*)\\s*(?=(?:\\[\\]\\s*)?(?:,|\\)))'
+    },
+    shader_stages: {
+      match:
+        '\\b(vertex|fragment|compute|hull|domain|geometry|raygen|intersection|anyhit|closesthit|miss|mesh|amplification|callable)\\b',
+      name: 'variable.other.constant.shader_stage'
     },
     static_assert: {
       begin:
@@ -1843,12 +1861,13 @@ const grammar = {
         {
           captures: {
             1: {name: 'keyword.$1.slang'},
-            2: {name: 'support.type.$1.slang'},
-            4: {name: 'punctuation.separator.dot-access.slang'},
-            5: {name: 'support.type.$1.slang'}
+            3: {patterns: []},
+            4: {name: 'support.type.$1.slang'},
+            6: {name: 'punctuation.separator.dot-access.slang'},
+            7: {name: 'support.type.$1.slang'}
           },
           match:
-            '\\b(namespace|enum|enum\\s+class|struct|class|interface)\\s+([A-Za-z0-9_]+)((\\.|::)([A-Za-z0-9_]+))*'
+            '\\b(namespace|enum|enum\\s+class|struct|class|interface)\\s+(\\[.*\\])?\\s*([A-Za-z0-9_]+)((\\.|::)([A-Za-z0-9_]+))*'
         },
         {
           begin: '(\\b(?:__asm__|asm)\\b)\\s*((?:volatile)?)',

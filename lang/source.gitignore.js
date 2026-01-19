@@ -27,8 +27,8 @@ const grammar = {
       ]
     },
     comment: {
-      begin: '#',
-      beginCaptures: {0: {name: 'punctuation.definition.comment.gitignore'}},
+      begin: '^\\s*(#)',
+      beginCaptures: {1: {name: 'punctuation.definition.comment.gitignore'}},
       end: '$',
       name: 'comment.line.number-sign.gitignore'
     },

@@ -16,7 +16,7 @@ const grammar = {
   ],
   repository: {
     scopeHack: {
-      begin: '\\A(?:\\xC2\\xAD|\\xAD){50}',
+      begin: '\\A(?:\\xC2\\xAD|\\x{AD}){50}',
       end: '(?=A)B',
       patterns: [
         {

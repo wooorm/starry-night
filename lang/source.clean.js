@@ -36,7 +36,7 @@ const grammar = {
         0: {name: 'punctuation.definition.comment.documentation.begin.clean'}
       },
       name: 'comment.block.documentation',
-      patterns: [{include: 'source.gfm'}]
+      patterns: [{include: 'text.md'}]
     },
     commentLine: {
       begin: '//',

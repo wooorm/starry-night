@@ -452,8 +452,14 @@ const grammar = {
           name: 'string.quoted.double.slint',
           patterns: [
             {
-              match: '\\\\(n|\\\\|u\\{\\d+\\}|\\{[^\\}]+\\})',
+              match: '\\\\(n|\\\\|u\\{\\d+\\})',
               name: 'constant.character.escape.untitled.slint'
+            },
+            {
+              begin: '\\\\\\{',
+              end: '\\}',
+              name: 'constant.character.escape.untitled.slint',
+              patterns: [{include: '#expression'}]
             }
           ]
         }

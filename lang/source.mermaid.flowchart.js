@@ -190,11 +190,8 @@ const grammar = {
           beginCaptures: {
             0: {name: 'punctuation.definition.string.begin.mermaid'}
           },
-          end: '(")|([^"]+)$',
-          endCaptures: {
-            1: {name: 'punctuation.definition.string.end.mermaid'},
-            2: {patterns: [{include: '#unclosed-string'}]}
-          },
+          end: '"',
+          endCaptures: {0: {name: 'punctuation.definition.string.end.mermaid'}},
           name: 'string.quoted.double.mermaid',
           patterns: [{include: '#html'}]
         },
@@ -203,11 +200,8 @@ const grammar = {
           beginCaptures: {
             0: {name: 'punctuation.definition.string.begin.mermaid'}
           },
-          end: "(')|([^']+)$",
-          endCaptures: {
-            1: {name: 'punctuation.definition.string.end.mermaid'},
-            2: {patterns: [{include: '#unclosed-string'}]}
-          },
+          end: "'",
+          endCaptures: {0: {name: 'punctuation.definition.string.end.mermaid'}},
           name: 'string.quoted.single.mermaid',
           patterns: [{include: '#html'}]
         },
@@ -220,11 +214,10 @@ const grammar = {
         0: {name: 'punctuation.definition.string.begin.mermaid'},
         1: {name: 'sublimelinter.gutter-mark.mermaid'}
       },
-      end: '((\\){2}))|((?:(?<!\\))\\)(?!\\))|[^\\r\\n)])++)$',
+      end: '(\\){2})',
       endCaptures: {
-        1: {name: 'punctuation.definition.string.end.mermaid'},
-        2: {name: 'sublimelinter.gutter-mark.mermaid'},
-        3: {patterns: [{include: '#unclosed-string'}]}
+        0: {name: 'punctuation.definition.string.end.mermaid'},
+        1: {name: 'sublimelinter.gutter-mark.mermaid'}
       },
       name: 'string.unquoted.node-text.circle.mermaid',
       patterns: [{include: '#node-innards'}]
@@ -235,11 +228,10 @@ const grammar = {
         0: {name: 'punctuation.definition.string.begin.mermaid'},
         1: {name: 'sublimelinter.gutter-mark.mermaid'}
       },
-      end: '((\\)\\]))|((?:[^\\r\\n)]|\\)(?!\\]))++)$',
+      end: '(\\)\\])',
       endCaptures: {
-        1: {name: 'punctuation.definition.string.end.mermaid'},
-        2: {name: 'sublimelinter.gutter-mark.mermaid'},
-        3: {patterns: [{include: '#unclosed-string'}]}
+        0: {name: 'punctuation.definition.string.end.mermaid'},
+        1: {name: 'sublimelinter.gutter-mark.mermaid'}
       },
       name: 'string.unquoted.node-text.cylinder.mermaid',
       patterns: [{include: '#node-innards'}]
@@ -250,11 +242,10 @@ const grammar = {
         0: {name: 'punctuation.definition.string.begin.mermaid'},
         1: {name: 'sublimelinter.gutter-mark.mermaid'}
       },
-      end: '((}))|([^\\r\\n}]+)$',
+      end: '(})',
       endCaptures: {
-        1: {name: 'punctuation.definition.string.end.mermaid'},
-        2: {name: 'sublimelinter.gutter-mark.mermaid'},
-        3: {patterns: [{include: '#unclosed-string'}]}
+        0: {name: 'punctuation.definition.string.end.mermaid'},
+        1: {name: 'sublimelinter.gutter-mark.mermaid'}
       },
       name: 'string.unquoted.node-text.diamond.mermaid',
       patterns: [{include: '#node-innards'}]
@@ -265,11 +256,10 @@ const grammar = {
         0: {name: 'punctuation.definition.string.begin.mermaid'},
         1: {name: 'sublimelinter.gutter-mark.mermaid'}
       },
-      end: '((\\){3}))|((?:[^\\r\\n)]|(?<!\\)\\))\\))++)$',
+      end: '(\\){3})',
       endCaptures: {
-        1: {name: 'punctuation.definition.string.end.mermaid'},
-        2: {name: 'sublimelinter.gutter-mark.mermaid'},
-        3: {patterns: [{include: '#unclosed-string'}]}
+        0: {name: 'punctuation.definition.string.end.mermaid'},
+        1: {name: 'sublimelinter.gutter-mark.mermaid'}
       },
       name: 'string.unquoted.node-text.double-circle.mermaid',
       patterns: [{include: '#node-innards'}]
@@ -280,11 +270,10 @@ const grammar = {
         0: {name: 'punctuation.definition.string.begin.mermaid'},
         1: {name: 'sublimelinter.gutter-mark.mermaid'}
       },
-      end: '((-\\)))|((?:[^-\\r\\n)]|-(?!\\)))++)$',
+      end: '(-\\))',
       endCaptures: {
-        1: {name: 'punctuation.definition.string.end.mermaid'},
-        2: {name: 'sublimelinter.gutter-mark.mermaid'},
-        3: {patterns: [{include: '#unclosed-string'}]}
+        0: {name: 'punctuation.definition.string.end.mermaid'},
+        1: {name: 'sublimelinter.gutter-mark.mermaid'}
       },
       name: 'string.unquoted.node-text.ellipse.mermaid',
       patterns: [{include: '#node-innards'}]
@@ -295,11 +284,10 @@ const grammar = {
         0: {name: 'punctuation.definition.string.begin.mermaid'},
         1: {name: 'sublimelinter.gutter-mark.mermaid'}
       },
-      end: '((}}))|((?:[^\\r\\n}]|}(?!}))++)$',
+      end: '(}})',
       endCaptures: {
-        1: {name: 'punctuation.definition.string.end.mermaid'},
-        2: {name: 'sublimelinter.gutter-mark.mermaid'},
-        3: {patterns: [{include: '#unclosed-string'}]}
+        0: {name: 'punctuation.definition.string.end.mermaid'},
+        1: {name: 'sublimelinter.gutter-mark.mermaid'}
       },
       name: 'string.unquoted.node-text.hexagon.mermaid',
       patterns: [{include: '#node-innards'}]
@@ -310,11 +298,10 @@ const grammar = {
         0: {name: 'punctuation.definition.string.begin.mermaid'},
         1: {name: 'sublimelinter.gutter-mark.mermaid'}
       },
-      end: '(([\\\\/]\\]))|((?:[^\\r\\n\\]]|(?<![\\\\/])\\])++)$',
+      end: '([\\\\/]\\])',
       endCaptures: {
-        1: {name: 'punctuation.definition.string.end.mermaid'},
-        2: {name: 'sublimelinter.gutter-mark.mermaid'},
-        3: {patterns: [{include: '#unclosed-string'}]}
+        0: {name: 'punctuation.definition.string.end.mermaid'},
+        1: {name: 'sublimelinter.gutter-mark.mermaid'}
       },
       name: 'string.unquoted.node-text.polygon.mermaid',
       patterns: [{include: '#node-innards'}]
@@ -331,11 +318,10 @@ const grammar = {
         7: {name: 'punctuation.separator.pipe.mermaid'},
         8: {name: 'sublimelinter.gutter-mark.mermaid'}
       },
-      end: '((\\|\\]))|((?:[^\\r\\n\\]]|(?<!\\|)\\])++)$',
+      end: '(\\|\\])',
       endCaptures: {
-        1: {name: 'punctuation.definition.string.end.mermaid'},
-        2: {name: 'sublimelinter.gutter-mark.mermaid'},
-        3: {patterns: [{include: '#unclosed-string'}]}
+        0: {name: 'punctuation.definition.string.end.mermaid'},
+        1: {name: 'sublimelinter.gutter-mark.mermaid'}
       },
       name: 'string.unquoted.node-text.rectangle-with-props.mermaid',
       patterns: [{include: '#node-innards'}]
@@ -346,11 +332,10 @@ const grammar = {
         0: {name: 'punctuation.definition.string.begin.mermaid'},
         1: {name: 'sublimelinter.gutter-mark.mermaid'}
       },
-      end: '((\\]))|([^\\r\\n\\]]+)$',
+      end: '(\\])',
       endCaptures: {
-        1: {name: 'punctuation.definition.string.end.mermaid'},
-        2: {name: 'sublimelinter.gutter-mark.mermaid'},
-        3: {patterns: [{include: '#unclosed-string'}]}
+        0: {name: 'punctuation.definition.string.end.mermaid'},
+        1: {name: 'sublimelinter.gutter-mark.mermaid'}
       },
       name: 'string.unquoted.node-text.ribbon.mermaid',
       patterns: [{include: '#node-innards'}]
@@ -361,11 +346,10 @@ const grammar = {
         0: {name: 'punctuation.definition.string.begin.mermaid'},
         1: {name: 'sublimelinter.gutter-mark.mermaid'}
       },
-      end: '((\\)))|([^\\r\\n)]+)$',
+      end: '(\\))',
       endCaptures: {
-        1: {name: 'punctuation.definition.string.end.mermaid'},
-        2: {name: 'sublimelinter.gutter-mark.mermaid'},
-        3: {patterns: [{include: '#unclosed-string'}]}
+        0: {name: 'punctuation.definition.string.end.mermaid'},
+        1: {name: 'sublimelinter.gutter-mark.mermaid'}
       },
       name: 'string.unquoted.node-text.round.mermaid',
       patterns: [{include: '#node-innards'}]
@@ -376,11 +360,10 @@ const grammar = {
         0: {name: 'punctuation.definition.string.begin.mermaid'},
         1: {name: 'sublimelinter.gutter-mark.mermaid'}
       },
-      end: '((\\]))|([^\\r\\n\\]]+)$',
+      end: '(\\])',
       endCaptures: {
-        1: {name: 'punctuation.definition.string.end.mermaid'},
-        2: {name: 'sublimelinter.gutter-mark.mermaid'},
-        3: {patterns: [{include: '#unclosed-string'}]}
+        0: {name: 'punctuation.definition.string.end.mermaid'},
+        1: {name: 'sublimelinter.gutter-mark.mermaid'}
       },
       name: 'string.unquoted.node-text.square.mermaid',
       patterns: [{include: '#node-innards'}]
@@ -391,11 +374,10 @@ const grammar = {
         0: {name: 'punctuation.definition.string.begin.mermaid'},
         1: {name: 'sublimelinter.gutter-mark.mermaid'}
       },
-      end: '((\\]\\)))|((?:[^\\r\\n)]|(?<!\\])\\))++)$',
+      end: '(\\]\\))',
       endCaptures: {
-        1: {name: 'punctuation.definition.string.end.mermaid'},
-        2: {name: 'sublimelinter.gutter-mark.mermaid'},
-        3: {patterns: [{include: '#unclosed-string'}]}
+        0: {name: 'punctuation.definition.string.end.mermaid'},
+        1: {name: 'sublimelinter.gutter-mark.mermaid'}
       },
       name: 'string.unquoted.node-text.stadium.mermaid',
       patterns: [{include: '#node-innards'}]
@@ -406,11 +388,10 @@ const grammar = {
         0: {name: 'punctuation.definition.string.begin.mermaid'},
         1: {name: 'sublimelinter.gutter-mark.mermaid'}
       },
-      end: '((\\]\\]))|((?:[^\\r\\n\\]]|(?<!\\])\\])++)$',
+      end: '(\\]\\])',
       endCaptures: {
-        1: {name: 'punctuation.definition.string.end.mermaid'},
-        2: {name: 'sublimelinter.gutter-mark.mermaid'},
-        3: {patterns: [{include: '#unclosed-string'}]}
+        0: {name: 'punctuation.definition.string.end.mermaid'},
+        1: {name: 'sublimelinter.gutter-mark.mermaid'}
       },
       name: 'string.unquoted.node-text.subroutine.mermaid',
       patterns: [{include: '#node-innards'}]
@@ -513,11 +494,6 @@ const grammar = {
       end: '"',
       endCaptures: {0: {name: 'punctuation.definition.string.end.mermaid'}},
       name: 'string.quoted.double.callback-tooltip.mermaid'
-    },
-    'unclosed-string': {
-      captures: {0: {patterns: [{include: '#html'}]}},
-      match: '(?:^|\\G).+',
-      name: 'invalid.illegal.unclosed-string.mermaid'
     },
     url: {
       patterns: [

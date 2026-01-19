@@ -2113,7 +2113,7 @@ const grammar = {
             1: {name: 'storage.modifier.declaration.python'},
             2: {name: 'variable.other.python'}
           },
-          match: '\\b(var|let|alias) \\s*([[:alpha:]_]\\w*)\\b'
+          match: '\\b(var|let|alias|comptime) \\s*([[:alpha:]_]\\w*)\\b'
         }
       ]
     },

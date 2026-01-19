@@ -55,7 +55,7 @@ const grammar = {
           patterns: [
             {include: '#string'},
             {include: 'etc#comma'},
-            {include: '#lineContinuation'}
+            {include: '#escape'}
           ]
         },
         {
@@ -64,7 +64,7 @@ const grammar = {
           end: '(?=^)(?! |\\t)',
           patterns: [{include: '#escape'}]
         },
-        {include: '#comment'}
+        {include: 'etc#commentHash'}
       ]
     },
     main: {patterns: [{include: '#record'}, {include: 'etc#commentHash'}]},

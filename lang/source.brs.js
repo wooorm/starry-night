@@ -193,6 +193,7 @@ const grammar = {
         {include: '#inline_function_declaration'},
         {include: '#end_function'},
         {include: '#interface_declaration'},
+        {include: '#function_param_ish'},
         {include: '#storage_types'},
         {include: '#loop_keywords'},
         {include: '#program_statements'},
@@ -252,6 +253,13 @@ const grammar = {
       match:
         '(?i:(?:(public|protected|private)\\s+)?(?:(override)\\s+)?((?:sub|function))(?:\\s+(?:\\(|([a-z_][a-z0-9_]*))))'
     },
+    function_param_ish: {
+      captures: {
+        1: {name: 'variable.parameter.brs'},
+        2: {name: 'keyword.control.as.brs'}
+      },
+      match: '(?i:)(?<=[\\(,])[ \\t]*\\b([a-z0-9_]+)[ \\t]+(as\\b)'
+    },
     global_constants: {
       match: '(?i:\\b(line_num)\\b)',
       name: 'variable.language'
@@ -282,7 +290,7 @@ const grammar = {
       match: '(?i)[^a-z0-9_"](function|sub)\\s*\\('
     },
     interface_declaration: {
-      begin: '(?i)\\b[\\s\\t]*(interface)[\\s\\t]+([a-zA-Z0-9_]+)\\b',
+      begin: '(?i)^[\\s\\t]*(interface)[\\s\\t]+([a-zA-Z0-9_]+)\\b',
       beginCaptures: {
         1: {name: 'storage.type.interface.brs'},
         2: {name: 'entity.name.type.interface.brs'}

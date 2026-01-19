@@ -9,9 +9,11 @@
 
 /** @type {Grammar} */
 const grammar = {
+  dependencies: ['source.c'],
   extensions: ['.ld', '.lds', '.x'],
   names: ['linker-script'],
   patterns: [
+    {include: 'source.c'},
     {
       match:
         '\\b(?:S(?:E(?:ARCH_DIR|CTIONS)|IZEOF(?:_HEADERS)?|TARTUP)|IN(?:HIBIT_COMMON_ALLOCATION|CLUDE|PUT)|D(?:ATA_SEGMENT_(?:ALIGN|END)|EFINED)|O(?:UTPUT(?:_(?:FORMAT|ARCH))?|RIGIN)|C(?:REATE_OBJECT_SYMBOL|ONSTRUCTOR)S|(?:FORCE_COMMON_ALLOCATIO|HIDDE)N|E(?:X(?:CLUDE_FILE|TERN)|NTRY)|P(?:ROVIDE(?:_HIDDEN)?|HDRS)|A(?:BSOLUTE|SSERT|LIGN|DDR)|N(?:OCROSSREFS|EXT)|L(?:OADADDR|ENGTH)|M(?:EMORY|AX|IN)|sizeof_headers|l(?:en)?|o(?:rg)?|TARGET|BLOCK|GROUP)\\b',

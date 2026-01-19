@@ -1092,6 +1092,7 @@ Changes should go to upstream repos and
 * [ ] [`source.aidl`](lang/source.aidl.js) (apache-2.0) — [upstream](https://github.com/google/aidl-language)
 * [ ] [`source.aiken`](lang/source.aiken.js) (apache-2.0) — [upstream](https://github.com/aiken-lang/vscode-aiken)
 * [ ] [`source.al`](lang/source.al.js) (mit) — [upstream](https://github.com/microsoft/AL)
+* [ ] [`source.algol60`](lang/source.algol60.js) (mit) — [upstream](https://github.com/PolariTOON/language-algol60)
 * [ ] [`source.alloy`](lang/source.alloy.js) (apache-2.0) — [upstream](https://github.com/macekond/Alloy.tmbundle)
 * [ ] [`source.ampl`](lang/source.ampl.js) (mit)
 * [ ] [`source.angelscript`](lang/source.angelscript.js) (unlicense) — [upstream](https://github.com/wronex/sublime-angelscript)
@@ -1102,6 +1103,7 @@ Changes should go to upstream repos and
 * [ ] [`source.apl`](lang/source.apl.js) (isc) — [upstream](https://github.com/Alhadis/language-apl)
 * [ ] [`source.applescript`](lang/source.applescript.js)
 * [ ] [`source.arr`](lang/source.arr.js) (mit) — [upstream](https://github.com/samuela/language-pyret)
+* [ ] [`source.ash`](lang/source.ash.js) (bsd-2-clause) — [upstream](https://github.com/midgleyc/vscode-kolmafia-ash)
 * [ ] [`source.asl`](lang/source.asl.js) (mit) — [upstream](https://github.com/sebadur/language-asl)
 * [ ] [`source.asn`](lang/source.asn.js) (mit) — [upstream](https://github.com/ajlangley/language-asn1)
 * [ ] [`source.asp`](lang/source.asp.js)
@@ -1112,6 +1114,7 @@ Changes should go to upstream repos and
 * [ ] [`source.autoit`](lang/source.autoit.js) (mit)
 * [ ] [`source.avro`](lang/source.avro.js) (mit) — [upstream](https://github.com/Jason3S/avro.tmLanguage)
 * [ ] [`source.awk`](lang/source.awk.js) (mit)
+* [ ] [`source.b`](lang/source.b.js) (mit) — [upstream](https://github.com/JJWRoeloffs/b-vscode)
 * [ ] [`source.ballerina`](lang/source.ballerina.js) (apache-2.0) — [upstream](https://github.com/ballerina-platform/ballerina-grammar)
 * [ ] [`source.basic`](lang/source.basic.js) (apache-2.0) — [upstream](https://github.com/telnet23/language-basic)
 * [ ] [`source.batchfile`](lang/source.batchfile.js) (mit) — [upstream](https://github.com/mmims/language-batchfile)
@@ -1128,12 +1131,14 @@ Changes should go to upstream repos and
 * [ ] [`source.bp`](lang/source.bp.js) (mit) — [upstream](https://github.com/flimberger/android-system-tools)
 * [ ] [`source.bqn`](lang/source.bqn.js) (mit) — [upstream](https://github.com/razetime/bqn-vscode)
 * [ ] [`source.brs`](lang/source.brs.js) (mit) — [upstream](https://github.com/rokucommunity/vscode-brightscript-language)
+* [ ] [`source.bru`](lang/source.bru.js) (mit) — [upstream](https://github.com/usebruno/bruno-ide-extensions)
 * [ ] [`source.bsl`](lang/source.bsl.js) (mit) — [upstream](https://github.com/1c-syntax/vsc-language-1c-bsl) — needs: `source.sdbl`
 * [ ] [`source.bst`](lang/source.bst.js) (mit) — [upstream](https://github.com/zyoshoka/bst.tmLanguage)
 * [ ] [`source.bsv`](lang/source.bsv.js) (mit)
 * [ ] [`source.c.ec`](lang/source.c.ec.js) (unlicense) — [upstream](https://github.com/ecere/ec.tmbundle) — needs: `source.c`
-* [ ] [`source.c.linker`](lang/source.c.linker.js) (mit) — [upstream](https://github.com/donno2048/Linker.tmLanguage)
+* [ ] [`source.c.linker`](lang/source.c.linker.js) (mit) — [upstream](https://github.com/donno2048/Linker.tmLanguage) — needs: `source.c`
 * [ ] [`source.c.nwscript`](lang/source.c.nwscript.js) (isc) — [upstream](https://github.com/Alhadis/language-etc) — needs: `source.c`
+* [ ] [`source.c3`](lang/source.c3.js) (mit) — [upstream](https://github.com/c3lang/vscode-c3)
 * [ ] [`source.cabal`](lang/source.cabal.js) (mit) — [upstream](https://github.com/atom-haskell/language-haskell)
 * [ ] [`source.Caddyfile`](lang/source.Caddyfile.js) (mit) — [upstream](https://github.com/caddyserver/vscode-caddyfile)
 * [ ] [`source.cadence`](lang/source.cadence.js) (apache-2.0) — [upstream](https://github.com/onflow/vscode-cadence)
@@ -1149,6 +1154,7 @@ Changes should go to upstream repos and
 * [ ] [`source.cil`](lang/source.cil.js) (apache-2.0) — [upstream](https://github.com/google/selinux-policy-languages)
 * [ ] [`source.circom`](lang/source.circom.js) (mit) — [upstream](https://github.com/iden3/circom-highlighting-vscode)
 * [ ] [`source.cirru`](lang/source.cirru.js) (mit) — [upstream](https://github.com/Cirru/sublime-cirru)
+* [ ] [`source.cj`](lang/source.cj.js) (apache-2.0) — [upstream](https://github.com/Zxilly/playground-cj)
 * [ ] [`source.clar`](lang/source.clar.js) (mit) — [upstream](https://github.com/hirosystems/clarity.tmbundle)
 * [ ] [`source.clarion`](lang/source.clarion.js) (mit) — [upstream](https://github.com/fushnisoft/SublimeClarion)
 * [ ] [`source.clean`](lang/source.clean.js) (mit)
@@ -1160,8 +1166,10 @@ Changes should go to upstream repos and
 * [ ] [`source.cobol`](lang/source.cobol.js) (mit) — [upstream](https://github.com/spgennard/vscode_cobol)
 * [ ] [`source.coffee`](lang/source.coffee.js) (mit) — [upstream](https://github.com/atom/language-coffee-script) — needs: `source.js`
 * [ ] [`source.commonlisp`](lang/source.commonlisp.js) (mit) — [upstream](https://github.com/qingpeng9802/common-lisp-tmlanguage)
+* [ ] [`source.cooklang`](lang/source.cooklang.js) (mit) — [upstream](https://github.com/cooklang/CookVSCode)
 * [ ] [`source.cool`](lang/source.cool.js) (mit)
 * [ ] [`source.coq`](lang/source.coq.js) (mit)
+* [ ] [`source.cql`](lang/source.cql.js) (apache-2.0) — [upstream](https://github.com/Akzestia/cqlTextMate)
 * [ ] [`source.crystal`](lang/source.crystal.js) (mit) — [upstream](https://github.com/atom-crystal/language-crystal) — needs: `text.html.basic`
 * [ ] [`source.csound`](lang/source.csound.js) (mit) — [upstream](https://github.com/nwhetsell/language-csound)
 * [ ] [`source.csound-document`](lang/source.csound-document.js) (mit) — [upstream](https://github.com/nwhetsell/language-csound) — needs: `source.csound`, `text.xml`
@@ -1169,6 +1177,7 @@ Changes should go to upstream repos and
 * [ ] [`source.css.mss`](lang/source.css.mss.js) (mit)
 * [ ] [`source.css.postcss.sugarss`](lang/source.css.postcss.sugarss.js) (mit)
 * [ ] [`source.csswg`](lang/source.csswg.js) (cc0-1.0) — [upstream](https://github.com/tabatkins/bikeshed)
+* [ ] [`source.csv`](lang/source.csv.js) (isc) — [upstream](https://github.com/Alhadis/language-dsv)
 * [ ] [`source.cuda-c++`](lang/source.cuda-c++.js) (bsd-3-clause) — [upstream](https://github.com/harrism/sublimetext-cuda-cpp) — needs: `source.c++`
 * [ ] [`source.cue`](lang/source.cue.js) (mit) — [upstream](https://github.com/cue-sh/vscode-cue)
 * [ ] [`source.cuesheet`](lang/source.cuesheet.js) (mit) — [upstream](https://github.com/relikd/CUE-Sheet_sublime)
@@ -1216,6 +1225,7 @@ Changes should go to upstream repos and
 * [ ] [`source.firestore`](lang/source.firestore.js) (mit)
 * [ ] [`source.firrtl`](lang/source.firrtl.js) (apache-2.0) — [upstream](https://github.com/chipsalliance/firrtl-syntax)
 * [ ] [`source.fish`](lang/source.fish.js) (mit)
+* [ ] [`source.flix`](lang/source.flix.js) (apache-2.0) — [upstream](https://github.com/flix/textmate)
 * [ ] [`source.fnl`](lang/source.fnl.js) (mit) — [upstream](https://github.com/kongeor/vsc-fennel)
 * [ ] [`source.fontdir`](lang/source.fontdir.js) (isc) — [upstream](https://github.com/Alhadis/language-fontforge) — needs: `source.xlfd`
 * [ ] [`source.fontforge`](lang/source.fontforge.js) (isc) — [upstream](https://github.com/Alhadis/language-fontforge)
@@ -1235,7 +1245,6 @@ Changes should go to upstream repos and
 * [ ] [`source.gedcom`](lang/source.gedcom.js) (apache-2.0) — [upstream](https://github.com/fguitton/vscode-gedcom)
 * [ ] [`source.gemfile-lock`](lang/source.gemfile-lock.js) (mit) — [upstream](https://github.com/hmarr/gemfile-lock-tmlanguage)
 * [ ] [`source.gemini`](lang/source.gemini.js) (mit) — [upstream](https://github.com/printfn/gemini-vscode)
-* [ ] [`source.generic-db`](lang/source.generic-db.js) (isc) — [upstream](https://github.com/Alhadis/language-etc) — needs: `etc`
 * [ ] [`source.genero-4gl`](lang/source.genero-4gl.js) (unlicense) — [upstream](https://github.com/FourjsGenero/GeneroFgl.tmbundle)
 * [ ] [`source.genero-per`](lang/source.genero-per.js) (unlicense) — [upstream](https://github.com/FourjsGenero/GeneroFgl.tmbundle)
 * [ ] [`source.gerber`](lang/source.gerber.js) (isc) — [upstream](https://github.com/Alhadis/language-pcb)
@@ -1249,6 +1258,7 @@ Changes should go to upstream repos and
 * [ ] [`source.glsl`](lang/source.glsl.js) (unlicense) — [upstream](https://github.com/euler0/sublime-glsl)
 * [ ] [`source.gn`](lang/source.gn.js) (bsd-3-clause) — [upstream](https://github.com/devoncarew/language-gn)
 * [ ] [`source.gnuplot`](lang/source.gnuplot.js) (mit)
+* [ ] [`source.go-template`](lang/source.go-template.js) (mit) — [upstream](https://github.com/jinliming2/vscode-go-template)
 * [ ] [`source.golo`](lang/source.golo.js) (mit) — [upstream](https://github.com/TypeUnsafe/sublime-golo)
 * [ ] [`source.gosu.2`](lang/source.gosu.2.js) (apache-2.0) — [upstream](https://github.com/jpcamara/Textmate-Gosu-Bundle)
 * [ ] [`source.grace`](lang/source.grace.js) (mit)
@@ -1259,7 +1269,7 @@ Changes should go to upstream repos and
 * [ ] [`source.gts`](lang/source.gts.js) (mit) — [upstream](https://github.com/lifeart/vsc-ember-syntax) — needs: `source.ts`
 * [ ] [`source.hack`](lang/source.hack.js) (mit) — [upstream](https://github.com/slackhq/vscode-hack) — needs: `text.html.basic`
 * [ ] [`source.haproxy-config`](lang/source.haproxy-config.js) (mit)
-* [ ] [`source.harbour`](lang/source.harbour.js) (mit)
+* [ ] [`source.harbour`](lang/source.harbour.js) (mit) — [upstream](https://github.com/hernad/atom-language-harbour)
 * [ ] [`source.haskell`](lang/source.haskell.js) (mit) — [upstream](https://github.com/atom-haskell/language-haskell)
 * [ ] [`source.hc`](lang/source.hc.js) (unlicense)
 * [ ] [`source.hcl`](lang/source.hcl.js) (mpl-2.0) — [upstream](https://github.com/hashicorp/syntax)
@@ -1270,6 +1280,7 @@ Changes should go to upstream repos and
 * [ ] [`source.hosts`](lang/source.hosts.js) (isc) — [upstream](https://github.com/Alhadis/language-etc) — needs: `etc`
 * [ ] [`source.hql`](lang/source.hql.js) (mit)
 * [ ] [`source.httpspec`](lang/source.httpspec.js) (mit) — [upstream](https://github.com/samsalisbury/Sublime-HTTP) — needs: `source.json`
+* [ ] [`source.hurl`](lang/source.hurl.js) (mit) — [upstream](https://github.com/nikeee/language-hurl)
 * [ ] [`source.hx`](lang/source.hx.js) (mit) — [upstream](https://github.com/vshaxe/haxe-TmLanguage)
 * [ ] [`source.hxml`](lang/source.hxml.js) (mit) — [upstream](https://github.com/vshaxe/haxe-TmLanguage) — needs: `source.hx`
 * [ ] [`source.hy`](lang/source.hy.js) (mit) — [upstream](https://github.com/tshakalekholoane/vscode-hy)
@@ -1291,6 +1302,7 @@ Changes should go to upstream repos and
 * [ ] [`source.isabelle.theory`](lang/source.isabelle.theory.js) (bsd-2-clause) — [upstream](https://github.com/lsf37/Isabelle.tmbundle)
 * [ ] [`source.ispc`](lang/source.ispc.js) (bsd-3-clause) — [upstream](https://github.com/ispc/ispc.syntax)
 * [ ] [`source.j`](lang/source.j.js) (mit) — [upstream](https://github.com/tikkanz/JSyntax)
+* [ ] [`source.jac`](lang/source.jac.js) (mit) — [upstream](https://github.com/jaseci-labs/jac-vscode)
 * [ ] [`source.jai`](lang/source.jai.js) (mit) — [upstream](https://github.com/SogoCZE/Jails)
 * [ ] [`source.janet`](lang/source.janet.js) (mit) — [upstream](https://github.com/janet-lang/vscode-janet)
 * [ ] [`source.jasmin`](lang/source.jasmin.js) (wtfpl) — [upstream](https://github.com/atmarksharp/jasmin-sublime)
@@ -1310,12 +1322,14 @@ Changes should go to upstream repos and
 * [ ] [`source.julia.console`](lang/source.julia.console.js) (mit) — [upstream](https://github.com/JuliaEditorSupport/atom-language-julia) — needs: `source.julia`, `source.shell`
 * [ ] [`source.just`](lang/source.just.js) (mit) — [upstream](https://github.com/nefrob/vscode-just)
 * [ ] [`source.kakscript`](lang/source.kakscript.js) (unlicense) — [upstream](https://github.com/kakoune-editor/language-kak)
+* [ ] [`source.kcl`](lang/source.kcl.js) (apache-2.0) — [upstream](https://github.com/kcl-lang/vscode-kcl)
 * [ ] [`source.kdl`](lang/source.kdl.js) (apache-2.0) — [upstream](https://github.com/kdl-org/vscode-kdl)
 * [ ] [`source.kerboscript`](lang/source.kerboscript.js) (mit) — [upstream](https://github.com/KSP-KOS/language-kerboscript)
 * [ ] [`source.keyvalues`](lang/source.keyvalues.js) (isc) — [upstream](https://github.com/Nixinova/NovaGrammars)
 * [ ] [`source.kickstart`](lang/source.kickstart.js) (mit) — [upstream](https://github.com/wgwoods/language-kickstart)
 * [ ] [`source.koka`](lang/source.koka.js) (apache-2.0) — [upstream](https://github.com/koka-community/koka-textmate-grammar)
 * [ ] [`source.kusto`](lang/source.kusto.js) (apache-2.0) — [upstream](https://github.com/mmanela/kusto-sublime)
+* [ ] [`source.langium`](lang/source.langium.js) (mit) — [upstream](https://github.com/eclipse-langium/language-langium)
 * [ ] [`source.lark`](lang/source.lark.js) (isc) — [upstream](https://github.com/Alhadis/language-grammars)
 * [ ] [`source.lean`](lang/source.lean.js) (apache-2.0) — [upstream](https://github.com/leanprover/vscode-lean)
 * [ ] [`source.lean4`](lang/source.lean4.js) (apache-2.0) — [upstream](https://github.com/leanprover/vscode-lean4)
@@ -1333,6 +1347,7 @@ Changes should go to upstream repos and
 * [ ] [`source.logtalk`](lang/source.logtalk.js)
 * [ ] [`source.lolcode`](lang/source.lolcode.js) (mit) — [upstream](https://github.com/KrazIvan/LOLCODE-grammar-vscode)
 * [ ] [`source.loomscript`](lang/source.loomscript.js) (mit)
+* [ ] [`source.lp`](lang/source.lp.js) (mit) — [upstream](https://github.com/Deducteam/sublime-lambdapi)
 * [ ] [`source.lsl`](lang/source.lsl.js)
 * [ ] [`source.ltspice.symbol`](lang/source.ltspice.symbol.js) (isc) — [upstream](https://github.com/Alhadis/language-pcb)
 * [ ] [`source.luau`](lang/source.luau.js) (mit) — [upstream](https://github.com/JohnnyMorganz/Luau.tmLanguage)
@@ -1348,8 +1363,8 @@ Changes should go to upstream repos and
 * [ ] [`source.mcfunction`](lang/source.mcfunction.js) (mit) — [upstream](https://github.com/MinecraftCommands/syntax-mcfunction)
 * [ ] [`source.mdx`](lang/source.mdx.js) (mit) — [upstream](https://github.com/wooorm/markdown-tm-language) — needs: `source.tsx`
 * [ ] [`source.mercury`](lang/source.mercury.js) (mit)
-* [ ] [`source.mermaid`](lang/source.mermaid.js) (isc) — [upstream](https://github.com/Alhadis/language-mermaid) — needs: `source.mermaid.c4c-diagram`, `source.mermaid.class-diagram`, `source.mermaid.er-diagram`, `source.mermaid.flowchart`, `source.mermaid.gantt`, `source.mermaid.gitgraph`, `source.mermaid.mindmap`, `source.mermaid.pie-chart`, `source.mermaid.requirement-diagram`, `source.mermaid.sequence-diagram`, `source.mermaid.state-diagram`, `source.mermaid.user-journey`
-* [ ] [`source.mermaid.c4c-diagram`](lang/source.mermaid.c4c-diagram.js) (isc) — [upstream](https://github.com/Alhadis/language-mermaid) — needs: `source.mermaid`, `source.mermaid.user-journey`, `source.wsd`
+* [ ] [`source.mermaid`](lang/source.mermaid.js) (isc) — [upstream](https://github.com/Alhadis/language-mermaid) — needs: `source.mermaid.c4c-diagram`, `source.mermaid.class-diagram`, `source.mermaid.er-diagram`, `source.mermaid.flowchart`, `source.mermaid.gantt`, `source.mermaid.gitgraph`, `source.mermaid.mindmap`, `source.mermaid.pie-chart`, `source.mermaid.quad-chart`, `source.mermaid.requirement-diagram`, `source.mermaid.sankey`, `source.mermaid.sequence-diagram`, `source.mermaid.state-diagram`, `source.mermaid.timeline`, `source.mermaid.user-journey`, `source.mermaid.zenuml`
+* [ ] [`source.mermaid.c4c-diagram`](lang/source.mermaid.c4c-diagram.js) (isc) — [upstream](https://github.com/Alhadis/language-mermaid) — needs: `source.mermaid`, `source.wsd`
 * [ ] [`source.mermaid.class-diagram`](lang/source.mermaid.class-diagram.js) (isc) — [upstream](https://github.com/Alhadis/language-mermaid) — needs: `source.mermaid`, `source.mermaid.flowchart`
 * [ ] [`source.mermaid.er-diagram`](lang/source.mermaid.er-diagram.js) (isc) — [upstream](https://github.com/Alhadis/language-mermaid) — needs: `source.mermaid`
 * [ ] [`source.mermaid.flowchart`](lang/source.mermaid.flowchart.js) (isc) — [upstream](https://github.com/Alhadis/language-mermaid) — needs: `source.mermaid`
@@ -1357,17 +1372,21 @@ Changes should go to upstream repos and
 * [ ] [`source.mermaid.gitgraph`](lang/source.mermaid.gitgraph.js) (isc) — [upstream](https://github.com/Alhadis/language-mermaid) — needs: `source.json`, `source.mermaid`
 * [ ] [`source.mermaid.mindmap`](lang/source.mermaid.mindmap.js) (isc) — [upstream](https://github.com/Alhadis/language-mermaid) — needs: `source.mermaid`, `source.mermaid.flowchart`
 * [ ] [`source.mermaid.pie-chart`](lang/source.mermaid.pie-chart.js) (isc) — [upstream](https://github.com/Alhadis/language-mermaid) — needs: `source.mermaid`
+* [ ] [`source.mermaid.quad-chart`](lang/source.mermaid.quad-chart.js) (isc) — [upstream](https://github.com/Alhadis/language-mermaid) — needs: `source.mermaid`
 * [ ] [`source.mermaid.requirement-diagram`](lang/source.mermaid.requirement-diagram.js) (isc) — [upstream](https://github.com/Alhadis/language-mermaid) — needs: `source.mermaid`
+* [ ] [`source.mermaid.sankey`](lang/source.mermaid.sankey.js) (isc) — [upstream](https://github.com/Alhadis/language-mermaid) — needs: `source.mermaid`
 * [ ] [`source.mermaid.sequence-diagram`](lang/source.mermaid.sequence-diagram.js) (isc) — [upstream](https://github.com/Alhadis/language-mermaid) — needs: `source.json`, `source.mermaid`
 * [ ] [`source.mermaid.state-diagram`](lang/source.mermaid.state-diagram.js) (isc) — [upstream](https://github.com/Alhadis/language-mermaid) — needs: `source.mermaid`
+* [ ] [`source.mermaid.timeline`](lang/source.mermaid.timeline.js) (isc) — [upstream](https://github.com/Alhadis/language-mermaid) — needs: `source.mermaid`
 * [ ] [`source.mermaid.user-journey`](lang/source.mermaid.user-journey.js) (isc) — [upstream](https://github.com/Alhadis/language-mermaid) — needs: `source.mermaid`
+* [ ] [`source.mermaid.zenuml`](lang/source.mermaid.zenuml.js) (isc) — [upstream](https://github.com/Alhadis/language-mermaid) — needs: `source.mermaid`
 * [ ] [`source.meson`](lang/source.meson.js) (apache-2.0) — [upstream](https://github.com/TingPing/language-meson)
 * [ ] [`source.miniyaml`](lang/source.miniyaml.js) (mit) — [upstream](https://github.com/OpenRA/atom-miniyaml)
 * [ ] [`source.mint`](lang/source.mint.js) (mit) — [upstream](https://github.com/mint-lang/mint-vscode) — needs: `source.css`, `source.css.scss`, `source.js`
 * [ ] [`source.ml`](lang/source.ml.js) — [upstream](https://github.com/textmate/standard-ml.tmbundle)
 * [ ] [`source.mligo`](lang/source.mligo.js) (mit) — [upstream](https://github.com/pewulfman/Ligo-grammar)
 * [ ] [`source.mlir`](lang/source.mlir.js) (apache-2.0) — [upstream](https://github.com/jpienaar/mlir-grammar)
-* [ ] [`source.mo`](lang/source.mo.js) (apache-2.0) — [upstream](https://github.com/dfinity/vscode-motoko)
+* [ ] [`source.mo`](lang/source.mo.js) (apache-2.0) — [upstream](https://github.com/caffeinelabs/vscode-motoko)
 * [ ] [`source.modelica`](lang/source.modelica.js) (mit) — [upstream](https://github.com/BorisChumichev/modelicaSublimeTextPackage)
 * [ ] [`source.modula-3`](lang/source.modula-3.js) (bsd-3-clause) — [upstream](https://github.com/newgrammars/m3)
 * [ ] [`source.modula2`](lang/source.modula2.js) (mit) — [upstream](https://github.com/harogaston/Sublime-Modula-2)
@@ -1394,7 +1413,8 @@ Changes should go to upstream repos and
 * [ ] [`source.netlinx.erb`](lang/source.netlinx.erb.js) (mit) — needs: `source.netlinx`
 * [ ] [`source.nextflow`](lang/source.nextflow.js) (mit) — needs: `source.nextflow-groovy`
 * [ ] [`source.nextflow-groovy`](lang/source.nextflow-groovy.js) (mit)
-* [ ] [`source.nginx`](lang/source.nginx.js) (mit) — [upstream](https://github.com/brandonwamboldt/sublime-nginx)
+* [ ] [`source.nginx`](lang/source.nginx.js) (mit) — [upstream](https://github.com/william-voyek/vscode-nginx)
+* [ ] [`source.nickel`](lang/source.nickel.js) (mit) — [upstream](https://github.com/tweag/nickel)
 * [ ] [`source.nim`](lang/source.nim.js) (mit) — [upstream](https://github.com/nim-lang/NimLime)
 * [ ] [`source.ninja`](lang/source.ninja.js) (mit)
 * [ ] [`source.nit`](lang/source.nit.js) (wtfpl)
@@ -1468,10 +1488,12 @@ Changes should go to upstream repos and
 * [ ] [`source.qml`](lang/source.qml.js) (mit) — needs: `source.js`
 * [ ] [`source.qsharp`](lang/source.qsharp.js) (mit) — [upstream](https://github.com/microsoft/qsharp)
 * [ ] [`source.quake`](lang/source.quake.js) (bsd-3-clause)
+* [ ] [`source.quakec`](lang/source.quakec.js) (mit) — [upstream](https://github.com/4LT/quakec-syntax)
 * [ ] [`source.quoting.raku`](lang/source.quoting.raku.js) — [upstream](https://github.com/perl6/atom-language-perl6) — needs: `source.raku`
 * [ ] [`source.racket`](lang/source.racket.js) (mit)
 * [ ] [`source.raku`](lang/source.raku.js) — [upstream](https://github.com/perl6/atom-language-perl6) — needs: `source.quoting.raku`
 * [ ] [`source.rascal`](lang/source.rascal.js) (bsd-2-clause) — [upstream](https://github.com/usethesource/rascal-syntax-highlighting)
+* [ ] [`source.rascript`](lang/source.rascript.js) (mit) — [upstream](https://github.com/joshraphael/rascript-syntax)
 * [ ] [`source.rbs`](lang/source.rbs.js) (mit) — [upstream](https://github.com/soutaro/vscode-rbs-syntax)
 * [ ] [`source.reason`](lang/source.reason.js) (mit) — [upstream](https://github.com/reasonml-editor/language-reason)
 * [ ] [`source.rebol`](lang/source.rebol.js) (mit) — [upstream](https://github.com/Oldes/Sublime-REBOL)
@@ -1492,6 +1514,7 @@ Changes should go to upstream repos and
 * [ ] [`source.ring`](lang/source.ring.js) (mit)
 * [ ] [`source.roc`](lang/source.roc.js) (mit) — [upstream](https://github.com/ivan-demchenko/roc-vscode-unofficial)
 * [ ] [`source.ron`](lang/source.ron.js) (mit) — [upstream](https://github.com/a5huynh/vscode-ron)
+* [ ] [`source.rosmsg`](lang/source.rosmsg.js) (mit) — [upstream](https://github.com/jtbandes/ros-tmlanguage)
 * [ ] [`source.rpgle`](lang/source.rpgle.js) (mit) — [upstream](https://github.com/barrettotte/vscode-ibmi-languages) — needs: `source.sql`
 * [ ] [`source.rpm-spec`](lang/source.rpm-spec.js) (mit) — needs: `source.changelogs.rpm-spec`, `source.shell`
 * [ ] [`source.sail`](lang/source.sail.js) (mit) — [upstream](https://github.com/Timmmm/sail_vscode)
@@ -1534,6 +1557,7 @@ Changes should go to upstream repos and
 * [ ] [`source.string-template`](lang/source.string-template.js) (isc) — [upstream](https://github.com/Alhadis/language-etc) — needs: `etc`
 * [ ] [`source.stylus`](lang/source.stylus.js) (mit)
 * [ ] [`source.supercollider`](lang/source.supercollider.js) (mit) — [upstream](https://github.com/supercollider/language-supercollider)
+* [ ] [`source.surrealql`](lang/source.surrealql.js) (apache-2.0) — [upstream](https://github.com/surrealdb/surrealql-grammar)
 * [ ] [`source.svelte`](lang/source.svelte.js) (mit) — [upstream](https://github.com/sebastinez/svelte-atom) — needs: `source.css`, `source.js`, `source.ts`
 * [ ] [`source.sway`](lang/source.sway.js) (apache-2.0) — [upstream](https://github.com/FuelLabs/sway-vscode-plugin)
 * [ ] [`source.sy`](lang/source.sy.js) (isc) — [upstream](https://github.com/Alhadis/language-regexp) — needs: `source.regexp`
@@ -1542,6 +1566,7 @@ Changes should go to upstream repos and
 * [ ] [`source.talon`](lang/source.talon.js) (mit) — [upstream](https://github.com/mrob95/vscode-TalonScript)
 * [ ] [`source.tcl`](lang/source.tcl.js)
 * [ ] [`source.tea`](lang/source.tea.js) (apache-2.0) — needs: `source.js`, `text.html.basic`, `text.xml`
+* [ ] [`source.teal`](lang/source.teal.js) (mit) — [upstream](https://github.com/teal-language/vscode-teal)
 * [ ] [`source.templ`](lang/source.templ.js) (mit) — [upstream](https://github.com/templ-go/templ-vscode) — needs: `source.go`
 * [ ] [`source.terra`](lang/source.terra.js) (bsd-3-clause)
 * [ ] [`source.textgrid`](lang/source.textgrid.js) (mit) — [upstream](https://github.com/orhunulusahin/praatvscode)
@@ -1551,12 +1576,14 @@ Changes should go to upstream repos and
 * [ ] [`source.tla`](lang/source.tla.js) (mit)
 * [ ] [`source.tlverilog`](lang/source.tlverilog.js) (mit) — [upstream](https://github.com/adamint/tlv-vscode)
 * [ ] [`source.tm-properties`](lang/source.tm-properties.js) — [upstream](https://github.com/textmate/textmate.tmbundle)
+* [ ] [`source.tmdl`](lang/source.tmdl.js) (mit) — [upstream](https://github.com/microsoft/vscode-tmdl)
 * [ ] [`source.toc`](lang/source.toc.js) (unlicense) — [upstream](https://github.com/nebularg/language-toc-wow)
 * [ ] [`source.toit`](lang/source.toit.js) (mit) — [upstream](https://github.com/toitware/ide-tools)
 * [ ] [`source.toml`](lang/source.toml.js) — [upstream](https://github.com/textmate/toml.tmbundle)
 * [ ] [`source.torrc`](lang/source.torrc.js) (isc) — [upstream](https://github.com/Alhadis/language-etc) — needs: `etc`, `source.hosts`
 * [ ] [`source.tsp`](lang/source.tsp.js) (mit) — [upstream](https://github.com/microsoft/typespec)
 * [ ] [`source.tsql`](lang/source.tsql.js) (mit) — [upstream](https://github.com/beau-witter/language-tsql)
+* [ ] [`source.tsv`](lang/source.tsv.js) (isc) — [upstream](https://github.com/Alhadis/language-dsv)
 * [ ] [`source.tsx`](lang/source.tsx.js) (mit) — [upstream](https://github.com/Microsoft/TypeScript-TmLanguage)
 * [ ] [`source.turing`](lang/source.turing.js) (isc) — [upstream](https://github.com/Alhadis/language-turing)
 * [ ] [`source.turtle`](lang/source.turtle.js) (mit) — [upstream](https://github.com/peta/turtle.tmbundle)
@@ -1566,16 +1593,16 @@ Changes should go to upstream repos and
 * [ ] [`source.ur`](lang/source.ur.js) (mit)
 * [ ] [`source.v`](lang/source.v.js) (mit) — [upstream](https://github.com/0x9ef/vscode-vlang)
 * [ ] [`source.vala`](lang/source.vala.js) (mit) — [upstream](https://github.com/technosophos/Vala-TMBundle)
-* [ ] [`source.varnish.vcl`](lang/source.varnish.vcl.js) (mit) — [upstream](https://github.com/brandonwamboldt/sublime-varnish)
-* [ ] [`source.vba`](lang/source.vba.js) (mpl-2.0) — [upstream](https://github.com/serkonda7/vscode-vba)
+* [ ] [`source.vb6`](lang/source.vb6.js) (mpl-2.0) — [upstream](https://github.com/serkonda7/vscode-vba)
+* [ ] [`source.vba`](lang/source.vba.js) (mpl-2.0) — [upstream](https://github.com/serkonda7/vscode-vba) — needs: `source.vb6`
 * [ ] [`source.vcard`](lang/source.vcard.js) (mit) — [upstream](https://github.com/cstrachan88/vscode-vcard)
+* [ ] [`source.vcl`](lang/source.vcl.js) (mit) — [upstream](https://github.com/fastly/vscode-fastly-vcl)
 * [ ] [`source.velocity`](lang/source.velocity.js) (mit) — [upstream](https://github.com/animecyc/AtomLanguageVelocity)
-* [ ] [`source.vento`](lang/source.vento.js) (mit) — [upstream](https://github.com/ventojs/vscode-vento) — needs: `source.js`
+* [ ] [`source.vento`](lang/source.vento.js) (mit) — [upstream](https://github.com/ventojs/vscode-vento) — needs: `source.js`, `text.html.basic`
 * [ ] [`source.verilog`](lang/source.verilog.js)
-* [ ] [`source.vhdl`](lang/source.vhdl.js)
+* [ ] [`source.vhdl`](lang/source.vhdl.js) (mit) — [upstream](https://github.com/VHDL-LS/rust_hdl_vscode)
 * [ ] [`source.vim-snippet`](lang/source.vim-snippet.js) (mit) — [upstream](https://github.com/Alhadis/language-viml)
 * [ ] [`source.viml`](lang/source.viml.js) (mit) — [upstream](https://github.com/Alhadis/language-viml)
-* [ ] [`source.vue`](lang/source.vue.js) (mit) — [upstream](https://github.com/vuejs/language-tools) — needs: `source.css`, `text.html.basic`
 * [ ] [`source.vyper`](lang/source.vyper.js) (mit) — [upstream](https://github.com/davidhq/SublimeEthereum)
 * [ ] [`source.wavefront.mtl`](lang/source.wavefront.mtl.js) (isc) — [upstream](https://github.com/Alhadis/language-wavefront)
 * [ ] [`source.wavefront.obj`](lang/source.wavefront.obj.js) (isc) — [upstream](https://github.com/Alhadis/language-wavefront)
@@ -1623,6 +1650,7 @@ Changes should go to upstream repos and
 * [ ] [`text.elixir`](lang/text.elixir.js) (apache-2.0) — [upstream](https://github.com/elixir-lang/elixir-tmbundle) — needs: `source.elixir`
 * [ ] [`text.eml.basic`](lang/text.eml.basic.js) (mit) — [upstream](https://github.com/mariozaizar/language-eml)
 * [ ] [`text.gherkin.feature`](lang/text.gherkin.feature.js) (mit) — [upstream](https://github.com/cucumber/cucumber-tmbundle)
+* [ ] [`text.git-commit`](lang/text.git-commit.js) (isc) — [upstream](https://github.com/Nixinova/NovaGrammars)
 * [ ] [`text.grammarkdown`](lang/text.grammarkdown.js) (isc) — [upstream](https://github.com/Alhadis/language-grammars)
 * [ ] [`text.haml`](lang/text.haml.js) (mit) — needs: `source.ruby`
 * [ ] [`text.html.asciidoc`](lang/text.html.asciidoc.js) (mit) — [upstream](https://github.com/zuckschwerdt/asciidoc.tmbundle) — needs: `text.html.basic`
@@ -1657,7 +1685,8 @@ Changes should go to upstream repos and
 * [ ] [`text.html.statamic`](lang/text.html.statamic.js) (mit) — [upstream](https://github.com/Stillat/vscode-antlers-language-server) — needs: `text.html.basic`
 * [ ] [`text.html.twig`](lang/text.html.twig.js) (bsd-3-clause) — [upstream](https://github.com/Anomareh/PHP-Twig.tmbundle)
 * [ ] [`text.jade`](lang/text.jade.js) (mit) — needs: `source.js`, `text.html.basic`
-* [ ] [`text.marko`](lang/text.marko.js) (mit) — [upstream](https://github.com/marko-js/marko-tmbundle) — needs: `source.js`
+* [ ] [`text.k`](lang/text.k.js) (mit) — [upstream](https://github.com/LucianCumpata/K-VSCode)
+* [ ] [`text.marko`](lang/text.marko.js) (mit) — [upstream](https://github.com/marko-js/marko-tmbundle) — needs: `source.ts`
 * [ ] [`text.muse`](lang/text.muse.js) (isc) — [upstream](https://github.com/Alhadis/language-emacs-lisp)
 * [ ] [`text.python.console`](lang/text.python.console.js) (mit) — [upstream](https://github.com/MagicStack/MagicPython) — needs: `source.python`
 * [ ] [`text.python.traceback`](lang/text.python.traceback.js) (mit) — [upstream](https://github.com/MagicStack/MagicPython) — needs: `source.python`
@@ -1670,7 +1699,8 @@ Changes should go to upstream repos and
 * [ ] [`text.runoff`](lang/text.runoff.js) (isc) — [upstream](https://github.com/Alhadis/language-roff)
 * [ ] [`text.sfd`](lang/text.sfd.js) (isc) — [upstream](https://github.com/Alhadis/language-fontforge) — needs: `source.fontforge`
 * [ ] [`text.shell-session`](lang/text.shell-session.js) (mit) — [upstream](https://github.com/atom/language-shellscript) — needs: `source.shell`
-* [ ] [`text.slim`](lang/text.slim.js) (mit) — needs: `text.html.basic`
+* [ ] [`text.slim`](lang/text.slim.js) (mit) — [upstream](https://github.com/borama/vscode-ruby-slim) — needs: `text.html.basic`
+* [ ] [`text.source.mps`](lang/text.source.mps.js) (apache-2.0) — [upstream](https://github.com/sharktide/mps-vscode)
 * [ ] [`text.srt`](lang/text.srt.js) (isc) — [upstream](https://github.com/Alhadis/language-subtitles) — needs: `text.html.basic`
 * [ ] [`text.tex`](lang/text.tex.js) — [upstream](https://github.com/textmate/latex.tmbundle) — needs: `source.r`
 * [ ] [`text.tex.latex`](lang/text.tex.latex.js) — [upstream](https://github.com/textmate/latex.tmbundle) — needs: `text.tex`

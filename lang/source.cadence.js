@@ -13,10 +13,10 @@ const grammar = {
   names: ['cadence'],
   patterns: [
     {include: '#comments'},
-    {include: '#expressions'},
     {include: '#declarations'},
     {include: '#keywords'},
     {include: '#code-block'},
+    {include: '#expressions'},
     {include: '#composite'},
     {include: '#event'}
   ],
@@ -87,7 +87,7 @@ const grammar = {
               beginCaptures: {
                 0: {name: 'punctuation.definition.comment.cadence'}
               },
-              end: '^',
+              end: '$',
               name: 'comment.line.triple-slash.documentation.cadence'
             },
             {
@@ -95,7 +95,7 @@ const grammar = {
               beginCaptures: {
                 0: {name: 'punctuation.definition.comment.cadence'}
               },
-              end: '^',
+              end: '$',
               name: 'comment.line.double-slash.documentation.cadence'
             },
             {
@@ -103,7 +103,7 @@ const grammar = {
               beginCaptures: {
                 0: {name: 'punctuation.definition.comment.cadence'}
               },
-              end: '^',
+              end: '$',
               name: 'comment.line.double-slash.cadence'
             }
           ]
@@ -115,23 +115,21 @@ const grammar = {
     },
     composite: {
       begin:
-        '\\b((?:(?:struct|resource|contract)(?:\\s+interface)?)|transaction|enum)\\s+([\\p{L}_][\\p{L}_\\p{N}\\p{M}]*)',
+        '\\b((?:(?:struct|resource|contract|attachment)(?:\\s+interface)?)|enum)\\s+([\\p{L}_][\\p{L}_\\p{N}\\p{M}]*)',
       beginCaptures: {
         1: {name: 'storage.type.$1.cadence'},
         2: {name: 'entity.name.type.$1.cadence'}
       },
-      end: '(?<=\\})',
+      end: '(?<=\\})|(?=\\s*\\Z)',
       name: 'meta.definition.type.composite.cadence',
       patterns: [
         {include: '#comments'},
         {include: '#conformance-clause'},
         {
           begin: '\\{',
-          beginCaptures: {
-            0: {name: 'punctuation.definition.type.begin.cadence'}
-          },
+          beginCaptures: {0: {name: 'punctuation.section.type.begin.cadence'}},
           end: '\\}',
-          endCaptures: {0: {name: 'punctuation.definition.type.end.cadence'}},
+          endCaptures: {0: {name: 'punctuation.section.type.end.cadence'}},
           name: 'meta.definition.type.body.cadence',
           patterns: [{include: '$self'}]
         }
@@ -157,7 +155,11 @@ const grammar = {
       patterns: [
         {include: '#var-let-declaration'},
         {include: '#function'},
-        {include: '#initializer'}
+        {include: '#initializer'},
+        {include: '#prepare-execute'},
+        {include: '#execute-phase'},
+        {include: '#pre-post'},
+        {include: '#transaction'}
       ]
     },
     event: {
@@ -166,9 +168,25 @@ const grammar = {
         1: {name: 'storage.type.event.cadence'},
         2: {name: 'entity.name.type.event.cadence'}
       },
-      end: '(?<=\\))|$',
+      end: '(?<=\\))',
       name: 'meta.definition.type.event.cadence',
       patterns: [{include: '#comments'}, {include: '#parameter-clause'}]
+    },
+    'execute-phase': {
+      begin: '(?<!\\.)\\b(execute)\\b\\s*(?=\\{)',
+      beginCaptures: {1: {name: 'storage.modifier.phase.cadence'}},
+      end: '(?<=\\})',
+      name: 'meta.definition.transaction.phase.cadence',
+      patterns: [
+        {include: '#comments'},
+        {
+          begin: '\\{',
+          beginCaptures: {0: {name: 'punctuation.section.phase.begin.cadence'}},
+          end: '\\}',
+          endCaptures: {0: {name: 'punctuation.section.phase.end.cadence'}},
+          patterns: [{include: '$self'}]
+        }
+      ]
     },
     'expression-element-list': {
       patterns: [
@@ -176,7 +194,7 @@ const grammar = {
         {
           begin: '([\\p{L}_][\\p{L}_\\p{N}\\p{M}]*)\\s*(:)',
           beginCaptures: {
-            1: {name: 'support.function.any-method.cadence'},
+            1: {name: 'variable.parameter.function-call.cadence'},
             2: {name: 'punctuation.separator.argument-label.cadence'}
           },
           end: '(?=[,)\\]])',
@@ -192,10 +210,64 @@ const grammar = {
     expressions: {
       patterns: [
         {include: '#comments'},
+        {include: '#keywords'},
+        {include: '#language-variables'},
+        {include: '#function-expression'},
+        {include: '#path-literals'},
+        {
+          begin:
+            '(?!\\b(?:if|while|for|return|create|destroy|emit|as)\\b)([\\p{L}_][\\p{L}_\\p{N}\\p{M}]*)\\s*(<)(?=[\\p{Lu}_&@\\[{(]|auth\\b|\\s*$)',
+          beginCaptures: {
+            1: {name: 'entity.name.function.cadence'},
+            2: {name: 'punctuation.definition.type-arguments.begin.cadence'}
+          },
+          end: '(>)(?!\\s*[=<>])',
+          endCaptures: {
+            1: {name: 'punctuation.definition.type-arguments.end.cadence'}
+          },
+          name: 'meta.type.arguments.cadence',
+          patterns: [
+            {include: '#type'},
+            {match: ',', name: 'punctuation.separator.type-argument.cadence'}
+          ]
+        },
+        {
+          begin: '(\\()',
+          beginCaptures: {
+            1: {name: 'punctuation.definition.arguments.begin.cadence'}
+          },
+          end: '(\\))',
+          endCaptures: {
+            1: {name: 'punctuation.definition.arguments.end.cadence'}
+          },
+          name: 'meta.group.cadence',
+          patterns: [{include: '#expression-element-list'}]
+        },
+        {
+          begin: '(?<=\\.)([\\p{L}_][\\p{L}_\\p{N}\\p{M}]*)\\s*(\\()',
+          beginCaptures: {
+            1: {name: 'entity.name.function.cadence'},
+            2: {name: 'punctuation.definition.arguments.begin.cadence'}
+          },
+          end: '(\\))',
+          endCaptures: {
+            1: {name: 'punctuation.definition.arguments.end.cadence'}
+          },
+          name: 'meta.function-call.method.cadence',
+          patterns: [{include: '#expression-element-list'}]
+        },
+        {
+          match: '(?<=\\.)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*',
+          name: 'variable.other.member.cadence'
+        },
         {include: '#function-call-expression'},
+        {
+          match:
+            '(?<!\\.)\\b(?!(?:contract|struct|resource|event|enum|attachment|entitlement|import|fun|let|var|if|else|switch|case|default|while|for|in|break|continue|return|emit|as|create|destroy|attach|to|remove|from|pub|priv|access|all|self|view|auth|transaction|prepare|execute|pre|post|init|true|false|nil|Type|Int|UInt|Int8|Int16|Int32|Int64|Int128|Int256|UInt8|UInt16|UInt32|UInt64|UInt128|UInt256|Word8|Word16|Word32|Word64|Fix64|Fix128|UFix64|UFix128|String|Character|Bool|Address|Void|AnyStruct|AnyResource|Any|Never|mapping|include)\\b)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*\\b',
+          name: 'variable.other.readwrite.cadence'
+        },
         {include: '#literals'},
-        {include: '#operators'},
-        {include: '#language-variables'}
+        {include: '#operators'}
       ]
     },
     function: {
@@ -204,7 +276,7 @@ const grammar = {
         1: {name: 'storage.type.function.cadence'},
         2: {name: 'entity.name.function.cadence'}
       },
-      end: '(?<=\\})|$',
+      end: '(?<=\\})|;|(?=\\}[\\s]*$)|$',
       name: 'meta.definition.function.cadence',
       patterns: [
         {include: '#comments'},
@@ -225,24 +297,49 @@ const grammar = {
     'function-call-expression': {
       patterns: [
         {
-          begin: '(?!(?:set|init))([\\p{L}_][\\p{L}_\\p{N}\\p{M}]*)\\s*(\\()',
+          begin:
+            '(?<!\\.)\\b(?!(?:set|init|transaction|prepare|execute|access|auth))([\\p{L}_][\\p{L}_\\p{N}\\p{M}]*)\\s*(\\()',
           beginCaptures: {
-            1: {name: 'support.function.any-method.cadence'},
-            4: {name: 'punctuation.definition.arguments.begin.cadence'}
+            1: {name: 'entity.name.function.cadence'},
+            2: {name: 'punctuation.definition.arguments.begin.cadence'}
           },
-          end: '\\)',
+          end: '(\\))',
           endCaptures: {
-            0: {name: 'punctuation.definition.arguments.end.cadence'}
+            1: {name: 'punctuation.definition.arguments.end.cadence'}
           },
           name: 'meta.function-call.cadence',
           patterns: [{include: '#expression-element-list'}]
         }
       ]
     },
+    'function-expression': {
+      begin: '(?<!\\.)\\b(?:(view)\\s+)?(fun)\\b(?=\\s*\\()',
+      beginCaptures: {
+        1: {name: 'storage.modifier.view.cadence'},
+        2: {name: 'storage.type.function.cadence'}
+      },
+      end: '(?<=\\})|$',
+      name: 'meta.function.expression.cadence',
+      patterns: [
+        {include: '#comments'},
+        {include: '#parameter-clause'},
+        {include: '#function-result'},
+        {
+          begin: '(\\{)',
+          beginCaptures: {
+            1: {name: 'punctuation.section.function.begin.cadence'}
+          },
+          end: '(\\})',
+          endCaptures: {1: {name: 'punctuation.section.function.end.cadence'}},
+          name: 'meta.definition.function.body.cadence',
+          patterns: [{include: '$self'}]
+        }
+      ]
+    },
     'function-result': {
       begin: '(?<![/=\\-+!*%<>&|\\^~.])(:)(?![/=\\-+!*%<>&|\\^~.])\\s*',
       beginCaptures: {1: {name: 'keyword.operator.function-result.cadence'}},
-      end: '(?!\\G)(?=\\{|;)|$',
+      end: '(?<![@&\\[<])(?!\\G)(?=\\s*\\{)|(?=;|(?<!\\{)\\})|$',
       name: 'meta.function-result.cadence',
       patterns: [{include: '#type'}]
     },
@@ -268,6 +365,77 @@ const grammar = {
     },
     keywords: {
       patterns: [
+        {match: '(?<!\\.)\\bvar\\b', name: 'storage.type.var.cadence'},
+        {match: '(?<!\\.)\\blet\\b', name: 'storage.type.let.cadence'},
+        {
+          begin:
+            '(?<!\\.)\\b(entitlement)\\s+(mapping)\\s+([\\p{L}_][\\p{L}_\\p{N}\\p{M}]*)\\s*(\\{)',
+          beginCaptures: {
+            1: {name: 'keyword.declaration.entitlement.cadence'},
+            2: {name: 'keyword.other.mapping.cadence'},
+            3: {name: 'entity.name.type.entitlement-mapping.cadence'},
+            4: {name: 'punctuation.definition.type.begin.cadence'}
+          },
+          end: '(\\})',
+          endCaptures: {1: {name: 'punctuation.definition.type.end.cadence'}},
+          name: 'meta.definition.entitlement-mapping.cadence',
+          patterns: [
+            {include: '#comments'},
+            {
+              match: '\\binclude\\b',
+              name: 'keyword.other.mapping.include.cadence'
+            },
+            {
+              captures: {
+                1: {name: 'entity.name.type.entitlement-mapping.cadence'}
+              },
+              match: '(?<=\\binclude)\\s+([\\p{L}_][\\p{L}_\\p{N}\\p{M}.]*)'
+            },
+            {
+              match: '[\\p{L}_][\\p{L}_\\p{N}\\p{M}.]*',
+              name: 'entity.name.type.entitlement.cadence'
+            },
+            {match: '->', name: 'punctuation.separator.mapping.cadence'}
+          ]
+        },
+        {
+          captures: {
+            1: {name: 'keyword.declaration.entitlement.cadence'},
+            2: {name: 'entity.name.type.entitlement.cadence'}
+          },
+          match:
+            '(?<!\\.)\\b(entitlement)\\b\\s+([\\p{L}_][\\p{L}_\\p{N}\\p{M}]*)'
+        },
+        {
+          begin: '(?<!\\.)\\b(access)\\b\\s*(\\()',
+          beginCaptures: {
+            1: {name: 'storage.modifier.access.cadence'},
+            2: {name: 'punctuation.section.group.begin.cadence'}
+          },
+          end: '(\\))',
+          endCaptures: {1: {name: 'punctuation.section.group.end.cadence'}},
+          name: 'meta.access.modifier.cadence',
+          patterns: [
+            {include: '#comments'},
+            {match: '\\bmapping\\b', name: 'keyword.other.mapping.cadence'},
+            {
+              captures: {
+                1: {name: 'entity.name.type.entitlement-mapping.cadence'}
+              },
+              match: '(?<=\\bmapping)\\s+([\\p{L}_][\\p{L}_\\p{N}\\p{M}.]*)'
+            },
+            {
+              match: '\\b(?:all|self|contract|account)\\b',
+              name: 'constant.language.access.audience.cadence'
+            },
+            {match: ',', name: 'punctuation.separator.entitlement.cadence'},
+            {match: '\\|', name: 'punctuation.separator.entitlement.cadence'},
+            {
+              match: '[\\p{L}_][\\p{L}_\\p{N}\\p{M}.]*',
+              name: 'entity.name.type.entitlement.cadence'
+            }
+          ]
+        },
         {
           match: '(?<!\\.)\\b(?:if|else|switch|case|default)\\b',
           name: 'keyword.control.branch.cadence'
@@ -281,22 +449,28 @@ const grammar = {
           name: 'keyword.control.loop.cadence'
         },
         {
-          match:
-            '(?<!\\.)\\b(?:pre|post|prepare|execute|create|destroy|emit)\\b',
+          match: '(?<!\\.)\\b(?:create|destroy|emit|attach|to|remove|from)\\b',
           name: 'keyword.other.cadence'
         },
         {
-          match:
-            '(?<!\\.)\\b(?:private|pub(?:\\(set\\))?|access\\((?:self|contract|account|all)\\))\\b',
-          name: 'keyword.other.declaration-specifier.accessibility.cadence'
+          match: '(?<!\\.)\\b(pub|priv)\\b',
+          name: 'invalid.deprecated.keyword.cadence'
         },
+        {match: '(?<!\\.)\\bview\\b', name: 'storage.modifier.view.cadence'},
+        {match: '(?<!\\.)\\b(auth)\\b', name: 'keyword.other.auth.cadence'},
         {
-          match: '\\b(?:init|destroy)\\b',
-          name: 'storage.type.function.cadence'
-        },
-        {
-          match: '(?<!\\.)\\b(?:import|from)\\b',
-          name: 'keyword.control.import.cadence'
+          begin: '(?<!\\.)\\b(import)\\b',
+          beginCaptures: {1: {name: 'keyword.control.import.cadence'}},
+          end: '(?=$|//|/\\*|;)',
+          name: 'meta.import.cadence',
+          patterns: [
+            {match: '\\bfrom\\b', name: 'keyword.control.import.cadence'},
+            {include: '#literals'},
+            {
+              match: '\\b[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*\\b',
+              name: 'variable.other.readwrite.cadence'
+            }
+          ]
         }
       ]
     },
@@ -319,8 +493,9 @@ const grammar = {
           patterns: [
             {include: '#binary'},
             {include: '#octal'},
-            {include: '#decimal'},
-            {include: '#hexadecimal'}
+            {include: '#hexadecimal'},
+            {include: '#fixed-point'},
+            {include: '#decimal'}
           ],
           repository: {
             binary: {
@@ -330,6 +505,11 @@ const grammar = {
             decimal: {
               match: '(\\B\\-|\\b)[0-9]([_0-9]*[0-9])?\\b',
               name: 'constant.numeric.integer.decimal.cadence'
+            },
+            'fixed-point': {
+              match:
+                '(\\B\\-|\\b)[0-9]([_0-9]*[0-9])?\\.[0-9]([_0-9]*[0-9])?\\b',
+              name: 'constant.numeric.float.cadence'
             },
             hexadecimal: {
               match: '(\\B\\-|\\b)0x[0-9A-Fa-f]([_0-9A-Fa-f]*[0-9A-Fa-f])?\\b',
@@ -358,6 +538,36 @@ const grammar = {
                   match: '\\r|\\n',
                   name: 'invalid.illegal.returns-not-allowed.cadence'
                 },
+                {
+                  begin: '\\\\\\(',
+                  beginCaptures: {
+                    0: {
+                      name: 'punctuation.section.embedded.begin.cadence meta.embedded.cadence'
+                    }
+                  },
+                  contentName: 'meta.embedded.line.cadence',
+                  end: '\\)',
+                  endCaptures: {
+                    0: {
+                      name: 'punctuation.section.embedded.end.cadence meta.embedded.cadence'
+                    }
+                  },
+                  name: 'meta.interpolation.cadence',
+                  patterns: [
+                    {
+                      begin: '\\(',
+                      beginCaptures: {
+                        0: {name: 'punctuation.section.group.begin.cadence'}
+                      },
+                      end: '\\)',
+                      endCaptures: {
+                        0: {name: 'punctuation.section.group.end.cadence'}
+                      },
+                      patterns: [{include: '#expressions'}]
+                    },
+                    {include: '#expressions'}
+                  ]
+                },
                 {include: '#string-guts'}
               ]
             }
@@ -381,13 +591,52 @@ const grammar = {
     },
     operators: {
       patterns: [
+        {match: '<->', name: 'keyword.operator.swap.cadence'},
+        {match: '\\?\\.', name: 'keyword.operator.optional.chain.cadence'},
+        {
+          begin: '\\b(as\\?|as!|as)\\b',
+          beginCaptures: {0: {name: 'keyword.operator.type.cast.cadence'}},
+          end: '(?=$|;|//|/\\\\*|\\")|(?=\\)|,|\\})|(?<=\\>)(?=\\s*\\{(?!\\s*[\\p{L}_][\\p{L}_\\p{N}\\p{M}.]*\\s*:))|(?<=[\\p{L}\\p{N}\\}\\>\\)\\]\\?])(?=\\s*\\{(?!\\s*[\\p{L}_][\\p{L}_\\p{N}\\p{M}.]*\\s*:))|(?=\\?\\?)',
+          name: 'meta.type.cast-target.cadence',
+          patterns: [
+            {
+              begin: '\\{(?=\\s*[\\p{L}_][\\p{L}_\\p{N}\\p{M}.]*\\s*:)',
+              beginCaptures: {
+                0: {
+                  name: 'punctuation.definition.type.dictionary.begin.cadence'
+                }
+              },
+              end: '(\\})',
+              endCaptures: {
+                1: {name: 'punctuation.definition.type.dictionary.end.cadence'}
+              },
+              name: 'meta.type.dictionary.cadence',
+              patterns: [
+                {include: '#comments'},
+                {include: '#type'},
+                {
+                  match: ':',
+                  name: 'punctuation.separator.type.dictionary.cadence'
+                },
+                {
+                  match: ',',
+                  name: 'punctuation.separator.type.dictionary.cadence'
+                }
+              ]
+            },
+            {include: '#type'}
+          ]
+        },
         {match: '\\-', name: 'keyword.operator.arithmetic.unary.cadence'},
+        {match: '(?<=\\))!', name: 'keyword.operator.force-unwrap.cadence'},
         {match: '!', name: 'keyword.operator.logical.not.cadence'},
         {match: '=', name: 'keyword.operator.assignment.cadence'},
         {match: '<-', name: 'keyword.operator.move.cadence'},
         {match: '<-!', name: 'keyword.operator.force-move.cadence'},
         {match: '\\+|\\-|\\*|/', name: 'keyword.operator.arithmetic.cadence'},
         {match: '%', name: 'keyword.operator.arithmetic.remainder.cadence'},
+        {match: '>>', name: 'keyword.operator.bitwise.shift.cadence'},
+        {match: '<<', name: 'keyword.operator.bitwise.shift.cadence'},
         {match: '==|!=|>|<|>=|<=', name: 'keyword.operator.comparison.cadence'},
         {match: '\\?\\?', name: 'keyword.operator.coalescing.cadence'},
         {match: '&&|\\|\\|', name: 'keyword.operator.logical.cadence'},
@@ -402,24 +651,29 @@ const grammar = {
       end: '(\\))',
       endCaptures: {1: {name: 'punctuation.definition.parameters.end.cadence'}},
       name: 'meta.parameter-clause.cadence',
-      patterns: [{include: '#parameter-list'}]
+      patterns: [{include: '#comments'}, {include: '#parameter-list'}]
     },
     'parameter-list': {
       patterns: [
+        {include: '#comments'},
         {
           captures: {
-            1: {name: 'entity.name.function.cadence'},
-            2: {name: 'variable.parameter.function.cadence'}
+            1: {name: 'keyword.operator.unnamed-parameter.cadence'},
+            2: {name: 'variable.parameter.cadence'}
+          },
+          match: '(_)\\s+([\\p{L}_][\\p{L}_\\p{N}\\p{M}]*)(?=\\s*:)'
+        },
+        {
+          captures: {
+            1: {name: 'entity.name.label.cadence'},
+            2: {name: 'variable.parameter.cadence'}
           },
           match:
             '([\\p{L}_][\\p{L}_\\p{N}\\p{M}]*)\\s+([\\p{L}_][\\p{L}_\\p{N}\\p{M}]*)(?=\\s*:)'
         },
         {
-          captures: {
-            1: {name: 'variable.parameter.function.cadence'},
-            2: {name: 'entity.name.function.cadence'}
-          },
-          match: '(([\\p{L}_][\\p{L}_\\p{N}\\p{M}]*))(?=\\s*:)'
+          captures: {1: {name: 'variable.parameter.cadence'}},
+          match: '([\\p{L}_][\\p{L}_\\p{N}\\p{M}]*)(?=\\s*:)'
         },
         {
           begin: ':\\s*(?!\\s)',
@@ -434,23 +688,236 @@ const grammar = {
         }
       ]
     },
-    type: {
+    'path-literals': {
+      patterns: [
+        {
+          captures: {
+            1: {name: 'punctuation.separator.path.cadence'},
+            2: {name: 'constant.other.path.cadence'}
+          },
+          match: '(/)((storage|public)(/[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*)?)'
+        }
+      ]
+    },
+    'pre-post': {
+      begin: '(?<!\\.)\\b(pre|post)\\b\\s*(?=\\{)',
+      beginCaptures: {1: {name: 'storage.modifier.phase.cadence'}},
+      end: '(?<=\\})',
+      name: 'meta.definition.transaction.phase.cadence',
       patterns: [
         {include: '#comments'},
         {
-          match: '([\\p{L}_][\\p{L}_\\p{N}\\p{M}]*)',
-          name: 'storage.type.cadence'
+          begin: '\\{',
+          beginCaptures: {0: {name: 'punctuation.section.phase.begin.cadence'}},
+          end: '\\}',
+          endCaptures: {0: {name: 'punctuation.section.phase.end.cadence'}},
+          patterns: [{include: '$self'}]
         }
+      ]
+    },
+    'prepare-execute': {
+      begin: '(?<!\\.)\\b(prepare)\\b\\s*(?=\\()',
+      beginCaptures: {1: {name: 'storage.modifier.phase.cadence'}},
+      end: '(?<=\\})',
+      name: 'meta.definition.transaction.phase.cadence',
+      patterns: [
+        {include: '#comments'},
+        {include: '#parameter-clause'},
+        {
+          begin: '\\{',
+          beginCaptures: {0: {name: 'punctuation.section.phase.begin.cadence'}},
+          end: '\\}',
+          endCaptures: {0: {name: 'punctuation.section.phase.end.cadence'}},
+          patterns: [{include: '$self'}]
+        }
+      ]
+    },
+    transaction: {
+      begin: '\\b(transaction)\\b',
+      beginCaptures: {1: {name: 'storage.type.transaction.cadence'}},
+      end: '(?<=\\))|(?<=\\})',
+      name: 'meta.definition.transaction.cadence',
+      patterns: [
+        {include: '#comments'},
+        {include: '#parameter-clause'},
+        {
+          begin: '\\{',
+          beginCaptures: {
+            0: {name: 'punctuation.section.transaction.begin.cadence'}
+          },
+          end: '\\}',
+          endCaptures: {
+            0: {name: 'punctuation.section.transaction.end.cadence'}
+          },
+          name: 'meta.definition.transaction.body.cadence',
+          patterns: [{include: '$self'}]
+        }
+      ]
+    },
+    type: {
+      patterns: [
+        {
+          begin: '(?<!\\.)\\b(?:(view)\\s+)?(fun)\\b\\s*(\\()',
+          beginCaptures: {
+            1: {name: 'storage.modifier.view.cadence'},
+            2: {name: 'storage.type.function.cadence'},
+            3: {name: 'punctuation.definition.parameters.begin.cadence'}
+          },
+          end: '(?=,|[)>}\\]]|$)',
+          name: 'meta.type.function.cadence',
+          patterns: [
+            {include: '#comments'},
+            {
+              begin: '\\G',
+              end: '(\\))',
+              endCaptures: {
+                1: {name: 'punctuation.definition.parameters.end.cadence'}
+              },
+              patterns: [
+                {include: '#type'},
+                {match: ',', name: 'punctuation.separator.parameter.cadence'}
+              ]
+            },
+            {
+              begin: '(:)',
+              beginCaptures: {
+                1: {name: 'keyword.operator.function-result.cadence'}
+              },
+              end: '(?=,|[)>}\\]]|$)',
+              name: 'meta.function-result.cadence',
+              patterns: [{include: '#type'}]
+            }
+          ]
+        },
+        {include: '#comments'},
+        {
+          begin: '(?<!\\.)([\\p{L}_][\\p{L}_\\p{N}\\p{M}]*)\\s*(<)',
+          beginCaptures: {
+            1: {name: 'entity.name.type.cadence'},
+            2: {name: 'punctuation.definition.type-arguments.begin.cadence'}
+          },
+          end: '(>)',
+          endCaptures: {
+            1: {name: 'punctuation.definition.type-arguments.end.cadence'}
+          },
+          name: 'meta.type.arguments.cadence',
+          patterns: [
+            {include: '#type'},
+            {match: ',', name: 'punctuation.separator.type-argument.cadence'}
+          ]
+        },
+        {
+          begin: '(?<!\\.)\\b(auth)\\b\\s*(\\()',
+          beginCaptures: {
+            1: {name: 'keyword.other.auth.cadence'},
+            2: {name: 'punctuation.section.group.begin.cadence'}
+          },
+          end: '(\\))',
+          endCaptures: {1: {name: 'punctuation.section.group.end.cadence'}},
+          name: 'meta.auth.entitlements.cadence',
+          patterns: [
+            {include: '#comments'},
+            {match: '\\bmapping\\b', name: 'keyword.other.mapping.cadence'},
+            {
+              captures: {
+                1: {name: 'entity.name.type.entitlement-mapping.cadence'}
+              },
+              match: '(?<=\\bmapping)\\s+([\\p{L}_][\\p{L}_\\p{N}\\p{M}.]*)'
+            },
+            {match: ',', name: 'punctuation.separator.entitlement.cadence'},
+            {match: '\\|', name: 'punctuation.separator.entitlement.cadence'},
+            {
+              match: '[\\p{L}_][\\p{L}_\\p{N}\\p{M}.]*',
+              name: 'entity.name.type.entitlement.cadence'
+            }
+          ]
+        },
+        {
+          begin: '\\{(?![^}]*:)(?!.*\\}\\s*\\()',
+          beginCaptures: {
+            0: {name: 'punctuation.definition.type.intersection.begin.cadence'}
+          },
+          end: '(\\})',
+          endCaptures: {
+            1: {name: 'punctuation.definition.type.intersection.end.cadence'}
+          },
+          patterns: [
+            {include: '#comments'},
+            {include: '#type'},
+            {
+              match: ',',
+              name: 'punctuation.separator.type.intersection.cadence'
+            }
+          ]
+        },
+        {
+          begin:
+            '\\{(?=\\s*[\\p{L}_][\\p{L}_\\p{N}\\p{M}.]*\\s*:)(?!.*\\}\\s*\\()',
+          beginCaptures: {
+            0: {name: 'punctuation.definition.type.dictionary.begin.cadence'}
+          },
+          end: '(\\})',
+          endCaptures: {
+            1: {name: 'punctuation.definition.type.dictionary.end.cadence'}
+          },
+          name: 'meta.type.dictionary.cadence',
+          patterns: [
+            {include: '#comments'},
+            {include: '#type'},
+            {match: ':', name: 'punctuation.separator.type.dictionary.cadence'},
+            {match: ',', name: 'punctuation.separator.type.dictionary.cadence'}
+          ]
+        },
+        {
+          begin: '\\[',
+          beginCaptures: {
+            0: {name: 'punctuation.definition.type.array.begin.cadence'}
+          },
+          end: '(\\])',
+          endCaptures: {
+            1: {name: 'punctuation.definition.type.array.end.cadence'}
+          },
+          name: 'meta.type.array.cadence',
+          patterns: [{include: '#comments'}, {include: '#type'}]
+        },
+        {
+          captures: {
+            1: {name: 'punctuation.definition.type.reference.cadence'}
+          },
+          match: '(&|@)(?=\\s*\\{)'
+        },
+        {
+          captures: {
+            1: {name: 'punctuation.definition.type.reference.cadence'},
+            2: {name: 'entity.name.type.cadence'}
+          },
+          match: '(&|@)\\s*([\\p{L}_][\\p{L}_\\p{N}\\p{M}.]*)'
+        },
+        {
+          match: '([\\p{L}_][\\p{L}_\\p{N}\\p{M}]*)',
+          name: 'entity.name.type.cadence'
+        },
+        {match: '[?!]', name: 'keyword.operator.type.optional.cadence'}
       ]
     },
     'var-let-declaration': {
       begin: '\\b(var|let)\\b\\s+([\\p{L}_][\\p{L}_\\p{N}\\p{M}]*)',
       beginCaptures: {
         1: {name: 'storage.type.$1.cadence'},
-        2: {name: 'entity.name.type.$1.cadence'}
+        2: {name: 'variable.other.declaration.cadence'}
       },
-      end: '=|<-|<-!|$',
-      patterns: [{include: '#type'}]
+      end: '=|<-|<-!|;|(?=//)|$',
+      patterns: [
+        {include: '#comments'},
+        {
+          begin: ':\\s*(?!\\s)',
+          beginCaptures: {
+            0: {name: 'keyword.operator.type.annotation.cadence'}
+          },
+          end: '(?=//|=|<-|<-!|;|$)',
+          patterns: [{include: '#type'}, {include: '#comments'}]
+        }
+      ]
     }
   },
   scopeName: 'source.cadence'

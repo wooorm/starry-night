@@ -611,6 +611,12 @@ const grammar = {
       endCaptures: {0: {name: 'punctuation.section.collection-type.end.swift'}},
       patterns: [
         {include: '#declarations-available-types'},
+        {include: '#literals-numeric'},
+        {match: '\\b_\\b', name: 'support.variable.inferred.swift'},
+        {
+          match: '(?<=\\s)\\bof\\b(?=\\s+[\\p{L}_\\d\\p{N}\\p{M}\\[(])',
+          name: 'keyword.other.inline-array.swift'
+        },
         {
           begin: ':',
           beginCaptures: {0: {name: 'punctuation.separator.key-value.swift'}},
@@ -633,20 +639,17 @@ const grammar = {
       patterns: [{include: '#declarations-available-types'}]
     },
     'declarations-extension': {
-      begin:
-        '\\b(extension)\\s+((?<q>`?)[\\p{L}_][\\p{L}_\\p{N}\\p{M}]*(\\k<q>))',
-      beginCaptures: {
-        1: {name: 'storage.type.$1.swift'},
-        2: {
-          name: 'entity.name.type.swift',
-          patterns: [{include: '#declarations-available-types'}]
-        },
-        3: {name: 'punctuation.definition.identifier.swift'},
-        4: {name: 'punctuation.definition.identifier.swift'}
-      },
+      begin: '\\b(extension)\\s+',
+      beginCaptures: {1: {name: 'storage.type.$1.swift'}},
       end: '(?<=\\})',
       name: 'meta.definition.type.$1.swift',
       patterns: [
+        {
+          begin: '\\G(?!\\s*[:{\\n])',
+          end: '(?=\\s*[:{\\n])|(?!\\G)(?=\\s*where\\b)',
+          name: 'entity.name.type.swift',
+          patterns: [{include: '#declarations-available-types'}]
+        },
         {include: '#comments'},
         {include: '#declarations-generic-where-clause'},
         {include: '#declarations-inheritance-clause'},
@@ -729,7 +732,10 @@ const grammar = {
       beginCaptures: {1: {name: 'keyword.operator.function-result.swift'}},
       end: '(?!\\G)(?=\\{|\\bwhere\\b|;|=)|$',
       name: 'meta.function-result.swift',
-      patterns: [{include: '#declarations-available-types'}]
+      patterns: [
+        {match: '\\bsending\\b', name: 'storage.modifier.swift'},
+        {include: '#declarations-available-types'}
+      ]
     },
     'declarations-function-subscript': {
       begin: '(?<!\\.)\\b(subscript)\\s*(?=\\(|<)',
@@ -765,7 +771,10 @@ const grammar = {
         0: {name: 'punctuation.separator.generic-argument-clause.end.swift'}
       },
       name: 'meta.generic-argument-clause.swift',
-      patterns: [{include: '#declarations-available-types'}]
+      patterns: [
+        {include: '#literals-numeric'},
+        {include: '#declarations-available-types'}
+      ]
     },
     'declarations-generic-parameter-clause': {
       begin: '<',
@@ -780,6 +789,7 @@ const grammar = {
       patterns: [
         {include: '#comments'},
         {include: '#declarations-generic-where-clause'},
+        {match: '\\blet\\b', name: 'keyword.other.declaration-specifier.swift'},
         {match: '\\beach\\b', name: 'keyword.control.loop.swift'},
         {
           captures: {1: {name: 'variable.language.generic-parameter.swift'}},
@@ -928,6 +938,7 @@ const grammar = {
           begin: '\\G',
           end: '(?!\\G)$|(?=[={}]|(?!\\G)\\bwhere\\b)',
           patterns: [
+            {include: '#attributes'},
             {include: '#comments'},
             {include: '#declarations-inheritance-clause-inherited-type'},
             {include: '#declarations-inheritance-clause-more-types'},
@@ -947,6 +958,7 @@ const grammar = {
       end: '(?!\\G)(?!//|/\\*)|(?=[,={}]|(?!\\G)\\bwhere\\b)',
       name: 'meta.inheritance-list.more-types',
       patterns: [
+        {include: '#attributes'},
         {include: '#comments'},
         {include: '#declarations-inheritance-clause-inherited-type'},
         {include: '#declarations-inheritance-clause-more-types'},
@@ -1077,6 +1089,7 @@ const grammar = {
           begin: ':\\s*(?!\\s)',
           end: '(?=[,)])',
           patterns: [
+            {match: '\\bsending\\b', name: 'storage.modifier.swift'},
             {include: '#declarations-available-types'},
             {
               match: ':',
@@ -1736,12 +1749,16 @@ const grammar = {
           name: 'keyword.control.branch.swift'
         },
         {
-          match: '(?<!\\.)\\b(?:continue|break|fallthrough|return)\\b',
+          match: '(?<!\\.)\\b(?:continue|break|fallthrough|return|yield)\\b',
           name: 'keyword.control.transfer.swift'
         },
         {
           match: '(?<!\\.)\\b(?:while|for|in|each)\\b',
           name: 'keyword.control.loop.swift'
+        },
+        {
+          match: '(?<=\\s)\\bof\\b(?=\\s+[\\p{L}_\\d\\p{N}\\p{M}\\[(])',
+          name: 'keyword.other.inline-array.swift'
         },
         {
           match: '\\bany\\b(?=\\s*`?[\\p{L}_])',
@@ -1800,7 +1817,7 @@ const grammar = {
         },
         {
           match:
-            '\\binit[?!]|\\binit\\b|(?<!\\.)\\b(?:func|deinit|subscript|didSet|get|set|willSet)\\b',
+            '\\binit[?!]|\\binit\\b|(?<!\\.)\\b(?:func|deinit|subscript|didSet|get|set|willSet|yielding\\s+borrow|yielding\\s+mutate)\\b',
           name: 'storage.type.function.swift'
         },
         {
@@ -1952,12 +1969,26 @@ const grammar = {
               ]
             },
             1: {name: 'punctuation.definition.string.begin.regexp.swift'},
-            8: {name: 'punctuation.definition.string.end.regexp.swift'},
-            9: {name: 'invalid.illegal.returns-not-allowed.regexp'}
+            3: {name: 'punctuation.definition.string.end.regexp.swift'}
           },
           match:
-            '(?x)\n(?!/\\s)         # non-extended regex literals may not start with a space or tab\n(?!//)          # disambiguation with line comments (redundant since comment rules occur earlier)\n(((\\#+)?)/)     # (1) for captures, (2) for matching end, (3) for conditionals\n(\\\\\\s)? # (4) may start with an escaped space or tab\n(?<guts>\n  (?>   # no backtracking, avoids issues with negative lookbehind at end\n    (?:\n      \\\\Q\n        (?:(?!\\\\E)(?!/\\2).)*+\n        (?:\\\\E\n          # A quoted sequence may not have a closing E, in which case it extends to the end of the regex\n          | (?(3)|(?<!\\s))(?=/\\2)\n        )\n      | \\\\.\n      | \\(\\?\\#[^)]*\\)\n      | \\(\\?\n          # InterpolatedCallout\n          (?>(\\{(?:\\g<-1>|(?!{).*?)\\}))\n          (?:\\[(?!\\d)\\w+\\])?\n          [X<>]?\n        \\)\n      | (?<class>\\[ (?:\\\\. | [^\\[\\]] | \\g<class>)+ \\])\n      | \\(\\g<guts>?+\\)\n      | (?:(?!/\\2)[^()\\[\\\\])+  # any character (until end)\n    )+\n  )\n)?+\n# may end with a space only if it is an extended literal or contains only a single escaped space\n(?(3)|(?(5)(?<!\\s)))\n(/\\2)     # (12)\n| \\#+/.+(\\n)',
+            '(?x)\n(/)\n(?!\\s)         # non-extended regex literals may not start with a space or tab\n(?!/)          # disambiguation with line comments (redundant since comment rules occur earlier)\n(?:\n  \\\\\\s(?=/)    # may end with a space only if it contains only a single escaped space, i.e. /\\ /\n  | (?<guts>\n    (?>   # no backtracking, avoids issues with negative lookbehind at end\n      (?:\n        \\\\Q\n          (?:(?!\\\\E)(?!/).)*+\n          # A quoted sequence may not have a closing E, in which case it extends to the end of the regex\n          (?:\\\\E | (?=/))\n        | \\\\.\n        | \\(\\?\\#[^)]*\\)\n        | \\(\\?\n            # InterpolatedCallout\n            (?>\n              {[^{].*?}\n              | {{[^{].*?}}\n              | {{{[^{].*?}}}\n              | {{{{[^{].*?}}}}\n              | {{{{{[^{].*?}}}}}\n              | {{{{{{.+?}}}}}}\n            )\n            (?:\\[(?!\\d)\\w+\\])?\n            [X<>]?\n          \\)\n        # Allow nested character classes to a limited depth\n        | \\[(?:\n            \\\\. |\n            [^\\[\\]\\\\] |\n            \\[(?:\n              \\\\. |\n              [^\\[\\]\\\\] |\n              \\[(?:\n                \\\\. |\n                [^\\[\\]\\\\] |\n                \\[(?:\n                  \\\\. |\n                  [^\\[\\]\\\\]\n                )+\\]\n              )+\\]\n            )+\\]\n          )+\\]\n        | \\(\\g<guts>?+\\)\n        | (?:(?!/)[^()\\[\\\\])+  # any character (until end)\n      )+\n    )\n  )?+\n  (?<!\\s)\n)\n(/)',
           name: 'string.regexp.line.swift'
+        },
+        {
+          captures: {
+            0: {
+              patterns: [
+                {include: '#literals-regular-expression-literal-regex-guts'}
+              ]
+            },
+            1: {name: 'punctuation.definition.string.begin.regexp.swift'},
+            4: {name: 'punctuation.definition.string.end.regexp.swift'},
+            5: {name: 'invalid.illegal.returns-not-allowed.regexp'}
+          },
+          match:
+            '(?x)\n((\\#+)/)     # (1) for captures, (2) for matching end\n(?<guts>\n  (?>   # no backtracking, avoids issues with negative lookbehind at end\n    (?:\n      \\\\Q\n        (?:(?!\\\\E)(?!/\\2).)*+\n        # A quoted sequence may not have a closing E, in which case it extends to the end of the regex\n        (?:\\\\E | (?=/\\2))\n      | \\\\.\n      | \\(\\?\\#[^)]*\\)\n      | \\(\\?\n          # InterpolatedCallout\n          (?>\n            {[^{].*?}\n            | {{[^{].*?}}\n            | {{{[^{].*?}}}\n            | {{{{[^{].*?}}}}\n            | {{{{{[^{].*?}}}}}\n            | {{{{{{.+?}}}}}}\n          )\n          (?:\\[(?!\\d)\\w+\\])?\n          [X<>]?\n        \\)\n      # Allow nested character classes to a limited depth\n      | \\[(?:\n          \\\\. |\n          [^\\[\\]\\\\] |\n          \\[(?:\n            \\\\. |\n            [^\\[\\]\\\\] |\n            \\[(?:\n              \\\\. |\n              [^\\[\\]\\\\] |\n              \\[(?:\n                \\\\. |\n                [^\\[\\]\\\\]\n              )+\\]\n            )+\\]\n          )+\\]\n        )+\\]\n      | \\(\\g<guts>?+\\)\n      | (?:(?!/\\2)[^()\\[\\\\])+  # any character (until end)\n    )+\n  )\n)?+\n(/\\2)     # (4)\n| \\#+/.+(\\n)',
+          name: 'string.regexp.line.extended.swift'
         }
       ]
     },
@@ -2444,11 +2475,8 @@ const grammar = {
             0: {name: 'punctuation.section.embedded.begin.swift'}
           },
           contentName: 'source.swift',
-          end: '(\\))',
-          endCaptures: {
-            0: {name: 'punctuation.section.embedded.end.swift'},
-            1: {name: 'source.swift'}
-          },
+          end: '\\)',
+          endCaptures: {0: {name: 'punctuation.section.embedded.end.swift'}},
           name: 'meta.embedded.line.swift',
           patterns: [{include: '$self'}, {begin: '\\(', end: '\\)'}]
         },
@@ -2468,11 +2496,8 @@ const grammar = {
             0: {name: 'punctuation.section.embedded.begin.swift'}
           },
           contentName: 'source.swift',
-          end: '(\\))',
-          endCaptures: {
-            0: {name: 'punctuation.section.embedded.end.swift'},
-            1: {name: 'source.swift'}
-          },
+          end: '\\)',
+          endCaptures: {0: {name: 'punctuation.section.embedded.end.swift'}},
           name: 'meta.embedded.line.swift',
           patterns: [{include: '$self'}, {begin: '\\(', end: '\\)'}]
         },

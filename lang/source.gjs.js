@@ -16,7 +16,7 @@ const grammar = {
       patterns: [{include: '#main'}]
     }
   },
-  names: ['glimmer-js'],
+  names: ['glimmer-js', 'gjs'],
   patterns: [{include: '#main'}, {include: 'source.js'}],
   repository: {
     'as-keyword': {match: '\\s\\b(as)\\b(?=\\s\\|)', name: 'keyword.control'},

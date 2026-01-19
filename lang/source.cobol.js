@@ -144,7 +144,7 @@ const grammar = {
         1: {name: 'keyword.control.directive.cobol'},
         2: {name: 'entity.other.attribute-name.preprocessor.cobol'}
       },
-      match: '(\\$region|\\$end-region)(.*$)'
+      match: '(\\$(?i:region)|\\$(?i:end-region))(.*$)'
     },
     {
       begin: '\\$(?i:doc)(.*$)',
@@ -187,7 +187,7 @@ const grammar = {
       match: '(\\*>)\\s+(@[0-9a-zA-Z][a-zA-Z\\-0-9]+)\\s+(.*$)'
     },
     {match: '(\\*>.*$)', name: 'comment.line.modern'},
-    {match: '(>>.*)$', name: 'strong comment.line.set.acucobol'},
+    {match: '(>>.*)$', name: 'strong comment.line.set.cobol'},
     {
       match: "([nNuU][xX]|[hHxX])'[[:xdigit:]]*'",
       name: 'constant.numeric.integer.hexadecimal.cobol'

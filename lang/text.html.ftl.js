@@ -8,7 +8,7 @@
 /** @type {Grammar} */
 const grammar = {
   dependencies: ['text.html.basic'],
-  extensions: [],
+  extensions: ['.ftlh'],
   names: ['freemarker', 'ftl'],
   patterns: [
     {

@@ -17,8 +17,10 @@ const grammar = {
     '.ebuild',
     '.eclass',
     '.ksh',
+    '.sbatch',
     '.sh',
     '.sh.in',
+    '.slurm',
     '.tcsh',
     '.tmux',
     '.tool',
@@ -295,7 +297,7 @@ const grammar = {
           end: '^\\t*(MARKDOWN)(?=\\s|;|&|$)',
           endCaptures: {1: {name: 'keyword.control.heredoc-token.shell'}},
           name: 'string.unquoted.heredoc.no-indent.markdown.shell',
-          patterns: [{include: 'source.gfm'}]
+          patterns: [{include: 'text.md'}]
         },
         {
           begin: '(<<)\\s*("|\'|)\\s*(MARKDOWN)(?=\\s|;|&|<|"|\')\\2',
@@ -307,7 +309,7 @@ const grammar = {
           end: '^(MARKDOWN)(?=\\s|;|&|$)',
           endCaptures: {1: {name: 'keyword.control.heredoc-token.shell'}},
           name: 'string.unquoted.heredoc.markdown.shell',
-          patterns: [{include: 'source.gfm'}]
+          patterns: [{include: 'text.md'}]
         },
         {
           begin: '(<<)-\\s*("|\'|)\\s*(TEXTILE)(?=\\s|;|&|<|"|\')\\2',

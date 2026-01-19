@@ -169,24 +169,24 @@ const grammar = {
       patterns: [
         {
           begin:
-            '(?x: (?= (?: (?!(?:out|ptr|ref|tuple)\\b) [A-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\\dA-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_|`[^;,\\n`]+` ) (?:\\[.*])? (?: \\( |" |[ ]+ (?: [_\\d"\'`\\[\\(] |(?!\\.|(?:\\*?[ ]*)[:=]|=[^=])[-=+*/<>@$~&%|!?^.:\\\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]+[^\\-=+*/<>@$~&%|!?^.:\\\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔\\s] |(?!(as|asm|and|bind|break|concept|const|continue|converter |defer|discard|distinct|div|elif|else|end|except|export|finally|from|import |include|interface|is(?:not)?|let|macro|method|mixin|mod|(?:not)?in|of |raise|sh[lr]|template|using|while|yield|x?or)\\b)[A-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]] |\\{(?!\\.) ) ) ) )',
-          end: '(?=[^\\[\\(`\\w\\x{80}-\\x{ff}])|(?<=["\\)])',
+            '(?x: (?= (?: (?!(?:out|ptr|ref|tuple)\\b) (?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\\x80-\\x{10FFFF}](?:_?(?:(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\\dA-Za-z\\x80-\\x{10FFFF}]))*|_|`[^;,\\n`]+` ) (?:\\[.*])? (?: \\( |" |[ ]+ (?: [_\\d"\'`\\[\\(] |(?!\\.|(?:\\*?[ ]*)[:=]|=[^=])[-=+*/<>@$~&%|!?^.:\\\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]+[^\\-=+*/<>@$~&%|!?^.:\\\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔\\s] |(?!(as|asm|and|bind|break|concept|const|continue|converter |defer|discard|distinct|div|elif|else|end|except|export|finally|from|import |include|interface|is(?:not)?|let|macro|method|mixin|mod|(?:not)?in|of |raise|sh[lr]|template|using|while|yield|x?or)\\b)(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\\x80-\\x{10FFFF}] |\\{(?!\\.) ) ) ) )',
+          end: '(?=[^\\[\\(`\\w\\x{80}-\\x{10FFFF}]|[∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])|(?<=["\\)])',
           patterns: [
             {
               begin:
-                '(?=[`_A-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])',
-              end: '(?=[^`_A-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])',
+                '(?=(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[`_A-Za-z\\x80-\\x{10FFFF}])',
+              end: '(?=[^`_A-Za-z\\x80-\\x{10FFFF}]|[∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])',
               name: 'entity.name.function.nim',
               patterns: [
                 {include: '#builtins'},
                 {
                   match:
-                    '[A-Z][\\dA-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]]+\\b',
+                    '[A-Z](?:(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\\dA-Za-z\\x80-\\x{10FFFF}])+\\b',
                   name: 'support.type.nim'
                 },
                 {
                   match:
-                    '[A-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\\dA-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_|`[^;,\\n`]+`'
+                    '(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\\x80-\\x{10FFFF}](?:_?(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\\dA-Za-z\\x80-\\x{10FFFF}])*|_|`[^;,\\n`]+`'
                 }
               ]
             },
@@ -282,7 +282,7 @@ const grammar = {
             }
           },
           patterns: [
-            {match: '{{|}}', name: 'constant.character.escape.nim'},
+            {match: '\\{\\{|\\}\\}', name: 'constant.character.escape.nim'},
             {
               begin: '{',
               beginCaptures: {
@@ -315,7 +315,7 @@ const grammar = {
             2: {name: 'invalid.illegal.nim'}
           },
           patterns: [
-            {match: '{{|}}|""', name: 'constant.character.escape.nim'},
+            {match: '\\{\\{|\\}\\}|""', name: 'constant.character.escape.nim'},
             {
               begin: '{',
               beginCaptures: {
@@ -349,7 +349,7 @@ const grammar = {
             2: {name: 'invalid.illegal.nim'}
           },
           patterns: [
-            {match: '{{|}}', name: 'constant.character.escape.nim'},
+            {match: '\\{\\{|\\}\\}', name: 'constant.character.escape.nim'},
             {
               begin: '{',
               beginCaptures: {
@@ -387,7 +387,7 @@ const grammar = {
         {match: ',', name: 'punctuation.separator.nim'},
         {
           match:
-            '[A-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\\dA-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_|`[^;,\\n`]+`'
+            '(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\\x80-\\x{10FFFF}](?:_?(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\\dA-Za-z\\x80-\\x{10FFFF}])*|_|`[^;,\\n`]+`'
         },
         {include: '#pragmas'},
         {include: '#comments'}
@@ -398,7 +398,7 @@ const grammar = {
         {
           begin: 'for\\b',
           beginCaptures: {0: {name: 'keyword.control.loop.for.nim'}},
-          end: '(in\\b)|(?=[^#,{_`A-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]\\s])',
+          end: '(in\\b)|(?=[^#,{_`A-Za-z\\s\\x80-\\x{10FFFF}]|[∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])',
           endCaptures: {1: {name: 'keyword.control.loop.for.in.nim'}},
           patterns: [
             {
@@ -406,7 +406,7 @@ const grammar = {
               beginCaptures: {
                 0: {name: 'punctuation.section.parens.begin.nim'}
               },
-              end: '(in\\b)|(\\))|(?=[^#,{_`A-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]\\s])',
+              end: '(in\\b)|(\\))|(?=[^#,{_`A-Za-z\\s\\x80-\\x{10FFFF}]|[∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])',
               endCaptures: {
                 1: {name: 'keyword.control.loop.for.in.nim'},
                 2: {name: 'punctuation.section.parens.end.nim'}
@@ -421,9 +421,10 @@ const grammar = {
     'generic-param-list': {
       patterns: [
         {
-          begin: '(?<=[`*\\w\\x{80}-\\x{ff}]) *(\\[)',
+          begin:
+            '(?<=(?<=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[`*\\w\\x{80}-\\x{10FFFF}]) *(\\[)',
           beginCaptures: {1: {name: 'punctuation.section.generic.begin.nim'}},
-          end: '(])|(?=[^#_`:=,;A-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]\\s])',
+          end: '(])|(?=[^#_`:=,;A-Za-z\\x80-\\x{10FFFF}\\s]|[∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])',
           endCaptures: {1: {name: 'punctuation.section.generic.end.nim'}},
           name: 'meta.generic.nim',
           patterns: [{include: '#generic-param-list-0'}]
@@ -450,17 +451,17 @@ const grammar = {
       patterns: [
         {
           match:
-            '[A-Z](_?[A-Z\\d\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])+\\b',
+            '\\p{Lu}(?:_?(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Z\\d\\x80-\\x{10FFFF}])+\\b',
           name: 'support.constant.nim'
         },
         {
           match:
-            '[A-Z][\\dA-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]]+\\b',
+            '\\p{Lu}(?:(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\\dA-Za-z\\x80-\\x{10FFFF}])+\\b',
           name: 'support.type.nim'
         },
         {
           match:
-            '[A-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\\dA-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_|`[^;,\\n`]+`'
+            '(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\\x80-\\x{10FFFF}](?:_?(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\\dA-Za-z\\x80-\\x{10FFFF}])*|_|`[^;,\\n`]+`'
         }
       ]
     },
@@ -473,7 +474,7 @@ const grammar = {
             2: {name: 'punctuation.section.embedded.end.nim'}
           },
           match:
-            '(`) *(?:[A-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\\dA-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_) *(`)'
+            '(`) *(?:(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\\x80-\\x{10FFFF}](?:_?(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\\dA-Za-z\\x80-\\x{10FFFF}])*|_) *(`)'
         }
       ]
     },
@@ -545,7 +546,7 @@ const grammar = {
             2: {name: 'punctuation.section.block.begin.nim'}
           },
           match:
-            '\\b(block)\\b(?:(?: *(?:[A-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\\dA-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_|`[^;,\\n`]+`))? *(:))?'
+            '\\b(block)\\b(?:(?: *(?:(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\\x80-\\x{10FFFF}](?:_?(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\\dA-Za-z\\x80-\\x{10FFFF}])*|_|`[^;,\\n`]+`))? *(:))?'
         },
         {
           match: '\\b(?:as|(?:ex|im)port|include|bind|mixin|from|except)\\b',
@@ -604,7 +605,7 @@ const grammar = {
             7: {name: 'constant.numeric.suffix.nim'}
           },
           match:
-            "(?x: \\b(\\d(?:_?\\d)*) (?: (?: ((\\.)\\d(?:_?\\d)*) ([Ee][-+]?\\d(?:_?\\d)*)? |([Ee][-+]?\\d(?:_?\\d)*) ) ('(?:[A-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\\dA-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_)|(?:[Ff](?:32|64)|[Dd]))? |('(?:[A-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\\dA-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_)|(?:[Ff](?:32|64)|[Dd])) ) )"
+            "(?x: \\b(\\d(?:_?\\d)*) (?: (?: ((\\.)\\d(?:_?\\d)*) ([Ee][-+]?\\d(?:_?\\d)*)? |([Ee][-+]?\\d(?:_?\\d)*) ) ('(?:(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\\x80-\\x{10FFFF}](?:_?(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\\dA-Za-z\\x80-\\x{10FFFF}])*|_)|(?:[Ff](?:32|64)|[Dd]))? |('(?:(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\\x80-\\x{10FFFF}](?:_?(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\\dA-Za-z\\x80-\\x{10FFFF}])*|_)|(?:[Ff](?:32|64)|[Dd])) ) )"
         },
         {
           captures: {
@@ -614,7 +615,7 @@ const grammar = {
             3: {name: 'constant.numeric.suffix.nim'}
           },
           match:
-            "(?x: \\b(0[Xx]) ([[:xdigit:]](?:_?[[:xdigit:]])*) ('(?:[A-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\\dA-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_)|[Ff](?:32|64)) )"
+            "(?x: \\b(0[Xx]) ([[:xdigit:]](?:_?[[:xdigit:]])*) ('(?:(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\\x80-\\x{10FFFF}](?:_?(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\\dA-Za-z\\x80-\\x{10FFFF}])*|_)|[Ff](?:32|64)) )"
         },
         {
           captures: {
@@ -624,7 +625,7 @@ const grammar = {
             3: {name: 'constant.numeric.suffix.nim'}
           },
           match:
-            "(?x: \\b(0o) ([0-7](?:_?[0-7])*) ('(?:[A-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\\dA-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_)|(?:[Ff](?:32|64)|[Dd])) )"
+            "(?x: \\b(0o) ([0-7](?:_?[0-7])*) ('(?:(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\\x80-\\x{10FFFF}](?:_?(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\\dA-Za-z\\x80-\\x{10FFFF}])*|_)|(?:[Ff](?:32|64)|[Dd])) )"
         },
         {
           captures: {
@@ -634,7 +635,7 @@ const grammar = {
             3: {name: 'constant.numeric.suffix.nim'}
           },
           match:
-            "(?x: \\b(0[Bb]) ([01](?:_?[01])*) ('(?:[A-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\\dA-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_)|(?:[Ff](?:32|64)|[Dd])) )"
+            "(?x: \\b(0[Bb]) ([01](?:_?[01])*) ('(?:(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\\x80-\\x{10FFFF}](?:_?(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\\dA-Za-z\\x80-\\x{10FFFF}])*|_)|(?:[Ff](?:32|64)|[Dd])) )"
         },
         {
           captures: {
@@ -644,7 +645,7 @@ const grammar = {
             3: {name: 'constant.numeric.suffix.nim'}
           },
           match:
-            "(?x: \\b(0[Xx]) ([[:xdigit:]](?:_?[[:xdigit:]])*) ('(?:[A-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\\dA-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_)|(?:[IUiu](?:8|16|32|64)|[Uu]))? )"
+            "(?x: \\b(0[Xx]) ([[:xdigit:]](?:_?[[:xdigit:]])*) ('(?:(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\\x80-\\x{10FFFF}](?:_?(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\\dA-Za-z\\x80-\\x{10FFFF}])*|_)|(?:[IUiu](?:8|16|32|64)|[Uu]))? )"
         },
         {
           captures: {
@@ -654,7 +655,7 @@ const grammar = {
             3: {name: 'constant.numeric.suffix.nim'}
           },
           match:
-            "(?x: \\b(0o) ([0-7](?:_?[0-7])*) ('(?:[A-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\\dA-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_)|(?:[IUiu](?:8|16|32|64)|[Uu]))? )"
+            "(?x: \\b(0o) ([0-7](?:_?[0-7])*) ('(?:(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\\x80-\\x{10FFFF}](?:_?(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\\dA-Za-z\\x80-\\x{10FFFF}])*|_)|(?:[IUiu](?:8|16|32|64)|[Uu]))? )"
         },
         {
           captures: {
@@ -664,7 +665,7 @@ const grammar = {
             3: {name: 'constant.numeric.suffix.nim'}
           },
           match:
-            "(?x: \\b(0[Bb]) ([01](?:_?[01])*) ('(?:[A-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\\dA-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_)|(?:[IUiu](?:8|16|32|64)|[Uu]))? )"
+            "(?x: \\b(0[Bb]) ([01](?:_?[01])*) ('(?:(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\\x80-\\x{10FFFF}](?:_?(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\\dA-Za-z\\x80-\\x{10FFFF}])*|_)|(?:[IUiu](?:8|16|32|64)|[Uu]))? )"
         },
         {
           captures: {
@@ -673,7 +674,7 @@ const grammar = {
             2: {name: 'constant.numeric.suffix.nim'}
           },
           match:
-            "(?x: \\b(\\d(?:_?\\d)*) ('(?:[A-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\\dA-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_)|(?:[IUiu](?:8|16|32|64)|[Uu]))? )"
+            "(?x: \\b(\\d(?:_?\\d)*) ('(?:(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\\x80-\\x{10FFFF}](?:_?(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\\dA-Za-z\\x80-\\x{10FFFF}])*|_)|(?:[IUiu](?:8|16|32|64)|[Uu]))? )"
         }
       ]
     },
@@ -751,7 +752,7 @@ const grammar = {
             {include: '#calls'},
             {
               match:
-                '[A-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\\dA-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_|`[^;,\\n`]+`',
+                '(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\\x80-\\x{10FFFF}](?:_?(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\\dA-Za-z\\x80-\\x{10FFFF}])*|_|`[^;,\\n`]+`',
               name: 'entity.other.attribute-name.pragma.nim'
             },
             {include: '#square-brackets'},
@@ -797,7 +798,7 @@ const grammar = {
       patterns: [
         {
           begin:
-            '(?x: (proc|template|iterator|func|method|macro|converter)\\b (?:[ ]*([A-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\\dA-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_|`[^;,\\n`]+`)(?:[ ]*(\\*))?)? )',
+            '(?x: (proc|template|iterator|func|method|macro|converter)\\b (?:[ ]*((?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\\x80-\\x{10FFFF}](?:_?(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\\dA-Za-z\\x80-\\x{10FFFF}])*|_|`[^;,\\n`]+`)(?:[ ]*(\\*))?)? )',
           beginCaptures: {
             1: {name: 'storage.type.function.nim'},
             2: {name: 'entity.name.function.nim'},
@@ -904,7 +905,7 @@ const grammar = {
       patterns: [
         {
           begin:
-            '(?=(?:[A-Za-z\\x80-\\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\\dA-Za-z])*)\\[)(?x:(out|ptr|ref|array |cstring[Aa]rray|iterable|lent|open[Aa]rray|owned|ptr|range|ref|se[qt] |sink|static|type(?:[Dd]esc)?|varargs)|([A-Z][\\dA-Za-z]+))(\\[)',
+            '(?=(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\\x80-\\x{10FFFF}](?:_?(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\\dA-Za-z\\x80-\\x{10FFFF}])*\\[)(?x:(out|ptr|ref|array |cstring[Aa]rray|iterable|lent|open[Aa]rray|owned|ptr|range|ref|se[qt] |sink|static|type(?:[Dd]esc)?|varargs)|(\\p{Lu}(?:(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\\dA-Za-z\\x80-\\x{10FFFF}])+))(\\[)',
           beginCaptures: {
             1: {name: 'storage.type.primitive.nim'},
             2: {name: 'support.type.nim'},

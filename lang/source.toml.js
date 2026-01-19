@@ -9,7 +9,7 @@
 
 /** @type {Grammar} */
 const grammar = {
-  extensions: ['.toml'],
+  extensions: ['.toml', '.toml.example'],
   names: ['toml'],
   patterns: [
     {include: '#comments'},

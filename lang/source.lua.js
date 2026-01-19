@@ -36,13 +36,20 @@ const grammar = {
           beginCaptures: {
             1: {name: 'punctuation.definition.parameters.begin.lua'}
           },
-          end: '(\\))|(?=[\\-\\.{}\\[\\]"\'])',
+          end: '(\\))|(?=[\\-{}\\[\\]"\'])|(?<!\\.)\\.(?!\\.)',
           endCaptures: {
             1: {name: 'punctuation.definition.parameters.finish.lua'}
           },
           name: 'meta.parameter.lua',
           patterns: [
             {include: '#comment'},
+            {
+              captures: {
+                1: {name: 'constant.language.lua'},
+                2: {name: 'variable.parameter.function.lua'}
+              },
+              match: '(\\.{3})\\s*([a-zA-Z_][a-zA-Z0-9_]*)'
+            },
             {
               match: '[a-zA-Z_][a-zA-Z0-9_]*',
               name: 'variable.parameter.function.lua'
@@ -127,6 +134,10 @@ const grammar = {
       name: 'keyword.control.lua'
     },
     {match: '\\b(local)\\b', name: 'keyword.local.lua'},
+    {
+      captures: {1: {name: 'keyword.global.lua'}},
+      match: '^\\s*(global)\\b(?!\\s*=)'
+    },
     {match: '\\b(function)\\b(?![,:])', name: 'keyword.control.lua'},
     {
       match:
@@ -145,13 +156,11 @@ const grammar = {
     },
     {
       match:
-        '(?<![^.]\\.|:)\\b(coroutine\\.(create|isyieldable|close|resume|running|status|wrap|yield)|string\\.(byte|char|dump|find|format|gmatch|gsub|len|lower|match|pack|packsize|rep|reverse|sub|unpack|upper)|table\\.(concat|insert|maxn|move|pack|remove|sort|unpack)|math\\.(abs|acos|asin|atan2?|ceil|cosh?|deg|exp|floor|fmod|frexp|ldexp|log|log10|max|min|modf|pow|rad|random|randomseed|sinh?|sqrt|tanh?|tointeger|type)|io\\.(close|flush|input|lines|open|output|popen|read|tmpfile|type|write)|os\\.(clock|date|difftime|execute|exit|getenv|remove|rename|setlocale|time|tmpname)|package\\.(loadlib|seeall|searchpath)|debug\\.(debug|[gs]etfenv|[gs]ethook|getinfo|[gs]etlocal|[gs]etmetatable|getregistry|[gs]etupvalue|[gs]etuservalue|set[Cc]stacklimit|traceback|upvalueid|upvaluejoin)|bit32\\.(arshift|band|bnot|bor|btest|bxor|extract|replace|lrotate|lshift|rrotate|rshift)|utf8\\.(char|codes|codepoint|len|offset))\\b(?!\\s*=(?!=))',
+        '(?<![^.]\\.|:)\\b(coroutine\\.(create|isyieldable|close|resume|running|status|wrap|yield)|string\\.(byte|char|dump|find|format|gmatch|gsub|len|lower|match|pack|packsize|rep|reverse|sub|unpack|upper)|table\\.(concat|create|insert|maxn|move|pack|remove|sort|unpack)|math\\.(abs|acos|asin|atan2?|ceil|cosh?|deg|exp|floor|fmod|frexp|ldexp|log|log10|max|min|modf|pow|rad|random|randomseed|sinh?|sqrt|tanh?|tointeger|type)|io\\.(close|flush|input|lines|open|output|popen|read|tmpfile|type|write)|os\\.(clock|date|difftime|execute|exit|getenv|remove|rename|setlocale|time|tmpname)|package\\.(loadlib|seeall|searchpath)|debug\\.(debug|[gs]etfenv|[gs]ethook|getinfo|[gs]etlocal|[gs]etmetatable|getregistry|[gs]etupvalue|[gs]etuservalue|set[Cc]stacklimit|traceback|upvalueid|upvaluejoin)|bit32\\.(arshift|band|bnot|bor|btest|bxor|extract|replace|lrotate|lshift|rrotate|rshift)|utf8\\.(char|codes|codepoint|len|offset))\\b(?!\\s*=(?!=))',
       name: 'support.function.library.lua'
     },
-    {
-      match: '\\b(and|or|not|\\|\\||\\&\\&|\\!)\\b',
-      name: 'keyword.operator.lua'
-    },
+    {match: '\\b(\\|\\||\\&\\&|\\!)\\b', name: 'keyword.operator.lua'},
+    {match: '\\b(and|or|not)\\b', name: 'keyword.operator.logical.lua'},
     {
       match: '\\b([a-zA-Z_][a-zA-Z0-9_]*)\\b(?=\\s*(?:[({"\']|\\[\\[))',
       name: 'support.function.any-method.lua'
@@ -488,10 +497,12 @@ const grammar = {
           beginCaptures: {0: {name: 'keyword.control.lua'}},
           end: '(?=[\\s#])',
           patterns: [
-            {match: '[\\(\\),:\\?][ \\t]*', name: 'keyword.operator.lua'},
             {
-              match:
-                '([a-zA-Z_][a-zA-Z0-9_\\.\\*\\[\\]\\<\\>\\,\\-]*)(?<!,)[ \\t]*(?=\\??:)',
+              match: '[\\(\\),\\:\\?\\[\\]\\<\\>][ \\t]*',
+              name: 'keyword.operator.lua'
+            },
+            {
+              match: '([a-zA-Z_][a-zA-Z0-9_\\.\\*\\-]*)(?<!,)[ \\t]*(?=\\??:)',
               name: 'entity.name.variable.lua'
             },
             {include: '#emmydoc.type'},

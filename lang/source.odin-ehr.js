@@ -182,10 +182,10 @@ const grammar = {
     interval: {
       begin: '\\|',
       beginCaptures: {
-        0: {name: 'punctuation.definition.interval.begin.odin─ehr'}
+        0: {name: 'punctuation.definition.interval.begin.odin-ehr'}
       },
       end: '\\|',
-      endCaptures: {0: {name: 'punctuation.definition.interval.end.odin─ehr'}},
+      endCaptures: {0: {name: 'punctuation.definition.interval.end.odin-ehr'}},
       name: 'meta.interval.odin-ehr',
       patterns: [
         {

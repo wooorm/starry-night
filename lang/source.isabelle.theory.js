@@ -68,6 +68,7 @@ const grammar = {
     },
     {match: '\\b(sorry|oops)\\b', name: 'invalid.illegal.abandon-proof'},
     {begin: '"', end: '"', name: 'string'},
+    {begin: '‹', end: '›', name: 'string'},
     {begin: '`', end: '`', name: 'string'},
     {
       match: "\\??'?([^\\W\\d]|\\\\<\\w+\\>)([.\\w\\']|\\\\<\\w+\\>)*",

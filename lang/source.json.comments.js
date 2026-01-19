@@ -26,7 +26,8 @@ const grammar = {
     '.sublime-theme',
     '.sublime-workspace',
     '.sublime_metrics',
-    '.sublime_session'
+    '.sublime_session',
+    '.tsconfig.json'
   ],
   names: ['json-with-comments', 'jsonc'],
   patterns: [{include: '#value'}],
@@ -130,7 +131,7 @@ const grammar = {
       endCaptures: {
         0: {name: 'punctuation.entity.name.tag.property-name.end.json.comments'}
       },
-      name: 'string.json.comments entity.name.tag.property-name.json.comments',
+      name: 'entity.name.tag.property-name.json.comments string.json.comments',
       patterns: [{include: '#stringcontent'}]
     },
     string: {

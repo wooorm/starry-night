@@ -40,7 +40,7 @@ const grammar = {
         2: {name: 'keyword.other.special-method.singularity'}
       },
       match:
-        '^\\s*(%)\\b(post|setup|environment|help|labels|test|runscript|files|startscript)\\b'
+        '^\\s*(%)\\b(arguments|post|setup|environment|help|labels|test|runscript|files|startscript)\\b'
     },
     {
       captures: {

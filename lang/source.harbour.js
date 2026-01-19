@@ -1,5 +1,7 @@
 // This is a TextMate grammar distributed by `starry-night`.
-// This grammar is licensed `mit`.
+// This grammar is developed at
+// <https://github.com/hernad/atom-language-harbour>
+// and licensed `mit`.
 // See <https://github.com/wooorm/starry-night> for more info.
 /**
  * @import {Grammar} from '@wooorm/starry-night'
@@ -14,9 +16,6 @@ const grammar = {
     {include: '#block_comment'},
     {include: '#line_doc_comment'},
     {include: '#line_comment'},
-    {include: '#line_Ampersand_comment'},
-    {include: '#line_asterisk_comment'},
-    {include: '#line_note_comment'},
     {include: '#sigils'},
     {
       begin: '#\\!?\\[',
@@ -24,11 +23,10 @@ const grammar = {
       name: 'meta.attribute.harbour',
       patterns: [{include: '#string_literal'}]
     },
-    {begin: "'", end: "'", name: 'string.quoted.single.harbour'},
     {
-      begin: '(?<=\\s|,|\\(|=)\\[',
-      end: '\\]',
-      name: 'string.quoted.square.harbour'
+      match:
+        "'([^'\\\\]|\\\\(x[[:xdigit:]]{2}|[0-2][0-7]{,2}|3[0-6][0-7]?|37[0-7]?|[4-7][0-7]?|.))'",
+      name: 'string.quoted.single.harbour'
     },
     {include: '#string_literal'},
     {
@@ -82,20 +80,20 @@ const grammar = {
     },
     {
       match:
-        '\\b(?i)(EXIT|ELSEIF|ELSE|IF|ENDIF|FOR|EACH|IN|TO|STEP|DESCEND|NEXT|LOOP|DO CASE|ENDCASE|SWITCH|CASE|OTHERWISE|ENDSWITCH|RETURN|ENDCLASS|VAR|DATA|INIT|WHILE|DO WHILE|ENDDO|BEGIN SEQUENCE|END SEQUENCE|RECOVER USING|WITH|BREAK|PARAMETERS|END|REQUEST|ANNOUNCE)\\b',
+        '\\b(EXIT|ELSEIF|ELSE|IF|ENDIF|FOR|EACH|IN|TO|STEP|DESCEND|NEXT|LOOP|DO CASE|ENDCASE|SWITCH|CASE|OTHERWISE|ENDSWITCH|RETURN|ENDCLASS|VAR|DATA|INIT|WHILE|DO WHILE|ENDDO|BEGIN SEQUENCE|END SEQUENCE|RECOVER USING|WITH|BREAK|PARAMETERS|END|REQUEST|ANNOUNCE)\\b',
       name: 'keyword.control.harbour'
     },
     {
       match:
-        '\\b(?i)(GO TOP|SELECT|SAY|GET|PICTURE|SEEK|REPLACE|APPEND BLANK|USE|INDEX ON|TAG)\\b',
+        '\\b(GO TOP|SELECT|SAY|GET|PICTURE|SEEK|REPLACE|APPEND BLANK|USE|INDEX ON|TAG)\\b',
       name: 'keyword.command.xbase.harbour'
     },
     {
-      match: '\\b(?i)(HSEEK|RREPLACE|START PRINT|ENDPRINT)\\b',
+      match: '\\b(HSEEK|RREPLACE|START PRINT|ENDPRINT)\\b',
       name: 'keyword.command.xbase.harbour'
     },
     {
-      match: '\\b(?i)(LOCAL|PRIVATE|PROTECTED|PUBLIC|FIELD|field|MEMVAR)\\b',
+      match: '\\b(LOCAL|PRIVATE|PROTECTED|PUBLIC|FIELD|field|MEMVAR)\\b',
       name: 'keyword.other.harbour'
     },
     {include: '#types'},
@@ -134,12 +132,21 @@ const grammar = {
           end: '"',
           endCaptures: {0: {name: 'punctuation.definition.string.end.harbour'}},
           name: 'string.quoted.double.include.harbour'
+        },
+        {
+          begin: '<',
+          beginCaptures: {
+            0: {name: 'punctuation.definition.string.begin.harbour'}
+          },
+          end: '>',
+          endCaptures: {0: {name: 'punctuation.definition.string.end.harbour'}},
+          name: 'string.quoted.other.lt-gt.include.harbour'
         }
       ]
     },
     {
       begin:
-        '(?i)^\\s*#\\s*(define|defined|elif|else|if|ifdef|ifndef|endif|line|pragma|undef|command|xcommand|translate|xtranslate)\\b',
+        '^\\s*#\\s*(define|defined|elif|else|if|ifdef|ifndef|endif|line|pragma|undef|command|xcommand|translate|xtranslate)\\b',
       captures: {1: {name: 'keyword.control.import.harbour'}},
       end: '(?=(?://|/\\*))|(?<!\\\\)(?=\\n)',
       name: 'meta.preprocessor.harbour',
@@ -150,15 +157,15 @@ const grammar = {
         }
       ]
     },
-    {match: '(:=|-\\>|\\+=|-=)', name: 'keyword.operator.assignment.harbour'},
+    {match: '(:=|->|\\+=|-=)', name: 'keyword.operator.assignment.harbour'},
     {
       match:
-        '(\\<|\\<=|\\>=|==|!=|!|\\<\\>|\\>|\\$|\\s\\.OR\\.\\s|\\s\\.AND\\.\\s|\\s\\.NOT\\.\\s)',
+        '(\\<=|>=|==|!=|!|\\<>|\\<|>|\\$|\\s\\.OR\\.\\s|\\s\\.AND\\.\\s|\\s\\.NOT\\.\\s)',
       name: 'keyword.operator.comparison.harbour'
     },
     {
       match:
-        '\\b(?i)(log_write|pp|to_str|RTrim|TRIM|Trim|PadR|Padr|PADR|PadC|PadL|Space)!',
+        '\\b(log_write|pp|to_str|RTrim|TRIM|Trim|PadR|Padr|PADR|PadC|PadL)!',
       name: 'support.function.std.harbour'
     },
     {
@@ -178,7 +185,7 @@ const grammar = {
     },
     {
       begin:
-        '\\b(?i)((?:(?:static|init|exit)\\s+)?(?:func(?:t(?:i(?:o(?:n)?)?)?)?|PROC(?:E(?:D(?:U(?:R(?:E)?)?)?)?)?))\\s+([a-zA-Z_][a-zA-Z0-9_]*)',
+        '\\b(FUNCTION|STATIC FUNCTION|PROCEDURE|STATIC PROCEDURE|INIT PROCEDURE|EXIT PROCEDURE)\\s+([a-zA-Z_][a-zA-Z0-9_]*)',
       beginCaptures: {
         1: {name: 'keyword.other.fn.harbour'},
         2: {name: 'entity.name.function.harbour'}
@@ -188,7 +195,7 @@ const grammar = {
     },
     {
       begin:
-        '\\b(?i)((?:CREATE\\s+)?(?:CLASS))\\s+([a-zA-Z_][a-zA-Z0-9_]*)(?:\\s+(INHERIT)\\s+([a-zA-Z_][a-zA-Z0-9_]*))?',
+        '\\b((?:CREATE\\s+)?(?:CLASS))\\s+([a-zA-Z_][a-zA-Z0-9_]*)(?:\\s+(INHERIT)\\s+([a-zA-Z_][a-zA-Z0-9_]*))?',
       beginCaptures: {
         1: {name: 'keyword.class.harbour'},
         2: {name: 'entity.name.class.harbour'},
@@ -200,7 +207,7 @@ const grammar = {
     },
     {
       begin:
-        '\\b(?i)(METHOD|STATIC METHOD|METHOD PROCEDURE)\\s+((?:(?:[a-zA-Z_][a-zA-Z0-9_]*):)?(?:[a-zA-Z_][a-zA-Z0-9_]*))',
+        '\\b(METHOD|STATIC METHOD|METHOD PROCEDURE)\\s+((?:(?:[a-zA-Z_][a-zA-Z0-9_]*):)?(?:[a-zA-Z_][a-zA-Z0-9_]*))',
       beginCaptures: {
         1: {name: 'keyword.method.fn.harbour'},
         2: {name: 'entity.name.method.harbour'}
@@ -229,25 +236,13 @@ const grammar = {
     },
     escaped_character: {
       match:
-        '\\\\(x[0-9A-Fa-f]{2}|[0-2][0-7]{0,2}|3[0-6][0-7]?|37[0-7]?|[4-7][0-7]?|.)',
+        '\\\\(x[[:xdigit:]]{2}|[0-2][0-7]{,2}|3[0-6][0-7]?|37[0-7]?|[4-7][0-7]?|.)',
       name: 'constant.character.escape.harbour'
-    },
-    line_Ampersand_comment: {
-      match: '&&.*$',
-      name: 'comment.line.double-slash.harbour'
-    },
-    line_asterisk_comment: {
-      match: '^\\s*\\*.*$',
-      name: 'comment.line.star.harbour'
     },
     line_comment: {match: '//.*$', name: 'comment.line.double-slash.harbour'},
     line_doc_comment: {
       match: '//[!/][^/].*$',
       name: 'comment.line.documentation.harbour'
-    },
-    line_note_comment: {
-      match: '^\\s*NOTE\\s.*$',
-      name: 'comment.line.note.harbour'
     },
     nil: {match: '\\b(NIL|nil)\\b', name: 'variable.nil.language.harbour'},
     self: {
@@ -263,7 +258,26 @@ const grammar = {
         '\\b(Vec|StrBuf|Path|Option|Result|Reader|Writer|Stream|Seek|Buffer|IoError|IoResult|Sender|SyncSender|Receiver|Cell|RefCell|Any)\\b',
       name: 'support.class.std.harbour'
     },
-    string_literal: {begin: '"', end: '"', name: 'string.quoted.double.harbour'}
+    string_literal: {
+      begin: '"',
+      end: '"',
+      name: 'string.quoted.double.harbour',
+      patterns: [{include: '#escaped_character'}]
+    },
+    type_params: {
+      begin: '<',
+      end: '>',
+      name: 'meta.type_params.harbour',
+      patterns: [
+        {include: '#block_comment'},
+        {include: '#line_comment'},
+        {include: '#sigils'},
+        {include: '#types'},
+        {include: '#std_types'},
+        {include: '#lifetime'},
+        {include: '#type_params'}
+      ]
+    }
   },
   scopeName: 'source.harbour'
 }

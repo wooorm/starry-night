@@ -378,7 +378,7 @@ const grammar = {
         {
           begin: '(^|\\G)(\\s*)(.*)',
           contentName: 'meta.embedded.block.git_commit',
-          patterns: [],
+          patterns: [{include: 'text.git-commit'}],
           while: '(^|\\G)(?!\\s*([`~]{3,})\\s*$)'
         }
       ]
@@ -670,7 +670,7 @@ const grammar = {
         {
           begin: '(^|\\G)(\\s*)(.*)',
           contentName: 'meta.embedded.block.markdown',
-          patterns: [{include: 'source.gfm'}],
+          patterns: [{include: 'text.md'}],
           while: '(^|\\G)(?!\\s*([`~]{3,})\\s*$)'
         }
       ]

@@ -477,21 +477,21 @@ const grammar = {
       patterns: [
         {
           begin: '(?<=trace|$type|if|while|for|super)\\s*(\\()',
-          beginCaptures: {2: {name: 'meta.brace.round.hx'}},
+          beginCaptures: {1: {name: 'meta.brace.round.hx'}},
           end: '\\)',
           endCaptures: {0: {name: 'meta.brace.round.hx'}},
           patterns: [{include: '#block-contents'}]
         },
         {
           begin: '(?<=catch)\\s*(\\()',
-          beginCaptures: {2: {name: 'meta.brace.round.hx'}},
+          beginCaptures: {1: {name: 'meta.brace.round.hx'}},
           end: '\\)',
           endCaptures: {0: {name: 'meta.brace.round.hx'}},
           patterns: [{include: '#block-contents'}, {include: '#type-check'}]
         },
         {
           begin: '(?<=cast)\\s*(\\()',
-          beginCaptures: {2: {name: 'meta.brace.round.hx'}},
+          beginCaptures: {1: {name: 'meta.brace.round.hx'}},
           end: '\\)',
           endCaptures: {0: {name: 'meta.brace.round.hx'}},
           patterns: [
@@ -555,7 +555,7 @@ const grammar = {
       ]
     },
     'keywords-accessor': {
-      match: '\\b(default|get|set|dynamic|never|null)\\b',
+      match: '\\b(private|default|get|set|dynamic|never|null)\\b',
       name: 'storage.type.property.hx'
     },
     'macro-reification': {

@@ -929,7 +929,9 @@ const grammar = {
           name: 'meta.function.declaration.jai'
         },
         {
-          captures: {
+          begin:
+            '(([a-zA-Z_](?:\\w|\\\\ *)*)(\\.)(([a-zA-Z_](?:\\w|\\\\ *)*)(\\.))*)?\\b([a-zA-Z_](?:\\w|\\\\ *)*)\\s*(\\()',
+          beginCaptures: {
             2: {name: 'entity.name.namespace.jai'},
             3: {name: 'punctuation.accessor.jai'},
             5: {name: 'entity.name.namespace.member.jai'},
@@ -943,16 +945,17 @@ const grammar = {
                 }
               ]
             },
-            8: {name: 'punctuation.section.parens.begin.jai'},
-            9: {name: 'punctuation.section.parens.end.jai'}
+            8: {name: 'punctuation.section.parens.begin.jai'}
           },
-          match:
-            '(([a-zA-Z_](?:\\w|\\\\ *)*)(\\.)(([a-zA-Z_](?:\\w|\\\\ *)*)(\\.))*)?\\b([a-zA-Z_](?:\\w|\\\\ *)*)\\s*(\\()(\\))',
-          name: 'meta.function.call.jai'
+          end: '(\\))',
+          endCaptures: {1: {name: 'punctuation.section.parens.end.jai'}},
+          name: 'meta.function.call.jai',
+          patterns: [{include: '$self'}]
         },
         {
-          captures: {
-            10: {name: 'punctuation.section.parens.end.jai'},
+          begin:
+            '(([a-zA-Z_](?:\\w|\\\\ *)*)(\\.)(([a-zA-Z_](?:\\w|\\\\ *)*)(\\.))*)?\\b([a-zA-Z_](?:\\w|\\\\ *)*)\\s*(\\()(.*)',
+          beginCaptures: {
             2: {name: 'entity.name.namespace.jai'},
             3: {name: 'punctuation.accessor.jai'},
             5: {name: 'entity.name.namespace.member.jai'},
@@ -972,9 +975,10 @@ const grammar = {
               patterns: [{include: '#parameters'}]
             }
           },
-          match:
-            '(([a-zA-Z_](?:\\w|\\\\ *)*)(\\.)(([a-zA-Z_](?:\\w|\\\\ *)*)(\\.))*)?\\b([a-zA-Z_](?:\\w|\\\\ *)*)\\s*(\\()(.*)(\\))',
-          name: 'meta.function.call.jai'
+          end: '(\\))',
+          endCaptures: {1: {name: 'punctuation.section.parens.end.jai'}},
+          name: 'meta.function.call.jai',
+          patterns: [{include: '$self'}]
         }
       ],
       repository: {
@@ -1729,7 +1733,7 @@ const grammar = {
             }
           },
           name: 'string.here.embed.md.jai',
-          patterns: [{include: 'source.gfm'}]
+          patterns: [{include: 'text.md'}]
         },
         {
           begin: '(#string)\\s+((?i)([A-Za-z_]\\w*)?(xml))\\b',

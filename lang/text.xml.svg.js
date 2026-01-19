@@ -146,7 +146,7 @@ const grammar = {
           name: 'keyword.operator.drawing-command.xml.svg'
         },
         {
-          match: '-?(?:\\d+(?:\\.\\d+)?|\\.\\d+)',
+          match: '-?(?:\\d+(?:\\.\\d+)?|\\.\\d+)(?:[Ee][-+]?\\d+)?',
           name: 'constant.numeric.number.xml.svg'
         },
         {match: ',', name: 'punctuation.separator.coordinates.comma.xml.svg'}

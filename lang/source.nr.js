@@ -17,12 +17,11 @@ const grammar = {
       patterns: [
         {
           captures: {
-            1: {name: 'keyword.nr'},
+            1: {patterns: [{include: '#code'}]},
             2: {name: 'support.type.property-name.nr'},
-            3: {name: 'support.type.nr'}
+            3: {patterns: [{include: '#code'}]}
           },
-          match:
-            '(pub|pub\\(crate\\))?\\s*([a-zA-Z_][a-zA-Z0-9_]*)\\s*:\\s*([a-zA-Z_][a-zA-Z0-9_]*)',
+          match: '(pub|pub\\(.+\\))?\\s*([a-zA-Z_][a-zA-Z0-9_]*)\\s*:\\s*(.+)',
           patterns: [{include: '#comments'}]
         },
         {begin: '<', end: '>', patterns: [{include: '#--struct-types'}]},
@@ -104,7 +103,7 @@ const grammar = {
       patterns: [
         {
           match:
-            '\\b(fn|impl|trait|type|mod|use|struct|if|else|for|loop|enum|match)\\b',
+            '\\b(fn|impl|trait|type|mod|use|struct|if|else|for|loop|while|enum|match|break|continue)\\b',
           name: 'keyword.control.nr'
         },
         {
