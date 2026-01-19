@@ -81,11 +81,14 @@ but `starry-night` is meant to match GitHub in that it produces classes and
 works with the CSS it ships,
 making it easier to add dark mode and other themes with CSS compared to inline
 styles.
+GitHub did some good work on accessibility around color blindness and contrast,
+that’s available here too.
 
 Finally,
 this package produces objects (an AST),
 which makes it useful when you want to perform syntax highlighting in a place
-where serialized HTML wouldn’t work or wouldn’t work well.
+where serialized HTML wouldn’t work, wouldn’t work well, or isn’t solely what
+you want.
 For example,
 when you want to show code in a CLI by rendering to ANSI sequences,
 when you’re using virtual DOM frameworks (such as React or Preact) so that
