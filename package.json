@@ -15,7 +15,7 @@
     "@types/css": "^0.0.38",
     "@types/json-stable-stringify": "^1.0.0",
     "@types/mdast": "^4.0.0",
-    "@types/node": "^22.0.0",
+    "@types/node": "^25.0.0",
     "c8": "^10.0.0",
     "css": "^3.0.0",
     "generate-github-markdown-css": "^6.0.0",
