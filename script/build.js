@@ -890,7 +890,7 @@ function scopeToId(value) {
     .toLowerCase() // `source.Caddyfile` -> `source.caddyfile`
     // For `c++`
     .replace(/\+/g, 'p')
-    .replace(/[. -_]([a-z\d])/g, function (_, /** @type {string} */ $1) {
+    .replace(/[. _-]([a-z\d])/g, function (_, /** @type {string} */ $1) {
       return $1.toUpperCase()
     })
   assert.ok(/^[A-Za-z\d.]+$/.test(id), value)
