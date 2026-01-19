@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         node:
-          - lts/hydrogen
+          - lts/iron
           - node
 name: main
 on:
