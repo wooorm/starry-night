@@ -483,7 +483,7 @@ for (const scope of usedScopes) {
 
       if (missing.size > 0) {
         console.warn(
-          `Missing entrie${missing.size > 1 ? 's' : ''} in \`graph.yml\` for \`${scope}\`, here’s the fields to add:
+          `Missing ${missing.size > 1 ? 'entries' : 'entry'} in \`graph.yml\` for \`${scope}\`, here’s the fields to add:
 ${[...missing]
   .sort()
   .map(function (d) {
