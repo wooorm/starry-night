@@ -19,6 +19,7 @@
     "c8": "^10.0.0",
     "css": "^3.0.0",
     "generate-github-markdown-css": "^6.0.0",
+    "globals": "^17.0.0",
     "hast-util-to-html": "^9.0.0",
     "json-stable-stringify": "^1.0.0",
     "mdast-zone": "^6.0.0",

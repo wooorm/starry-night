@@ -1,3 +1,5 @@
+import globals from 'globals'
+
 /** @type {import('xo').FlatXoConfig} */
 const xoConfig = [
   {
@@ -13,6 +15,10 @@ const xoConfig = [
       'unicorn/prefer-string-replace-all': 'off'
     },
     space: true
+  },
+  {
+    languageOptions: {globals: globals.browser},
+    files: ['lib/get-oniguruma.default.js']
   },
   {
     files: ['lang/*.js'],
