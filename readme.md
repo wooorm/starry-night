@@ -193,7 +193,7 @@ do
 
 ```html
 <!-- This supports light and dark mode automatically. -->
-<link rel="stylesheet" href="https://esm.sh/@wooorm/starry-night@3/style/both">
+<link rel="stylesheet" href="https://esm.sh/@wooorm/starry-night@3/style/both.css">
 ```
 
 ## Use
@@ -653,7 +653,7 @@ if we would have an `index.html` for our document:
 <!doctype html>
 <meta charset=utf8>
 <title>Hello</title>
-<link rel=stylesheet href=https://esm.sh/@wooorm/starry-night@3/style/both>
+<link rel=stylesheet href=https://esm.sh/@wooorm/starry-night@3/style/both.css>
 <body>
 <h1>Hello</h1>
 <p>…world!</p>
