@@ -51,6 +51,18 @@ test('.flagToScope(flag)', async (t) => {
     assert.equal(starryNight.flagToScope('pandoc'), 'text.md')
   })
 
+  await t.test('should ignore leading and trailing whitespace and slashes', async () => {
+    assert.equal(starryNight.flagToScope(' \tpandoc/ \t/'), 'text.md')
+  })
+
+  await t.test('should handle flags containing only whitespace', async () => {
+    assert.equal(starryNight.flagToScope(' \t '), undefined)
+  })
+
+  await t.test('should handle flags containing only slashes', async () => {
+    assert.equal(starryNight.flagToScope('///'), undefined)
+  })
+
   await t.test('should support extensions (w/o dot)', async () => {
     assert.equal(starryNight.flagToScope('workbook'), 'text.md')
   })
