@@ -52,6 +52,8 @@ console.log(tree)`,
 fs.writeFile(new URL('../media/preview.html', import.meta.url), document)
 
 /**
+ * Generate highlighted HTML for a given value and scope.
+ *
  * @param {string} value
  *   Value to highlight.
  * @param {string} scope

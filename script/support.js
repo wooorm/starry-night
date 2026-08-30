@@ -7,32 +7,32 @@ import {u} from 'unist-builder'
 import {common as commonGrammars} from '../index.js'
 import {info} from './info.js'
 
-const common = new Set(
-  commonGrammars.map(function (d) {
-    return d.scopeName
-  })
-)
+const common = new Set(commonGrammars.map((d) => d.scopeName))
 
 /**
+ * Plugin.
+ *
  * @returns
  *   Transform.
  */
 export default function support() {
   /**
+   * Transform.
+   *
    * @param {Root} tree
-   *   Tree.
+   *   Tree to transform.
    * @returns {undefined}
    *   Nothing.
    */
   return function (tree) {
     /** @type {Array<ListContent>} */
     const items = Object.keys(info)
-      .sort(function (a, b) {
+      .sort((a, b) => {
         const aCommon = common.has(a)
         const bCommon = common.has(b)
         return aCommon === bCommon ? a.localeCompare(b) : aCommon ? -1 : 1
       })
-      .map(function (scope) {
+      .map((scope) => {
         const {dependencies, homepage, license} = info[scope]
         /** @type {Array<PhrasingContent>} */
         const content = [
@@ -66,8 +66,10 @@ export default function support() {
         ])
       })
 
-    zone(tree, 'support', function (start, _, end) {
-      return [start, u('list', {spread: false}, items), end]
-    })
+    zone(tree, 'support', (start, _, end) => [
+      start,
+      u('list', {spread: false}, items),
+      end
+    ])
   }
 }

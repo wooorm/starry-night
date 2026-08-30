@@ -5,16 +5,26 @@ const xoConfig = [
   {
     ignores: ['gems/', 'lang/'],
     name: 'default',
-    prettier: true,
+    prettier: 'compat',
     rules: {
+      'jsdoc/check-indentation': 'off',
+      'jsdoc/check-line-alignment': 'off',
+      'jsdoc/require-asterisk-prefix': 'off',
+      'jsdoc/require-returns-type': 'off',
+      'jsdoc/require-yields': 'off',
       'max-depth': 'off',
       'no-bitwise': 'off',
+      'no-shadow': 'off',
       'no-template-curly-in-string': 'off',
       'require-unicode-regexp': 'off',
+      'unicorn/consistent-boolean-name': 'off',
       'unicorn/no-array-sort': 'off',
+      'unicorn/no-break-in-nested-loop': 'off',
       'unicorn/prefer-at': 'off',
+      'unicorn/prefer-iterator-to-array': 'off',
       'unicorn/prefer-string-raw': 'off',
       'unicorn/prefer-string-replace-all': 'off',
+      'unicorn/require-array-sort-compare': 'off',
       'unicorn/require-module-specifiers': 'off'
     },
     space: true
@@ -27,13 +37,15 @@ const xoConfig = [
     files: ['lang/*.js'],
     rules: {
       camelcase: 'off',
-      'unicorn/no-thenable': 'off'
+      'unicorn/no-thenable': 'off',
+      'unicorn/prefer-https': 'off'
     }
   },
   {
     files: ['lang/*.js', 'script/info.js'],
     rules: {
-      'max-lines': 'off'
+      'max-lines': 'off',
+      'unicorn/prefer-unicode-code-point-escapes': 'off'
     }
   },
   {

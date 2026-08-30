@@ -52,7 +52,7 @@ await fs.mkdir(languagesBase, {recursive: true})
 // Human-maintained database of which language needs what language.
 /** @type {Record<string, Record<string, boolean>>} */
 const graph = parseYaml(
-  String(await fs.readFile(new URL('graph.yml', import.meta.url)))
+  await fs.readFile(new URL('graph.yml', import.meta.url), 'utf8')
 )
 
 /** @type {Array<string>} */
@@ -68,9 +68,7 @@ try {
 }
 
 const prefix = 'github-linguist-'
-const linguistBasename = installed.find(function (d) {
-  return d.startsWith(prefix)
-})
+const linguistBasename = installed.find((d) => d.startsWith(prefix))
 
 if (!linguistBasename) {
   console.log(
@@ -95,7 +93,7 @@ const gemBase = new URL(linguistBasename + '/', gemsBase)
 const languagesUrl = new URL('lib/linguist/languages.yml', gemBase)
 
 /** @type {Record<string, {aliases?: ReadonlyArray<string>, extensions?: ReadonlyArray<string>, tm_scope: string}>} */
-const languages = parseYaml(String(await fs.readFile(languagesUrl)))
+const languages = parseYaml(await fs.readFile(languagesUrl, 'utf8'))
 /** @type {string} */
 let name
 
@@ -112,9 +110,7 @@ for (const [name, language] of Object.entries(languages)) {
     continue
   }
 
-  const names = (language.aliases || []).map(function (d) {
-    return normalizeLinguistName(d)
-  })
+  const names = (language.aliases || []).map((d) => normalizeLinguistName(d))
   const defaultId = normalizeLinguistName(name)
 
   if (!names.includes(defaultId)) {
@@ -125,8 +121,9 @@ for (const [name, language] of Object.entries(languages)) {
     const existing = uniqueIdentifiers.get(alias)
 
     if (existing) {
-      assert.ok(
-        existing === scope,
+      assert.equal(
+        existing,
+        scope,
         'expected duplicate names to refer to same language'
       )
     }
@@ -143,9 +140,9 @@ for (const [name, language] of Object.entries(languages)) {
     continue
   }
 
-  const extnames = (language.extensions || []).map(function (d) {
-    return normalizeLinguistExtension(d)
-  })
+  const extnames = (language.extensions || []).map((d) =>
+    normalizeLinguistExtension(d)
+  )
 
   for (const extname of extnames) {
     const existing = uniqueIdentifiers.get(extname)
@@ -165,43 +162,45 @@ for (const [name, language] of Object.entries(languages)) {
 const linguistInfo = new Map()
 
 for (name in languages) {
-  if (Object.hasOwn(languages, name)) {
-    const rawInfo = languages[name]
-    const scope = rawInfo.tm_scope
-
-    assert.ok(
-      // This one actually turns into two classes on GH, which must be a bug.
-      scope === 'source.pov-ray sdl' ||
-        // https://github.com/github-linguist/linguist/pull/6862#issuecomment-2157822516
-        scope === 'source.Caddyfile' ||
-        scope === 'source.iCalendar' ||
-        scope === 'source.QB64' ||
-        scope === 'source.vespaSchema' ||
-        /^[-a-z\d+_.]+$/.test(scope),
-      scope
-    )
-
-    if (scope === 'none') {
-      continue
-    }
-
-    let names = [name, ...(rawInfo.aliases || [])].map(function (d) {
-      return normalizeLinguistName(d)
-    })
-
-    let extensions = (rawInfo.extensions || []).map(function (d) {
-      return normalizeLinguistExtension(d)
-    })
-
-    const info = linguistInfo.get(scope)
-
-    if (info) {
-      names = [...info.names, ...names].sort()
-      extensions = [...info.extensions, ...extensions].sort()
-    }
-
-    linguistInfo.set(scope, {extensions, names})
+  if (!Object.hasOwn(languages, name)) {
+    continue
   }
+
+  const rawInfo = languages[name]
+  const scope = rawInfo.tm_scope
+
+  assert.ok(
+    // This one actually turns into two classes on GH, which must be a bug.
+    scope === 'source.pov-ray sdl' ||
+      // https://github.com/github-linguist/linguist/pull/6862#issuecomment-2157822516
+      scope === 'source.Caddyfile' ||
+      scope === 'source.iCalendar' ||
+      scope === 'source.QB64' ||
+      scope === 'source.vespaSchema' ||
+      /^[\d+\-._a-z]+$/.test(scope),
+    scope
+  )
+
+  if (scope === 'none') {
+    continue
+  }
+
+  let names = [name, ...(rawInfo.aliases || [])].map((d) =>
+    normalizeLinguistName(d)
+  )
+
+  let extensions = (rawInfo.extensions || []).map((d) =>
+    normalizeLinguistExtension(d)
+  )
+
+  const info = linguistInfo.get(scope)
+
+  if (info) {
+    names = [...info.names, ...names].sort()
+    extensions = [...info.extensions, ...extensions].sort()
+  }
+
+  linguistInfo.set(scope, {extensions, names})
 }
 
 const grammarSchema = {
@@ -233,14 +232,14 @@ const ruleSchema = {
 
 const grammarsBase = new URL('grammars/', gemBase)
 const grammarBasenames = await fs.readdir(grammarsBase)
-const scopes = grammarBasenames.flatMap(function (d) {
+const scopes = grammarBasenames.flatMap((d) => {
   const extension = path.extname(d)
 
   if (extension === '.json') {
     return path.basename(d, extension)
   }
 
-  assert.ok(d === 'version', d)
+  assert.equal(d, 'version', d)
   return []
 })
 
@@ -249,16 +248,16 @@ const dependencyInfo = new Map()
 
 // Write grammars.
 await Promise.all(
-  scopes.map(async function (scope) {
+  scopes.map(async (scope) => {
     const inputUrl = new URL(scope + '.json', grammarsBase)
     const outputUrl = new URL(scope + '.js', languagesBase)
 
     const grammar = cleanGrammar(
       /** @type {Grammar} */
-      (JSON.parse(String(await fs.readFile(inputUrl)))),
+      (JSON.parse(await fs.readFile(inputUrl, 'utf8'))),
       scope
     )
-    assert.ok(grammar.scopeName === scope, 'expected scopes to match')
+    assert.equal(grammar.scopeName, scope, 'expected scopes to match')
 
     const result = analyze(grammar)
     dependencyInfo.set(scope, result)
@@ -268,7 +267,7 @@ await Promise.all(
     for (const name of info.names) {
       const mappedScope = uniqueIdentifiers.get(name)
       assert.ok(mappedScope, 'expected mapping')
-      assert.ok(mappedScope === scope, 'expected names to be unique')
+      assert.equal(mappedScope, scope, 'expected names to be unique')
     }
 
     /**
@@ -319,8 +318,8 @@ await Promise.all(
     /** @type {Array<string>} */
     const required = []
 
-    for (const dep of Object.keys(dependencies)) {
-      if (dependencies[dep]) {
+    for (const [dep, enabled] of Object.entries(dependencies)) {
+      if (enabled) {
         required.push(dep)
       }
     }
@@ -432,9 +431,17 @@ for (const [scope] of linguistInfo) {
   add(scope)
 }
 
-/** @param {string} scope */
+/**
+ * Add a scope and its dependencies to the used set.
+ *
+ * @param {string} scope
+ *   Scope to add.
+ */
 function add(scope) {
-  if (used.has(scope)) return
+  if (used.has(scope)) {
+    return
+  }
+
   used.add(scope)
   const deps = dependencies.get(scope)
   assert.ok(deps, scope)
@@ -443,12 +450,10 @@ function add(scope) {
   }
 }
 
-const unneeded = scopes.filter(function (d) {
-  return !used.has(d)
-})
+const unneeded = scopes.filter((d) => !used.has(d))
 
 await Promise.all(
-  unneeded.map(async function (d) {
+  unneeded.map(async (d) => {
     await fs.unlink(new URL(d + '.js', languagesBase))
   })
 )
@@ -487,9 +492,7 @@ for (const scope of usedScopes) {
           `Missing ${missing.size > 1 ? 'entries' : 'entry'} in \`graph.yml\` for \`${scope}\`, here’s the fields to add:
 ${[...missing]
   .sort()
-  .map(function (d) {
-    return `  ${d}: false`
-  })
+  .map((d) => `  ${d}: false`)
   .join('\n')}
 `
         )
@@ -508,9 +511,7 @@ ${[...missing]
 ${scope}:
 ${[...deps]
   .sort()
-  .map(function (d) {
-    return `  ${d}: false`
-  })
+  .map((d) => `  ${d}: false`)
   .join('\n')}
 `
       )
@@ -527,7 +528,7 @@ const indices = ['common', 'all']
 
 // Write index files.
 await Promise.all(
-  indices.map(async function (d) {
+  indices.map(async (d) => {
     /** @type {Array<string>} */
     const list = []
 
@@ -540,17 +541,24 @@ await Promise.all(
 
     list.sort()
 
-    /** @param {string} scope */
+    /**
+     * Add a scope and its dependencies to the list.
+     *
+     * @param {string} scope
+     *   Scope to add.
+     */
     function add(scope) {
-      if (!list.includes(scope)) {
-        list.push(scope)
+      if (list.includes(scope)) {
+        return
+      }
 
-        const dependencies = Object.hasOwn(graph, scope) ? graph[scope] : {}
+      list.push(scope)
 
-        for (const dep of Object.keys(dependencies)) {
-          if (dependencies[dep]) {
-            add(dep)
-          }
+      const dependencies = Object.hasOwn(graph, scope) ? graph[scope] : {}
+
+      for (const [dep, enabled] of Object.entries(dependencies)) {
+        if (enabled) {
+          add(dep)
         }
       }
     }
@@ -563,21 +571,18 @@ await Promise.all(
           " * @import {Grammar} from '@wooorm/starry-night'",
           ' */',
           '',
-          ...list.map(function (d) {
-            return (
+          ...list.map(
+            (d) =>
               'import ' +
               scopeToId(d) +
               ' from "@wooorm/starry-night/' +
               d +
               '"'
-            )
-          }),
+          ),
           '',
           '/** @type {ReadonlyArray<Grammar>} */',
           'export const grammars = [',
-          ...list.flatMap(function (d) {
-            return '  ' + scopeToId(d) + ','
-          }),
+          ...list.flatMap((d) => '  ' + scopeToId(d) + ','),
           ']',
           ''
         ].join('\n'),
@@ -591,7 +596,7 @@ console.log('generated %s indices', indices.length)
 
 // Write grammars.
 await Promise.all(
-  Object.keys(aliases).map(async function (from) {
+  Object.keys(aliases).map(async (from) => {
     const to = aliases[from]
 
     await fs.writeFile(
@@ -611,10 +616,12 @@ await Promise.all(
 console.log('generated %s aliases', Object.keys(aliases).length)
 
 /**
+ * Clean a grammar.
+ *
  * @param {Grammar} d
  *   Grammar to clean.
  * @param {string} path
- *   Path.
+ *   Path in object.
  * @returns {Grammar}
  *   Cleaned grammar.
  */
@@ -623,16 +630,20 @@ function cleanGrammar(d, path) {
 }
 
 /**
+ * Clean a rule.
+ *
  * @param {Rule} d
  *   Rule to clean.
  * @param {string} path
- *   Path.
+ *   Path in object.
  * @returns {Rule}
  *   Cleaned rule.
  */
 function cleanRule(d, path) {
   // @ts-expect-error: sometimes used in custom grammars.
-  if (d.disabled) return {}
+  if (d.disabled) {
+    return {}
+  }
 
   const cleaned = cleanPatternFields(clean(d, ruleSchema, path), path)
 
@@ -665,28 +676,28 @@ function cleanRule(d, path) {
 }
 
 /**
+ * Clean a list of rules.
+ *
  * @param {ReadonlyArray<Rule>} d
  *   List of rules to clean.
  * @param {string} path
- *   Path.
+ *   Path in object.
  * @returns {Array<Rule>}
  *   Cleaned list of rules.
  */
 function cleanListOfRules(d, path) {
   return d
-    .map(function (d, i) {
-      return cleanRule(d, path + '[' + i + ']')
-    })
-    .filter(function (d) {
-      return Object.keys(d).length > 0
-    })
+    .map((d, i) => cleanRule(d, path + '[' + i + ']'))
+    .filter((d) => Object.keys(d).length > 0)
 }
 
 /**
+ * Clean a map of rules.
+ *
  * @param {Record<string, Rule>} d
  *   Map of rules to clean.
  * @param {string} path
- *   Path.
+ *   Path in object.
  * @returns {Record<string, Rule>}
  *   Cleaned map of rules.
  */
@@ -694,8 +705,8 @@ function cleanMapOfRules(d, path) {
   /** @type {Record<string, Rule>} */
   const copy = {}
 
-  for (const key of Object.keys(d)) {
-    const cleaned = cleanRule(d[key], path + '.' + key)
+  for (const [key, value] of Object.entries(d)) {
+    const cleaned = cleanRule(value, path + '.' + key)
     if (Object.keys(cleaned).length > 0) {
       copy[key] = cleaned
     }
@@ -705,12 +716,14 @@ function cleanMapOfRules(d, path) {
 }
 
 /**
+ * Clean something with pattern fields.
+ *
  * @template {Grammar | Rule} Thing
  *   Kind.
  * @param {Thing} d
  *   Thing to clean.
  * @param {string} path
- *   Path.
+ *   Path in object.
  * @returns {Thing}
  *   Cleaned thing.
  */
@@ -731,11 +744,13 @@ function cleanPatternFields(d, path) {
 }
 
 /**
- * @template {Object} Thing
+ * Clean a value against a schema.
+ *
+ * @template {object} Thing
  *   Kind.
  * @param {Thing} value
  *   Value to clean.
- * @param {Object} schema
+ * @param {object} schema
  *   Schema to clean against.
  * @param {ReadonlyArray<string>} [schema.need]
  *   Fields to require.
@@ -744,16 +759,14 @@ function cleanPatternFields(d, path) {
  * @param {ReadonlyArray<string>} schema.remove
  *   Fields to remove.
  * @param {string} path
- *   Path.
+ *   Path in object.
  * @returns {Thing}
  *   Clone.
  */
 function clean(value, schema, path) {
   const {need = [], allow = [], remove = []} = schema
   const keys = Object.keys(value)
-    .filter(function (d) {
-      return !remove.includes(d)
-    })
+    .filter((d) => !remove.includes(d))
     .sort()
   const allAllowed = new Set([...allow, ...need])
 
@@ -784,6 +797,8 @@ function clean(value, schema, path) {
 }
 
 /**
+ * Analyze a rule.
+ *
  * @param {Rule} rule
  *   Rule to analyze.
  * @param {boolean | null | undefined} [local=false]
@@ -797,30 +812,28 @@ function analyze(rule, local) {
   /** @type {Set<string>} */
   const referenced = new Set()
 
-  visit(
-    rule,
-    /** @returns {undefined} */
-    function (rule) {
-      if ('repository' in rule && rule.repository) {
-        for (const key of Object.keys(rule.repository)) {
-          defined.add(key)
-        }
-      }
-
-      if (
-        'include' in rule &&
-        rule.include &&
-        (!local || rule.include.startsWith('#'))
-      ) {
-        referenced.add(rule.include)
+  visit(rule, (rule) => {
+    if ('repository' in rule && rule.repository) {
+      for (const key of Object.keys(rule.repository)) {
+        defined.add(key)
       }
     }
-  )
+
+    if (
+      'include' in rule &&
+      rule.include &&
+      (!local || rule.include.startsWith('#'))
+    ) {
+      referenced.add(rule.include)
+    }
+  })
 
   return {defined, referenced}
 }
 
 /**
+ * Visit a rule.
+ *
  * @param {Rule} rule
  *   Rule to visit.
  * @param {(rule: Rule) => boolean | undefined} callback
@@ -835,18 +848,40 @@ function visit(rule, callback) {
     return result
   }
 
-  if ('captures' in rule && rule.captures) map(rule.captures)
-  if ('beginCaptures' in rule && rule.beginCaptures) map(rule.beginCaptures)
-  if ('endCaptures' in rule && rule.endCaptures) map(rule.endCaptures)
-  if ('whileCaptures' in rule && rule.whileCaptures) map(rule.whileCaptures)
-  if ('repository' in rule && rule.repository) map(rule.repository)
-  if ('injections' in rule && rule.injections) map(rule.injections)
-  if ('patterns' in rule && rule.patterns) set(rule.patterns)
+  if ('captures' in rule && rule.captures) {
+    map(rule.captures)
+  }
+
+  if ('beginCaptures' in rule && rule.beginCaptures) {
+    map(rule.beginCaptures)
+  }
+
+  if ('endCaptures' in rule && rule.endCaptures) {
+    map(rule.endCaptures)
+  }
+
+  if ('whileCaptures' in rule && rule.whileCaptures) {
+    map(rule.whileCaptures)
+  }
+
+  if ('repository' in rule && rule.repository) {
+    map(rule.repository)
+  }
+
+  if ('injections' in rule && rule.injections) {
+    map(rule.injections)
+  }
+
+  if ('patterns' in rule && rule.patterns) {
+    set(rule.patterns)
+  }
 
   // Keep.
   return true
 
   /**
+   * Visit a list of rules.
+   *
    * @param {Array<Rule>} values
    *   List of rules to visit.
    */
@@ -862,6 +897,8 @@ function visit(rule, callback) {
   }
 
   /**
+   * Visit a map of rules.
+   *
    * @param {Record<string, Rule>} values
    *   Map of rules to visit.
    */
@@ -870,17 +907,21 @@ function visit(rule, callback) {
     let key
 
     for (key in values) {
-      if (Object.hasOwn(values, key)) {
-        const result = visit(values[key], callback)
-        if (result === false) {
-          delete values[key]
-        }
+      if (!Object.hasOwn(values, key)) {
+        continue
+      }
+
+      const result = visit(values[key], callback)
+      if (result === false) {
+        delete values[key]
       }
     }
   }
 }
 
 /**
+ * Turn a scope into a valid identifier.
+ *
  * @param {string} value
  *   Value to convert.
  * @returns {string}
@@ -891,14 +932,14 @@ function scopeToId(value) {
     .toLowerCase() // `source.Caddyfile` -> `source.caddyfile`
     // For `c++`
     .replace(/\+/g, 'p')
-    .replace(/[. _-]([a-z\d])/g, function (_, /** @type {string} */ $1) {
-      return $1.toUpperCase()
-    })
-  assert.ok(/^[A-Za-z\d.]+$/.test(id), value)
+    .replace(/[ \-._][\da-z]/g, (match) => match.charAt(1).toUpperCase())
+  assert.match(id, /^[\d.a-z]+$/i, value)
   return id
 }
 
 /**
+ * Normalize a name and make sure it is valid.
+ *
  * @param {string} d
  *   Name to normalize.
  * @returns {string}
@@ -913,11 +954,13 @@ function normalizeLinguistName(d) {
   // For example `DNS zone` can be used as `dns-zone`, not as `dns`, `dns_zone`,
   // or `dnszone`.
   const normal = d.toLowerCase().replace(/ /g, '-')
-  assert.ok(/^[-_a-z\d.#+'*()/]+$/.test(normal), normal)
+  assert.match(normal, /^[\d#'()*+\-./_a-z]+$/, normal)
   return normal
 }
 
 /**
+ * Normalize an extension and make sure it is valid.
+ *
  * @param {string} d
  *   Extension to normalize.
  * @returns {string}
@@ -927,6 +970,6 @@ function normalizeLinguistExtension(d) {
   // Extensions are case-insensitive (example: for `.OutJob`, `.outjob` also works).
   // They can also contain dots, dashes, plusses, etc.
   const normal = d.toLowerCase()
-  assert.ok(/^\.[\w+.-]+$/.test(normal), normal)
+  assert.match(normal, /^\.[\w+\-.]+$/, normal)
   return normal
 }

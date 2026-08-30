@@ -1,36 +1,40 @@
 /**
  * @typedef Dep
- *   Dependency.
+ *   Dependency info.
  * @property {string} name
- *   Name.
+ *   Name of the dependency.
  * @property {string} license
- *   License.
+ *   License of the dependency.
  * @property {ReadonlyArray<Readonly<License>>} licenses
- *   Licenses.
+ *   Licenses from the source.
  * @property {string | undefined} homepage
- *   Homepage.
+ *   Homepage of the dependency.
  * @property {ReadonlyArray<string>} notices
- *   Notices.
+ *   Notices from the source.
  * @property {'git_submodule'} type
- *   Type.
+ *   Type of dependency.
  * @property {string} version
- *   Version.
- *
+ *   Version of the dependency.
+ */
+
+/**
  * @typedef Info
- *   Info.
+ *   Info about a grammar.
  * @property {ReadonlyArray<string> | undefined} dependencies
- *   Dependencies.
+ *   Dependencies of the grammar.
  * @property {string | undefined} homepage
- *   Homepage.
+ *   Homepage of the project.
  * @property {string | undefined} license
- *   License.
- *
+ *   License of the project.
+ */
+
+/**
  * @typedef License
- *   License.
+ *   License info.
  * @property {string | undefined} sources
- *   Sources.
+ *   Sources of license.
  * @property {string} text
- *   Text.
+ *   Text of license.
  */
 
 import assert from 'node:assert/strict'
@@ -41,7 +45,7 @@ import {all} from '../index.js'
 
 /** @type {Record<string, Record<string, boolean>>} */
 const graph = parseYaml(
-  String(await fs.readFile(new URL('graph.yml', import.meta.url)))
+  await fs.readFile(new URL('graph.yml', import.meta.url), 'utf8')
 )
 
 const ghKey = process.env.GITHUB_TOKEN || process.env.GH_TOKEN
@@ -58,11 +62,7 @@ async function list() {
   const base = new URL(import.meta.url)
   const infoFolder = new URL('info/', base)
 
-  const scopes = new Set(
-    all.map(function (d) {
-      return d.scopeName
-    })
-  )
+  const scopes = new Set(all.map((d) => d.scopeName))
   const grammarsBody = await readOrFetch(
     new URL('grammars.yml', base),
     new URL(
@@ -80,7 +80,7 @@ async function list() {
 
   const prefix = 'vendor/grammars/'
 
-  const rawVendors = Object.keys(grammars).filter(function (vendor) {
+  const rawVendors = Object.keys(grammars).filter((vendor) => {
     if (!vendor.startsWith(prefix)) {
       console.warn('ignoring funky vendor `%s`', vendor)
       return false
@@ -98,7 +98,11 @@ async function list() {
         continue
       }
 
-      const vendor = rawVendor.slice(prefix.length).replace(/\/.*$/, '')
+      const slash = rawVendor.indexOf('/', prefix.length)
+      const vendor = rawVendor.slice(
+        prefix.length,
+        slash === -1 ? undefined : slash
+      )
       let vendorToScopes = vendorToScope.get(vendor)
       if (vendorToScopes) {
         vendorToScopes.push(scopeName)
@@ -115,8 +119,8 @@ async function list() {
   const vendors = [...new Set(vendorToScope.keys())].sort()
 
   const rawInfo = await Promise.all(
-    vendors.map(function (vendor) {
-      return readOrFetch(
+    vendors.map((vendor) =>
+      readOrFetch(
         new URL(vendor + '.yml', infoFolder),
         new URL(
           'https://raw.githubusercontent.com/github-linguist/linguist/master/vendor/licenses/git_submodule/' +
@@ -124,7 +128,7 @@ async function list() {
             '.dep.yml'
         )
       )
-    })
+    )
   )
 
   let index = -1
@@ -191,8 +195,8 @@ The following files/folders contain third party software:`
       /** @type {Array<string>} */
       const required = []
 
-      for (const dep of Object.keys(dependencies)) {
-        if (dependencies[dep]) {
+      for (const [dep, enabled] of Object.entries(dependencies)) {
+        if (enabled) {
           required.push(dep)
         }
       }
@@ -215,18 +219,12 @@ The following files/folders contain third party software:`
     }
 
     thirdPartyStuff.push(`${'='.repeat(105)}
-Files in \`starry-night\`: ${scopes
-      .map(function (d) {
-        return `lang/${d}.js`
-      })
-      .join(', ')}
+Files in \`starry-night\`: ${scopes.map((d) => `lang/${d}.js`).join(', ')}
 From source: <${homepage || ''}>
 SPDX: ${license || 'permissive'}
 ${'-'.repeat(105)}
 ${info.licenses
-  .map(function (d) {
-    return `License from source file: ${d.sources || '?'}\n\n${d.text}`
-  })
+  .map((d) => `License from source file: ${d.sources || '?'}\n\n${d.text}`)
   .join('\n\n')}`)
   }
 

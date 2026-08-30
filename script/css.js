@@ -22,14 +22,21 @@
 /**
  * @typedef {Charset | Comment | CustomMedia | Declaration | Document | FontFace | Host | Import | KeyFrames | KeyFrame | Media | Namespace | Page | Rule | Stylesheet | Supports} Node
  *   CSS node.
- *
+ */
+
+/**
  * @typedef {'light' | 'light_colorblind' | 'light_high_contrast' | 'light_tritanopia'} Light
  *   Light theme name.
+ */
+
+/**
  * @typedef {'dark' | 'dark_colorblind' | 'dark_dimmed' | 'dark_high_contrast' | 'dark_tritanopia'} Dark
  *   Dark theme name.
- *
+ */
+
+/**
  * @typedef Schema
- *   Schema.
+ *   Schema for a theme file.
  * @property {Dark} [dark]
  *   Dark theme name (optional).
  * @property {Light} [light]
@@ -106,14 +113,15 @@ const selectorsMap = new Map()
 const themeMap = new Map()
 
 /** @type {Array<Promise<undefined>>} */
-const generatePromises = []
-
-for (const light of lights) {
-  generatePromises.push(generate(light, darks[0]))
-}
+const generatePromises = Array.from(lights, (light) =>
+  generate(light, darks[0])
+)
 
 for (const dark of darks) {
-  if (dark === darks[0]) continue // Duplicate work.
+  if (dark === darks[0]) {
+    continue // Duplicate work.
+  }
+
   generatePromises.push(generate(lights[0], dark))
 }
 
@@ -148,17 +156,16 @@ for (const fileName of fileNames) {
 
   const {ext, name} = path.parse(fileName)
 
+  const css = await prettier.format(
+    '/* This is a theme distributed by `starry-night`.\n' +
+      ' * It’s based on what GitHub uses on their site.\n' +
+      ' * See <https://github.com/wooorm/starry-night> for more info. */' +
+      document.join('\n\n'),
+    {...prettierConfig, parser: 'css'}
+  )
+
   writePromises.push(
-    fs.writeFile(
-      new URL(fileName, base),
-      await prettier.format(
-        '/* This is a theme distributed by `starry-night`.\n' +
-          ' * It’s based on what GitHub uses on their site.\n' +
-          ' * See <https://github.com/wooorm/starry-night> for more info. */' +
-          document.join('\n\n'),
-        {...prettierConfig, parser: 'css'}
-      )
-    ),
+    fs.writeFile(new URL(fileName, base), css),
     fs.writeFile(new URL(name + '.d' + ext + '.ts', base), 'export {}\n')
   )
 }
@@ -166,12 +173,14 @@ for (const fileName of fileNames) {
 await Promise.all(writePromises)
 
 /**
+ * Generate CSS for a theme.
+ *
  * @param {Light} light
  *   Light theme name.
  * @param {Dark} dark
  *   Dark theme name.
  * @returns {Promise<undefined>}
- *   Nothing.
+ *   Promise that resolves to nothing.
  */
 async function generate(light, dark) {
   /** @type {string} */
@@ -184,20 +193,18 @@ async function generate(light, dark) {
 
   // Get themes.
   // Note: types don’t put media as children, force any node.
-  const darkMedia = tree.stylesheet.rules.find((d) => {
-    return (
+  const darkMedia = tree.stylesheet.rules.find(
+    (d) =>
       d.type === 'media' &&
       'media' in d &&
       d.media === '(prefers-color-scheme: dark)'
-    )
-  })
-  const lightMedia = tree.stylesheet.rules.find((d) => {
-    return (
+  )
+  const lightMedia = tree.stylesheet.rules.find(
+    (d) =>
       d.type === 'media' &&
       'media' in d &&
       d.media === '(prefers-color-scheme: light)'
-    )
-  })
+  )
   themeMap.set(dark, generateMedia(darkMedia, 'dark'))
   themeMap.set(light, generateMedia(lightMedia, 'light'))
 
@@ -205,52 +212,50 @@ async function generate(light, dark) {
   // These use variables (if light and dark are not the same) and hence are the
   // same for each theme.
   for (const rule of walkRules(tree)) {
-    if (rule.selectors) {
-      const selectors = rule.selectors
-        .filter(function (d) {
-          return d.startsWith(scopePrefix)
-        })
-        .map(function (d) {
-          return d.slice(scopePrefix.length)
-        })
-        .filter(function (d) {
-          return d.startsWith(prefix)
-        })
+    if (!rule.selectors) {
+      continue
+    }
 
-      if (selectors.length > 0) {
-        const selectorsString = selectors.join(',\n')
-        rule.selectors = selectors
-        /** @type {Stylesheet} */
-        const sheet = {type: 'stylesheet', stylesheet: {rules: [rule]}}
-        selectorsMap.set(selectorsString, css.stringify(sheet))
-      }
+    const selectors = rule.selectors
+      .filter((d) => d.startsWith(scopePrefix))
+      .map((d) => d.slice(scopePrefix.length))
+      .filter((d) => d.startsWith(prefix))
+
+    if (selectors.length > 0) {
+      const selectorsString = selectors.join(',\n')
+      rule.selectors = selectors
+      /** @type {Stylesheet} */
+      const sheet = {type: 'stylesheet', stylesheet: {rules: [rule]}}
+      selectorsMap.set(selectorsString, css.stringify(sheet))
     }
   }
 }
 
 /**
+ * Generate CSS for a media query.
+ *
  * @param {Node | undefined} media
  *   Media node.
  * @param {'dark' | 'light'} mode
- *   Mode.
+ *   Theme mode.
  * @returns {string}
  *   CSS.
  */
 function generateMedia(media, mode) {
-  assert.ok(
-    media &&
-      media.type === 'media' &&
-      'media' in media &&
-      'rules' in media &&
-      media.media === '(prefers-color-scheme: ' + mode + ')' &&
-      media.rules,
-    'expected `' + mode + '` head'
+  assert.ok(media, 'expected media')
+  assert.equal(media.type, 'media', 'expected media type')
+  assert.ok('media' in media, 'expected media in media')
+  assert.ok('rules' in media, 'expected media rules')
+  assert.equal(
+    media.media,
+    '(prefers-color-scheme: ' + mode + ')',
+    'expected media for `' + mode + '`'
   )
+  assert.ok(media.rules, 'expected media rules for `' + mode + '`')
   const rule = media.rules[0]
-  assert.ok(
-    rule && 'declarations' in rule && rule.declarations,
-    'expected `' + mode + '` rule'
-  )
+  assert.ok(rule, 'expected media rule')
+  assert.ok('declarations' in rule, 'expected declarations')
+  assert.ok(rule.declarations, 'expected declarations')
 
   return css.stringify({
     type: 'stylesheet',
@@ -259,13 +264,12 @@ function generateMedia(media, mode) {
         {
           type: 'rule',
           selectors: [':root'],
-          declarations: rule.declarations.filter(function (d) {
-            return (
+          declarations: rule.declarations.filter(
+            (d) =>
               'property' in d &&
               d.property &&
               d.property.startsWith('--color-prettylights-')
-            )
-          })
+          )
         }
       ]
     }
@@ -273,8 +277,10 @@ function generateMedia(media, mode) {
 }
 
 /**
+ * Walk all CSS rules.
+ *
  * @param {Node} tree
- *   Tree.
+ *   Tree to walk.
  * @returns {Generator<Rule>}
  *   Generator.
  */
