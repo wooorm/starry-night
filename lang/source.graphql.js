@@ -17,6 +17,7 @@ const grammar = {
       patterns: [
         {include: '#graphql-comment'},
         {include: '#graphql-description-docstring'},
+        {include: '#graphql-description-string'},
         {include: '#graphql-description-singleline'},
         {include: '#graphql-fragment-definition'},
         {include: '#graphql-directive-definition'},
@@ -41,7 +42,7 @@ const grammar = {
       name: 'meta.arguments.graphql',
       patterns: [
         {include: '#graphql-comment'},
-        {include: '#graphql-description-docstring'},
+        {include: '#graphql-block-string-value'},
         {include: '#graphql-description-singleline'},
         {
           begin: '\\s*([_A-Za-z][_0-9A-Za-z]*)(?:\\s*(:))',
@@ -53,13 +54,30 @@ const grammar = {
           endCaptures: {3: {name: 'punctuation.comma.graphql'}},
           patterns: [
             {include: '#graphql-comment'},
-            {include: '#graphql-description-docstring'},
+            {include: '#graphql-block-string-value'},
             {include: '#graphql-description-singleline'},
             {include: '#graphql-directive'},
             {include: '#graphql-value'},
             {include: '#graphql-skip-newlines'}
           ]
         },
+        {include: '#literal-quasi-embedded'}
+      ]
+    },
+    'graphql-block-string-value': {
+      begin: '\\s*+(("""))',
+      beginCaptures: {
+        1: {name: 'string.quoted.triple.graphql'},
+        2: {name: 'punctuation.definition.string.begin.graphql'}
+      },
+      contentName: 'string.quoted.triple.graphql',
+      end: '(("""))',
+      endCaptures: {
+        1: {name: 'string.quoted.triple.graphql'},
+        2: {name: 'punctuation.definition.string.end.graphql'}
+      },
+      patterns: [
+        {match: '\\\\"""', name: 'constant.character.escape.graphql'},
         {include: '#literal-quasi-embedded'}
       ]
     },
@@ -83,33 +101,25 @@ const grammar = {
           },
           match: '(\\s*)(#).*',
           name: 'comment.line.graphql.js'
-        },
-        {
-          begin: '(""")',
-          beginCaptures: {
-            1: {name: 'punctuation.whitespace.comment.leading.graphql'}
-          },
-          end: '(""")',
-          name: 'comment.line.graphql.js'
-        },
-        {
-          begin: '(")',
-          beginCaptures: {
-            1: {name: 'punctuation.whitespace.comment.leading.graphql'}
-          },
-          end: '(")',
-          name: 'comment.line.graphql.js'
         }
       ]
     },
     'graphql-description-docstring': {
       begin: '"""',
       end: '"""',
-      name: 'comment.block.graphql'
+      name: 'comment.block.documentation.graphql'
     },
     'graphql-description-singleline': {
       match: '#(?=([^"]*"[^"]*")*[^"]*$).*$',
       name: 'comment.line.number-sign.graphql'
+    },
+    'graphql-description-string': {
+      begin: '(")',
+      beginCaptures: {
+        1: {name: 'punctuation.whitespace.comment.leading.graphql'}
+      },
+      end: '(")',
+      name: 'comment.line.documentation.graphql'
     },
     'graphql-directive': {
       applyEndPatternLast: true,
@@ -118,7 +128,7 @@ const grammar = {
       end: '(?=.)',
       patterns: [
         {include: '#graphql-comment'},
-        {include: '#graphql-description-docstring'},
+        {include: '#graphql-block-string-value'},
         {include: '#graphql-description-singleline'},
         {include: '#graphql-arguments'},
         {include: '#literal-quasi-embedded'},
@@ -181,6 +191,7 @@ const grammar = {
             {include: '#graphql-object-type'},
             {include: '#graphql-comment'},
             {include: '#graphql-description-docstring'},
+            {include: '#graphql-description-string'},
             {include: '#graphql-description-singleline'},
             {include: '#graphql-directive'},
             {include: '#graphql-enum-value'},
@@ -188,7 +199,7 @@ const grammar = {
           ]
         },
         {include: '#graphql-comment'},
-        {include: '#graphql-description-docstring'},
+        {include: '#graphql-block-string-value'},
         {include: '#graphql-description-singleline'},
         {include: '#graphql-directive'}
       ]
@@ -239,7 +250,7 @@ const grammar = {
         },
         {include: '#graphql-variable-definitions'},
         {include: '#graphql-comment'},
-        {include: '#graphql-description-docstring'},
+        {include: '#graphql-block-string-value'},
         {include: '#graphql-description-singleline'},
         {include: '#graphql-selection-set'},
         {include: '#graphql-directive'},
@@ -258,7 +269,7 @@ const grammar = {
       patterns: [
         {include: '#graphql-arguments'},
         {include: '#graphql-comment'},
-        {include: '#graphql-description-docstring'},
+        {include: '#graphql-block-string-value'},
         {include: '#graphql-description-singleline'},
         {include: '#graphql-selection-set'},
         {include: '#graphql-directive'},
@@ -278,7 +289,7 @@ const grammar = {
       end: '(?=.)',
       patterns: [
         {include: '#graphql-comment'},
-        {include: '#graphql-description-docstring'},
+        {include: '#graphql-block-string-value'},
         {include: '#graphql-description-singleline'},
         {include: '#graphql-selection-set'},
         {include: '#graphql-directive'},
@@ -306,7 +317,7 @@ const grammar = {
           name: 'meta.type.list.graphql',
           patterns: [
             {include: '#graphql-comment'},
-            {include: '#graphql-description-docstring'},
+            {include: '#graphql-block-string-value'},
             {include: '#graphql-description-singleline'},
             {include: '#graphql-input-types'},
             {include: '#graphql-comma'},
@@ -407,20 +418,20 @@ const grammar = {
                   match: '\\s*([_A-Za-z][_0-9A-Za-z]*)'
                 },
                 {include: '#graphql-comment'},
-                {include: '#graphql-description-docstring'},
+                {include: '#graphql-block-string-value'},
                 {include: '#graphql-description-singleline'},
                 {include: '#graphql-colon'},
                 {include: '#graphql-skip-newlines'}
               ]
             },
             {include: '#graphql-comment'},
-            {include: '#graphql-description-docstring'},
+            {include: '#graphql-block-string-value'},
             {include: '#graphql-description-singleline'},
             {include: '#graphql-skip-newlines'}
           ]
         },
         {include: '#graphql-comment'},
-        {include: '#graphql-description-docstring'},
+        {include: '#graphql-block-string-value'},
         {include: '#graphql-description-singleline'},
         {include: '#graphql-directive'},
         {include: '#graphql-skip-newlines'}
@@ -434,7 +445,7 @@ const grammar = {
       name: 'meta.selectionset.graphql',
       patterns: [
         {include: '#graphql-comment'},
-        {include: '#graphql-description-docstring'},
+        {include: '#graphql-block-string-value'},
         {include: '#graphql-description-singleline'},
         {include: '#graphql-field'},
         {include: '#graphql-fragment-spread'},
@@ -482,13 +493,14 @@ const grammar = {
       endCaptures: {5: {name: 'punctuation.comma.graphql'}},
       patterns: [
         {include: '#graphql-comment'},
-        {include: '#graphql-description-docstring'},
+        {include: '#graphql-block-string-value'},
         {include: '#graphql-description-singleline'},
         {include: '#graphql-directive'},
         {include: '#graphql-variable-definitions'},
         {include: '#graphql-type-object'},
         {include: '#graphql-colon'},
         {include: '#graphql-input-types'},
+        {include: '#graphql-variable-assignment'},
         {include: '#literal-quasi-embedded'}
       ]
     },
@@ -516,7 +528,7 @@ const grammar = {
               match: '\\s*([_A-Za-z][_0-9A-Za-z]*)'
             },
             {include: '#graphql-comment'},
-            {include: '#graphql-description-docstring'},
+            {include: '#graphql-block-string-value'},
             {include: '#graphql-description-singleline'},
             {include: '#graphql-directive'},
             {include: '#graphql-ampersand'},
@@ -524,7 +536,7 @@ const grammar = {
           ]
         },
         {include: '#graphql-comment'},
-        {include: '#graphql-description-docstring'},
+        {include: '#graphql-block-string-value'},
         {include: '#graphql-description-singleline'},
         {include: '#graphql-directive'},
         {include: '#graphql-type-object'},
@@ -541,6 +553,7 @@ const grammar = {
       patterns: [
         {include: '#graphql-comment'},
         {include: '#graphql-description-docstring'},
+        {include: '#graphql-description-string'},
         {include: '#graphql-description-singleline'},
         {include: '#graphql-object-type'},
         {include: '#graphql-type-definition'},
@@ -566,7 +579,7 @@ const grammar = {
           end: '(?=.)',
           patterns: [
             {include: '#graphql-comment'},
-            {include: '#graphql-description-docstring'},
+            {include: '#graphql-block-string-value'},
             {include: '#graphql-description-singleline'},
             {include: '#graphql-skip-newlines'},
             {include: '#literal-quasi-embedded'},
@@ -580,7 +593,7 @@ const grammar = {
           ]
         },
         {include: '#graphql-comment'},
-        {include: '#graphql-description-docstring'},
+        {include: '#graphql-block-string-value'},
         {include: '#graphql-description-singleline'},
         {include: '#graphql-skip-newlines'},
         {include: '#literal-quasi-embedded'}
@@ -593,7 +606,7 @@ const grammar = {
     'graphql-value': {
       patterns: [
         {include: '#graphql-comment'},
-        {include: '#graphql-description-docstring'},
+        {include: '#graphql-block-string-value'},
         {include: '#graphql-variable-name'},
         {include: '#graphql-float-value'},
         {include: '#graphql-string-value'},
@@ -620,7 +633,7 @@ const grammar = {
       name: 'meta.variables.graphql',
       patterns: [
         {include: '#graphql-comment'},
-        {include: '#graphql-description-docstring'},
+        {include: '#graphql-block-string-value'},
         {include: '#graphql-description-singleline'},
         {include: '#graphql-directive'},
         {include: '#graphql-colon'},
@@ -637,6 +650,7 @@ const grammar = {
       patterns: [
         {include: '#graphql-comment'},
         {include: '#graphql-description-docstring'},
+        {include: '#graphql-description-string'},
         {include: '#graphql-description-singleline'},
         {include: '#graphql-variable-definition'},
         {include: '#literal-quasi-embedded'}

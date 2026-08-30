@@ -115,7 +115,7 @@ const grammar = {
     },
     keyword: {
       match:
-        '(^|\\s+)(?:(default|not|package|import|as|with|else|some|in|every|if|contains))(?=\\s|$)',
+        '(^|\\s+)(?:(default|not|package|import|as|with|else|some|in|every|if|contains|and|or))(?=\\s|$)',
       name: 'keyword.other.rego'
     },
     number: {

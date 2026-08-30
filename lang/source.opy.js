@@ -120,12 +120,9 @@ const grammar = {
       patterns: [
         {
           match: '^[ \\t]*(?!(do|else|elif|default)\\b)[A-Za-z\\d_]+(?=:)',
-          name: 'constant.other.reference.link'
+          name: 'markup.italic'
         },
-        {
-          match: '(?<=goto )[A-Za-z\\d_]+',
-          name: 'constant.other.reference.link'
-        }
+        {match: '(?<=goto )[A-Za-z\\d_]+', name: 'markup.italic'}
       ]
     },
     macros: {begin: '#!', end: '(?<!\\\\)\\n', name: 'markup.heading'},

@@ -158,6 +158,18 @@ const grammar = {
         }
       ]
     },
+    'c-string-escapes': {
+      captures: {
+        1: {name: 'constant.character.escape.backslash.rust'},
+        2: {name: 'constant.character.escape.bit.rust'},
+        3: {name: 'constant.character.escape.unicode.rust'},
+        4: {name: 'constant.character.escape.unicode.punctuation.rust'},
+        5: {name: 'constant.character.escape.unicode.punctuation.rust'}
+      },
+      match:
+        '(\\\\)(?:(?:(x[\\da-fA-F]{2})|(u(\\{)(?:[\\da-fA-F]_*){1,6}(\\}))|.))',
+      name: 'constant.character.escape.rust'
+    },
     comments: {
       patterns: [
         {
@@ -184,30 +196,45 @@ const grammar = {
         },
         {
           captures: {
-            1: {name: 'punctuation.separator.dot.decimal.rust'},
-            2: {name: 'keyword.operator.exponent.rust'},
-            3: {name: 'keyword.operator.exponent.sign.rust'},
-            4: {name: 'constant.numeric.decimal.exponent.mantissa.rust'},
-            5: {name: 'entity.name.type.numeric.rust'}
+            1: {name: 'constant.numeric.decimal.exponent.mantissa.rust'},
+            2: {name: 'punctuation.separator.dot.decimal.rust'},
+            3: {name: 'keyword.operator.exponent.rust'},
+            4: {name: 'keyword.operator.exponent.sign.rust'},
+            6: {name: 'storage.type.numeric.rust'}
           },
           match:
-            '\\b\\d[\\d_]*(\\.?)[\\d_]*(?:(E|e)([+-]?)([\\d_]+))?(f32|f64|i128|i16|i32|i64|i8|isize|u128|u16|u32|u64|u8|usize)?\\b',
+            '\\b(\\d[\\d_]*(?:(\\.)[\\d_]*)?)(E|e)([+-]?)([\\d_]+)(f16|f32|f64|f128)?\\b',
           name: 'constant.numeric.decimal.rust'
         },
         {
-          captures: {1: {name: 'entity.name.type.numeric.rust'}},
+          captures: {
+            1: {name: 'punctuation.separator.dot.decimal.rust'},
+            2: {name: 'storage.type.numeric.rust'}
+          },
+          match:
+            '\\b(?=[\\d_]*(?:\\.[\\d_]+|f(?:16|32|64|128)\\b))\\d[\\d_]*(\\.?)[\\d_]*(f16|f32|f64|f128)?\\b',
+          name: 'constant.numeric.decimal.rust'
+        },
+        {
+          captures: {1: {name: 'storage.type.numeric.rust'}},
+          match:
+            '\\b\\d[\\d_]*(i128|i16|i32|i64|i8|isize|u128|u16|u32|u64|u8|usize)?\\b',
+          name: 'constant.numeric.decimal.rust'
+        },
+        {
+          captures: {1: {name: 'storage.type.numeric.rust'}},
           match:
             '\\b0x[\\da-fA-F_]+(i128|i16|i32|i64|i8|isize|u128|u16|u32|u64|u8|usize)?\\b',
           name: 'constant.numeric.hex.rust'
         },
         {
-          captures: {1: {name: 'entity.name.type.numeric.rust'}},
+          captures: {1: {name: 'storage.type.numeric.rust'}},
           match:
             '\\b0o[0-7_]+(i128|i16|i32|i64|i8|isize|u128|u16|u32|u64|u8|usize)?\\b',
           name: 'constant.numeric.oct.rust'
         },
         {
-          captures: {1: {name: 'entity.name.type.numeric.rust'}},
+          captures: {1: {name: 'storage.type.numeric.rust'}},
           match:
             '\\b0b[01_]+(i128|i16|i32|i64|i8|isize|u128|u16|u32|u64|u8|usize)?\\b',
           name: 'constant.numeric.bin.rust'
@@ -230,8 +257,12 @@ const grammar = {
     functions: {
       patterns: [
         {
+          captures: {1: {name: 'storage.modifier.visibility.rust'}},
+          match: '\\b(pub)\\b'
+        },
+        {
           captures: {
-            1: {name: 'keyword.other.rust'},
+            1: {name: 'storage.modifier.visibility.rust'},
             2: {name: 'punctuation.brackets.round.rust'}
           },
           match: '\\b(pub)(\\()'
@@ -366,15 +397,16 @@ const grammar = {
         {match: '\\b(abstract|static)\\b', name: 'storage.modifier.rust'},
         {
           match:
-            '\\b(as|async|become|box|dyn|move|final|gen|impl|in|override|priv|pub|ref|typeof|union|unsafe|unsized|use|virtual|where)\\b',
+            '\\b(as|async|become|box|dyn|move|final|gen|impl|in|override|priv|ref|typeof|union|unsafe|unsized|use|virtual|where)\\b',
           name: 'keyword.other.rust'
         },
         {match: '\\bfn\\b', name: 'keyword.other.fn.rust'},
         {match: '\\bcrate\\b', name: 'keyword.other.crate.rust'},
         {match: '\\bmut\\b', name: 'storage.modifier.mut.rust'},
+        {match: '(\\|\\||&&|!)(?!=)', name: 'keyword.operator.logical.rust'},
         {
-          match: '(\\^|\\||\\|\\||&&|<<|>>|!)(?!=)',
-          name: 'keyword.operator.logical.rust'
+          match: '(<<|>>|\\^|\\|(?!\\|))(?!=)',
+          name: 'keyword.operator.bitwise.rust'
         },
         {match: '&(?![&=])', name: 'keyword.operator.borrow.and.rust'},
         {
@@ -482,6 +514,31 @@ const grammar = {
     strings: {
       patterns: [
         {
+          begin: '(c)(")',
+          beginCaptures: {
+            1: {name: 'string.quoted.c.rust'},
+            2: {name: 'punctuation.definition.string.rust'}
+          },
+          end: '"',
+          endCaptures: {0: {name: 'punctuation.definition.string.rust'}},
+          name: 'string.quoted.double.c.rust',
+          patterns: [{include: '#c-string-escapes'}]
+        },
+        {
+          begin: '(cr)(#*)(")',
+          beginCaptures: {
+            1: {name: 'string.quoted.c.raw.rust'},
+            2: {name: 'punctuation.definition.string.raw.rust'},
+            3: {name: 'punctuation.definition.string.rust'}
+          },
+          end: '(")(\\2)',
+          endCaptures: {
+            1: {name: 'punctuation.definition.string.rust'},
+            2: {name: 'punctuation.definition.string.raw.rust'}
+          },
+          name: 'string.quoted.double.c.raw.rust'
+        },
+        {
           begin: '(b?)(")',
           beginCaptures: {
             1: {name: 'string.quoted.byte.raw.rust'},
@@ -522,9 +579,9 @@ const grammar = {
     types: {
       patterns: [
         {
-          captures: {1: {name: 'entity.name.type.numeric.rust'}},
+          captures: {1: {name: 'storage.type.numeric.rust'}},
           match:
-            '(?<![A-Za-z])(f32|f64|i128|i16|i32|i64|i8|isize|u128|u16|u32|u64|u8|usize)\\b'
+            '(?<![A-Za-z])(f16|f32|f64|f128|i128|i16|i32|i64|i8|isize|u128|u16|u32|u64|u8|usize)\\b'
         },
         {
           begin: '\\b(_?[A-Z][A-Za-z0-9_]*)(<)',
@@ -540,15 +597,13 @@ const grammar = {
             {include: '#keywords'},
             {include: '#lvariables'},
             {include: '#lifetimes'},
+            {include: '#namespaces'},
             {include: '#punctuation'},
             {include: '#types'},
             {include: '#variables'}
           ]
         },
-        {
-          match: '\\b(bool|char|str)\\b',
-          name: 'entity.name.type.primitive.rust'
-        },
+        {match: '\\b(bool|char|str)\\b', name: 'storage.type.primitive.rust'},
         {
           captures: {
             1: {name: 'keyword.declaration.trait.rust storage.type.rust'},

@@ -62,6 +62,27 @@ const grammar = {
       },
       match: '(?:\\G|^)\\s*([-A-Za-z0-9]+)\\s*(?:(:)\\s*(.*)|(;))'
     },
+    hexKey: {
+      patterns: [
+        {
+          captures: {
+            1: {name: 'keyword.operator.source-modifier.curlrc'},
+            2: {name: 'string.unquoted.filename.curlrc'}
+          },
+          match: '(?:^|\\G)\\s*(@)((?:[^"\\s\\\\]|\\\\.)++)'
+        },
+        {
+          captures: {
+            1: {name: 'punctuation.definition.string.begin.curlrc'},
+            2: {name: 'keyword.operator.source-modifier.curlrc'},
+            3: {name: 'string.quoted.double.filename.curlrc'},
+            4: {name: 'punctuation.definition.string.end.curlrc'}
+          },
+          match: '(?:^|\\G)\\s*(")(@)((?:[^\\\\"]|\\\\.)++)(")'
+        },
+        {include: 'etc#hexNoSign'}
+      ]
+    },
     longOptions: {
       patterns: [
         {
@@ -106,6 +127,24 @@ const grammar = {
             3: {patterns: [{include: '#header'}, {include: 'etc#bareword'}]},
             4: {name: 'punctuation.definition.string.end.curlrc'},
             5: {patterns: [{include: '#header'}, {include: 'etc#bareword'}]}
+          },
+          name: 'meta.option.long.curlrc'
+        },
+        {
+          begin:
+            '(?x) (?:\\G|^|(?<=[ \\t]))\n(?!\\s*--\\w[-\\w]*\\s*[=:]) \\s*\n(\n\t(--)?\n\t(?<optlist_hexkey>\n\t\thttpsig-key\n\t)\n)\n(?:\\s*(=|:)|(?=\\s|$))',
+          beginCaptures: {
+            1: {name: 'entity.long.option.name.curlrc'},
+            2: {name: 'punctuation.definition.dash.long.option.curlrc'},
+            4: {patterns: [{include: '#separators'}]}
+          },
+          end: '$|(?:((")((?:[^"\\\\]|\\\\.)*)(?:(")|(?=$)))|([^\\s]+))',
+          endCaptures: {
+            1: {name: 'string.quoted.double.curlrc'},
+            2: {name: 'punctuation.definition.string.begin.curlrc'},
+            3: {patterns: [{include: '#hexKey'}]},
+            4: {name: 'punctuation.definition.string.end.curlrc'},
+            5: {patterns: [{include: '#hexKey'}]}
           },
           name: 'meta.option.long.curlrc'
         },
@@ -231,7 +270,7 @@ const grammar = {
         },
         {
           begin:
-            '(?x) (?:\\G|^|(?<=[ \\t]))\n(?!\\s*--\\w[-\\w]*\\s*[=:](?=\\s)) \\s*\n(\n\t(--)?\n\t(?<optlist_string>\n\t\tabstract-unix-socket\n\t|\talt-svc\n\t|\tcacert\n\t|\tcapath\n\t|\tcert-type\n\t|\tciphers\n\t|\tconfig\n\t|\tcookie-jar\n\t|\tcrlfile\n\t|\tcurves\n\t|\tdata-ascii\n\t|\tdata-binary\n\t|\tdata-raw\n\t|\tdata-urlencode\n\t|\tdata\n\t|\tdelegation\n\t|\tdns-interface\n\t|\tdump-header\n\t|\tech\n\t|\tegd-file\n\t|\tengine\n\t|\tetag-compare\n\t|\tetag-save\n\t|\tftp-account\n\t|\tftp-alternative-to-user\n\t|\tftp-method\n\t|\tftp-ssl-ccc-mode\n\t|\thappy-eyeballs-timeout-ms\n\t|\thelp\n\t|\thostpubsha256\n\t|\thsts\n\t|\tinterface\n\t|\tjson\n\t|\tkey-type\n\t|\tkey\n\t|\tknownhosts\n\t|\tkrb\n\t|\tlibcurl\n\t|\tlogin-options\n\t|\tnetrc-file\n\t|\toauth2-bearer\n\t|\toutput-dir\n\t|\toutput\n\t|\tpass\n\t|\tpinnedpubkey\n\t|\tproxy-cacert\n\t|\tproxy-capath\n\t|\tproxy-cert-type\n\t|\tproxy-ciphers\n\t|\tproxy-crlfile\n\t|\tproxy-key-type\n\t|\tproxy-key\n\t|\tproxy-pass\n\t|\tproxy-pinnedpubkey\n\t|\tproxy-service-name\n\t|\tproxy-tls13-ciphers\n\t|\tproxy-tlsauthtype\n\t|\tproxy-tlspassword\n\t|\tproxy-tlsuser\n\t|\tpubkey\n\t|\tquote\n\t|\trandom-file\n\t|\trequest-target\n\t|\trequest\n\t|\tsasl-authzid\n\t|\tservice-name\n\t|\tsigalgs\n\t|\tsocks5-gssapi-service\n\t|\tssl-sessions\n\t|\tstderr\n\t|\ttls-max\n\t|\ttls13-ciphers\n\t|\ttlsauthtype\n\t|\ttlspassword\n\t|\ttlsuser\n\t|\ttrace-ascii\n\t|\ttrace-config\n\t|\ttrace\n\t|\tunix-socket\n\t|\tupload-file\n\t|\tupload-flags\n\t|\turl-query\n\t|\tuser-agent\n\t|\twrite-out\n\t)\n)\n(?:\\s*(=|:)|(?=\\s|$))',
+            '(?x) (?:\\G|^|(?<=[ \\t]))\n(?!\\s*--\\w[-\\w]*\\s*[=:](?=\\s)) \\s*\n(\n\t(--)?\n\t(?<optlist_string>\n\t\tabstract-unix-socket\n\t|\talt-svc\n\t|\tcacert\n\t|\tcapath\n\t|\tcert-type\n\t|\tciphers\n\t|\tconfig\n\t|\tcookie-jar\n\t|\tcrlfile\n\t|\tcurves\n\t|\tdata-ascii\n\t|\tdata-binary\n\t|\tdata-raw\n\t|\tdata-urlencode\n\t|\tdata\n\t|\tdelegation\n\t|\tdns-interface\n\t|\tdump-header\n\t|\tech\n\t|\tegd-file\n\t|\tengine\n\t|\tetag-compare\n\t|\tetag-save\n\t|\tftp-account\n\t|\tftp-alternative-to-user\n\t|\tftp-method\n\t|\tftp-ssl-ccc-mode\n\t|\thappy-eyeballs-timeout-ms\n\t|\thelp\n\t|\thostpubsha256\n\t|\thsts\n\t|\thttpsig-algo\n\t|\thttpsig-headers\n\t|\thttpsig-keyid\n\t|\tinterface\n\t|\tjson\n\t|\tkey-type\n\t|\tkey\n\t|\tknownhosts\n\t|\tkrb\n\t|\tlibcurl\n\t|\tlogin-options\n\t|\tnetrc-file\n\t|\toauth2-bearer\n\t|\toutput-dir\n\t|\toutput\n\t|\tpass\n\t|\tpinnedpubkey\n\t|\tproxy-cacert\n\t|\tproxy-capath\n\t|\tproxy-cert-type\n\t|\tproxy-ciphers\n\t|\tproxy-crlfile\n\t|\tproxy-key-type\n\t|\tproxy-key\n\t|\tproxy-pass\n\t|\tproxy-pinnedpubkey\n\t|\tproxy-service-name\n\t|\tproxy-tls13-ciphers\n\t|\tproxy-tlsauthtype\n\t|\tproxy-tlspassword\n\t|\tproxy-tlsuser\n\t|\tpubkey\n\t|\tquote\n\t|\trandom-file\n\t|\trequest-target\n\t|\trequest\n\t|\tsasl-authzid\n\t|\tservice-name\n\t|\tsigalgs\n\t|\tsocks5-gssapi-service\n\t|\tssl-sessions\n\t|\tstderr\n\t|\ttls-max\n\t|\ttls13-ciphers\n\t|\ttlsauthtype\n\t|\ttlspassword\n\t|\ttlsuser\n\t|\ttrace-ascii\n\t|\ttrace-config\n\t|\ttrace\n\t|\tunix-socket\n\t|\tupload-file\n\t|\tupload-flags\n\t|\turl-query\n\t|\tuser-agent\n\t|\twrite-out\n\t)\n)\n(?:\\s*(=|:)|(?=\\s|$))',
           beginCaptures: {
             1: {name: 'entity.long.option.name.curlrc'},
             2: {name: 'punctuation.definition.dash.long.option.curlrc'},

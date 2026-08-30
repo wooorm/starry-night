@@ -14,7 +14,7 @@ const grammar = {
   patterns: [
     {include: '#comment'},
     {
-      begin: '^(\\$)([A-Z-a-z_][A-Z-a-z0-9_]*)(:)\\s*',
+      begin: '^(\\$)([A-Za-z_][A-Za-z0-9_]*)(:)\\s*',
       beginCaptures: {
         1: {name: 'keyword.statement.control.smithy'},
         2: {name: 'support.type.property-name.smithy'},
@@ -28,7 +28,8 @@ const grammar = {
       ]
     },
     {
-      begin: '^(metadata)\\s+(.+)\\s*(=)\\s*',
+      begin:
+        '^(metadata)\\s+("(?:[^"\\\\]|\\\\.)*"|[A-Za-z_][A-Za-z0-9_]*)\\s*(=)\\s*',
       beginCaptures: {
         1: {name: 'keyword.statement.smithy'},
         2: {name: 'variable.other.smithy'},
@@ -45,9 +46,10 @@ const grammar = {
       name: 'meta.keyword.statement.namespace.smithy',
       patterns: [
         {
-          match: '[A-Z-a-z_][A-Z-a-z0-9_]*(\\.[A-Z-a-z_][A-Z-a-z0-9_]*)*',
+          match: '[A-Za-z_][A-Za-z0-9_]*(\\.[A-Za-z_][A-Za-z0-9_]*)*',
           name: 'entity.name.type.smithy'
         },
+        {include: '#comment'},
         {match: '[^\\n]', name: 'invalid.illegal.namespace.smithy'}
       ]
     },
@@ -59,16 +61,17 @@ const grammar = {
       patterns: [
         {
           match:
-            '[A-Z-a-z_][A-Z-a-z0-9_]*(\\.[A-Z-a-z_][A-Z-a-z0-9_]*)*#[A-Z-a-z_][A-Z-a-z0-9_]*(\\.[A-Z-a-z_][A-Z-a-z0-9_]*)*',
+            '[A-Za-z_][A-Za-z0-9_]*(\\.[A-Za-z_][A-Za-z0-9_]*)*#[A-Za-z_][A-Za-z0-9_]*(\\.[A-Za-z_][A-Za-z0-9_]*)*',
           name: 'entity.name.type.smithy'
         },
+        {include: '#comment'},
         {match: '[^\\n]', name: 'invalid.illegal.use.smithy'}
       ]
     },
     {include: '#trait'},
     {
       begin:
-        '^(byte|short|integer|long|float|double|bigInteger|bigDecimal|boolean|blob|string|timestamp|document|list|set|map|union|service|operation|resource|enum|intEnum)\\s+([A-Z-a-z_][A-Z-a-z0-9_]*)\\s+(with)\\s+(\\[)',
+        '^(byte|short|integer|long|float|double|bigInteger|bigDecimal|boolean|blob|string|timestamp|document|list|set|map|union|service|operation|resource|enum|intEnum)\\s+([A-Za-z_][A-Za-z0-9_]*)\\s+(with)\\s+(\\[)',
       beginCaptures: {
         1: {name: 'keyword.statement.smithy'},
         2: {name: 'entity.name.type.smithy'},
@@ -79,7 +82,7 @@ const grammar = {
       endCaptures: {0: {name: 'punctuation.definition.array.end.smithy'}},
       name: 'meta.keyword.statement.shape.smithy',
       patterns: [
-        {include: '#identifier', name: 'entity.name.type.smithy'},
+        {include: '#shapeid', name: 'entity.name.type.smithy'},
         {include: '#comment'},
         {match: ',', name: 'punctuation.separator.array.smithy'}
       ]
@@ -90,12 +93,12 @@ const grammar = {
         2: {name: 'entity.name.type.smithy'}
       },
       match:
-        '^(byte|short|integer|long|float|double|bigInteger|bigDecimal|boolean|blob|string|timestamp|document|list|set|map|union|service|operation|resource|enum|intEnum)\\s+([A-Z-a-z_][A-Z-a-z0-9_]*)',
+        '^(byte|short|integer|long|float|double|bigInteger|bigDecimal|boolean|blob|string|timestamp|document|list|set|map|union|service|operation|resource|enum|intEnum)\\s+([A-Za-z_][A-Za-z0-9_]*)',
       name: 'meta.keyword.statement.shape.smithy'
     },
     {
       begin:
-        '^(structure)\\s+([A-Z-a-z_][A-Z-a-z0-9_]*)(?:\\s+(for)\\s+([0-9a-zA-Z\\.#-]+))?\\s+(with)\\s+(\\[)',
+        '^(structure)\\s+([A-Za-z_][A-Za-z0-9_]*)(?:\\s+(for)\\s+([0-9a-zA-Z_\\.#]+))?\\s+(with)\\s+(\\[)',
       beginCaptures: {
         1: {name: 'keyword.statement.smithy'},
         2: {name: 'entity.name.type.smithy'},
@@ -108,7 +111,7 @@ const grammar = {
       endCaptures: {0: {name: 'punctuation.definition.array.end.smithy'}},
       name: 'meta.keyword.statement.shape.smithy',
       patterns: [
-        {include: '#identifier', name: 'entity.name.type.smithy'},
+        {include: '#shapeid', name: 'entity.name.type.smithy'},
         {include: '#comment'},
         {match: ',', name: 'punctuation.separator.array.smithy'}
       ]
@@ -121,7 +124,7 @@ const grammar = {
         4: {name: 'entity.name.type.smithy'}
       },
       match:
-        '^(structure)\\s+([A-Z-a-z_][A-Z-a-z0-9_]*)(?:\\s+(for)\\s+([0-9a-zA-Z\\.#-]+))?',
+        '^(structure)\\s+([A-Za-z_][A-Za-z0-9_]*)(?:\\s+(for)\\s+([0-9a-zA-Z_\\.#]+))?',
       name: 'meta.keyword.statement.shape.smithy'
     },
     {
@@ -134,6 +137,18 @@ const grammar = {
       patterns: [{include: '#shape_inner'}]
     },
     {
+      begin: '^(apply)\\s+([A-Za-z_][A-Za-z0-9_\\.#$]*)\\s*(\\{)',
+      beginCaptures: {
+        1: {name: 'keyword.statement.smithy'},
+        2: {name: 'entity.name.type.smithy'},
+        3: {name: 'punctuation.definition.dictionary.begin.smithy'}
+      },
+      end: '\\}',
+      endCaptures: {0: {name: 'punctuation.definition.dictionary.end.smithy'}},
+      name: 'meta.keyword.statement.apply.smithy',
+      patterns: [{include: '#trait'}, {include: '#comment'}]
+    },
+    {
       begin: '^(apply)\\s+',
       beginCaptures: {1: {name: 'keyword.statement.smithy'}},
       end: '\\n',
@@ -141,18 +156,19 @@ const grammar = {
       patterns: [
         {include: '#trait'},
         {include: '#shapeid'},
+        {include: '#comment'},
         {match: '[^\\n]', name: 'invalid.illegal.apply.smithy'}
       ]
     },
     {
-      begin: '^([A-Z-a-z_][A-Z-a-z0-9_]*)(:)\\s*',
+      begin: '^([A-Za-z_][A-Za-z0-9_]*)(:)\\s*',
       beginCaptures: {
         1: {name: 'support.type.property-name.smithy'},
         2: {name: 'punctuation.separator.dictionary.pair.smithy'}
       },
       end: '\\n',
       name: 'meta.keyword.statement.member.smithy',
-      patterns: [{include: '#shapeid'}]
+      patterns: [{include: '#shapeid'}, {include: '#comment'}]
     }
   ],
   repository: {
@@ -181,7 +197,7 @@ const grammar = {
       patterns: [{match: '\\\\.', name: 'constant.character.escape.smithy'}]
     },
     dquote_key: {
-      match: '".*"(?=\\s*:)',
+      match: '"(?:[^"\\\\]|\\\\.)*"(?=\\s*:)',
       name: 'support.type.property-name.smithy'
     },
     elided_target: {
@@ -189,14 +205,14 @@ const grammar = {
         1: {name: 'keyword.statement.elision.smithy'},
         2: {name: 'support.type.property-name.smithy'}
       },
-      match: '(\\$)([A-Z-a-z0-9_\\.#$]+)'
+      match: '(\\$)([A-Za-z0-9_\\.#$]+)'
     },
     identifier: {
-      match: '[A-Z-a-z_][A-Z-a-z0-9_]*',
+      match: '[A-Za-z_][A-Za-z0-9_]*',
       name: 'entity.name.type.smithy'
     },
     identifier_key: {
-      match: '[A-Z-a-z0-9_\\.#$]+(?=\\s*:)',
+      match: '[A-Za-z0-9_\\.#$]+(?=\\s*:)',
       name: 'support.type.property-name.smithy'
     },
     keywords: {
@@ -242,7 +258,7 @@ const grammar = {
       ]
     },
     shapeid: {
-      match: '[A-Z-a-z_][A-Z-a-z0-9_\\.#$]*',
+      match: '[A-Za-z_][A-Za-z0-9_\\.#$]*',
       name: 'entity.name.type.smithy'
     },
     string: {
@@ -266,7 +282,7 @@ const grammar = {
     trait: {
       patterns: [
         {
-          begin: '(@)([0-9a-zA-Z\\.#-]+)(\\()',
+          begin: '(@)([0-9a-zA-Z_\\.#]+)(\\()',
           beginCaptures: {
             1: {name: 'punctuation.definition.annotation.smithy'},
             2: {name: 'storage.type.annotation.smithy'},
@@ -284,7 +300,7 @@ const grammar = {
             1: {name: 'punctuation.definition.annotation.smithy'},
             2: {name: 'storage.type.annotation.smithy'}
           },
-          match: '(@)([0-9a-zA-Z\\.#-]+)',
+          match: '(@)([0-9a-zA-Z_\\.#]+)',
           name: 'meta.keyword.statement.trait.smithy'
         }
       ]
@@ -309,7 +325,7 @@ const grammar = {
       endCaptures: {0: {name: 'punctuation.definition.array.end.smithy'}},
       patterns: [
         {match: ',', name: 'punctuation.separator.array.smithy'},
-        {include: '#identifier'},
+        {include: '#shapeid'},
         {include: '#comment'}
       ]
     }

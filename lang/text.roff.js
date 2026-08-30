@@ -254,15 +254,7 @@ const grammar = {
     arithmetic: {
       patterns: [
         {include: '#escapes'},
-        {
-          captures: {
-            1: {name: 'punctuation.arithmetic.begin.roff'},
-            2: {patterns: [{include: '#arithmetic'}]},
-            3: {name: 'punctuation.arithmetic.end.roff'}
-          },
-          match: '(\\()(.*?)(\\))',
-          name: 'meta.brackets.roff'
-        },
+        {include: '#brackets'},
         {include: '#number'},
         {match: '<\\?', name: 'keyword.operator.minimum.gnu.roff'},
         {match: '>\\?', name: 'keyword.operator.maximum.gnu.roff'},
@@ -362,6 +354,14 @@ const grammar = {
       name: 'markup.bold.italic.roff'
     },
     'bold-word': {match: '\\S+?(?=\\\\|$|\\s)', name: 'markup.bold.roff'},
+    brackets: {
+      begin: '\\(',
+      beginCaptures: {0: {name: 'punctuation.arithmetic.begin.roff'}},
+      end: '\\)|(?=[^\\)]*)(?<!\\\\)$',
+      endCaptures: {0: {name: 'punctuation.arithmetic.end.roff'}},
+      name: 'meta.brackets.roff',
+      patterns: [{include: '#arithmetic'}]
+    },
     'bridge-escapes': {
       patterns: [
         {
@@ -3337,8 +3337,11 @@ const grammar = {
                 },
                 {
                   begin: '\\G(?=\\|?[\\(\\d\\\\])',
-                  end: "(?<=\\))[CDMPTcimnpstuvz]?(?!\\s*[-+*&:^?=/|\\d<>\\(\\)])|(?=[.']|\\\\{)|(?<!\\\\)$",
-                  endCaptures: {0: {patterns: [{include: '#units'}]}},
+                  end: "(?<=\\))([CDMPTcimnpstuvz])?(?!\\s*[-+*&:^?=/|\\d<>\\(\\)])|(?=[.']|\\\\{)|(\\\\*)$",
+                  endCaptures: {
+                    1: {patterns: [{include: '#units'}]},
+                    2: {patterns: [{include: '#continuous-newline'}]}
+                  },
                   name: 'meta.equation.roff',
                   patterns: [{include: '#arithmetic'}]
                 },

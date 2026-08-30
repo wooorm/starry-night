@@ -13,6 +13,8 @@ const grammar = {
   extensions: ['.handlebars', '.hbs'],
   names: ['handlebars', 'hbs', 'htmlbars'],
   patterns: [
+    {include: '#escaped_backslash'},
+    {include: '#escaped_expression'},
     {include: '#yfm'},
     {include: '#extends'},
     {include: '#block_comments'},
@@ -29,8 +31,8 @@ const grammar = {
     block_comments: {
       patterns: [
         {
-          begin: '\\{\\{!--',
-          end: '--\\}\\}',
+          begin: '\\{\\{~?!--',
+          end: '--~?\\}\\}',
           name: 'comment.block.handlebars',
           patterns: [
             {match: '@\\w*', name: 'keyword.annotation.handlebars'},
@@ -50,7 +52,7 @@ const grammar = {
     },
     block_helper: {
       begin:
-        '(\\{\\{)(~?\\#)([-a-zA-Z0-9_\\./>]+)\\s?(@?[-a-zA-Z0-9_\\./]+)*\\s?(@?[-a-zA-Z0-9_\\./]+)*\\s?(@?[-a-zA-Z0-9_\\./]+)*',
+        '(\\{\\{)(~?\\#)([-\\p{L}\\p{N}_\\./>]+)\\s?(@?[-\\p{L}\\p{N}_\\./]+)*\\s?(@?[-\\p{L}\\p{N}_\\./]+)*\\s?(@?[-\\p{L}\\p{N}_\\./]+)*',
       beginCaptures: {
         1: {name: 'support.constant.handlebars'},
         2: {name: 'support.constant.handlebars keyword.control'},
@@ -68,8 +70,8 @@ const grammar = {
     comments: {
       patterns: [
         {
-          begin: '\\{\\{!',
-          end: '\\}\\}',
+          begin: '\\{\\{~?!',
+          end: '~?\\}\\}',
           name: 'comment.block.handlebars',
           patterns: [
             {match: '@\\w*', name: 'keyword.annotation.handlebars'},
@@ -88,7 +90,7 @@ const grammar = {
       ]
     },
     else_token: {
-      begin: '(\\{\\{)(~?else)(@?\\s(if)\\s([-a-zA-Z0-9_\\.\\(\\s\\)/]+))?',
+      begin: '(\\{\\{)(~?else)(@?\\s(if)\\s([-\\p{L}\\p{N}_\\.\\(\\s\\)/]+))?',
       beginCaptures: {
         1: {name: 'support.constant.handlebars'},
         2: {name: 'support.constant.handlebars keyword.control'},
@@ -100,7 +102,7 @@ const grammar = {
       name: 'meta.function.inline.else.handlebars'
     },
     end_block: {
-      begin: '(\\{\\{)(~?/)([a-zA-Z0-9/_\\.-]+)\\s*',
+      begin: '(\\{\\{)(~?/)([\\p{L}\\p{N}/_\\.-]+)\\s*',
       beginCaptures: {
         1: {name: 'support.constant.handlebars'},
         2: {name: 'support.constant.handlebars keyword.control'},
@@ -131,10 +133,18 @@ const grammar = {
       match: "\\\\'",
       name: 'constant.character.escape.js'
     },
+    escaped_backslash: {
+      match: '\\\\\\\\(?=\\\\*\\{{2,3})',
+      name: 'constant.character.escape.handlebars'
+    },
+    escaped_expression: {
+      match: '\\\\\\{{2,3}',
+      name: 'constant.character.escape.handlebars'
+    },
     extends: {
       patterns: [
         {
-          begin: '(\\{\\{!<)\\s([-a-zA-Z0-9_\\./]+)',
+          begin: '(\\{\\{!<)\\s([-\\p{L}\\p{N}_\\./]+)',
           beginCaptures: {
             1: {name: 'support.function.handlebars'},
             2: {name: 'support.class.handlebars'}
@@ -152,13 +162,13 @@ const grammar = {
       ]
     },
     handlebars_attribute_name: {
-      begin: '\\b([-a-zA-Z0-9_\\.]+)\\b=',
+      begin: '\\b([-\\p{L}\\p{N}_\\.]+)\\b=',
       captures: {1: {name: 'variable.parameter.handlebars'}},
       end: '(?=\'|"|)',
       name: 'entity.other.attribute-name.handlebars'
     },
     handlebars_attribute_value: {
-      begin: '([-a-zA-Z0-9_\\./]+)\\b',
+      begin: '([-\\p{L}\\p{N}_\\./]+)\\b',
       captures: {1: {name: 'variable.parameter.handlebars'}},
       end: '(\'|"|)',
       name: 'entity.other.attribute-value.handlebars',
@@ -343,12 +353,10 @@ const grammar = {
     },
     inline_script: {
       begin:
-        '(?:^\\s+)?(<)((?i:script))\\b(?:.*(type)=(["\'](?:text/x-handlebars-template|text/x-handlebars|text/template|x-tmpl-handlebars)["\']))(?![^>]*/>)',
+        '(?:^\\s+)?(<)((?i:script))\\b(?=[^>]*\\stype=(["\'](?:text/x-handlebars-template|text/x-handlebars|text/template|x-tmpl-handlebars)["\']))(?![^>]*/>)',
       beginCaptures: {
         1: {name: 'punctuation.definition.tag.html'},
-        2: {name: 'entity.name.tag.script.html'},
-        3: {name: 'entity.other.attribute-name.html'},
-        4: {name: 'string.quoted.double.html'}
+        2: {name: 'entity.name.tag.script.html'}
       },
       end: '(?<=</(script|SCRIPT))(>)(?:\\s*\\n)?',
       endCaptures: {2: {name: 'punctuation.definition.tag.html'}},
@@ -363,6 +371,8 @@ const grammar = {
           },
           end: '(</)((?i:script))',
           patterns: [
+            {include: '#escaped_backslash'},
+            {include: '#escaped_expression'},
             {include: '#block_comments'},
             {include: '#comments'},
             {include: '#block_helper'},
@@ -376,7 +386,7 @@ const grammar = {
       ]
     },
     partial_and_var: {
-      begin: '(\\{\\{~?\\{*(>|!<)*)\\s*(@?[-a-zA-Z0-9$_\\./]+)*',
+      begin: '(\\{\\{~?\\{*(>|!<)*)\\s*(@?[-\\p{L}\\p{N}$_\\./]+)*',
       beginCaptures: {
         1: {name: 'support.constant.handlebars'},
         3: {name: 'variable.parameter.handlebars'}
@@ -460,8 +470,8 @@ const grammar = {
     yfm: {
       patterns: [
         {
-          begin: '(?<!\\s)---\\n$',
-          end: '^---\\s',
+          begin: '\\A-{3}$',
+          end: '^-{3}$',
           name: 'markup.raw.yaml.front-matter',
           patterns: [{include: 'source.yaml'}]
         }

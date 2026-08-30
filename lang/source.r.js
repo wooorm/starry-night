@@ -7,7 +7,7 @@
 
 /** @type {Grammar} */
 const grammar = {
-  extensions: ['.r', '.rd', '.rsx'],
+  extensions: ['.r', '.rd', '.rhistory', '.rsx'],
   names: ['r', 'rscript', 'splus'],
   patterns: [
     {

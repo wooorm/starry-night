@@ -8,7 +8,8 @@
 /** @type {Grammar} */
 const grammar = {
   extensions: ['.adp', '.glf', '.sdc', '.tcl', '.tcl.in', '.tm', '.xdc'],
-  names: ['glyph', 'sdc', 'tcl', 'xdc'],
+  extensionsWithDot: ['.sip'],
+  names: ['glyph', 'quartus-simulation-ip', 'sdc', 'tcl', 'xdc'],
   patterns: [
     {
       begin: '(?<=^|;)\\s*((#))',

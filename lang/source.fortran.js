@@ -7,7 +7,7 @@
 
 /** @type {Grammar} */
 const grammar = {
-  extensions: ['.f77', '.fpp'],
+  extensions: ['.f77'],
   injections: {
     'source.fortran - (source.fortran.modern)': {
       patterns: [

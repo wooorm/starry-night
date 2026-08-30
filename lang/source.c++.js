@@ -49,6 +49,7 @@ const grammar = {
     'game-maker-language',
     'hip',
     'metal',
+    'sip',
     'swig'
   ],
   patterns: [

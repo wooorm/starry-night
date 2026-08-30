@@ -50,6 +50,12 @@ const grammar = {
       endCaptures: {1: {name: 'punctuation.definition.block.begin.hx'}},
       patterns: [
         {include: '#global'},
+        {
+          begin: '\\b(from|to)\\b(?=\\s*\\{)',
+          beginCaptures: {1: {name: 'keyword.other.hx'}},
+          end: '(?<=\\})',
+          patterns: [{include: '#type'}]
+        },
         {match: '\\b(from|to)\\b', name: 'keyword.other.hx'},
         {include: '#type'},
         {match: '[\\(\\)]', name: 'punctuation.definition.other.hx'}
@@ -149,6 +155,23 @@ const grammar = {
         {include: '#punctuation-terminator'},
         {include: '#punctuation-comma'},
         {include: '#punctuation-accessor'},
+        {include: '#identifiers'},
+        {include: '#method-return-type-hint'}
+      ]
+    },
+    'case-object-pattern': {
+      begin: '\\{',
+      beginCaptures: {0: {name: 'meta.brace.curly.hx'}},
+      end: '\\}',
+      endCaptures: {0: {name: 'meta.brace.curly.hx'}},
+      patterns: [
+        {include: '#global'},
+        {include: '#case-object-pattern'},
+        {include: '#array'},
+        {include: '#constants'},
+        {include: '#strings'},
+        {include: '#macro-reification'},
+        {include: '#punctuation-comma'},
         {include: '#identifiers'}
       ]
     },
@@ -509,6 +532,7 @@ const grammar = {
           end: ':|(?=if)|$',
           patterns: [
             {include: '#global'},
+            {include: '#case-object-pattern'},
             {include: '#metadata'},
             {
               captures: {
@@ -622,13 +646,19 @@ const grammar = {
       ]
     },
     method: {
+      applyEndPatternLast: true,
       begin: '(?=\\bfunction\\b)',
-      end: '(?<=[\\};])',
+      end: '(?<=\\})|(?=\\s*[^\\s{])',
       name: 'meta.method.hx',
       patterns: [
         {include: '#macro-reification'},
         {include: '#method-name'},
-        {include: '#method-name-post'},
+        {include: '#parameters'},
+        {include: '#method-return'},
+        {
+          captures: {1: {name: 'punctuation.definition.block.begin.hx'}},
+          match: '(\\{)'
+        },
         {include: '#method-block'}
       ]
     },
@@ -662,24 +692,15 @@ const grammar = {
       end: '(?=$|\\()',
       patterns: [{include: '#macro-reification'}, {include: '#type-parameters'}]
     },
-    'method-name-post': {
-      begin: '(?<=[\\w\\s>])',
-      end: '(\\{)|(;)',
-      endCaptures: {
-        1: {name: 'punctuation.definition.block.begin.hx'},
-        2: {name: 'punctuation.terminator.hx'}
-      },
-      patterns: [
-        {include: '#parameters'},
-        {include: '#method-return-type-hint'},
-        {include: '#block'},
-        {include: '#block-contents'}
-      ]
-    },
-    'method-return-type-hint': {
+    'method-return': {
       begin: '(?<=\\))\\s*(:)',
       beginCaptures: {1: {name: 'keyword.operator.type.annotation.hx'}},
-      end: '(?=\\{|;|[a-z0-9])',
+      end: '(?=\\{|;)|(?<=\\s)(?=[a-z0-9]\\w*\\b(?!\\s*\\.))',
+      patterns: [{include: '#type'}]
+    },
+    'method-return-type-hint': {
+      beginCaptures: {1: {name: 'keyword.operator.type.annotation.hx'}},
+      end: '(?=\\{|;)|(?<=\\s)(?=[a-z0-9]\\w*\\b(?!\\s*\\.))',
       patterns: [{include: '#type'}]
     },
     modifiers: {
@@ -950,7 +971,7 @@ const grammar = {
               },
               end: '(})',
               endCaptures: {0: {name: 'punctuation.definition.block.end.hx'}},
-              patterns: [{include: '#block-contents'}]
+              patterns: [{include: '#block'}, {include: '#block-contents'}]
             },
             {
               captures: {
@@ -986,7 +1007,7 @@ const grammar = {
     },
     'type-check': {
       begin: '(?<!macro)(?=:)',
-      end: '(?=\\))',
+      end: '(?=\\)|,)',
       patterns: [{include: '#operator-type-hint'}, {include: '#type'}]
     },
     'type-name': {
@@ -1085,6 +1106,7 @@ const grammar = {
         {include: '#variable'},
         {include: '#modifiers'},
         {include: '#punctuation-comma'},
+        {include: '#punctuation-terminator'},
         {include: '#operator-optional'},
         {include: '#typedef-extension'},
         {include: '#typedef-simple-field-type-hint'},
@@ -1156,7 +1178,7 @@ const grammar = {
     'variable-assign': {
       begin: '=',
       beginCaptures: {0: {name: 'keyword.operator.assignment.hx'}},
-      end: '(?=;|,)',
+      end: '(?=;|,|$)',
       patterns: [{include: '#block'}, {include: '#block-contents'}]
     },
     'variable-name': {

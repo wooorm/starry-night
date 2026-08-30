@@ -14,6 +14,7 @@ const grammar = {
     '._coffee',
     '.cjsx',
     '.coffee',
+    '.coffee.erb',
     '.cson',
     '.em',
     '.emberscript',

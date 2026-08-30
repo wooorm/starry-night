@@ -52,16 +52,32 @@ const grammar = {
     number: {
       name: 'constant.numeric.KCL',
       patterns: [
-        {match: '\\-?[1-9]\\d*', name: 'constant.numeric.list.number.KCL'},
         {
-          match: '\\-?0[xX][0-9a-fA-F]+',
+          match: '(?<![\\w.])\\-?(?:[1-9]\\d*|0)\\.\\d*([eE][-+]?\\d+)?',
           name: 'constant.numeric.list.number.KCL'
         },
-        {match: '\\-?0[oO][0-7]+', name: 'constant.numeric.list.number.KCL'},
-        {match: '\\-?0[bB][0-1]+', name: 'constant.numeric.list.number.KCL'},
         {
-          match:
-            '([-+]?\\d+\\.\\d*|\\.\\d+)([eE][-+]?\\d+)?|\\d+([eE][-+]?\\d+)',
+          match: '(?<![\\w.])\\-?\\.\\d+([eE][-+]?\\d+)?',
+          name: 'constant.numeric.list.number.KCL'
+        },
+        {
+          match: '(?<![\\w.])\\-?(?:[1-9]\\d*|0)[eE][-+]?\\d+\\b',
+          name: 'constant.numeric.list.number.KCL'
+        },
+        {
+          match: '(?<![\\w.])\\-?0[xX][0-9a-fA-F]+\\b',
+          name: 'constant.numeric.list.number.KCL'
+        },
+        {
+          match: '(?<![\\w.])\\-?0[oO][0-7]+\\b',
+          name: 'constant.numeric.list.number.KCL'
+        },
+        {
+          match: '(?<![\\w.])\\-?0[bB][0-1]+\\b',
+          name: 'constant.numeric.list.number.KCL'
+        },
+        {
+          match: '(?<![\\w.])\\-?(?:[1-9]\\d*|0)\\b',
           name: 'constant.numeric.list.number.KCL'
         }
       ]

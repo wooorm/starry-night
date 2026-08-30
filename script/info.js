@@ -24,6 +24,11 @@ export const info = {
     homepage: 'https://github.com/ahkscript/SublimeAutoHotkey',
     license: 'unlicense'
   },
+  'source.bird2': {
+    homepage:
+      'https://github.com/bird-chinese-community/BIRD-tm-language-grammar',
+    license: 'mpl-2.0'
+  },
   'source.cuesheet': {
     homepage: 'https://github.com/relikd/CUE-Sheet_sublime',
     license: 'mit'
@@ -217,6 +222,10 @@ export const info = {
     homepage: 'https://github.com/Anomareh/PHP-Twig.tmbundle',
     license: 'bsd-3-clause'
   },
+  'source.pl': {
+    homepage: 'https://github.com/WerWolv/PatternLanguage-Grammar',
+    license: 'mit'
+  },
   'source.pogoscript': {
     license: 'mit'
   },
@@ -363,6 +372,10 @@ export const info = {
     homepage: 'https://github.com/angryant0007/VBDotNetSyntax',
     license: 'apache-2.0'
   },
+  'text.bbcode': {
+    homepage: 'https://github.com/ModiLogist/VSC-BBCode',
+    license: 'mit'
+  },
   'source.vala': {
     homepage: 'https://github.com/technosophos/Vala-TMBundle',
     license: 'mit'
@@ -414,6 +427,10 @@ export const info = {
   },
   'source.aidl': {
     homepage: 'https://github.com/google/aidl-language',
+    license: 'apache-2.0'
+  },
+  'source.aleo': {
+    homepage: 'https://github.com/ProvableHQ/aleo-linguist',
     license: 'apache-2.0'
   },
   'source.ampl': {
@@ -526,8 +543,7 @@ export const info = {
     license: 'mit'
   },
   'source.yaml.salt': {
-    dependencies: ['source.python'],
-    homepage: 'https://github.com/saltstack/atom-salt',
+    homepage: 'https://github.com/saltstack-contrib/atom-salt',
     license: 'mit'
   },
   'source.ats': {
@@ -561,6 +577,10 @@ export const info = {
     license: 'cc0-1.0'
   },
   'source.blitzmax': {},
+  'source.blueprint': {
+    homepage: 'https://github.com/kaypes/blueprint-grammar',
+    license: 'mit'
+  },
   'source.boogie': {
     homepage: 'https://github.com/boogie-org/boogie-vscode',
     license: 'mit'
@@ -597,6 +617,10 @@ export const info = {
     license: 'apache-2.0'
   },
   'source.capnp': {},
+  'source.carbon': {
+    homepage: 'https://github.com/carbon-language/carbon.tmbundle',
+    license: 'apache-2.0'
+  },
   'source.css.mss': {
     license: 'mit'
   },
@@ -755,6 +779,10 @@ export const info = {
   'source.fortran': {},
   'source.fortran.modern': {
     dependencies: ['source.fortran']
+  },
+  'source.fpp': {
+    homepage: 'https://github.com/fprime-community/fpp-tools',
+    license: 'apache-2.0'
   },
   'source.gap': {
     homepage: 'https://github.com/dhowden/gap-tmbundle'
@@ -1071,7 +1099,7 @@ export const info = {
     license: 'isc'
   },
   'source.gitconfig': {
-    dependencies: ['source.shell'],
+    dependencies: ['etc', 'source.shell'],
     homepage: 'https://github.com/Alhadis/language-etc',
     license: 'isc'
   },
@@ -1325,6 +1353,10 @@ export const info = {
   },
   'source.inform7': {
     homepage: 'https://github.com/erkyrath/language-inform7',
+    license: 'mit'
+  },
+  'source.jass': {
+    homepage: 'https://github.com/Drake53/language-jass',
     license: 'mit'
   },
   'source.js': {
@@ -1794,6 +1826,10 @@ export const info = {
     homepage: 'https://github.com/whitequark/llvm.tmbundle',
     license: 'mit'
   },
+  'source.lobster': {
+    homepage: 'https://github.com/inferrna/lobster_ling',
+    license: 'apache-2.0'
+  },
   'source.logos': {
     dependencies: ['source.c++', 'source.objc'],
     homepage: 'https://github.com/Cykey/Sublime-Logos',
@@ -1842,6 +1878,10 @@ export const info = {
     license: 'mit'
   },
   'source.metta': {
+    license: 'mit'
+  },
+  'source.ms': {
+    homepage: 'https://github.com/ayecue/miniscript-textmate-linguist',
     license: 'mit'
   },
   'source.mint': {
@@ -2294,11 +2334,6 @@ export const info = {
     license: 'mit'
   },
   'source.baml': {
-    dependencies: ['source.baml-jinja'],
-    homepage: 'https://github.com/boundaryml/textMate-baml',
-    license: 'apache-2.0'
-  },
-  'source.baml-jinja': {
     homepage: 'https://github.com/boundaryml/textMate-baml',
     license: 'apache-2.0'
   },
@@ -2321,6 +2356,10 @@ export const info = {
   'source.toml': {
     homepage: 'https://github.com/textmate/toml.tmbundle'
   },
+  'source.tolk': {
+    homepage: 'https://github.com/ton-blockchain/ton-language-server',
+    license: 'mit'
+  },
   'source.sparql': {
     dependencies: ['source.turtle'],
     homepage: 'https://github.com/peta/turtle.tmbundle',
@@ -2338,7 +2377,19 @@ export const info = {
     homepage: 'https://github.com/michidk/typst-grammar',
     license: 'apache-2.0'
   },
+  'source.ucode': {
+    homepage: 'https://github.com/NoahBPeterson/ucode-lsp',
+    license: 'mit'
+  },
   'source.verilog': {},
+  'source.verse': {
+    homepage: 'https://github.com/simnjs/verse-grammar',
+    license: 'mit'
+  },
+  'source.vespaSchema': {
+    homepage: 'https://github.com/vespa-engine/vespa',
+    license: 'apache-2.0'
+  },
   'source.gjs': {
     dependencies: ['source.js'],
     homepage: 'https://github.com/lifeart/vsc-ember-syntax',
@@ -2453,6 +2504,10 @@ export const info = {
   },
   'source.gleam': {
     homepage: 'https://github.com/gleam-lang/vscode-gleam',
+    license: 'apache-2.0'
+  },
+  'source.gno': {
+    homepage: 'https://github.com/gnoverse/vscode-gno',
     license: 'apache-2.0'
   },
   'go.mod': {
@@ -2586,6 +2641,10 @@ export const info = {
     homepage: 'https://github.com/soutaro/vscode-rbs-syntax',
     license: 'mit'
   },
+  'source.rhai': {
+    homepage: 'https://github.com/rhaiscript/vscode-rhai',
+    license: 'mpl-2.0'
+  },
   'source.ron': {
     homepage: 'https://github.com/a5huynh/vscode-ron',
     license: 'mit'
@@ -2635,6 +2694,10 @@ export const info = {
   'source.vento': {
     dependencies: ['source.js'],
     homepage: 'https://github.com/ventojs/vscode-vento',
+    license: 'mit'
+  },
+  'source.vhs': {
+    homepage: 'https://github.com/griimick/vscode-vhs',
     license: 'mit'
   },
   'source.v': {

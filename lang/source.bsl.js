@@ -155,6 +155,7 @@ const grammar = {
           end: '(\\))',
           endCaptures: {1: {name: 'punctuation.bracket.end.bsl'}},
           patterns: [
+            {include: '#annotations'},
             {include: '#basic'},
             {match: '(=)', name: 'keyword.operator.assignment.bsl'},
             {

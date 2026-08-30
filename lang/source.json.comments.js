@@ -13,6 +13,7 @@ const grammar = {
     '.jsonc',
     '.code-snippets',
     '.code-workspace',
+    '.hujson',
     '.sublime-build',
     '.sublime-color-scheme',
     '.sublime-commands',

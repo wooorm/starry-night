@@ -24,25 +24,25 @@ const grammar = {
   repository: {
     arrow: {
       captures: {
-        1: {name: 'entity.name.variable'},
-        2: {name: 'keyword.operator.arrow markup.bold.authzed'},
-        3: {name: 'entity.name.variable'}
+        1: {name: 'variable.other.member.spicedb'},
+        2: {name: 'keyword.operator.arrow.spicedb'},
+        3: {name: 'variable.other.member.spicedb'}
       },
       match: '\\s*([a-zA-Z_]\\w*)(->)([a-zA-Z_]\\w*)\\s*'
     },
     arrow_alternative: {
       captures: {
-        1: {name: 'entity.name.variable'},
-        2: {name: 'keyword.operator.arrow markup.bold.authzed'},
-        3: {name: 'entity.name.variable'}
+        1: {name: 'variable.other.member.spicedb'},
+        2: {name: 'keyword.operator.arrow.spicedb'},
+        3: {name: 'variable.other.member.spicedb'}
       },
       match: '\\s*([a-zA-Z_]\\w*)(\\.any)\\(([a-zA-Z_]\\w*)\\)\\s*'
     },
     arrow_intersection: {
       captures: {
-        1: {name: 'entity.name.variable'},
-        2: {name: 'keyword.operator.arrow markup.bold.authzed'},
-        3: {name: 'entity.name.variable'}
+        1: {name: 'variable.other.member.spicedb'},
+        2: {name: 'keyword.operator.arrow.spicedb'},
+        3: {name: 'variable.other.member.spicedb'}
       },
       match: '\\s*([a-zA-Z_]\\w*)(\\.all)\\(([a-zA-Z_]\\w*)\\)\\s*'
     },
@@ -128,11 +128,14 @@ const grammar = {
       captures: {
         1: {name: 'entity.name.class'},
         2: {name: 'punctuation.definition.hash'},
-        3: {name: 'entity.name.variable'}
+        3: {name: 'variable.other.member.spicedb'}
       },
       match: '([a-zA-Z_]\\w*)(#)([a-zA-Z_]\\w*)'
     },
-    nil: {captures: {1: {name: 'keyword.operator.nil'}}, match: 'nil'},
+    nil: {
+      captures: {1: {name: 'constant.language.nil.spicedb'}},
+      match: '\\b(nil)\\b'
+    },
     partial: {
       captures: {
         1: {name: 'keyword.class.definition'},
@@ -182,7 +185,7 @@ const grammar = {
       ]
     },
     relationRef: {
-      captures: {1: {name: 'entity.name.variable'}},
+      captures: {1: {name: 'variable.other.member.spicedb'}},
       match: '([a-zA-Z_]\\w*)\\b(?!->|\\.(?:any|all)\\()'
     },
     use: {
@@ -196,7 +199,7 @@ const grammar = {
       captures: {
         1: {name: 'entity.name.class'},
         2: {name: 'punctuation.definition.colon'},
-        3: {name: 'keyword.operator.wildcard markup.bold.authzed'}
+        3: {name: 'constant.language.wildcard.spicedb'}
       },
       match: '([a-zA-Z_]\\w*)(:)(\\*)'
     },
@@ -211,7 +214,7 @@ const grammar = {
     with_expiration: {
       captures: {
         1: {name: 'keyword.class.definition'},
-        2: {name: 'keyword.class.definition'}
+        2: {name: 'support.type.expiration.spicedb'}
       },
       match: '\\s*(with)\\s*(expiration)\\s*'
     }

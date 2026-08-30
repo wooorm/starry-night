@@ -1,6 +1,6 @@
 // This is a TextMate grammar distributed by `starry-night`.
 // This grammar is developed at
-// <https://github.com/saltstack/atom-salt>
+// <https://github.com/saltstack-contrib/atom-salt>
 // and licensed `mit`.
 // See <https://github.com/wooorm/starry-night> for more info.
 /**
@@ -9,12 +9,15 @@
 
 /** @type {Grammar} */
 const grammar = {
-  dependencies: ['source.python'],
   extensions: ['.sls'],
-  names: ['saltstack', 'saltstate', 'salt'],
+  names: ['salt', 'saltstack', 'saltstate'],
   patterns: [
-    {include: '#jinja-control'},
-    {include: '#jinja-value'},
+    {
+      begin: '{([%#{])',
+      end: '([%#}])}',
+      name: 'jinja.tag.in.yaml',
+      patterns: []
+    },
     {
       begin: '^(\\s*)(?:(-)|(?:(-\\s*)?(\\w+\\s*(:))))\\s*(\\||>)',
       beginCaptures: {
@@ -25,7 +28,7 @@ const grammar = {
       },
       end: '^(?!^\\1)|^(?=\\1(-|\\w+\\s*:)|#)',
       name: 'string.unquoted.block.yaml',
-      patterns: [{include: '#jinja-control'}, {include: '#jinja-value'}]
+      patterns: []
     },
     {
       captures: {
@@ -88,11 +91,7 @@ const grammar = {
       end: '"',
       endCaptures: {0: {name: 'punctuation.definition.string.end.yaml'}},
       name: 'string.quoted.double.yaml',
-      patterns: [
-        {include: '#escaped_char'},
-        {include: '#jinja-control'},
-        {include: '#jinja-value'}
-      ]
+      patterns: [{include: '#escaped_char'}]
     },
     {
       begin: "'",
@@ -100,11 +99,7 @@ const grammar = {
       end: "'",
       endCaptures: {0: {name: 'punctuation.definition.string.end.yaml'}},
       name: 'string.quoted.single.yaml',
-      patterns: [
-        {include: '#escaped_char'},
-        {include: '#jinja-control'},
-        {include: '#jinja-value'}
-      ]
+      patterns: [{include: '#escaped_char'}]
     },
     {
       begin: '`',
@@ -112,7 +107,7 @@ const grammar = {
       end: '`',
       endCaptures: {0: {name: 'punctuation.definition.string.end.yaml'}},
       name: 'string.interpolated.yaml',
-      patterns: [{include: '#escaped_char'}, {include: '#jinja-control'}]
+      patterns: [{include: '#escaped_char'}]
     },
     {
       captures: {
@@ -150,43 +145,7 @@ const grammar = {
     }
   ],
   repository: {
-    escaped_char: {match: '\\\\.', name: 'constant.character.escape.yaml'},
-    'jinja-control': {
-      begin: '\\{%+(?!>)=?',
-      beginCaptures: {0: {name: 'punctuation.definition.embedded.begin.jinja'}},
-      contentName: 'source.python',
-      end: '(%)\\}',
-      endCaptures: {0: {name: 'punctuation.definition.embedded.end.jinja'}},
-      name: 'meta.embedded.line.jinja',
-      patterns: [
-        {
-          captures: {1: {name: 'punctuation.definition.comment.jinja'}},
-          match: '(#).*?(?=%>)',
-          name: 'comment.line.number-sign.jinja'
-        },
-        {include: 'source.python'}
-      ]
-    },
-    'jinja-value': {
-      begin: '\\{\\{(?!\\})',
-      beginCaptures: {
-        0: {name: 'punctuation.definition.embedded.begin.jinja-value'}
-      },
-      contentName: 'source.python',
-      end: '\\}\\}',
-      endCaptures: {
-        0: {name: 'punctuation.definition.embedded.end.jinja-value'}
-      },
-      name: 'meta.embedded.line.jinja',
-      patterns: [
-        {
-          captures: {1: {name: 'punctuation.definition.comment.jinja-value'}},
-          match: '(#).*?(?=%>)',
-          name: 'comment.line.number-sign.jinja-value'
-        },
-        {include: 'source.python'}
-      ]
-    }
+    escaped_char: {match: '\\\\.', name: 'constant.character.escape.yaml'}
   },
   scopeName: 'source.yaml.salt'
 }

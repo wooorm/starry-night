@@ -9,7 +9,8 @@
 
 /** @type {Grammar} */
 const grammar = {
-  extensions: ['.vhdl', '.vhd', '.vhf', '.vhi', '.vho', '.vhs', '.vht', '.vhw'],
+  extensions: ['.vhdl', '.vhd', '.vhf', '.vhi', '.vho', '.vht', '.vhw'],
+  extensionsWithDot: ['.vhs'],
   names: ['vhdl'],
   patterns: [{include: '#syntax_highlighting'}],
   repository: {

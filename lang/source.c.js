@@ -10,6 +10,7 @@
 /** @type {Grammar} */
 const grammar = {
   extensions: [
+    '.b',
     '.c',
     '.cats',
     '.h',
@@ -23,6 +24,7 @@ const grammar = {
     '.xs'
   ],
   names: [
+    'b',
     'c',
     'dtrace',
     'dtrace-script',

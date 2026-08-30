@@ -186,12 +186,12 @@ const grammar = {
     'dartdoc-codeblock-block': {
       begin: '^\\s*\\*\\s*(?!(\\s*```|/))',
       contentName: 'variable.other.source.dart',
-      end: '\n'
+      end: '$'
     },
     'dartdoc-codeblock-triple': {
       begin: '^\\s*///\\s*(?!\\s*```)',
       contentName: 'variable.other.source.dart',
-      end: '\n'
+      end: '$'
     },
     expression: {
       patterns: [

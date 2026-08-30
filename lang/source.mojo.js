@@ -1231,7 +1231,7 @@ const grammar = {
           },
           name: 'meta.lambda-function.python',
           patterns: [
-            {match: '\\b(var|read|mut|out|ref)\\b', name: 'storage.modifier'},
+            {match: '\\b(var|imm|mut|out|ref)\\b', name: 'storage.modifier'},
             {match: '/', name: 'keyword.operator.positional.parameter.python'},
             {
               match: '(\\*\\*|\\*)',
@@ -1318,7 +1318,7 @@ const grammar = {
     'magic-function-names': {
       captures: {1: {name: 'support.function.magic.python'}},
       match:
-        '(?x)\n  \\b(\n    __(?:\n      abs | add | aenter | aexit | aiter | and | anext\n      | await | bool | call | ceil | class_getitem\n      | cmp | coerce | complex | contains | copy\n      | deepcopy | del | __disable_del | delattr | delete | delitem\n      | delslice | dir | div | divmod | enter | eq\n      | exit | float | floor | floordiv | format | ge\n      | get | getattr | getattribute | getinitargs\n      | getitem | getnewargs | getslice | getstate | gt\n      | hash | hex | iadd | iand | idiv | ifloordiv |\n      | ilshift | imod | imul | index | init\n      | instancecheck | int | invert | ior | ipow\n      | irshift | isub | iter | itruediv | ixor | le\n      | len | long | lshift | lt | missing | mod | mul\n      | ne | neg | new | next | nonzero | oct | or | pos\n      | pow | radd | rand | rdiv | rdivmod | reduce\n      | reduce_ex | repr | reversed | rfloordiv |\n      | rlshift | rmod | rmul | ror | round | rpow\n      | rrshift | rshift | rsub | rtruediv | rxor | set\n      | setattr | setitem | set_name | setslice\n      | setstate | sizeof | str | sub | subclasscheck\n      | truediv | trunc | unicode | xor | matmul\n      | rmatmul | imatmul | init_subclass | set_name\n      | fspath | bytes | prepare | length_hint\n    )__\n  )\\b\n'
+        '(?x)\n  \\b(\n    __(?:\n      abs | add | aenter | aexit | aiter | and | anext\n      | await | bool | call | ceil | class_getitem\n      | cmp | coerce | complex | contains | copy\n      | deepcopy | deinit | delattr | delete | delitem\n      | delslice | dir | div | divmod | enter | eq\n      | exit | float | floor | floordiv | format | ge\n      | get | getattr | getattribute | getinitargs\n      | getitem | getnewargs | getslice | getstate | gt\n      | hash | hex | iadd | iand | idiv | ifloordiv |\n      | ilshift | imod | imul | index | init\n      | instancecheck | int | invert | ior | ipow\n      | irshift | isub | iter | itruediv | ixor | le\n      | len | long | lshift | lt | missing | mod | mul\n      | ne | neg | new | next | nonzero | oct | or | pos\n      | pow | radd | rand | rdiv | rdivmod | reduce\n      | reduce_ex | repr | reversed | rfloordiv |\n      | rlshift | rmod | rmul | ror | round | rpow\n      | rrshift | rshift | rsub | rtruediv | rxor | set\n      | setattr | setitem | set_name | setslice\n      | setstate | sizeof | str | sub | subclasscheck\n      | truediv | trunc | unicode | xor | matmul\n      | rmatmul | imatmul | init_subclass | set_name\n      | fspath | bytes | prepare | length_hint\n    )__\n  )\\b\n'
     },
     'magic-names': {
       patterns: [
@@ -1472,7 +1472,7 @@ const grammar = {
       endCaptures: {1: {name: 'punctuation.definition.parameters.end.python'}},
       name: 'meta.function.parameters.python',
       patterns: [
-        {match: '\\b(var|read|mut|out|ref)\\b', name: 'storage.modifier'},
+        {match: '\\b(var|imm|mut|out|ref)\\b', name: 'storage.modifier'},
         {match: '/', name: 'keyword.operator.positional.parameter.python'},
         {
           match: '(\\*\\*|\\*)',

@@ -15,7 +15,7 @@ const grammar = {
   patterns: [
     {
       match:
-        '%(init|hook|subclass|group|class|new|ctor|end|config|orig|log|hookf|dtor|property|c)',
+        '%(init|hookf|hook|subclass|group|class|new|ctor|end|config|orig|log|dtor|property|c)',
       name: 'keyword.source.logos'
     },
     {

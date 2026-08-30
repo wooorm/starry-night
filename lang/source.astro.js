@@ -85,77 +85,126 @@ const grammar = {
     'L:meta.style.astro - meta.lang - (meta.embedded.block source)': {
       patterns: [
         {
-          begin: '(?<=>)(?!</)',
+          begin: '(?<=>)(?=[^\\n]+</style[\\s>])',
           contentName: 'source.css',
-          end: '(?=</)',
+          end: '(?=</style[\\s>])',
           name: 'meta.embedded.block.astro',
           patterns: [{include: 'source.css'}]
+        },
+        {
+          begin: '(?<=>)(?!</)',
+          contentName: 'source.css',
+          name: 'meta.embedded.block.astro',
+          patterns: [{include: 'source.css'}],
+          while: '^(?!\\s*</style[\\s>])'
         }
       ]
     },
     'L:meta.style.astro meta.lang.css - (meta.embedded.block source)': {
       patterns: [
         {
-          begin: '(?<=>)(?!</)',
+          begin: '(?<=>)(?=[^\\n]+</style[\\s>])',
           contentName: 'source.css',
-          end: '(?=</)',
+          end: '(?=</style[\\s>])',
           name: 'meta.embedded.block.astro',
           patterns: [{include: 'source.css'}]
+        },
+        {
+          begin: '(?<=>)(?!</)',
+          contentName: 'source.css',
+          name: 'meta.embedded.block.astro',
+          patterns: [{include: 'source.css'}],
+          while: '^(?!\\s*</style[\\s>])'
         }
       ]
     },
     'L:meta.style.astro meta.lang.less - (meta.embedded.block source)': {
       patterns: [
         {
-          begin: '(?<=>)(?!</)',
+          begin: '(?<=>)(?=[^\\n]+</style[\\s>])',
           contentName: 'source.css.less',
-          end: '(?=</)',
+          end: '(?=</style[\\s>])',
           name: 'meta.embedded.block.astro',
           patterns: [{include: 'source.css.less'}]
+        },
+        {
+          begin: '(?<=>)(?!</)',
+          contentName: 'source.css.less',
+          name: 'meta.embedded.block.astro',
+          patterns: [{include: 'source.css.less'}],
+          while: '^(?!\\s*</style[\\s>])'
         }
       ]
     },
     'L:meta.style.astro meta.lang.postcss - (meta.embedded.block source)': {
       patterns: [
         {
-          begin: '(?<=>)(?!</)',
+          begin: '(?<=>)(?=[^\\n]+</style[\\s>])',
           contentName: 'source.css.postcss',
-          end: '(?=</)',
+          end: '(?=</style[\\s>])',
           name: 'meta.embedded.block.astro',
           patterns: []
+        },
+        {
+          begin: '(?<=>)(?!</)',
+          contentName: 'source.css.postcss',
+          name: 'meta.embedded.block.astro',
+          patterns: [],
+          while: '^(?!\\s*</style[\\s>])'
         }
       ]
     },
     'L:meta.style.astro meta.lang.sass - (meta.embedded.block source)': {
       patterns: [
         {
-          begin: '(?<=>)(?!</)',
+          begin: '(?<=>)(?=[^\\n]+</style[\\s>])',
           contentName: 'source.sass',
-          end: '(?=</)',
+          end: '(?=</style[\\s>])',
           name: 'meta.embedded.block.astro',
           patterns: [{include: 'source.sass'}]
+        },
+        {
+          begin: '(?<=>)(?!</)',
+          contentName: 'source.sass',
+          name: 'meta.embedded.block.astro',
+          patterns: [{include: 'source.sass'}],
+          while: '^(?!\\s*</style[\\s>])'
         }
       ]
     },
     'L:meta.style.astro meta.lang.scss - (meta.embedded.block source)': {
       patterns: [
         {
-          begin: '(?<=>)(?!</)',
+          begin: '(?<=>)(?=[^\\n]+</style[\\s>])',
           contentName: 'source.css.scss',
-          end: '(?=</)',
+          end: '(?=</style[\\s>])',
           name: 'meta.embedded.block.astro',
           patterns: [{include: 'source.css.scss'}]
+        },
+        {
+          begin: '(?<=>)(?!</)',
+          contentName: 'source.css.scss',
+          name: 'meta.embedded.block.astro',
+          patterns: [{include: 'source.css.scss'}],
+          while: '^(?!\\s*</style[\\s>])'
         }
       ]
     },
     'L:meta.style.astro meta.lang.stylus - (meta.embedded.block source)': {
       patterns: [
         {
-          begin: '(?<=>)(?!</)',
+          begin: '(?<=>)(?=[^\\n]+</style[\\s>])',
           contentName: 'source.stylus',
-          end: '(?=</)',
+          end: '(?=</style[\\s>])',
           name: 'meta.embedded.block.astro',
           patterns: [{include: 'source.stylus'}]
+        },
+        {
+          begin: '(?<=>)(?!</)',
+          contentName: 'source.stylus',
+          name: 'meta.embedded.block.astro',
+          patterns: [{include: 'source.stylus'}],
+          while: '^(?!\\s*</style[\\s>])'
         }
       ]
     }
@@ -477,30 +526,69 @@ const grammar = {
       patterns: [
         {
           begin:
-            '\\G(?=\\s*[^>]*?(type|lang)\\s*=\\s*([\'"]|)(?:text\\/)?(application\\/ld\\+json)\\2)',
+            '\\G(?=\\s*(type|lang)\\s*=\\s*([\'"]|)(?:text\\/)?(application\\/ld\\+json)\\2(?=\\s|/?>|$))',
           end: '(?=</|/>)',
           name: 'meta.lang.json.astro',
           patterns: [{include: '#tags-lang-start-attributes'}]
         },
         {
-          begin: '\\G(?=\\s*[^>]*?(type|lang)\\s*=\\s*([\'"]|)(module)\\2)',
+          begin:
+            '\\G(?=\\s*(type|lang)\\s*=\\s*([\'"]|)(module)\\2(?=\\s|/?>|$))',
           end: '(?=</|/>)',
           name: 'meta.lang.javascript.astro',
           patterns: [{include: '#tags-lang-start-attributes'}]
         },
         {
           begin:
-            '\\G(?=\\s*[^>]*?(type|lang)\\s*=\\s*([\'"]|)(?:text/|application/)?([\\w\\/+]+)\\2)',
+            '\\G(?=\\s*(type|lang)\\s*=\\s*([\'"]|)(?:text/|application/)?([\\w\\/+]+)\\2(?=\\s|/?>|$))',
           end: '(?=</|/>)',
           name: 'meta.lang.$3.astro',
           patterns: [{include: '#tags-lang-start-attributes'}]
         },
-        {include: '#tags-lang-start-attributes'}
+        {
+          begin: '\\G',
+          end: '(?=</|/>)',
+          patterns: [
+            {include: '#tags-lang-start-attributes-prescan'},
+            {
+              begin:
+                '(?=\\s*(type|lang)\\s*=\\s*([\'"]|)(?:text\\/)?(application\\/ld\\+json)\\2(?=\\s|/?>|$))',
+              end: '(?=</|/>)',
+              name: 'meta.lang.json.astro',
+              patterns: [{include: '#tags-lang-start-attributes'}]
+            },
+            {
+              begin:
+                '(?=\\s*(type|lang)\\s*=\\s*([\'"]|)(module)\\2(?=\\s|/?>|$))',
+              end: '(?=</|/>)',
+              name: 'meta.lang.javascript.astro',
+              patterns: [{include: '#tags-lang-start-attributes'}]
+            },
+            {
+              begin:
+                '(?=\\s*(type|lang)\\s*=\\s*([\'"]|)(?:text/|application/)?([\\w\\/+]+)\\2(?=\\s|/?>|$))',
+              end: '(?=</|/>)',
+              name: 'meta.lang.$3.astro',
+              patterns: [{include: '#tags-lang-start-attributes'}]
+            },
+            {
+              match: '>',
+              name: 'meta.tag.start.astro punctuation.definition.tag.end.astro'
+            }
+          ]
+        }
       ]
     },
     'tags-lang-start-attributes': {
       begin: '\\G',
       end: '(?=/>)|>',
+      endCaptures: {0: {name: 'punctuation.definition.tag.end.astro'}},
+      name: 'meta.tag.start.astro',
+      patterns: [{include: '#attributes'}]
+    },
+    'tags-lang-start-attributes-prescan': {
+      begin: '\\G',
+      end: '(?=/>)|>|(?=\\s*(?:type|lang)\\s*=\\s*(?:"(?:text/|application/)?[\\w\\/+]+"|\'(?:text/|application/)?[\\w\\/+]+\'|(?:text/|application/)?[\\w\\/+]+)(?=\\s|/?>|$))',
       endCaptures: {0: {name: 'punctuation.definition.tag.end.astro'}},
       name: 'meta.tag.start.astro',
       patterns: [{include: '#attributes'}]

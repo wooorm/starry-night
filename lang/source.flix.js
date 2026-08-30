@@ -16,12 +16,14 @@ const grammar = {
     all_patterns: {
       patterns: [
         {include: '#constants'},
+        {include: '#declarations'},
         {include: '#keywords'},
         {include: '#literal_char'},
         {include: '#literal_string'},
         {include: '#literal_dec'},
         {include: '#literal_hex'},
         {include: '#annotations'},
+        {include: '#functions'},
         {include: '#types'},
         {include: '#comments'}
       ]
@@ -47,7 +49,10 @@ const grammar = {
     },
     constants: {
       patterns: [
-        {match: '\\b\\(\\)\\b', name: 'constant.language.unit.flix'},
+        {
+          match: '(?<![a-zA-Z0-9_!])\\(\\)',
+          name: 'constant.language.unit.flix'
+        },
         {match: '\\b(true|false)\\b', name: 'constant.language.bool.flix'},
         {
           match: '\\b(LessThan|EqualTo|GreaterThan)\\b',
@@ -59,13 +64,38 @@ const grammar = {
         {match: '\\b(Ok|Err)\\b', name: 'constant.language.result.flix'}
       ]
     },
+    declarations: {
+      patterns: [
+        {
+          captures: {
+            1: {name: 'keyword.declaration.flix'},
+            2: {name: 'entity.name.function.flix'}
+          },
+          match: '\\b(def|redef)\\s+([a-z][a-zA-Z0-9_]*!?)'
+        }
+      ]
+    },
+    functions: {
+      patterns: [
+        {
+          captures: {
+            1: {name: 'entity.name.type.flix'},
+            2: {name: 'support.function.flix'}
+          },
+          match: '\\b([A-Z][a-zA-Z0-9_]*)\\.([a-z][a-zA-Z0-9_]*!?)'
+        },
+        {
+          match: '\\b[a-z][a-zA-Z0-9_]*!?(?=\\s*\\()',
+          name: 'entity.name.function.flix'
+        }
+      ]
+    },
     keywords: {
       patterns: [
         {
           match: '\\b(choose\\*|choose)\\b',
           name: 'keyword.control.choose.flix'
         },
-        {match: '\\b(dbg)\\b', name: 'keyword.control.debug.flix'},
         {match: '\\b(forA)\\b', name: 'keyword.control.applicativefor.flix'},
         {match: '\\b(forM)\\b', name: 'keyword.control.monadicfor.flix'},
         {match: '\\b(foreach)\\b', name: 'keyword.control.foreach.flix'},
@@ -73,24 +103,22 @@ const grammar = {
         {match: '\\b(yield)\\b', name: 'keyword.control.yield.flix'},
         {match: '\\b(if|else)\\b', name: 'keyword.control.if.flix'},
         {
-          match: '\\b(case|match|typematch|ematch)\\b',
+          match: '\\b(case|match|ematch)\\b',
           name: 'keyword.control.match.flix'
         },
         {match: '\\b(run)\\b', name: 'keyword.control.run.flix'},
-        {match: '\\b(resume)\\b', name: 'keyword.control.resume.flix'},
         {match: '\\b(throw)\\b', name: 'keyword.control.throw.flix'},
         {match: '\\b(try|catch)\\b', name: 'keyword.control.try.flix'},
         {match: '\\b(spawn)\\b', name: 'keyword.control.spawn.flix'},
         {match: '\\b(par)\\b', name: 'keyword.control.par.flix'},
         {match: '\\b(unsafe)\\b', name: 'keyword.control.unsafe.flix'},
-        {match: '\\b(branch|jumpto)\\b', name: 'keyword.control.ast.flix'},
         {match: '\\b(forall)\\b', name: 'keyword.forall.flix'},
         {match: '\\b(not|and|or)\\b', name: 'keyword.operator.bool.flix'},
         {match: '\\bfix\\b', name: 'keyword.operator.fix.flix'},
         {match: '\\b(new)\\b', name: 'keyword.operator.new.flix'},
         {
           match:
-            '\\b(eff|def|redef|law|enum|case|type|alias|trait|instance|with|without|opaque|mod|struct|handler|xvar)\\b',
+            '\\b(eff|def|redef|enum|type|alias|trait|instance|with|mod|struct)\\b',
           name: 'keyword.declaration.flix'
         },
         {
@@ -125,10 +153,8 @@ const grammar = {
         },
         {match: '\\->', name: 'keyword.operator.arrow.struct.flix'},
         {match: ';', name: 'keyword.control.semicolon.flix'},
-        {
-          match: '\\b(lawful|pub|sealed|static)\\b',
-          name: 'storage.type.modifier.flix'
-        }
+        {match: '\\b(super)\\b', name: 'variable.language.super.flix'},
+        {match: '\\b(pub|sealed|static)\\b', name: 'storage.modifier.flix'}
       ]
     },
     literal_char: {
@@ -184,11 +210,7 @@ const grammar = {
     },
     types: {
       patterns: [
-        {
-          match:
-            '\\b(Unit|Bool|Char|Float32|Float64|Int8|Int16|Int32|Int64|BigInt|String)\\b',
-          name: 'entity.name.type'
-        }
+        {match: '\\b[A-Z][a-zA-Z0-9_]*\\b', name: 'entity.name.type.flix'}
       ]
     }
   },

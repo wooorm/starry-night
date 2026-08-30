@@ -17,6 +17,7 @@ const grammar = {
     '.ebuild',
     '.eclass',
     '.ksh',
+    '.pacscript',
     '.sbatch',
     '.sh',
     '.sh.in',

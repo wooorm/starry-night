@@ -9,7 +9,7 @@
 
 /** @type {Grammar} */
 const grammar = {
-  extensions: ['.ahk', '.ahkl'],
+  extensions: ['.ahk', '.ah1', '.ah2', '.ahkl'],
   names: ['autohotkey', 'ahk'],
   patterns: [
     {

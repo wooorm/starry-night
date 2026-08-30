@@ -9,7 +9,7 @@
 
 /** @type {Grammar} */
 const grammar = {
-  extensions: ['.b'],
+  extensions: [],
   names: ['brainfuck'],
   patterns: [
     {match: '[+-]', name: 'constant.character.modify-value.bf'},

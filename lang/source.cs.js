@@ -1834,6 +1834,7 @@ const grammar = {
         {include: '#preprocessor-app-directive-exclude'},
         {include: '#preprocessor-app-directive-include'},
         {include: '#preprocessor-app-directive-project'},
+        {include: '#preprocessor-app-directive-ref'},
         {include: '#preprocessor-app-directive-sdk'},
         {include: '#preprocessor-app-directive-generic'}
       ]
@@ -1895,6 +1896,13 @@ const grammar = {
         4: {name: 'string.unquoted.preprocessor.message.cs'}
       },
       match: '\\b(property)\\b\\s*([_[:alpha:]][_[:alnum:]]*)?(=)?(.*)?\\s*'
+    },
+    'preprocessor-app-directive-ref': {
+      captures: {
+        1: {name: 'keyword.preprocessor.ref.cs'},
+        2: {name: 'string.unquoted.preprocessor.message.cs'}
+      },
+      match: '\\b(ref)\\b\\s*(.*)?\\s*'
     },
     'preprocessor-app-directive-sdk': {
       captures: {

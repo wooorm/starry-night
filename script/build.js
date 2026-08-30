@@ -92,10 +92,10 @@ const prettierConfig = await prettier.resolveConfig(
 )
 
 const gemBase = new URL(linguistBasename + '/', gemsBase)
-const languagesUrl = new URL('lib/linguist/languages.json', gemBase)
+const languagesUrl = new URL('lib/linguist/languages.yml', gemBase)
 
 /** @type {Record<string, {aliases?: ReadonlyArray<string>, extensions?: ReadonlyArray<string>, tm_scope: string}>} */
-const languages = JSON.parse(String(await fs.readFile(languagesUrl)))
+const languages = parseYaml(String(await fs.readFile(languagesUrl)))
 /** @type {string} */
 let name
 
@@ -176,6 +176,7 @@ for (name in languages) {
         scope === 'source.Caddyfile' ||
         scope === 'source.iCalendar' ||
         scope === 'source.QB64' ||
+        scope === 'source.vespaSchema' ||
         /^[-a-z\d+_.]+$/.test(scope),
       scope
     )

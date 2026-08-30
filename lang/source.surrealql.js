@@ -13,6 +13,7 @@ const grammar = {
   names: ['surrealql', 'surql'],
   patterns: [
     {include: '#comment'},
+    {include: '#type-clause'},
     {include: '#keywords'},
     {include: '#operators'},
     {include: '#js-function'},
@@ -81,7 +82,10 @@ const grammar = {
         '(?i)\\b(chebyshev|euclidean|manhattan|minkowski|hamming|jaccard|pearson|cosine)\\b',
       name: 'support.constant.distance.surrealql'
     },
-    duration: {match: '(\\d+(ns|µs|ms|s|m|h|d|w|y))+', name: 'constant.other'},
+    duration: {
+      match: '(\\d+(?:_\\d+)* *(?:ns|µs|ms|s|m|h|d|w|y)(?![A-Za-z_]))+',
+      name: 'constant.other'
+    },
     'filter-name': {
       match: '(?i)\\b(edgengram|uppercase|snowball|ascii|ngram)\\b',
       name: 'support.constant.filter.surrealql'
@@ -148,21 +152,21 @@ const grammar = {
         },
         {
           match:
-            '(?i)\\b(commit|config|create|define|delete|exists|fields|ignore|insert|issuer|normal|option|record|reject|relate|remove|return|search|select|signin|signup|tables|unique|update|upsert|values|alter|async|begin|break|defer|event|fetch|field|group)\\b',
+            '(?i)\\b(commit|config|create|define|delete|exists|fields|ignore|insert|issuer|normal|option|record|reject|relate|remove|return|search|select|signin|signup|strict|tables|unique|update|upsert|values|alter|async|begin|break|defer|event|fetch|field)\\b',
           name: 'keyword.control keyword.control.surrealql'
         },
         {
           match:
-            '(?i)\\b(index|limit|merge|mtree|order|param|patch|roles|scope|since|sleep|split|start|table|throw|token|trace|unset|value|where|auto|bm25|desc|dist|drop|else|from|hnsw|info|into|kill|live|omit|only|root)\\b',
+            '(?i)\\b(group|index|limit|merge|mtree|order|param|patch|roles|scope|since|sleep|split|start|table|throw|token|trace|unset|value|where|auto|bm25|desc|dist|drop|else|from|hnsw|info|into|kill|live|omit|only)\\b',
           name: 'keyword.control keyword.control.surrealql'
         },
         {
           match:
-            '(?i)\\b(show|then|type|user|when|with|all|any|api|asc|efc|end|for|get|jwt|key|let|not|out|put|set|url|use|as|at|by|db|if|in|lm|m0|ns|on|sc|tb)\\b',
+            '(?i)\\b(root|show|then|type|user|when|with|all|any|api|asc|efc|end|for|get|jwt|key|let|not|out|put|set|url|use|as|at|by|db|if|in|lm|m0|ns|on|sc)\\b',
           name: 'keyword.control keyword.control.surrealql'
         },
         {
-          match: '(?i)\\b(to|m)\\b',
+          match: '(?i)\\b(tb|to|m)\\b',
           name: 'keyword.control keyword.control.surrealql'
         }
       ]
@@ -174,10 +178,16 @@ const grammar = {
     number: {
       patterns: [
         {
-          match: '\\b\\d+\\.\\d+(?:f|dec)?\\b',
+          match:
+            '\\b\\d+(?:_\\d+)*(?:\\.\\d+(?:_\\d+)*)?(?:[eE][+-]?\\d+(?:_\\d+)*)?dec\\b',
           name: 'constant.numeric.decimal'
         },
-        {match: '\\b\\d+(?:f|dec)?\\b', name: 'constant.numeric.int'}
+        {
+          match:
+            '\\b(?:\\d+(?:_\\d+)*f|\\d+(?:_\\d+)*(?:\\.\\d+(?:_\\d+)*(?:[eE][+-]?\\d+(?:_\\d+)*)?|[eE][+-]?\\d+(?:_\\d+)*)(?:f)?)\\b',
+          name: 'constant.numeric.decimal'
+        },
+        {match: '\\b\\d+(?:_\\d+)*\\b', name: 'constant.numeric.int'}
       ]
     },
     'object-key': {
@@ -248,6 +258,7 @@ const grammar = {
           match: '@([0-9]+)?@',
           name: 'keyword.operator.matches.surrealql'
         },
+        {match: '\\.\\?', name: 'keyword.operator.optional.surrealql'},
         {match: '\\?:', name: 'keyword.operator.either.surrealql'},
         {match: '\\?\\?', name: 'keyword.operator.truthy.surrealql'},
         {
@@ -349,6 +360,26 @@ const grammar = {
       match: '[a-z]*<[a-zA-Z][a-zA-Z0-9<>|, _]+[a-zA-Z0-9>]+>',
       name: 'meta.type.annotation.surrealql'
     },
+    'type-clause': {
+      begin: '(?i)\\b(TYPE)\\b',
+      beginCaptures: {1: {name: 'keyword.control.surrealql'}},
+      end: '(?=\\b(DEFAULT|ASSERT|VALUE|COMMENT|PERMISSIONS|REFERENCE|READONLY|FLEXIBLE|COMPUTED|DIST|DIMENSION|EFC|M|LM|M0)\\b|;|$)',
+      name: 'meta.type.annotation.surrealql',
+      patterns: [
+        {include: '#comment'},
+        {include: '#string'},
+        {include: '#number'},
+        {include: '#void-type'},
+        {match: '\\|', name: 'keyword.operator.union.surrealql'},
+        {match: '[\\[\\]<>]', name: 'punctuation.definition.type.surrealql'},
+        {match: ',', name: 'punctuation.separator.type.surrealql'},
+        {include: '#index-type'},
+        {
+          match: '\\b[a-zA-Z_][a-zA-Z0-9_]*\\b',
+          name: 'entity.name.type.surrealql'
+        }
+      ]
+    },
     value: {
       patterns: [
         {include: '#comment'},
@@ -362,8 +393,8 @@ const grammar = {
         {include: '#ident'},
         {include: '#void-type'},
         {include: '#positional'},
-        {include: '#number'},
         {include: '#duration'},
+        {include: '#number'},
         {include: '#record'},
         {include: '#subquery'},
         {include: '#type'},

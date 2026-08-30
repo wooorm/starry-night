@@ -396,13 +396,19 @@ const grammar = {
       patterns: [{include: '#expression'}, {include: '#punctuation-comma'}]
     },
     'as-type': {
-      begin: '\\s*([Aa][Ss])\\s*([Cc][Ll][Aa][Ss]{2})?',
+      begin: '\\s*([Aa][Ss])(\\s+([Cc][Ll][Aa][Ss]{2})\\s)?\\s*',
       beginCaptures: {
         1: {name: 'keyword.other.abl'},
-        2: {name: 'keyword.other.abl'}
+        3: {name: 'keyword.other.abl'}
       },
-      end: '\\s*(\\.|\\,|\\s*)',
-      patterns: [{include: '#primitive-type'}, {include: '#type-names'}]
+      end: '(?=\\.|\\,|\\)|\\s|:)',
+      patterns: [
+        {include: '#primitive-type'},
+        {include: '#dll-type'},
+        {include: '#type-names'},
+        {include: '#string'},
+        {include: '#comment'}
+      ]
     },
     'assign-statment': {
       patterns: [
@@ -441,7 +447,7 @@ const grammar = {
         3: {name: 'punctuation.terminator.abl'}
       },
       match:
-        '(?i)^\\s*(?!((?:transact(?:ion|io|i)?)|no-lock|(?:exclusive-l(?:ock|oc|o)?)|(?:share(?:-lock|-loc|-lo|-l|-)?)):)([a-zA-Z][a-zA-Z0-9_\\-#$%\\-$#]*)(:)\\s'
+        '(?i)^\\s*(?!((?:transact(?:ion|io|i)?)|no-lock|(?:exclusive(?:-lock|-loc|-lo|-l)?)|(?:share(?:-lock|-loc|-lo|-l)?)):)([a-zA-Z][a-zA-Z0-9_\\-#$%\\-$#]*)(:)\\s'
     },
     'block-statement': {
       begin: '(?i)(?<!end)\\s*(do|repeat|finally)\\b',
@@ -606,7 +612,7 @@ const grammar = {
         1: {name: 'support.function.abl'},
         2: {name: 'meta.brace.round.abl'}
       },
-      end: '(?i)\\b(?=\\)|where|no-lock|(share(?:-lock|-loc|-lo|-l|-)?)|using|(no-prefe(?:tch|tc|t)?)|no-wait)\\s*',
+      end: '(?i)\\b(?=\\)|where|no-lock|(share(?:-lock|-loc|-lo|-l)?)|using|(no-prefe(?:tch|tc|t)?)|no-wait)\\s*',
       patterns: [
         {include: '#parens'},
         {include: '#comment'},
@@ -620,6 +626,18 @@ const grammar = {
         {include: '#of-phrase'},
         {include: '#db-dot-table'},
         {include: '#db-dot-table-dot-field'}
+      ]
+    },
+    'catch-block': {
+      begin: '\\s*([Cc][Aa][Tt][Cc][Hh])\\s+',
+      beginCaptures: {1: {name: 'keyword.other.abl'}},
+      end: '(:)',
+      endCaptures: {1: {name: 'punctuation.terminator.abl'}},
+      patterns: [
+        {include: '#as-type'},
+        {include: '#variable-name'},
+        {include: '#comment'},
+        {include: '#preprocessors'}
       ]
     },
     'code-block': {
@@ -701,9 +719,11 @@ const grammar = {
       patterns: [
         {
           captures: {1: {name: 'keyword.other.abl'}},
-          match: '(?i)\\s*(for|table|no-error)\\s*'
+          match: '(?i)\\s*(for|table|no-error)\\b'
         },
         {include: '#define-table'},
+        {include: '#handle-attributes-and-methods'},
+        {include: '#type-member-call'},
         {include: '#buffer-name'},
         {include: '#temp-table-name'},
         {include: '#expression'},
@@ -802,7 +822,6 @@ const grammar = {
         {include: '#property-accessor'},
         {include: '#array-literal'},
         {include: '#define-field'},
-        {include: '#parameter-as'},
         {include: '#define-stream'},
         {include: '#define-buffer'},
         {include: '#define-frame'},
@@ -851,9 +870,11 @@ const grammar = {
         {
           captures: {1: {name: 'keyword.other.abl'}},
           match:
-            '(?i)\\b((share(?:-lock|-loc|-lo|-l|-)?)|(exclusive-l(?:ock|oc|o)?)|no-lock|no-wait|(disp(?:lay|la|l)?))\\b'
+            '(?i)\\b((share(?:-lock|-loc|-lo|-l)?)|(exclusive(?:-lock|-loc|-lo|-l)?)|no-lock|no-wait|(disp(?:lay|la|l)?))\\b'
         },
         {include: '#comment'},
+        {include: '#preprocessors'},
+        {include: '#abl-functions'},
         {include: '#db-dot-table-dot-field'},
         {include: '#keywords'},
         {include: '#expression'}
@@ -1044,37 +1065,14 @@ const grammar = {
     'define-parameter': {
       begin: '(?i)\\b(param(?:eter|ete|et|e)?)\\b',
       beginCaptures: {1: {name: 'keyword.other.abl'}},
-      end: '(?i)(?=\\.)|\\b(?=(bgc(?:olor|olo|ol|o)?)|(column-lab(?:el|e)?)|context-help-id|dcolor|decimals|drop-target|extent|font|(fgc(?:olor|olo|ol|o)?)|(form(?:at|a)?)|initial|label|(mouse-p(?:ointer|ointe|oint|oin|oi|o)?)|no-undo|not|(case-sen(?:sitive|sitiv|siti|sit|si|s)?)|(pfc(?:olor|olo|ol|o)?)|view-as|triggers)\\b',
+      end: '(?i)(?=\\.)|(?=\\s+(decimals|extent|(form(?:at|a)?)|initial|label|no-undo|not|(case-sen(?:sitive|sitiv|siti|sit|si|s)?)|(column-lab(?:el|e)?)|append|bind|by-value))\\b',
       patterns: [
-        {
-          captures: {
-            1: {name: 'keyword.other.abl'},
-            2: {name: 'keyword.other.abl'},
-            3: {name: 'storage.data.table.abl'}
-          },
-          match:
-            '(?i)\\b(table)\\s+(for)\\s+([a-zA-Z][a-zA-Z_\\-#$%]*(\\.[a-zA-Z][a-zA-Z_\\-#$%]*)?)\\b'
-        },
-        {
-          captures: {
-            1: {name: 'keyword.other.abl'},
-            2: {name: 'variable.other.abl'}
-          },
-          match:
-            '(?i)\\b(table-handle|dataset-handle)\\s+([a-zA-Z_][a-zA-Z0-9_#$\\-%&]*)\\b'
-        },
-        {
-          captures: {
-            1: {name: 'keyword.other.abl'},
-            2: {name: 'keyword.other.abl'},
-            3: {name: 'storage.data.dataset.abl'}
-          },
-          match:
-            '(?i)\\b(dataset)\\s+(for)\\s+([a-zA-Z_\\-#$%]+(\\.[a-zA-Z_\\-#$%]+)?)\\b'
-        },
-        {include: '#parameter-as'},
-        {include: '#keywords'},
-        {include: '#expression'}
+        {include: '#parameter-table'},
+        {include: '#parameter-table-dataset-handle'},
+        {include: '#parameter-dataset'},
+        {include: '#as-type'},
+        {include: '#like-field'},
+        {include: '#parameter-name'}
       ]
     },
     'define-property': {
@@ -1142,7 +1140,7 @@ const grammar = {
     'define-variable': {
       begin: '(?i)\\s*(var(?:iable|iabl|iab|ia|i)?)\\s*',
       beginCaptures: {1: {name: 'keyword.other.abl'}},
-      end: '(?i)(?=\\.)|\\b(?=(bgc(?:olor|olo|ol|o)?)|(column-lab(?:el|e)?)|context-help-id|dcolor|decimals|drop-target|extent|font|(fgc(?:olor|olo|ol|o)?)|(form(?:at|a)?)|(init(?:ial|ia|i)?)|label|(mouse-p(?:ointer|ointe|oint|oin|oi|o)?)|no-undo|not|(case-sen(?:sitive|sitiv|siti|sit|si|s)?)|(pfc(?:olor|olo|ol|o)?)|view-as|triggers)\\b',
+      end: '(?i)(?=\\.)|\\b(?=((bgc(?:olor|olo|ol|o)?)|(column-lab(?:el|e)?)|context-help-id|dcolor|decimals|drop-target|extent|font|(fgc(?:olor|olo|ol|o)?)|(form(?:at|a)?)|(init(?:ial|ia|i)?)|label|(mouse-p(?:ointer|ointe|oint|oin|oi|o)?)|no-undo|not|(case-sen(?:sitive|sitiv|siti|sit|si|s)?)|(pfc(?:olor|olo|ol|o)?)|view-as|triggers)(?![#$\\-_%&]))\\b',
       patterns: [
         {
           captures: {1: {name: 'keyword.other.abl'}},
@@ -1303,6 +1301,7 @@ const grammar = {
       end: '(?i)\\s*(?=where|no-lock|(exclusive-l(?:ock|oc|o)?)|(share(?:-lock|-loc|-lo|-l|-)?)|tenant-where|use-index|table-scan|using|(no-prefe(?:tch|tc|t)?)|left|outer-join|break|by|(transact(?:ion|io|i)?)|,|:)\\s*',
       patterns: [
         {include: '#fields-except-list'},
+        {include: '#comment'},
         {include: '#of-phrase'},
         {
           captures: {
@@ -1322,7 +1321,7 @@ const grammar = {
     'for-each-table': {
       begin: '(?i)(?<=\\s|\\b|^)(for|(presel(?:ect|ec|e)?))[\\s+|$]',
       beginCaptures: {1: {name: 'keyword.other.abl'}},
-      end: '(?i)\\s*(?=where|no-lock|(exclusive-l(?:ock|oc|o)?)|(share(?:-lock|-loc|-lo|-l|-)?)|tenant-where|use-index|table-scan|using|(no-prefe(?:tch|tc|t)?)|left|outer-join|break|by|(transact(?:ion|io|i)?)|,|:|on)\\s*',
+      end: '(?i)\\s*(?=where|no-lock|(exclusive(?:-lock|-loc|-lo|-l)?)|(share(?:-lock|-loc|-lo|-l|-)?)|tenant-where|use-index|table-scan|using|(no-prefe(?:tch|tc|t)?)|left|outer-join|break|by|(transact(?:ion|io|i)?)|,|:|on)\\s*',
       patterns: [
         {
           captures: {1: {name: 'keyword.other.abl'}},
@@ -1340,7 +1339,7 @@ const grammar = {
     'for-join': {
       captures: {1: {name: 'storage.data.table.abl'}},
       match:
-        '(?i)(?<=,|^)\\s*([a-zA-Z][a-zA-Z0-9_\\-#$%]*(\\.[a-zA-Z_][a-zA-Z0-9_\\-#$%]*)?)\\s+(?=where|no-lock|(exclusive-l(?:ock|oc|o)?)|(share(?:-lock|-loc|-lo|-l|-)?)|tenant-where|use-index|table-scan|using|(no-prefe(?:tch|tc|t)?)|left|outer-join|break|by|(transact(?:ion|io|i)?))\\s*'
+        '(?i)(?<=,|^)\\s*([a-zA-Z][a-zA-Z0-9_\\-#$%]*(\\.[a-zA-Z_][a-zA-Z0-9_\\-#$%]*)?)\\s+(?=where|no-lock|(exclusive(?:-lock|-loc|-lo|-l)?)|(share(?:-lock|-loc|-lo|-l|-)?)|tenant-where|use-index|table-scan|using|(no-prefe(?:tch|tc|t)?)|left|outer-join|break|by|(transact(?:ion|io|i)?))\\s*'
     },
     'for-record': {
       captures: {
@@ -1448,6 +1447,7 @@ const grammar = {
         {include: '#abl-system-handles'},
         {include: '#can-find'},
         {include: '#abl-functions'},
+        {include: '#handle-attributes-and-methods'},
         {include: '#type-member-call'},
         {include: '#db-dot-table-dot-field'},
         {include: '#handle-attributes'},
@@ -1545,8 +1545,9 @@ const grammar = {
       patterns: [
         {
           begin:
-            '(?i)^\\s*((&)(scop(?:ed-define|ed-defin|ed-defi|ed-def|ed-de|ed-d|ed-|ed|e)?))\\s*',
+            '(?i)\\s*((&)(scop(?:ed-define|ed-defin|ed-defi|ed-def|ed-de|ed-d|ed-|ed|e)?))\\s*',
           beginCaptures: {
+            1: {name: 'meta.preprocessor.abl'},
             2: {name: 'punctuation.definition.preprocessor.abl'},
             3: {name: 'keyword.control.directive.define.abl'},
             4: {name: 'entity.name.function.preprocessor.abl'}
@@ -1558,7 +1559,7 @@ const grammar = {
         },
         {
           begin:
-            '(?i)^\\s*((&)(glob(?:al-define|al-defin|al-defi|al-def|al-de|al-d|al-|al|a)?))\\s*',
+            '(?i)\\s*((&)(glob(?:al-define|al-defin|al-defi|al-def|al-de|al-d|al-|al|a)?))\\s*',
           beginCaptures: {
             2: {name: 'punctuation.definition.preprocessor.abl'},
             3: {name: 'keyword.control.directive.define.abl'},
@@ -2031,12 +2032,13 @@ const grammar = {
       patterns: [{include: '#logical-expression'}]
     },
     'include-file': {
-      begin: '({)\\s*(?!&)((["]?)([\\\\/\\w$\\-\\.]+)(["]?))',
+      begin: '({)\\s*(?!&)((")([^"]*)(")|([\\\\/\\w$\\-\\.]+))',
       beginCaptures: {
         1: {name: 'punctuation.section.abl'},
         3: {name: 'punctuation.definition.string.begin.abl'},
         4: {name: 'entity.name.include.abl'},
-        5: {name: 'punctuation.definition.string.end.abl'}
+        5: {name: 'punctuation.definition.string.end.abl'},
+        6: {name: 'entity.name.include.abl'}
       },
       end: '\\s*(\\s*})\\s*',
       endCaptures: {1: {name: 'punctuation.section.abl'}},
@@ -2078,9 +2080,9 @@ const grammar = {
       name: 'meta.define-type.implements.abl',
       patterns: [{include: '#type-names'}]
     },
-    'input-output-from-to': {
+    'input-output-from-to-through': {
       begin:
-        '(?i)\\b(input|output)\\s+((stream|stream-handle)\\s+([a-zA-Z_][a-zA-Z0-9_#$\\-%&]*)\\s+)?(from|to)',
+        '(?i)\\b(input|output)\\s+((stream|stream-handle)\\s+([a-zA-Z_][a-zA-Z0-9_#$\\-%&]*)\\s+)?(from|to|through)',
       beginCaptures: {
         1: {name: 'keyword.other.abl'},
         3: {name: 'keyword.other.abl'},
@@ -2098,6 +2100,27 @@ const grammar = {
         {include: '#preprocessors'},
         {include: '#opsys-device-name'},
         {include: '#expression'}
+      ]
+    },
+    'input-statements': {
+      patterns: [
+        {
+          captures: {
+            1: {name: 'keyword.other.ablt'},
+            2: {name: 'keyword.other.abl'}
+          },
+          match: '\\s*([Ii][Nn][Pp][Uu][Tt])\\s+([Cc][Ll][Ee][Aa][Rr])\\b'
+        },
+        {
+          captures: {
+            1: {name: 'keyword.other.abl'},
+            3: {name: 'keyword.other.abl'},
+            4: {name: 'variable.other.abl'},
+            5: {name: 'keyword.other.abl'}
+          },
+          match:
+            '(?i)\\b(input|output|input-output)\\s+((stream|stream-handle)\\s+([a-zA-Z_][a-zA-Z0-9_#$\\-%&]*)\\s+)?(close)'
+        }
       ]
     },
     keywords: {
@@ -2259,6 +2282,14 @@ const grammar = {
       },
       match: '(?i)\\s*([a-zA-Z0-9_\\-#$%]+)\\s+(label)\\s*'
     },
+    'like-field': {
+      captures: {
+        1: {name: 'keyword.other.abl'},
+        2: {name: 'storage.data.table.abl'}
+      },
+      match:
+        '\\s*([Ll][Ii][Kk][Ee])\\s+(([a-zA-Z][a-zA-Z0-9#$\\-_%&]*\\.)?([a-zA-Z_][a-zA-Z0-9#$\\-_%&]*\\.)([a-zA-Z_][a-zA-Z0-9#$\\-_%&]*))'
+    },
     'logical-expression': {
       patterns: [
         {
@@ -2268,17 +2299,19 @@ const grammar = {
         {include: '#parens'},
         {include: '#function-arguments'},
         {include: '#abl-system-handles'},
+        {include: '#dynamic-buffer-field-access'},
         {include: '#new-record'},
         {include: '#record-buffer-functions'},
         {include: '#can-find'},
         {include: '#type-argument-function'},
         {include: '#abl-functions'},
+        {include: '#handle-methods'},
+        {include: '#handle-attributes'},
         {include: '#type-member-call'},
         {include: '#db-dot-table-dot-field'},
         {include: '#comment'},
         {include: '#operator'},
         {include: '#code-block'},
-        {include: '#handle-attributes'},
         {include: '#preprocessors'},
         {include: '#keywords'}
       ]
@@ -2304,7 +2337,6 @@ const grammar = {
           endCaptures: {1: {name: 'meta.brace.round.abl'}},
           patterns: [{include: '#parameter-definition'}]
         },
-        {include: '#parameter-as'},
         {include: '#string'},
         {include: '#extent'},
         {include: '#primitive-type'},
@@ -2419,26 +2451,14 @@ const grammar = {
       },
       match: '(?i)\\s*(ordinal)\\s((0x)?[[:xdigit:]]+)?'
     },
-    'parameter-as': {
-      begin: '\\s*([a-zA-Z0-9_\\-#$%]+)\\s+([Aa][Ss])\\s+',
-      beginCaptures: {
-        1: {name: 'variable.parameter.abl'},
-        2: {name: 'keyword.other.abl'}
+    'parameter-dataset': {
+      captures: {
+        1: {name: 'keyword.other.abl'},
+        3: {name: 'keyword.other.abl'},
+        4: {name: 'storage.data.dataset.abl'}
       },
-      end: '(?=\\s|\\)|\\.|,)',
-      patterns: [
-        {
-          captures: {1: {name: 'keyword.other.abl'}},
-          match: '\\b([Cc][Ll][Aa][Ss]{2})\\b'
-        },
-        {include: '#primitive-type'},
-        {include: '#dll-type'},
-        {include: '#type-names'},
-        {include: '#parens'},
-        {include: '#string'},
-        {include: '#punctuation-period'},
-        {include: '#punctuation-comma'}
-      ]
+      match:
+        '(?i)\\s*(dataset)\\s+((for)\\s+)?([a-zA-Z_\\-#$%]+(\\.[a-zA-Z_\\-#$%]+)?)\\s*'
     },
     'parameter-definition': {
       name: 'meta.define.parameter.abl',
@@ -2448,66 +2468,47 @@ const grammar = {
           match:
             '(?i)\\s*((input-o(?:utput|utpu|utp|u)?)|input|output|append|bind|by-value|(presel(?:ect|ec|e)?)|buffer|(param(?:eter|ete|et|e)?)|no-undo)\\s*'
         },
-        {
-          captures: {
-            1: {name: 'keyword.other.abl'},
-            2: {name: 'variable.parameter.abl'}
-          },
-          match:
-            '(?i)\\s*(dataset-handle|table-handle)\\s+([a-zA-Z][a-zA-Z0-9_\\-]*)'
-        },
-        {
-          captures: {
-            1: {name: 'keyword.other.abl'},
-            2: {name: 'storage.data.dataset.abl'}
-          },
-          match: '(?i)\\s*(dataset)\\s+([a-zA-Z][a-zA-Z0-9_\\-]*)\\s*'
-        },
-        {
-          captures: {
-            1: {name: 'keyword.other.abl'},
-            2: {name: 'storage.data.table.abl'}
-          },
-          match: '(?i)\\s*(table)\\s+([a-zA-Z][a-zA-Z0-9_\\-]*)\\s*'
-        },
-        {include: '#parameter-as'},
-        {
-          captures: {
-            1: {name: 'storage.type.abl'},
-            2: {name: 'punctuation.separator.comma.abl'}
-          },
-          match:
-            '(?i)\\s*((char(?:acter|acte|act|ac|a)?)|com-handle|date|datetime-tz|datetime|(dec(?:imal|ima|im|i)?)|handle|int64|(int(?:eger|ege|eg|e)?)|(log(?:ical|ica|ic|i)?)|(longch(?:ar|a)?)|memptr|raw|recid|rowid|(widget-h(?:andle|andl|and|an|a)?))(?![=a-zA-Z0-9_\\-])\\s*(,*)'
-        },
-        {
-          captures: {1: {name: 'punctuation.separator.comma.abl'}},
-          match: '\\s*(,)\\s*'
-        },
-        {include: '#buffer-for-table'},
+        {include: '#parameter-table-dataset-handle'},
+        {include: '#parameter-dataset'},
+        {include: '#parameter-table'},
+        {include: '#as-type'},
+        {include: '#like-field'},
         {include: '#extent'},
-        {include: '#property-call'},
-        {include: '#abl-system-handles'},
-        {include: '#abl-functions'},
-        {include: '#array-literal'},
-        {include: '#decimals'},
-        {include: '#constant'},
-        {include: '#keywords'},
-        {include: '#handle-attributes-and-methods'},
-        {include: '#type-names'},
+        {include: '#buffer-for-table'},
         {include: '#string'},
         {include: '#comment'},
-        {include: '#preprocessors'}
+        {include: '#preprocessors'},
+        {include: '#parameter-name'},
+        {include: '#punctuation-comma'}
       ]
     },
     'parameter-name': {
-      match: '(?<=^|\\s)(a-zA-Z0-9_\\-#$%|-)+(?=\\s)',
-      name: 'variable.parameter.abl'
+      captures: {1: {name: 'variable.parameter.abl'}},
+      match: '\\s*([a-zA-Z0-9_\\-#$%]+)\\s*'
+    },
+    'parameter-table': {
+      captures: {
+        1: {name: 'keyword.other.abl'},
+        3: {name: 'keyword.other.abl'},
+        4: {name: 'storage.data.table.abl'}
+      },
+      match:
+        '(?i)\\s*(table)\\s+((for)\\s+)?([a-zA-Z][a-zA-Z_\\-#$%]*(\\.[a-zA-Z][a-zA-Z_\\-#$%]*)?)\\b'
+    },
+    'parameter-table-dataset-handle': {
+      captures: {
+        1: {name: 'keyword.other.abl'},
+        2: {name: 'variable.parameter.abl'}
+      },
+      match:
+        '(?i)\\s*(dataset-handle|table-handle)\\s+([a-zA-Z][a-zA-Z0-9_\\-]*)'
     },
     parens: {match: '\\(|\\)', name: 'meta.brace.round.abl'},
     'preprocessor-directives': {
       patterns: [
         {
           captures: {
+            1: {name: 'meta.preprocessor.abl'},
             2: {name: 'punctuation.definition.preprocessor.abl'},
             3: {name: 'keyword.control.directive.conditional.abl'}
           },
@@ -2515,6 +2516,7 @@ const grammar = {
         },
         {
           captures: {
+            1: {name: 'meta.preprocessor.abl'},
             2: {name: 'punctuation.definition.preprocessor.abl'},
             3: {name: 'storage.type.function.abl'}
           },
@@ -2767,6 +2769,7 @@ const grammar = {
     statements: {
       name: 'meta.statements.abl',
       patterns: [
+        {include: '#input-statements'},
         {include: '#comment'},
         {include: '#run-options'},
         {include: '#buffer-copy'},
@@ -2778,7 +2781,7 @@ const grammar = {
         {include: '#while-expression'},
         {include: '#rowid-function'},
         {include: '#var-statement'},
-        {include: '#input-output-from-to'},
+        {include: '#input-output-from-to-through'},
         {include: '#function-definition'},
         {include: '#record-buffer-functions'},
         {include: '#create-statement'},
@@ -2792,6 +2795,7 @@ const grammar = {
         {include: '#annotation'},
         {include: '#undo-statement'},
         {include: '#transaction-distinct'},
+        {include: '#catch-block'},
         {include: '#block-statement'},
         {include: '#block-label'},
         {include: '#end-block'},

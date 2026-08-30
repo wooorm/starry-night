@@ -9,11 +9,20 @@
 
 /** @type {Grammar} */
 const grammar = {
-  dependencies: ['source.shell'],
+  dependencies: ['etc', 'source.shell'],
   extensions: ['.gitconfig'],
   injections: {
     'L:meta.alias.gitconfig source.embedded.shell, L:meta.command.gitconfig - string.quoted':
       {patterns: [{include: '#escapedNewline'}]},
+    'L:meta.bug-matcher.gitconfig string.regexp': {
+      patterns: [
+        {
+          captures: {0: {name: 'sublimelinter.gutter-mark'}},
+          match: '\\\\(?=\\\\)',
+          name: 'punctuation.definition.escape.backslash.gitconfig'
+        }
+      ]
+    },
     'L:string.quoted.double.gitconfig source.embedded.shell - string.quoted.*.shell':
       {
         patterns: [
@@ -129,6 +138,126 @@ const grammar = {
         {include: '#alias'},
         {include: '#comments'},
         {include: '#variables'}
+      ]
+    },
+    bugtraqLog: {
+      begin: '(?i)\\b(logregex)\\s*(=)[ \\t]*',
+      beginCaptures: {
+        1: {name: 'variable.parameter.assignment.gitconfig'},
+        2: {name: 'keyword.operator.assignment.key-value.gitconfig'}
+      },
+      end: '(?=\\s*(?:$|#|;))',
+      name: 'meta.bug-matcher.gitconfig',
+      patterns: [
+        {
+          begin: '\\G("|\')',
+          beginCaptures: {
+            0: {name: 'punctuation.definition.regexp.begin.gitconfig'}
+          },
+          end: '\\1',
+          endCaptures: {
+            0: {name: 'punctuation.definition.regexp.end.gitconfig'}
+          },
+          name: 'string.regexp.gitconfig',
+          patterns: [{include: 'source.regexp'}, {include: '#escapes'}]
+        },
+        {include: '#variableInnards'}
+      ]
+    },
+    bugtraqMessage: {
+      begin: '(?i)\\b(message)\\s*(=)[ \\t]*',
+      beginCaptures: {
+        1: {name: 'variable.parameter.assignment.gitconfig'},
+        2: {name: 'keyword.operator.assignment.key-value.gitconfig'}
+      },
+      end: '(?=\\s*(?:$|#|;))',
+      name: 'meta.log-message.gitconfig',
+      patterns: [
+        {
+          begin: '\\G"',
+          beginCaptures: {
+            0: {name: 'punctuation.definition.string.begin.gitconfig'}
+          },
+          end: '"',
+          endCaptures: {
+            0: {name: 'punctuation.definition.string.end.gitconfig'}
+          },
+          name: 'string.quoted.double.message.gitconfig',
+          patterns: [{include: '#bugtraqPlaceholder'}, {include: '#escapes'}]
+        },
+        {
+          begin: "\\G'",
+          beginCaptures: {
+            0: {name: 'punctuation.definition.string.begin.gitconfig'}
+          },
+          end: "'",
+          endCaptures: {
+            0: {name: 'punctuation.definition.string.end.gitconfig'}
+          },
+          name: 'string.quoted.single.message.gitconfig',
+          patterns: [{include: '#bugtraqPlaceholder'}, {include: '#escapes'}]
+        },
+        {include: '#variableInnards'}
+      ]
+    },
+    bugtraqPlaceholder: {
+      match: '%BUGID%',
+      name: 'constant.other.placeholder.bugid.gitconfig'
+    },
+    bugtraqSection: {
+      begin: '(?:^|\\G)\\s*(?:(\\[)\\s*(bugtraq)\\s*(\\]))',
+      beginCaptures: {
+        0: {name: 'meta.section.header.gitconfig'},
+        1: {name: 'punctuation.definition.bracket.square.begin.gitconfig'},
+        2: {name: 'entity.section.name.gitconfig'},
+        3: {name: 'punctuation.definition.bracket.square.end.gitconfig'}
+      },
+      end: '(?!\\G)(?=^\\s*\\[)',
+      name: 'meta.bugtraq.section.gitconfig',
+      patterns: [
+        {include: '#bugtraqLog'},
+        {include: '#bugtraqUUID'},
+        {include: '#bugtraqMessage'},
+        {include: '#bugtraqURL'},
+        {include: '#comments'},
+        {include: '#variables'}
+      ]
+    },
+    bugtraqURL: {
+      begin: '(?i)\\b(url)\\s*(=)[ \\t]*',
+      beginCaptures: {
+        1: {name: 'variable.parameter.assignment.gitconfig'},
+        2: {name: 'keyword.operator.assignment.key-value.gitconfig'}
+      },
+      end: '(?=\\s*(?:$|#|;))',
+      name: 'meta.bug-tracker.gitconfig',
+      patterns: [
+        {
+          captures: {0: {patterns: [{include: '#bugtraqPlaceholder'}]}},
+          match: '\\G\\S+',
+          name: 'string.other.link.gitconfig'
+        }
+      ]
+    },
+    bugtraqUUID: {
+      begin: '(?i)\\b(provideruuid(?:64)?)\\s*(=)[ \\t]*',
+      beginCaptures: {
+        1: {name: 'variable.parameter.assignment.gitconfig'},
+        2: {name: 'keyword.operator.assignment.key-value.gitconfig'}
+      },
+      end: '(?=\\s*(?:$|#|;))',
+      name: 'meta.provider-uuid.gitconfig',
+      patterns: [
+        {
+          captures: {
+            1: {patterns: [{include: 'etc#bracket'}]},
+            2: {patterns: [{include: 'etc#dash'}, {include: 'etc#hexNoSign'}]},
+            3: {patterns: [{include: 'etc#bracket'}]}
+          },
+          match: '(?i)\\G({)([0-9A-F](?:-?[0-9A-F]){31})(})',
+          name: 'meta.uuid.gitconfig'
+        },
+        {include: '#variableInnards'}
       ]
     },
     cmd: {
@@ -282,6 +411,53 @@ const grammar = {
         {match: '\\\\.', name: 'invalid.illegal.syntax.escape.gitconfig'}
       ]
     },
+    hookCmd: {
+      begin: '(?:^|(?<=\\])\\G)\\s*(cmdline)\\s*(=)',
+      beginCaptures: {
+        1: {name: 'variable.parameter.assignment.gitconfig'},
+        2: {name: 'keyword.operator.assignment.key-value.gitconfig'}
+      },
+      end: '(?<!\\\\)$|(?=#|;)',
+      name: 'meta.command.hook.gitconfig',
+      patterns: [
+        {
+          begin: '\\G\\s*(?=\\\\$)',
+          end: '(?=\\s*(?!\\\\$)(?=\\S))',
+          patterns: [{include: '#escapedNewline'}]
+        },
+        {
+          begin: '\\s*(?!\\\\$)(?=\\S)',
+          contentName: 'source.embedded.batchfile',
+          end: '(?!\\G)',
+          patterns: [{include: 'source.batchfile'}]
+        }
+      ]
+    },
+    hookSection: {
+      begin:
+        '(?xi)\n(?:^|\\G)\n\\s* (\\[) #1\n\\s* (hook) #2\n(?:\n\t\\s+ (") ((?:[^\\\\"\\r\\n]|\\\\.)*+) (") #3-5\n\t|\n\t(\\.) ([-A-Za-z0-9]+) #6-7\n)\n\\s* (\\]) #8',
+      beginCaptures: {
+        0: {name: 'meta.section.header.gitconfig'},
+        1: {name: 'punctuation.definition.bracket.square.begin.gitconfig'},
+        2: {name: 'entity.section.name.gitconfig'},
+        3: {name: 'punctuation.definition.subsection.begin.gitconfig'},
+        4: {
+          name: 'entity.subsection.name.gitconfig',
+          patterns: [{include: '#sectionEscapes'}]
+        },
+        5: {name: 'punctuation.definition.subsection.end.gitconfig'},
+        6: {patterns: [{include: '#dot'}]},
+        7: {name: 'entity.subsection.name.deprecated-syntax.gitconfig'},
+        8: {name: 'punctuation.definition.bracket.square.end.gitconfig'}
+      },
+      end: '(?!\\G)(?=^\\s*\\[)',
+      name: 'meta.hook.section.gitconfig',
+      patterns: [
+        {include: '#hookCmd'},
+        {include: '#comments'},
+        {include: '#variables'}
+      ]
+    },
     includeInnards: {
       patterns: [
         {match: '(?:^|\\G)~(?=/)', name: 'keyword.operator.tilde.gitconfig'},
@@ -412,9 +588,11 @@ const grammar = {
     main: {
       patterns: [
         {include: '#comments'},
+        {include: '#bugtraqSection'},
         {include: '#includeSection'},
         {include: '#aliasSection'},
         {include: '#diffSection'},
+        {include: '#hookSection'},
         {include: '#urlSection'},
         {include: '#section'}
       ]
@@ -481,7 +659,7 @@ const grammar = {
     },
     urlSection: {
       begin:
-        '(?ix)\n(?:^|\\G) \\s*\n(\\[) #1\n\\s*\n(url|https?|core.(?:git)?proxy) #2\n(?:\n\t\\s*\n\t(") #3\n\t(   #4\n\t\t(?: [^\\\\"]\n\t\t|   \\\\.\n\t\t)*+\n\t)\n\t(") #5\n)?+\n\\s* (\\]) #6',
+        '(?ix)\n(?:^|\\G) \\s*\n(\\[) #1\n\\s*\n(url|https?|core\\.(?:git)?proxy) #2\n(?:\n\t\\s*\n\t(") #3\n\t(   #4\n\t\t(?: [^\\\\"]\n\t\t|   \\\\.\n\t\t)*+\n\t)\n\t(") #5\n)?+\n\\s* (\\]) #6',
       beginCaptures: {
         0: {name: 'meta.section.header.gitconfig'},
         1: {name: 'punctuation.definition.bracket.square.begin.gitconfig'},

@@ -28,6 +28,7 @@ const grammar = {
     {include: '#top_type_struct_args'},
     {include: '#top_type_struct'},
     {include: '#top_type_quantifier'},
+    {include: '#decl_wrong_function'},
     {include: '#decl_function'},
     {include: '#decl_external_import'},
     {include: '#decl_external'},
@@ -135,7 +136,7 @@ const grammar = {
         3: {name: 'entity.name.function koka.id.decl.function'}
       },
       match:
-        '((?:(?:inline|noinline)\\s+)?(?:(?:fip|fbip)\\s+)?extern)\\s+((?:[@a-z][\\w\\-@]*/#?)*)([@a-z][\\w\\-@]*[\\\']*|\\([$%&\\*\\+@!/\\\\\\^~=\\.:\\-\\?\\|<>]+\\)|\\[\\]|\\"[^\\s\\"]+\\")?'
+        '((?:(?:inline|noinline)\\s+)?(?:(?:fip|fbip)(?:\\(\\d+\\))?\\s+)?extern)\\s+((?:[@a-z][\\w\\-@]*/#?)*)([@a-z][\\w\\-@]*[\\\']*|\\([$%&\\*\\+@!/\\\\\\^~=\\.:\\-\\?\\|<>]+\\)|\\[\\]|\\"[^\\s\\"]+\\")?'
     },
     decl_external_import: {
       match: '(extern\\s+import)',
@@ -191,6 +192,15 @@ const grammar = {
       },
       match:
         "(var)\\s+([a-z][\\w\\-]*[\\']*|\\([$%&\\*\\+@!/\\\\\\^~=\\.:\\-\\?\\|<>]+\\))"
+    },
+    decl_wrong_function: {
+      captures: {
+        1: {name: 'keyword.declaration.function'},
+        2: {name: 'keyword.declaration.function koka.moduleid'},
+        3: {name: 'entity.name.function koka.id.decl.function'}
+      },
+      match:
+        "((?:(?:inline|noinline)\\s+)?(?:tail\\s+)?(?:(?:fip|fbip)(?:\\(\\d+\\))?\\s+)?(?:fun))\\s+((?:wrong/|default/)(?:[@a-z][\\w\\-@]*/#?)*)([@a-z][\\w\\-@]*[\\']*)"
     },
     dot: {match: '\\.', name: 'source.dot koka.special.dot'},
     externid: {

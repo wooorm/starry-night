@@ -79,8 +79,11 @@ const grammar = {
       ]
     },
     'const-declaration': {
-      begin: '\\b(const)\\b',
-      beginCaptures: {1: {name: 'storage.modifier.const.luau'}},
+      begin: '\\b(?:(export)\\s+)?(const)\\b',
+      beginCaptures: {
+        1: {name: 'storage.modifier.visibility.luau'},
+        2: {name: 'storage.modifier.const.luau'}
+      },
       end: '(?=\\s*[=;]|\\s*$)',
       patterns: [
         {include: '#comment'},
@@ -135,11 +138,13 @@ const grammar = {
       ]
     },
     'function-definition': {
-      begin: '\\b(?:(local)\\s+|(const)\\s+)?(function)\\b(?![,:])',
+      begin:
+        '\\b(?:(local)\\s+|(const)\\s+|(export)\\s+)?(function)\\b(?![,:])',
       beginCaptures: {
         1: {name: 'storage.modifier.local.luau'},
         2: {name: 'storage.modifier.const.luau'},
-        3: {name: 'keyword.control.luau'}
+        3: {name: 'storage.modifier.visibility.luau'},
+        4: {name: 'keyword.control.luau'}
       },
       end: '(?<=[\\)\\-{}\\[\\]"\'])',
       name: 'meta.function.luau',
@@ -286,8 +291,11 @@ const grammar = {
       ]
     },
     'local-declaration': {
-      begin: '\\b(local)\\b',
-      beginCaptures: {1: {name: 'storage.modifier.local.luau'}},
+      begin: '\\b(?:(export)\\s+)?(local)\\b',
+      beginCaptures: {
+        1: {name: 'storage.modifier.visibility.luau'},
+        2: {name: 'storage.modifier.local.luau'}
+      },
       end: '(?=\\s*do\\b|\\s*[=;]|\\s*$)',
       patterns: [
         {include: '#comment'},
@@ -311,18 +319,17 @@ const grammar = {
     number: {
       patterns: [
         {
-          match:
-            '\\b0_*[xX]_*[\\da-fA-F_]*(?:[eE][\\+\\-]?_*\\d[\\d_]*(?:\\.[\\d_]*)?)?',
+          match: '\\b0_*[xX]_*[\\da-fA-F][\\da-fA-F_]*i?',
           name: 'constant.numeric.hex.luau'
         },
         {
-          match:
-            '\\b0_*[bB][01_]+(?:[eE][\\+\\-]?_*\\d[\\d_]*(?:\\.[\\d_]*)?)?',
+          match: '\\b0_*[bB]_*[01][01_]*i?',
           name: 'constant.numeric.binary.luau'
         },
+        {match: '\\d[\\d_]*i', name: 'constant.numeric.decimal.luau'},
         {
           match:
-            '(?:\\d[\\d_]*(?:\\.[\\d_]*)?|\\.\\d[\\d_]*)(?:[eE][\\+\\-]?_*\\d[\\d_]*(?:\\.[\\d_]*)?)?',
+            '(?:\\d[\\d_]*(?:\\.[\\d_]*)?|\\.\\d[\\d_]*)(?:[eE][\\+\\-]?_*\\d[\\d_]*)?',
           name: 'constant.numeric.decimal.luau'
         }
       ]
@@ -369,12 +376,12 @@ const grammar = {
         },
         {
           match:
-            '(?<![^.]\\.|:)\\b(bit32\\.(?:arshift|band|bnot|bor|btest|bxor|extract|lrotate|lshift|replace|rrotate|rshift|countlz|countrz|byteswap)|coroutine\\.(?:create|isyieldable|resume|running|status|wrap|yield|close)|debug\\.(?:info|loadmodule|profilebegin|profileend|traceback)|math\\.(?:abs|acos|asin|atan|atan2|ceil|clamp|cos|cosh|deg|exp|floor|fmod|frexp|isfinite|isinf|isnan|ldexp|lerp|log|log10|map|max|min|modf|noise|pow|rad|random|randomseed|round|sign|sin|sinh|sqrt|tan|tanh)|os\\.(?:clock|date|difftime|time)|string\\.(?:byte|char|find|format|gmatch|gsub|len|lower|match|pack|packsize|rep|reverse|split|sub|unpack|upper)|table\\.(?:concat|create|find|foreach|foreachi|getn|insert|maxn|move|pack|remove|sort|unpack|clear|freeze|isfrozen|clone)|task\\.(?:spawn|synchronize|desynchronize|wait|defer|delay)|utf8\\.(?:char|codepoint|codes|graphemes|len|nfcnormalize|nfdnormalize|offset)|buffer\\.(?:create|fromstring|tostring|len|readbits|readi8|readu8|readi16|readu16|readi32|readu32|readf32|readf64|writebits|writei8|writeu8|writei16|writeu16|writei32|writeu32|writef32|writef64|readstring|writestring|copy|fill)|vector\\.(?:abs|angle|ceil|clamp|create|cross|dot|floor|lerp|magnitude|max|min|normalize|sign))\\b',
+            '(?<![^.]\\.|:)\\b(bit32\\.(?:arshift|band|bnot|bor|btest|bxor|extract|lrotate|lshift|replace|rrotate|rshift|countlz|countrz|byteswap)|coroutine\\.(?:create|isyieldable|resume|running|status|wrap|yield|close)|debug\\.(?:info|loadmodule|profilebegin|profileend|traceback)|integer\\.(?:add|arshift|band|bnot|bor|bswap|btest|bxor|clamp|countlz|countrz|create|div|extract|fromstring|ge|gt|idiv|le|lrotate|lshift|lt|max|min|mod|mul|neg|rem|replace|rrotate|rshift|sub|tonumber|udiv|uge|ugt|ule|ult|urem)|math\\.(?:abs|acos|asin|atan|atan2|ceil|clamp|cos|cosh|deg|exp|floor|fmod|frexp|isfinite|isinf|isnan|ldexp|lerp|log|log10|map|max|min|modf|noise|pow|rad|random|randomseed|round|sign|sin|sinh|sqrt|tan|tanh)|os\\.(?:clock|date|difftime|time)|string\\.(?:byte|char|find|format|gmatch|gsub|len|lower|match|pack|packsize|rep|reverse|split|sub|unpack|upper)|table\\.(?:concat|create|find|foreach|foreachi|getn|insert|maxn|move|pack|remove|sort|unpack|clear|freeze|isfrozen|clone)|task\\.(?:spawn|synchronize|desynchronize|wait|defer|delay)|utf8\\.(?:char|codepoint|codes|graphemes|len|nfcnormalize|nfdnormalize|offset)|buffer\\.(?:create|fromstring|tostring|len|readbits|readi8|readu8|readi16|readu16|readi32|readu32|readinteger|readf32|readf64|writebits|writei8|writeu8|writei16|writeu16|writei32|writeu32|writeinteger|writef32|writef64|readstring|writestring|copy|fill)|vector\\.(?:abs|angle|ceil|clamp|create|cross|dot|floor|lerp|magnitude|max|min|normalize|sign))\\b',
           name: 'support.function.luau'
         },
         {
           match:
-            '(?<![^.]\\.|:)\\b(bit32|buffer|coroutine|debug|math(\\.(huge|pi|nan|e|phi|sqrt2|tau))?|os|string|table|task|utf8(\\.charpattern)?|vector(\\.(one|zero))?)\\b',
+            '(?<![^.]\\.|:)\\b(bit32|buffer|coroutine|debug|integer(\\.(maxsigned|minsigned))?|math(\\.(huge|pi|nan|e|phi|sqrt2|tau))?|os|string|table|task|utf8(\\.charpattern)?|vector(\\.(one|zero))?)\\b',
           name: 'support.constant.luau'
         },
         {
@@ -522,7 +529,7 @@ const grammar = {
         {match: '\\b(true)\\b', name: 'constant.language.boolean.true.luau'},
         {
           match:
-            '\\b(nil|string|number|boolean|thread|vector|buffer|unknown|never|any)\\b',
+            '\\b(nil|string|number|integer|boolean|thread|vector|buffer|unknown|never|any)\\b',
           name: 'support.type.primitive.luau'
         },
         {

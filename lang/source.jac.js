@@ -1328,12 +1328,19 @@ const grammar = {
         {
           begin: '(?x)\\b(has)\\b(?=\\s*[[:alpha:]_]\\w*|\\s*({|;|\\(||\\n))',
           beginCaptures: {1: {name: 'storage.type.function.jac'}},
-          end: '(?=\\)|{)|;|by',
+          end: '(?=\\)|{)|;',
           endCaptures: {1: {name: 'punctuation.section.function.begin.jac'}},
           name: 'meta.property.jac',
           patterns: [
             {include: '#comments'},
             {match: ',', name: 'punctuation.separator.jac'},
+            {
+              captures: {
+                1: {name: 'keyword.control.flow.jac'},
+                2: {name: 'variable.other.jac'}
+              },
+              match: '(?x)\\b(by)\\b\\s*([[:alpha:]_]\\w*)?'
+            },
             {include: '#general'},
             {
               captures: {

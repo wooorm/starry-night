@@ -609,7 +609,7 @@ const grammar = {
         },
         {
           match:
-            '(?<=^|\\s)\\b(transparent|opaque|infix|open|inline)\\b(?=[a-z\\s]*\\b(def|val|var|given|type|class|trait|object|enum)\\b)',
+            '(?<=^|\\s)\\b(transparent|opaque|infix|open|inline|into)\\b(?=[a-z\\s]*\\b(def|val|var|given|type|class|trait|object|enum)\\b)',
           name: 'storage.modifier.other'
         }
       ]

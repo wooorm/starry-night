@@ -40,10 +40,6 @@ source.astro:
   source.tsx: true
 source.awk:
   source.regexp: false
-source.baml:
-  source.baml-jinja: true
-  source.python: false
-  source.ts: false
 source.bdf:
   source.xlfd: true
 source.bru:
@@ -72,6 +68,8 @@ source.cairo0:
   source.python: false
 source.camlp4.ocaml:
   source.ocaml: true
+source.carbon:
+  source.c++: false
 source.cfscript:
   source.sql: true
   text.html.javadoc: false
@@ -155,10 +153,12 @@ source.fontdir:
   source.xlfd: true
 source.fortran.modern:
   source.fortran: true
-source.futhark:
-  etc: true
+source.fpp:
+  source.c++: false
 source.fsharp:
   text.md: false
+source.futhark:
+  etc: true
 source.gdresource:
   source.gdscript: false
   source.gdshader: false
@@ -213,6 +213,9 @@ source.gitattributes:
   etc: true
   source.gitignore: true
 source.gitconfig:
+  etc: true
+  source.batchfile: false
+  source.regexp: false
   source.shell: true
 source.gitignore:
   etc: true
@@ -806,8 +809,6 @@ source.xtend:
 source.yacc:
   source.c++: true
   source.java: true
-source.yaml.salt:
-  source.python: true
 source.yasnippet:
   source.emacs.lisp: true
 text.adblock:

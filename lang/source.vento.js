@@ -12,6 +12,13 @@ const grammar = {
   dependencies: ['source.js'],
   extensions: ['.vto'],
   injections: {
+    'L:source.css -comment -string': {
+      patterns: [
+        {include: '#comment'},
+        {include: '#js_code'},
+        {include: '#template_tag'}
+      ]
+    },
     'L:source.vento (meta.tag.metadata | meta.tag.structure | meta.tag.inline | meta.tag.object | meta.tag.other | meta.tag.custom | string) -meta.embedded -comment':
       {patterns: [{include: 'source.vento'}, {include: '#attributes'}]}
   },

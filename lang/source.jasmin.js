@@ -10,7 +10,6 @@
 /** @type {Grammar} */
 const grammar = {
   extensions: [],
-  extensionsWithDot: ['.j'],
   names: ['jasmin'],
   patterns: [
     {include: '#class-def'},

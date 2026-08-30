@@ -1826,8 +1826,18 @@ const grammar = {
         },
         {
           match:
-            '\\binit[?!]|\\binit\\b|(?<!\\.)\\b(?:func|deinit|subscript|didSet|get|set|willSet|yielding\\s+borrow|yielding\\s+mutate)\\b',
+            '\\binit[?!]|\\binit\\b|(?<!\\.)\\b(?:func|deinit|subscript|didSet|set|willSet|yielding\\s+borrow|yielding\\s+mutate)\\b',
           name: 'storage.type.function.swift'
+        },
+        {
+          captures: {
+            1: {name: 'storage.type.function.swift'},
+            2: {name: 'invalid.illegal.async-must-precede-throws.swift'},
+            3: {name: 'storage.modifier.async.swift'},
+            4: {name: 'storage.modifier.exception.swift'}
+          },
+          match:
+            '\\b(get)(?:\\s+(throws\\s+async)|\\s+(async)(?:\\s+(throws))?)?\\b'
         },
         {
           match:

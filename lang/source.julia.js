@@ -428,7 +428,7 @@ const grammar = {
           end: '"""',
           endCaptures: {0: {name: 'punctuation.definition.string.end.julia'}},
           name: 'string.quoted.other.julia',
-          patterns: [{include: '#string_escaped_char'}]
+          patterns: [{include: '#string_escaped_char_raw'}]
         },
         {
           begin: '(raw)(")',
@@ -439,7 +439,7 @@ const grammar = {
           end: '"',
           endCaptures: {0: {name: 'punctuation.definition.string.end.julia'}},
           name: 'string.quoted.other.julia',
-          patterns: [{include: '#string_escaped_char'}]
+          patterns: [{include: '#string_escaped_char_raw'}]
         },
         {
           begin: '(sql)(""")',
@@ -638,6 +638,12 @@ const grammar = {
             '\\\\(\\\\|[0-3]\\d{,2}|[4-7]\\d?|x[a-fA-F0-9]{,2}|u[a-fA-F0-9]{,4}|U[a-fA-F0-9]{,8}|.)',
           name: 'constant.character.escape.julia'
         }
+      ]
+    },
+    string_escaped_char_raw: {
+      patterns: [
+        {match: '(\\\\\\\\)*\\\\"', name: 'constant.character.escape.julia'},
+        {match: '(\\\\\\\\)+(?=")', name: 'constant.character.escape.julia'}
       ]
     },
     symbol: {

@@ -73,11 +73,13 @@ const grammar = {
     function_calls: {
       patterns: [
         {
-          begin: '([_$[:alpha:]][_$[:alnum:]]*)\\s*(<[^|&()]+>)?(\\()',
+          begin: '([_$[:alpha:]][_$[:alnum:]]*)\\s*(?:(<)([^|&()]+)(>))?(\\()',
           beginCaptures: {
             1: {name: 'entity.name.function.wgsl'},
-            2: {patterns: [{include: '#function_arguments'}]},
-            3: {name: 'punctuation.brackets.round.wgsl'}
+            2: {name: 'punctuation.brackets.angle.wgsl'},
+            3: {patterns: [{include: '#function_arguments'}]},
+            4: {name: 'punctuation.brackets.angle.wgsl'},
+            5: {name: 'punctuation.brackets.round.wgsl'}
           },
           end: '\\)',
           endCaptures: {0: {name: 'punctuation.brackets.round.wgsl'}},
@@ -176,10 +178,7 @@ const grammar = {
           match: '(?<![<>])=(?!=|>)',
           name: 'keyword.operator.assignment.equal.wgsl'
         },
-        {
-          match: '(=(=)?(?!>)|!=|<=|(?<!=)>=)',
-          name: 'keyword.operator.comparison.wgsl'
-        },
+        {match: '(==|!=|<=|>=|<|>)', name: 'keyword.operator.comparison.wgsl'},
         {
           match: '(([+%]|(\\*(?!\\w)))(?!=))|(-(?!>))|(/(?!/))',
           name: 'keyword.operator.math.wgsl'
@@ -208,14 +207,25 @@ const grammar = {
         {match: '[{}]', name: 'punctuation.brackets.curly.wgsl'},
         {match: '[()]', name: 'punctuation.brackets.round.wgsl'},
         {match: ';', name: 'punctuation.semi.wgsl'},
-        {match: '[\\[\\]]', name: 'punctuation.brackets.square.wgsl'},
-        {match: '(?<!=)[<>]', name: 'punctuation.brackets.angle.wgsl'}
+        {match: '[\\[\\]]', name: 'punctuation.brackets.square.wgsl'}
       ]
     },
     reserved_words: {
       match:
         '\\b(aNULL|Self|abstract|active|alignas|alignof|as|asm|asm_fragment|async|attribute|auto|await|become|cast|catch|class|co_await|co_return|co_yield|coherent|column_major|common|compile|compile_fragment|concept|const_cast|consteval|constexpr|constinit|crate|debugger|decltype|delete|demote|demote_to_helper|do|dynamic_cast|enum|explicit|export|extends|extern|external|fallthrough|filter|final|finally|friend|from|fxgroup|get|goto|groupshared|highp|impl|implements|import|inline|instanceof|interface|layout|lowp|macro|macro_rules|match|mediump|meta|mod|module|move|mut|mutable|namespace|new|nil|noexcept|noinline|nointerpolation|non_coherent|noncoherent|noperspective|null|nullptr|of|operator|package|packoffset|partition|pass|patch|pixelfragment|precise|precision|premerge|priv|protected|pub|public|readonly|ref|regardless|register|reinterpret_cast|require|resource|restrict|self|set|shared|sizeof|smooth|snorm|static|static_assert|static_cast|std|subroutine|super|target|template|this|thread_local|throw|trait|try|type|typedef|typeid|typename|typeof|union|unless|unorm|unsafe|unsized|use|using|varying|virtual|volatile|wgsl|where|with|writeonly|yield)\\b',
       name: 'keyword.other.reserved_words.wgsl'
+    },
+    template_types: {
+      begin:
+        '\\b(array|atomic|ptr|vec[2-4]|mat[2-4]x[2-4]|texture_storage_(?:1d|2d|2d_array|3d))\\s*(<)',
+      beginCaptures: {
+        1: {name: 'storage.type.wgsl'},
+        2: {name: 'punctuation.brackets.angle.wgsl'}
+      },
+      end: '>',
+      endCaptures: {0: {name: 'punctuation.brackets.angle.wgsl'}},
+      name: 'meta.type.template.wgsl',
+      patterns: [{include: '#function_arguments'}]
     },
     texture_and_sampler_types: {
       patterns: [
@@ -251,6 +261,7 @@ const grammar = {
     },
     types: {
       patterns: [
+        {include: '#template_types'},
         {include: '#plain_types'},
         {include: '#memory_views'},
         {include: '#texture_and_sampler_types'}

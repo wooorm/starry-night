@@ -34,6 +34,13 @@ const grammar = {
         '(?<!\\w)(-m|-main|--main|--run)\\b\\s*\\b(?:(([a-z][a-zA-Z0-9]*\\.)*)(_*[A-Z]\\w*))?\\b'
     },
     {
+      captures: {
+        1: {name: 'support.package.hx'},
+        3: {name: 'entity.name.type.hx'}
+      },
+      match: '^\\s*(([a-z][a-zA-Z0-9]*\\.)*)(_*[A-Z]\\w*)\\s*$'
+    },
+    {
       captures: {1: {name: 'keyword.other.hxml'}},
       match:
         '(?<!\\w)(-cppia|-cpp?|-js|-as3|-swf-(header|version|lib(-extern)?)|-swf9?|-neko|-python|-php|-cs|-java-lib|-java|-xml|-lua|-hl|-x|-lib|-D|-resource|-exclude|-version|-v|-debug|-prompt|-cmd|-dce\\s+(std|full|no)?|--flash-strict|--no-traces|--flash-use-stage|--neko-source|--gen-hx-classes|-net-lib|-net-std|-c-arg|--each|--next|--display|--no-output|--times|--no-inline|--no-opt|--php-front|--php-lib|--php-prefix|--remap|--help-defines|--help-metas|-help|--help|-java|-cs|--js-modern|--interp|--eval|--dce|--wait|--connect|--cwd|--run).*$'

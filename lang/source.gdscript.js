@@ -277,7 +277,7 @@ const grammar = {
       ]
     },
     function_call: {
-      begin: '(?=\\b[a-zA-Z_]\\w*\\b\\()',
+      begin: '(?=\\b[a-zA-Z_]\\w*\\b\\s*\\()',
       end: '(\\))',
       endCaptures: {1: {name: 'punctuation.definition.arguments.end.gdscript'}},
       name: 'meta.function-call.gdscript',
@@ -367,7 +367,7 @@ const grammar = {
     },
     letter: {
       match: '\\b(?:true|false|null)\\b',
-      name: 'constant.language.gdscript'
+      name: 'constant.language.literal.gdscript'
     },
     line_continuation: {
       patterns: [
@@ -396,8 +396,8 @@ const grammar = {
       patterns: [{include: '#expression'}]
     },
     match_keyword: {
-      captures: {1: {name: 'keyword.control.gdscript'}},
-      match: '^\n\\s*(match)'
+      captures: {1: {name: 'keyword.control.flow.gdscript'}},
+      match: '(?:^|:)\\s*(match)\\b'
     },
     nodepath_function: {
       begin:
@@ -546,7 +546,7 @@ const grammar = {
         {
           captures: {1: {name: 'keyword.control.flow.gdscript'}},
           match:
-            '(?x)\n  ^\\s*(\n    case | match\n  )(?=\\s*([-+\\w\\d(\\[{\'":#]|$))\\b\n'
+            '(?x)\n  (?:^|:)\\s*(\n    case | match\n  )(?=\\s*([-+\\w\\d(\\[{\'":#]|$))\\b\n'
         }
       ]
     },
